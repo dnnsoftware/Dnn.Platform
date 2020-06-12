@@ -6,7 +6,6 @@ using System;
 
 namespace DotNetNuke.Common.Utilities
 {
-
     /// <summary>
     /// Wrapper class for any object that maps string key onto the object value (like Dictionary).
     /// </summary>
@@ -14,7 +13,6 @@ namespace DotNetNuke.Common.Utilities
     /// <remarks></remarks>
     public abstract class StateVariable<T>
     {
-
         private readonly string _key;
         private readonly Func<T> _initializer;
 

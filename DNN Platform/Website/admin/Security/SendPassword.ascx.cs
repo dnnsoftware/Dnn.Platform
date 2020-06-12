@@ -67,7 +67,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-
                 if (Convert.ToInt32(setting) <= 0)
                 {
                     if (this.Request.QueryString["returnurl"] != null)

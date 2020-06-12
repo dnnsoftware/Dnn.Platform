@@ -28,7 +28,6 @@ using Telerik.Web.UI;
 
 namespace DotNetNuke.Modules.Html
 {
-
     /// <summary>
     ///   The EditHtml PortalModuleBase is used to manage Html
     /// </summary>

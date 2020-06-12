@@ -58,7 +58,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public sealed class LoggerManager
     {
-
         /// <summary>
         /// Private constructor to prevent instances. Only static methods should be used.
         /// </summary>

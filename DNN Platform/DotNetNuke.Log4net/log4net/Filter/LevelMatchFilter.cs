@@ -47,7 +47,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class LevelMatchFilter : FilterSkeleton
     {
-
         /// <summary>
         /// flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match
         /// </summary>

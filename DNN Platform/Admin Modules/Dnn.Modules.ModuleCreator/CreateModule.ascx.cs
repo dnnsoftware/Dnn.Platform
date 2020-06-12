@@ -26,7 +26,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dnn.Module.ModuleCreator
 {
-
     public partial class CreateModule : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;

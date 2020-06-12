@@ -159,7 +159,6 @@ namespace DotNetNuke.Web.DDRMenu
 
         public List<MenuNode> FlattenChildren(MenuNode root)
         {
-
             var flattened = new List<MenuNode>();
             if (root.TabId != 0)
             {

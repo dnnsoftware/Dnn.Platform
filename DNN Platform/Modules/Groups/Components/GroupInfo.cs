@@ -20,7 +20,6 @@ namespace DotNetNuke.Entities.Groups
         // private RoleInfo roleInfo;
         public GroupInfo()
         {
-
         }
         public GroupInfo(RoleInfo roleInfo)
         {

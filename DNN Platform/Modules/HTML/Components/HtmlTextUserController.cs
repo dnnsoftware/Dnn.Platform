@@ -23,7 +23,6 @@ namespace DotNetNuke.Modules.Html
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserController
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetHtmlTextUser retrieves a collection of HtmlTextUserInfo objects for an Item

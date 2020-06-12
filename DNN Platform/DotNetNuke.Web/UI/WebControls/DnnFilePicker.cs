@@ -24,7 +24,6 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     /// <summary>
     ///   The FilePicker Class provides a File Picker Control for DotNetNuke
     /// </summary>

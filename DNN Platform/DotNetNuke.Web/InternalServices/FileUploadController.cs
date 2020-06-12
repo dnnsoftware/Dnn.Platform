@@ -756,7 +756,6 @@ namespace DotNetNuke.Web.InternalServices
             Uri uri = new Uri(url);
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {
-
                 if (!uri.Host.Contains("."))
                 {
                     return false;

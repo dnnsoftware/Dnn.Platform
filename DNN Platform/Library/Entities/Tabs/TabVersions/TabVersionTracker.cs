@@ -13,7 +13,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 {
     internal class TabVersionTracker : ServiceLocator<ITabChangeTracker, TabVersionTracker>, ITabChangeTracker
     {
-
         /// <summary>
         /// Tracks a version detail when a module is added to a page
         /// </summary>

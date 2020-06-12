@@ -32,7 +32,6 @@ namespace DotNetNuke.Services.Installer
     /// </remarks>
     public class Util
     {
-
         // ReSharper disable InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
         public static string ASSEMBLY_Added = GetLocalizedString("ASSEMBLY_Added");

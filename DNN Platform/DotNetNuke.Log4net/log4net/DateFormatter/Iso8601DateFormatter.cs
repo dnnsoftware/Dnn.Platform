@@ -37,7 +37,6 @@ namespace log4net.DateFormatter
     /// <author>Gert Driesen</author>
     public class Iso8601DateFormatter : AbsoluteTimeDateFormatter
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

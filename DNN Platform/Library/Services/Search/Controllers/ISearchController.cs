@@ -12,7 +12,6 @@ namespace DotNetNuke.Services.Search.Controllers
 {
     public interface ISearchController
     {
-
         /// <summary>
         /// Get Search Result for the searchQuery at the Site Level
         /// </summary>

@@ -87,7 +87,6 @@ namespace DotNetNuke.Services.Installer.Installers
                             TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
                             if (temp != null)
                             {
-
                                 var mods = TabModulesController.Instance.GetTabModules(temp);
                                 bool noOtherTabModule = true;
                                 foreach (ModuleInfo mod in mods)
@@ -191,7 +190,6 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
-
                     bool createdNewPage = false, addedNewModule = false;
                     DesktopModuleController.AddDesktopModulePageToPortal(this._desktopModule, this._desktopModule.AdminPage, portal.PortalID, ref createdNewPage, ref addedNewModule);
 

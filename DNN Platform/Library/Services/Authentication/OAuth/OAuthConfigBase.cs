@@ -11,7 +11,6 @@ using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
-
     /// <summary>
     /// The Config class provides a central area for management of Module Configuration Settings.
     /// </summary>

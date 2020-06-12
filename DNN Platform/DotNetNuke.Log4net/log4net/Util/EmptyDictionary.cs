@@ -41,7 +41,6 @@ namespace log4net.Util
 #endif
     public sealed class EmptyDictionary : IDictionary
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyDictionary" /> class.
         /// </summary>

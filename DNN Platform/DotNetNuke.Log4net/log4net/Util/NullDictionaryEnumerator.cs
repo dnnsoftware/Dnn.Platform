@@ -38,7 +38,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class NullDictionaryEnumerator : IDictionaryEnumerator
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NullDictionaryEnumerator" /> class.
         /// </summary>

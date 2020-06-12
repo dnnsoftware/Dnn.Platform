@@ -40,7 +40,6 @@ namespace DotNetNuke.Web.Mvc
 
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
-
             ModuleApplication moduleApplication = null;
 
             // Check if the MVC Module overrides the base ModuleApplication class.

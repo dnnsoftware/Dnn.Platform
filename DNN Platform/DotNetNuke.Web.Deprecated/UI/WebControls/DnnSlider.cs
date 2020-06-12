@@ -12,7 +12,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnSlider : RadSlider
     {
-
         // public DnnSlider()
         // {
         //    Utilities.ApplySkin(this);

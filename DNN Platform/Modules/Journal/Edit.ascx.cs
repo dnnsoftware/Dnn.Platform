@@ -19,7 +19,6 @@ using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Journal
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditJournal class is used to manage content

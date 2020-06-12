@@ -268,7 +268,6 @@ namespace DotNetNuke.Entities.Content
 
         private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
         {
-
             DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
             if (readdItem)
             {

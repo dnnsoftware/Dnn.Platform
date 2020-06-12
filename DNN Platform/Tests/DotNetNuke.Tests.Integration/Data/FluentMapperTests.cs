@@ -14,7 +14,6 @@ namespace DotNetNuke.Tests.Data
     [TestFixture]
     public class FluentMapperTests
     {
-
         [Test]
         public void FluentMapper_Constructor_Initialises_TablePrefix_Property()
         {

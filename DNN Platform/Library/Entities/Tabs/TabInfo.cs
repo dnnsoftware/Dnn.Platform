@@ -61,7 +61,6 @@ namespace DotNetNuke.Entities.Tabs
         public TabInfo()
             : this(new SharedDictionary<string, string>(), new SharedDictionary<string, string>())
         {
-
         }
 
 
@@ -774,7 +773,6 @@ namespace DotNetNuke.Entities.Tabs
                 _docTypeCacheLock.EnterWriteLock();
                 try
                 {
-
                     var docType = this.LoadDocType();
                     _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
 

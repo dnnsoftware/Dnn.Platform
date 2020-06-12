@@ -48,7 +48,6 @@ namespace log4net.Util.TypeConverters
     public class ConversionNotSupportedException : ApplicationException
 #endif
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

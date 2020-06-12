@@ -11,7 +11,6 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     public class JavaScriptFileInstaller : FileInstaller
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Collection Node ("jsfiles")

@@ -98,7 +98,6 @@ namespace log4net.Util.PatternStringConverters
         /// </remarks>
         protected override void Convert(TextWriter writer, object state)
         {
-
             if (this.Option != null)
             {
                 // Write the value for the specified key

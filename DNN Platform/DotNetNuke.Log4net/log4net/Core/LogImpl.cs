@@ -101,7 +101,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class LogImpl : LoggerWrapperImpl, ILog
     {
-
         /// <summary>
         /// Construct a new wrapper for the specified logger.
         /// </summary>

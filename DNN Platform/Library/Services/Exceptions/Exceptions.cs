@@ -388,7 +388,6 @@ namespace DotNetNuke.Services.Exceptions
                     // redirect
                     if (URL.IndexOf("error=terminate") != -1)
                     {
-
                         HttpContext.Current.Response.Clear();
                         HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
                     }

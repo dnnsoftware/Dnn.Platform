@@ -263,7 +263,6 @@ namespace DotNetNuke.UI.Modules
                 }
                 if (this.Skin != null)
                 {
-
                     // check for IMC
                     this.Skin.Communicator.LoadCommunicator(this._control);
                 }

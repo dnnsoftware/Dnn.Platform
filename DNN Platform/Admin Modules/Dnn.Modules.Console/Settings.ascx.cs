@@ -23,7 +23,6 @@ using DotNetNuke.Web.UI.WebControls.Internal;
 
 namespace Dnn.Modules.Console
 {
-
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
@@ -248,7 +247,6 @@ namespace Dnn.Modules.Console
 
         private void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)
         {
-
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 var tab = (TabInfo)e.Item.DataItem;

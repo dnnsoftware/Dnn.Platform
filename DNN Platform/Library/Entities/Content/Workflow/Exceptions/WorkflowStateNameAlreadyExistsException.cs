@@ -11,7 +11,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
         public WorkflowStateNameAlreadyExistsException()
             : base(Localization.GetString("WorkflowStateNameAlreadyExistsException", Localization.ExceptionsResourceFile))
         {
-
         }
     }
 }

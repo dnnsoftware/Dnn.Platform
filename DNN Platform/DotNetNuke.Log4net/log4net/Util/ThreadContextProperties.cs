@@ -39,7 +39,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContextProperties : ContextPropertiesBase
     {
-
 #if NETCF
 		/// <summary>
 		/// The thread local data slot to use to store a PropertiesDictionary.

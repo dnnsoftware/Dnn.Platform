@@ -309,7 +309,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
-
             return this.AddFile(folder, fileName, fileContent, true, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
         }
 
@@ -754,7 +753,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the copied file.</returns>
         public virtual IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
@@ -773,7 +771,6 @@ namespace DotNetNuke.Services.FileSystem
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
                 try
                 {
-
                     // check for existing file
                     var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                     if (existingFile != null)
@@ -858,7 +855,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when files is null.</exception>
         public virtual void DeleteFiles(IEnumerable<IFileInfo> files)
         {
-
             Requires.NotNull("files", files);
 
             foreach (var file in files)
@@ -893,7 +889,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual bool FileExists(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles)
         {
-
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
@@ -922,7 +917,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The Content Type for the specified extension.</returns>
         public virtual string GetContentType(string extension)
         {
-
             return FileContentTypeManager.Instance.GetContentType(extension);
         }
 
@@ -983,7 +977,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles)
         {
-
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("folder", folder);
 
@@ -1012,7 +1005,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles)
         {
-
             Requires.NotNullOrEmpty("relativePath", relativePath);
 
             var folderPath = string.Empty;
@@ -1072,7 +1064,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A seekable Stream.</returns>
         public virtual Stream GetSeekableStream(Stream stream)
         {
-
             Requires.NotNull("stream", stream);
 
             if (stream.CanSeek)
@@ -1113,7 +1104,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public string GetUrl(IFileInfo file)
         {
-
             Requires.NotNull("file", file);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1234,7 +1224,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>An <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the renamed file.</returns>
         public virtual IFileInfo RenameFile(IFileInfo file, string newFileName)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNullOrEmpty("newFileName", newFileName);
 
@@ -1294,7 +1283,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="fileAttributes">The file attributes to add.</param>
         public void SetAttributes(IFileInfo file, FileAttributes fileAttributes)
         {
-
             Requires.NotNull("file", file);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1319,7 +1307,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file)
         {
-
             Requires.NotNull("file", file);
 
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -1352,7 +1339,6 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
@@ -1450,7 +1436,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when file or stream are null.</exception>
         public virtual void WriteFile(IFileInfo file, Stream stream)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNull("stream", stream);
 
@@ -1476,7 +1461,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.PermissionsNotMetException">Thrown when permissions are not met.</exception>
         public virtual void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition)
         {
-
             Requires.NotNull("file", file);
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);

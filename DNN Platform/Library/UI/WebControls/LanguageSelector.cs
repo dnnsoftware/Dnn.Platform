@@ -16,7 +16,6 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     /// <summary>
     /// Language Selector control
     /// </summary>

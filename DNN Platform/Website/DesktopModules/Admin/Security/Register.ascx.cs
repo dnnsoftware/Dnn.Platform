@@ -131,7 +131,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 // UserName
                 if (!this.PortalSettings.Registration.UseEmailAsUserName)
                 {
-
                     this.AddField("Username", string.Empty, true,
                             string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator) ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
                             TextBoxMode.SingleLine);
@@ -408,7 +407,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void AddPasswordConfirmField(string dataField, string dataMember, bool required)
         {
-
             var formItem = new DnnFormTextBoxItem
             {
                 ID = dataField,

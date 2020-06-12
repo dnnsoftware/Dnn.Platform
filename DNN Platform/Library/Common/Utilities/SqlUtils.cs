@@ -18,8 +18,6 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class SqlUtils
     {
-
-
         /// <summary>
         ///   function to translate sql exceptions to readable messages.
         ///   It also captures cases where sql server is not available and guards against

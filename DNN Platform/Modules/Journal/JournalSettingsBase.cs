@@ -18,12 +18,8 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.Journal
 {
-
     public class JournalSettingsBase : ModuleSettingsBase
     {
-
-
-
     }
 
 }

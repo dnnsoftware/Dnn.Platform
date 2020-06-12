@@ -136,7 +136,6 @@ namespace log4net.Appender
 #endif
     public class FileAppender : TextWriterAppender
     {
-
         /// <summary>
         /// Write only <see cref="Stream"/> that uses the <see cref="LockingModelBase"/>
         /// to manage access to an underlying resource.

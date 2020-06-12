@@ -25,7 +25,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     /// </summary>
     public class AzureFolderProvider : BaseRemoteStorageProvider
     {
-
         public AzureFolderProvider()
         {
             ServicePointManager.DefaultConnectionLimit = 100;
@@ -65,7 +64,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         private CloudBlobContainer GetContainer(FolderMappingInfo folderMapping)
         {
-
             CheckSettings(folderMapping);
 
             var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);

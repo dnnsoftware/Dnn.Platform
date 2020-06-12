@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFormTabStrip : ListControl
     {
-
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);

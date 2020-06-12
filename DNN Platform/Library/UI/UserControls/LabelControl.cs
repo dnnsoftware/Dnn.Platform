@@ -18,7 +18,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.UserControls
 {
-
     /// <summary>
     /// LabelControl is a user control that provides all the server code to manage a
     /// label, including localization, 508 support and help.

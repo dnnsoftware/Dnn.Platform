@@ -68,7 +68,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class LocalSyslogAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// syslog severities
         /// </summary>

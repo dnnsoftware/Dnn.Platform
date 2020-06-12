@@ -27,7 +27,6 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-
     /// <summary>
     /// Delegate used to handle logger repository creation event notifications
     /// </summary>

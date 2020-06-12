@@ -30,9 +30,6 @@ namespace DotNetNuke.Services.Installer
     [Serializable]
     public class InstallerInfo
     {
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new InstallerInfo instance

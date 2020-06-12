@@ -26,7 +26,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.ViewProfile
 {
-
     /// <summary>
     ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile
     /// </summary>

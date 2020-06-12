@@ -22,7 +22,6 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     public class ProfilePropertyDefinitionComparer : IComparer
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Compares two ProfilePropertyDefinition objects

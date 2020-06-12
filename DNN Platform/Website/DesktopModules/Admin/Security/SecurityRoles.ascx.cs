@@ -303,8 +303,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void BindGrid()
         {
-
-
             if (this.RoleId != Null.NullInteger)
             {
                 this.cmdAdd.Text = Localization.GetString("AddUser.Text", this.LocalResourceFile);

@@ -41,7 +41,6 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public sealed class PluginMap
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

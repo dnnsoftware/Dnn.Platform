@@ -13,7 +13,6 @@ namespace DotNetNuke.Collections
     /// </summary>
     public static class PagingExtensions
     {
-
         /// <summary>
         ///   Filters the incoming store to retrieve pages of a specified size.
         /// </summary>

@@ -37,7 +37,6 @@ namespace DotNetNuke.UI.WebControls
 
         private void AutoCompleteControl_Load(object sender, System.EventArgs e)
         {
-
         }
 
         protected override void RenderEditMode(HtmlTextWriter writer)

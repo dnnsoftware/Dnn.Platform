@@ -56,7 +56,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Douglas de la Torre</author>
     public abstract class Logger : IAppenderAttachable, ILogger
     {
-
         /// <summary>
         /// This constructor created a new <see cref="Logger" /> instance and
         /// sets its name.

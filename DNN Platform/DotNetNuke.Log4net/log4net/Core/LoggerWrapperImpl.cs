@@ -34,7 +34,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public abstract class LoggerWrapperImpl : ILoggerWrapper
     {
-
         /// <summary>
         /// Constructs a new wrapper for the specified logger.
         /// </summary>

@@ -16,7 +16,6 @@ namespace Dnn.ExportImport.Components.Controllers
 {
     public class ImportController : BaseController
     {
-
         public int QueueOperation(int userId, ImportDto importDto)
         {
             using (var repository = new ExportImportRepository(GetPackageDbPath(importDto.PackageId)))

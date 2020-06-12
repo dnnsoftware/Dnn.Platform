@@ -67,7 +67,6 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual void Initialize(UserControl personaBarControl)
         {
-
         }
 
         public virtual IDictionary<string, object> GetConfiguration()
@@ -79,7 +78,6 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
-
         }
 
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)

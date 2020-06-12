@@ -42,7 +42,6 @@ namespace log4net.Util.TypeConverters
     /// <author>Nicko Cadell</author>
     internal class TypeConverter : IConvertFrom
     {
-
         /// <summary>
         /// Can the source type be converted to the type supported by this object
         /// </summary>

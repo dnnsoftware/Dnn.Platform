@@ -10,10 +10,8 @@ using Telerik.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     public class DnnTreeViewContextMenu : RadTreeViewContextMenu
     {
-
         // public DnnTreeViewContextMenu()
         // {
         //    Utilities.ApplySkin(this);

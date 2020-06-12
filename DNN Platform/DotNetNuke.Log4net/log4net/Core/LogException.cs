@@ -48,7 +48,6 @@ namespace log4net.Core
     public class LogException : ApplicationException
 #endif
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

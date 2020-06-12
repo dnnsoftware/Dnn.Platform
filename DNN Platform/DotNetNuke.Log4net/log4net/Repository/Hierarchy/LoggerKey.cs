@@ -43,7 +43,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     internal sealed class LoggerKey
     {
-
         /// <summary>
         /// Construct key with string name
         /// </summary>

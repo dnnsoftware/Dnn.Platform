@@ -51,7 +51,6 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public class RemoteLoggingServerPlugin : PluginSkeleton
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -186,7 +185,6 @@ namespace log4net.Plugin
         /// </remarks>
         private class RemoteLoggingSinkImpl : MarshalByRefObject, IRemoteLoggingSink
         {
-
             /// <summary>
             /// Constructor
             /// </summary>

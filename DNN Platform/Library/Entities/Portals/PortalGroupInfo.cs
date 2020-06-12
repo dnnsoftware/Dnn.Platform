@@ -16,7 +16,6 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalGroupInfo : BaseEntityInfo, IHydratable
     {
-
         public int PortalGroupId { get; set; }
 
         public string AuthenticationDomain { get; set; }

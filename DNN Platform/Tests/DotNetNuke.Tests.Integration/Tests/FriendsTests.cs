@@ -27,7 +27,6 @@ namespace DotNetNuke.Tests.Integration.Tests
 {
     public class FriendsTests : IntegrationTestBase
     {
-
         private const int PortalId = 0;
         private const string FirstLanguage = "en-US";
         private const string SecondLanguage = "fr-FR";
@@ -92,7 +91,6 @@ namespace DotNetNuke.Tests.Integration.Tests
         {
             if (!this.LanguageEnabled(PortalId, SecondLanguage))
             {
-
             }
         }
 

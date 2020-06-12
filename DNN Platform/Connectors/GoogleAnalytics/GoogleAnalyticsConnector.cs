@@ -62,15 +62,12 @@ namespace DNN.Connectors.GoogleAnalytics
 
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
-
             return new List<IConnector> { this };
 
         }
 
         public void DeleteConnector(int portalId)
         {
-
-
         }
 
         public bool HasConfig(int portalId)
@@ -83,7 +80,6 @@ namespace DNN.Connectors.GoogleAnalytics
 
         public IDictionary<string, string> GetConfig(int portalId)
         {
-
             var analyticsConfig = AnalyticsConfiguration.GetConfig("GoogleAnalytics");
             var portalSettings = new PortalSettings(portalId);
 
@@ -98,7 +94,6 @@ namespace DNN.Connectors.GoogleAnalytics
 
             if (analyticsConfig != null)
             {
-
                 foreach (AnalyticsSetting setting in analyticsConfig.Settings)
                 {
                     switch (setting.SettingName.ToLower())
@@ -166,7 +161,6 @@ namespace DNN.Connectors.GoogleAnalytics
 
             try
             {
-
                 var isDeactivating = false;
 
                 bool.TryParse(values["isDeactivating"].ToLowerInvariant(), out isDeactivating);
@@ -205,7 +199,6 @@ namespace DNN.Connectors.GoogleAnalytics
 
                 if (isValid)
                 {
-
                     var config = new AnalyticsConfiguration
                     {
                         Settings = new AnalyticsSettingCollection(),

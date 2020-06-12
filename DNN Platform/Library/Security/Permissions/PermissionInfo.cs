@@ -25,9 +25,6 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class PermissionInfo : BaseEntityInfo
     {
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Mdoule Definition ID

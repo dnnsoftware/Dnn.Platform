@@ -45,7 +45,6 @@ namespace log4net.Filter
     /// <author>Daniel Cazzulino</author>
     public class LoggerMatchFilter : FilterSkeleton
     {
-
         /// <summary>
         /// Flag to indicate the behavior when we have a match
         /// </summary>

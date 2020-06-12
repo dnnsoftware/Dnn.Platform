@@ -31,7 +31,6 @@ namespace DotNetNuke.Tests.Core.Common
         [TestFixtureSetUp]
         public void Setup()
         {
-
             this._navigationManager = new NavigationManager(PortalControllerMock());
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());

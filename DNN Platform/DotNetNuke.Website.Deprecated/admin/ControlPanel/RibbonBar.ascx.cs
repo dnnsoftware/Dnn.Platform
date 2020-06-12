@@ -45,7 +45,6 @@ namespace DotNetNuke.UI.ControlPanels
 
         private void Localize()
         {
-
             Control ctrl = this.AdminPanel.FindControl("SiteNewPage");
             if ((ctrl != null) && ctrl is DnnRibbonBarTool)
             {

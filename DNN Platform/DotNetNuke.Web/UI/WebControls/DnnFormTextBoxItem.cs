@@ -50,7 +50,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-
             this._textBox = new TextBox { ID = this.ID + "_TextBox" };
 
             this._textBox.Rows = this.Rows;

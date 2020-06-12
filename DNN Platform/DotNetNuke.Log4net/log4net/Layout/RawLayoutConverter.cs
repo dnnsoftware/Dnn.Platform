@@ -45,7 +45,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class RawLayoutConverter : IConvertFrom
     {
-
         /// <summary>
         /// Can the sourceType be converted to an <see cref="IRawLayout"/>
         /// </summary>

@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.ClientCapability
     /// </summary>
     public class FacebookRequest
     {
-
         /// <summary>
         ///  Mechanism used to sign the request
         /// </summary>

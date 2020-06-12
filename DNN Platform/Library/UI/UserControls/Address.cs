@@ -18,7 +18,6 @@ using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.UI.UserControls
 {
-
     /// <summary>
     /// The Address UserControl is used to manage User Addresses
     /// </summary>

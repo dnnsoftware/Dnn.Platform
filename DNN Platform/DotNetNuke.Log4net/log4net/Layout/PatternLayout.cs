@@ -787,7 +787,6 @@ namespace log4net.Layout
     /// <author>Daniel Cazzulino</author>
     public class PatternLayout : LayoutSkeleton
     {
-
         /// <summary>
         /// Default pattern string for log output.
         /// </summary>

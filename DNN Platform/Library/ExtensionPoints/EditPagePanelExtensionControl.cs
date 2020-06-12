@@ -114,7 +114,6 @@ namespace DotNetNuke.ExtensionPoints
 
         protected override void RenderContents(HtmlTextWriter op)
         {
-
             op.Write(@"<div class=""" + this.CssClass + @""">
 	<h2 id=""" + this.PanelId + @""" class=""dnnFormSectionHead"">
 <a href="" class=""dnnLabelExpanded"">" + this.Text + @"</a>

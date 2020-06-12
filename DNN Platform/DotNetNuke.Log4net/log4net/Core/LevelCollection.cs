@@ -34,7 +34,6 @@ namespace log4net.Core
         , ICloneable
 #endif
     {
-
         /// <summary>
         /// Supports type-safe iteration over a <see cref="LevelCollection"/>.
         /// </summary>

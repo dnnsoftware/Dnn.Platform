@@ -46,7 +46,6 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public sealed class XmlConfigurator
     {
-
         /// <summary>
         /// Private constructor
         /// </summary>

@@ -37,7 +37,6 @@ namespace log4net.Core
 #endif
     public class MethodItem
     {
-
         /// <summary>
         /// constructs a method item for an unknown method.
         /// </summary>

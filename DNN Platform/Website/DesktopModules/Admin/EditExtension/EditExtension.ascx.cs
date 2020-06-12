@@ -27,7 +27,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditExtension control is used to edit a Extension
@@ -151,7 +150,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.cmdUpdate.Visible = this.IsSuperTab;
             if (this.Package != null)
             {
-
                 if (this.PackageEditor == null || this.PackageID == Null.NullInteger)
                 {
                     this.extensionSection.Visible = false;

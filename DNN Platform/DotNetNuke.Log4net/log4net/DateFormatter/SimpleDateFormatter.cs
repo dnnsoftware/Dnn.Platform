@@ -37,7 +37,6 @@ namespace log4net.DateFormatter
     /// <author>Gert Driesen</author>
     public class SimpleDateFormatter : IDateFormatter
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

@@ -26,7 +26,6 @@ using DotNetNuke.UI.Utilities;
 namespace DotNetNuke.UI.WebControls
 // ReSharper restore CheckNamespace
 {
-
     /// <summary>
     /// The VisibilityControl control provides a base control for defining visibility
     /// options

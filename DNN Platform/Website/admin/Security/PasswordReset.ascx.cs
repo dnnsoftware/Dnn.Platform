@@ -30,8 +30,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.Security
 {
-
-
     public partial class PasswordReset : UserModuleBase
     {
         private readonly INavigationManager _navigationManager;

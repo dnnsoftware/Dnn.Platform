@@ -14,7 +14,6 @@ namespace DotNetNuke.Services.Users
 {
     public class PurgeDeletedUsers : SchedulerClient
     {
-
         public PurgeDeletedUsers(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;

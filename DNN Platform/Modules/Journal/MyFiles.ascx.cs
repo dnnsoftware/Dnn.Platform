@@ -27,7 +27,6 @@ namespace DotNetNuke.Modules.Journal
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
         protected void btnUp_Upload(object sender, EventArgs e)
         {

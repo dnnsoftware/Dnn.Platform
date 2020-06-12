@@ -41,7 +41,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContextStack : IFixingRequired
     {
-
         /// <summary>
         /// The stack store.
         /// </summary>
@@ -306,7 +305,6 @@ namespace log4net.Util
         /// </remarks>
         private struct AutoPopStackFrame : IDisposable
         {
-
             /// <summary>
             /// The ThreadContextStack internal stack
             /// </summary>

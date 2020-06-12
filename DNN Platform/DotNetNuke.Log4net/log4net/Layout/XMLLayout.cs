@@ -74,7 +74,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class XmlLayout : XmlLayoutBase
     {
-
         /// <summary>
         /// Constructs an XmlLayout
         /// </summary>

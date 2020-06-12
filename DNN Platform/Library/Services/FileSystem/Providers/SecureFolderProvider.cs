@@ -13,7 +13,6 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class SecureFolderProvider : StandardFolderProvider
     {
-
         /// <summary>
         /// Gets the file extension to use for protected files.
         /// </summary>

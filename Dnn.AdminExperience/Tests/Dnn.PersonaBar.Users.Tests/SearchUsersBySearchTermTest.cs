@@ -16,7 +16,6 @@ namespace Dnn.PersonaBar.Users.Tests
     [TestFixture]
     public class SearchUsersBySearchTermTest
     {
-
         private GetUsersContract usersContract;
         private UsersControllerTestable usersCtrl;
 

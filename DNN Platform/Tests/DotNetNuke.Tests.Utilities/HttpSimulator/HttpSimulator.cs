@@ -46,7 +46,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public HttpSimulator(string applicationPath)
             : this(applicationPath, WebsitePhysicalAppPath)
         {
-
         }
 
         public HttpSimulator(string applicationPath, string physicalApplicationPath)

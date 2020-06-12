@@ -50,7 +50,6 @@ namespace log4net.Config
     [Serializable]
     public sealed class SecurityContextProviderAttribute : ConfiguratorAttribute
     {
-
         /// <summary>
         /// Construct provider attribute with type specified
         /// </summary>

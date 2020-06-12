@@ -13,7 +13,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class ItemListOptions
     {
-
         [DataMember(Name = "sortAscendingButtonTitle")]
         public string SortAscendingButtonTitle;
 

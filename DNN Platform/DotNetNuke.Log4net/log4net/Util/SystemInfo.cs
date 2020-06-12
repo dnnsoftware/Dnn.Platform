@@ -261,7 +261,6 @@ namespace log4net.Util
             {
                 if (s_hostName == null)
                 {
-
                     // Get the DNS host name of the current machine
                     try
                     {

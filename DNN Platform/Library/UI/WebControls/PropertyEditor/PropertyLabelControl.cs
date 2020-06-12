@@ -19,7 +19,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     /// <summary>
     /// The PropertyLabelControl control provides a standard UI component for displaying
     /// a label for a property. It contains a Label and Help Text and can be Data Bound.
@@ -39,7 +38,6 @@ namespace DotNetNuke.UI.WebControls
 
         public PropertyLabelControl()
         {
-
         }
 
 

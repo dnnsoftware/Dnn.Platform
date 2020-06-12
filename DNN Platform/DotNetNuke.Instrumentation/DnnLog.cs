@@ -63,7 +63,6 @@ namespace DotNetNuke.Instrumentation
                 {
                     if (!_configured)
                     {
-
                         var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
                         var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
                         if (!File.Exists(configPath) && File.Exists(originalPath))

@@ -15,7 +15,6 @@ namespace DotNetNuke.Web.UI.WebControls
     /// <remarks></remarks>
     public class DnnUnsortedListItem : WebControl
     {
-
         public DnnUnsortedListItem()
             : base(HtmlTextWriterTag.Li)
         {

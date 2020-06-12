@@ -119,7 +119,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception ex)
             {
-
                 this.Log.AddFailure(ex);
             }
         }

@@ -32,7 +32,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
-
         /// <summary>
         /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file
         /// </summary>

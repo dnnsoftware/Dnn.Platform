@@ -29,7 +29,6 @@ using Image = System.Web.UI.WebControls.Image;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     /// <summary>
     /// The CaptchaControl control provides a Captcha Challenge control
     /// </summary>
@@ -653,7 +652,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         protected virtual string GetNextCaptcha()
         {
-
             var sb = new StringBuilder();
             var rand = new Random();
             int n;

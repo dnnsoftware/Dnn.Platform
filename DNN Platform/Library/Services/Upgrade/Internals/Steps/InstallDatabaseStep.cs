@@ -22,7 +22,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// -----------------------------------------------------------------------------
     public class InstallDatabaseStep : BaseInstallationStep
     {
-
         /// <summary>
         /// Main method to execute the step
         /// </summary>

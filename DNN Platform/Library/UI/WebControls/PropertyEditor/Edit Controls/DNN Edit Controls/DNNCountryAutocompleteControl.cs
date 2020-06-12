@@ -18,7 +18,6 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
     public class DnnCountryAutocompleteControl : EditControl
     {
@@ -156,7 +155,6 @@ namespace DotNetNuke.UI.WebControls
 
         private void LoadControls()
         {
-
             this.CountryName.Text = this.StringValue;
             int countryId = -1;
             string countryCode = this.StringValue;

@@ -40,7 +40,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public class CountingQuietTextWriter : QuietTextWriter
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

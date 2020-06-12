@@ -19,7 +19,6 @@ namespace DotNetNuke.Modules.Journal.Components
 {
     public class Utilities
     {
-
         private static readonly Regex PageRegex = new Regex(
             "<(title)[^>]*?>((?:.|\\n)*?)</\\s*\\1\\s*>",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -235,7 +234,6 @@ namespace DotNetNuke.Modules.Journal.Components
         }
         internal static string GetPageFromURL(ref string url, string username, string password)
         {
-
             url = PrepareURL(url);
             HttpWebRequest objWebRequest = default(HttpWebRequest);
             HttpWebResponse objWebResponse = default(HttpWebResponse);

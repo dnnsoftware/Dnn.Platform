@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Html
 {
-
     /// <summary>
     ///   MyWork allows a user to view any outstanding workflow items
     /// </summary>

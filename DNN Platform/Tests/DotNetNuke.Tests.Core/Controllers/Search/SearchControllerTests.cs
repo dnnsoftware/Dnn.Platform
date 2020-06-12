@@ -2874,7 +2874,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_GetResult_Works_With_CustomKeyword_Querirs()
         {
-
             this.AddDocumentsWithKeywords();
 
             // Act

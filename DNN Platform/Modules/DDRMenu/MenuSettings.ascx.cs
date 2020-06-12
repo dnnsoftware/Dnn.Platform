@@ -29,7 +29,6 @@ namespace DotNetNuke.Web.DDRMenu
 
         public override void UpdateSettings()
         {
-
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "MenuStyle", (this.MenuStyle.Value ?? string.Empty).ToString());
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "NodeXmlPath", (this.NodeXmlPath.Value ?? string.Empty).ToString());
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "NodeSelector", (this.NodeSelector.Value ?? string.Empty).ToString());

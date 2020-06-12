@@ -24,7 +24,6 @@ namespace DotNetNuke.Modules.Html
     /// -----------------------------------------------------------------------------
     public class HtmlTextLogController
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetHtmlTextLog retrieves a collection of HtmlTextLogInfo objects for an Item

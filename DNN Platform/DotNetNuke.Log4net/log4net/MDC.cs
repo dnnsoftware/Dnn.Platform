@@ -53,7 +53,6 @@ namespace log4net
     [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
     public sealed class MDC
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MDC" /> class.
         /// </summary>

@@ -106,7 +106,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class AnsiColorTerminalAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// The enum of possible display attributes
         /// </summary>

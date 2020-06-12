@@ -14,7 +14,6 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-
     /// <summary></summary>
     /// <remarks></remarks>
     public class ModuleMessage : SkinObjectBase

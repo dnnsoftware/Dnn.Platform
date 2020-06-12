@@ -51,7 +51,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class ReaderWriterLock
     {
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -62,7 +61,6 @@ namespace log4net.Util
         /// </remarks>
         public ReaderWriterLock()
         {
-
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM
             this.m_lock = new System.Threading.ReaderWriterLockSlim(System.Threading.LockRecursionPolicy.SupportsRecursion);

@@ -41,7 +41,6 @@ namespace log4net.Layout
     /// <author>Nicko Cadell</author>
     public class XmlLayoutSchemaLog4j : XmlLayoutBase
     {
-
         /// <summary>
         /// The 1st of January 1970 in UTC
         /// </summary>

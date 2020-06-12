@@ -23,7 +23,6 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchCriteriaCollection : CollectionBase
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class.
         /// </summary>

@@ -7,7 +7,6 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Common.Utilities
 {
-
     public static class SizeExtensions
     {
         public static Orientation Orientation(this Size size)

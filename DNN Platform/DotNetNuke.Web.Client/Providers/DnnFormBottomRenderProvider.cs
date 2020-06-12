@@ -20,7 +20,6 @@ namespace DotNetNuke.Web.Client.Providers
     /// </summary>
     public class DnnFormBottomProvider : DnnFileRegistrationProvider
     {
-
         /// <summary>
         /// The default name of the provider
         /// </summary>

@@ -11,10 +11,8 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     public class DnnLabel : Label, ILocalizable
     {
-
         private bool _localize = true;
 
         public DnnLabel()

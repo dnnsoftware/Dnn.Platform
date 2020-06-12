@@ -27,7 +27,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Admin.Tabs
 {
-
     public partial class Import : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;

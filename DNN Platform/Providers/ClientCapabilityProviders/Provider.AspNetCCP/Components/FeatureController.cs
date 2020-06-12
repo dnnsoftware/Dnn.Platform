@@ -18,7 +18,6 @@ using DotNetNuke.Services.Mobile;
 
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The FeatureController class for the modules.

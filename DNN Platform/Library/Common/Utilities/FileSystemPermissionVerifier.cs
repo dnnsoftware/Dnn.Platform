@@ -44,7 +44,6 @@ namespace DotNetNuke.Common.Utilities
         public FileSystemPermissionVerifier(string basePath, int retryTimes)
             : this(basePath)
         {
-
             this._retryTimes = retryTimes;
         }
 

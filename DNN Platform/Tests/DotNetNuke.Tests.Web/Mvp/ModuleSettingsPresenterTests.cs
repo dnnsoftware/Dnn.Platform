@@ -31,7 +31,6 @@ namespace DotNetNuke.Tests.Web.Mvp
             public TestSettingsPresenter(ISettingsView<SettingsModel> view)
                 : base(view)
             {
-
             }
         }
 

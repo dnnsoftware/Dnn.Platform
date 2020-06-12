@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Social.Notifications
     /// </summary>
     public interface INotificationsController
     {
-
         /// <summary>
         /// Creates a new notification type.
         /// </summary>

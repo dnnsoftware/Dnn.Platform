@@ -23,7 +23,6 @@ namespace DotNetNuke.Entities.Host
 {
     public class ServerController
     {
-
         public const string DefaultUrlAdapter = "DotNetNuke.Entities.Host.ServerWebRequestAdapter, DotNetNuke";
 
         private const string cacheKey = "WebServers";

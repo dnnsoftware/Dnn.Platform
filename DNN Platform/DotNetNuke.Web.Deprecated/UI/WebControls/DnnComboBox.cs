@@ -14,7 +14,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnComboBox : RadComboBox
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

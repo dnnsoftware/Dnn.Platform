@@ -22,7 +22,6 @@ namespace DotNetNuke.Services.Search
     #pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.
         /// </summary>

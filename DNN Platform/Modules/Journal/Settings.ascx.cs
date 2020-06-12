@@ -26,7 +26,6 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Modules.Journal
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Settings class manages Module Settings
@@ -34,8 +33,6 @@ namespace DotNetNuke.Modules.Journal
     /// -----------------------------------------------------------------------------
     public partial class Settings : JournalSettingsBase
     {
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadSettings loads the settings from the Database and displays them

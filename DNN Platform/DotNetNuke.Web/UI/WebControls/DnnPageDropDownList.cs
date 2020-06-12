@@ -22,7 +22,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnPageDropDownList runat='server'></{0}:DnnPageDropDownList>")]
     public class DnnPageDropDownList : DnnDropDownList
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

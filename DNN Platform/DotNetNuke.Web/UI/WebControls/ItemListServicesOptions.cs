@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class ItemListServicesOptions
     {
-
         [DataMember(Name = "moduleId")]
         public string ModuleId = string.Empty;
 

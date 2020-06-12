@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class InstallerFactory
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetInstaller method instantiates the relevant Component Installer

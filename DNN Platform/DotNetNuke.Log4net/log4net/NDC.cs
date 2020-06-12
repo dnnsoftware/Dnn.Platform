@@ -71,7 +71,6 @@ namespace log4net
     [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
     public sealed class NDC
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NDC" /> class.
         /// </summary>

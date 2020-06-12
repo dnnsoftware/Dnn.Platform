@@ -88,7 +88,6 @@ namespace log4net.Core
 #endif
     public sealed class Level : IComparable
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

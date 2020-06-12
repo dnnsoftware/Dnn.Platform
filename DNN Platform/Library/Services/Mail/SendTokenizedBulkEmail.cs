@@ -48,7 +48,6 @@ namespace DotNetNuke.Services.Mail
         // Existing public API
         public enum AddressMethods
         {
-
             Send_TO = 1,
             Send_BCC = 2,
             Send_Relay = 3,

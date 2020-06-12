@@ -26,7 +26,6 @@ namespace DotNetNuke.Common.Lists
         public CachedCountryList(string locale)
             : base()
         {
-
             foreach (ListEntryInfo li in new ListController().GetListEntryInfoItems("Country"))
             {
                 string text = li.Text;
@@ -45,7 +44,6 @@ namespace DotNetNuke.Common.Lists
 
         public static CachedCountryList GetCountryList(string locale)
         {
-
             CachedCountryList res = null;
             try
             {

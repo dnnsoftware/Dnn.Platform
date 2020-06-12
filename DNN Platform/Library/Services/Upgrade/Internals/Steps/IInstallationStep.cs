@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
-
     /// <summary>
     /// This event gets fired when any activity gets recorded
     /// </summary>
@@ -21,7 +20,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// -----------------------------------------------------------------------------
     public interface IInstallationStep
     {
-
         /// <summary>
         /// Any details of the task while it's executing
         /// </summary>

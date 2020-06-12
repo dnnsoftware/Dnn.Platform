@@ -301,7 +301,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
             else
             {
-
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).CheckedState =
                     NodeCheckedState.Checked;
             }

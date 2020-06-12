@@ -10,7 +10,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFormPanel : WebControl
     {
-
         public bool Expanded { get; set; }
 
         public string Text { get; set; }

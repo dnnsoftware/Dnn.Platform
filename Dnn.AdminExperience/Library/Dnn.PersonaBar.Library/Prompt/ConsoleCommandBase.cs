@@ -110,7 +110,6 @@ namespace Dnn.PersonaBar.Library.Prompt
 
         public virtual void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
         }
 
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

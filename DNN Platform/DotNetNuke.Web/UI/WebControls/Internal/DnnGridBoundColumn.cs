@@ -13,6 +13,5 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnGridBoundColumn : BoundField
     {
-
     }
 }

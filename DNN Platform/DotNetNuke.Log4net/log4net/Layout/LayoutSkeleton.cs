@@ -53,7 +53,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public abstract class LayoutSkeleton : ILayout, IOptionHandler
     {
-
         /// <summary>
         /// The header text
         /// </summary>

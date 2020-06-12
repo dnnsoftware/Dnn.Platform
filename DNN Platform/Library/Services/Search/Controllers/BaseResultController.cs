@@ -17,7 +17,6 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public abstract class BaseResultController
     {
-
         /// <summary>
         /// Does the user in the Context have View Permission on the Document
         /// </summary>

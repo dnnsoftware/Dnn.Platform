@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Search
     [Serializable]
     public class SearchItemInfoCollection : CollectionBase
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class.
         /// </summary>

@@ -105,7 +105,6 @@ namespace DotNetNuke.Entities.Host
         /// <returns>true if banned</returns>
         public bool IsIPBanned(string ipAddress)
         {
-
             return this.CheckIfBannedIPAddress(ipAddress);
         }
 

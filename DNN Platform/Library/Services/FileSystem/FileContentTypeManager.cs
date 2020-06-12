@@ -53,7 +53,6 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual string GetContentType(string extension)
         {
-
             if (string.IsNullOrEmpty(extension))
             {
                 return "application/octet-stream";

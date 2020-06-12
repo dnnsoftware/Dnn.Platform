@@ -10,7 +10,6 @@ using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     [DataContract]
     public class DnnFileUploadResources
     {

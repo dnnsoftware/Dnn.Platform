@@ -52,7 +52,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         [TearDown]
         public void TearDown()
         {
-
         }
 
         [Test]

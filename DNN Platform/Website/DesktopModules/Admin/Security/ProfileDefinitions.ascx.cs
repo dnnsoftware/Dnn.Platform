@@ -314,7 +314,6 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         private void ProcessPostBack()
         {
-
             string[] newOrder = ClientAPI.GetClientSideReorder(this.grdProfileProperties.ClientID, this.Page);
             for (int i = 0; i <= this.grdProfileProperties.Items.Count - 1; i++)
             {

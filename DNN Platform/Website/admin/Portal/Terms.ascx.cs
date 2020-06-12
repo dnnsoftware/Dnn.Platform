@@ -14,7 +14,6 @@ namespace DotNetNuke.Common.Controls
 {
     public partial class Terms : PortalModuleBase
     {
-
         // This call is required by the Web Form Designer.
         private void InitializeComponent()
         {

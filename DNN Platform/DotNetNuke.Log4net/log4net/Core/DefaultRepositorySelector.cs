@@ -54,7 +54,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class DefaultRepositorySelector : IRepositorySelector
     {
-
         /// <summary>
         /// Event to notify that a logger repository has been created.
         /// </summary>

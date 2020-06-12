@@ -42,7 +42,6 @@ namespace DotNetNuke.Entities.Content.Common
     /// <seealso cref="Term"/>
     public static class ContentExtensions
     {
-
         /// <summary>
         /// Gets the child terms.
         /// </summary>

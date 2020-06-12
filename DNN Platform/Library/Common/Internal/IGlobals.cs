@@ -9,7 +9,6 @@ using DotNetNuke.Entities.Tabs;
 
 namespace DotNetNuke.Common.Internal
 {
-
     public interface IGlobals
     {
         /// <summary>

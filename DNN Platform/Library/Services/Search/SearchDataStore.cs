@@ -38,7 +38,6 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchDataStore : SearchDataStoreProvider
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetCommonWords gets a list of the Common Words for the locale

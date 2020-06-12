@@ -419,7 +419,6 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (this.PortalSettings.UserInfo.IsSuperUser)
                 {
-
                     tabs = TabController.Instance.GetTabsByPortal(-1).AsList()
                         .Where(tab => searchFunc(tab) && tab.ParentId == parentId && !tab.IsDeleted && !tab.DisableLink && !tab.IsSystem)
                         .OrderBy(tab => tab.TabOrder)
@@ -475,7 +474,6 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-
                 tabs = TabController.Instance.GetTabsByPortal(portalId).Where(tab =>
                                         (includeActive || tab.Value.TabID != this.PortalSettings.ActiveTab.TabID)
                                         && (includeDisabled || !tab.Value.DisableLink)

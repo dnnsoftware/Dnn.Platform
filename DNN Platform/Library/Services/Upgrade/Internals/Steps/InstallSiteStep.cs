@@ -27,7 +27,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// -----------------------------------------------------------------------------
     public class InstallSiteStep : BaseInstallationStep
     {
-
         /// <summary>
         /// Main method to execute the step
         /// </summary>
@@ -61,7 +60,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
         private void CreateSite(PortalConfig portal, InstallConfig installConfig)
         {
-
             var domain = string.Empty;
             if (HttpContext.Current != null)
             {

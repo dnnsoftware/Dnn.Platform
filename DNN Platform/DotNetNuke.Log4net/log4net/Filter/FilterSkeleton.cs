@@ -71,7 +71,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public abstract class FilterSkeleton : IFilter
     {
-
         /// <summary>
         /// Points to the next filter in the filter chain.
         /// </summary>

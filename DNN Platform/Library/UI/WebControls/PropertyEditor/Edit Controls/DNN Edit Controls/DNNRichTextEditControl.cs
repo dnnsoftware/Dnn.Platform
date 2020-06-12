@@ -14,7 +14,6 @@ using DotNetNuke.Modules.HTMLEditorProvider;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     /// <summary>
     /// The DNNRichTextEditControl control provides a standard UI component for editing
     /// RichText

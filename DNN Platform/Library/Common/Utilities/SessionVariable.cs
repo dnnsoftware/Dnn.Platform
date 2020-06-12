@@ -8,14 +8,12 @@ using System.Web.SessionState;
 
 namespace DotNetNuke.Common.Utilities
 {
-
     /// <summary>
     /// Wrapper class for <see cref="HttpContext.Session"/>
     /// </summary>
     /// <typeparam name="T">The type of the value to be stored</typeparam>
     public class SessionVariable<T> : StateVariable<T>
     {
-
         /// <summary>
         /// Initializes a new HttpContext.Session item variable
         /// </summary>

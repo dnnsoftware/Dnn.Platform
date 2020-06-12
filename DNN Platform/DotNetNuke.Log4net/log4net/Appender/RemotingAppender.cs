@@ -81,7 +81,6 @@ namespace log4net.Appender
     /// <author>Daniel Cazzulino</author>
     public class RemotingAppender : BufferingAppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RemotingAppender" /> class.
         /// </summary>

@@ -41,7 +41,6 @@ namespace DotNetNuke.Modules.Groups.Components
 
                 if (actions.Any())
                 {
-
                     foreach (var action in actions)
                     {
                         action.APICall = action.APICall.Replace(".ashx", string.Empty);

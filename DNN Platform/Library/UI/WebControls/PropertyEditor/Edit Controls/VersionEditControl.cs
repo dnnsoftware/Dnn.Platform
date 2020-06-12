@@ -23,7 +23,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// StringValue is the value of the control expressed as a String

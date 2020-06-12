@@ -19,7 +19,6 @@ namespace DotNetNuke.Collections
     /// <typeparam name = "T">The type of objects contained in this list</typeparam>
     public class PagedList<T> : List<T>, IPagedList<T>
     {
-
         /// <summary>
         ///  Initializes a new instance of the <see cref="PagedList{T}"/> a paged list containing objects from the selected enumerable source
         /// </summary>

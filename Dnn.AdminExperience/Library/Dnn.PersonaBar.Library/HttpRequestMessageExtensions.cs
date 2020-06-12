@@ -10,13 +10,11 @@ using System.Net.Http.Headers;
 
 namespace Dnn.PersonaBar.Library
 {
-
     /// <summary>
     /// Extends the HttpRequestMessage collection
     /// </summary>
     public static class HttpRequestMessageExtensions
     {
-
         /// <summary>
         /// Returns a dictionary of QueryStrings that's easier to work with
         /// than GetQueryNameValuePairs KevValuePairs collection.

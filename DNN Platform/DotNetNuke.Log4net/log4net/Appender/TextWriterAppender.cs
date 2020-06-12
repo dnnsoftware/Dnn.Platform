@@ -47,7 +47,6 @@ namespace log4net.Appender
     /// <author>Douglas de la Torre</author>
     public class TextWriterAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TextWriterAppender" /> class.
         /// </summary>

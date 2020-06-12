@@ -189,7 +189,6 @@ namespace DotNetNuke.Entities.Urls
 
             try
             {
-
                 string fullUrl, querystring;
                 // 699: get the full url based on the request and the quersytring, rather than the requestUri.ToString()
                 // there is a difference in encoding, which can corrupt results when an encoded value is in the querystring
@@ -1878,7 +1877,6 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else if (result.OriginalPath.ToLowerInvariant().Contains(wrongAlias))
                 {
-
                     destUrl = result.OriginalPath.ToLowerInvariant().Replace(wrongAlias, rightAlias);
                 }
 

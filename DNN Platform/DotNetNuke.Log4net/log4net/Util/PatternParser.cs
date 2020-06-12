@@ -43,7 +43,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class PatternParser
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

@@ -2951,7 +2951,6 @@ namespace DotNetNuke.Entities.Tabs
             // Manage Content Localization
             if (tab.DefaultLanguageTab != null)
             {
-
                 try
                 {
                     newnode = tabXml.CreateElement("defaultLanguageTab");

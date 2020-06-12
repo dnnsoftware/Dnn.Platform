@@ -46,7 +46,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class LevelRangeFilter : FilterSkeleton
     {
-
         /// <summary>
         /// Flag to indicate the behavior when matching a <see cref="Level"/>
         /// </summary>

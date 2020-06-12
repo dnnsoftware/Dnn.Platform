@@ -11,7 +11,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
         public WorkflowConcurrencyException()
             : base(Localization.GetString("WorkflowConcurrencyException", Localization.ExceptionsResourceFile))
         {
-
         }
     }
 }

@@ -45,7 +45,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class SimpleLayout : LayoutSkeleton
     {
-
         /// <summary>
         /// Constructs a SimpleLayout
         /// </summary>

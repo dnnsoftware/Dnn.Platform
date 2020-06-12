@@ -11,8 +11,6 @@ namespace DotNetNuke.Modules.Groups.Components
 {
     public class Constants
     {
-
-
         internal const string DefaultRoleGroupSetting = "DefaultRoleGroup_Setting";
         internal const string DefautlGroupViewMode = "DefaultGroupViewMode_Setting";
         internal const string GroupViewPage = "GroupViewPage_Setting";

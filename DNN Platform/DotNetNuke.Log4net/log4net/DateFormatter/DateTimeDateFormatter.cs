@@ -41,7 +41,6 @@ namespace log4net.DateFormatter
     /// <author>Angelika Schnagl</author>
     public class DateTimeDateFormatter : AbsoluteTimeDateFormatter
     {
-
         /// <summary>
         /// Default constructor.
         /// </summary>

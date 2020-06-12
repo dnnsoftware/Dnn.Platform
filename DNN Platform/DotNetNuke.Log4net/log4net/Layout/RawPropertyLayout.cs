@@ -39,7 +39,6 @@ namespace log4net.Layout
     /// <author>Nicko Cadell</author>
     public class RawPropertyLayout : IRawLayout
     {
-
         /// <summary>
         /// Constructs a RawPropertyLayout
         /// </summary>

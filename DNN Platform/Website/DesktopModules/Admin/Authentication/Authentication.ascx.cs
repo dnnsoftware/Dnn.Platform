@@ -17,7 +17,6 @@ using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.Admin.Authentication
 {
-
     /// <summary>
     /// Manages the Authentication settings
     /// </summary>
@@ -25,7 +24,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Authentication : PortalModuleBase
     {
-
         private readonly List<AuthenticationSettingsBase> _settingControls = new List<AuthenticationSettingsBase>();
 
         protected override void OnLoad(EventArgs e)

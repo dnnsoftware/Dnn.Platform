@@ -23,7 +23,6 @@ namespace DotNetNuke.Common.Lists
 {
     public class ListController
     {
-
         public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
 
         private void ClearListCache(int portalId)
@@ -109,7 +108,6 @@ namespace DotNetNuke.Common.Lists
 
         private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
         {
-
             string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
             return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
                 new CacheItemArgs(

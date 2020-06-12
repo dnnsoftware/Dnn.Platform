@@ -14,7 +14,6 @@ namespace DotNetNuke.Web.UI.WebControls
     public sealed class TypedControlCollection<T> : ControlCollection
         where T : Control
     {
-
         public TypedControlCollection(Control owner)
             : base(owner)
         {

@@ -83,7 +83,6 @@ namespace DotNetNuke.Services.FileSystem
             string URL = string.Empty;
             if (context.Request.QueryString["fileticket"] != null)
             {
-
                 URL = "FileID=" + FileLinkClickController.Instance.GetFileIdFromLinkClick(context.Request.QueryString);
             }
             if (context.Request.QueryString["userticket"] != null)
@@ -198,7 +197,6 @@ namespace DotNetNuke.Services.FileSystem
                                 }
                                 catch (ThreadAbortException) // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
                                 {
-
                                 }
                                 catch (Exception ex)
                                 {

@@ -38,7 +38,6 @@ namespace log4net.Plugin
     /// <author>Gert Driesen</author>
     public abstract class PluginSkeleton : IPlugin
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

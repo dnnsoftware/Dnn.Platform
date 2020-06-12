@@ -143,7 +143,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class NetSendAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// The DNS or NetBIOS name of the server on which the function is to execute.
         /// </summary>

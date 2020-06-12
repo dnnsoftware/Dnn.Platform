@@ -72,7 +72,6 @@ namespace log4net
     /// <author>Nicko Cadell</author>
     public sealed class ThreadContext
     {
-
         /// <summary>
         /// Private Constructor.
         /// </summary>

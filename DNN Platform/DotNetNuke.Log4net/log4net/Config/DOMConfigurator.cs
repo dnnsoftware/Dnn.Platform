@@ -49,7 +49,6 @@ namespace log4net.Config
     [Obsolete("Use XmlConfigurator instead of DOMConfigurator. Scheduled removal in v10.0.0.")]
     public sealed class DOMConfigurator
     {
-
         /// <summary>
         /// Private constructor
         /// </summary>

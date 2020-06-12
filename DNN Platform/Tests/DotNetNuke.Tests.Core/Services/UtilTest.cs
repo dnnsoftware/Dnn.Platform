@@ -34,7 +34,6 @@ namespace DotNetNuke.Tests.Core.Services
 
             var task = Task.Run(() =>
             {
-
                 Debug.WriteLine("fileStream locked");
                 Task.Delay(lockFileFor).Wait();
 

@@ -12,7 +12,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
 {
     public class ManagedPackageDependency : DependencyBase, IManagedPackageDependency
     {
-
         public override string ErrorMessage
         {
             get

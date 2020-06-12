@@ -39,7 +39,6 @@ namespace DotNetNuke.UI.WebControls
 
         public EditorInfo CreateEditControl()
         {
-
             var info = (SettingInfo)this.DataMember;
             var editInfo = new EditorInfo();
 

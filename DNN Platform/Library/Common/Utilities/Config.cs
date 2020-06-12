@@ -488,7 +488,6 @@ namespace DotNetNuke.Common.Utilities
 
         public static string GetCustomErrorMode()
         {
-
             XPathNavigator configNav = Load().CreateNavigator();
             // Select the location node
             var customErrorsNav = configNav.SelectSingleNode("//configuration/system.web/customErrors|//configuration/location/system.web/customErrors");
@@ -881,7 +880,6 @@ namespace DotNetNuke.Common.Utilities
         {
             try
             {
-
                 // check current .net version and if attribute has been added already
                 if (IsNet45OrNewer() && GetFcnMode() != fcnMode.ToString())
                 {

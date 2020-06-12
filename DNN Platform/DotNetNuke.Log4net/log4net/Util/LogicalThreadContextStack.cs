@@ -27,7 +27,6 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-
         /// <summary>
     /// Delegate type used for LogicalThreadContextStack's callbacks.
     /// </summary>
@@ -48,7 +47,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class LogicalThreadContextStack : IFixingRequired
     {
-
         /// <summary>
         /// The stack store.
         /// </summary>
@@ -344,7 +342,6 @@ namespace log4net.Util
         /// </remarks>
         private struct AutoPopStackFrame : IDisposable
         {
-
             /// <summary>
             /// The depth to trim the stack to when this instance is disposed
             /// </summary>

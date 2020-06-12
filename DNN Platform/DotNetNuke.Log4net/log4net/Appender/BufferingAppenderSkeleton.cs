@@ -73,7 +73,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public abstract class BufferingAppenderSkeleton : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BufferingAppenderSkeleton" /> class.
         /// </summary>

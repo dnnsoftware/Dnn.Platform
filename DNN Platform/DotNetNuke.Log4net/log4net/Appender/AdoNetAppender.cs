@@ -126,7 +126,6 @@ namespace log4net.Appender
     /// <author>Lance Nehring</author>
     public class AdoNetAppender : BufferingAppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AdoNetAppender" /> class.
         /// </summary>
@@ -849,7 +848,6 @@ namespace log4net.Appender
     /// </remarks>
     public class AdoNetAppenderParameter
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AdoNetAppenderParameter" /> class.
         /// </summary>

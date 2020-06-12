@@ -39,7 +39,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class LevelMapping : IOptionHandler
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

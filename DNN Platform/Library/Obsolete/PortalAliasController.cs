@@ -21,7 +21,6 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.DeletePortalAlias. Scheduled removal in v10.0.0.")]
         public void DeletePortalAlias(int portalAliasId)
         {
-
             DataProvider.Instance().DeletePortalAlias(portalAliasId);
 
             EventLogController.Instance.AddLog(

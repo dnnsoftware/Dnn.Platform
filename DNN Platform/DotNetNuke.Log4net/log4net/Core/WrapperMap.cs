@@ -27,7 +27,6 @@ using log4net.Repository;
 
 namespace log4net.Core
 {
-
     /// <summary>
     /// Delegate used to handle creation of new wrappers.
     /// </summary>
@@ -67,7 +66,6 @@ namespace log4net.Core
     /// <author>Gert Driesen</author>
     public class WrapperMap
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WrapperMap" />
         /// </summary>

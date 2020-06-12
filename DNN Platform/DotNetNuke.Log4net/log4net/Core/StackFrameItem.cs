@@ -37,7 +37,6 @@ namespace log4net.Core
     [Serializable]
     public class StackFrameItem
     {
-
         /// <summary>
         /// returns a stack frame item from a stack frame. This
         /// </summary>

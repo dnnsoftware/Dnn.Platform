@@ -159,7 +159,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
         private void SetupUserController()
         {
-
             this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
             new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile { } });
             UserController.SetTestableInstance(this._mockUserController.Object);

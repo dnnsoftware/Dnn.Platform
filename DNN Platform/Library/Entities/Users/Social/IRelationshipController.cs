@@ -8,7 +8,6 @@ namespace DotNetNuke.Entities.Users.Social
 {
     public interface IRelationshipController
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Delete RelationshipType

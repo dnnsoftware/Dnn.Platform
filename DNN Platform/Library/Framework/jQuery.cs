@@ -443,7 +443,6 @@ namespace DotNetNuke.Framework
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQuery);. Scheduled removal in v10.0.0.")]
         public static void RequestRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.jQuery);
             JavaScript.RequestRegistration(CommonJs.jQueryMigrate);
         }
@@ -451,21 +450,18 @@ namespace DotNetNuke.Framework
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.jQueryUI);. Scheduled removal in v10.0.0.")]
         public static void RequestUIRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.jQueryUI);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.DnnPlugins);. Scheduled removal in v10.0.0.")]
         public static void RequestDnnPluginsRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         [Obsolete("Obsoleted in 7.2.0 - use JavaScript.RequestRegistration(CommonJs.HoverIntent);. Scheduled removal in v10.0.0.")]
         public static void RequestHoverIntentRegistration()
         {
-
             JavaScript.RequestRegistration(CommonJs.HoverIntent);
         }
     }

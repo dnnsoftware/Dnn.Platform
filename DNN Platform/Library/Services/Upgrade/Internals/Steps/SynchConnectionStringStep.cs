@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// -----------------------------------------------------------------------------
     public class SynchConnectionStringStep : BaseInstallationStep
     {
-
         /// <summary>
         /// Main method to execute the step
         /// </summary>

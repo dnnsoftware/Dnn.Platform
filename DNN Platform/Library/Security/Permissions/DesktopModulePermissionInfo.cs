@@ -25,7 +25,6 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class DesktopModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-
         // local property declarations
         private int _desktopModulePermissionID;
         private int _portalDesktopModuleID;

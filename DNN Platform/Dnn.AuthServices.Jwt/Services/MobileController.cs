@@ -14,7 +14,6 @@ namespace Dnn.AuthServices.Jwt.Services
     [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {
-
         /// <summary>
         /// Clients that used JWT login should use this API call to logout and invalidate the tokens.
         /// </summary>

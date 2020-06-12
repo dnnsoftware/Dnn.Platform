@@ -15,7 +15,6 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     public class DateUtils
     {
-
         private static DateTime _lastUpdateUtc = DateTime.MinValue;
         private static DateTime _lastUpdateLocal = DateTime.MinValue;
 

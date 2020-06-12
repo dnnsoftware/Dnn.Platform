@@ -315,7 +315,6 @@ namespace Dnn.EditBar.UI.Controllers
 
         private static void FindControlRecursive(Control rootControl, string controlId, ICollection<Control> foundControls)
         {
-
             if (rootControl.ID == controlId)
             {
                 foundControls.Add(rootControl);

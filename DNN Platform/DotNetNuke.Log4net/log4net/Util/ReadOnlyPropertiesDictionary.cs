@@ -52,7 +52,6 @@ namespace log4net.Util
     public class ReadOnlyPropertiesDictionary : ISerializable, IDictionary
 #endif
     {
-
         /// <summary>
         /// The Hashtable used to store the properties data
         /// </summary>

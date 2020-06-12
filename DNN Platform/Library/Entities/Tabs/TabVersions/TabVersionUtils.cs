@@ -17,7 +17,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     /// </summary>
     internal static class TabVersionUtils
     {
-
         /// <summary>
         /// Try to get the version number from the current URL
         /// </summary>

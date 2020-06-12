@@ -52,7 +52,6 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public class Log4NetConfigurationSectionHandler : IConfigurationSectionHandler
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Log4NetConfigurationSectionHandler"/> class.
         /// </summary>

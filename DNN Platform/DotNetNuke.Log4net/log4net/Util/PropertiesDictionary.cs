@@ -48,7 +48,6 @@ namespace log4net.Util
     public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, ISerializable, IDictionary
 #endif
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

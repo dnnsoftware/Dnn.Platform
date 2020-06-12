@@ -8,7 +8,6 @@ namespace DotNetNuke.Services.Cryptography
 {
     public abstract class CryptographyProvider : ICryptographyProvider
     {
-
         /// <summary>
         ///     simple method that uses basic encryption to safely encode parameters
         /// </summary>

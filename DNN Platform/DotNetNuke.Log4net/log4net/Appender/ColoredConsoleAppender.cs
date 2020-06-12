@@ -96,7 +96,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class ColoredConsoleAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// The enum of possible color values for use with the color mapping method
         /// </summary>

@@ -18,7 +18,6 @@ using DotNetNuke.Services.Upgrade;
 
 namespace DotNetNuke.Modules.MemberDirectory.Components
 {
-
     public class UpgradeController : IUpgradeable
     {
         public string UpgradeModule(string Version)

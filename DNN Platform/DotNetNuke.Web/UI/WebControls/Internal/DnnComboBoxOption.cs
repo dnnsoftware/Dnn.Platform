@@ -91,7 +91,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     {
         public OptionItem()
         {
-
         }
 
         [DataMember(Name = "text")]

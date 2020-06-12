@@ -248,7 +248,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         [StructLayout(LayoutKind.Explicit)]
         public struct Color32
         {
-
             public Color32(IntPtr pSourcePixel)
             {
               this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));

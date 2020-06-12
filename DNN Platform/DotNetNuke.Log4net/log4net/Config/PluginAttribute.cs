@@ -49,7 +49,6 @@ namespace log4net.Config
     [Serializable]
     public sealed class PluginAttribute : Attribute, IPluginFactory
     {
-
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <summary>
         /// Initializes a new instance of the <see cref="PluginAttribute" /> class

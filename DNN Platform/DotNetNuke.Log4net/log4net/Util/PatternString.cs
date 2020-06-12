@@ -263,7 +263,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class PatternString : IOptionHandler
     {
-
         /// <summary>
         /// Internal map of converter identifiers to converter types.
         /// </summary>

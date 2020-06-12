@@ -327,7 +327,6 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void LoadHostSkins(bool includeNotSpecified)
         {
-
             // default value
             if (includeNotSpecified)
             {

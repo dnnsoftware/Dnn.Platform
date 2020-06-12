@@ -40,7 +40,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public abstract class TextWriterAdapter : TextWriter
     {
-
         /// <summary>
         /// The writer to forward messages to
         /// </summary>

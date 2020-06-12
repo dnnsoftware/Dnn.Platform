@@ -29,7 +29,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNPageEditControl runat=server></{0}:DNNPageEditControl>")]
     public class DNNPageEditControl : IntegerEditControl
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// RenderEditMode renders the Edit mode of the control

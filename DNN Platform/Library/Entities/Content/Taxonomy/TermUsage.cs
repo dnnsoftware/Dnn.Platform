@@ -19,7 +19,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// </summary>
         public TermUsage()
         {
-
         }
 
         internal TermUsage(int total, int month, int week, int day)

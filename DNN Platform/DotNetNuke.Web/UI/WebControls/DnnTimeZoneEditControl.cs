@@ -13,11 +13,8 @@ using DotNetNuke.Web.UI.WebControls.Extensions;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     public class DnnTimeZoneEditControl : TextEditControl
     {
-
-
         private DnnTimeZoneComboBox TimeZones;
 
         public DnnTimeZoneEditControl()

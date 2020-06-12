@@ -55,7 +55,6 @@ namespace log4net.Appender
     /// <author>Ron Grabowski</author>
     public class TraceAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TraceAppender" />.
         /// </summary>

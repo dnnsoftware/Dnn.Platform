@@ -36,7 +36,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Journal.Components
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Controller class for Journal

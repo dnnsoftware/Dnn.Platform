@@ -16,7 +16,6 @@ namespace DotNetNuke.Security.Permissions
     [Serializable]
     public class FolderPermissionInfo : PermissionInfoBase, IHydratable
     {
-
         // local property declarations
         private int _folderID;
         private string _folderPath;

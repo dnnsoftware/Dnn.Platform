@@ -38,7 +38,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class ReusableStringWriter : StringWriter
     {
-
         /// <summary>
         /// Create an instance of <see cref="ReusableStringWriter"/>
         /// </summary>

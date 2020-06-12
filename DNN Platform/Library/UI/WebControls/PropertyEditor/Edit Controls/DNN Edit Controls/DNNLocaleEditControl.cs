@@ -15,7 +15,6 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     /// <summary>
     /// The DNNLocaleEditControl control provides a standard UI component for selecting
     /// a Locale

@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.Groups
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
             RoleInfo role = RoleController.Instance.GetRole(this.PortalId, r => r.SecurityMode != SecurityMode.SecurityRole && r.RoleID == this.GroupId);
             if (role == null && this.GroupId > 0)
             {

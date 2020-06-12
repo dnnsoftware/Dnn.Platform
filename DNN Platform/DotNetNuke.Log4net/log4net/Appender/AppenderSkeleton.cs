@@ -49,7 +49,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public abstract class AppenderSkeleton : IAppender, IBulkAppender, IOptionHandler, IFlushable
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

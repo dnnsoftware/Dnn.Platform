@@ -20,7 +20,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Groups
 {
-
     public partial class Create : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;

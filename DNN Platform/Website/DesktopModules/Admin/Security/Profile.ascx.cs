@@ -30,7 +30,6 @@ namespace DesktopModules.Admin.Security
     /// -----------------------------------------------------------------------------
     public partial class DNNProfile : ProfileUserControlBase
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets whether to display the Visibility controls
@@ -121,7 +120,6 @@ namespace DesktopModules.Admin.Security
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-
             // Before we bind the Profile to the editor we need to "update" the visible data
             var properties = new ProfilePropertyDefinitionCollection();
             var imageType = new ListController().GetListEntryInfo("DataType", "Image");

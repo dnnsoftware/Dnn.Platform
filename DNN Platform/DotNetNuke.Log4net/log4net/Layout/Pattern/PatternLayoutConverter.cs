@@ -43,7 +43,6 @@ namespace log4net.Layout.Pattern
     /// <author>Nicko Cadell</author>
     public abstract class PatternLayoutConverter : PatternConverter
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PatternLayoutConverter" /> class.
         /// </summary>

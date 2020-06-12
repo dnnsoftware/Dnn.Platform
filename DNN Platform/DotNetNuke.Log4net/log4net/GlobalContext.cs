@@ -54,7 +54,6 @@ namespace log4net
     /// <author>Nicko Cadell</author>
     public sealed class GlobalContext
     {
-
         /// <summary>
         /// Private Constructor.
         /// </summary>

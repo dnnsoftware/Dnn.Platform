@@ -138,7 +138,6 @@ namespace Dnn.ExportImport.Components.Services
 
                             if (folder.StorageLocation != (int)FolderController.StorageLocationTypes.DatabaseSecure)
                             {
-
                                 CompressionUtil.AddFilesToArchive(zipArchive, files.Select(file => portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(file)),
                                     folderOffset, isUserFolder ? "TempUsers" : null);
 

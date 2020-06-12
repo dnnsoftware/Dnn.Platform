@@ -10,10 +10,8 @@ using DotNetNuke.Entities.Content.Common;
 
 namespace DotNetNuke.Services.Journal
 {
-
     public class Content
     {
-
         /// <summary>
         /// This should only run after the Post exists in the data store.
         /// </summary>

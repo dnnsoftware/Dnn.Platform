@@ -567,7 +567,6 @@ namespace DotNetNuke.Entities.Users.Social
 
         public Relationship GetFollowersRelationshipByPortal(int portalId)
         {
-
             return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers);
         }
 

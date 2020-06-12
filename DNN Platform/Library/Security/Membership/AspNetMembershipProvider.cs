@@ -1864,7 +1864,6 @@ namespace DotNetNuke.Security.Membership
                 // Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
-
                     // Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
                     if (this._socialAuthProviders.Contains(authType) && string.IsNullOrEmpty(verificationCode))
                     {

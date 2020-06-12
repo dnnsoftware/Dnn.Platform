@@ -10,12 +10,10 @@ using System.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     public sealed class UniformControlCollection<TOwner, TChildren> : IList<TChildren>
         where TOwner : Control
         where TChildren : Control
     {
-
         private readonly TOwner _owner;
 
         internal UniformControlCollection(TOwner owner)

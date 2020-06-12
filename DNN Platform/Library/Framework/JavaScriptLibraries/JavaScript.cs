@@ -487,7 +487,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         // such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
                         if (page.Form != null)
                         {
-
                         }
 
                         // register dependency

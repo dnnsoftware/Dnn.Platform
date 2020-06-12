@@ -82,7 +82,6 @@ namespace DotNetNuke.Services.Install
             }
             else
             {
-
                 try
                 {
                     var synchConnectionString = new SynchConnectionStringStep();

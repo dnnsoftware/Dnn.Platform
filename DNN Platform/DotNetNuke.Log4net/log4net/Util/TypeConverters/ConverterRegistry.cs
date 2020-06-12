@@ -52,7 +52,6 @@ namespace log4net.Util.TypeConverters
     /// <author>Gert Driesen</author>
     public sealed class ConverterRegistry
     {
-
         /// <summary>
         /// Private constructor
         /// </summary>

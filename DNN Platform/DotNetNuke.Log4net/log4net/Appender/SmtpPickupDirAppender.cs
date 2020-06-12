@@ -55,7 +55,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class SmtpPickupDirAppender : BufferingAppenderSkeleton
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

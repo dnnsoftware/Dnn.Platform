@@ -38,7 +38,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     internal class DefaultLoggerFactory : ILoggerFactory
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

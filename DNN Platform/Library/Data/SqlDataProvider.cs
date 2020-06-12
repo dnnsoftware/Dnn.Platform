@@ -72,7 +72,6 @@ namespace DotNetNuke.Data
                 var sql = statement.Trim();
                 if (!string.IsNullOrEmpty(sql))
                 {
-
                     // script dynamic substitution
                     sql = DataUtil.ReplaceTokens(sql);
 

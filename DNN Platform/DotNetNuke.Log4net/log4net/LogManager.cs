@@ -60,7 +60,6 @@ namespace log4net
     /// <author>Gert Driesen</author>
     public sealed class LogManager
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LogManager" /> class.
         /// </summary>

@@ -376,7 +376,6 @@ namespace DotNetNuke.Services.Localization
 
         public static void AddLanguageToPortal(int portalID, int languageID, bool clearCache)
         {
-
             // try to get valid locale reference
             var newLocale = LocaleController.Instance.GetLocale(languageID);
 
@@ -456,7 +455,6 @@ namespace DotNetNuke.Services.Localization
 
                 if (currentAlias != null && !string.IsNullOrEmpty(httpAlias) && portalInfo != null)
                 {
-
                     if (!string.IsNullOrEmpty(currentAlias.CultureCode))
                     {
                         // the portal alias is culture specific

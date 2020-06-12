@@ -41,7 +41,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class ForwardingAppender : AppenderSkeleton, IAppenderAttachable
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ForwardingAppender" /> class.
         /// </summary>

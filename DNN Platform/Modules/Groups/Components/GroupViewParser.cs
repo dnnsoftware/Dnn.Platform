@@ -64,7 +64,6 @@ namespace DotNetNuke.Modules.Groups.Components
 
             if (isOwner)
             {
-
                 this.Template = this.Template.Replace("[GROUPEDITBUTTON]", string.Format(editUrl, this.GroupEditUrl));
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", false);
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", true);

@@ -340,7 +340,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.CanUpdateUsername() && !disableUsername)
             {
-
                 this.renameUserName.Visible = true;
 
                 this.userName.Visible = false;

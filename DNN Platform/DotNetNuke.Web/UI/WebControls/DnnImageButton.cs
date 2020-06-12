@@ -10,7 +10,6 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-
     public class DnnImageButton : ImageButton
     {
         public string IconKey { get; set; }

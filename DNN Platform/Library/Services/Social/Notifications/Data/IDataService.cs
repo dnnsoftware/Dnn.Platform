@@ -9,7 +9,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 {
     public interface IDataService
     {
-
         /// <summary>
         /// Creates a new Notification Type
         /// </summary>

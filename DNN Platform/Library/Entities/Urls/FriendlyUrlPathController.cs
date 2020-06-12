@@ -16,7 +16,6 @@ namespace DotNetNuke.Entities.Urls
 {
     internal class FriendlyUrlPathController
     {
-
         /// <summary>
         /// Splits out the userid value from the supplied Friendly Url Path
         /// </summary>

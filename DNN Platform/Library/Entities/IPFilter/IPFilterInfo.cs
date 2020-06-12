@@ -19,12 +19,9 @@ using DotNetNuke.Security.Roles.Internal;
 
 namespace DotNetNuke.Entities.Host
 {
-
     [Serializable]
     public class IPFilterInfo : BaseEntityInfo, IHydratable
     {
-
-
         /// <summary>
         /// Create new IPFilterInfo instance
         /// </summary>
@@ -71,7 +68,6 @@ namespace DotNetNuke.Entities.Host
             }
             catch (IndexOutOfRangeException)
             {
-
                 // else swallow the error
             }
 

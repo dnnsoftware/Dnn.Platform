@@ -45,7 +45,6 @@ namespace log4net.Util
     /// <author>Ron Grabowski</author>
     public class OnlyOnceErrorHandler : IErrorHandler
     {
-
         /// <summary>
         /// Default Constructor
         /// </summary>

@@ -455,7 +455,6 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception ex)
             {
-
                 this.InstallerInfo.Log.AddFailure(ex);
                 bStatus = false;
             }
@@ -541,7 +540,6 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception ex)
             {
-
                 this.InstallerInfo.Log.AddFailure(ex);
                 return false;
             }

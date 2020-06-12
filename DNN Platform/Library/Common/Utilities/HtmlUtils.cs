@@ -192,7 +192,6 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static string ConvertToHtml(string strText)
         {
-
             if (!string.IsNullOrEmpty(strText))
             {
                 var htmlBuilder = new StringBuilder(strText);

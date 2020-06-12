@@ -22,7 +22,6 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.Modules.Admin.Modules
 // ReSharper restore CheckNamespace
 {
-
     /// <summary>
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.

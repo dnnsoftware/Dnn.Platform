@@ -22,7 +22,6 @@ namespace DotNetNuke.Web.Client.Providers
     /// </summary>
     public class DnnBodyProvider : DnnFileRegistrationProvider
     {
-
         /// <summary>
         /// The name of the provider
         /// </summary>

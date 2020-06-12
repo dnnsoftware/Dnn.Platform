@@ -38,7 +38,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class NullEnumerator : IEnumerator
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NullEnumerator" /> class.
         /// </summary>

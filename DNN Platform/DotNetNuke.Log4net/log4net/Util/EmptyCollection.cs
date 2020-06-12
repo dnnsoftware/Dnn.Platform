@@ -41,7 +41,6 @@ namespace log4net.Util
 #endif
     public sealed class EmptyCollection : ICollection
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyCollection" /> class.
         /// </summary>

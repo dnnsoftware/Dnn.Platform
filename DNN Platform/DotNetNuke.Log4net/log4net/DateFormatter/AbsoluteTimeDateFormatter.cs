@@ -39,7 +39,6 @@ namespace log4net.DateFormatter
     /// <author>Gert Driesen</author>
     public class AbsoluteTimeDateFormatter : IDateFormatter
     {
-
         /// <summary>
         /// Renders the date into a string. Format is <c>"HH:mm:ss"</c>.
         /// </summary>

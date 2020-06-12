@@ -25,7 +25,6 @@ namespace DNN.Integration.Test.Framework
 {
     internal class WebApiConnector : IWebApiConnector, IDisposable
     {
-
         private static readonly Dictionary<string, CachedWebPage> CachedPages = new Dictionary<string, CachedWebPage>();
 
         public static WebApiConnector GetWebConnector(string siteUrl, string userName)
@@ -331,7 +330,6 @@ namespace DNN.Integration.Test.Framework
         {
             using (var client = this.CreateHttpClient("/", true))
             {
-
                 var headers = client.DefaultRequestHeaders;
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));

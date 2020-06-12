@@ -27,7 +27,6 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
     [ToolboxData("<{0}:PackageTypeEditControl runat=server></{0}:PackageTypeEditControl>")]
     public class PackageTypeEditControl : TextEditControl
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// RenderEditMode renders the Edit mode of the control

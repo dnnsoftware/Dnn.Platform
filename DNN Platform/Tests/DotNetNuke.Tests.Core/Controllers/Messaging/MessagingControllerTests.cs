@@ -66,7 +66,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [SetUp]
         public void SetUp()
         {
-
             ComponentFactory.Container = new SimpleContainer();
             this._mockDataService = new Mock<IDataService>();
             this._dataProvider = MockComponentProvider.CreateDataProvider();

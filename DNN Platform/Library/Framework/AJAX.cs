@@ -16,7 +16,6 @@ namespace DotNetNuke.Framework
 {
     public class AJAX
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   AddScriptManager is used internally by the framework to add a ScriptManager control to the page

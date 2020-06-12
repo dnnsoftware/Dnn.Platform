@@ -300,7 +300,6 @@ namespace DotNetNuke.Web.InternalServices
                     int tabModuleId = -1;
                     if (moduleLstID > -1)
                     {
-
                         if (dto.AddExistingModule == "true")
                         {
                             int pageID;
@@ -520,7 +519,6 @@ namespace DotNetNuke.Web.InternalServices
 
             try
             {
-
                 if (!string.IsNullOrEmpty(portal))
                 {
                     var selectedPortalId = int.Parse(portal);

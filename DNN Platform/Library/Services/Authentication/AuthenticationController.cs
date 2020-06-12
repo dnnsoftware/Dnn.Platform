@@ -86,7 +86,6 @@ namespace DotNetNuke.Services.Authentication
             }
             else
             {
-
                 EventLogController.Instance.AddLog(
                     "userID/authenticationType already exists",
                     userID + "/" + authenticationType,

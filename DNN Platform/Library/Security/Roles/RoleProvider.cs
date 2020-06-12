@@ -17,7 +17,6 @@ namespace DotNetNuke.Security.Roles
 {
     public abstract class RoleProvider
     {
-
         // return the provider
         public static RoleProvider Instance()
         {
@@ -47,7 +46,6 @@ namespace DotNetNuke.Security.Roles
 
         public virtual void UpdateRoleSettings(RoleInfo role)
         {
-
         }
 
 

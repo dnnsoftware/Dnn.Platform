@@ -46,7 +46,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public abstract class XmlLayoutBase : LayoutSkeleton
     {
-
         /// <summary>
         /// Protected constructor to support subclasses
         /// </summary>

@@ -39,7 +39,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public sealed class Transform
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Transform" /> class.
         /// </summary>

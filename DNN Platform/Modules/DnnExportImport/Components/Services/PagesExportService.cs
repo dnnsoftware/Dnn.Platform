@@ -546,7 +546,6 @@ namespace Dnn.ExportImport.Components.Services
                     var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
                     if (permissionId != null)
                     {
-
                         local = new TabPermissionInfo
                         {
                             TabID = localTab.TabID,
@@ -1161,7 +1160,6 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (permissionId != null)
                 {
-
                     var local = new ModulePermissionInfo
                     {
                         ModuleID = localModule.ModuleID,

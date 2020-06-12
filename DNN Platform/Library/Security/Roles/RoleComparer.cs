@@ -20,7 +20,6 @@ namespace DotNetNuke.Security.Roles
     /// -----------------------------------------------------------------------------
     public class RoleComparer : IComparer
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Compares two RoleInfo objects by performing a comparison of their rolenames

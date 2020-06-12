@@ -57,7 +57,6 @@ namespace Dnn.EditBar.UI.Services
 
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
-
             if (!this.Expired(culture))
             {
                 var jsonFileContent = this.GetJsonFileContent(culture);
@@ -147,6 +146,5 @@ namespace Dnn.EditBar.UI.Services
     [Serializable]
     public class CacheDto
     {
-
     }
 }

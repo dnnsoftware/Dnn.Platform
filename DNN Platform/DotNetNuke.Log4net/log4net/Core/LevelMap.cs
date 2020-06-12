@@ -41,7 +41,6 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public sealed class LevelMap
     {
-
         /// <summary>
         /// Mapping from level name to Level object. The
         /// level name is case insensitive

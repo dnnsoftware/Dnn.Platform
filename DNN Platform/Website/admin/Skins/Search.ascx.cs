@@ -21,8 +21,6 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-
-
     public partial class Search : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
@@ -547,7 +545,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Client Variables will survive a postback so there is no reason to register them.
                 if (!this.Page.IsPostBack)
                 {
-
                     this.downArrow.AlternateText = Localization.GetString("DropDownGlyph.AltText", Localization.GetResourceFile(this, MyFileName));
                     this.downArrow.ToolTip = this.downArrow.AlternateText;
 

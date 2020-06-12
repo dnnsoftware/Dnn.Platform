@@ -36,7 +36,6 @@ using Globals = DotNetNuke.Common.Globals;
 namespace DotNetNuke.Modules.Admin.Modules
 // ReSharper restore CheckNamespace
 {
-
     /// <summary>
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.
@@ -344,7 +343,6 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (moduleControlInfo != null)
                     {
-
                         this._control = ModuleControlFactory.LoadSettingsControl(this.Page, this.Module, moduleControlInfo.ControlSrc);
 
                         var settingsControl = this._control as ISettingsControl;

@@ -20,7 +20,6 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class PackageWriterFactory
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetWriter method instantiates the relevant PackageWriter Installer

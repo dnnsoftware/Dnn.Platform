@@ -13,7 +13,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class DnnJsIncludeFallback : WebControl
     {
-
         public DnnJsIncludeFallback(string objectName, string fileName)
         {
             this.ObjectName = objectName;

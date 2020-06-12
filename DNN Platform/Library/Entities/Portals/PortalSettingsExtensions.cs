@@ -12,7 +12,6 @@ namespace DotNetNuke.Entities.Portals
 {
     public static class PortalSettingsExtensions
     {
-
         /// <summary>
         /// Detect whether current page is custom error page.
         /// </summary>

@@ -44,7 +44,6 @@ namespace log4net.ObjectRenderer
     /// <author>Gert Driesen</author>
     public sealed class DefaultRenderer : IObjectRenderer
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

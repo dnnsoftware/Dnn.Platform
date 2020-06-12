@@ -14,7 +14,6 @@ using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Html
 {
-
     /// <summary>
     ///   The Settings ModuleSettingsBase is used to manage the
     ///   settings for the HTML Module

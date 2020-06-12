@@ -266,7 +266,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 foreach (var p in panes)
                 {
-
                     var botPane = new[]
                     {
                         string.Format(this.GetString("Pane.Add.Text"), p),

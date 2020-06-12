@@ -85,7 +85,6 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private DateTime GetLastModifiedTimeInternal(string resourceFile, string culture)
         {
-
             var cultureSpecificFile = System.Web.HttpContext.Current.Server.MapPath(resourceFile.Replace(".resx", string.Empty) + "." + culture + ".resx");
             var lastModifiedDate = DateTime.MinValue;
 

@@ -500,7 +500,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
     internal class TestLogSource : ILoggerSource
     {
-
         public ILog GetLogger(string name)
         {
             return new TestLogger();
@@ -514,7 +513,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
     internal class TestLogger : ILog
     {
-
         public void Debug(object message, Exception exception)
         {
         }

@@ -40,7 +40,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public class ProtectCloseTextWriter : TextWriterAdapter
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

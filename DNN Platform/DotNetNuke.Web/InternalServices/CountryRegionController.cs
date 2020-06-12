@@ -19,7 +19,6 @@ namespace DotNetNuke.Web.InternalServices
     [AllowAnonymous]
     public class CountryRegionController : DnnApiController
     {
-
         [HttpGet]
         public HttpResponseMessage Countries()
         {

@@ -11,7 +11,6 @@ namespace DotNetNuke.Web.Client.Controls
 {
     public abstract class ClientResourceExclude : Control
     {
-
         public string Name { get; set; }
 
         public ClientDependencyType DependencyType { get; internal set; }

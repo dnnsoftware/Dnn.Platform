@@ -41,7 +41,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public sealed class DenyAllFilter : FilterSkeleton
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

@@ -32,7 +32,6 @@ namespace DotNetNuke.Entities.Host
     [Serializable]
     public class Host : BaseEntityInfo
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the AutoAccountUnlockDuration

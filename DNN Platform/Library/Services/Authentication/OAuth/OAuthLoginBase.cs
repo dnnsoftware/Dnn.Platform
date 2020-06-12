@@ -24,7 +24,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected virtual void AddCustomProperties(NameValueCollection properties)
         {
-
         }
 
         protected override void OnLoad(EventArgs e)

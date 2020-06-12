@@ -50,7 +50,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class OutputDebugStringAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="OutputDebugStringAppender" /> class.
         /// </summary>

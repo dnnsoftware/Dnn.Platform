@@ -88,7 +88,6 @@ namespace log4net.Appender
     /// <author>Thomas Voss</author>
     public class EventLogAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EventLogAppender" /> class.
         /// </summary>

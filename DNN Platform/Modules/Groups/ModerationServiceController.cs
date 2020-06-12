@@ -140,7 +140,6 @@ namespace DotNetNuke.Modules.Groups
                     this._roleInfo = RoleController.Instance.GetRoleById(this.PortalSettings.PortalId, postData.RoleId);
                     if (this._roleInfo != null)
                     {
-
                         var requireApproval = false;
 
                         if (this._roleInfo.Settings.ContainsKey("ReviewMembers"))

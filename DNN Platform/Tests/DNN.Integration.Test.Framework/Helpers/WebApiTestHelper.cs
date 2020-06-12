@@ -61,7 +61,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
             using (WebApiTestHelper.Register(username, AppConfigHelper.HostPassword, username, email))
             {
-
             }
 
             userId = DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE Username = '{username}'");

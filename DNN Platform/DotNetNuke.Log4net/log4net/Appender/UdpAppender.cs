@@ -111,7 +111,6 @@ namespace log4net.Appender
     /// <author>Nicko Cadell</author>
     public class UdpAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="UdpAppender" /> class.
         /// </summary>

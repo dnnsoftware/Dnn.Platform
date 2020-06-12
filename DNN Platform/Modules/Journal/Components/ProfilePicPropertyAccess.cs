@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.Journal.Components
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-
             if (propertyName.ToLowerInvariant() == "relativeurl")
             {
                 int size;

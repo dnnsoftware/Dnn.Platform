@@ -40,7 +40,6 @@ namespace log4net.Layout
     /// <author>Gert Driesen</author>
     public class RawTimeStampLayout : IRawLayout
     {
-
         /// <summary>
         /// Constructs a RawTimeStampLayout
         /// </summary>

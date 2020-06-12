@@ -133,7 +133,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     using (var writer = XmlWriter.Create(manifestStream, settings))
                     {
-
                         // Start the new Root Element
                         writer.WriteStartElement("dotnetnuke");
                         writer.WriteAttributeString("type", "ResourceFile");

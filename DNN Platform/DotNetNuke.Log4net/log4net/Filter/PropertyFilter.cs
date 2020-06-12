@@ -41,7 +41,6 @@ namespace log4net.Filter
     /// <author>Nicko Cadell</author>
     public class PropertyFilter : StringMatchFilter
     {
-
         /// <summary>
         /// The key to use to lookup the string from the event properties
         /// </summary>

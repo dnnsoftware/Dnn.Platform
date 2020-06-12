@@ -28,7 +28,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:SettingsEditorControl runat=server></{0}:SettingsEditorControl>")]
     public class SettingsEditorControl : PropertyEditorControl
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Underlying DataSource

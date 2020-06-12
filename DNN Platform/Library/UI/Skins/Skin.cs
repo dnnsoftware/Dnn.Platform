@@ -62,7 +62,6 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class Skin : UserControlBase
     {
-
         // ReSharper disable InconsistentNaming
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
         public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
@@ -831,7 +830,6 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
         {
-
             // Use this to get a module message control
             // with a standard DotNetNuke icon
             var s = new Skin();

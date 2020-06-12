@@ -41,7 +41,6 @@ namespace log4net.Util
     /// <author>Nicko Cadell</author>
     public sealed class GlobalContextProperties : ContextPropertiesBase
     {
-
         /// <summary>
         /// The read only copy of the properties.
         /// </summary>

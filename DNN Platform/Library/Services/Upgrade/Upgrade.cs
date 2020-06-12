@@ -3210,7 +3210,6 @@ namespace DotNetNuke.Services.Upgrade
 
                     if (actions.Any())
                     {
-
                         foreach (var action in actions)
                         {
                             action.APICall = action.APICall.Replace(".ashx", string.Empty);
@@ -3477,7 +3476,6 @@ namespace DotNetNuke.Services.Upgrade
             var hostGettingStartedFile = string.Format("{0}GettingStarted.css", Globals.HostMapPath);
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-
                 if (File.Exists(hostGettingStartedFile))
                 {
                     var portalFile = portal.HomeDirectoryMapPath + "GettingStarted.css";
@@ -3779,7 +3777,6 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static int AddPortal(XmlNode node, bool status, int indent, UserInfo superUser = null)
         {
-
             int portalId = -1;
             try
             {
@@ -4501,7 +4498,6 @@ namespace DotNetNuke.Services.Upgrade
 
                         if (version == databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
-
                             var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
                             if (incrementalfiles != null)
                             {
@@ -5039,10 +5035,8 @@ namespace DotNetNuke.Services.Upgrade
             {
                 foreach (string file in Directory.GetFiles(installPackagePath))
                 {
-
                     if (Path.GetExtension(file.ToLowerInvariant()) == ".zip" /*|| installLanguage */)
                     {
-
                         InstallPackage(file, packageType, writeFeedback);
                     }
                 }

@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public class DependencyFactory
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetDependency method instantiates (and returns) the relevant Dependency

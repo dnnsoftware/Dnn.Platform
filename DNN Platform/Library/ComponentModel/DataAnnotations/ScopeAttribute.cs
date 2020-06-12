@@ -8,7 +8,6 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     public class ScopeAttribute : Attribute
     {
-
         public ScopeAttribute(string scope)
         {
             this.Scope = scope;

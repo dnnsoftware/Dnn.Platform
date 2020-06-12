@@ -234,7 +234,6 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         foreach (var exportPackage in exportPackages)
                         {
-
                             this.ProcessImportModulePackage(exportPackage, tempFolder, importDto.CollisionResolution);
 
                             this.CheckPoint.ProcessedItems++;

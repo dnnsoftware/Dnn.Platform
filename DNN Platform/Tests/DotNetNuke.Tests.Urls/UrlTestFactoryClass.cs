@@ -59,7 +59,6 @@ namespace DotNetNuke.Tests.Urls
             catch (Exception exc)
             #pragma warning restore 168
             {
-
                 throw;
             }
             // ReSharper restore RedundantCatchClause

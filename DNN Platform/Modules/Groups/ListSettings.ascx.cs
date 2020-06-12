@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.Groups
     /// -----------------------------------------------------------------------------
     public partial class ListSettings : GroupsSettingsBase
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadSettings loads the settings from the Database and displays them

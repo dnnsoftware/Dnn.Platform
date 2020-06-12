@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Presenters
         public ModuleSettingsPresenter(ISettingsView<MemberDirectorySettingsModel> view)
             : base(view)
         {
-
         }
 
         protected override void OnLoad()

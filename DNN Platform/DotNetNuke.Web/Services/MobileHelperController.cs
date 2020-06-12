@@ -118,7 +118,6 @@ namespace DotNetNuke.Web.Services
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
             if (desktopModule != null)
             {
-
                 var cacheKey = string.Format(DataCache.DesktopModuleCacheKey, portalId) + "_" +
                                desktopModule.DesktopModuleID;
                 var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut,

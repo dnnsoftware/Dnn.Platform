@@ -81,7 +81,6 @@ namespace log4net
     /// <author>Nicko Cadell</author>
     public sealed class LogicalThreadContext
     {
-
         /// <summary>
         /// Private Constructor.
         /// </summary>

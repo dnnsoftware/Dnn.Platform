@@ -88,7 +88,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         public AspNetClientCapability(HttpRequest request)
             : this(request.UserAgent ?? string.Empty, request.Browser)
         {
-
         }
 
         /// <summary>

@@ -1197,7 +1197,6 @@ namespace DotNetNuke.Common
            }
            catch (Exception)
            {
-
                return 0;
            }
 

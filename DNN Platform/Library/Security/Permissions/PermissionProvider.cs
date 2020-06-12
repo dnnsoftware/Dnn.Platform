@@ -27,7 +27,6 @@ namespace DotNetNuke.Security.Permissions
 {
     public class PermissionProvider
     {
-
         // Folder Permission Keys
         private const string AdminFolderPermissionKey = "WRITE";
         private const string AddFolderPermissionKey = "WRITE";

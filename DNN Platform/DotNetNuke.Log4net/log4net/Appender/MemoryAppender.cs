@@ -59,7 +59,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class MemoryAppender : AppenderSkeleton
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryAppender" /> class.
         /// </summary>

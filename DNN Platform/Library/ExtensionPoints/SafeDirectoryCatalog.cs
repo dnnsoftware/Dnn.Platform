@@ -42,7 +42,6 @@ namespace DotNetNuke.ExtensionPoints
                 }
                 catch (FileLoadException) // ignore when the assembly load failed.
                 {
-
                 }
             }
         }

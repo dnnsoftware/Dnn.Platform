@@ -23,7 +23,6 @@ namespace Dnn.PersonaBar.UI.Components.EventHandlers
 
         public void TabRemoved(object sender, TabEventArgs args)
         {
-
         }
 
         public void TabDeleted(object sender, TabEventArgs args)

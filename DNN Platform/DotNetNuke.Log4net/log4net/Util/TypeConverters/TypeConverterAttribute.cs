@@ -43,7 +43,6 @@ namespace log4net.Util.TypeConverters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum)]
     public sealed class TypeConverterAttribute : Attribute
     {
-
         /// <summary>
         /// The string type name of the type converter
         /// </summary>

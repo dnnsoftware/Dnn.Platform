@@ -64,7 +64,6 @@ namespace log4net.Core
 #endif
     public class LocationInfo
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

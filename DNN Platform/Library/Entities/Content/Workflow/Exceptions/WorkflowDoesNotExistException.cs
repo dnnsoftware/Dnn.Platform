@@ -11,7 +11,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
         public WorkflowDoesNotExistException()
             : base(Localization.GetString("WorkflowDoesNotExistException", Localization.ExceptionsResourceFile))
         {
-
         }
     }
 }

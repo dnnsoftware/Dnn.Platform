@@ -74,7 +74,6 @@ namespace log4net.Appender
     /// <author>Gert Driesen</author>
     public class SmtpAppender : BufferingAppenderSkeleton
     {
-
         /// <summary>
         /// Default constructor
         /// </summary>

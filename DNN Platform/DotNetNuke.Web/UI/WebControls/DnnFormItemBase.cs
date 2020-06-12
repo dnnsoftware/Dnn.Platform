@@ -205,7 +205,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.Required)
             {
-
                 label.RequiredField = true;
             }
 

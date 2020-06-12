@@ -24,7 +24,6 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.WebControls
 // ReSharper restore CheckNamespace
 {
-
     public class RolesSelectionGrid : Control, INamingContainer
     {
         private readonly DataTable _dtRoleSelections = new DataTable();

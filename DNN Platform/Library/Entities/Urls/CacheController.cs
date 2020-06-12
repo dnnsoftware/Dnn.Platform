@@ -525,7 +525,6 @@ namespace DotNetNuke.Entities.Urls
 
             if (settings.LogCacheMessages)
             {
-
                 var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
                 log.AddProperty("Url Rewriting Caching Message", "Friendly Url Index built and Stored in Cache.");
                 log.AddProperty("Build Reason", reason);

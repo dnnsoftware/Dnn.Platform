@@ -46,7 +46,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     public class RootLogger : Logger
     {
-
         /// <summary>
         /// Construct a <see cref="RootLogger"/>
         /// </summary>

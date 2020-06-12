@@ -29,7 +29,6 @@ using log4net.Util;
 
 namespace log4net.Repository.Hierarchy
 {
-
     /// <summary>
     /// Delegate used to handle logger creation event notifications.
     /// </summary>
@@ -122,7 +121,6 @@ namespace log4net.Repository.Hierarchy
     /// <author>Gert Driesen</author>
     public class Hierarchy : LoggerRepositorySkeleton, IBasicRepositoryConfigurator, IXmlRepositoryConfigurator
     {
-
         /// <summary>
         /// Event used to notify that a logger has been created.
         /// </summary>

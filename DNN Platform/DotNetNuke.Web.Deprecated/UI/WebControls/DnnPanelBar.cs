@@ -12,7 +12,6 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnPanelBar : RadPanelBar
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

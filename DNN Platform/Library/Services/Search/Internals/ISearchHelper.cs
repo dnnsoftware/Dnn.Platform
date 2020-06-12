@@ -17,8 +17,6 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     public interface ISearchHelper
     {
-
-
         // /// <summary>
         // /// Commits the added search documents into the search database
         // /// </summary>

@@ -15,7 +15,6 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 {
     public abstract class FriendlyUrlProvider
     {
-
         // return the provider
         public static FriendlyUrlProvider Instance()
         {

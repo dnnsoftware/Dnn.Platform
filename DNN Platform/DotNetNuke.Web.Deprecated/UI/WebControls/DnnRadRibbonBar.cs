@@ -9,6 +9,5 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnRadRibbonBar : RadRibbonBar
     {
-
     }
 }

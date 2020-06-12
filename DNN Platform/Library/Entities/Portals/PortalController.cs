@@ -259,7 +259,6 @@ namespace DotNetNuke.Entities.Portals
                 }
                 if (message == Null.NullString)
                 {
-
                     var portal = this.GetPortal(portalId);
                     portal.Description = description;
                     portal.KeyWords = keyWords;
@@ -2123,7 +2122,6 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="portalAlias">Portal Alias to be created</param>
         public void AddPortalAlias(int portalId, string portalAlias)
         {
-
             // Check if the Alias exists
             PortalAliasInfo portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
 

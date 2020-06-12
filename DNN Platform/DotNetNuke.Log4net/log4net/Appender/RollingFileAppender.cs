@@ -128,7 +128,6 @@ namespace log4net.Appender
     /// <author>Edward Smit</author>
     public class RollingFileAppender : FileAppender
     {
-
         /// <summary>
         /// Style of rolling to use
         /// </summary>

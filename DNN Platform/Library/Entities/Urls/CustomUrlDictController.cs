@@ -17,7 +17,6 @@ namespace DotNetNuke.Entities.Urls
 {
     internal static class CustomUrlDictController
     {
-
         /// <summary>
         /// Returns a list of tab and redirects from the database, for the specified portal
         /// Assumes that the dictionary should have any existing items replaced if the portalid is specified

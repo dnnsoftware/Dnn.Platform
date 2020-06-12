@@ -38,7 +38,6 @@ namespace log4net.Util
     /// <author>Gert Driesen</author>
     public class CyclicBuffer
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

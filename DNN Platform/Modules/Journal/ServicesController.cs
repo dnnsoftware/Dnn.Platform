@@ -347,7 +347,6 @@ namespace DotNetNuke.Modules.Journal
         {
             try
             {
-
                 var jp = new JournalParser(this.PortalSettings, this.ActiveModule.ModuleID, postData.ProfileId, postData.GroupId, this.UserInfo);
                 return this.Request.CreateResponse(HttpStatusCode.OK, jp.GetList(postData.RowIndex, postData.MaxRows), "text/html");
             }

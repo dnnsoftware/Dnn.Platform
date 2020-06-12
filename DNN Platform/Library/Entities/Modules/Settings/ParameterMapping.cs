@@ -14,7 +14,6 @@ namespace DotNetNuke.Entities.Modules.Settings
     [Serializable]
     public class ParameterMapping
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ParameterMapping"/> class.
         /// </summary>

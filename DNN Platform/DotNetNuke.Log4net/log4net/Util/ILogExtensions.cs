@@ -50,7 +50,6 @@ namespace log4net.Util
     /// </example>
     public static class ILogExtensions
     {
-
         /// <summary>
         /// The fully qualified type of the Logger class.
         /// </summary>

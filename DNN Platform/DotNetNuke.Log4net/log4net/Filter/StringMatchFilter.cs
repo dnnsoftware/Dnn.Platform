@@ -41,7 +41,6 @@ namespace log4net.Filter
     /// <author>Gert Driesen</author>
     public class StringMatchFilter : FilterSkeleton
     {
-
         /// <summary>
         /// Flag to indicate the behavior when we have a match
         /// </summary>

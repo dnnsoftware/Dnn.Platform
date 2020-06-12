@@ -54,7 +54,6 @@ namespace log4net.Config
     /// <author>Gert Driesen</author>
     public sealed class BasicConfigurator
     {
-
         /// <summary>
         /// The fully qualified type of the BasicConfigurator class.
         /// </summary>

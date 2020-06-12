@@ -17,7 +17,6 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.WebControls
 {
-
     [ToolboxData("<{0}:PagingControl runat=server></{0}:PagingControl>")]
     public class PagingControl : WebControl, IPostBackEventHandler
     {

@@ -31,7 +31,6 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:CollectionEditorControl runat=server></{0}:CollectionEditorControl>")]
     public class CollectionEditorControl : PropertyEditorControl
     {
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Underlying DataSource

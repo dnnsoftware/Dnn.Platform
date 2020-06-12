@@ -26,7 +26,6 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserProfile : IIndexable
     {
-
         // Name properties
         public const string USERPROFILE_FirstName = "FirstName";
         public const string USERPROFILE_LastName = "LastName";

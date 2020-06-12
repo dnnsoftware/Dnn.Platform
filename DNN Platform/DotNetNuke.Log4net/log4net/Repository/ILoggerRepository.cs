@@ -32,7 +32,6 @@ using log4net.Util;
 
 namespace log4net.Repository
 {
-
     /// <summary>
     /// Delegate used to handle logger repository shutdown event notifications
     /// </summary>

@@ -49,7 +49,6 @@ namespace log4net.Core
     /// <author>Nicko Cadell</author>
     public struct LoggingEventData
     {
-
         /// <summary>
         /// The logger name.
         /// </summary>

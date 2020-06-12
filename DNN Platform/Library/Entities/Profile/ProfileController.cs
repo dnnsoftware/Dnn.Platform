@@ -458,7 +458,6 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
         {
-
             if (definition.Required)
             {
                 definition.Visible = true;

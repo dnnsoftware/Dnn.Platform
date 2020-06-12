@@ -32,7 +32,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DotNetNuke.Modules.Journal
 {
-
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ViewJournal class displays the content
@@ -40,7 +39,6 @@ namespace DotNetNuke.Modules.Journal
     /// -----------------------------------------------------------------------------
     public partial class View : JournalModuleBase
     {
-
         private readonly INavigationManager _navigationManager;
         public int PageSize = 20;
         public bool AllowPhotos = true;

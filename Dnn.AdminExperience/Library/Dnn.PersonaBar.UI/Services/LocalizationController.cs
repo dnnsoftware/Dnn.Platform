@@ -59,7 +59,6 @@ namespace Dnn.PersonaBar.UI.Services
 
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
-
             if (!this.Expired(culture))
             {
                 var jsonFileContent = this.GetJsonFileContent(culture);
@@ -247,6 +246,5 @@ namespace Dnn.PersonaBar.UI.Services
     [Serializable]
     public class CacheDto
     {
-
     }
 }
