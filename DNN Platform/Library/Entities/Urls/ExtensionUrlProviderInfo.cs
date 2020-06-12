@@ -24,7 +24,10 @@ namespace DotNetNuke.Entities.Urls
         /// <summary>
         /// When true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
         /// </summary>
-        public bool AllTabs { get { return this.TabIds.Count == 0; } }
+        public bool AllTabs
+        {
+            get { return this.TabIds.Count == 0; }
+        }
 
         /// <summary>
         /// The DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.

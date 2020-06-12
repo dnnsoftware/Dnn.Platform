@@ -39,7 +39,10 @@ namespace DotNetNuke.Services.Search.Internals
             this._hitDocs = new List<ScoreDoc>(16);
         }
 
-        public override bool AcceptsDocsOutOfOrder { get { return false; } }
+        public override bool AcceptsDocsOutOfOrder
+        {
+            get { return false; }
+        }
 
         public override void SetNextReader(IndexReader reader, int docBase)
         {

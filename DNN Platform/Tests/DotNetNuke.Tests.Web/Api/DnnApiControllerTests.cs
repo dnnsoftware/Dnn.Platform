@@ -18,7 +18,9 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class DnnApiControllerTests
     {
-        internal class DnnApiControllerHelper : DnnApiController { }
+        internal class DnnApiControllerHelper : DnnApiController
+        {
+        }
 
         [TearDown]
         public void TearDown()

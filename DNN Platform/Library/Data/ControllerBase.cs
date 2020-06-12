@@ -15,7 +15,9 @@ namespace DotNetNuke.Data
     {
         protected readonly IDataContext DataContext;
 
-        protected ControllerBase() { }
+        protected ControllerBase()
+        {
+        }
 
         protected ControllerBase(IDataContext dataContext)
         {

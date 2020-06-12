@@ -30,7 +30,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             public TimeSpan? TimeSpanProperty { get; set; } = TimeSpan.FromHours(12);
         }
 
-        public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings> { }
+        public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings>
+        {
+        }
 
         [Test]
         [TestCaseSource(nameof(NullableCases))]

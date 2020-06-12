@@ -25,7 +25,8 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         public List<BasicView> Results { get; set; }
 
         public GroupedBasicView()
-        { }
+        {
+        }
 
         public GroupedBasicView(BasicView basic)
         {

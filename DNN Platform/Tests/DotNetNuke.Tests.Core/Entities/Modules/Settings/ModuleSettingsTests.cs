@@ -44,7 +44,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             public ComplexType ComplexProperty { get; set; } = new ComplexType(20, 25);
         }
 
-        public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
+        public class ModulesSettingsRepository : SettingsRepository<ModulesSettings>
+        {
+        }
 
         [Test]
         [TestCaseSource(nameof(SettingsCases))]

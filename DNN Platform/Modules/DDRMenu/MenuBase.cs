@@ -46,10 +46,16 @@ namespace DotNetNuke.Web.DDRMenu
         public TemplateDefinition TemplateDef { get; set; }
 
         private HttpContext currentContext;
-        private HttpContext CurrentContext { get { return this.currentContext ?? (this.currentContext = HttpContext.Current); } }
+        private HttpContext CurrentContext
+        {
+            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
+        }
 
         private PortalSettings hostPortalSettings;
-        internal PortalSettings HostPortalSettings { get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
+        internal PortalSettings HostPortalSettings
+        {
+            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
+        }
 
         private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
                                                                           {

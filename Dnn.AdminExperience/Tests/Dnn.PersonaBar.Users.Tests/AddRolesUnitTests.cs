@@ -23,7 +23,10 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUsersController> _usersControllerMock;
         private Mock<IRolesController> _rolesControllerMock;
 
-        protected override string CommandName { get { return "Add-roles"; } }
+        protected override string CommandName
+        {
+            get { return "Add-roles"; }
+        }
 
         protected override void ChildSetup()
         {

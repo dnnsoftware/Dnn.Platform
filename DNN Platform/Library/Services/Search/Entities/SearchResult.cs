@@ -23,7 +23,10 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Time when Content was last modified (in friendly format)
         /// </summary>
-        public string DisplayModifiedTime { get { return DateUtils.CalculateDateForDisplay(this.ModifiedTimeUtc); } }
+        public string DisplayModifiedTime
+        {
+            get { return DateUtils.CalculateDateForDisplay(this.ModifiedTimeUtc); }
+        }
 
         /// <summary>
         /// Highlighted snippet from document

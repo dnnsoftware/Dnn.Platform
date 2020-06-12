@@ -107,7 +107,9 @@ namespace DotNetNuke.Tests.Core
         private readonly List<DateTime> _callTimes = new List<DateTime>();
 
         public ActionMonitor()
-            : this(0) { }
+            : this(0)
+        {
+        }
 
         public ActionMonitor(int failureCount)
         {

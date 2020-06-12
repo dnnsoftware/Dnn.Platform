@@ -25,7 +25,9 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// </summary>
         /// <param name="cacheKey">The cacheKey to use</param>
         public CacheableAttribute(string cacheKey)
-            : this(cacheKey, CacheItemPriority.Default, 20) { }
+            : this(cacheKey, CacheItemPriority.Default, 20)
+        {
+        }
 
         /// <summary>
         /// Construct a new CacheableAttribute
@@ -33,7 +35,9 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// <param name="cacheKey">The cacheKey to use</param>
         /// <param name="priority">The priority of the cached item</param>
         public CacheableAttribute(string cacheKey, CacheItemPriority priority)
-            : this(cacheKey, priority, 20) { }
+            : this(cacheKey, priority, 20)
+        {
+        }
 
         /// <summary>
         /// Construct a new CacheableAttribute

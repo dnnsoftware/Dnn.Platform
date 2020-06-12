@@ -15,26 +15,44 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 {
     public class DNNContext : IDisposable
     {
-        public static DNNContext Current { get { return (DNNContext)HttpContext.Current.Items[DataName]; } private set { HttpContext.Current.Items[DataName] = value; } }
+        public static DNNContext Current
+        {
+            get { return (DNNContext)HttpContext.Current.Items[DataName]; } private set { HttpContext.Current.Items[DataName] = value; }
+        }
 
         private readonly DNNContext savedContext;
 
         public Control HostControl { get; private set; }
 
         private Page _Page;
-        public Page Page { get { return this._Page ?? (this._Page = this.HostControl.Page); } }
+        public Page Page
+        {
+            get { return this._Page ?? (this._Page = this.HostControl.Page); }
+        }
 
         private PortalSettings _PortalSettings;
-        public PortalSettings PortalSettings { get { return this._PortalSettings ?? (this._PortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
+        public PortalSettings PortalSettings
+        {
+            get { return this._PortalSettings ?? (this._PortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
+        }
 
         private TabInfo _ActiveTab;
-        public TabInfo ActiveTab { get { return this._ActiveTab ?? (this._ActiveTab = this.PortalSettings.ActiveTab); } }
+        public TabInfo ActiveTab
+        {
+            get { return this._ActiveTab ?? (this._ActiveTab = this.PortalSettings.ActiveTab); }
+        }
 
         private string _SkinPath;
-        public string SkinPath { get { return this._SkinPath ?? (this._SkinPath = this.ActiveTab.SkinPath); } }
+        public string SkinPath
+        {
+            get { return this._SkinPath ?? (this._SkinPath = this.ActiveTab.SkinPath); }
+        }
 
         private static string _ModuleName;
-        public static string ModuleName { get { return _ModuleName ?? (_ModuleName = GetModuleNameFromAssembly()); } }
+        public static string ModuleName
+        {
+            get { return _ModuleName ?? (_ModuleName = GetModuleNameFromAssembly()); }
+        }
 
         private static string _ModuleFolder;
         public static string ModuleFolder
@@ -49,7 +67,10 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         }
 
         private static string _DataName;
-        private static string DataName { get { return _DataName ?? (_DataName = "DDRMenu.DNNContext." + ModuleName); } }
+        private static string DataName
+        {
+            get { return _DataName ?? (_DataName = "DDRMenu.DNNContext." + ModuleName); }
+        }
 
         public DNNContext(Control hostControl)
         {

@@ -138,6 +138,9 @@ namespace Dnn.PersonaBar.Library.Model
             this.Order = Null.SetNullInteger(dr["Order"]);
         }
 
-        public int KeyID { get { return this.MenuId; } set { this.MenuId = value; } }
+        public int KeyID
+        {
+            get { return this.MenuId; } set { this.MenuId = value; }
+        }
     }
 }

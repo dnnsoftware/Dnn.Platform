@@ -11,7 +11,10 @@ namespace DotNetNuke.Web.DDRMenu
 {
     internal class DDRMenuControl : WebControl, IPostBackEventHandler
     {
-        public override bool EnableViewState { get { return false; } set { } }
+        public override bool EnableViewState
+        {
+            get { return false; } set { }
+        }
 
         internal MenuNode RootNode { get; set; }
         internal bool SkipLocalisation { get; set; }

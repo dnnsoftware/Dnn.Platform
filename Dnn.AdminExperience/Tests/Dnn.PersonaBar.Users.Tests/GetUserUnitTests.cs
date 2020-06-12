@@ -20,7 +20,10 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
 
-        protected override string CommandName { get { return "Get-User"; } }
+        protected override string CommandName
+        {
+            get { return "Get-User"; }
+        }
 
         protected override void ChildSetup()
         {

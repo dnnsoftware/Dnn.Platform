@@ -37,8 +37,14 @@ namespace DotNetNuke.Web.DDRMenu
         public string LargeImage { get; set; }
         public string CommandName { get; set; }
         public string CommandArgument { get; set; }
-        public bool First { get { return (this.Parent == null) || (this.Parent.Children[0] == this); } }
-        public bool Last { get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); } }
+        public bool First
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
+        }
+        public bool Last
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
+        }
         public string Target { get; set; }
 
         public int Depth
@@ -60,7 +66,10 @@ namespace DotNetNuke.Web.DDRMenu
         public string Description { get; set; }
 
         private List<MenuNode> _Children;
-        public List<MenuNode> Children { get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; } }
+        public List<MenuNode> Children
+        {
+            get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; }
+        }
 
         public MenuNode Parent { get; set; }
 

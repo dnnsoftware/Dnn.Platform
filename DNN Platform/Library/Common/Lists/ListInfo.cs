@@ -15,7 +15,9 @@ namespace DotNetNuke.Common.Lists
     public class ListInfo : BaseEntityInfo
     {
         public ListInfo()
-            : this(string.Empty) { }
+            : this(string.Empty)
+        {
+        }
 
         public ListInfo(string Name)
         {

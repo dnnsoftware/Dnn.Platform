@@ -130,12 +130,30 @@ namespace DotNetNuke.Instrumentation
                 }
             }
 
-            public bool IsDebugEnabled { get { return this.Logger.IsEnabledFor(_levelDebug); } }
-            public bool IsInfoEnabled { get { return this.Logger.IsEnabledFor(_levelInfo); } }
-            public bool IsTraceEnabled { get { return this.Logger.IsEnabledFor(_levelTrace); } }
-            public bool IsWarnEnabled { get { return this.Logger.IsEnabledFor(_levelWarn); } }
-            public bool IsErrorEnabled { get { return this.Logger.IsEnabledFor(_levelError); } }
-            public bool IsFatalEnabled { get { return this.Logger.IsEnabledFor(_levelFatal); } }
+            public bool IsDebugEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelDebug); }
+            }
+            public bool IsInfoEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelInfo); }
+            }
+            public bool IsTraceEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelTrace); }
+            }
+            public bool IsWarnEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelWarn); }
+            }
+            public bool IsErrorEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelError); }
+            }
+            public bool IsFatalEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelFatal); }
+            }
 
             public void Debug(object message)
             {

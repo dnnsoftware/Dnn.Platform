@@ -38,7 +38,9 @@ namespace DotNetNuke.Tests.Urls
         private bool _sslEnabled;
 
         public UrlRewriteTests()
-            : base(0) { }
+            : base(0)
+        {
+        }
 
         private void CreateSimulatedRequest(Uri url)
         {

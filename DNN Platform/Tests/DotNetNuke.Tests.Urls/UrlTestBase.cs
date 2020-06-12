@@ -24,7 +24,10 @@ namespace DotNetNuke.Tests.Urls
 
         protected virtual string DefaultAlias { get; private set; }
 
-        protected virtual string TestType { get { return string.Empty; } }
+        protected virtual string TestType
+        {
+            get { return string.Empty; }
+        }
 
         public virtual void SetUp()
         {

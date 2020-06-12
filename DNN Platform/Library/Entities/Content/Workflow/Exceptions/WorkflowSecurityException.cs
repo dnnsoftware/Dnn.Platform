@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
     {
         public WorkflowSecurityException(string message)
             : base(message)
-        { }
+        {
+        }
     }
 }

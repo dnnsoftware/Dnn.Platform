@@ -108,8 +108,12 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Assert.AreEqual(expected.GetType(), actual[0].GetType());
         }
 
-        private interface ITestService { }
-        private class TestService : ITestService { }
+        private interface ITestService
+        {
+        }
+        private class TestService : ITestService
+        {
+        }
 
         private class FakeScopeAccessor : IScopeAccessor
         {

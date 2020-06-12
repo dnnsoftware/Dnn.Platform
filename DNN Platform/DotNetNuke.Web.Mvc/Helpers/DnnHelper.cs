@@ -75,19 +75,34 @@ namespace DotNetNuke.Web.Mvc.Helpers
             get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
         }
 
-        public RouteCollection RouteCollection { get { return this.HtmlHelper.RouteCollection; } }
+        public RouteCollection RouteCollection
+        {
+            get { return this.HtmlHelper.RouteCollection; }
+        }
 
         public UserInfo User
         {
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
         }
 
-        public dynamic ViewBag { get { return this.HtmlHelper.ViewBag; } }
+        public dynamic ViewBag
+        {
+            get { return this.HtmlHelper.ViewBag; }
+        }
 
-        public ViewContext ViewContext { get { return this.HtmlHelper.ViewContext; } }
+        public ViewContext ViewContext
+        {
+            get { return this.HtmlHelper.ViewContext; }
+        }
 
-        public ViewDataDictionary ViewData { get { return this.HtmlHelper.ViewData; } }
+        public ViewDataDictionary ViewData
+        {
+            get { return this.HtmlHelper.ViewData; }
+        }
 
-        public IViewDataContainer ViewDataContainer { get { return this.HtmlHelper.ViewDataContainer; } }
+        public IViewDataContainer ViewDataContainer
+        {
+            get { return this.HtmlHelper.ViewDataContainer; }
+        }
     }
 }

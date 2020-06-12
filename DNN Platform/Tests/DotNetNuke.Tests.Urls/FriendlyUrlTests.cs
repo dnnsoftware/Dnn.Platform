@@ -31,7 +31,9 @@ namespace DotNetNuke.Tests.Urls
         private PortalAliasInfo _primaryAlias;
 
         public FriendlyUrlTests()
-            : base(0) { }
+            : base(0)
+        {
+        }
 
         [SetUp]
         public override void SetUp()

@@ -15,7 +15,9 @@ namespace DotNetNuke.Services.Exceptions
     [Serializable]
     public class ExceptionInfo
     {
-        public ExceptionInfo() { }
+        public ExceptionInfo()
+        {
+        }
 
         public ExceptionInfo(Exception e)
         {

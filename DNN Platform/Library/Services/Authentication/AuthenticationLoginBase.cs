@@ -80,7 +80,10 @@ namespace DotNetNuke.Services.Authentication
         /// </summary>
         /// <remarks>This property may be overriden in the inherited class</remarks>
         /// -----------------------------------------------------------------------------
-        public virtual bool SupportsRegistration { get { return false; } }
+        public virtual bool SupportsRegistration
+        {
+            get { return false; }
+        }
 
         public event UserAuthenticatedEventHandler UserAuthenticated;
 

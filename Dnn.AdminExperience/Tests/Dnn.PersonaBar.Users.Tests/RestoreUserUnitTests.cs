@@ -18,7 +18,10 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IRecyclebinController> _recyclebinControllerMock;
 
-        protected override string CommandName { get { return "Restore-User"; } }
+        protected override string CommandName
+        {
+            get { return "Restore-User"; }
+        }
 
         protected override RestoreUser CreateCommand()
         {

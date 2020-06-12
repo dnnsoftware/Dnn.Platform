@@ -12,7 +12,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
     {
         protected PropertyEditorControl SettingsEditor;
 
-        protected virtual string AuthSystemApplicationName { get { return string.Empty; } }
+        protected virtual string AuthSystemApplicationName
+        {
+            get { return string.Empty; }
+        }
 
         public override void UpdateSettings()
         {

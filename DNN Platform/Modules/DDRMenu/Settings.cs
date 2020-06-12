@@ -23,10 +23,16 @@ namespace DotNetNuke.Web.DDRMenu
         public bool IncludeHidden { get; set; }
 
         private List<ClientOption> clientOptions;
-        public List<ClientOption> ClientOptions { get { return this.clientOptions ?? (this.clientOptions = new List<ClientOption>()); } set { this.clientOptions = value; } }
+        public List<ClientOption> ClientOptions
+        {
+            get { return this.clientOptions ?? (this.clientOptions = new List<ClientOption>()); } set { this.clientOptions = value; }
+        }
 
         private List<TemplateArgument> templateArguments;
-        public List<TemplateArgument> TemplateArguments { get { return this.templateArguments ?? (this.templateArguments = new List<TemplateArgument>()); } set { this.templateArguments = value; } }
+        public List<TemplateArgument> TemplateArguments
+        {
+            get { return this.templateArguments ?? (this.templateArguments = new List<TemplateArgument>()); } set { this.templateArguments = value; }
+        }
 
         public static Settings FromXml(string xml)
         {

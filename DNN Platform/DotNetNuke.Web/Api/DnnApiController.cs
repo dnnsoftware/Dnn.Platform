@@ -39,7 +39,10 @@ namespace DotNetNuke.Web.Api
         /// <summary>
         /// UserInfo for the current user
         /// </summary>
-        public UserInfo UserInfo { get { return this.PortalSettings.UserInfo; } }
+        public UserInfo UserInfo
+        {
+            get { return this.PortalSettings.UserInfo; }
+        }
 
         /// <summary>
         /// ModuleInfo for the current module

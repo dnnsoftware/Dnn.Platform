@@ -54,6 +54,9 @@ namespace Dnn.PersonaBar.Library.Model
             this.Enabled = Convert.ToBoolean(dr["Enabled"]);
         }
 
-        public int KeyID { get { return this.ExtensionId; } set { this.ExtensionId = value; } }
+        public int KeyID
+        {
+            get { return this.ExtensionId; } set { this.ExtensionId = value; }
+        }
     }
 }

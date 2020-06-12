@@ -338,7 +338,10 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>
         /// Disable the wild search
         /// </summary>
-        public bool EnableWildSearch { get { return this._enableWildSearch; } set { this._enableWildSearch = value; } }
+        public bool EnableWildSearch
+        {
+            get { return this._enableWildSearch; } set { this._enableWildSearch = value; }
+        }
 
         protected int PortalId { get; set; }
 
