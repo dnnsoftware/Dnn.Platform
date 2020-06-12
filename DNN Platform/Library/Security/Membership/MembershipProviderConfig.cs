@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.ComponentModel;
 
 using DotNetNuke.UI.WebControls;
@@ -25,8 +24,6 @@ namespace DotNetNuke.Security.Membership
     public class MembershipProviderConfig
     {
         private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

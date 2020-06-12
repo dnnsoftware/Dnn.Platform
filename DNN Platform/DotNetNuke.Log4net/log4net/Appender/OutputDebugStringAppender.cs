@@ -62,8 +62,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// Write the logging event to the output debug string API
         /// </summary>
@@ -103,8 +101,6 @@ namespace log4net.Appender
         {
             get { return true; }
         }
-
-
 
         /// <summary>
         /// Stub for OutputDebugString native method

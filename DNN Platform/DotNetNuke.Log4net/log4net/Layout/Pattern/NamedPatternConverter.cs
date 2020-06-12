@@ -49,7 +49,6 @@ namespace log4net.Layout.Pattern
     {
         private int m_precision = 0;
 
-
         /// <summary>
         /// Initialize the converter
         /// </summary>
@@ -94,7 +93,6 @@ namespace log4net.Layout.Pattern
                 }
             }
         }
-
 
         /// <summary>
         /// Get the fully qualified string data
@@ -154,7 +152,6 @@ namespace log4net.Layout.Pattern
                 }
             }
         }
-
 
         /// <summary>
         /// The fully qualified type of the NamedPatternConverter class.

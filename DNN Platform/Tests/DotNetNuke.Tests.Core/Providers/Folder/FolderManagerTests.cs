@@ -405,7 +405,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(fileInfo1));
             this._mockFileDeletionController.Setup(mfdc => mfdc.DeleteFile(fileInfo2)).Throws<FileLockedException>();
 
-
             // Act
             this._mockFolderManager.Object.DeleteFolder(folderInfo, new List<IFolderInfo>());
         }
@@ -1083,8 +1082,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             }
         }
 
-
-
         // [Test]
         // public void GetFolderMappingFoldersRecursive_Returns_One_Item_When_Folder_Does_Not_Have_SubFolders()
         // {
@@ -1155,8 +1152,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    }
         // }
 
-
-
         [Test]
         public void MergeFolderLists_Returns_Empty_List_When_Both_Lists_Are_Empty()
         {
@@ -1215,8 +1210,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    Assert.AreEqual(Constants.FOLDER_ValidFolderMappingID, result.Values[0].FolderMappingID);
         //    Assert.IsTrue(result.Values[0].ExistsInFolderMappings.Contains(Constants.FOLDER_ValidFolderMappingID));
         // }
-
-
 
         // [Test]
         // public void ProcessMergedTreeItem_Sets_StorageLocation_To_Default_When_Folder_Exists_Only_In_FileSystem_And_Database_And_FolderMapping_Is_Not_Default_And_Has_SubFolders()
@@ -2093,8 +2086,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         //    _directory.Verify(d => d.Delete(It.IsAny<string>(), It.IsAny<bool>()), Times.Never());
         // }
 
-
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MoveFolder_Throws_On_Null_Folder()
@@ -2200,8 +2191,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         // _mockFolderManager.Verify();
         // }
 
-
-
         [Test]
         public void OverwriteFolder_Calls_MoveFile_For_Each_File_In_Source_Folder()
         {
@@ -2289,8 +2278,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.AreEqual(1, foldersToDelete.Count);
         }
-
-
 
         // [Test]
         // public void MoveFolder_Calls_FolderProvider_MoveFolder_When_FolderMapping_Is_Not_Already_Processed_And_Is_Editable()

@@ -56,6 +56,5 @@ namespace DNN.Integration.Test.Framework.Helpers
                 portal.CultureCode);
         }
 
-
     }
 }

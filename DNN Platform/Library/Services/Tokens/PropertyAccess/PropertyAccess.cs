@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -50,7 +49,6 @@ namespace DotNetNuke.Services.Tokens
                 return CacheLevel.notCacheable;
             }
         }
-
 
         /// <summary>
         /// Boolean2LocalizedYesNo returns the translated string for "yes" or "no" against a given boolean value.

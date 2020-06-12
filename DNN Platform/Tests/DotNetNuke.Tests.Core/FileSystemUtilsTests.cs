@@ -34,7 +34,6 @@ namespace DotNetNuke.Tests.Core
             field.SetValue(null, rootPath);
         }
 
-
         [TestCase("/")]
         [TestCase("//")]
         [TestCase("///")]

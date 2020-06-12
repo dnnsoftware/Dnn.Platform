@@ -76,7 +76,6 @@ namespace DotNetNuke.Entities
         private event EventHandler<UserEventArgs> UserRemoved;
         private event EventHandler<UpdateUserEventArgs> UserUpdated;
 
-
         public EventManager()
         {
             foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)

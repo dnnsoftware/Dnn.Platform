@@ -58,8 +58,6 @@ namespace log4net.Util
             this.m_pattern = pattern;
         }
 
-
-
         /// <summary>
         /// Parses the pattern into a chain of pattern converters.
         /// </summary>
@@ -78,8 +76,6 @@ namespace log4net.Util
             return this.m_head;
         }
 
-
-
         /// <summary>
         /// Get the converter registry used by this parser
         /// </summary>
@@ -95,8 +91,6 @@ namespace log4net.Util
         {
             get { return this.m_patternConverters; }
         }
-
-
 
         /// <summary>
         /// Build the unified cache of converters from the static and instance maps
@@ -117,7 +111,6 @@ namespace log4net.Util
 
             return converterNamesCache;
         }
-
 
         /// <summary>
         /// Sort strings by length
@@ -157,7 +150,6 @@ namespace log4net.Util
                 return s2.Length.CompareTo(s1.Length);
             }
         }
-
 
         /// <summary>
         /// Internal method to parse the specified pattern to find specified matches
@@ -373,8 +365,6 @@ namespace log4net.Util
 
         private const char ESCAPE_CHAR = '%';
 
-
-
         /// <summary>
         /// The first pattern converter in the chain
         /// </summary>
@@ -399,8 +389,6 @@ namespace log4net.Util
         /// </para>
         /// </remarks>
         private Hashtable m_patternConverters = new Hashtable();
-
-
 
         /// <summary>
         /// The fully qualified type of the PatternParser class.

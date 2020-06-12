@@ -308,7 +308,6 @@ namespace DotNetNuke.Tests.Web.Api
         // very hard to unit test inbound authentication code as it dips into untestable bits of
         // UserController, etc. Need to write controllers with interfaces and ServiceLocator<>.
 
-
         // private static string DecodeBase64(string b64Str)
         // {
         //    // fix Base64 string padding

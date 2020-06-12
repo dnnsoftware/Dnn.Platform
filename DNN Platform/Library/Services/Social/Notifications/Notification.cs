@@ -27,8 +27,6 @@ namespace DotNetNuke.Services.Social.Notifications
         private int _notificationID = -1;
         private string _displayDate;
 
-
-
         /// <summary>
         /// NotificationID - The primary key
         /// </summary>
@@ -137,8 +135,6 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool SendToast { get; set; }
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -146,8 +142,6 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             this.SendToast = true;
         }
-
-
 
         /// <summary>
         /// Fill the object with data from database.

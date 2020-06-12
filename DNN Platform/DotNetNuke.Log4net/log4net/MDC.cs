@@ -63,8 +63,6 @@ namespace log4net
         {
         }
 
-
-
         /// <summary>
         /// Gets the context value identified by the <paramref name="key" /> parameter.
         /// </summary>

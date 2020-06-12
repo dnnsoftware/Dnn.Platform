@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -266,7 +265,6 @@ namespace DotNetNuke.Common.Utilities
 
             return strValue;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -663,7 +661,6 @@ namespace DotNetNuke.Common.Utilities
                 nodeSettingValue.InnerText = hashtable[key].ToString();
             }
         }
-
 
         public static void UpdateAttribute(XmlNode node, string attName, string attValue)
         {

@@ -25,8 +25,6 @@ namespace DotNetNuke.Services.FileSystem
         private const string SettingsControlId = "Settings.ascx";
         private string _providerName;
 
-
-
         /// <summary>
         ///   Get the list of all the folder providers.
         /// </summary>
@@ -53,8 +51,6 @@ namespace DotNetNuke.Services.FileSystem
 
             return provider;
         }
-
-
 
         /// <summary>
         /// Gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
@@ -320,8 +316,6 @@ namespace DotNetNuke.Services.FileSystem
 
             return hashText.ToString();
         }
-
-
 
         /// <summary>
         ///   Adds a new file to the specified folder.

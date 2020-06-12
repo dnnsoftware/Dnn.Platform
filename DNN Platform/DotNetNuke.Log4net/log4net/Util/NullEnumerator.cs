@@ -50,8 +50,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Get the singleton instance of the <see cref="NullEnumerator" />.
         /// </summary>
@@ -65,8 +63,6 @@ namespace log4net.Util
         {
             get { return s_instance; }
         }
-
-
 
         /// <summary>
         /// Gets the current object from the enumerator.
@@ -116,8 +112,6 @@ namespace log4net.Util
         public void Reset()
         {
         }
-
-
 
         /// <summary>
         /// The singleton instance of the <see cref="NullEnumerator" />.

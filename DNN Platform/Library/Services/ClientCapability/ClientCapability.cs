@@ -9,7 +9,6 @@ using System.Text;
 
 using DotNetNuke.Services.ClientCapability;
 
-
 namespace DotNetNuke.Services.ClientCapability
 {
     /// <summary>
@@ -25,7 +24,6 @@ namespace DotNetNuke.Services.ClientCapability
         {
             this._capabilities = new Dictionary<string, string>();
         }
-
 
         /// <summary>
         ///   Unique ID of the client making request.

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.Common;
@@ -294,8 +293,6 @@ namespace DotNetNuke.UI.Skins.Controls
         {
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The BuildTree helper method is used to build the tree
@@ -441,8 +438,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.CSSControl = this.TreeCssClass;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,14 +27,11 @@ namespace DotNetNuke.Services.Mobile
         private const string DisableRedirectPresistCookieName = "disableredirectpresist";
         private const string DisableMobileRedirectQueryStringName = "nomo"; // google uses the same name nomo=1 means do not redirect to mobile
 
-
         private const string UrlsCacheKey = "MobileRedirectAllUrls";
         private const string RedirectionUrlCacheKey = "RedirectionUrl_{0}_{1}_{2}";
         private const string FullSiteUrlCacheKey = "FullSiteUrl_{0}_{1}";
         private const string MobileSiteUrlCacheKey = "MobileSiteUrl_{0}_{1}";
         private const int UrlsCacheTimeout = 60;
-
-
 
         /// <summary>
         /// Is Redirection Allowed for the session. Method analyzes the query string for special parameters to enable / disable redirects.
@@ -85,7 +81,6 @@ namespace DotNetNuke.Services.Mobile
             {
                 allowed = false;
             }
-
 
             if (!allowed) // redirect is not setup to be allowed, keep the cookie alive
             {

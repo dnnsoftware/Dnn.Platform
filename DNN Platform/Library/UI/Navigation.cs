@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -40,8 +39,6 @@ namespace DotNetNuke.UI
             Description,
             None,
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -254,7 +251,6 @@ namespace DotNetNuke.UI
             {
                 return false;
             }
-
 
             //--- These checks below are here so tree becomes expands to selected node ---
             if (blnPOD)

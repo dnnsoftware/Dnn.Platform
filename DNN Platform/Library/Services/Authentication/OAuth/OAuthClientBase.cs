@@ -126,8 +126,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         // DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
         protected string APIResource { get; set; }
 
-
-
         public Uri CallbackUri { get; set; }
         public string Service { get; set; }
 
@@ -303,7 +301,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 nonce,
                 out outUrl,
                 out requestParameters);
-
 
             var headerParameters = new List<QueryParameter>
                                        {
@@ -543,8 +540,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return new Uri(string.Format("{0}{1}{2}", url, url.Contains("?") ? "&" : "?", parameters));
         }
 
-
-
         /// <summary>
         /// Generate the timestamp for the signature
         /// </summary>
@@ -617,7 +612,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                                                 this.Service, token,
                                                                 settings.PortalName, IPAddress,
                                                                 ref loginStatus);
-
 
             // Raise UserAuthenticated Event
             var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, this.Service)

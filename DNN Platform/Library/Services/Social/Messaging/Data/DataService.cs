@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,7 +21,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
     {
         /// <summary>The provider instance</summary>
         private readonly DataProvider _provider = DataProvider.Instance();
-
 
         /// <summary>Saves the message.</summary>
         /// <param name="message">The message.</param>
@@ -278,8 +276,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             return this._provider.ExecuteScalar<int>("CoreMessaging_CountArchivedConversations", userId, portalId);
         }
 
-
-
         /// <summary>Saves the message recipient.</summary>
         /// <param name="messageRecipient">The message recipient.</param>
         /// <param name="createUpdateUserId">The create update user identifier.</param>
@@ -346,8 +342,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             this._provider.ExecuteNonQuery("CoreMessaging_DeleteMessageRecipientByMessageAndUser", messageId, userId);
         }
 
-
-
         /// <summary>Saves the message attachment.</summary>
         /// <param name="messageAttachment">The message attachment.</param>
         /// <param name="createUpdateUserId">The create update user identifier.</param>
@@ -411,8 +405,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
             this._provider.ExecuteNonQuery("CoreMessaging_DeleteMessageAttachment", messageAttachmentId);
         }
 
-
-
         /// <summary>Converts the legacy messages.</summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
@@ -427,8 +419,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         {
             return this._provider.ExecuteReader("CoreMessaging_CountLegacyMessages");
         }
-
-
 
         /// <summary>Gets the next messages for instant dispatch.</summary>
         /// <param name="schedulerInstance">The scheduler instance.</param>
@@ -464,8 +454,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         {
             this._provider.ExecuteNonQuery("CoreMessaging_MarkMessageAsSent", messageId, recipientId);
         }
-
-
 
         /// <summary>Gets the user preference.</summary>
         /// <param name="portalId">The portal identifier.</param>

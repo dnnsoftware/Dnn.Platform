@@ -81,8 +81,6 @@ namespace log4net
         {
         }
 
-
-
         /// <summary>
         /// Gets the current context depth.
         /// </summary>
@@ -108,8 +106,6 @@ namespace log4net
         {
             get { return ThreadContext.Stacks["NDC"].Count; }
         }
-
-
 
         /// <summary>
         /// Clears all the contextual information held on the current thread.

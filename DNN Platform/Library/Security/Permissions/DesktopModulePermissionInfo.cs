@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 
@@ -28,8 +27,6 @@ namespace DotNetNuke.Security.Permissions
         // local property declarations
         private int _desktopModulePermissionID;
         private int _portalDesktopModuleID;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -57,8 +54,6 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -96,8 +91,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a DesktopModulePermissionInfo from a Data Reader
@@ -128,8 +121,6 @@ namespace DotNetNuke.Security.Permissions
                 this.DesktopModulePermissionID = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

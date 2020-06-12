@@ -60,7 +60,6 @@ namespace log4net.Appender
         private SocketHandler m_handler;
         private int m_listeningPort = 23;
 
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -73,8 +72,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// The fully qualified type of the TelnetAppender class.
         /// </summary>
@@ -83,7 +80,6 @@ namespace log4net.Appender
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(TelnetAppender);
-
 
         /// <summary>
         /// Gets or sets the TCP port number on which this <see cref="TelnetAppender"/> will listen for connections.
@@ -121,7 +117,6 @@ namespace log4net.Appender
                 }
             }
         }
-
 
         /// <summary>
         /// Overrides the parent method to close the socket handler
@@ -207,8 +202,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Helper class to manage connected clients
         /// </summary>
@@ -277,7 +270,6 @@ namespace log4net.Appender
                     this.m_writer.Write(message);
                     this.m_writer.Flush();
                 }
-
 
                 /// <summary>
                 /// Cleanup the clients connection
@@ -430,7 +422,6 @@ namespace log4net.Appender
                 }
             }
 
-
 #if NETSTANDARD1_3
 			private void OnConnect(Task<Socket> acceptTask)
 #else
@@ -488,7 +479,6 @@ namespace log4net.Appender
                     }
                 }
             }
-
 
             /// <summary>
             /// Close all network connections

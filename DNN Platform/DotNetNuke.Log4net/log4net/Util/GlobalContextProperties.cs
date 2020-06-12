@@ -61,8 +61,6 @@ namespace log4net.Util
         /// </summary>
         private readonly object m_syncRoot = new object();
 
-
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -74,8 +72,6 @@ namespace log4net.Util
         internal GlobalContextProperties()
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the value of a property
@@ -108,8 +104,6 @@ namespace log4net.Util
                 }
             }
         }
-
-
 
         /// <summary>
         /// Remove a property from the global context
@@ -146,8 +140,6 @@ namespace log4net.Util
                 this.m_readOnlyProperties = new ReadOnlyPropertiesDictionary();
             }
         }
-
-
 
         /// <summary>
         /// Get a readonly immutable copy of the properties

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -209,7 +208,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// InstantiateIn is called when the Template is instantiated by the parent control
@@ -235,7 +233,6 @@ namespace DotNetNuke.UI.WebControls
                 container.Controls.Add(box);
             }
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

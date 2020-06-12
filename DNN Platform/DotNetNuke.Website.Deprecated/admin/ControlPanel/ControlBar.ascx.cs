@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -279,7 +278,6 @@ namespace DotNetNuke.UI.ControlPanels
 
             return resultPanes;
         }
-
 
         protected string GetString(string key)
         {
@@ -564,7 +562,6 @@ namespace DotNetNuke.UI.ControlPanels
             return string.Empty;
         }
 
-
         protected string GetAdminBaseMenu()
         {
             var tabs = this.AdminBaseTabs;
@@ -691,7 +688,6 @@ namespace DotNetNuke.UI.ControlPanels
                         this.SetLanguage(true, this.CurrentUICulture);
                     }
                 }
-
 
                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, string.Empty, false);
                 foreach (var cultureItem in cultureListItems)
@@ -1104,7 +1100,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 return true;
             }
-
 
             return isHost ? this._hostCommonTabs.Contains(tab.TabName) : this._adminCommonTabs.Contains(tab.TabName);
         }

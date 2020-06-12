@@ -106,7 +106,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockFolderProvider.Setup(mf => mf.DeleteFile(fileInfo)).Throws<Exception>();
 
-
             FileDeletionController.Instance.DeleteFile(fileInfo);
         }
 

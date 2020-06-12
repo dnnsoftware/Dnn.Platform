@@ -73,8 +73,6 @@ namespace log4net.Appender
             this.m_eventsList = new ArrayList();
         }
 
-
-
         /// <summary>
         /// Gets the events that have been logged.
         /// </summary>
@@ -142,8 +140,6 @@ namespace log4net.Appender
             set { this.m_fixFlags = value; }
         }
 
-
-
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
         /// </summary>
@@ -163,8 +159,6 @@ namespace log4net.Appender
                 this.m_eventsList.Add(loggingEvent);
             }
         }
-
-
 
         /// <summary>
         /// Clear the list of events
@@ -198,8 +192,6 @@ namespace log4net.Appender
                 return tmp;
             }
         }
-
-
 
         /// <summary>
         /// The list of events that have been appended.

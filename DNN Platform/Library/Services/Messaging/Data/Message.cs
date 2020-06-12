@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 
@@ -62,7 +61,6 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-
         public int FromUserID
         {
             get
@@ -74,7 +72,6 @@ namespace DotNetNuke.Services.Messaging.Data
                 this._FromUserID = value;
             }
         }
-
 
         public int ToRoleID
         {
@@ -88,7 +85,6 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-
         public bool AllowReply
         {
             get
@@ -100,7 +96,6 @@ namespace DotNetNuke.Services.Messaging.Data
                 this._allowReply = value;
             }
         }
-
 
         public bool SkipInbox
         {
@@ -125,7 +120,6 @@ namespace DotNetNuke.Services.Messaging.Data
                 this._EmailSent = value;
             }
         }
-
 
         public string Body
         {
@@ -174,7 +168,6 @@ namespace DotNetNuke.Services.Messaging.Data
                 this._MessageID = value;
             }
         }
-
 
         public int PortalID
         {
@@ -227,7 +220,6 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-
         public int ToUserID
         {
             get
@@ -252,7 +244,6 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-
         public DateTime EmailSentDate
         {
             get
@@ -264,7 +255,6 @@ namespace DotNetNuke.Services.Messaging.Data
                 this._EmailSentDate = value;
             }
         }
-
 
         public Guid EmailSchedulerInstance
         {
@@ -317,7 +307,6 @@ namespace DotNetNuke.Services.Messaging.Data
             this.EmailSentDate = Null.SetNullDateTime(dr["EmailSentDate"]);
             this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
             this.Conversation = Null.SetNullGuid(dr["Conversation"]);
-
 
             // 'Conversation = New Guid(g)
         }

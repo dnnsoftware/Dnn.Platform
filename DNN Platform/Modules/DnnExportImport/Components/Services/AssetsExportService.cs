@@ -35,7 +35,6 @@ namespace Dnn.ExportImport.Components.Services
         private readonly string _assetsFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipFiles}";
 
-
         private const string UsersAssetsTempFolder = "{0}\\TempUsers\\";
 
         public override string Category => Constants.Category_Assets;
@@ -78,7 +77,6 @@ namespace Dnn.ExportImport.Components.Services
                             .GetFolders(portalId, toDate, fromDate)).ToList();
                     var totalFolders = folders.Any() ? folders.Count : 0;
                     folders = folders.Skip(skip).ToList();
-
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalFolders : this.CheckPoint.TotalItems;
@@ -566,7 +564,6 @@ namespace Dnn.ExportImport.Components.Services
                         file.StartDate, file.EndDate ?? Null.NullDate, file.EnablePublishPeriod,
                         // file.ContentItemId ?? Null.NullInteger);--If we keep it we will see FK_PK relationship errors.
                         Null.NullInteger);
-
 
                 if (file.Content != null)
                 {

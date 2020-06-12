@@ -74,8 +74,6 @@ namespace log4net.Util
         {
         }
 
-
-
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class
@@ -93,8 +91,6 @@ namespace log4net.Util
         {
         }
 #endif
-
-
 
         /// <summary>
         /// Gets or sets the value of the  property with the specified key.
@@ -116,8 +112,6 @@ namespace log4net.Util
             set { this.InnerHashtable[key] = value; }
         }
 
-
-
         /// <summary>
         /// Remove the entry with the specified key from this dictionary
         /// </summary>
@@ -131,8 +125,6 @@ namespace log4net.Util
         {
             this.InnerHashtable.Remove(key);
         }
-
-
 
         /// <summary>
         /// See <see cref="IDictionary.GetEnumerator"/>
@@ -283,8 +275,6 @@ namespace log4net.Util
             get { return false; }
         }
 
-
-
         /// <summary>
         /// See <see cref="ICollection.CopyTo"/>
         /// </summary>
@@ -310,8 +300,6 @@ namespace log4net.Util
         {
             get { return this.InnerHashtable.SyncRoot; }
         }
-
-
 
         /// <summary>
         /// See <see cref="IEnumerable.GetEnumerator"/>

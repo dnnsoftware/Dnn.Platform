@@ -83,8 +83,6 @@ namespace log4net.Appender
             this.Layout = layout;
         }
 
-
-
         /// <summary>
         /// Gets or sets a value that indicates whether the appender will
         /// flush at the end of each write.
@@ -125,8 +123,6 @@ namespace log4net.Appender
             get { return this.m_category; }
             set { this.m_category = value; }
         }
-
-
 
         /// <summary>
         /// Writes the logging event to the <see cref="System.Diagnostics.Trace"/> system.
@@ -173,8 +169,6 @@ namespace log4net.Appender
             get { return true; }
         }
 
-
-
         /// <summary>
         /// Immediate flush means that the underlying writer or output stream
         /// will be flushed at the end of each append operation.
@@ -196,7 +190,6 @@ namespace log4net.Appender
         /// Defaults to %logger
         /// </summary>
         private PatternLayout m_category = new PatternLayout("%logger");
-
 
         /// <summary>
         /// Flushes any buffered log data.

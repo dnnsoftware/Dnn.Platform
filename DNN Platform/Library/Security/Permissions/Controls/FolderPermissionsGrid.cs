@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,8 +47,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and Sets the path of the Folder
@@ -85,8 +82,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 return this.FolderPermissions;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -400,8 +395,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             return this.IsSystemFolderPermission(permissionInfo);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

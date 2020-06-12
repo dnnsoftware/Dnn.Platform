@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Collections.Generic;
 using System.Xml;
 
@@ -28,8 +27,6 @@ namespace DotNetNuke.Services.Installer.Writers
         private int _InstallOrder = Null.NullInteger;
         private int _UnInstallOrder = Null.NullInteger;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs the FileComponentWriter
@@ -44,8 +41,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this._BasePath = basePath;
             this._Package = package;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -140,9 +135,6 @@ namespace DotNetNuke.Services.Installer.Writers
                 this._UnInstallOrder = value;
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -8,7 +8,6 @@ using System.Web.UI.WebControls;
 
 using DotNetNuke.Common.Utilities;
 
-
 namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnGenericHiddenField<T> : HiddenField

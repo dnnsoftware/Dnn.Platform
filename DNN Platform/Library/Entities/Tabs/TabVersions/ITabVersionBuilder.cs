@@ -26,7 +26,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <returns>TabVersion filled with the new version data</returns>
         TabVersion CreateNewVersion(int portalid, int tabId, int createdByUserId);
 
-
         /// <summary>
         /// Publish a Tab Version
         /// </summary>

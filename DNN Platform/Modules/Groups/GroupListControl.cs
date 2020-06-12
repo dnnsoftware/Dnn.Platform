@@ -143,9 +143,7 @@ namespace DotNetNuke.Modules.Groups.Controls
 
             decimal pages = (decimal)roles.Count / (decimal)this.PageSize;
 
-
             output.Write(this.HeaderTemplate);
-
 
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:posts}", Localization.GetString("posts", Constants.SharedResourcesPath));
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:members}", Localization.GetString("members", Constants.SharedResourcesPath));
@@ -213,7 +211,6 @@ namespace DotNetNuke.Modules.Groups.Controls
 
             int TotalPages = Convert.ToInt32(System.Math.Ceiling(pages));
 
-
             if (TotalPages == 0)
             {
                 TotalPages = 1;
@@ -262,7 +259,6 @@ namespace DotNetNuke.Modules.Groups.Controls
             output.Write("</div>");
 
         }
-
 
     }
 

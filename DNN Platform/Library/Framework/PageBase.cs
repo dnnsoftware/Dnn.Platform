@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Specialized;
@@ -53,8 +52,6 @@ namespace DotNetNuke.Framework
         private CultureInfo _pageCulture;
         private string _localResourceFile;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates the Page
@@ -64,8 +61,6 @@ namespace DotNetNuke.Framework
         {
             this._localizedControls = new ArrayList();
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -318,9 +313,6 @@ namespace DotNetNuke.Framework
             this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");
         }
 
-
-
-
         /// <summary>
         /// <para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para>
         /// </summary>
@@ -515,7 +507,6 @@ namespace DotNetNuke.Framework
                     }
                 }
             }
-
 
             // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
             // Manual Override to ResolveUrl

@@ -50,8 +50,6 @@ namespace log4net.Layout.Pattern
         {
         }
 
-
-
         /// <summary>
         /// Flag indicating if this converter handles the logging event exception
         /// </summary>
@@ -74,8 +72,6 @@ namespace log4net.Layout.Pattern
             set { this.m_ignoresException = value; }
         }
 
-
-
         /// <summary>
         /// Derived pattern converters must override this method in order to
         /// convert conversion specifiers in the correct way.
@@ -83,8 +79,6 @@ namespace log4net.Layout.Pattern
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">The <see cref="LoggingEvent" /> on which the pattern converter should be executed.</param>
         protected abstract void Convert(TextWriter writer, LoggingEvent loggingEvent);
-
-
 
         /// <summary>
         /// Derived pattern converters must override this method in order to
@@ -104,7 +98,6 @@ namespace log4net.Layout.Pattern
                 throw new ArgumentException("state must be of type [" + typeof(LoggingEvent).FullName + "]", "state");
             }
         }
-
 
         /// <summary>
         /// Flag indicating if this converter handles exceptions

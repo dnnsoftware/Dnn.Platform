@@ -168,7 +168,6 @@ namespace DotNetNuke.Services.Journal
             return Convert.ToInt32(Math.Round(calculated));
         }
 
-
         private bool IsImageFile(string fileName)
         {
             return (Globals.glbImageFileTypes + ",").IndexOf(Path.GetExtension(fileName).Replace(".", string.Empty) + ",", StringComparison.InvariantCultureIgnoreCase) > -1;
@@ -277,8 +276,6 @@ namespace DotNetNuke.Services.Journal
 
         private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
         private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
-
-
 
         // Journal Items
         public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)

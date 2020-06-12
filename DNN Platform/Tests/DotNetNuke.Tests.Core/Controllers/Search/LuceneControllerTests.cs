@@ -331,7 +331,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, hits.Results.Count());
         }
 
-
         [Test]
         public void LuceneController_Search_Request_For_PagIndex2_PageSize1_Returns_2nd_Record_Only()
         {
@@ -690,8 +689,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<SearchException>(() => secondController.Add(doc1));
         }
 
-
-
         // Arrange
         private const int TotalTestDocs2Create = 5;
         private const string ContentFieldName = "content";
@@ -726,7 +723,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Commit();
             return delCount;
         }
-
 
         [Test]
         public void LuceneController_DocumentMaxAndCountAreCorrect()

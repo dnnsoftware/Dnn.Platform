@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -55,8 +54,6 @@ namespace DotNetNuke.Services.Mail
 
         // ReSharper restore InconsistentNaming
 
-
-
         private readonly List<string> _addressedRoles = new List<string>();
         private readonly List<UserInfo> _addressedUsers = new List<UserInfo>();
         private readonly List<Attachment> _attachments = new List<Attachment>();
@@ -102,8 +99,6 @@ namespace DotNetNuke.Services.Mail
             this.SuppressTokenReplace = this.SuppressTokenReplace;
             this.Initialize();
         }
-
-
 
         /// <summary>
         /// Priority of emails to be sent
@@ -206,8 +201,6 @@ namespace DotNetNuke.Services.Mail
         }
 
         public string[] LanguageFilter { get; set; }
-
-
 
         /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
         private void Initialize()
@@ -346,8 +339,6 @@ namespace DotNetNuke.Services.Mail
             }
             return attachments;
         }
-
-
 
         /// <summary>Specify SMTP server to be used</summary>
         /// <param name="smtpServer">name of the SMTP server</param>

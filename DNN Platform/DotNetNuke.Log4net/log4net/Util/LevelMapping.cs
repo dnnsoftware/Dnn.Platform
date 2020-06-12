@@ -51,8 +51,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Add a <see cref="LevelMappingEntry"/> to this mapping
         /// </summary>
@@ -102,8 +100,6 @@ namespace log4net.Util
             }
             return null;
         }
-
-
 
         /// <summary>
         /// Initialize options

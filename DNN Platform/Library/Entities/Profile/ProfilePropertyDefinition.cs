@@ -63,8 +63,6 @@ namespace DotNetNuke.Entities.Profile
             this.PortalId = portalId;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Data Type of the Profile Property
@@ -447,8 +445,6 @@ namespace DotNetNuke.Entities.Profile
                 this._profileVisibility = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

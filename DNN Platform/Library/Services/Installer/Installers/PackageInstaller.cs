@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +26,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly SortedList<int, ComponentInstallerBase> _componentInstallers = new SortedList<int, ComponentInstallerBase>();
         private PackageInfo _installedPackage;
         private EventMessage _eventMessage;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -86,8 +83,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the Packages files are deleted when uninstalling the
@@ -104,8 +99,6 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -189,8 +182,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             return strText;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

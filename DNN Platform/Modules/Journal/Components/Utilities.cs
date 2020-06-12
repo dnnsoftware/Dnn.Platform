@@ -80,7 +80,6 @@ namespace DotNetNuke.Modules.Journal.Components
 
                 return bmp;
 
-
             }
             catch
             {
@@ -253,7 +252,6 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 objWebResponse = (HttpWebResponse)objWebRequest.GetResponse();
                 Encoding enc = Encoding.UTF8;
-
 
                 string contentType = objWebResponse.ContentType;
 

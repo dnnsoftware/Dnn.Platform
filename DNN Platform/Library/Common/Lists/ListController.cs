@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -116,7 +115,6 @@ namespace DotNetNuke.Common.Lists
                 DataCache.ListsCachePriority),
                 c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
-
 
         /// <summary>
         /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be

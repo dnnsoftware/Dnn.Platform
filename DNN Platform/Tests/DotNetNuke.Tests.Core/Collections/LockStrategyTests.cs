@@ -229,7 +229,6 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-
         protected virtual IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
         {
             var l = new List<Action<ILockStrategy>>();

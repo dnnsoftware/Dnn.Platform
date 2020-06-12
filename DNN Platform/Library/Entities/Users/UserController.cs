@@ -647,8 +647,6 @@ namespace DotNetNuke.Entities.Users
             return DataProvider.Instance().GetDuplicateEmailCount(PortalSettings.Current.PortalId);
         }
 
-
-
         /// <summary>
         /// add new userportal record (used for creating sites with existing user)
         /// </summary>
@@ -2374,7 +2372,6 @@ namespace DotNetNuke.Entities.Users
             var domainName = GetDomainName(portalAlias);
             return Globals.AddHTTP(domainName + relativeUrl);
         }
-
 
         private static string GetDomainName(PortalAliasInfo portalAlias)
         {

@@ -92,7 +92,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Act
             controller.LoadPortalSettings(settings);
 
-
             // Assert
             var property = settings.GetType().GetProperty(propertyName);
             var actualValue = property.GetValue(settings, null);

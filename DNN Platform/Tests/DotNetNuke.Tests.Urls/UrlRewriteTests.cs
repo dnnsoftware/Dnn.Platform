@@ -569,7 +569,6 @@ namespace DotNetNuke.Tests.Urls
             this.SetDefaultAlias(defaultAlias);
             this.ExecuteTest(settings, testFields, false);
 
-
             alias = PortalAliasController.Instance.GetPortalAlias(defaultAlias, this.PortalId);
             if (alias != null)
             {

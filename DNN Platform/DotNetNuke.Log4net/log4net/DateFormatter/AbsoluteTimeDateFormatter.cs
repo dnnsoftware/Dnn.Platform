@@ -78,8 +78,6 @@ namespace log4net.DateFormatter
             buffer.Append(secs);
         }
 
-
-
         /// <summary>
         /// Renders the date into a string. Format is "HH:mm:ss,fff".
         /// </summary>
@@ -167,8 +165,6 @@ namespace log4net.DateFormatter
                     }
         }
 
-
-
         /// <summary>
         /// String constant used to specify AbsoluteTimeDateFormat in layouts. Current value is <b>ABSOLUTE</b>.
         /// </summary>
@@ -183,8 +179,6 @@ namespace log4net.DateFormatter
         /// String constant used to specify ISO8601DateFormat in layouts. Current value is <b>ISO8601</b>.
         /// </summary>
         public const string Iso8601TimeDateFormat = "ISO8601";
-
-
 
         /// <summary>
         /// Last stored time with precision up to the second.

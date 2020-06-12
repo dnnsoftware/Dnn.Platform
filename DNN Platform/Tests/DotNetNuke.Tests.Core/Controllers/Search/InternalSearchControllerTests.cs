@@ -76,7 +76,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int LanguageIdItIt = 3;
         private const int LanguageIdEsEs = 4;
 
-
         private const string SearchIndexFolder = @"App_Data\InternalSearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private Mock<IHostController> _mockHostController;
@@ -111,7 +110,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
             UserController.SetTestableInstance(this._mockUserController.Object);
-
 
             this.CreateNewLuceneControllerInstance();
         }
@@ -376,7 +374,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => this._internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
         }
-
 
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Null_OrEmpty_Title()
@@ -735,7 +732,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<ArgumentOutOfRangeException>(() => _internalSearchController.DeleteSearchDocument(searchDoc));
         }
 #endif
-
 
     }
 }

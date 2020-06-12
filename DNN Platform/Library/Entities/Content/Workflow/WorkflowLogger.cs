@@ -46,7 +46,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
         }
 
-
         public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
         {
             this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);

@@ -49,8 +49,6 @@ namespace log4net.DateFormatter
         {
         }
 
-
-
         /// <summary>
         /// Formats the date without the milliseconds part
         /// </summary>

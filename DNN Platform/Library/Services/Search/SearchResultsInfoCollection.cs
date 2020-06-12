@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 
@@ -58,8 +57,6 @@ namespace DotNetNuke.Services.Search
             this.AddRange(value);
         }
 
-
-
         /// <summary>
         /// Gets the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> at the specified index in the collection.
         /// <para>
@@ -77,8 +74,6 @@ namespace DotNetNuke.Services.Search
                 this.List[index] = value;
             }
         }
-
-
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchResultsInfo">SearchResultsInfo</see> to the end of the collection.

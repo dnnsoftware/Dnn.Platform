@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Web.UI.HtmlControls;
@@ -30,7 +29,6 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFilePicker : CompositeControl, ILocalizable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
-
 
         /// <summary>
         ///   Represents a possible mode for the File Control
@@ -74,8 +72,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool _localize = true;
         private int _maxHeight = 100;
         private int _maxWidth = 135;
-
-
 
         /// <summary>
         ///   Gets whether the control is on a Host or Portal Tab
@@ -185,8 +181,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-
-
 
         /// <summary>
         ///   Gets or sets the class to be used for the Labels
@@ -379,8 +373,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         public UserInfo User { get; set; }
-
-
 
         /// <summary>
         ///   AddButton adds a button to the Command Row

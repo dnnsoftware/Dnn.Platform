@@ -71,7 +71,6 @@ namespace DotNetNuke.Modules.Journal
                     relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
             }
 
-
             var extension = relativePath.Substring(relativePath.LastIndexOf(
                 ".",
                 StringComparison.Ordinal) + 1).ToLowerInvariant();
@@ -309,7 +308,6 @@ namespace DotNetNuke.Modules.Journal
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
 
         public class PreviewDTO
         {

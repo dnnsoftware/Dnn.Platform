@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.Entities.Modules;
@@ -22,7 +21,6 @@ namespace DotNetNuke.Common.Controls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
 
             // CODEGEN: This method call is required by the Web Form Designer
             // Do not modify it using the code editor.

@@ -63,8 +63,6 @@ namespace log4net.Config
         /// </remarks>
         private static readonly Type declaringType = typeof(BasicConfigurator);
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="BasicConfigurator" /> class.
         /// </summary>
@@ -76,8 +74,6 @@ namespace log4net.Config
         private BasicConfigurator()
         {
         }
-
-
 
 #if !NETSTANDARD1_3
         /// <summary>

@@ -51,7 +51,6 @@ namespace log4net.Repository.Hierarchy
             Overwrite,
         }
 
-
         /// <summary>
         /// Construct the configurator for a hierarchy
         /// </summary>
@@ -67,8 +66,6 @@ namespace log4net.Repository.Hierarchy
             this.m_hierarchy = hierarchy;
             this.m_appenderBag = new Hashtable();
         }
-
-
 
         /// <summary>
         /// Configure the hierarchy by parsing a DOM tree of XML elements.
@@ -222,8 +219,6 @@ namespace log4net.Repository.Hierarchy
 
             // Done reading config
         }
-
-
 
         /// <summary>
         /// Parse appenders by IDREF.
@@ -1063,7 +1058,6 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-
 #if !(NETCF || NETSTANDARD1_3) // NETSTANDARD1_3: System.Runtime.InteropServices.RuntimeInformation not available on desktop 4.6
         private bool HasCaseInsensitiveEnvironment
             {
@@ -1097,7 +1091,6 @@ namespace log4net.Repository.Hierarchy
         }
 #endif
 
-
         // String constants used while parsing the XML data
         private const string CONFIGURATION_TAG = "log4net";
         private const string RENDERER_TAG = "renderer";
@@ -1129,8 +1122,6 @@ namespace log4net.Repository.Hierarchy
         // flag used on the level element
         private const string INHERITED = "inherited";
 
-
-
         /// <summary>
         /// key: appenderName, value: appender.
         /// </summary>
@@ -1140,8 +1131,6 @@ namespace log4net.Repository.Hierarchy
         /// The Hierarchy being configured.
         /// </summary>
         private readonly Hierarchy m_hierarchy;
-
-
 
         /// <summary>
         /// The fully qualified type of the XmlHierarchyConfigurator class.

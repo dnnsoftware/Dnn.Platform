@@ -46,8 +46,6 @@ namespace log4net.Layout
         /// </summary>
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
 
-
-
         /// <summary>
         /// Constructs an XMLLayoutSchemaLog4j
         /// </summary>
@@ -78,8 +76,6 @@ namespace log4net.Layout
         {
         }
 
-
-
         /// <summary>
         /// The version of the log4j schema to use.
         /// </summary>
@@ -99,7 +95,6 @@ namespace log4net.Layout
                 }
             }
         }
-
 
         /* Example log4j schema event
 

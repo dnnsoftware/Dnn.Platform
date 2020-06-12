@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Globalization;
 
@@ -15,7 +14,6 @@ using DotNetNuke.Entities.Profile;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
-
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -64,8 +62,6 @@ namespace DotNetNuke.Security.Profile
                 }
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

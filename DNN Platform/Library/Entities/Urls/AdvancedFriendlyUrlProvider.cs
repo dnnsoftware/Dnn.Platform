@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -58,8 +57,6 @@ namespace DotNetNuke.Entities.Urls
         {
             return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
         }
-
-
 
         /// <summary>
         /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version
@@ -1274,7 +1271,6 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
         }
-
 
         private static void RemoveExcludedPartsOfPath(FriendlyUrlSettings settings, ref string newPath, ref string qs)
         {

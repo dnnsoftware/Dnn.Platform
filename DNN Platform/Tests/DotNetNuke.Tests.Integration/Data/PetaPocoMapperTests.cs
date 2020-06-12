@@ -18,7 +18,6 @@ namespace DotNetNuke.Tests.Data
     {
         // ReSharper disable InconsistentNaming
 
-
         [Test]
         public void PetaPocoMapper_Constructor_Initialises_TablePrefix_Property()
         {
@@ -179,7 +178,6 @@ namespace DotNetNuke.Tests.Data
             // Assert
             Assert.AreEqual(Constants.COLUMNNAME_Name, ci.ColumnName);
         }
-
 
         // ReSharper restore InconsistentNaming
     }

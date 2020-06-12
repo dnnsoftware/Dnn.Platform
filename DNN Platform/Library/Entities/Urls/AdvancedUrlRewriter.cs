@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -877,7 +876,6 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-
             if (context != null)
             {
                 HttpRequest request = context.Request;
@@ -1577,7 +1575,6 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
 
-
                 if (redirectSecure)
                 {
                     // now check to see if excluded.  Why now? because less requests are made to redirect secure,
@@ -1728,7 +1725,6 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                     }
-
 
                     // check to see if it is a custom tab alais - in that case, it is allowed to be requested for the tab
                     if (CheckIfAliasIsCustomTabAlias(ref result, httpAlias, settings))

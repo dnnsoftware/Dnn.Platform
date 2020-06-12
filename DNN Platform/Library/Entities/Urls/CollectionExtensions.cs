@@ -288,7 +288,6 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
 
-
                             break;
 
                         case XmlNodeType.EndElement:

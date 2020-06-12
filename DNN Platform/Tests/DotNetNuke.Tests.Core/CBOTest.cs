@@ -28,7 +28,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             MockComponentProvider.CreateDataCacheProvider();
         }
 
-
         [Test]
         public void CBO_FillObject_int()
         {
@@ -45,7 +44,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             Assert.IsNotNull(result);
             Assert.AreEqual(colValue, result.IntProp);
         }
-
 
         [Test]
         public void CBO_FillObject_string()
@@ -92,7 +90,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Columns.Add("ByteArrayProp", typeof(byte[]));
             cboTable.Rows.Add(colValue);
 
-
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
             Assert.IsInstanceOf<IntPoco>(result);
@@ -108,7 +105,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             cboTable.Columns.Add("ArrayProp", typeof(byte[]));
             cboTable.Rows.Add(colValue);
-
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
@@ -126,7 +122,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Columns.Add("BitProp", typeof(bool));
             cboTable.Rows.Add(colValue);
 
-
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
             Assert.IsInstanceOf<IntPoco>(result);
@@ -142,7 +137,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             cboTable.Columns.Add("DecimalProp", typeof(decimal));
             cboTable.Rows.Add(colValue);
-
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
@@ -160,7 +154,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Columns.Add("BitProp", typeof(int));
             cboTable.Rows.Add(colValue);
 
-
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
             Assert.IsInstanceOf<IntPoco>(result);
@@ -176,7 +169,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
             cboTable.Columns.Add("BitProp", typeof(int));
             cboTable.Rows.Add(colValue);
-
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 

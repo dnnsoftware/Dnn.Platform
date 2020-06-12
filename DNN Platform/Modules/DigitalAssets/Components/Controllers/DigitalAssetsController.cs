@@ -246,7 +246,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return folderTypeId;
         }
 
-
         public int GetCurrentPortalId(int moduleId)
         {
             if (PortalSettings.Current.UserInfo.IsSuperUser)

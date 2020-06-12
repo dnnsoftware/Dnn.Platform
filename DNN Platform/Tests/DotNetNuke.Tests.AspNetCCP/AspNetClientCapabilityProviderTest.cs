@@ -12,7 +12,6 @@ using DotNetNuke.Tests.Utilities.Mocks;
 
 using NUnit.Framework;
 
-
 namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
 {
     [TestFixture]

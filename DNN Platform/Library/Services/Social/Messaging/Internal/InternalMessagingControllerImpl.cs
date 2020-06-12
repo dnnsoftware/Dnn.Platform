@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +30,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         internal const string ConstSortColumnSubject = "Subject";
         internal const bool ConstAscending = true;
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
-
-
 
         private readonly IDataService _dataService;
 
@@ -117,7 +114,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
 
-
             // Profanity Filter
             var profanityFilterSetting = this.GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
             if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
@@ -149,9 +145,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
             return messageId;
         }
-
-
-
 
         /// <summary>How long a user needs to wait before sending the next message.</summary>
         /// <returns>Time in seconds. Returns zero if user is Host, Admin or has never sent a message.</returns>
@@ -457,7 +450,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             return CBO.FillCollection<MessageRecipient>(this._dataService.GetNextMessagesForDigestDispatch(Convert.ToInt32(frequency), schedulerInstance, batchSize));
         }
-
 
         public virtual void MarkMessageAsDispatched(int messageId, int recipientId)
         {

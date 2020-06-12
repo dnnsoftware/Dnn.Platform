@@ -283,7 +283,6 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Never());
 
-
             // Really update
             contentItem.ContentTitle = "SNAFU";
 

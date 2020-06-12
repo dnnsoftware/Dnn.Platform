@@ -105,7 +105,6 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             var controller = new Mock<IModuleController>();
 
-
             var presenter = new TestSettingsPresenter(view.Object) { ModuleContext = this.CreateModuleContext() };
             presenter.IsPostBack = true;
             view.Raise(v => v.Load += null, EventArgs.Empty);
@@ -130,7 +129,6 @@ namespace DotNetNuke.Tests.Web.Mvp
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
             var controller = new Mock<IModuleController>();
-
 
             var presenter = new TestSettingsPresenter(view.Object) { ModuleContext = this.CreateModuleContext() };
             presenter.IsPostBack = true;

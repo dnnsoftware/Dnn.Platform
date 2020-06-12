@@ -54,9 +54,6 @@ namespace DotNetNuke.Tests.Utilities
         public const int PORTAL_InValidPortalId = -1;
         public const int PORTAL_ValidPortalId = 1;
 
-
-
-
         /// <summary>The setting name that stores whether attachments are allowed.</summary>
         public const string PORTALSETTING_MessagingAllowAttachments_Name = "MessagingAllowAttachments";
 
@@ -81,7 +78,6 @@ namespace DotNetNuke.Tests.Utilities
         public const int PORTALGROUP_ValidPortalGroupCount = 5;
         public const string PORTALGROUP_ValidNameFormat = "PortalGroupName {0}";
         public const string PORTALGROUP_ValidDescriptionFormat = "PortalGroupDescription {0}";
-
 
         // Valid Content values
         public const int CONTENT_ValidContentItemId = 1;
@@ -334,7 +330,6 @@ namespace DotNetNuke.Tests.Utilities
         public const string LOCALIZATION_UserRelationship_Updated_Key = "UserRelationship_Updated";
         public const string LOCALIZATION_UserRelationship_Updated = "Updated UserRelationship ID {0}, UserID {1}, RelatedUserID {2}";
 
-
         public const string LOCALIZATION_UserRelationshipPreference_Deleted_Key = "UserRelationshipPreference_Deleted";
         public const string LOCALIZATION_UserRelationshipPreference_Deleted = "Deleted UserRelationshipPreference ID {0} for User ID {1} and Relationship ID {2}";
         public const string LOCALIZATION_UserRelationshipPreference_Added_Key = "UserRelationshipPreference_Added";
@@ -400,7 +395,6 @@ namespace DotNetNuke.Tests.Utilities
         public const string CACHE_ScopeModule = "ModuleId";
         public const int CACHE_TimeOut = 10;
         public const CacheItemPriority CACHE_Priority = CacheItemPriority.High;
-
 
         public const string TABLENAME_Dog = "Dogs";
         public const string TABLENAME_Key = "ID";

@@ -53,8 +53,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Append on on all attached appenders.
         /// </summary>
@@ -150,8 +148,6 @@ namespace log4net.Util
             return this.m_appenderList.Count;
         }
 
-
-
         /// <summary>
         /// Calls the DoAppende method on the <see cref="IAppender"/> with
         /// the <see cref="LoggingEvent"/> objects supplied.
@@ -181,8 +177,6 @@ namespace log4net.Util
                 }
             }
         }
-
-
 
         /// <summary>
         /// Attaches an appender.
@@ -339,8 +333,6 @@ namespace log4net.Util
             return this.RemoveAppender(this.GetAppender(name));
         }
 
-
-
         /// <summary>
         /// List of appenders
         /// </summary>
@@ -350,8 +342,6 @@ namespace log4net.Util
         /// Array of appenders, used to cache the m_appenderList
         /// </summary>
         private IAppender[] m_appenderArray;
-
-
 
         /// <summary>
         /// The fully qualified type of the AppenderAttachedImpl class.

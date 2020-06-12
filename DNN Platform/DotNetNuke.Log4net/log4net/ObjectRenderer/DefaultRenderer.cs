@@ -56,8 +56,6 @@ namespace log4net.ObjectRenderer
         {
         }
 
-
-
         /// <summary>
         /// Render the object <paramref name="obj"/> to a string
         /// </summary>
@@ -209,7 +207,6 @@ namespace log4net.ObjectRenderer
             string str = obj.ToString();
             writer.Write((str == null) ? SystemInfo.NullText : str);
         }
-
 
         /// <summary>
         /// Render the array argument into a string

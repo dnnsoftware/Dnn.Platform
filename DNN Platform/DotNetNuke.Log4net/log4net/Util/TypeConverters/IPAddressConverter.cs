@@ -139,7 +139,6 @@ namespace log4net.Util.TypeConverters
             throw ConversionNotSupportedException.Create(typeof(IPAddress), source);
         }
 
-
         /// <summary>
         /// Valid characters in an IPv4 or IPv6 address string. (Does not support subnets)
         /// </summary>

@@ -96,7 +96,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             // Arrange
 
-
             // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
@@ -131,7 +130,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             Assert.AreEqual(1, templates.Count);
             AssertTemplateInfo(StaticExpectations, templates[0]);
         }
-
 
         [Test]
         public void TemplateWith2Languages()

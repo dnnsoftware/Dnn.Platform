@@ -9,7 +9,6 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 
-
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -104,7 +103,6 @@ namespace Dnn.Module.ModuleCreator
             var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedValue + "\\";
 
             EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, this.PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
 
             var controlName = Null.NullString;
             var fileName = Null.NullString;
@@ -223,7 +221,6 @@ namespace Dnn.Module.ModuleCreator
             // return class and remove any spaces that might appear in class name
             return strClass.Replace(" ", string.Empty);
         }
-
 
         /// <summary>
         /// </summary>

@@ -141,7 +141,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             Name = Constants.SOCIAL_RelationshipTypeName,
                                         };
 
-
             // Act
             relationshipController.DeleteRelationshipType(relationshipType);
 
@@ -640,7 +639,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             RelatedUserId = Constants.USER_TenId,
                                         };
 
-
             // Act
             relationshipController.DeleteUserRelationship(userRelationship);
 
@@ -726,7 +724,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             Assert.AreEqual(0, userRelationships.Count);
         }
 
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void RelationshipController_SaveUserRelationship_Throws_On_Null_UserRelationship()
@@ -774,7 +771,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                                 UserId = Constants.USER_ElevenId,
                                                 RelatedUserId = Constants.USER_TenId,
                                             };
-
 
             // Act
             relationshipController.SaveUserRelationship(userRelationship);

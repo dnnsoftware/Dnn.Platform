@@ -238,7 +238,6 @@ namespace Dnn.ExportImport.Components.Services
                                         && x.PermissionName.Equals(importPermission.PermissionName, StringComparison.InvariantCultureIgnoreCase) &&
                                         x.RoleID == roleId && x.UserID == userId);
 
-
                                     if (local == null)
                                     {
                                         workflowStateManager.AddWorkflowStatePermission(permission, -1);

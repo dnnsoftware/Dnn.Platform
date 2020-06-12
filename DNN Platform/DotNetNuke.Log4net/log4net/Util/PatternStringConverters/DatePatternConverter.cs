@@ -95,7 +95,6 @@ namespace log4net.Util.PatternStringConverters
         /// </remarks>
         protected IDateFormatter m_dateFormatter;
 
-
         /// <summary>
         /// Initialize the converter options
         /// </summary>
@@ -147,7 +146,6 @@ namespace log4net.Util.PatternStringConverters
             }
         }
 
-
         /// <summary>
         /// Write the current date to the output
         /// </summary>
@@ -173,7 +171,6 @@ namespace log4net.Util.PatternStringConverters
                 LogLog.Error(declaringType, "Error occurred while converting date.", ex);
             }
         }
-
 
         /// <summary>
         /// The fully qualified type of the DatePatternConverter class.

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.Entities.Users;
@@ -41,7 +40,6 @@ namespace DotNetNuke.Entities.Modules
         public event EventHandler UserUpdated;
         public event EventHandler UserUpdateCompleted;
         public event UserUpdateErrorEventHandler UserUpdateError;
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -168,8 +166,6 @@ namespace DotNetNuke.Entities.Modules
 
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The BaseUserEventArgs class provides a base for User EventArgs classes
@@ -191,8 +187,6 @@ namespace DotNetNuke.Entities.Modules
             /// -----------------------------------------------------------------------------
             public string UserName { get; set; }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -247,8 +241,6 @@ namespace DotNetNuke.Entities.Modules
             public bool Notify { get; set; }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserDeletedEventArgs class provides a customised EventArgs class for
@@ -270,8 +262,6 @@ namespace DotNetNuke.Entities.Modules
                 this.UserName = name;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -295,8 +285,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserRemovedEventArgs class provides a customised EventArgs class for
@@ -318,9 +306,6 @@ namespace DotNetNuke.Entities.Modules
                 this.UserName = name;
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

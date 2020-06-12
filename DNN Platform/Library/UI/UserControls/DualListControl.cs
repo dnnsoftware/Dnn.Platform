@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Web.UI.WebControls;
@@ -114,8 +113,6 @@ namespace DotNetNuke.UI.UserControls
                 this._Enabled = value;
             }
         }
-
-
 
         /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
         protected override void OnLoad(EventArgs e)

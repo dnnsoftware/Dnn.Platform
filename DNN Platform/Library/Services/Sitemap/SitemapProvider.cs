@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -17,7 +16,6 @@ namespace DotNetNuke.Services.Sitemap
 
         public string Description { get; set; }
 
-
         public bool Enabled
         {
             get
@@ -29,7 +27,6 @@ namespace DotNetNuke.Services.Sitemap
                 PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Enabled", value.ToString());
             }
         }
-
 
         public bool OverridePriority
         {
@@ -61,7 +58,6 @@ namespace DotNetNuke.Services.Sitemap
                 PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Value", value.ToString(NumberFormatInfo.InvariantInfo));
             }
         }
-
 
         public abstract List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version);
     }

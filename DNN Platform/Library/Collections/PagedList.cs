@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,8 +74,6 @@ namespace DotNetNuke.Collections
             this.IsFirstPage = this.PageIndex <= 0;
             this.IsLastPage = this.PageIndex >= (this.PageCount - 1);
         }
-
-
 
         /// <summary>
         ///   Gets a boolean indicating if there is a next page available

@@ -67,8 +67,6 @@ namespace log4net.Core
         private int m_count = 0;
         private int m_version = 0;
 
-
-
         /// <summary>
         /// Creates a read-only wrapper for a <c>LevelCollection</c> instance.
         /// </summary>
@@ -85,8 +83,6 @@ namespace log4net.Core
 
             return new ReadOnlyLevelCollection(list);
         }
-
-
 
         /// <summary>
         /// Initializes a new instance of the <c>LevelCollection</c> class
@@ -163,7 +159,6 @@ namespace log4net.Core
             this.m_array = null;
         }
 
-
         /// <summary>
         /// Gets the number of elements actually contained in the <c>LevelCollection</c>.
         /// </summary>
@@ -214,8 +209,6 @@ namespace log4net.Core
         {
             get { return this.m_array; }
         }
-
-
 
         /// <summary>
         /// Gets or sets the <see cref="Level"/> at the specified index.
@@ -415,8 +408,6 @@ namespace log4net.Core
             get { return false; }
         }
 
-
-
         /// <summary>
         /// Returns an enumerator that can iterate through the <c>LevelCollection</c>.
         /// </summary>
@@ -425,8 +416,6 @@ namespace log4net.Core
         {
             return new Enumerator(this);
         }
-
-
 
         /// <summary>
         /// Gets or sets the number of elements the <c>LevelCollection</c> can contain.
@@ -526,8 +515,6 @@ namespace log4net.Core
             this.Capacity = this.m_count;
         }
 
-
-
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="i"/> is less than zero</para>
         /// <para>-or-</para>
@@ -609,8 +596,6 @@ namespace log4net.Core
             return (IEnumerator) this.GetEnumerator();
         }
 
-
-
         /// <summary>
         /// Supports simple iteration over a <see cref="LevelCollection"/>.
         /// </summary>
@@ -619,8 +604,6 @@ namespace log4net.Core
             private readonly LevelCollection m_collection;
             private int m_index;
             private int m_version;
-
-
 
             /// <summary>
             /// Initializes a new instance of the <c>Enumerator</c> class.
@@ -632,8 +615,6 @@ namespace log4net.Core
                 this.m_index = -1;
                 this.m_version = tc.m_version;
             }
-
-
 
             /// <summary>
             /// Gets the current element in the collection.
@@ -767,8 +748,6 @@ namespace log4net.Core
             {
                 return this.m_collection.GetEnumerator();
             }
-
-
 
             // (just to mimic some nice features of ArrayList)
             public override int Capacity

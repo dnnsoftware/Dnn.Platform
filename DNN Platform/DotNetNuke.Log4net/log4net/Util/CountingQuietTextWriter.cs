@@ -57,8 +57,6 @@ namespace log4net.Util
             this.m_countBytes = 0;
         }
 
-
-
         /// <summary>
         /// Writes a character to the underlying writer and counts the number of bytes written.
         /// </summary>
@@ -145,8 +143,6 @@ namespace log4net.Util
             }
         }
 
-
-
         /// <summary>
         /// Gets or sets the total number of bytes written.
         /// </summary>
@@ -163,8 +159,6 @@ namespace log4net.Util
             get { return this.m_countBytes; }
             set { this.m_countBytes = value; }
         }
-
-
 
         /// <summary>
         /// Total number of bytes written.

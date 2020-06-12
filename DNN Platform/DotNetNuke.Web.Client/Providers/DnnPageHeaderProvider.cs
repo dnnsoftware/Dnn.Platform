@@ -31,7 +31,6 @@ namespace DotNetNuke.Web.Client.Providers
         public const string CssPlaceHolderName = "ClientDependencyHeadCss";
         public const string JsPlaceHolderName = "ClientDependencyHeadJs";
 
-
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one

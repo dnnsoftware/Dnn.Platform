@@ -91,8 +91,6 @@ namespace log4net.Core
         {
         }
 
-
-
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
         /// Serialization constructor

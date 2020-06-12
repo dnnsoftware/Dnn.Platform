@@ -292,8 +292,6 @@ namespace DotNetNuke.Modules.Groups
 
                 var member = UserController.GetUserById(this.PortalSettings.PortalId, this._memberId);
 
-
-
                 if (member != null)
                 {
                     RoleController.DeleteUserRole(member, this._roleInfo, this.PortalSettings, false);

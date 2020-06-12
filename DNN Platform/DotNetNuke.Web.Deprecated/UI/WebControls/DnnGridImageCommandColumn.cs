@@ -23,7 +23,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public string CommandName { get; set; }
 
-
         /// <summary>
         /// EditMode for the Column
         /// </summary>
@@ -33,7 +32,6 @@ namespace DotNetNuke.Web.UI.WebControls
             get { return this._editMode; }
             set { this._editMode = value; }
         }
-
 
         /// <summary>
         /// Gets or sets the URL of the Image
@@ -53,13 +51,11 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this._imageURL = value; }
         }
 
-
         /// <summary>
         /// The Icon Key to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconKey { get; set; }
-
 
         /// <summary>
         /// The Icon Siz to obtain ImageURL
@@ -67,13 +63,11 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public string IconSize { get; set; }
 
-
         /// <summary>
         /// The Icon Style to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconStyle { get; set; }
-
 
         /// <summary>
         /// The Key Field that provides a Unique key to the data Item
@@ -81,13 +75,11 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public string KeyField { get; set; }
 
-
         /// <summary>
         /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
         /// </summary>
         /// <value>A String</value>
         public string NavigateURL { get; set; }
-
 
         /// <summary>
         /// Gets or sets the URL Formatting string
@@ -95,13 +87,11 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public string NavigateURLFormatString { get; set; }
 
-
         /// <summary>
         /// Javascript text to attach to the OnClick Event
         /// </summary>
         /// <value>A String</value>
         public string OnClickJs { get; set; }
-
 
         /// <summary>
         /// Gets or sets whether an Image is displayed
@@ -114,20 +104,17 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this._showImage = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the Text (for Header/Footer Templates)
         /// </summary>
         /// <value>A String</value>
         public string Text { get; set; }
 
-
         /// <summary>
         /// An flag that indicates whether the buttons are visible.
         /// </summary>
         /// <value>A Boolean</value>
         public string VisibleField { get; set; }
-
 
         /// <summary>
         /// Creates a ImageCommandColumnTemplate

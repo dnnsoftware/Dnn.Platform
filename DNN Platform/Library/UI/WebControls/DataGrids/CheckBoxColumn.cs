@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -28,8 +27,6 @@ namespace DotNetNuke.UI.WebControls
         private string mEnabledField = Null.NullString;
         private bool mHeaderCheckBox = true;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs the CheckBoxColumn
@@ -51,9 +48,6 @@ namespace DotNetNuke.UI.WebControls
         {
             this.AutoPostBack = autoPostBack;
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -161,8 +155,6 @@ namespace DotNetNuke.UI.WebControls
 
         public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Creates a CheckBoxColumnTemplate
@@ -210,8 +202,6 @@ namespace DotNetNuke.UI.WebControls
                 this.CheckedChanged(sender, e);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

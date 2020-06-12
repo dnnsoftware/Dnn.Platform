@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,7 +61,6 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-
         /// <summary>
         ///   Creates an instance of the sitemap builder class
         /// </summary>
@@ -75,7 +73,6 @@ namespace DotNetNuke.Services.Sitemap
 
             LoadProviders();
         }
-
 
         /// <summary>
         ///   Builds the complete portal sitemap
@@ -95,7 +92,6 @@ namespace DotNetNuke.Services.Sitemap
 
             var allUrls = new List<SitemapUrl>();
 
-
             // excluded urls by priority
             float excludePriority = 0;
             excludePriority = float.Parse(PortalController.GetPortalSetting("SitemapExcludePriority", this.PortalSettings.PortalId, "0"), NumberFormatInfo.InvariantInfo);
@@ -104,7 +100,6 @@ namespace DotNetNuke.Services.Sitemap
             bool isProviderEnabled = false;
             bool isProviderPriorityOverrided = false;
             float providerPriorityValue = 0;
-
 
             foreach (SitemapProvider _provider in this.Providers)
             {
@@ -186,7 +181,6 @@ namespace DotNetNuke.Services.Sitemap
                 // create a regular sitemap file
                 this.WriteSitemap(cached, output, 0, allUrls);
             }
-
 
             if (cached)
             {
@@ -322,8 +316,6 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-
-
         /// <summary>
         ///   Adds a new url to the sitemap
         /// </summary>
@@ -394,7 +386,6 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-
         private bool IsChildPortal(PortalSettings ps, HttpContext context)
         {
             bool isChild = false;
@@ -430,7 +421,6 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-
         private static void LoadProviders()
         {
             // Avoid claiming lock if providers are already loaded
@@ -440,14 +430,12 @@ namespace DotNetNuke.Services.Sitemap
                 {
                     _providers = new List<SitemapProvider>();
 
-
                     foreach (KeyValuePair<string, SitemapProvider> comp in ComponentFactory.GetComponents<SitemapProvider>())
                     {
                         comp.Value.Name = comp.Key;
                         comp.Value.Description = comp.Value.Description;
                         _providers.Add(comp.Value);
                     }
-
 
                     // 'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
                 }

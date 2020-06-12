@@ -68,8 +68,6 @@ namespace log4net.Plugin
         private int m_count = 0;
         private int m_version = 0;
 
-
-
         /// <summary>
         ///     Creates a read-only wrapper for a <c>PluginCollection</c> instance.
         /// </summary>
@@ -86,8 +84,6 @@ namespace log4net.Plugin
 
             return new ReadOnlyPluginCollection(list);
         }
-
-
 
         /// <summary>
         ///     Initializes a new instance of the <c>PluginCollection</c> class
@@ -166,8 +162,6 @@ namespace log4net.Plugin
             this.m_array = null;
         }
 
-
-
         /// <summary>
         /// Gets the number of elements actually contained in the <c>PluginCollection</c>.
         /// </summary>
@@ -221,8 +215,6 @@ namespace log4net.Plugin
         {
             get { return this.m_array; }
         }
-
-
 
         /// <summary>
         /// Gets or sets the <see cref="IPlugin"/> at the specified index.
@@ -424,8 +416,6 @@ namespace log4net.Plugin
             get { return false; }
         }
 
-
-
         /// <summary>
         /// Returns an enumerator that can iterate through the <c>PluginCollection</c>.
         /// </summary>
@@ -434,8 +424,6 @@ namespace log4net.Plugin
         {
             return new Enumerator(this);
         }
-
-
 
         /// <summary>
         /// Gets or sets the number of elements the <c>PluginCollection</c> can contain.
@@ -538,8 +526,6 @@ namespace log4net.Plugin
             this.Capacity = this.m_count;
         }
 
-
-
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="i"/> is less than zero.</para>
         /// <para>-or-</para>
@@ -621,8 +607,6 @@ namespace log4net.Plugin
             return (IEnumerator) this.GetEnumerator();
         }
 
-
-
         /// <summary>
         /// Supports simple iteration over a <see cref="PluginCollection"/>.
         /// </summary>
@@ -632,8 +616,6 @@ namespace log4net.Plugin
             private readonly PluginCollection m_collection;
             private int m_index;
             private int m_version;
-
-
 
             /// <summary>
             /// Initializes a new instance of the <c>Enumerator</c> class.
@@ -645,8 +627,6 @@ namespace log4net.Plugin
                 this.m_index = -1;
                 this.m_version = tc.m_version;
             }
-
-
 
             /// <summary>
             /// Gets the current element in the collection.
@@ -693,8 +673,6 @@ namespace log4net.Plugin
                 get { return this.Current; }
             }
         }
-
-
 
         /// <exclude/>
         private sealed class ReadOnlyPluginCollection : PluginCollection
@@ -786,8 +764,6 @@ namespace log4net.Plugin
             {
                 return this.m_collection.GetEnumerator();
             }
-
-
 
             // (just to mimic some nice features of ArrayList)
             public override int Capacity

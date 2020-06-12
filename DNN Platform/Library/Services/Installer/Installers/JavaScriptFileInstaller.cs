@@ -39,8 +39,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -54,9 +52,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "js";
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -48,8 +48,6 @@ namespace log4net.Filter
         {
         }
 
-
-
         /// <summary>
         /// Always returns the integer constant <see cref="FilterDecision.Deny"/>
         /// </summary>

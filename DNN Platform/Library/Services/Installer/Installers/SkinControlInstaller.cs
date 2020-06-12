@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Xml.XPath;
@@ -25,9 +24,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private SkinControlInfo InstalledSkinControl;
         private SkinControlInfo SkinControl;
 
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -41,8 +37,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ascx, vb, cs, js, resx, xml, vbproj, csproj, sln";
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,8 +60,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

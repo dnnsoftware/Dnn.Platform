@@ -7,7 +7,6 @@ using System.Collections;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.Html.Components;
 
-
 namespace DotNetNuke.Modules.Html
 {
     /// -----------------------------------------------------------------------------

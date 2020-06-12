@@ -77,8 +77,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-
-
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
         /// </summary>

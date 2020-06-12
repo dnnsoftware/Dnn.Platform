@@ -68,8 +68,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Get the source image bits and lock into memory
                 sourceData = copy.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-
-
                 // Call the FirstPass function if not a single pass algorithm.
                 // For something like an octree quantizer, this will run through
                 // all image pixels, build a data structure, and create a palette.
@@ -81,7 +79,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Then set the color palette on the output bitmap. I'm passing in the current palette
                 // as there's no way to construct a new, empty palette.
                 output.Palette = this.GetPalette(output.Palette);
-
 
                 // Then call the second pass which actually does the conversion
                 this.SecondPass(sourceData, output, width, height, bounds);

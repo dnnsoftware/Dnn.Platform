@@ -54,7 +54,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
         // Assuming 12:00 Aug 15, 2018 server local time
         private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
 
-
         [SetUp]
         public void Setup()
         {

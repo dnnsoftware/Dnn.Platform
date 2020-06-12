@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,8 +44,6 @@ namespace DotNetNuke.UI.Skins
         private HtmlGenericControl _containerWrapperControl;
         private Dictionary<string, Containers.Container> _containers;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs a new Pane object from the Control in the Skin
@@ -73,8 +70,6 @@ namespace DotNetNuke.UI.Skins
             this.PaneControl = pane;
             this.Name = name;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -148,8 +143,6 @@ namespace DotNetNuke.UI.Skins
             }
             return canCollapsePane;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -398,7 +391,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-
         private bool IsVesionableModule(ModuleInfo moduleInfo)
         {
              if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
@@ -409,8 +401,6 @@ namespace DotNetNuke.UI.Skins
              object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
              return controller is IVersionable;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

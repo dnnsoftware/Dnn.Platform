@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Globalization;
@@ -50,7 +49,6 @@ namespace DotNetNuke.Modules.Groups
             ModuleInfo groupViewModule = ModuleController.Instance.GetModule(groupViewModuleId, tab.TabID, false);
             ModuleController.Instance.CopyModule(groupViewModule, memberTab, "ContentPane", true);
             this.AddModule(memberTab, this.PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
-
 
             // List Settings
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());

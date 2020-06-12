@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,8 +50,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             var vocabularyId = (int)cacheItemArgs.ParamList[0];
             return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
-
-
 
         /// <summary>
         /// Adds the term.
@@ -140,7 +137,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             return CBO.FillObject<Term>(this._DataService.GetTerm(termId));
         }
-
 
         /// <summary>
         /// Retrieve usage data for the specified term ID.

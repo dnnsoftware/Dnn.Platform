@@ -78,7 +78,6 @@ namespace log4net.Layout.Pattern
             }
         }
 
-
         /// <summary>
         /// The fully qualified type of the UtcDatePatternConverter class.
         /// </summary>

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,8 +27,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private readonly SortedList<Version, InstallFile> _unInstallScripts = new SortedList<Version, InstallFile>();
         private InstallFile _installScript;
         private InstallFile _upgradeScript;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -122,8 +119,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._upgradeScript;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -261,8 +256,6 @@ namespace DotNetNuke.Services.Installer.Installers
             // Call base method to delete file
             base.UnInstallFile(scriptFile);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

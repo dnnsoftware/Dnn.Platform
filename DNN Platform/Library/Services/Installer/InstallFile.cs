@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -24,9 +23,6 @@ namespace DotNetNuke.Services.Installer
     public class InstallFile
     {
         private static readonly Regex FileTypeMatchRegex = new Regex(Util.REGEX_Version + ".txt", RegexOptions.Compiled);
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -100,8 +96,6 @@ namespace DotNetNuke.Services.Installer
             this.Name = fileName;
             this.Path = filePath;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -242,8 +236,6 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public Version Version { get; private set; }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ParseFileName parses the ZipEntry metadata
@@ -335,8 +327,6 @@ namespace DotNetNuke.Services.Installer
             Util.WriteStream(unzip, this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.DateTime);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

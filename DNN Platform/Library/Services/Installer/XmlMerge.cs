@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,8 +25,6 @@ namespace DotNetNuke.Services.Installer
     public class XmlMerge
     {
         private IDictionary<string, XmlDocument> _pendingDocuments;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -91,8 +88,6 @@ namespace DotNetNuke.Services.Installer
             this.Sender = sender;
             this.SourceConfig = sourceDoc;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -574,9 +569,6 @@ namespace DotNetNuke.Services.Installer
                 commentNodes.ForEach(n => { node.RemoveChild(n); });
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

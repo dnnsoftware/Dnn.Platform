@@ -62,7 +62,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-
         protected override void OnInit(EventArgs e)
         {
             try

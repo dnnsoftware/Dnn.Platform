@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.Groups
             this.btnCancel.Click += this.Cancel_Click;
         }
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -63,7 +62,6 @@ namespace DotNetNuke.Modules.Groups
                 this.lblInvalidGroupName.Visible = true;
                 return;
             }
-
 
             var modRoles = new List<RoleInfo>();
             var modUsers = new List<UserInfo>();
@@ -152,7 +150,6 @@ namespace DotNetNuke.Modules.Groups
             }
 
             var notifications = new Notifications();
-
 
             RoleController.Instance.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
             if (roleInfo.Status == RoleStatus.Pending)

@@ -44,7 +44,6 @@ namespace log4net.Core
     /// </remarks>
     public delegate ILoggerWrapper WrapperCreationHandler(ILogger logger);
 
-
     /// <summary>
     /// Maps between logger objects and wrapper objects.
     /// </summary>
@@ -83,8 +82,6 @@ namespace log4net.Core
             // Create the delegates for the event callbacks
             this.m_shutdownHandler = new LoggerRepositoryShutdownEventHandler(this.ILoggerRepository_Shutdown);
         }
-
-
 
         /// <summary>
         /// Gets the wrapper object for the specified logger.
@@ -144,8 +141,6 @@ namespace log4net.Core
             }
         }
 
-
-
         /// <summary>
         /// Gets the map of logger repositories.
         /// </summary>
@@ -163,8 +158,6 @@ namespace log4net.Core
         {
             get { return this.m_repositories; }
         }
-
-
 
         /// <summary>
         /// Creates the wrapper object for the specified logger.
@@ -226,8 +219,6 @@ namespace log4net.Core
                 this.RepositoryShutdown(repository);
             }
         }
-
-
 
         /// <summary>
         /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings

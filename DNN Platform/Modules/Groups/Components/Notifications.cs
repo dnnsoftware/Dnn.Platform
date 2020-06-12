@@ -79,8 +79,6 @@ namespace DotNetNuke.Modules.Groups.Components
             }
             roleOwners.Add(roleCreator);
 
-
-
             // Need to add from sender details
             var notification = new Notification
             {

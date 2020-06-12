@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Xml;
@@ -29,8 +28,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private string _UnInstallConfig = Null.NullString;
         private string _UninstallFileName = Null.NullString;
         private XmlMerge _xmlMerge;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -87,9 +84,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._UnInstallConfig;
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

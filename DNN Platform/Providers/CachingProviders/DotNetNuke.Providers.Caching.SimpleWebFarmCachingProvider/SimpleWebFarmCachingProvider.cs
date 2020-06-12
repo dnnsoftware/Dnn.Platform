@@ -23,7 +23,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
-
         private void NotifyOtherServers(string command, string detail)
         {
             // Do not send notifications to other servers if currently upgrading
@@ -103,7 +102,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             }
         }
 
-
         private static void HandleNotificationTimeout(object state, bool timedOut)
         {
             if (!timedOut)
@@ -115,8 +113,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             var request = (HttpWebRequest)state;
             request?.Abort();
         }
-
-
 
         /// <summary>
         /// This method responds to an incoming request to process synchronization from an additional server

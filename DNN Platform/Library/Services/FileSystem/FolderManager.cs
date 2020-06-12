@@ -407,9 +407,6 @@ namespace DotNetNuke.Services.FileSystem
                                                         });
         }
 
-
-
-
         /// <summary>
         /// Creates a new folder using the provided folder path.
         /// </summary>
@@ -1051,8 +1048,6 @@ namespace DotNetNuke.Services.FileSystem
             return updatedFolder;
         }
 
-
-
         /// <summary>
         /// Adds read permissions for all users to the specified folder.
         /// </summary>
@@ -1221,7 +1216,6 @@ namespace DotNetNuke.Services.FileSystem
                 }
             }
         }
-
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual IFolderInfo AddUserFolder(UserInfo user)
@@ -2199,7 +2193,6 @@ namespace DotNetNuke.Services.FileSystem
             return IsStandardFolderProviderType(sourceFolderMapping) && IsStandardFolderProviderType(destinationFolderMapping);
         }
 
-
         /// <summary>
         /// This class and its members are reserved for internal use and are not intended to be used in your code.
         /// </summary>
@@ -2239,8 +2232,6 @@ namespace DotNetNuke.Services.FileSystem
                 this.Target = target;
             }
         }
-
-
 
         /// <summary>
         /// Moves the specified folder and its contents to a new location.

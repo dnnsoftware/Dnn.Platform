@@ -44,8 +44,6 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryShutdownEventHandler(object sender, EventArgs e);
 
-
-
     /// <summary>
     /// Delegate used to handle logger repository configuration reset event notifications
     /// </summary>
@@ -58,8 +56,6 @@ namespace log4net.Repository
     /// </remarks>
     public delegate void LoggerRepositoryConfigurationResetEventHandler(object sender, EventArgs e);
 
-
-
     /// <summary>
     /// Delegate used to handle event notifications for logger repository configuration changes.
     /// </summary>
@@ -71,7 +67,6 @@ namespace log4net.Repository
     /// </para>
     /// </remarks>
     public delegate void LoggerRepositoryConfigurationChangedEventHandler(object sender, EventArgs e);
-
 
     /// <summary>
     /// Interface implemented by logger repositories.

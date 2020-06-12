@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -24,7 +23,6 @@ namespace DotNetNuke.Services.ClientCapability
                 return true;
             }
         }
-
 
         /// <summary>
         ///   Returns ClientCapability based on userAgent
@@ -52,7 +50,6 @@ namespace DotNetNuke.Services.ClientCapability
         /// List of IClientCapability present
         /// </returns>
         public abstract IQueryable<IClientCapability> GetAllClientCapabilities();
-
 
         /// <summary>
         ///   Returns ClientCapability based on HttpRequest

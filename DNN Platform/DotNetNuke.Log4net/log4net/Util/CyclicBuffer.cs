@@ -63,8 +63,6 @@ namespace log4net.Util
             this.m_numElems = 0;
         }
 
-
-
         /// <summary>
         /// Appends a <paramref name="loggingEvent"/> to the buffer.
         /// </summary>
@@ -260,8 +258,6 @@ namespace log4net.Util
 			}
 		}
 #endif
-
-
 
         /// <summary>
         /// Gets the <paramref name="i"/>th oldest event currently in the buffer.

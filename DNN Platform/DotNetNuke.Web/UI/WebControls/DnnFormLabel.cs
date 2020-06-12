@@ -42,7 +42,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.CssClass += " dnnLabel";
             }
 
-
             // var outerPanel = new Panel();
             // outerPanel.CssClass = "dnnLabel";
             // Controls.Add(outerPanel);

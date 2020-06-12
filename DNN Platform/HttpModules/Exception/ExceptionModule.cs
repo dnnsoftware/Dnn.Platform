@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web;
 using DotNetNuke.Common;
@@ -32,7 +31,6 @@ namespace DotNetNuke.HttpModules.Exceptions
             }
         }
 
-
         /// <summary>
         /// Initializes the error handling for the specified application.
         /// </summary>
@@ -45,7 +43,6 @@ namespace DotNetNuke.HttpModules.Exceptions
         public void Dispose()
         {
         }
-
 
         /// <summary>
         /// Called when error handling is requested.

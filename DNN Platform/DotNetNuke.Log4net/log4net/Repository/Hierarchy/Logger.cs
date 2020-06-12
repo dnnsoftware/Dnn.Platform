@@ -82,8 +82,6 @@ namespace log4net.Repository.Hierarchy
 #endif
         }
 
-
-
         /// <summary>
         /// Gets or sets the parent logger in the hierarchy.
         /// </summary>
@@ -188,8 +186,6 @@ namespace log4net.Repository.Hierarchy
             get { return this.m_level; }
             set { this.m_level = value; }
         }
-
-
 
         /// <summary>
         /// Add <paramref name="newAppender"/> to the list of appenders of this
@@ -379,8 +375,6 @@ namespace log4net.Repository.Hierarchy
             return null;
         }
 
-
-
         /// <summary>
         /// Gets the logger name.
         /// </summary>
@@ -530,7 +524,6 @@ namespace log4net.Repository.Hierarchy
         {
             get { return this.m_hierarchy; }
         }
-
 
         /// <summary>
         /// Deliver the <see cref="LoggingEvent"/> to the attached appenders.
@@ -700,13 +693,10 @@ namespace log4net.Repository.Hierarchy
             this.CallAppenders(logEvent);
         }
 
-
         /// <summary>
         /// The fully qualified type of the Logger class.
         /// </summary>
         private static readonly Type declaringType = typeof(Logger);
-
-
 
         /// <summary>
         /// The name of this logger.

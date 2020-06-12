@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -227,7 +226,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the underlying base control for this ModuleControl
@@ -411,12 +409,10 @@ namespace DotNetNuke.Entities.Modules
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
 
-
         public int GetNextActionID()
         {
             return this.ModuleContext.GetNextActionID();
         }
-
 
         // CONVERSION: Remove obsoleted methods (FYI some core modules use these, such as Links)
         /// -----------------------------------------------------------------------------

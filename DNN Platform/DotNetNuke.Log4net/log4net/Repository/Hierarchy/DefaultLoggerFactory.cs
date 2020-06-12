@@ -50,8 +50,6 @@ namespace log4net.Repository.Hierarchy
         {
         }
 
-
-
         /// <summary>
         /// Create a new <see cref="Logger" /> instance
         /// </summary>
@@ -80,7 +78,6 @@ namespace log4net.Repository.Hierarchy
             }
             return new LoggerImpl(name);
         }
-
 
         /// <summary>
         /// Default internal subclass of <see cref="Logger"/>

@@ -17,7 +17,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("DotNetNuke is copyright 2002-2018 by Dnn Corporation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DotNetNuke")]
 
-
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM componenets.  If you need to access a type in this assembly from
 // COM, set the ComVisible attribute to true on that type.

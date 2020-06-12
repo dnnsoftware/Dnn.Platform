@@ -29,7 +29,6 @@ namespace DotNetNuke.Web.InternalServices
                 { new byte[] { 0xff, 0xd8 }, DecodeJfif },
             };
 
-
         /// <summary>
         ///     Gets the dimensions of an image.
         /// </summary>

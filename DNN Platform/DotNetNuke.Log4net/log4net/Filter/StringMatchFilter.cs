@@ -61,16 +61,12 @@ namespace log4net.Filter
         /// </summary>
         protected Regex m_regexToMatch;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
         public StringMatchFilter()
         {
         }
-
-
 
         /// <summary>
         /// Initialize and precompile the Regex if required
@@ -99,7 +95,6 @@ namespace log4net.Filter
 #endif
             }
         }
-
 
         /// <summary>
         /// <see cref="FilterDecision.Accept"/> when matching <see cref="StringToMatch"/> or <see cref="RegexToMatch"/>
@@ -162,7 +157,6 @@ namespace log4net.Filter
             get { return this.m_stringRegexToMatch; }
             set { this.m_stringRegexToMatch = value; }
         }
-
 
         /// <summary>
         /// Check if this filter should allow the event to be logged

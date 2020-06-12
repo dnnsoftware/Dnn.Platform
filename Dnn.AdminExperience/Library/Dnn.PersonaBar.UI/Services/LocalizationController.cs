@@ -26,7 +26,6 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static object _threadLocker = new object();
 
-
         /// <summary>
         /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
         /// </summary>

@@ -73,8 +73,6 @@ namespace log4net.Util
             this.m_prefix = prefix;
         }
 
-
-
         /// <summary>
         /// Reset the error handler back to its initial disabled state.
         /// </summary>
@@ -86,7 +84,6 @@ namespace log4net.Util
             this.m_message = null;
             this.m_firstTime = true;
         }
-
 
         /// <summary>
         /// Log an Error
@@ -161,9 +158,6 @@ namespace log4net.Util
             this.Error(message, null, ErrorCode.GenericFailure);
         }
 
-
-
-
         /// <summary>
         /// Is error logging enabled
         /// </summary>
@@ -232,8 +226,6 @@ namespace log4net.Util
             get { return this.m_errorCode; }
         }
 
-
-
         /// <summary>
         /// The UTC date the error was recorded.
         /// </summary>
@@ -263,8 +255,6 @@ namespace log4net.Util
         /// String to prefix each message with
         /// </summary>
         private readonly string m_prefix;
-
-
 
         /// <summary>
         /// The fully qualified type of the OnlyOnceErrorHandler class.

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -161,7 +160,6 @@ namespace DotNetNuke.Services.Exceptions
                 log.LogProperties.Add(new LogDetailInfo("URL:", URL));
             }
             LogController.Instance.AddLog(log);
-
 
             throw exc;
         }

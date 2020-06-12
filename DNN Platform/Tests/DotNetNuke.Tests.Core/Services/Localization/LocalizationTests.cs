@@ -45,7 +45,6 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         {
             // Arrange
 
-
             // Act
             TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(null);
 
@@ -57,7 +56,6 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         public void FallBackCannotBeNull()
         {
             // Arrange
-
 
             // Act
             TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], null);
@@ -116,7 +114,6 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             // Assert
             Assert.AreEqual(ret, "fr-FR");
         }
-
 
         [Test]
         [TestCase("My/Path/To/File with.locale-extension")]

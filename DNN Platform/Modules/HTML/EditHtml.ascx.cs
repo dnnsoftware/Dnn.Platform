@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Linq;
@@ -129,8 +128,6 @@ namespace DotNetNuke.Modules.Html
                 }
             }
         }
-
-
 
         /// <summary>
         ///   Displays the history of an html content item in a grid in the preview section.
@@ -345,8 +342,6 @@ namespace DotNetNuke.Modules.Html
 
             this.lblPreviewWorkflowState.Text = firstState.StateName;
         }
-
-
 
         /// <summary>
         ///   Formats the content to make it html safe.
@@ -617,7 +612,6 @@ namespace DotNetNuke.Modules.Html
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
 
         private void OnMasterContentClick(object sender, EventArgs e)
         {

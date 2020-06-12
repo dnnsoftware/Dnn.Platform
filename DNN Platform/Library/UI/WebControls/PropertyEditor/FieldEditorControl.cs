@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -75,8 +74,6 @@ namespace DotNetNuke.UI.WebControls
                 return HtmlTextWriterTag.Div;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -240,7 +237,6 @@ namespace DotNetNuke.UI.WebControls
 
         public string ValidationExpression { get; set; }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Field Style
@@ -337,8 +333,6 @@ namespace DotNetNuke.UI.WebControls
         public event PropertyChangedEventHandler ItemChanged;
         public event EditorCreatedEventHandler ItemCreated;
         public event PropertyChangedEventHandler ItemDeleted;
-
-
 
         /// <summary>
         /// BuildDiv creates the Control as a Div
@@ -654,8 +648,6 @@ namespace DotNetNuke.UI.WebControls
             return visControl;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateEditor creates the control collection for this control
@@ -805,8 +797,6 @@ namespace DotNetNuke.UI.WebControls
             this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Binds the controls to the DataSource
@@ -858,8 +848,6 @@ namespace DotNetNuke.UI.WebControls
                 this._Validated = true;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -118,7 +117,6 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(localeName);
             writer.RenderEndTag();
         }
-
 
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.

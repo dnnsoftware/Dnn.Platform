@@ -33,7 +33,6 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPagePermission]
@@ -142,7 +141,6 @@ namespace DotNetNuke.Web.InternalServices
                                     };
                 TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
             }
-
 
             var response = new
             {

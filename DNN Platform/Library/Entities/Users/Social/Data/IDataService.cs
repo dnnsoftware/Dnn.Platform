@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,15 +16,11 @@ namespace DotNetNuke.Entities.Users.Social.Data
         IDataReader GetRelationshipType(int relationshipTypeId);
         int SaveRelationshipType(RelationshipType relationshipType, int createUpdateUserId);
 
-
-
         void DeleteRelationship(int relationshipId);
         IDataReader GetRelationship(int relationshipId);
         IDataReader GetRelationshipsByUserId(int userId);
         IDataReader GetRelationshipsByPortalId(int portalId);
         int SaveRelationship(Relationship relationship, int createUpdateUserId);
-
-
 
         void DeleteUserRelationship(int userRelationshipId);
         IDataReader GetUserRelationship(int userRelationshipId);
@@ -33,8 +28,6 @@ namespace DotNetNuke.Entities.Users.Social.Data
         IDataReader GetUserRelationships(int userId);
         IDataReader GetUserRelationshipsByRelationshipId(int relationshipId);
         int SaveUserRelationship(UserRelationship userRelationship, int createUpdateUserId);
-
-
 
         void DeleteUserRelationshipPreference(int preferenceId);
         IDataReader GetUserRelationshipPreferenceById(int preferenceId);

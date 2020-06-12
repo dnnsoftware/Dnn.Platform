@@ -91,8 +91,6 @@ namespace log4net.Util.TypeConverters
         {
         }
 
-
-
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
         /// Serialization constructor
@@ -110,8 +108,6 @@ namespace log4net.Util.TypeConverters
         {
         }
 #endif
-
-
 
         /// <summary>
         /// Creates a new instance of the <see cref="ConversionNotSupportedException" /> class.

@@ -42,7 +42,6 @@ namespace log4net.Util
         private readonly string m_format;
         private readonly object[] m_args;
 
-
         /// <summary>
         /// Initialise the <see cref="SystemStringFormat"/>
         /// </summary>
@@ -56,7 +55,6 @@ namespace log4net.Util
             this.m_args = args;
         }
 
-
         /// <summary>
         /// Format the string and arguments
         /// </summary>
@@ -65,7 +63,6 @@ namespace log4net.Util
         {
             return StringFormat(this.m_provider, this.m_format, this.m_args);
         }
-
 
         /// <summary>
         /// Replaces the format item in a specified <see cref="string"/> with the text equivalent
@@ -218,8 +215,6 @@ namespace log4net.Util
 #endif
             }
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the SystemStringFormat class.

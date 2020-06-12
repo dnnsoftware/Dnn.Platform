@@ -298,8 +298,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-
-
         /// <summary>
         /// Adds a file to the specified folder.
         /// </summary>
@@ -1518,8 +1516,6 @@ namespace DotNetNuke.Services.FileSystem
             return objContent;
         }
 
-
-
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void MoveVersions(IFileInfo file, IFolderInfo destinationFolder, FolderProvider sourceFolderProvider, FolderProvider destinationFolderProvider)
         {
@@ -1930,7 +1926,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-
         /// <summary>
         /// Update file info to database.
         /// </summary>
@@ -1942,7 +1937,6 @@ namespace DotNetNuke.Services.FileSystem
             // By default File Events will be fired
             return this.UpdateFile(file, updateLazyload, true);
         }
-
 
         /// <summary>
         /// Update file info to database.

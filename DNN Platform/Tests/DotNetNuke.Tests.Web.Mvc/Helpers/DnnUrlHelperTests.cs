@@ -268,7 +268,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var expectedContext = new ModuleInstanceContext();
             var helper = ArrangeHelper(expectedContext);
 
-
             RouteValueDictionary routeValues = null;
             var mockRouteProvider = new Mock<ModuleRoutingProvider>();
             mockRouteProvider.Setup(p => p.GenerateUrl(It.IsAny<RouteValueDictionary>(), expectedContext))

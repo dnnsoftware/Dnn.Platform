@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,8 +23,6 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         private readonly List<InstallFile> _Files = new List<InstallFile>();
         private bool _DeleteFiles = Null.NullBoolean;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -111,8 +108,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets whether the Packages files are deleted when uninstalling the
@@ -145,8 +140,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return Null.NullBoolean;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -348,9 +341,6 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteFile(unInstallFile);
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

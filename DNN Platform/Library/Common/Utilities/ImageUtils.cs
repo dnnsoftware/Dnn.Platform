@@ -149,7 +149,6 @@ namespace DotNetNuke.Common.Utilities
                 FileWrapper.Instance.Delete(tmp);
             }
 
-
             return sFile;
         }
 
@@ -265,7 +264,6 @@ namespace DotNetNuke.Common.Utilities
             {
                 // suppress unexpected exceptions
             }
-
 
             img.Dispose();
             bmpOutput.Dispose();

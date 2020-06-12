@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Threading;
 using System.Web.Security;
@@ -52,8 +51,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public delegate void PasswordUpdatedEventHandler(object sender, PasswordUpdatedEventArgs e);
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the UserMembership associated with this control
@@ -73,8 +70,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public event PasswordUpdatedEventHandler PasswordUpdated;
         public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -107,8 +102,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.PasswordQuestionAnswerUpdated(this, e);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -245,7 +238,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
         }
 
-
         protected override void OnPreRender(EventArgs e)
         {
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
@@ -302,7 +294,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-
         private void cmdReset_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
@@ -339,7 +330,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.LogFailure(message);
                 }
 
-
                 UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
             }
             catch (ArgumentException exc)
@@ -374,7 +364,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
                     this.LogFailure(message);
                 }
-
 
                 UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
             }
@@ -578,8 +567,6 @@ namespace DotNetNuke.Modules.Admin.Users
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -148,7 +148,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
             divTag.InnerHtml += toolTipTag.ToString();
 
-
             return new MvcHtmlString(divTag.ToString(TagRenderMode.Normal));
         }
     }

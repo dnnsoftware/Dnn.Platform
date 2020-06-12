@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Web.UI;
@@ -36,8 +35,6 @@ namespace DotNetNuke.UI.ControlPanels
     public class ControlPanelBase : UserControl
     {
         private string _localResourceFile;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -107,7 +104,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-
         public virtual bool IncludeInControlHierarchy
         {
             get { return true; }
@@ -158,8 +154,6 @@ namespace DotNetNuke.UI.ControlPanels
             return _IsPageAdmin;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Adds a Module Permission
@@ -187,8 +181,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
             return objModulePermission;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

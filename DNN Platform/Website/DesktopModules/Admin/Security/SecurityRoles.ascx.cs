@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,7 +56,6 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -173,8 +171,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the ParentModule (if one exists)
@@ -191,8 +187,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 return new ModuleActionCollection();
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -398,8 +392,6 @@ namespace DotNetNuke.Modules.Admin.Security
             this.expiryDatePicker.SelectedDate = expiryDate;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls
@@ -473,8 +465,6 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             return "<a href=\"" + Globals.LinkClick("userid=" + UserID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + DisplayName + "</a>";
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

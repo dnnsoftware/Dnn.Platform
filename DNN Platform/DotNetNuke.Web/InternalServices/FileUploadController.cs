@@ -63,7 +63,6 @@ namespace DotNetNuke.Web.InternalServices
         {
             int effectivePortalId = this.PortalSettings.PortalId;
 
-
             if (folderItem.FolderId <= 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);

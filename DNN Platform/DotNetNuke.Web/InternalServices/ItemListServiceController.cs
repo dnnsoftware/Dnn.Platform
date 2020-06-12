@@ -1277,8 +1277,6 @@ namespace DotNetNuke.Web.InternalServices
             return FolderManager.Instance.GetFiles(parentFolder).Where(f => searchFunc(f));
         }
 
-
-
         /// <summary>
         /// This class stores a single search result needed by jQuery Tokeninput
         /// </summary>

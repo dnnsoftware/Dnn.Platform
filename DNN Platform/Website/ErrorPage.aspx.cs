@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web;
 using System.Web.UI;
@@ -12,7 +11,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Services.FileSystem;
-
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.Exceptions

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Linq;
@@ -28,8 +27,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
         private string _fileName;
         private string _glob;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -84,8 +81,6 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -148,9 +143,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

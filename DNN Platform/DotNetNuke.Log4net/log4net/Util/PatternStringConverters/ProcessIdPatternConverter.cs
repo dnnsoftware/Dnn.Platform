@@ -73,7 +73,6 @@ namespace log4net.Util.PatternStringConverters
 #endif
         }
 
-
         /// <summary>
         /// The fully qualified type of the ProcessIdPatternConverter class.
         /// </summary>

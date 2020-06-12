@@ -70,7 +70,6 @@ namespace DotNetNuke.Entities.Users
             this._user = user;
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the Cell/Mobile Phone
@@ -492,8 +491,6 @@ namespace DotNetNuke.Entities.Users
                 this.SetProfileProperty(USERPROFILE_Website, value);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

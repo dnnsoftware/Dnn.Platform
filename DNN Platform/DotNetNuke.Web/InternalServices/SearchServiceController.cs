@@ -635,7 +635,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SupportedModules("SearchAdmin")]

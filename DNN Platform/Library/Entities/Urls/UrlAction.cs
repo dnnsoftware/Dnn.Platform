@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,8 +150,6 @@ namespace DotNetNuke.Entities.Urls
 
         public bool IsPhysicalResource { get; set; }
 
-
-
         public string UnlicensedProviderMessage { get; set; }
 
         public bool UnlicensedProviderCalled { get; set; }
@@ -180,7 +177,6 @@ namespace DotNetNuke.Entities.Urls
                     break;
             }
         }
-
 
         public void AddLicensedProviders(List<string> licensedProviders)
         {

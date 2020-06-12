@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -380,7 +379,6 @@ namespace DotNetNuke.Services.Upgrade
                 portalId = parentTab.PortalID;
             }
 
-
             return AddPage(portalId, parentId, tabName, description, tabIconFile, tabIconFileLarge, isVisible, permissions, isAdmin);
         }
 
@@ -453,7 +451,6 @@ namespace DotNetNuke.Services.Upgrade
 
             permissions.Add(tabPermission);
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -620,7 +617,6 @@ namespace DotNetNuke.Services.Upgrade
             DesktopModuleController.AddModuleCategory("< None >");
             DesktopModuleController.AddModuleCategory("Admin");
             DesktopModuleController.AddModuleCategory("Common");
-
 
             foreach (var desktopModuleInfo in DesktopModuleController.GetDesktopModules(Null.NullInteger))
             {
@@ -829,7 +825,6 @@ namespace DotNetNuke.Services.Upgrade
                 return -1;
             }
 
-
             return objModuleDefinition.ModuleDefID;
         }
 
@@ -852,7 +847,6 @@ namespace DotNetNuke.Services.Upgrade
             {
                 tabExists = true;
             }
-
 
             return tabExists;
         }
@@ -1646,7 +1640,6 @@ namespace DotNetNuke.Services.Upgrade
             AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Sitemap/SitemapSettings.ascx", "~/images/icon_analytics_32px.gif", SecurityAccessLevel.View, 0);
             AddAdminPages("Search Engine Sitemap", "Configure the sitemap for submission to common search engines.", "~/images/icon_analytics_16px.gif", "~/images/icon_analytics_32px.gif", true, moduleDefId, "Search Engine Sitemap", "~/images/icon_analytics_32px.gif");
 
-
             // Add new Photo Profile field to Host
             var listController = new ListController();
             Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
@@ -1863,7 +1856,6 @@ namespace DotNetNuke.Services.Upgrade
                 listController.UpdateListEntry(listItem);
             }
 
-
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 // fix issue where portal default language may be disabled
@@ -2049,7 +2041,6 @@ namespace DotNetNuke.Services.Upgrade
                 AddModuleControl(moduleDefId, string.Empty, string.Empty, "DesktopModules/Admin/Solutions/Solutions.ascx", string.Empty, SecurityAccessLevel.Admin, 0);
                 AddAdminPages("Solutions", "DotNetNuke Solutions Explorer page provides easy access to locate free and commercial DotNetNuke modules, skin and more.", "icon_solutions_16px.gif", "icon_solutions_32px.gif", true, moduleDefId, "Solutions Explorer", "icon_solutions_32px.gif");
             }
-
 
             // Add Search Skin Object
             AddSkinControl("SEARCH", "DotNetNuke.SearchSkinObject", "Admin/Skins/Search.ascx");
@@ -2548,7 +2539,6 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             var fileContentType = (from t in typeController.GetContentTypes() where t.ContentType == "File" select t).SingleOrDefault();
-
 
             // only perform following for an existing installation upgrading
             if (Globals.Status == Globals.UpgradeStatus.Upgrade)
@@ -3180,7 +3170,6 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")
         {
             DnnInstallLogger.InstallLogInfo(string.Concat(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile), "Uninstallation of Package:", packageName, " Type:", packageType, " Version:", version));
@@ -3392,7 +3381,6 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-
         private static void MovePhotoProperty()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "MovePhotoProperty");
@@ -3539,8 +3527,6 @@ namespace DotNetNuke.Services.Upgrade
             }
             return true;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -3734,7 +3720,6 @@ namespace DotNetNuke.Services.Upgrade
             return moduleId;
         }
 
-
         public static int AddModuleToPage(string tabPath, int portalId, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
             int moduleId = Null.NullInteger;
@@ -3846,7 +3831,6 @@ namespace DotNetNuke.Services.Upgrade
                     var template = FindBestTemplate(templateFileName);
                     var userInfo = superUser ?? CreateUserInfo(firstName, lastName, username, password, email);
 
-
                     // Create Portal
                     portalId = PortalController.Instance.CreatePortal(
                         portalName,
@@ -3887,7 +3871,6 @@ namespace DotNetNuke.Services.Upgrade
                         adminUser.Membership.UpdatePassword = true;
                         UserController.UpdateUser(portalId, adminUser);
                     }
-
 
                     return portalId;
                 }
@@ -4027,7 +4010,6 @@ namespace DotNetNuke.Services.Upgrade
                 warnings = stringBuilder.ToString();
             }
 
-
             return warnings;
         }
 
@@ -4087,7 +4069,6 @@ namespace DotNetNuke.Services.Upgrade
                 Logger.Error(ex);
                 warnings += Environment.NewLine + Environment.NewLine + ex.Message;
             }
-
 
             return warnings;
         }
@@ -4515,7 +4496,6 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
 
-
             return scriptFiles;
         }
 
@@ -4530,7 +4510,6 @@ namespace DotNetNuke.Services.Upgrade
             Array.Sort(files); // The order of the returned file names is not guaranteed; use the Sort method if a specific sort order is required.
 
             return files;
-
 
         }
 
@@ -4606,7 +4585,6 @@ namespace DotNetNuke.Services.Upgrade
 
                                 break;
                         }
-
 
                         HostController.Instance.Update(settingName, settingValue, settingIsSecure);
                     }
@@ -4730,8 +4708,6 @@ namespace DotNetNuke.Services.Upgrade
                         InstallPackage(lpAndTemplates, "Language", false);
                     }
                 }
-
-
 
                 // parse portal(s) if available
                 XmlNodeList nodes = xmlDoc.SelectNodes("//dotnetnuke/portals/portal");
@@ -5777,7 +5753,6 @@ namespace DotNetNuke.Services.Upgrade
             return exceptions;
         }
 
-
         public static string UpdateConfig(string providerPath, string configFile, Version version, string reason)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
@@ -5827,7 +5802,6 @@ namespace DotNetNuke.Services.Upgrade
             }
             return exceptions;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

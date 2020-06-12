@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -46,7 +45,6 @@ namespace DotNetNuke.Entities.Urls
             var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
             DataCache.RemoveCache(cacheKey);
         }
-
 
         /// <summary>
         /// Returns the providers to call. Returns tabid matches first, and any portal id matches after that.
@@ -103,8 +101,6 @@ namespace DotNetNuke.Entities.Urls
             // return the collection of module providers
             return providers;
         }
-
-
 
         /// <summary>
         /// Checks to see if any providers are marked as 'always call for rewrites'
@@ -222,7 +218,6 @@ namespace DotNetNuke.Entities.Urls
             // list should have returned all providers with site root rewrite, but double check here in case of faulty third-party logic
             return providers.Any(provider => provider.AlwaysUsesDnnPagePath(portalId) == false);
         }
-
 
         internal static bool GetUrlFromExtensionUrlProviders(
             int portalId,

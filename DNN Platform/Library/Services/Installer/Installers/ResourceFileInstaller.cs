@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Xml;
@@ -28,8 +27,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
         public const string DEFAULT_MANIFESTEXT = ".manifest";
         private string _Manifest;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -68,8 +65,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -83,8 +78,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "resources, zip";
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

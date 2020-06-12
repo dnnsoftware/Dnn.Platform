@@ -51,8 +51,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// The level that is the key for this mapping
         /// </summary>
@@ -70,8 +68,6 @@ namespace log4net.Util
             get { return this.m_level; }
             set { this.m_level = value; }
         }
-
-
 
         /// <summary>
         /// Initialize any options defined on this entry

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -46,7 +45,6 @@ namespace DotNetNuke.Web.InternalServices
             var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId));
             var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out modified);
 
-
             if (modified)
             {
                 return this.Request.CreateResponse(
@@ -62,7 +60,6 @@ namespace DotNetNuke.Web.InternalServices
 
             // Validate for uniqueness
             var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified);
-
 
             if (modified)
             {

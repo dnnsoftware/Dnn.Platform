@@ -29,8 +29,6 @@ namespace DotNetNuke.Common.Utilities
             SubFolder = 1,
         }
 
-
-
         /// <summary>
         /// Adds backslash to the specified source.
         /// </summary>

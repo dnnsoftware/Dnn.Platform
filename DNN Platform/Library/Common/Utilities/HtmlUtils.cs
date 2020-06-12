@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -123,7 +122,6 @@ namespace DotNetNuke.Common.Utilities
             return html;
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Formats an Email address
@@ -180,7 +178,6 @@ namespace DotNetNuke.Common.Utilities
             return ReplaceHtmlNewLinesRegex.Replace(HTML, Environment.NewLine);
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Formats String as Html by replacing linefeeds by <br />
@@ -226,7 +223,6 @@ namespace DotNetNuke.Common.Utilities
                 // Replace all variants of <br> by Linefeeds
                 strText = FormatText(strText, false);
             }
-
 
             return strText;
         }
@@ -349,7 +345,6 @@ namespace DotNetNuke.Common.Utilities
             return StripTagsRegex.Replace(HTML, RetainSpace ? " " : string.Empty);
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   StripUnspecifiedTags removes the HTML tags from the content -- leaving behind the info
@@ -389,7 +384,6 @@ namespace DotNetNuke.Common.Utilities
             return result.ToString();
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// StripPunctuation removes the Punctuation from the content
@@ -423,7 +417,6 @@ namespace DotNetNuke.Common.Utilities
             // Return modified string after trimming leading and ending quotation marks
             return retHTML.Trim('"');
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

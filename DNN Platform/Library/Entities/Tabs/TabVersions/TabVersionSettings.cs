@@ -73,7 +73,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return isVersioningEnableForTab;
         }
 
-
         public string GetTabVersionQueryStringParameter(int portalId)
         {
             Requires.NotNegative("portalId", portalId);

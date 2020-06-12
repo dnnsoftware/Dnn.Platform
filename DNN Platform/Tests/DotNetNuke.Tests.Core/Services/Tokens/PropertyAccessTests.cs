@@ -83,7 +83,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var dtPropertyAccess = new DateTimePropertyAccess();
             var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
 
-
             // Act
             bool propertyNotFound = false;
             string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, CultureInfo.InvariantCulture,
@@ -127,7 +126,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                     break;
             }
 
-
             // Act
             bool propertyNotFound = false;
             string propertyValue = dtPropertyAccess.GetProperty(propertyName, string.Empty, culture,
@@ -153,7 +151,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
              var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
              var culture = new CultureInfo(cultureName);
 
-
              string expected = string.Empty;
 
              switch (propertyName)
@@ -171,7 +168,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                      expected = DateTime.Now.ToUniversalTime().ToString(format, culture);
                      break;
              }
-
 
              // Act
              bool propertyNotFound = false;
@@ -218,7 +214,6 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                     expected = DateTime.Now.ToUniversalTime().ToString("g", culture);
                     break;
             }
-
 
             // Act
             bool propertyNotFound = false;

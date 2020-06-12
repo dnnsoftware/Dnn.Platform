@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web;
 using DotNetNuke.Services.Localization;
@@ -73,7 +72,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 linkText = "WCM by DNN";
                 utmTerm = "&utm_term=wcm+by+dnn";
             }
-
 
             this.aDnnLink.InnerText = linkText;
             this.aDnnLink.HRef = HttpUtility.HtmlEncode(url + utmTerm);

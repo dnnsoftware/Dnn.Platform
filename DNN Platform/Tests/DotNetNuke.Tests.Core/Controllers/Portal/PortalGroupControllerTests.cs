@@ -31,7 +31,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private UserCopiedCallback userCopied;
 #pragma warning restore 649
 
-
         [SetUp]
         public void SetUp()
         {
@@ -98,7 +97,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
             var portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
-
 
             // Act, Assert
             controller.AddPortalToGroup(null, portalGroup, this.userCopied);
@@ -367,7 +365,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
             var portalGroup = new PortalGroupInfo { PortalGroupId = Constants.PORTALGROUP_ValidPortalGroupId };
-
 
             // Act, Assert
             controller.RemovePortalFromGroup(null, portalGroup, false, this.userCopied);

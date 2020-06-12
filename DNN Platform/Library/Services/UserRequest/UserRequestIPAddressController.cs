@@ -79,7 +79,6 @@ namespace DotNetNuke.Services.UserRequest
             return false;
         }
 
-
         protected override Func<IUserRequestIPAddressController> GetFactory()
         {
             return () => new UserRequestIPAddressController();

@@ -51,8 +51,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Write a string to an <see cref="XmlWriter"/>
         /// </summary>
@@ -136,8 +134,6 @@ namespace log4net.Util
         {
             return INVALIDCHARS.Replace(textData, mask);
         }
-
-
 
         /// <summary>
         /// Count the number of times that the substring occurs in the text

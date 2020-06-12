@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
@@ -43,7 +42,6 @@ namespace DotNetNuke.Services.Search
 
         // the time from where to start indexing items
         public DateTime IndexingStartTime { get; private set; }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -158,7 +156,6 @@ namespace DotNetNuke.Services.Search
             InternalSearchController.Instance.Commit();
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets all the Search Documents for the given timeframe.
@@ -272,8 +269,6 @@ namespace DotNetNuke.Services.Search
             }
             return startDate;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

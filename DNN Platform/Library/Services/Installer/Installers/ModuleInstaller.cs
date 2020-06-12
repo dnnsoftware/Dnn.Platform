@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Xml.XPath;
@@ -33,8 +32,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private EventMessage _eventMessage;
         private DesktopModuleInfo _installedDesktopModule;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -48,8 +45,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "cshtml, vbhtml, ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html, xml, psd, svc, asmx, xsl, xslt";
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -71,7 +66,6 @@ namespace DotNetNuke.Services.Installer.Installers
                         Config.RemoveCodeSubDirectory(this._desktopModule.CodeSubDirectory);
                     }
                     var controller = new DesktopModuleController();
-
 
                     this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
                     // remove admin/host pages
@@ -132,8 +126,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

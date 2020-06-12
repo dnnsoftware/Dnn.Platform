@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -38,8 +37,6 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         int CountArchivedConversations(int userId, int portalId);
         int CheckReplyHasRecipients(int conversationId, int userId);
 
-
-
         int SaveMessageRecipient(MessageRecipient messageRecipient, int createUpdateUserId);
         void CreateMessageRecipientsForRole(int messageId, string roleIds, int createUpdateUserId);
         IDataReader GetMessageRecipient(int messageRecipientId);
@@ -49,27 +46,19 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         void DeleteMessageRecipient(int messageRecipientId);
         void DeleteMessageRecipientByMessageAndUser(int messageId, int userId);
 
-
-
         int SaveMessageAttachment(MessageAttachment messageAttachment, int createUpdateUserId);
         IDataReader GetMessageAttachment(int messageAttachmentId);
         IList<MessageFileView> GetMessageAttachmentsByMessage(int messageId);
         void DeleteMessageAttachment(int messageAttachmentId);
 
-
-
         void ConvertLegacyMessages(int pageIndex, int pageSize);
 
         IDataReader CountLegacyMessages();
-
-
 
         IDataReader GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
         IDataReader GetNextMessagesForDigestDispatch(int frequecy, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
-
-
 
         IDataReader GetUserPreference(int portalId, int userId);
         void SetUserPreference(int portalId, int userId, int messagesEmailFrequency, int notificationsEmailFrequency);

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -76,8 +75,6 @@ namespace DotNetNuke.Entities.Urls
         {
             return FriendlyUrlController.EnsureLeadingChar(leading, path);
         }
-
-
 
         /// <summary>
         /// When true, output Urls from the provider for the specified portalId always include the current DotNetNuke page path (ie example.com/pagename/friendlyUrl)
@@ -160,8 +157,6 @@ namespace DotNetNuke.Entities.Urls
             ref List<string> messages,
             out int status,
             out string location);
-
-
 
         /// <summary>
         /// This method is called to check whether to do a Url Rewrite on all Tabs specified by the provider

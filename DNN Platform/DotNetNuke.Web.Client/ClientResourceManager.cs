@@ -80,8 +80,6 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
         }
 
-
-
         /// <summary>
         /// Adds the neccessary configuration to website root web.config to use the Client Depenedecny componenet.
         /// </summary>

@@ -107,8 +107,6 @@ namespace log4net.Appender
             this.m_eventMustBeFixed = eventMustBeFixed;
         }
 
-
-
         /// <summary>
         /// Gets or sets a value that indicates whether the appender is lossy.
         /// </summary>
@@ -258,8 +256,6 @@ namespace log4net.Appender
             set { this.m_fixFlags = value; }
         }
 
-
-
         /// <summary>
         /// Flushes any buffered log data.
         /// </summary>
@@ -359,8 +355,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Initialize the appender based on the options set
         /// </summary>
@@ -398,8 +392,6 @@ namespace log4net.Appender
                 this.m_cb = null;
             }
         }
-
-
 
         /// <summary>
         /// Close this appender instance.
@@ -522,8 +514,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Sends the contents of the buffer.
         /// </summary>
@@ -557,7 +547,6 @@ namespace log4net.Appender
             }
         }
 
-
         /// <summary>
         /// Sends the events.
         /// </summary>
@@ -569,7 +558,6 @@ namespace log4net.Appender
         /// </remarks>
         protected abstract void SendBuffer(LoggingEvent[] events);
 
-
         /// <summary>
         /// The default buffer size.
         /// </summary>
@@ -578,8 +566,6 @@ namespace log4net.Appender
         /// This is set to 512 by default.
         /// </remarks>
         private const int DEFAULT_BUFFER_SIZE = 512;
-
-
 
         /// <summary>
         /// The size of the cyclic buffer used to hold the logging events.

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,7 +36,6 @@ namespace DotNetNuke.Entities.Content.Data
     public class DataService : IDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();
-
 
         /// <summary>
         /// Adds the content item.
@@ -165,8 +163,6 @@ namespace DotNetNuke.Entities.Content.Data
                 this._provider.GetNull(contentItem.StateID));
         }
 
-
-
         /// <summary>
         /// Adds the meta data.
         /// </summary>
@@ -242,8 +238,6 @@ namespace DotNetNuke.Entities.Content.Data
             return this._provider.ExecuteReader("GetMetaData", contentItemId);
         }
 
-
-
         /// <summary>
         /// Adds the type of the content.
         /// </summary>
@@ -276,8 +270,6 @@ namespace DotNetNuke.Entities.Content.Data
         {
             this._provider.ExecuteNonQuery("UpdateContentType", contentType.ContentTypeId, contentType.ContentType);
         }
-
-
 
         /// <summary>
         /// Adds the type of the scope.
@@ -315,8 +307,6 @@ namespace DotNetNuke.Entities.Content.Data
         {
             this._provider.ExecuteNonQuery("UpdateScopeType", scopeType.ScopeTypeId, scopeType.ScopeType);
         }
-
-
 
         /// <summary>
         /// Adds the heirarchical term.
@@ -429,8 +419,6 @@ namespace DotNetNuke.Entities.Content.Data
         {
             this._provider.ExecuteNonQuery("UpdateSimpleTerm", term.TermId, term.VocabularyId, term.Name, term.Description, term.Weight, lastModifiedByUserId);
         }
-
-
 
         /// <summary>
         /// Adds the vocabulary.

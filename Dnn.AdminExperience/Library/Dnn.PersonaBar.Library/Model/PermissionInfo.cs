@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Xml.Serialization;
@@ -37,8 +36,6 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("permissionName")]
         public string PermissionName { get; set; }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a MenuPermissionInfo from a Data Reader
@@ -48,7 +45,6 @@ namespace Dnn.PersonaBar.Library.Model
         public void Fill(IDataReader dr)
         {
             this.FillInternal(dr);
-
 
             this.PermissionId = Null.SetNullInteger(dr["PermissionId"]);
             this.MenuId = Null.SetNullInteger(dr["MenuId"]);

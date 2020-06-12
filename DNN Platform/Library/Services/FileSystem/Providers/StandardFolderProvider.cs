@@ -23,7 +23,6 @@ namespace DotNetNuke.Services.FileSystem
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
-
         /// <summary>
         /// Gets a value indicating if the provider requires network connectivity to do its tasks.
         /// </summary>
@@ -350,7 +349,6 @@ namespace DotNetNuke.Services.FileSystem
         {
             return new PortalSettings(portalId);
         }
-
 
         /// <summary>
         /// Get actual path to a file

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -76,8 +75,6 @@ namespace DotNetNuke.UI.WebControls
                 return HttpContext.Current == null;
             }
         }
-
-
 
         /// <summary>
         /// Gets and sets the BackGroundColor
@@ -296,7 +293,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadPostData loads the Post Back Data and determines whether the value has change
@@ -326,8 +322,6 @@ namespace DotNetNuke.UI.WebControls
 
         public event ServerValidateEventHandler UserValidated;
 
-
-
         /// <summary>
         /// Builds the url for the Handler
         /// </summary>
@@ -356,8 +350,6 @@ namespace DotNetNuke.UI.WebControls
 
             return sb.ToString();
         }
-
-
 
         /// <summary>
         /// Creates the Image
@@ -630,8 +622,6 @@ namespace DotNetNuke.UI.WebControls
             textPath.Warp(points, rectF, m, WarpMode.Perspective, 0);
         }
 
-
-
         /// <summary>
         /// Creates the child controls
         /// </summary>
@@ -817,8 +807,6 @@ namespace DotNetNuke.UI.WebControls
 
             return allStates;
         }
-
-
 
         /// <summary>
         /// Validates the posted back data

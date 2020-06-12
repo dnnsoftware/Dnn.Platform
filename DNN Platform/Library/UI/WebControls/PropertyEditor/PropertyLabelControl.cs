@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -40,7 +39,6 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -48,8 +46,6 @@ namespace DotNetNuke.UI.WebControls
                 return HtmlTextWriterTag.Div;
             }
         }
-
-
 
         /// <summary>
         /// Gets and Sets the Caption Text if no ResourceKey is provided
@@ -165,7 +161,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
         /// <summary>
         /// Gets and sets the value of the Field that is bound to the Label
         /// </summary>
@@ -182,8 +177,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>The DataSource object</value>
         [Browsable(false)]
         public object DataSource { get; set; }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -226,9 +219,6 @@ namespace DotNetNuke.UI.WebControls
         }
 
         public bool Required { get; set; }
-
-
-
 
         /// <summary>
         /// CreateChildControls creates the control collection.

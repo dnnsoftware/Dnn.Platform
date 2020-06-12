@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -78,7 +77,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 Logger.Error(exc);
             }
 
-
             string domainName;
             this.RewriteUrl(app, out domainName);
 
@@ -123,7 +121,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 // The tabId or PortalId are incorrectly formatted (potential DOS)
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
-
 
             try
             {
@@ -248,7 +245,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
                 app.Context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
 
-
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
                     && portalAliasInfo != null && !portalAliasInfo.IsPrimary
                     && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias)) // don't redirect if no primary alias is defined
@@ -364,8 +360,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             }
         }
 
-
-
         // Note these formerly lived in the 'UrlRewriteModule.cs' class
         private string FormatDomain(string url, string replaceDomain, string withDomain)
         {
@@ -384,7 +378,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             HttpRequest request = app.Request;
             HttpResponse response = app.Response;
             string requestedPath = app.Request.Url.AbsoluteUri;
-
 
             portalAlias = string.Empty;
 
@@ -405,7 +398,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 myAlias = slashIndex > 1 ? myAlias.Substring(0, slashIndex) : string.Empty;
             }
             while (myAlias.Length > 0);
-
 
             app.Context.Items.Add("UrlRewrite:OriginalUrl", app.Request.Url.AbsoluteUri);
 

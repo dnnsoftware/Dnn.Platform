@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Web;
@@ -47,8 +46,6 @@ namespace DotNetNuke.Modules.Admin.Security
         private UserInfo _user;
         private int _userCount = Null.NullInteger;
         private string _ipAddress;
-
-
 
         /// <summary>
         /// Gets the Redirect URL (after successful sending of password)
@@ -185,7 +182,6 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.lblHelp.Text += Localization.GetString("RequiresQuestionAndAnswer", this.LocalResourceFile);
             }
-
 
         }
 

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Net;
@@ -125,7 +124,6 @@ namespace DotNetNuke.Framework
             }
         }
 
-
         /// <summary>
         ///   Processs the incoming HTTP request.
         /// </summary>
@@ -161,7 +159,6 @@ namespace DotNetNuke.Framework
                 return true;
             }
         }
-
 
         /// <summary>
         ///   Handles the request.  This is where you put your

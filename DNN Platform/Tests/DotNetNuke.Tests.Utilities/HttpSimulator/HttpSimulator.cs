@@ -168,7 +168,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             InitializeApplication();
 
-
             // Console.WriteLine("host: " + Host);
             // Console.WriteLine("virtualDir: " + _applicationPath);
             // Console.WriteLine("page: " + LocalPath);
@@ -190,7 +189,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             // Console.WriteLine("HttpRuntime.AppDomainAppVirtualPath: " + HttpRuntime.AppDomainAppVirtualPath);
             // Console.WriteLine("HostingEnvironment.ApplicationPhysicalPath: " + HostingEnvironment.ApplicationPhysicalPath);
             // Console.WriteLine("HostingEnvironment.ApplicationVirtualPath: " + HostingEnvironment.ApplicationVirtualPath);
-
 
             return this;
         }
@@ -442,8 +440,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 get { return this._syncRoot; }
             }
-
-
 
             /// <summary>
             /// Gets a value indicating whether access to the collection of session-state values is synchronized (thread safe).

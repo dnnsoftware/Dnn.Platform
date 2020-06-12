@@ -5,7 +5,6 @@
 using System.Collections.Generic;
 using System.Data;
 
-
 namespace DotNetNuke.Common.Utilities
 {
     public interface ICBO

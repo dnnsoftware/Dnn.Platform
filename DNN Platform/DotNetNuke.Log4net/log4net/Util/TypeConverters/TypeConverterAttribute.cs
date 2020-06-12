@@ -48,8 +48,6 @@ namespace log4net.Util.TypeConverters
         /// </summary>
         private string m_typeName = null;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -91,7 +89,6 @@ namespace log4net.Util.TypeConverters
         {
             this.m_typeName = log4net.Util.SystemInfo.AssemblyQualifiedName(converterType);
         }
-
 
         /// <summary>
         /// The string type name of the type converter

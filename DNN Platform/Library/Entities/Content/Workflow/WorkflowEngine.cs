@@ -192,7 +192,6 @@ namespace DotNetNuke.Entities.Content.Workflow
 
                 var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, state), stateTransaction, message, ContentWorkflowNotificationNoActionType);
 
-
                 this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
             catch (Exception ex)
@@ -221,7 +220,6 @@ namespace DotNetNuke.Entities.Content.Workflow
                 var message = workflowAction.GetActionMessage(stateTransaction, workflow.FirstState);
 
                 var notification = this.GetNotification(this.GetWorkflowNotificationContext(contentItem, workflow.FirstState), stateTransaction, message, ContentWorkflowNotificatioStartWorkflowType);
-
 
                 this._notificationsController.SendNotification(notification, workflow.PortalID, null, new[] { user });
             }
@@ -282,7 +280,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             };
             return notification;
         }
-
 
         private class ReviewersDto
         {

@@ -58,8 +58,6 @@ namespace log4net.Layout
             this.IgnoresException = false;
         }
 
-
-
         /// <summary>
         /// Activate component options
         /// </summary>
@@ -76,8 +74,6 @@ namespace log4net.Layout
         {
             // nothing to do.
         }
-
-
 
         /// <summary>
         /// Gets the exception text from the logging event

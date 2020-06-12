@@ -31,7 +31,6 @@ namespace DotNetNuke.Services.Tokens
         private const string TokenReplaceCacheKeyDefault = "TokenReplaceRegEx_Default";
         private const string TokenReplaceCacheKeyObjectless = "TokenReplaceRegEx_Objectless";
 
-
         private CultureInfo _formatProvider;
         private string _language;
 

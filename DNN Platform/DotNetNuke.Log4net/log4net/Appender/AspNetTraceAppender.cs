@@ -69,8 +69,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// Write the logging event to the ASP.NET trace
         /// </summary>
@@ -116,8 +114,6 @@ namespace log4net.Appender
             get { return true; }
         }
 
-
-
         /// <summary>
         /// The category parameter sent to the Trace method.
         /// </summary>
@@ -134,8 +130,6 @@ namespace log4net.Appender
             get { return this.m_category; }
             set { this.m_category = value; }
         }
-
-
 
         /// <summary>
         /// Defaults to %logger

@@ -121,8 +121,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// Gets or sets the IP address of the remote host or multicast group to which
         /// the underlying <see cref="UdpClient" /> should sent the logging event.
@@ -284,8 +282,6 @@ namespace log4net.Appender
             set { this.m_encoding = value; }
         }
 
-
-
         /// <summary>
         /// Gets or sets the underlying <see cref="UdpClient" />.
         /// </summary>
@@ -321,8 +317,6 @@ namespace log4net.Appender
             get { return this.m_remoteEndPoint; }
             set { this.m_remoteEndPoint = value; }
         }
-
-
 
         /// <summary>
         /// Initialize the appender based on the options set.
@@ -376,8 +370,6 @@ namespace log4net.Appender
                 this.InitializeClientConnection();
             }
         }
-
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -449,8 +441,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Initializes the underlying  <see cref="UdpClient" /> connection.
         /// </summary>
@@ -495,8 +485,6 @@ namespace log4net.Appender
                 this.Client = null;
             }
         }
-
-
 
         /// <summary>
         /// The IP address of the remote host or multicast group to which

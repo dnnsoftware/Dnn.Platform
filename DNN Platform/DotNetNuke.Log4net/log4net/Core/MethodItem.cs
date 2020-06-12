@@ -98,7 +98,6 @@ namespace log4net.Core
             return (string[])methodParameterNames.ToArray(typeof(string));
         }
 
-
         /// <summary>
         /// Gets the method name of the caller making the logging
         /// request.
@@ -139,8 +138,6 @@ namespace log4net.Core
 
         private readonly string m_name;
         private readonly string[] m_parameters;
-
-
 
         /// <summary>
         /// The fully qualified type of the StackFrameItem class.

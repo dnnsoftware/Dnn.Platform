@@ -52,7 +52,6 @@ namespace log4net.Config
         // Class is not sealed because AliasDomainAttribute extends it while it is obsoleted
         //
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AliasRepositoryAttribute" /> class with
         /// the specified repository to alias to this assembly's repository.
@@ -68,8 +67,6 @@ namespace log4net.Config
         {
             this.Name = name;
         }
-
-
 
         /// <summary>
         /// Gets or sets the repository to alias to this assembly's repository.

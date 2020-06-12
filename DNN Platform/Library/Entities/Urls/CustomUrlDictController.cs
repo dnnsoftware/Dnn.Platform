@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -47,7 +46,6 @@ namespace DotNetNuke.Entities.Urls
             {
                 customAliasTabs = new SharedDictionary<string, string>();
             }
-
 
             // go through each tab in the found list
             foreach (TabInfo tab in tabs.Values)
@@ -136,7 +134,6 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
         }
-
 
         /// <summary>
         /// returns a tabId indexed dictionary of Friendly Urls

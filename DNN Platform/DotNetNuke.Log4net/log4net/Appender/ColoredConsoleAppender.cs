@@ -150,8 +150,6 @@ namespace log4net.Appender
             HighIntensity = 0x0008,
         }
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ColoredConsoleAppender" /> class.
         /// </summary>
@@ -195,8 +193,6 @@ namespace log4net.Appender
             this.Layout = layout;
             this.m_writeToErrorStream = writeToErrorStream;
         }
-
-
 
         /// <summary>
         /// Target is the value of the console output stream.
@@ -245,8 +241,6 @@ namespace log4net.Appender
         {
             this.m_levelMapping.Add(mapping);
         }
-
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(log4net.Core.LoggingEvent)"/> method.
@@ -339,7 +333,6 @@ namespace log4net.Appender
                 //
                 // See the ActivateOptions method below for the code that
                 // retrieves and wraps the stream.
-
 
                 // The windows console uses ScrollConsoleScreenBuffer internally to
                 // scroll the console buffer when the display buffer of the console
@@ -467,8 +460,6 @@ namespace log4net.Appender
             GC.SuppressFinalize(this.m_consoleOutputWriter);
         }
 
-
-
         /// <summary>
         /// The <see cref="ColoredConsoleAppender.Target"/> to use when writing to the Console
         /// standard output stream.
@@ -492,8 +483,6 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         public const string ConsoleError = "Console.Error";
-
-
 
         /// <summary>
         /// Flag to write output to the error stream rather than the standard output stream
@@ -569,8 +558,6 @@ namespace log4net.Appender
             public SMALL_RECT srWindow;
             public COORD dwMaximumWindowSize;
         }
-
-
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and

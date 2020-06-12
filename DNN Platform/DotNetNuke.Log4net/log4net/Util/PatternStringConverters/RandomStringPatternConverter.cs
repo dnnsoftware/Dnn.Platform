@@ -60,7 +60,6 @@ namespace log4net.Util.PatternStringConverters
         /// </summary>
         private int m_length = 4;
 
-
         /// <summary>
         /// Initialize the converter options
         /// </summary>
@@ -93,7 +92,6 @@ namespace log4net.Util.PatternStringConverters
                 }
             }
         }
-
 
         /// <summary>
         /// Write a randoim string to the output
@@ -140,7 +138,6 @@ namespace log4net.Util.PatternStringConverters
                 LogLog.Error(declaringType, "Error occurred while converting.", ex);
             }
         }
-
 
         /// <summary>
         /// The fully qualified type of the RandomStringPatternConverter class.

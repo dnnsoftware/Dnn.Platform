@@ -253,8 +253,6 @@ namespace DotNetNuke.Services.FileSystem
             this.UpdateFileInternal(file.FileId, content);
         }
 
-
-
         /// <summary>
         /// Clears the content of the file in the database.
         /// </summary>

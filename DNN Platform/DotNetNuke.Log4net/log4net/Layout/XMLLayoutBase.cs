@@ -84,8 +84,6 @@ namespace log4net.Layout
             this.m_locationInfo = locationInfo;
         }
 
-
-
         /// <summary>
         /// Gets a value indicating whether to include location information in
         /// the XML events.
@@ -130,7 +128,6 @@ namespace log4net.Layout
             set { this.m_invalidCharReplacement = value; }
         }
 
-
         /// <summary>
         /// Initialize layout options
         /// </summary>
@@ -151,8 +148,6 @@ namespace log4net.Layout
         {
             // nothing to do
         }
-
-
 
         /// <summary>
         /// Gets the content type output by this layout.
@@ -214,8 +209,6 @@ namespace log4net.Layout
             xmlWriter.Close();
         }
 
-
-
         /// <summary>
         /// Does the actual writing of the XML.
         /// </summary>
@@ -228,8 +221,6 @@ namespace log4net.Layout
         /// </para>
         /// </remarks>
         protected abstract void FormatXml(XmlWriter writer, LoggingEvent loggingEvent);
-
-
 
         /// <summary>
         /// Flag to indicate if location information should be included in

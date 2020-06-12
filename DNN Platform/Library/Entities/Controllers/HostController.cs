@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -47,7 +46,6 @@ namespace DotNetNuke.Entities.Controllers
         internal HostController()
         {
         }
-
 
         /// <summary>
         /// Gets the setting value by the specific key.
@@ -198,7 +196,6 @@ namespace DotNetNuke.Entities.Controllers
             var cipherText = this.GetString(key);
             return Security.FIPSCompliant.DecryptAES(cipherText, passPhrase, Entities.Host.Host.GUID);
         }
-
 
         /// <summary>
         /// Gets the setting value by the specific key.
@@ -354,7 +351,6 @@ namespace DotNetNuke.Entities.Controllers
                 PortalController.IncrementOverridingPortalsCrmVersion();
             }
         }
-
 
         /// <summary>
         /// Gets all settings from the databse

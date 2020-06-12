@@ -233,7 +233,6 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
-
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsOwnerRoleAndRoleEntityIsNotUser()
         {
@@ -269,7 +268,6 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         // var permissionProvider = new CorePermissionProvider();
         //    Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
         // }
-
 
         // [Test]
         // public void CorePermissionProvider_HasModuleAccess_SecurityLevelAnonymous_Is_Always_True()

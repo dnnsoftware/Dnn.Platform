@@ -63,7 +63,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
-
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
         }
 
@@ -374,7 +373,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
             connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId = notificationId }, this.GetRequestHeaders());
-
 
             // POST JOURNAL
             var journalText = $"{username1} Post";

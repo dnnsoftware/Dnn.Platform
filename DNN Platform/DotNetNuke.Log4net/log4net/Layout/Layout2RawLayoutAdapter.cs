@@ -46,8 +46,6 @@ namespace log4net.Layout
         /// </summary>
         private ILayout m_layout;
 
-
-
         /// <summary>
         /// Construct a new adapter
         /// </summary>
@@ -61,8 +59,6 @@ namespace log4net.Layout
         {
             this.m_layout = layout;
         }
-
-
 
         /// <summary>
         /// Format the logging event as an object.

@@ -68,8 +68,6 @@ namespace log4net.Appender
         private int m_count = 0;
         private int m_version = 0;
 
-
-
         /// <summary>
         /// Creates a read-only wrapper for a <c>AppenderCollection</c> instance.
         /// </summary>
@@ -87,14 +85,10 @@ namespace log4net.Appender
             return new ReadOnlyAppenderCollection(list);
         }
 
-
-
         /// <summary>
         /// An empty readonly static AppenderCollection
         /// </summary>
         public static readonly AppenderCollection EmptyCollection = ReadOnly(new AppenderCollection(0));
-
-
 
         /// <summary>
         /// Initializes a new instance of the <c>AppenderCollection</c> class
@@ -173,8 +167,6 @@ namespace log4net.Appender
             this.m_array = null;
         }
 
-
-
         /// <summary>
         /// Gets the number of elements actually contained in the <c>AppenderCollection</c>.
         /// </summary>
@@ -225,8 +217,6 @@ namespace log4net.Appender
         {
             get { return this.m_array; }
         }
-
-
 
         /// <summary>
         /// Gets or sets the <see cref="IAppender"/> at the specified index.
@@ -426,8 +416,6 @@ namespace log4net.Appender
             get { return false; }
         }
 
-
-
         /// <summary>
         /// Returns an enumerator that can iterate through the <c>AppenderCollection</c>.
         /// </summary>
@@ -436,8 +424,6 @@ namespace log4net.Appender
         {
             return new Enumerator(this);
         }
-
-
 
         /// <summary>
         /// Gets or sets the number of elements the <c>AppenderCollection</c> can contain.
@@ -551,8 +537,6 @@ namespace log4net.Appender
             return resultArray;
         }
 
-
-
         /// <exception cref="ArgumentOutOfRangeException">
         /// <para><paramref name="i"/> is less than zero</para>
         /// <para>-or-</para>
@@ -637,8 +621,6 @@ namespace log4net.Appender
             return (IEnumerator) this.GetEnumerator();
         }
 
-
-
         /// <summary>
         /// Supports simple iteration over a <see cref="AppenderCollection"/>.
         /// </summary>
@@ -648,8 +630,6 @@ namespace log4net.Appender
             private readonly AppenderCollection m_collection;
             private int m_index;
             private int m_version;
-
-
 
             /// <summary>
             /// Initializes a new instance of the <c>Enumerator</c> class.
@@ -661,8 +641,6 @@ namespace log4net.Appender
                 this.m_index = -1;
                 this.m_version = tc.m_version;
             }
-
-
 
             /// <summary>
             /// Gets the current element in the collection.
@@ -706,8 +684,6 @@ namespace log4net.Appender
                 get { return this.Current; }
             }
         }
-
-
 
         /// <exclude/>
         private sealed class ReadOnlyAppenderCollection : AppenderCollection, ICollection
@@ -805,8 +781,6 @@ namespace log4net.Appender
             {
                 return this.m_collection.GetEnumerator();
             }
-
-
 
             // (just to mimic some nice features of ArrayList)
             public override int Capacity

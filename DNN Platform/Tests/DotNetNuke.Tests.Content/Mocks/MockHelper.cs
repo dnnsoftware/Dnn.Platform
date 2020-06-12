@@ -203,7 +203,6 @@ namespace DotNetNuke.Tests.Content.Mocks
             return getMock;
         }
 
-
         internal static IDataReader CreateEmptyContentItemReader()
         {
             return CreateContentItemTable().CreateDataReader();
@@ -394,7 +393,6 @@ namespace DotNetNuke.Tests.Content.Mocks
                 Constants.TERM_ValidName,
                 Constants.TERM_ValidWeight,
                 Constants.TERM_ValidParentTermId);
-
 
             return table.CreateDataReader();
         }

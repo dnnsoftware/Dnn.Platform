@@ -56,8 +56,6 @@ namespace log4net.Plugin
             this.m_repository = repository;
         }
 
-
-
         /// <summary>
         /// Gets a <see cref="IPlugin" /> by name.
         /// </summary>
@@ -107,8 +105,6 @@ namespace log4net.Plugin
                 }
             }
         }
-
-
 
         /// <summary>
         /// Adds a <see cref="IPlugin" /> to the map.

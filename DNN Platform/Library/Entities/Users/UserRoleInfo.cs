@@ -8,7 +8,6 @@ using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security.Roles;
 
-
 namespace DotNetNuke.Entities.Users
 {
     /// -----------------------------------------------------------------------------

@@ -141,8 +141,6 @@ namespace log4net.Appender
             this.ReconnectOnError = false;
         }
 
-
-
         /// <summary>
         /// Gets or sets the database connection string that is used to connect to
         /// the database.
@@ -359,8 +357,6 @@ namespace log4net.Appender
             set { this.m_reconnectOnError = value; }
         }
 
-
-
         /// <summary>
         /// Gets or sets the underlying <see cref="IDbConnection" />.
         /// </summary>
@@ -379,8 +375,6 @@ namespace log4net.Appender
             get { return this.m_dbConnection; }
             set { this.m_dbConnection = value; }
         }
-
-
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -410,8 +404,6 @@ namespace log4net.Appender
             this.InitializeDatabaseConnection();
         }
 
-
-
         /// <summary>
         /// Override the parent method to close the database
         /// </summary>
@@ -425,8 +417,6 @@ namespace log4net.Appender
             base.OnClose();
             this.DiposeConnection();
         }
-
-
 
         /// <summary>
         /// Inserts the events into the database.
@@ -488,8 +478,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Adds a parameter to the command.
         /// </summary>
@@ -503,9 +491,6 @@ namespace log4net.Appender
         {
             this.m_parameters.Add(parameter);
         }
-
-
-
 
         /// <summary>
         /// Writes the events to the database using the transaction specified.
@@ -698,8 +683,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Connects to the database.
         /// </summary>
@@ -754,8 +737,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// The list of <see cref="AdoNetAppenderParameter"/> objects.
         /// </summary>
@@ -765,8 +746,6 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         protected ArrayList m_parameters;
-
-
 
         /// <summary>
         /// The security context to use for privileged calls
@@ -821,8 +800,6 @@ namespace log4net.Appender
         /// </summary>
         private bool m_reconnectOnError;
 
-
-
         /// <summary>
         /// The fully qualified type of the AdoNetAppender class.
         /// </summary>
@@ -860,8 +837,6 @@ namespace log4net.Appender
             this.Scale = 0;
             this.Size = 0;
         }
-
-
 
         /// <summary>
         /// Gets or sets the name of this parameter.
@@ -1005,8 +980,6 @@ namespace log4net.Appender
             set { this.m_layout = value; }
         }
 
-
-
         /// <summary>
         /// Prepare the specified database command object.
         /// </summary>
@@ -1073,8 +1046,6 @@ namespace log4net.Appender
 
             param.Value = formattedValue;
         }
-
-
 
         /// <summary>
         /// The name of this parameter.

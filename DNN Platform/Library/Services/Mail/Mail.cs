@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +36,6 @@ namespace DotNetNuke.Services.Mail
 
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
             mailMessage.IsBodyHtml = bodyFormat == MailFormat.Html;
-
 
             // Only modify senderAdress if smtpAuthentication is enabled
             // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.

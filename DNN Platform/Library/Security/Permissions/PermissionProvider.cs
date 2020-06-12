@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,8 +56,6 @@ namespace DotNetNuke.Security.Permissions
         private const string NavigatePagePermissionKey = "VIEW";
         private const string ViewPagePermissionKey = "VIEW";
         private readonly DataProvider dataProvider = DataProvider.Instance();
-
-
 
         // return the provider
         public virtual string LocalResourceFile
@@ -116,8 +113,6 @@ namespace DotNetNuke.Security.Permissions
                 dependency.Dispose();
             }
         }
-
-
 
 #if false
         private object GetFolderPermissionsCallBack(CacheItemArgs cacheItemArgs)
@@ -486,7 +481,6 @@ namespace DotNetNuke.Security.Permissions
             return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
-
         /// <summary>
         /// Returns a flag indicating whether the current user can add a folder or file
         /// </summary>
@@ -711,8 +705,6 @@ namespace DotNetNuke.Security.Permissions
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns a flag indicating whether the current user can administer a module
@@ -977,8 +969,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-
-
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Tabs
         /// </summary>
@@ -1201,8 +1191,6 @@ namespace DotNetNuke.Security.Permissions
                 }
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

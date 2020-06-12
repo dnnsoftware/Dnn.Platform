@@ -133,7 +133,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.ForceDeleteVersion(tabId, version);
         }
 
-
         public TabVersion RollBackVesion(int tabId, int createdByUserId, int version)
         {
             this.CheckVersioningEnabled(tabId);

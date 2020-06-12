@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 
@@ -67,8 +66,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This routine Binds the Authentication System
@@ -90,7 +87,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
                 this.authenticationFormReadOnly.Visible = this.IsSuperTab && (this.AuthSystem.AuthenticationType == "DNN");
                 this.authenticationForm.Visible = this.IsSuperTab && this.AuthSystem.AuthenticationType != "DNN";
-
 
                 if (this.SettingsControl != null)
                 {

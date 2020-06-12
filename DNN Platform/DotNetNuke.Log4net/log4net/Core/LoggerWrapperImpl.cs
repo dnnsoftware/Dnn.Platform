@@ -48,8 +48,6 @@ namespace log4net.Core
             this.m_logger = logger;
         }
 
-
-
         /// <summary>
         /// Gets the implementation behind this wrapper object.
         /// </summary>
@@ -70,8 +68,6 @@ namespace log4net.Core
         {
             get { return this.m_logger; }
         }
-
-
 
         /// <summary>
         /// The logger that this object is wrapping

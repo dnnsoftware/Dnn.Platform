@@ -100,7 +100,6 @@ namespace log4net.Config
         {
         }
 
-
         /// <summary>
         /// Gets or sets the filename of the configuration file.
         /// </summary>
@@ -179,8 +178,6 @@ namespace log4net.Config
             set { this.m_configureAndWatch = value; }
         }
 
-
-
         /// <summary>
         /// Configures the <see cref="ILoggerRepository"/> for the specified assembly.
         /// </summary>
@@ -224,7 +221,6 @@ namespace log4net.Config
 
             targetRepository.ConfigurationMessages = configurationMessages;
         }
-
 
         /// <summary>
         /// Attempt to load configuration from the local file system
@@ -444,8 +440,6 @@ namespace log4net.Config
         private string m_configFile = null;
         private string m_configFileExtension = null;
         private bool m_configureAndWatch = false;
-
-
 
         /// <summary>
         /// The fully qualified type of the XmlConfiguratorAttribute class.

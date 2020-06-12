@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -66,7 +65,6 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
-
 
             public XmlSchema GetSchema()
             {
@@ -156,7 +154,6 @@ namespace DotNetNuke.Entities.Modules
             this.SupportedFeatures = Null.NullInteger;
             this.Shareable = ModuleSharing.Unknown;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -426,8 +423,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a DesktopModuleInfo from a Data Reader
@@ -457,8 +452,6 @@ namespace DotNetNuke.Entities.Modules
             // Call the base classes fill method to populate base class proeprties
             this.FillInternal(dr);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -637,8 +630,6 @@ namespace DotNetNuke.Entities.Modules
             // Write end of main element
             writer.WriteEndElement();
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

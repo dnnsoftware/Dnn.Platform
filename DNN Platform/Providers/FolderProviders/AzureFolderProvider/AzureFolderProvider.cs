@@ -200,7 +200,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-
         /// <remarks>
         /// Azure Storage doesn't support folders, so we create a file in order for the folder to not be deleted during future synchronizations.
         /// The file has an extension not allowed by host. This way the file won't be added during synchronizations.

@@ -82,7 +82,6 @@ namespace log4net.Util.PatternStringConverters
             }
         }
 
-
         /// <summary>
         /// The fully qualified type of the EnvironmentFolderPathPatternConverter class.
         /// </summary>

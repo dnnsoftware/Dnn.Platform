@@ -9,7 +9,6 @@ using DotNetNuke.Common;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Portals;
 
-
 namespace DotNetNuke.Entities.Portals.Internal
 {
     [EditorBrowsable(EditorBrowsableState.Never)]

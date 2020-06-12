@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,8 +70,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
         private const string LOGIN_PATH = "/login";
-
-
 
         /// <summary>
         /// Gets and sets the current AuthenticationType
@@ -219,7 +216,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 }
 
-
                 // replace language parameter in querystring, to make sure that user will see page in correct language
                 if (this.UserId != -1 && this.User != null)
                 {
@@ -275,7 +271,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
             return returnValue;
         }
-
 
         /// <summary>
         /// Gets and sets a flag that determines whether a permanent auth cookie should be created
@@ -591,7 +586,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
             // Add Container to Controls
             this.pnlLoginContainer.Controls.Add(container);
-
 
             // Add LineBreak
             if (addFooter)
@@ -979,8 +973,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             return LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).ContainsKey(locale);
         }
-
-
 
         /// <summary>
         /// Page_Init runs when the control is initialised

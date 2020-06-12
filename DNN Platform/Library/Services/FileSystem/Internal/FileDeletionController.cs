@@ -52,7 +52,6 @@ namespace DotNetNuke.Services.FileSystem.Internal
             this.DeleteFileData(file);
         }
 
-
         public void DeleteFileData(IFileInfo file)
         {
             DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);

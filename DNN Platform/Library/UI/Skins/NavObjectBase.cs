@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -100,7 +99,6 @@ namespace DotNetNuke.UI.Skins
         private string m_strStyleSelectionForeColor;
         private string m_strToolTip = string.Empty;
         private string m_strWorkImage;
-
 
         // JH - 2/5/07 - support for custom attributes
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

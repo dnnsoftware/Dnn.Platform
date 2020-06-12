@@ -13,7 +13,6 @@ namespace Dnn.PersonaBar.Library.Common
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
 
-
         /// <summary>
         /// Register a component into the IOC container for later instantiation.
         /// </summary>

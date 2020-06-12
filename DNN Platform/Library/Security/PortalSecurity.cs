@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,7 +22,6 @@ using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Cryptography;
 // ReSharper disable MemberCanBeMadeStatic.Global
-
 
 namespace DotNetNuke.Security
 {
@@ -90,7 +88,6 @@ namespace DotNetNuke.Security
 
         private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -391,8 +388,6 @@ namespace DotNetNuke.Security
         {
             return StripTagsRegex.IsMatch(strInput);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -878,7 +873,6 @@ namespace DotNetNuke.Security
                 // set cookie domain to be consistent with domain specification in web.config
                 cookieDomain = FormsAuthentication.CookieDomain;
             }
-
 
             return cookieDomain;
         }

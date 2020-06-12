@@ -83,8 +83,6 @@ namespace log4net.Layout
         /// </remarks>
         private bool m_ignoresException = true;
 
-
-
         /// <summary>
         /// Empty default constructor
         /// </summary>
@@ -96,8 +94,6 @@ namespace log4net.Layout
         protected LayoutSkeleton()
         {
         }
-
-
 
         /// <summary>
         /// Activate component options
@@ -119,8 +115,6 @@ namespace log4net.Layout
         /// </para>
         /// </remarks>
         public abstract void ActivateOptions();
-
-
 
         /// <summary>
         /// Implement this method to create your own layout format.

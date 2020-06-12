@@ -52,8 +52,6 @@ namespace log4net.Util
         private static PropertiesDictionary _dictionary;
 #endif
 
-
-
         /// <summary>
         /// Internal constructor
         /// </summary>
@@ -65,8 +63,6 @@ namespace log4net.Util
         internal ThreadContextProperties()
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the value of a property
@@ -97,8 +93,6 @@ namespace log4net.Util
                 this.GetProperties(true)[key] = value;
             }
         }
-
-
 
         /// <summary>
         /// Remove a property
@@ -157,8 +151,6 @@ namespace log4net.Util
                 _dictionary.Clear();
             }
         }
-
-
 
         /// <summary>
         /// Get the <c>PropertiesDictionary</c> for this thread.

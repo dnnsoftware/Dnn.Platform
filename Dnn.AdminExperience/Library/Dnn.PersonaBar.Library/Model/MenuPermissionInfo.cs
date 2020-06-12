@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Xml.Serialization;
@@ -29,8 +28,6 @@ namespace Dnn.PersonaBar.Library.Model
 
         // local property declarations
         private int _menuPermissionId;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -58,8 +55,6 @@ namespace Dnn.PersonaBar.Library.Model
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -102,8 +97,6 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("portalid")]
         public int PortalId { get; set; }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a MenuPermissionInfo from a Data Reader
@@ -136,8 +129,6 @@ namespace Dnn.PersonaBar.Library.Model
                 this.MenuPermissionId = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

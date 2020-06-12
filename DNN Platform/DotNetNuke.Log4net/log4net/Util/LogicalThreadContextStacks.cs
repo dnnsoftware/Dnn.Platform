@@ -38,7 +38,6 @@ namespace log4net.Util
     {
         private readonly LogicalThreadContextProperties m_properties;
 
-
         /// <summary>
         /// Internal constructor
         /// </summary>
@@ -51,8 +50,6 @@ namespace log4net.Util
         {
             this.m_properties = properties;
         }
-
-
 
         /// <summary>
         /// Gets the named thread context stack
@@ -117,8 +114,6 @@ namespace log4net.Util
         {
             this.m_properties[stackName] = stack;
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the ThreadContextStacks class.

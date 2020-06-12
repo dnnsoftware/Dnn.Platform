@@ -266,8 +266,6 @@ namespace DotNetNuke.Modules.Html
             return string.IsNullOrEmpty(protocol) ? result : protocol + result;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item
@@ -697,9 +695,6 @@ namespace DotNetNuke.Modules.Html
                 PortalController.UpdatePortalSetting(PortalID, "MaximumVersionHistory", MaximumVersionHistory.ToString());
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

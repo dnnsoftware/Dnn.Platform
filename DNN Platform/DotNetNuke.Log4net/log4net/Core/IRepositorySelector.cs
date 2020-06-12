@@ -87,7 +87,6 @@ namespace log4net.Core
         }
     }
 
-
     /// <summary>
     /// Interface used by the <see cref="LogManager"/> to select the <see cref="ILoggerRepository"/>.
     /// </summary>

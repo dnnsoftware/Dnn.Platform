@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -28,9 +27,6 @@ namespace DotNetNuke.UI.Containers
         private string _commandName = string.Empty;
         private bool _displayLink = true;
 
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleActionCollection to bind to the list
@@ -47,8 +43,6 @@ namespace DotNetNuke.UI.Containers
                 return this._ModuleActions;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -146,9 +140,6 @@ namespace DotNetNuke.UI.Containers
         /// <returns>An IModuleControl object</returns>
         public IModuleControl ModuleControl { get; set; }
 
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnAction raises the Action Event
@@ -199,8 +190,6 @@ namespace DotNetNuke.UI.Containers
             }
             this.Visible = this.Controls.Count > 0;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

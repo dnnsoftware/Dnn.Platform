@@ -70,8 +70,6 @@ namespace DotNetNuke.Entities.Users.Membership
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
         }
 
-
-
         /// <summary>
         /// Initialiser for MembershipPasswordSettings provider object.
         /// </summary>

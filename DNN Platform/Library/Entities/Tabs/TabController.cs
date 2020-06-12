@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -103,7 +102,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             return tab.PortalID == Null.NullInteger;
         }
-
 
         private static void AddAllTabsModules(TabInfo tab)
         {
@@ -316,7 +314,6 @@ namespace DotNetNuke.Entities.Tabs
         private void CreateTabRedirect(TabInfo tab)
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
-
 
             if (settings != null && tab.TabID != settings.HomeTabId && tab.TabUrls.Count(u => u.HttpStatus == "200") == 0)
             {
@@ -881,8 +878,6 @@ namespace DotNetNuke.Entities.Tabs
                 contentController.UpdateContentItem(tab);
             }
         }
-
-
 
         /// <summary>
         /// Adds localized copies of the page in all missing languages
@@ -2118,8 +2113,6 @@ namespace DotNetNuke.Entities.Tabs
             EventManager.Instance.OnTabMarkedAsPublished(new TabEventArgs { Tab = tab });
         }
 
-
-
         /// <summary>
         /// Copies the design to children.
         /// </summary>
@@ -2868,7 +2861,6 @@ namespace DotNetNuke.Entities.Tabs
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Url"));
                     break;
             }
-
 
             // serialize TabSettings
             XmlUtils.SerializeHashtable(tab.TabSettings, tabXml, tabNode, "tabsetting", "settingname", "settingvalue");

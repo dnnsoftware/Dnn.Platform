@@ -25,7 +25,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return () => new JavaScriptLibraryController();
         }
 
-
         /// <summary>Delete the library reference from the database</summary>
         /// <param name="library">Library to be deleted</param>
         public void DeleteLibrary(JavaScriptLibrary library)

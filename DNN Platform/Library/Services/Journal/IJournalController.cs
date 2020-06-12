@@ -123,7 +123,6 @@ namespace DotNetNuke.Services.Journal
         /// <returns>A FileInfo object corresponding to the saved file</returns>
         IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent);
 
-
         /// <summary>
         /// Save the journal object into database.
         /// </summary>

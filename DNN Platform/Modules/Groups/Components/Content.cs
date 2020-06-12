@@ -131,7 +131,6 @@ namespace DotNetNuke.Entities.Groups
             return contentTypeId;
         }
 
-
         /// <summary>
         /// Creates a Content Type (for taxonomy) in the data store.
         /// </summary>

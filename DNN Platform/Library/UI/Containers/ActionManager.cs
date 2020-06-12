@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Linq;
 using System.Web;
@@ -40,8 +39,6 @@ namespace DotNetNuke.UI.Containers
         private readonly HttpRequest Request = HttpContext.Current.Request;
         private readonly HttpResponse Response = HttpContext.Current.Response;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs a new ActionManager
@@ -51,8 +48,6 @@ namespace DotNetNuke.UI.Containers
         {
             this.ActionControl = actionControl;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -190,8 +185,6 @@ namespace DotNetNuke.UI.Containers
             // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

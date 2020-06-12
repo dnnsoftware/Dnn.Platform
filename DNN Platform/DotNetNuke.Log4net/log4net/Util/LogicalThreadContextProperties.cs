@@ -58,7 +58,6 @@ namespace log4net.Util
         /// </summary>
         private bool m_disabled = false;
 
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -70,8 +69,6 @@ namespace log4net.Util
         internal LogicalThreadContextProperties()
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the value of a property
@@ -107,8 +104,6 @@ namespace log4net.Util
                 SetCallContextData(immutableProps);
             }
         }
-
-
 
         /// <summary>
         /// Remove a property
@@ -147,8 +142,6 @@ namespace log4net.Util
                 SetCallContextData(immutableProps);
             }
         }
-
-
 
         /// <summary>
         /// Get the PropertiesDictionary stored in the LocalDataStoreSlot for this thread.
@@ -193,8 +186,6 @@ namespace log4net.Util
             return null;
         }
 
-
-
         /// <summary>
         /// Gets the call context get data.
         /// </summary>
@@ -236,8 +227,6 @@ namespace log4net.Util
 			CallContext.SetData(c_SlotName, properties);
 #endif
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the LogicalThreadContextProperties class.

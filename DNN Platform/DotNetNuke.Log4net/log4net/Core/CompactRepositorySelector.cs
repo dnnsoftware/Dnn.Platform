@@ -56,8 +56,6 @@ namespace log4net.Core
 
         private event LoggerRepositoryCreationEventHandler m_loggerRepositoryCreatedEvent;
 
-
-
         /// <summary>
         /// Create a new repository selector
         /// </summary>
@@ -88,8 +86,6 @@ namespace log4net.Core
 
             LogLog.Debug(declaringType, "defaultRepositoryType [" + this.m_defaultRepositoryType + "]");
         }
-
-
 
         /// <summary>
         /// Get the <see cref="ILoggerRepository"/> for the specified assembly
@@ -296,8 +292,6 @@ namespace log4net.Core
             }
         }
 
-
-
         /// <summary>
         /// The fully qualified type of the CompactRepositorySelector class.
         /// </summary>
@@ -306,7 +300,6 @@ namespace log4net.Core
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(CompactRepositorySelector);
-
 
         /// <summary>
         /// Event to notify that a logger repository has been created.

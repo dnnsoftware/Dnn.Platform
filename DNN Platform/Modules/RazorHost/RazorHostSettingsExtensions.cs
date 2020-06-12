@@ -22,7 +22,6 @@ namespace DotNetNuke.Modules.RazorHost
             return control;
         }
 
-
         private static void EnsureEditScriptControlIsRegistered(int moduleDefId)
         {
             if (ModuleControlController.GetModuleControlByControlKey("EditRazorScript", moduleDefId) != null)

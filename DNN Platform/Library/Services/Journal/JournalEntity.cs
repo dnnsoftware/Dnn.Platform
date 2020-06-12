@@ -72,7 +72,6 @@ namespace DotNetNuke.Services.Journal
                 case "avatar":
                     return PropertyAccess.FormatString(this.Avatar.ToString(), format);
 
-
             }
 
             propertyNotFound = true;

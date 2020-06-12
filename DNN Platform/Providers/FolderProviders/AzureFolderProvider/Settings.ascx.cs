@@ -22,7 +22,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
-
         /// <summary>
         /// Loads concrete settings.
         /// </summary>
@@ -322,8 +321,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 this.valContainerName.IsValid = false;
             }
         }
-
-
 
         /// <summary>
         /// </summary>

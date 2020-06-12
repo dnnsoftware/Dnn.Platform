@@ -84,8 +84,6 @@ namespace log4net.Config
             this.m_type = type;
         }
 
-
-
         /// <summary>
         /// Gets or sets the type for the plugin.
         /// </summary>
@@ -123,8 +121,6 @@ namespace log4net.Config
             set { this.m_typeName = value; }
         }
 
-
-
         /// <summary>
         /// Creates the plugin object defined by this attribute.
         /// </summary>
@@ -156,8 +152,6 @@ namespace log4net.Config
 
             return plugin;
         }
-
-
 
         /// <summary>
         /// Returns a representation of the properties of this object.

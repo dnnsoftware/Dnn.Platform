@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -286,8 +285,6 @@ namespace DotNetNuke.Entities.Users.Social
             this.AddLog(logContent);
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initiate an UserRelationship Request
@@ -351,10 +348,8 @@ namespace DotNetNuke.Entities.Users.Social
 
             // no existing UserRelationship record found
 
-
             // use Relationship DefaultResponse as status
             RelationshipStatus status = relationship.DefaultResponse;
-
 
             UserRelationshipPreference preference = this.GetUserRelationshipPreference(
                 targetUser.UserID,
@@ -363,7 +358,6 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 status = preference.DefaultResponse;
             }
-
 
             if (status == RelationshipStatus.None)
             {
@@ -415,8 +409,6 @@ namespace DotNetNuke.Entities.Users.Social
                 this.DeleteUserRelationship(userRelationship);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Linq;
 using System.Text;
@@ -175,7 +174,6 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                         Scope.DefaultSettings,
                         ref propertyNotFound);
 
-
                     var clientName = Localization.GetSafeJSString(property.PropertyName);
                     sb.Append("self['" + clientName + "'] = ko.observable(");
                     sb.Append("\"");
@@ -211,9 +209,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 sb.Append(this.LocalizeString("Email") + "';");
                 sb.Append('\n');
 
-
                 this.ProfileProperties = sb.ToString();
-
 
             }
             catch (Exception exc)

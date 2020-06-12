@@ -45,7 +45,6 @@ namespace DotNetNuke.Entities.Users.Membership
             }
         }
 
-
         /// <summary>
         /// returns the password history of the supplied user
         /// </summary>

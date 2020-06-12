@@ -52,8 +52,6 @@ namespace log4net.Util
         private const string DEFAULT_NULL_TEXT = "(null)";
         private const string DEFAULT_NOT_AVAILABLE_TEXT = "NOT AVAILABLE";
 
-
-
         /// <summary>
         /// Private constructor to prevent instances.
         /// </summary>
@@ -65,8 +63,6 @@ namespace log4net.Util
         private SystemInfo()
         {
         }
-
-
 
         /// <summary>
         /// Initialize default values for private static fields.
@@ -101,8 +97,6 @@ namespace log4net.Util
             s_notAvailableText = notAvailableText;
             s_nullText = nullText;
         }
-
-
 
         /// <summary>
         /// Gets the system dependent line terminator.
@@ -460,8 +454,6 @@ namespace log4net.Util
             set { s_notAvailableText = value; }
         }
 
-
-
         /// <summary>
         /// Gets the assembly location path for the specified assembly.
         /// </summary>
@@ -785,7 +777,6 @@ namespace log4net.Util
             }
         }
 
-
         /// <summary>
         /// Generate a new guid
         /// </summary>
@@ -833,7 +824,6 @@ namespace log4net.Util
             return new ArgumentOutOfRangeException(parameterName, actualValue, message);
 #endif
         }
-
 
         /// <summary>
         /// Parse a string into an <see cref="int"/> value
@@ -1102,8 +1092,6 @@ namespace log4net.Util
 #endif
         }
 
-
-
 #if NETCF
 		private static string NativeEntryAssemblyLocation 
 		{
@@ -1141,8 +1129,6 @@ namespace log4net.Util
 
 #endif
 
-
-
         /// <summary>
         /// Gets an empty array of types.
         /// </summary>
@@ -1153,8 +1139,6 @@ namespace log4net.Util
         /// </para>
         /// </remarks>
         public static readonly Type[] EmptyTypes = new Type[0];
-
-
 
         /// <summary>
         /// The fully qualified type of the SystemInfo class.
@@ -1189,7 +1173,6 @@ namespace log4net.Util
         /// Start time for the current process.
         /// </summary>
         private static DateTime s_processStartTimeUtc = DateTime.UtcNow;
-
 
 #if NETCF_1_0
 		/// <summary>

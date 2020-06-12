@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -79,7 +78,6 @@ namespace DotNetNuke.Entities.Content
             this.ContentItemId = Null.NullInteger;
             this.StateID = Null.NullInteger;
         }
-
 
         /// <summary>
         /// Gets or sets the content item id.
@@ -229,8 +227,6 @@ namespace DotNetNuke.Entities.Content
         [XmlIgnore]
         public int StateID { get; set; }
 
-
-
         /// <summary>
         /// Fills the internal.
         /// </summary>
@@ -273,8 +269,6 @@ namespace DotNetNuke.Entities.Content
             cloneItem.Indexed = originalItem.Indexed;
             cloneItem.StateID = originalItem.StateID;
         }
-
-
 
         /// <summary>
         /// Fill this content object will the information from data reader.

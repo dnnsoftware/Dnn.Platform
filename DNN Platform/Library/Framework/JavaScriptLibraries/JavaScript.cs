@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,7 +31,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     {
         private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
-
 
         /// <summary>
         ///     checks whether the script file is a known javascript library
@@ -503,7 +501,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                 FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
                         }
 
-
                         // actual jqueryui
                         if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
                         {
@@ -543,7 +540,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
-
 
         public static string JQueryUIFile(bool getMinFile)
         {

@@ -50,8 +50,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Gets the singleton instance of the <see cref="NullDictionaryEnumerator" />.
         /// </summary>
@@ -65,8 +63,6 @@ namespace log4net.Util
         {
             get { return s_instance; }
         }
-
-
 
         /// <summary>
         /// Gets the current object from the enumerator.
@@ -116,8 +112,6 @@ namespace log4net.Util
         public void Reset()
         {
         }
-
-
 
         /// <summary>
         /// Gets the current key from the enumerator.
@@ -182,8 +176,6 @@ namespace log4net.Util
         {
             get { throw new InvalidOperationException(); }
         }
-
-
 
         /// <summary>
         /// The singleton instance of the <see cref="NullDictionaryEnumerator" />.

@@ -59,8 +59,6 @@ namespace log4net.Repository
         private event LoggerRepositoryConfigurationChangedEventHandler m_configurationChangedEvent;
         private PropertiesDictionary m_properties;
 
-
-
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -97,8 +95,6 @@ namespace log4net.Repository
             // Don't disable any levels by default.
             this.m_threshold = Level.All;
         }
-
-
 
         /// <summary>
         /// The name of the repository
@@ -419,8 +415,6 @@ namespace log4net.Repository
         /// </para>
         /// </remarks>
         public abstract log4net.Appender.IAppender[] GetAppenders();
-
-
 
         /// <summary>
         /// The fully qualified type of the LoggerRepositorySkeleton class.

@@ -52,7 +52,6 @@ namespace log4net.Util
         {
         }
 
-
         /// <summary>
         /// Override Dispose to prevent closing of writer
         /// </summary>

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.Caching;
 
@@ -22,8 +21,6 @@ namespace DotNetNuke.Services.Cache
         private string[] _cacheKeys;
         private string[] _fileNames;
         private CacheDependency _systemCacheDependency;
-
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DNNCacheDependency"/> class.
@@ -135,8 +132,6 @@ namespace DotNetNuke.Services.Cache
             this._cacheDependency = dependency;
         }
 
-
-
         /// <summary>
         /// Gets the cache keys.
         /// </summary>
@@ -228,8 +223,6 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -238,7 +231,6 @@ namespace DotNetNuke.Services.Cache
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
 
         // Method that does the actual disposal of resources
         protected virtual void Dispose(bool disposing)

@@ -96,7 +96,6 @@ namespace log4net.Layout.Pattern
         /// </remarks>
         protected IDateFormatter m_dateFormatter;
 
-
         /// <summary>
         /// Initialize the converter pattern based on the <see cref="PatternConverter.Option"/> property.
         /// </summary>
@@ -147,7 +146,6 @@ namespace log4net.Layout.Pattern
             }
         }
 
-
         /// <summary>
         /// Convert the pattern into the rendered message
         /// </summary>
@@ -173,7 +171,6 @@ namespace log4net.Layout.Pattern
                 LogLog.Error(declaringType, "Error occurred while converting date.", ex);
             }
         }
-
 
         /// <summary>
         /// The fully qualified type of the DatePatternConverter class.

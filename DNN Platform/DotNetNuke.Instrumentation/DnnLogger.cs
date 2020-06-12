@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -84,7 +83,6 @@ namespace DotNetNuke.Instrumentation
             LevelLogError = levelMap.LookupWithDefault(LevelLogError);
             LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
 
-
             //// Register custom logging levels with the default LoggerRepository
             LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
             LogManager.GetRepository().LevelMap.Add(LevelLogError);
@@ -100,7 +98,6 @@ namespace DotNetNuke.Instrumentation
         {
             return new DnnLogger(LogManager.GetLogger(name).Logger);
         }
-
 
         /// <summary>
         ///   Logs a message object with the <c>DEBUG</c> level.
@@ -129,7 +126,6 @@ namespace DotNetNuke.Instrumentation
         {
             this.Logger.Log(this._stackBoundary, LevelDebug, message, null);
         }
-
 
         /// <summary>
         ///   Logs a formatted message string with the <c>DEBUG</c> level.
@@ -209,7 +205,6 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this._stackBoundary, LevelInfo, message, null);
         }
 
-
         /// <summary>
         ///   Logs a formatted message string with the <c>INFO</c> level.
         /// </summary>
@@ -236,7 +231,6 @@ namespace DotNetNuke.Instrumentation
         {
             this.Logger.Log(this._stackBoundary, LevelInfo, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
         }
-
 
         /// <summary>
         ///   Logs a formatted message string with the <c>INFO</c> level.
@@ -275,7 +269,6 @@ namespace DotNetNuke.Instrumentation
         {
             this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
         }
-
 
         /// <summary>
         ///   Logs a message object with the <c>WARN</c> level.

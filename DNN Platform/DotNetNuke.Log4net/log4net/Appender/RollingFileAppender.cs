@@ -171,8 +171,6 @@ namespace log4net.Appender
             Composite   = 3,
         }
 
-
-
         /// <summary>
         /// The code assumes that the following 'time' constants are in a increasing sequence.
         /// </summary>
@@ -219,8 +217,6 @@ namespace log4net.Appender
             TopOfMonth = 5,
         }
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RollingFileAppender" /> class.
         /// </summary>
@@ -250,8 +246,6 @@ namespace log4net.Appender
             }
 #endif
         }
-
-
 
 #if !NET_1_0 && !CLI_1_0 && !NETCF
         /// <summary>
@@ -531,8 +525,6 @@ namespace log4net.Appender
             set { this.m_staticLogFileName = value; }
         }
 
-
-
         /// <summary>
         /// The fully qualified type of the RollingFileAppender class.
         /// </summary>
@@ -541,8 +533,6 @@ namespace log4net.Appender
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(RollingFileAppender);
-
-
 
         /// <summary>
         /// Sets the quiet writer being used.
@@ -731,8 +721,6 @@ namespace log4net.Appender
 
             return fileName;
         }
-
-
 
         /// <summary>
         ///     Determines curSizeRollBackups (only within the current roll point)
@@ -1163,8 +1151,6 @@ namespace log4net.Appender
             base.ActivateOptions();
         }
 
-
-
         /// <summary>
         ///
         /// </summary>
@@ -1501,8 +1487,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Get the start time of the next window for the current rollpoint
         /// </summary>
@@ -1585,8 +1569,6 @@ namespace log4net.Appender
             return current;
         }
 
-
-
         /// <summary>
         /// This object supplies the current date/time.  Allows test code to plug in
         /// a method to control this class when testing date/time based rolling. The default
@@ -1667,7 +1649,6 @@ namespace log4net.Appender
         /// </summary>
         private bool m_preserveLogFileNameExtension = false;
 
-
         /// <summary>
         /// FileName provided in configuration.  Used for rolling properly
         /// </summary>
@@ -1680,14 +1661,10 @@ namespace log4net.Appender
         private Mutex m_mutexForRolling;
 #endif
 
-
-
         /// <summary>
         /// The 1st of January 1970 in UTC
         /// </summary>
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
-
-
 
         /// <summary>
         /// This interface is used to supply Date/Time information to the <see cref="RollingFileAppender"/>.

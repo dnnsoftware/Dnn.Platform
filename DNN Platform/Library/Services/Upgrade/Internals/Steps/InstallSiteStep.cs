@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Web;
@@ -35,10 +34,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Percentage = 0;
             this.Status = StepStatus.Running;
 
-
             // Set Status to None
             Globals.SetStatus(Globals.UpgradeStatus.None);
-
 
             var installConfig = InstallController.Instance.GetInstallConfig();
             var percentForEachStep = 100 / installConfig.Portals.Count;
@@ -187,7 +184,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         //        File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
         //    }
         // }
-
 
     }
 }

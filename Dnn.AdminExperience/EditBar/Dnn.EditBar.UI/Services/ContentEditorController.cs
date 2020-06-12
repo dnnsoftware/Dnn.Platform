@@ -94,7 +94,6 @@ namespace Dnn.EditBar.UI.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, result.OrderBy(m => recommendedModuleNames.IndexOf(m.ModuleName)));
         }
 
-
         [HttpGet]
         public HttpResponseMessage LoadModuleScript(int desktopModuleId)
         {

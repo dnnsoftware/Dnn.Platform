@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +34,6 @@ namespace DotNetNuke.Entities.Host
         internal IPFilterController()
         {
         }
-
-
 
         /// <summary>
         /// add a new IP filter
@@ -137,8 +134,6 @@ namespace DotNetNuke.Entities.Host
             }
             return ipAllowed;
         }
-
-
 
         private void LogBannedIPAttempt(string ipAddress)
         {

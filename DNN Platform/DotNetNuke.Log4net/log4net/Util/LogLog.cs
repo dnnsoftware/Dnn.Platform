@@ -132,7 +132,6 @@ namespace log4net.Util
             return this.Prefix + this.Source.Name + ": " + this.Message;
         }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LogLog" /> class.
         /// </summary>
@@ -149,8 +148,6 @@ namespace log4net.Util
             this.message = message;
             this.exception = exception;
         }
-
-
 
         /// <summary>
         /// Static constructor that initializes logging by reading
@@ -188,8 +185,6 @@ namespace log4net.Util
             }
 #endif
         }
-
-
 
         /// <summary>
         /// Gets or sets a value indicating whether log4net internal logging
@@ -281,8 +276,6 @@ namespace log4net.Util
             get { return s_emitInternalMessages; }
             set { s_emitInternalMessages = value; }
         }
-
-
 
         /// <summary>
         /// Raises the LogReceived event when an internal messages is received.
@@ -512,7 +505,6 @@ namespace log4net.Util
             }
         }
 
-
         /// <summary>
         /// Writes output to the standard output stream.
         /// </summary>
@@ -581,7 +573,6 @@ namespace log4net.Util
             }
         }
 
-
         /// <summary>
         ///  Default debug level
         /// </summary>
@@ -597,7 +588,6 @@ namespace log4net.Util
         private const string PREFIX = "log4net: ";
         private const string ERR_PREFIX = "log4net:ERROR ";
         private const string WARN_PREFIX    = "log4net:WARN ";
-
 
         /// <summary>
         /// Subscribes to the LogLog.LogReceived event and stores messages

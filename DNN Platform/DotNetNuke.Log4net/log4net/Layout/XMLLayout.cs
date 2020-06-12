@@ -104,8 +104,6 @@ namespace log4net.Layout
         {
         }
 
-
-
         /// <summary>
         /// The prefix to use for all element names
         /// </summary>
@@ -121,7 +119,6 @@ namespace log4net.Layout
             get { return this.m_prefix; }
             set { this.m_prefix = value; }
         }
-
 
         /// <summary>
         /// Set whether or not to base64 encode the message.
@@ -161,9 +158,6 @@ namespace log4net.Layout
             set { this.m_base64Properties = value; }
         }
 
-
-
-
         /// <summary>
         /// Initialize layout options
         /// </summary>
@@ -198,8 +192,6 @@ namespace log4net.Layout
                 this.m_elmLocation = this.m_prefix + ":" + ELM_LOCATION;
             }
         }
-
-
 
         /// <summary>
         /// Does the actual writing of the XML.
@@ -305,8 +297,6 @@ namespace log4net.Layout
 
             writer.WriteEndElement();
         }
-
-
 
         /// <summary>
         /// The prefix to use for all generated element names

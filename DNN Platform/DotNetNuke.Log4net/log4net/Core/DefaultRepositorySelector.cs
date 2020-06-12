@@ -74,8 +74,6 @@ namespace log4net.Core
             remove { this.m_loggerRepositoryCreatedEvent -= value; }
         }
 
-
-
         /// <summary>
         /// Creates a new repository selector.
         /// </summary>
@@ -106,8 +104,6 @@ namespace log4net.Core
 
             LogLog.Debug(declaringType, "defaultRepositoryType [" + this.m_defaultRepositoryType + "]");
         }
-
-
 
         /// <summary>
         /// Gets the <see cref="ILoggerRepository"/> for the specified assembly.
@@ -468,8 +464,6 @@ namespace log4net.Core
             }
         }
 
-
-
         /// <summary>
         /// Aliases a repository to an existing repository.
         /// </summary>
@@ -531,8 +525,6 @@ namespace log4net.Core
             }
         }
 
-
-
         /// <summary>
         /// Notifies the registered listeners that the repository has been created.
         /// </summary>
@@ -550,8 +542,6 @@ namespace log4net.Core
                 handler(this, new LoggerRepositoryCreationEventArgs(repository));
             }
         }
-
-
 
         /// <summary>
         /// Gets the repository name and repository type for the specified assembly.
@@ -871,8 +861,6 @@ namespace log4net.Core
                 }
             }
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the DefaultRepositorySelector class.

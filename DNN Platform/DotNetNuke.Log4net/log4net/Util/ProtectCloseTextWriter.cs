@@ -54,8 +54,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Attach this instance to a different underlying <see cref="TextWriter"/>
         /// </summary>
@@ -69,8 +67,6 @@ namespace log4net.Util
         {
             this.Writer = writer;
         }
-
-
 
         /// <summary>
         /// Does not close the underlying output writer.

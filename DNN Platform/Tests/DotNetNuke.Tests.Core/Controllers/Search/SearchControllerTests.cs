@@ -155,7 +155,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
             UserController.SetTestableInstance(this._mockUserController.Object);
 
-
             this.CreateNewLuceneControllerInstance();
         }
 
@@ -888,7 +887,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(added, search.Results.Count);
         }
 
-
         [Test]
         public void SearchController_SearchFindsAnalyzedVeryLongWords()
         {
@@ -1572,7 +1570,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, search.Results.Count);
         }
 
-
         [Test]
         public void SearchController_GetResult_TagSearch_Lowercase_Search_Returns_PropercaseTag_Single_Result()
         {
@@ -1930,7 +1927,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._searchController.SiteSearch(query);
         }
 
-
         [Test]
         public void SearchController_GetResult_Sort_By_Unknown_StringField_In_Ascending_Order_Does_Not_Throw()
         {
@@ -1964,7 +1960,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             };
             this._searchController.SiteSearch(query);
         }
-
 
         [Test]
         public void SearchController_GetResult_Sort_By_Unknown_NumericField_In_Ascending_Order_Does_Not_Throw()
@@ -2219,7 +2214,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, search.Results.Count);
         }
 
-
         // Note: these tests needs to pass through the analyzer which is utilized
         //       in SearchControllerImpl but not LuceneControllerImpl.
 
@@ -2331,7 +2325,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc3);
             this._internalSearchController.Commit();
 
-
             var result = this.SearchForKeyword("cow");
 
             // Assert
@@ -2353,7 +2346,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc2);
             this._internalSearchController.AddSearchDocument(doc3);
             this._internalSearchController.Commit();
-
 
             var result = this.SearchForKeyword("cow");
 
@@ -2396,8 +2388,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc4 = new SearchDocument { UniqueKey = "key04", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Description = "tootsie" };
             var doc5 = new SearchDocument { UniqueKey = "key05", Title = "Hello World", SearchTypeId = OtherSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, Body = "hello tootsie" };
 
-
-
             // Act
             this._internalSearchController.AddSearchDocument(doc1);
             this._internalSearchController.AddSearchDocument(doc2);
@@ -2406,7 +2396,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc5);
 
             this._internalSearchController.Commit();
-
 
             var result = this.SearchForKeyword("tootsie");
 
@@ -2492,7 +2481,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                                 { "thursday.png", "My<Images/My<DNN/" },
                                 { "friday.gif", "My<Images/My<DNN/" },
                                };
-
 
             foreach (var file in allFiles)
             {
@@ -2906,7 +2894,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc3);
             this._internalSearchController.Commit();
 
-
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 
             // Assert
@@ -2928,7 +2915,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc2);
             this._internalSearchController.AddSearchDocument(doc3);
             this._internalSearchController.Commit();
-
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, true);
 
@@ -2952,7 +2938,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._internalSearchController.AddSearchDocument(doc2);
             this._internalSearchController.AddSearchDocument(doc3);
             this._internalSearchController.Commit();
-
 
             var result = this.SearchForKeyword("rld", OtherSearchTypeId, true, false);
 

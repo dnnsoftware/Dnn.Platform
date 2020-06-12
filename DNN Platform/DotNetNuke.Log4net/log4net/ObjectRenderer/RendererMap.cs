@@ -54,8 +54,6 @@ namespace log4net.ObjectRenderer
 
         private static IObjectRenderer s_defaultRenderer = new DefaultRenderer();
 
-
-
         /// <summary>
         /// Default Constructor
         /// </summary>
@@ -68,7 +66,6 @@ namespace log4net.ObjectRenderer
         {
             this.m_map = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
-
 
         /// <summary>
         /// Render <paramref name="obj"/> using the appropriate renderer.

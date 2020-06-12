@@ -93,8 +93,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// Gets or sets the URL of the well-known object that will accept
         /// the logging events.
@@ -114,8 +112,6 @@ namespace log4net.Appender
             get { return this.m_sinkUrl; }
             set { this.m_sinkUrl = value; }
         }
-
-
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -145,8 +141,6 @@ namespace log4net.Appender
 
             this.m_sinkObj = (IRemoteLoggingSink)Activator.GetObject(typeof(IRemoteLoggingSink), this.m_sinkUrl, channelProperties);
         }
-
-
 
         /// <summary>
         /// Send the contents of the buffer to the remote sink.
@@ -222,7 +216,6 @@ namespace log4net.Appender
             return this.m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
         }
 
-
         /// <summary>
         /// A work item is being queued into the thread pool
         /// </summary>
@@ -276,7 +269,6 @@ namespace log4net.Appender
             }
         }
 
-
         /// <summary>
         /// The URL of the remote sink.
         /// </summary>
@@ -300,7 +292,6 @@ namespace log4net.Appender
         /// state it is safe to close the appender.
         /// </remarks>
         private ManualResetEvent m_workQueueEmptyEvent = new ManualResetEvent(true);
-
 
         /// <summary>
         /// Interface used to deliver <see cref="LoggingEvent"/> objects to a remote sink.

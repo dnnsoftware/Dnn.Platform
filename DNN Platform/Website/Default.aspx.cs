@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -69,7 +68,6 @@ namespace DotNetNuke.Framework
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -158,8 +156,6 @@ namespace DotNetNuke.Framework
             }
             return string.Empty;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -373,7 +369,6 @@ namespace DotNetNuke.Framework
             // META generator
 
             this.Generator = string.Empty;
-
 
             // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
             if (!UrlUtils.InPopUp() &&

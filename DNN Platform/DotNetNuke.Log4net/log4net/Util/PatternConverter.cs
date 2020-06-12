@@ -56,8 +56,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Get the next pattern converter in the chain
         /// </summary>
@@ -113,8 +111,6 @@ namespace log4net.Util
             set { this.m_option = value; }
         }
 
-
-
         /// <summary>
         /// Evaluate this pattern converter and write the output to a writer.
         /// </summary>
@@ -127,8 +123,6 @@ namespace log4net.Util
         /// </para>
         /// </remarks>
         protected abstract void Convert(TextWriter writer, object state);
-
-
 
         /// <summary>
         /// Set the next pattern converter in the chains
@@ -256,8 +250,6 @@ namespace log4net.Util
 
         private ReusableStringWriter m_formatWriter = new ReusableStringWriter(System.Globalization.CultureInfo.InvariantCulture);
 
-
-
         /// <summary>
         /// Initial buffer size
         /// </summary>
@@ -267,8 +259,6 @@ namespace log4net.Util
         /// Maximum buffer size before it is recycled
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
-
-
 
         /// <summary>
         /// Write an dictionary to a <see cref="TextWriter"/>

@@ -56,8 +56,6 @@ namespace log4net.Config
         {
         }
 
-
-
         /// <summary>
         /// Automatically configures the log4net system based on the
         /// application's configuration settings.
@@ -256,7 +254,6 @@ namespace log4net.Config
             XmlConfigurator.Configure(repository, configFile);
         }
 
-
         /// <summary>
         /// Configures the <see cref="ILoggerRepository"/> using the specified configuration
         /// file.
@@ -281,8 +278,6 @@ namespace log4net.Config
         {
             XmlConfigurator.Configure(repository, configStream);
         }
-
-
 
 #if !NETCF && !SSCLI
 

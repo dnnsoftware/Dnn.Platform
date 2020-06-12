@@ -57,8 +57,6 @@ namespace log4net.Util
         /// </summary>
         private readonly Hashtable m_hashtable = new Hashtable();
 
-
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -88,8 +86,6 @@ namespace log4net.Util
             }
         }
 
-
-
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
         /// Deserialization constructor
@@ -111,8 +107,6 @@ namespace log4net.Util
             }
         }
 #endif
-
-
 
         /// <summary>
         /// Gets the key names.
@@ -150,8 +144,6 @@ namespace log4net.Util
             set { throw new NotSupportedException("This is a Read Only Dictionary and can not be modified"); }
         }
 
-
-
         /// <summary>
         /// Test if the dictionary contains a specified key
         /// </summary>
@@ -166,7 +158,6 @@ namespace log4net.Util
         {
             return this.InnerHashtable.Contains(key);
         }
-
 
         /// <summary>
         /// The hashtable used to store the properties
@@ -183,7 +174,6 @@ namespace log4net.Util
         {
             get { return this.m_hashtable; }
         }
-
 
 #if !NETCF
         /// <summary>
@@ -225,8 +215,6 @@ namespace log4net.Util
             }
         }
 #endif
-
-
 
         /// <summary>
         /// See <see cref="IDictionary.GetEnumerator"/>
@@ -325,8 +313,6 @@ namespace log4net.Util
             get { return this.InnerHashtable.IsFixedSize; }
         }
 
-
-
         /// <summary>
         /// See <see cref="ICollection.CopyTo"/>
         /// </summary>
@@ -360,8 +346,6 @@ namespace log4net.Util
         {
             get { return this.InnerHashtable.SyncRoot; }
         }
-
-
 
         /// <summary>
         /// See <see cref="IEnumerable.GetEnumerator"/>

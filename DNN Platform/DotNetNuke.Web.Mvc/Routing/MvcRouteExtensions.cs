@@ -35,7 +35,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             route.DataTokens[NameKey] = name;
         }
 
-
         /// <summary>
         /// Get the name of the route
         /// </summary>

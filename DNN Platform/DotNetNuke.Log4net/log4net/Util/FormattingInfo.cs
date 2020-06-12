@@ -68,8 +68,6 @@ namespace log4net.Util
             this.m_leftAlign = leftAlign;
         }
 
-
-
         /// <summary>
         /// Gets or sets the minimum value.
         /// </summary>

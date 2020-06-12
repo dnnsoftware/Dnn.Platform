@@ -47,8 +47,6 @@ namespace log4net.Layout
         {
         }
 
-
-
         /// <summary>
         /// Gets the <see cref="LoggingEvent.TimeStamp"/> as a <see cref="DateTime"/>.
         /// </summary>

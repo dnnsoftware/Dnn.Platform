@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -132,7 +131,6 @@ namespace DotNetNuke.UI.Skins
 
             this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", string.Empty));
 
-
             // select current skin
             for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
             {
@@ -143,8 +141,6 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-
-
 
         /// <summary>
         /// The Page_Load server event handler on this page is used

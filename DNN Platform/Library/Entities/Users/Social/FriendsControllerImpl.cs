@@ -17,7 +17,6 @@ namespace DotNetNuke.Entities.Users.Social.Internal
     {
         internal const string FriendRequest = "FriendRequest";
 
-
         // static FriendsControllerImpl()
         // {
         // }

@@ -174,7 +174,5 @@ namespace DotNetNuke.Security.Roles
         /// <param name="cancel">A flag that indicates whether to cancel (delete) the userrole</param>
         void UpdateUserRole(int portalId, int userId, int roleId, RoleStatus status, bool isOwner, bool cancel);
 
-
-
     }
 }

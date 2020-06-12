@@ -27,7 +27,6 @@ namespace DotNetNuke.Web.Client.Providers
         /// </summary>
         public const string DefaultName = "DnnBodyProvider";
 
-
         /// <summary>
         /// The name of the placeholder in which the controls will be rendered
         /// </summary>

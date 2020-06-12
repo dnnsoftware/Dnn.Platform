@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -259,7 +258,6 @@ namespace DotNetNuke.Entities.Urls
             // return any changes to the rewritePath
             rewritePath = newRewritePath;
         }
-
 
         private static void AddInternalAliases(FriendlyUrlSettings settings, List<string> usingHttpAliases)
         {
@@ -919,7 +917,6 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
 
-
                         if (dupInSameCulture)
                         {
                             string msg = "Page naming conflict. Url of (" + foundTAb.TabPath +
@@ -1568,7 +1565,6 @@ namespace DotNetNuke.Entities.Urls
 
             return dict;
         }
-
 
         /// <summary>
         /// Returns a list of aliases that are used in custom tab/alias association.

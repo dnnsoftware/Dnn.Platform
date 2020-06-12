@@ -46,8 +46,6 @@ namespace log4net.Util
         /// </summary>
         private Stack m_stack = new Stack();
 
-
-
         /// <summary>
         /// Internal constructor
         /// </summary>
@@ -59,8 +57,6 @@ namespace log4net.Util
         internal ThreadContextStack()
         {
         }
-
-
 
         /// <summary>
         /// The number of messages in the stack
@@ -79,8 +75,6 @@ namespace log4net.Util
         {
             get { return this.m_stack.Count; }
         }
-
-
 
         /// <summary>
         /// Clears all the contextual information held in this stack.
@@ -154,8 +148,6 @@ namespace log4net.Util
             return new AutoPopStackFrame(stack, stack.Count - 1);
         }
 
-
-
         /// <summary>
         /// Gets the current context information for this stack.
         /// </summary>
@@ -186,7 +178,6 @@ namespace log4net.Util
             get { return this.m_stack; }
             set { this.m_stack = value; }
         }
-
 
         /// <summary>
         /// Gets the current context information for this stack.
@@ -230,8 +221,6 @@ namespace log4net.Util
             private readonly StackFrame m_parent;
             private string m_fullMessage = null;
 
-
-
             /// <summary>
             /// Constructor
             /// </summary>
@@ -253,8 +242,6 @@ namespace log4net.Util
                     this.m_fullMessage = message;
                 }
             }
-
-
 
             /// <summary>
             /// Get the message.
@@ -315,8 +302,6 @@ namespace log4net.Util
             /// </summary>
             private int m_frameDepth;
 
-
-
             /// <summary>
             /// Constructor
             /// </summary>
@@ -333,8 +318,6 @@ namespace log4net.Util
                 this.m_frameStack = frameStack;
                 this.m_frameDepth = frameDepth;
             }
-
-
 
             /// <summary>
             /// Returns the stack to the correct depth.

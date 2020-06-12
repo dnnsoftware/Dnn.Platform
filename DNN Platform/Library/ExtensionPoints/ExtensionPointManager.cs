@@ -109,7 +109,6 @@ namespace DotNetNuke.ExtensionPoints
                     select e.Value).FirstOrDefault();
         }
 
-
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module)
         {
             return this.GetScriptItemExtensionPoints(module, null);

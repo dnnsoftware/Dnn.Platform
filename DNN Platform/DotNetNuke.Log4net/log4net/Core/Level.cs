@@ -136,8 +136,6 @@ namespace log4net.Core
         {
         }
 
-
-
         /// <summary>
         /// Gets the name of this level.
         /// </summary>
@@ -185,8 +183,6 @@ namespace log4net.Core
         {
             get { return this.m_levelDisplayName; }
         }
-
-
 
         /// <summary>
         /// Returns the <see cref="string" /> representation of the current
@@ -248,8 +244,6 @@ namespace log4net.Core
             return this.m_levelValue;
         }
 
-
-
         /// <summary>
         /// Compares this instance to a specified object and returns an
         /// indication of their relative values.
@@ -297,8 +291,6 @@ namespace log4net.Core
             }
             throw new ArgumentException("Parameter: r, Value: [" + r + "] is not an instance of Level");
         }
-
-
 
         /// <summary>
         /// Returns a value indicating whether a specified <see cref="Level" />
@@ -427,8 +419,6 @@ namespace log4net.Core
             return !(l == r);
         }
 
-
-
         /// <summary>
         /// Compares two specified <see cref="Level"/> instances.
         /// </summary>
@@ -484,8 +474,6 @@ namespace log4net.Core
 
             return l.m_levelValue.CompareTo(r.m_levelValue);
         }
-
-
 
         /// <summary>
         /// The <see cref="Off" /> level designates a higher level than all the rest.

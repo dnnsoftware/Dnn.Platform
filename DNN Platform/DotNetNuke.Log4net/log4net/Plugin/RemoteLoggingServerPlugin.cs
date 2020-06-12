@@ -84,8 +84,6 @@ namespace log4net.Plugin
             this.m_sinkUri = sinkUri;
         }
 
-
-
         /// <summary>
         /// Gets or sets the URI of this sink.
         /// </summary>
@@ -103,8 +101,6 @@ namespace log4net.Plugin
             get { return this.m_sinkUri; }
             set { this.m_sinkUri = value; }
         }
-
-
 
         /// <summary>
         /// Attaches this plugin to a <see cref="ILoggerRepository"/>.
@@ -162,8 +158,6 @@ namespace log4net.Plugin
         private RemoteLoggingSinkImpl m_sink;
         private string m_sinkUri;
 
-
-
         /// <summary>
         /// The fully qualified type of the RemoteLoggingServerPlugin class.
         /// </summary>
@@ -172,7 +166,6 @@ namespace log4net.Plugin
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(RemoteLoggingServerPlugin);
-
 
         /// <summary>
         /// Delivers <see cref="LoggingEvent"/> objects to a remote sink.
@@ -200,8 +193,6 @@ namespace log4net.Plugin
                 this.m_repository = repository;
             }
 
-
-
             /// <summary>
             /// Logs the events to the repository.
             /// </summary>
@@ -225,8 +216,6 @@ namespace log4net.Plugin
                 }
             }
 
-
-
             /// <summary>
             /// Obtains a lifetime service object to control the lifetime
             /// policy for this instance.
@@ -246,8 +235,6 @@ namespace log4net.Plugin
             {
                 return null;
             }
-
-
 
             /// <summary>
             /// The underlying <see cref="ILoggerRepository" /> that events should

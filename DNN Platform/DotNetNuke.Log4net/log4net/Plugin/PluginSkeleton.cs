@@ -50,8 +50,6 @@ namespace log4net.Plugin
             this.m_name = name;
         }
 
-
-
         /// <summary>
         /// Gets or sets the name of the plugin.
         /// </summary>
@@ -106,8 +104,6 @@ namespace log4net.Plugin
         {
         }
 
-
-
         /// <summary>
         /// The repository for this plugin
         /// </summary>
@@ -125,8 +121,6 @@ namespace log4net.Plugin
             get { return this.m_repository; }
             set { this.m_repository = value; }
         }
-
-
 
         /// <summary>
         /// The name of this plugin.

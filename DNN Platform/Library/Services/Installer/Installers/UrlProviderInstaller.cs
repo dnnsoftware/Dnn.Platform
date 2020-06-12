@@ -18,7 +18,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private ExtensionUrlProviderInfo _installedExtensionUrlProvider;
         private string _desktopModuleName;
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -49,7 +48,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

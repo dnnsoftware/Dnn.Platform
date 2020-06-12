@@ -80,7 +80,6 @@ namespace DotNetNuke.Services.Journal
                 Util.GetContentController().UpdateContentItem(objContent);
             }
 
-
             // Update Terms
             // var cntTerm = new Terms();
             // cntTerm.ManageQuestionTerms(objPost, objContent);
@@ -132,7 +131,6 @@ namespace DotNetNuke.Services.Journal
 
             return contentTypeId;
         }
-
 
         /// <summary>
         /// Creates a Content Type (for taxonomy) in the data store.

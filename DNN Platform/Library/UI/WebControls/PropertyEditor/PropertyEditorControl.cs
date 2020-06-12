@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +18,6 @@ using DotNetNuke.Entities.Icons;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -73,8 +71,6 @@ namespace DotNetNuke.UI.WebControls
         {
             get { return this.GetProperties(); }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -231,7 +227,6 @@ namespace DotNetNuke.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ArrayList Fields { get; private set; }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Field Style
@@ -361,8 +356,6 @@ namespace DotNetNuke.UI.WebControls
         public event EditorCreatedEventHandler ItemCreated;
         public event PropertyChangedEventHandler ItemDeleted;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>
@@ -427,8 +420,6 @@ namespace DotNetNuke.UI.WebControls
             editor.DataBind();
             container.Controls.Add(editor);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -908,8 +899,6 @@ namespace DotNetNuke.UI.WebControls
             base.OnPreRender(e);
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Binds the controls to the DataSource
@@ -935,8 +924,6 @@ namespace DotNetNuke.UI.WebControls
             // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
             this.ChildControlsCreated = true;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -74,8 +74,6 @@ namespace log4net.Repository.Hierarchy
             this.m_hashCache = name.GetHashCode();
         }
 
-
-
         /// <summary>
         /// Returns a hash code for the current instance.
         /// </summary>

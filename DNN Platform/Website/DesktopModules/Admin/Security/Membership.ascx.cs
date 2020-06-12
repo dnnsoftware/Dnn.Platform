@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.Abstractions;
@@ -40,7 +39,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the UserMembership associated with this control
@@ -59,8 +57,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the MembershipAuthorized Event
@@ -72,7 +68,6 @@ namespace DotNetNuke.Modules.Admin.Users
         public event EventHandler MembershipUnLocked;
         public event EventHandler MembershipPromoteToSuperuser;
         public event EventHandler MembershipDemoteFromSuperuser;
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -109,7 +104,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -179,8 +173,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls
@@ -243,8 +235,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.membershipForm.DataBind();
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -262,7 +252,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdUnLock.Click += this.cmdUnLock_Click;
             this.cmdToggleSuperuser.Click += this.cmdToggleSuperuser_Click;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

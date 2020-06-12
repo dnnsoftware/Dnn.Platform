@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Globalization;
 using System.Linq;
@@ -69,7 +68,6 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-
         /// <summary>
         /// Initializes the specified application.
         /// </summary>
@@ -116,7 +114,6 @@ namespace DotNetNuke.HttpModules.Membership
                 }
             }
         }
-
 
         /// <summary>
         /// Called when unverified user skin initialize.

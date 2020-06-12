@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 
@@ -40,14 +39,10 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// </summary>
         IList<string> Errors { get; }
 
-
-
         /// <summary>
         /// Main method to execute the step
         /// </summary>
         void Execute();
-
-
 
         /// <summary>
         /// This event gets fired when any activity gets recorded

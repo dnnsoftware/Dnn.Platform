@@ -59,7 +59,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage FollowBack(NotificationDTO postData)

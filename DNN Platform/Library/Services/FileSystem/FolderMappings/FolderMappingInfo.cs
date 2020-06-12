@@ -98,8 +98,6 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderProviderType = folderProviderType;
         }
 
-
-
         /// <summary>
         ///   Fills a FolderInfo from a Data Reader
         /// </summary>

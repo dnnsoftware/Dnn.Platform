@@ -75,7 +75,6 @@ namespace log4net.Util.PatternStringConverters
 #endif
         }
 
-
         /// <summary>
         /// The fully qualified type of the UserNamePatternConverter class.
         /// </summary>

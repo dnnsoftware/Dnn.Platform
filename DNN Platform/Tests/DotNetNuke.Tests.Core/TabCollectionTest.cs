@@ -25,7 +25,6 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             MockComponentProvider.CreateDataCacheProvider();
         }
 
-
         [Test]
         public void DNN_13659_WithTabName_NullTabName()
         {

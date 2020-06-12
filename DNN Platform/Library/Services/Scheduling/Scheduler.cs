@@ -193,7 +193,6 @@ namespace DotNetNuke.Services.Scheduling
                 return null;
             }
 
-
             private static bool ScheduleInProgressContains(ScheduleHistoryItem scheduleHistoryItem)
             {
                 try
@@ -393,7 +392,6 @@ namespace DotNetNuke.Services.Scheduling
                         strDebug.Append(" task is scheduled for " + scheduleItem.NextStart);
                         appended = true;
                     }
-
 
                     if (!scheduleItem.Enabled)
                     {
@@ -716,7 +714,6 @@ namespace DotNetNuke.Services.Scheduling
 
                 var serverGroupServers = ServerGroupServers(thisServer);
 
-
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
                     if (runningInAGroup && string.IsNullOrEmpty(scheduleItem.Servers))
@@ -811,7 +808,6 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             FireEvents();
                         }
-
 
                         if (_writerTimeouts > 20 || _readerTimeouts > 20)
                         {
@@ -947,7 +943,6 @@ namespace DotNetNuke.Services.Scheduling
                                 {
                                     return;
                                 }
-
 
                                 if (_writerTimeouts > 20 || _readerTimeouts > 20)
                                 {
@@ -1130,7 +1125,6 @@ namespace DotNetNuke.Services.Scheduling
                         AddToScheduleQueue(scheduleHistoryItem);
                     }
 
-
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_COMPLETED" };
@@ -1168,7 +1162,6 @@ namespace DotNetNuke.Services.Scheduling
                     // A SchedulerClient is notifying us that their
                     // process has errored.  Decrease our ActiveThreadCount
                     Interlocked.Decrement(ref _activeThreadCount);
-
 
                     Exceptions.Exceptions.ProcessSchedulerException(exception);
 
@@ -1454,7 +1447,6 @@ namespace DotNetNuke.Services.Scheduling
                         }
                         // Update the ScheduleHistory in the database
                         UpdateScheduleHistory(scheduleHistoryItem);
-
 
                         if (scheduleHistoryItem.NextStart != Null.NullDate)
                         {

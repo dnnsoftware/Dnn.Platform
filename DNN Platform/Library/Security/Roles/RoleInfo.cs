@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -300,8 +299,6 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a RoleInfo from a Data Reader
@@ -343,7 +340,6 @@ namespace DotNetNuke.Security.Roles
                         break;
                 }
 
-
                 int status = Null.SetNullInteger(dr["Status"]);
                 switch (status)
                 {
@@ -371,13 +367,11 @@ namespace DotNetNuke.Security.Roles
                     }
                 }
 
-
             }
             catch (IndexOutOfRangeException)
             {
                 // do nothing
             }
-
 
             // Fill base class fields
             this.FillInternal(dr);
@@ -471,8 +465,6 @@ namespace DotNetNuke.Security.Roles
                     return string.Empty;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

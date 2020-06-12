@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Specialized;
 using System.Data.SqlTypes;
@@ -29,7 +28,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
         private DnnDatePicker _dateControl;
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -187,7 +185,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
-
 
             this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
             this.DateControl.ID = base.ID + "_control";

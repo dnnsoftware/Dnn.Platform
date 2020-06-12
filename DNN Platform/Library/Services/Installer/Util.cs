@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -174,7 +173,6 @@ namespace DotNetNuke.Services.Installer
         public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
         // ReSharper restore InconsistentNaming
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The StreamToStream method reads a source stream and wrtites it to a destination stream
@@ -224,8 +222,6 @@ namespace DotNetNuke.Services.Installer
             }
             return propValue;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -309,7 +305,6 @@ namespace DotNetNuke.Services.Installer
                 }
             }
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

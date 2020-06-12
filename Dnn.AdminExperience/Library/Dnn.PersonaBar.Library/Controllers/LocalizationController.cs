@@ -51,7 +51,6 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var dictionary = new Dictionary<string, string>();
 
-
             foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
             {
                 dictionary[kvp.Key] = kvp.Value;
@@ -75,7 +74,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
 
             var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
-
 
             DataCache.SetCache(cacheKey, lastModifiedDate, (DNNCacheDependency)null,
                                Cache.NoAbsoluteExpiration, OneHour, CacheItemPriority.Normal, null);

@@ -46,15 +46,12 @@ namespace log4net.Filter
         /// </summary>
         private string m_key;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
         public PropertyFilter()
         {
         }
-
 
         /// <summary>
         /// The key to lookup in the event properties and then match against.
@@ -71,7 +68,6 @@ namespace log4net.Filter
             get { return this.m_key; }
             set { this.m_key = value; }
         }
-
 
         /// <summary>
         /// Check if this filter should allow the event to be logged

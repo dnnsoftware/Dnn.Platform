@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Text.RegularExpressions;
 using System.Web.UI;
@@ -38,8 +37,6 @@ namespace DotNetNuke.UI.Containers
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ActionRoot
@@ -71,8 +68,6 @@ namespace DotNetNuke.UI.Containers
                 return this._ProviderControl;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -158,10 +153,6 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// BindMenu binds the Navigation Provider to the Node Collection
@@ -240,8 +231,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// BindMenu binds the Navigation Provider to the Node Collection
@@ -306,8 +295,6 @@ namespace DotNetNuke.UI.Containers
             base.OnPreRender(e);
             this.BindMenu();
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

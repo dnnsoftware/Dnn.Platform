@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -114,7 +113,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PermissionInfo> Permissions { get; private set; }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a ModuleDefinitionInfo from a Data Reader
@@ -150,8 +148,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 this.ModuleDefID = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

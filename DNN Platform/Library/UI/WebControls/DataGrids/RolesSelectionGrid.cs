@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Roles.Internal;
 using DotNetNuke.Services.Localization;
-
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -126,7 +124,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
         /// <summary>
         /// List of the Names of the selected Roles
         /// </summary>
@@ -205,8 +202,6 @@ namespace DotNetNuke.UI.WebControls
                 this._selectedRoles = value;
             }
         }
-
-
 
         /// <summary>
         /// Bind the data to the controls
@@ -308,8 +303,6 @@ namespace DotNetNuke.UI.WebControls
             checkCol.HeaderStyle.Wrap = true;
             this.dgRoleSelection.Columns.Add(checkCol);
         }
-
-
 
         /// <summary>
         /// Load the ViewState

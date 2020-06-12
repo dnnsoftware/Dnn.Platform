@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Text.RegularExpressions;
 using System.Web.UI;
@@ -51,8 +50,6 @@ namespace DotNetNuke.UI.UserControls
             this.ChooseRender = true;
             this.ChooseMode = true;
         }
-
-
 
         /// <summary>Enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
         public bool ChooseMode { get; set; }
@@ -244,8 +241,6 @@ namespace DotNetNuke.UI.UserControls
                 return this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

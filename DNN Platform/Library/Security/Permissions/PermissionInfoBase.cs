@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Xml.Serialization;
@@ -51,8 +50,6 @@ namespace DotNetNuke.Security.Permissions
             this._Username = Null.NullString;
             this._DisplayName = Null.NullString;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -167,8 +164,6 @@ namespace DotNetNuke.Security.Permissions
                 this._Username = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

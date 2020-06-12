@@ -941,7 +941,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             return app;
         }
 
-
         private string NavigateUrl(int tabId)
         {
             return string.Format("/Default.aspx?tabid={0}", tabId);

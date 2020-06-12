@@ -95,7 +95,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowConcurrencyException">Thrown when the current state of the workflow is not the same of the current state specified in the StateTransaction Dto</exception>
         void CompleteWorkflow(StateTransaction stateTransaction);
 
-
         /// <summary>
         /// This method returns the user that started the workflow for the contentItem.
         /// </summary>

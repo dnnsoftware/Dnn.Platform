@@ -45,8 +45,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         public readonly IDataService DataProvider = DataService.Instance;
 
-
-
         /// <summary>
         /// Validates the received JWT against the databas eand returns username when successful.
         /// </summary>

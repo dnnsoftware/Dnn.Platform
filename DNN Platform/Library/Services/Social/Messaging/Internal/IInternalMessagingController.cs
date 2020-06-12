@@ -17,8 +17,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender);
 
-
-
         Message GetMessage(int messageId);
         MessageRecipient GetMessageRecipient(int messageId, int userId);
         IList<MessageRecipient> GetMessageRecipients(int messageId);
@@ -29,8 +27,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         void MarkUnRead(int conversationId, int userId);
         void MarkArchived(int conversationId, int userId);
         void MarkUnArchived(int conversationId, int userId);
-
-
 
         /// <summary>How long a user needs to wait before user is allowed sending the next message</summary>
         /// <returns>Time in seconds. Returns zero if user has never sent a message</returns>
@@ -61,8 +57,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="portalId">Portal Id</param>
         bool DisablePrivateMessage(int portalId);
 
-
-
         /// <summary>Converts the legacy messages.</summary>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
@@ -71,8 +65,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <summary>Counts the legacy messages.</summary>
         /// <returns>A count of messages</returns>
         int CountLegacyMessages();
-
-
 
         /// <summary>Gets the inbox.</summary>
         /// <param name="userId">The user identifier.</param>
@@ -170,14 +162,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns>A list of <see cref="MessageFileView"/></returns>
         IEnumerable<MessageFileView> GetAttachments(int messageId);
 
-
-
         IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
         IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize);
         void MarkMessageAsDispatched(int messageId, int recipientId);
         void MarkMessageAsSent(int messageId, int recipientId);
-
-
 
         int CheckReplyHasRecipients(int conversationId, int userId);
 

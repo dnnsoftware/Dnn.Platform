@@ -40,8 +40,6 @@ namespace log4net.Util
         private PropertiesDictionary m_flattened = null;
         private ArrayList m_nestedProperties = new ArrayList();
 
-
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -53,8 +51,6 @@ namespace log4net.Util
         internal CompositeProperties()
         {
         }
-
-
 
         /// <summary>
         /// Gets the value of a property
@@ -96,8 +92,6 @@ namespace log4net.Util
                 return null;
             }
         }
-
-
 
         /// <summary>
         /// Add a Properties Dictionary to this composite collection

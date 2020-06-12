@@ -76,8 +76,6 @@ namespace log4net.Core
             this.m_fullInfo = this.m_className + '.' + this.m_method.Name + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
         }
 
-
-
         /// <summary>
         /// Gets the fully qualified class name of the caller making the logging
         /// request.
@@ -168,8 +166,6 @@ namespace log4net.Core
         private readonly string m_className;
         private readonly string m_fullInfo;
         private readonly MethodItem m_method;
-
-
 
         /// <summary>
         /// The fully qualified type of the StackFrameItem class.

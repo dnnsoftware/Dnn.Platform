@@ -48,7 +48,6 @@ namespace DotNetNuke.Services.Journal
                     case "imageurl":
                         return PropertyAccess.FormatString(this.ImageUrl, format);
 
-
                 }
 
                 propertyNotFound = true;
@@ -56,9 +55,6 @@ namespace DotNetNuke.Services.Journal
 
             }
         }
-
-
-
 
 }
 

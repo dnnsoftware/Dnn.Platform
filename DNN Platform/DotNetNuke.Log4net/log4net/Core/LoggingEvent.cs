@@ -335,7 +335,6 @@ namespace log4net.Core
     {
         private static readonly Type declaringType = typeof(LoggingEvent);
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LoggingEvent" /> class
         /// from the supplied parameters.
@@ -461,8 +460,6 @@ namespace log4net.Core
         {
         }
 
-
-
 #if !(NETCF || NETSTANDARD1_3)
 
         /// <summary>
@@ -503,8 +500,6 @@ namespace log4net.Core
         }
 
 #endif
-
-
 
         /// <summary>
         /// Gets the time when the current process started.
@@ -1070,8 +1065,6 @@ namespace log4net.Core
             set { this.FixVolatileData(value); }
         }
 
-
-
 #if !NETCF
 
         /// <summary>
@@ -1118,8 +1111,6 @@ namespace log4net.Core
         }
 
 #endif
-
-
 
         /// <summary>
         /// Gets the portable data for this <see cref="LoggingEvent" />.
@@ -1526,8 +1517,6 @@ namespace log4net.Core
             return this.m_compositeProperties.Flatten();
         }
 
-
-
         /// <summary>
         /// The internal logging event data.
         /// </summary>
@@ -1588,8 +1577,6 @@ namespace log4net.Core
         /// changes in the caching strategy.
         /// </remarks>
         private bool m_cacheUpdatable = true;
-
-
 
         /// <summary>
         /// The key into the Properties map for the host name value.

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.UI.Modules;
@@ -36,7 +35,6 @@ namespace DotNetNuke.Web.Mvp
 
         public event EventHandler OnLoadSettings;
         public event EventHandler OnSaveSettings;
-
 
         /// <summary>
         /// The OnSettingsLoaded method is called when the Settings have been Loaded

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Web.UI.HtmlControls;
@@ -131,8 +130,6 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -279,8 +276,6 @@ namespace DotNetNuke.UI.Skins
             strThumbnail = Globals.ApplicationPath + "\\" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\", StringComparison.InvariantCultureIgnoreCase));
             return strThumbnail;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

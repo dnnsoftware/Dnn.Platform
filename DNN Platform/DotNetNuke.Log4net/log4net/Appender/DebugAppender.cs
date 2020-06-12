@@ -72,8 +72,6 @@ namespace log4net.Appender
             this.Layout = layout;
         }
 
-
-
         /// <summary>
         /// Gets or sets a value that indicates whether the appender will
         /// flush at the end of each write.
@@ -98,7 +96,6 @@ namespace log4net.Appender
             set { this.m_immediateFlush = value; }
         }
 
-
 #if !NETSTANDARD1_3
         /// <summary>
         /// Flushes any buffered log data.
@@ -119,7 +116,6 @@ namespace log4net.Appender
                 return true;
             }
 #endif
-
 
         /// <summary>
         /// Writes the logging event to the <see cref="System.Diagnostics.Debug"/> system.
@@ -159,8 +155,6 @@ namespace log4net.Appender
         {
             get { return true; }
         }
-
-
 
         /// <summary>
         /// Immediate flush means that the underlying writer or output stream

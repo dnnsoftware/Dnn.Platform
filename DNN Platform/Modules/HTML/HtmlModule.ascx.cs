@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 
@@ -40,9 +39,6 @@ namespace DotNetNuke.Modules.Html
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -258,8 +254,6 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

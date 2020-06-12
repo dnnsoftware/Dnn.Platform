@@ -53,8 +53,6 @@ namespace log4net.Layout
             this.IgnoresException = true;
         }
 
-
-
         /// <summary>
         /// Initialize layout options
         /// </summary>
@@ -75,8 +73,6 @@ namespace log4net.Layout
         {
             // nothing to do.
         }
-
-
 
         /// <summary>
         /// Produces a simple formatted output.

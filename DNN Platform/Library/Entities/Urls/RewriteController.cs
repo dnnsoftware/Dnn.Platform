@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -340,7 +339,6 @@ namespace DotNetNuke.Entities.Urls
             return vanityUrlLookupDictionary[vanityUrl];
         }
 
-
         private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
         {
             bool found;
@@ -568,8 +566,6 @@ namespace DotNetNuke.Entities.Urls
             // remove the application path
             result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
         }
-
-
 
         /// <summary>
         /// appends a language/culture code value if it is not already present in the rewrite path

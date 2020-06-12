@@ -55,16 +55,12 @@ namespace log4net.Filter
         /// </summary>
         private string m_loggerToMatch;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
         public LoggerMatchFilter()
         {
         }
-
-
 
         /// <summary>
         /// <see cref="FilterDecision.Accept"/> when matching <see cref="LoggerToMatch"/>
@@ -103,8 +99,6 @@ namespace log4net.Filter
             get { return this.m_loggerToMatch; }
             set { this.m_loggerToMatch = value; }
         }
-
-
 
         /// <summary>
         /// Check if this filter should allow the event to be logged

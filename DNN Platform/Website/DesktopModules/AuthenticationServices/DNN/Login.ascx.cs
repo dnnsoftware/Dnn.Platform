@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web;
 
@@ -41,7 +40,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-
         /// <summary>
         /// Gets whether the Captcha control is used to validate the login
         /// </summary>
@@ -52,8 +50,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 return AuthenticationConfig.GetConfig(this.PortalId).UseCaptcha;
             }
         }
-
-
 
         /// <summary>
         /// Check if the Auth System is Enabled (for the Portal)
@@ -116,8 +112,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             // see if the portal supports persistant cookies
             this.chkCookie.Visible = Host.RememberCheckbox;
 
-
-
             // no need to show password link if feature is disabled, let's check this first
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
@@ -133,7 +127,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 this.passwordLink.Visible = false;
             }
 
-
             if (!this.IsPostBack)
             {
                 if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]) && this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
@@ -144,7 +137,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     }
 
                     var verificationCode = this.Request.QueryString["verificationcode"];
-
 
                     try
                     {

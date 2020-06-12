@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -945,8 +944,6 @@ namespace DotNetNuke.Entities.Modules
                 contentController.UpdateContentItem(module);
             }
         }
-
-
 
         /// <summary>
         /// Check if a ModuleInfo belongs to the referenced Tab or not
@@ -2290,8 +2287,6 @@ namespace DotNetNuke.Entities.Modules
             // Clear Tab Caches
             this.ClearCache(localizedModule.TabID);
         }
-
-
 
         /// <summary>
         /// Deserializes the module.

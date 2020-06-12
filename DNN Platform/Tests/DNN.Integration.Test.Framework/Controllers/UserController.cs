@@ -25,7 +25,6 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string CreateFriendsMarker = @"'$[CreateFriends]'";
         private const string CreateFollowersMarker = @"'$[CreateFollowers]'";
 
-
         /// <summary>
         /// Creates a new user with Registered User Role and with the same password as the host user
         /// </summary>

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -102,7 +101,6 @@ namespace DotNetNuke.Services.Localization
         // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? _showMissingKeys;
-
 
         /// <summary>
         /// Returns ~/App_GlobalResources
@@ -236,8 +234,6 @@ namespace DotNetNuke.Services.Localization
                 return "Pacific Standard Time";
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -428,7 +424,6 @@ namespace DotNetNuke.Services.Localization
                 }
             }
         }
-
 
         private static void AddLanguageHttpAlias(int portalId, Locale locale)
         {
@@ -711,7 +706,6 @@ namespace DotNetNuke.Services.Localization
             EventLogController.Instance.AddLog(language, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_DELETED);
             DataCache.ClearHostCache(true);
         }
-
 
         public static string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
         {
@@ -1205,8 +1199,6 @@ namespace DotNetNuke.Services.Localization
             return LocalizationProvider.Instance.GetString(key, resourceFileRoot, language, portalSettings, disableShowMissingKeys);
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetStringUrl gets the localized string corresponding to the resourcekey
@@ -1225,8 +1217,6 @@ namespace DotNetNuke.Services.Localization
         {
             return GetString(key, resourceFileRoot, PortalController.Instance.GetCurrentPortalSettings(), null, true);
         }
-
-
 
         /// <summary>
         /// this function will escape reserved character fields to their "safe" javascript equivalents
@@ -1254,8 +1244,6 @@ namespace DotNetNuke.Services.Localization
             var unsafeString = GetString(key, resourceFileRoot);
             return GetSafeJSString(unsafeString);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1529,8 +1517,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-
-
         /// <summary>
         ///   <para>LoadCultureDropDownList loads a DropDownList with the list of supported cultures
         ///     based on the languages defined in the supported locales file, for the current portal</para>
@@ -1628,7 +1614,6 @@ namespace DotNetNuke.Services.Localization
 
             return cultureListItems;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -1920,7 +1905,6 @@ namespace DotNetNuke.Services.Localization
         {
             SaveLanguage(locale, true);
         }
-
 
         public static void SaveLanguage(Locale locale, bool clearCache)
         {

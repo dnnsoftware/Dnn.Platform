@@ -18,7 +18,6 @@ namespace DotNetNuke.Collections
         private readonly int _pageSize;
         private readonly IEnumerable<T> _source;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="PageSelector{T}"/> for use on the specified data store
         /// </summary>
@@ -29,8 +28,6 @@ namespace DotNetNuke.Collections
             this._source = source;
             this._pageSize = pageSize;
         }
-
-
 
         /// <summary>
         ///   Retrieves the specified page as a <see cref = "IPagedList{T}" />

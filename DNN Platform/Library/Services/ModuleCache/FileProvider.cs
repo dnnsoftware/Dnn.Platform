@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,8 +33,6 @@ namespace DotNetNuke.Services.ModuleCache
                 return tabModuleId + "_" + this.ByteArrayToString(hash);
             }
         }
-
-
 
         private static string GetAttribFileName(int tabModuleId, string cacheKey)
         {
@@ -72,7 +69,6 @@ namespace DotNetNuke.Services.ModuleCache
             var portalInfo = PortalController.Instance.GetPortal(portalId);
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
-
 
             if (! string.IsNullOrEmpty(homeDirectoryMapPath))
             {

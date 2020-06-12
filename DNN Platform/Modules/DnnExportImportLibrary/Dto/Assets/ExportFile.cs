@@ -49,7 +49,6 @@ namespace Dnn.ExportImport.Dto.Assets
         public bool HasBeenPublished { get; set; }
         public string Description { get; set; }
 
-
         public int StorageLocation { get; set; }
 
         public bool IsCached { get; set; }

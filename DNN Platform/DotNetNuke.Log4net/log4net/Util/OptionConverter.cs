@@ -55,8 +55,6 @@ namespace log4net.Util
         {
         }
 
-
-
         // /// <summary>
         // /// Concatenates two string arrays.
         // /// </summary>
@@ -592,8 +590,6 @@ namespace log4net.Util
             }
         }
 
-
-
         /// <summary>
         /// Converts the string representation of the name or numeric value of one or
         /// more enumerated constants to an equivalent enumerated object.
@@ -644,8 +640,6 @@ namespace log4net.Util
 			return Enum.ToObject(enumType, retVal);
 #endif
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the OptionConverter class.

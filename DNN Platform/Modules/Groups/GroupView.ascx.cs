@@ -59,7 +59,6 @@ namespace DotNetNuke.Modules.Groups
                 template = template.Replace("{resx:EditGroup}", Localization.GetString("EditGroup", resxPath));
                 template = template.Replace("[GroupViewTabId]", this.GroupViewTabId.ToString());
 
-
                 var groupParser = new GroupViewParser(this.PortalSettings, role, this.UserInfo, template, this.TabId);
                 groupParser.GroupEditUrl = this.GetEditUrl();
 

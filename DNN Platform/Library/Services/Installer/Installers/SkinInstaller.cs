@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.IO;
@@ -30,8 +29,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private SkinPackageInfo SkinPackage;
         private SkinPackageInfo TempSkinPackage;
         private string _SkinName = Null.NullString;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -159,8 +156,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -174,8 +169,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -200,8 +193,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -266,8 +257,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -192,7 +192,6 @@ namespace Dnn.ExportImport.Components.Providers
             return this._dataProvider.ExecuteScalar<int>("Export_RoleIdByName", this._dataProvider.GetNull(portalId), roleName);
         }
 
-
         public void SetRoleAutoAssign(int roleId)
         {
             this._dataProvider.ExecuteNonQuery("Export_RoleSetAutoAssign", roleId);

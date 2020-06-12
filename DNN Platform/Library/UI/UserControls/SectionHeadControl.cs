@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -34,9 +33,6 @@ namespace DotNetNuke.UI.UserControls
         protected ImageButton imgIcon;
         protected Label lblTitle;
         protected Panel pnlRule;
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -204,8 +200,6 @@ namespace DotNetNuke.UI.UserControls
                 this.lblTitle.Text = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

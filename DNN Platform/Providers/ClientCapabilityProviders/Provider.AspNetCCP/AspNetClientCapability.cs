@@ -35,7 +35,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-
         /// <summary>
         /// Constructs a new instance of ClientCapability.
         /// </summary>
@@ -120,8 +119,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 }
             }
         }
-
-
 
         /// <summary>
         /// Returns a dictionary of capability names and values as strings based on the object

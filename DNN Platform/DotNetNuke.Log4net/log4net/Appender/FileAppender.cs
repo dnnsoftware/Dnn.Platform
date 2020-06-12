@@ -164,7 +164,6 @@ namespace log4net.Appender
                 this.m_lockingModel = locking;
             }
 
-
 #if NETSTANDARD1_3
 			protected override void Dispose(bool disposing)
 			{
@@ -351,8 +350,6 @@ namespace log4net.Appender
                 }
             }
         }
-
-
 
         /// <summary>
         /// Locking model base class
@@ -871,8 +868,6 @@ namespace log4net.Appender
         }
 #endif
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -921,8 +916,6 @@ namespace log4net.Appender
             : this(layout, filename, true)
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the path to the file that logging will be written to.
@@ -1049,8 +1042,6 @@ namespace log4net.Appender
             set { this.m_lockingModel = value; }
         }
 
-
-
         /// <summary>
         /// Activate the options on the file appender.
         /// </summary>
@@ -1101,8 +1092,6 @@ namespace log4net.Appender
                 LogLog.Warn(declaringType, "FileAppender: Are you using FileAppender instead of ConsoleAppender?");
             }
         }
-
-
 
         /// <summary>
         /// Closes any previously opened file and calls the parent's <see cref="TextWriterAppender.Reset"/>.
@@ -1271,8 +1260,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Closes the previously opened file.
         /// </summary>
@@ -1286,8 +1273,6 @@ namespace log4net.Appender
         {
             this.WriteFooterAndCloseWriter();
         }
-
-
 
         /// <summary>
         /// Sets and <i>opens</i> the file where the log output will go. The specified file must be writable.
@@ -1410,8 +1395,6 @@ namespace log4net.Appender
             this.QuietWriter = new QuietTextWriter(writer, this.ErrorHandler);
         }
 
-
-
         /// <summary>
         /// Convert a path into a fully qualified path.
         /// </summary>
@@ -1429,8 +1412,6 @@ namespace log4net.Appender
         {
             return SystemInfo.ConvertToFullPath(path);
         }
-
-
 
         /// <summary>
         /// Flag to indicate if we should append to the file
@@ -1462,8 +1443,6 @@ namespace log4net.Appender
         /// The locking model to use
         /// </summary>
         private FileAppender.LockingModelBase m_lockingModel = new FileAppender.ExclusiveLock();
-
-
 
         /// <summary>
         /// The fully qualified type of the FileAppender class.

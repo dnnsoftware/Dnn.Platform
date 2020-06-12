@@ -56,8 +56,6 @@ namespace log4net.DateFormatter
             this.m_formatString = format;
         }
 
-
-
         /// <summary>
         /// Formats the date using <see cref="M:DateTime.ToString(string, IFormatProvider)"/>.
         /// </summary>
@@ -73,8 +71,6 @@ namespace log4net.DateFormatter
         {
             writer.Write(dateToFormat.ToString(this.m_formatString, System.Globalization.DateTimeFormatInfo.InvariantInfo));
         }
-
-
 
         /// <summary>
         /// The format string used to format the <see cref="DateTime" />.

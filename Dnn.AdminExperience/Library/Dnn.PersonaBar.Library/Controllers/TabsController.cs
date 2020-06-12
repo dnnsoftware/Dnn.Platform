@@ -343,7 +343,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                     .WithCulture(cultureCode, true))
                     .WithParentId(parentId).ToList();
 
-
             if (!string.IsNullOrEmpty(validateTab))
             {
                 tabs = this.ValidateModuleInTab(tabs, validateTab).ToList();

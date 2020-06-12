@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,8 +60,6 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-
-
         /// <summary>
         ///   LoadSettings loads the settings from the Database and displays them
         /// </summary>
@@ -97,7 +94,6 @@ namespace DotNetNuke.Modules.Html
                         this.cboWorkflow.FindItemByValue(workflow.Value.ToString()).Selected = true;
                     }
                     this.DisplayWorkflowDetails();
-
 
                     if (this.rblApplyTo.Items.FindByValue(workflow.Key) != null)
                     {

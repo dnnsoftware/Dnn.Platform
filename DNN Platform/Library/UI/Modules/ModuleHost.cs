@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,8 +56,6 @@ namespace DotNetNuke.UI.Modules
         private Control _control;
         private bool _isCached;
         private readonly IModuleControlPipeline _moduleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -474,8 +471,6 @@ namespace DotNetNuke.UI.Modules
                 }
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

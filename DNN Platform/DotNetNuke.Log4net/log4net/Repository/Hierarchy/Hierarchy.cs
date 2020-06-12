@@ -89,7 +89,6 @@ namespace log4net.Repository.Hierarchy
         }
     }
 
-
     /// <summary>
     /// Hierarchical organization of loggers
     /// </summary>
@@ -134,8 +133,6 @@ namespace log4net.Repository.Hierarchy
             add { this.m_loggerCreatedEvent += value; }
             remove { this.m_loggerCreatedEvent -= value; }
         }
-
-
 
         /// <summary>
         /// Default constructor
@@ -202,8 +199,6 @@ namespace log4net.Repository.Hierarchy
 
             this.m_ht = System.Collections.Hashtable.Synchronized(new System.Collections.Hashtable());
         }
-
-
 
         /// <summary>
         /// Has no appender warning been emitted
@@ -272,8 +267,6 @@ namespace log4net.Repository.Hierarchy
                 this.m_defaultFactory = value;
             }
         }
-
-
 
         /// <summary>
         /// Test if a logger exists
@@ -504,8 +497,6 @@ namespace log4net.Repository.Hierarchy
             return (Appender.IAppender[])appenderList.ToArray(typeof(Appender.IAppender));
         }
 
-
-
         /// <summary>
         /// Collect the appenders from an <see cref="IAppenderAttachable"/>.
         /// The appender may also be a container.
@@ -538,8 +529,6 @@ namespace log4net.Repository.Hierarchy
                 CollectAppender(appenderList, appender);
             }
         }
-
-
 
         /// <summary>
         /// Initialize the log4net system using the specified appender
@@ -590,8 +579,6 @@ namespace log4net.Repository.Hierarchy
             this.OnConfigurationChanged(new ConfigurationChangedEventArgs(configurationMessages));
         }
 
-
-
         /// <summary>
         /// Initialize the log4net system using the specified config
         /// </summary>
@@ -629,8 +616,6 @@ namespace log4net.Repository.Hierarchy
             // Notify listeners
             this.OnConfigurationChanged(new ConfigurationChangedEventArgs(configurationMessages));
         }
-
-
 
         /// <summary>
         /// Test if this hierarchy is disabled for the specified <see cref="Level"/>.
@@ -764,8 +749,6 @@ namespace log4net.Repository.Hierarchy
             }
         }
 
-
-
         /// <summary>
         /// Sends a logger creation event to all registered listeners
         /// </summary>
@@ -781,8 +764,6 @@ namespace log4net.Repository.Hierarchy
                 handler(this, new LoggerCreationEventArgs(logger));
             }
         }
-
-
 
         /// <summary>
         /// Updates all the parents of the specified logger
@@ -1062,8 +1043,6 @@ namespace log4net.Repository.Hierarchy
         private bool m_emittedNoAppenderWarning = false;
 
         private event LoggerCreationEventHandler m_loggerCreatedEvent;
-
-
 
         /// <summary>
         /// The fully qualified type of the Hierarchy class.

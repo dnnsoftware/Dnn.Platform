@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +26,6 @@ using DotNetNuke.Security;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Search.Entities;
 using Microsoft.ApplicationBlocks.Data;
-
 
 // ReSharper disable InconsistentNaming
 
@@ -156,8 +154,6 @@ namespace DotNetNuke.Data
         public abstract IDataReader ExecuteSQL(string sql);
         public abstract IDataReader ExecuteSQL(string sql, int timeoutSec);
 
-
-
         public abstract string ExecuteScript(string script);
         public abstract string ExecuteScript(string script, int timeoutSec);
 
@@ -256,7 +252,6 @@ namespace DotNetNuke.Data
         {
             return this.GetVersionInternal(false);
         }
-
 
         private Version GetVersionInternal(bool current)
         {
@@ -545,7 +540,6 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPortalsByUser", userId);
         }
 
-
         public virtual IDataReader GetPortalSettings(int PortalId, string CultureCode)
         {
             return this.ExecuteReader("GetPortalSettings", PortalId, CultureCode);
@@ -757,7 +751,6 @@ namespace DotNetNuke.Data
                 this.GetNull(tab.CultureCode),
                 tab.IsSystem);
         }
-
 
         public virtual int AddTabToEnd(TabInfo tab, int createdByUserID)
         {
@@ -1057,7 +1050,6 @@ namespace DotNetNuke.Data
                 createdByUserID);
         }
 
-
         public virtual void AddTabModule(int TabId, int ModuleId, string ModuleTitle, string Header, string Footer,
                                          int ModuleOrder, string PaneName, int CacheTime, string CacheMethod,
                                          string Alignment, string Color, string Border, string IconFile, int Visibility,
@@ -1098,7 +1090,6 @@ namespace DotNetNuke.Data
                 CultureCode,
                 createdByUserID);
         }
-
 
         public virtual void DeleteModule(int moduleId)
         {
@@ -1758,7 +1749,6 @@ namespace DotNetNuke.Data
         {
             this.ExecuteNonQuery("UpdateFileContent", fileId, this.GetNull(content));
         }
-
 
         public virtual void UpdateFileVersion(int fileId, Guid versionGuid)
         {
@@ -3012,7 +3002,6 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPackageDependencies");
         }
 
-
         public virtual IDataReader GetPackages(int portalID)
         {
             return this.ExecuteReader("GetPackages", this.GetNull(portalID));
@@ -3332,7 +3321,6 @@ namespace DotNetNuke.Data
                         exception.InnerMessage,
                         exception.InnerStackTrace,
                         exception.Source);
-
 
                 // DNN-6218 + DNN-6239 + DNN-6242: Due to change in the AddEventLog stored
                 // procedure in 7.4.0, we need to try a fallback especially during upgrading

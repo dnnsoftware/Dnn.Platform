@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Linq;
@@ -107,8 +106,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.pnlAddUser.CssClass = string.IsNullOrEmpty(this.pnlAddUser.CssClass) ? value : string.Format("{0} {1}", this.pnlAddUser.CssClass, value);
             }
         }
-
-
 
         /// <summary>
         /// method checks to see if its allowed to change the username
@@ -223,8 +220,6 @@ namespace DotNetNuke.Modules.Admin.Users
             return _IsValid;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateUser creates a new user in the Database
@@ -323,7 +318,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.txtPassword.Attributes.Add("value", this.txtPassword.Text);
             }
 
-
             bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
 
             // only show username row once UseEmailAsUserName is disabled in site settings
@@ -399,8 +393,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded
@@ -428,7 +420,6 @@ namespace DotNetNuke.Modules.Admin.Users
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
             base.OnPreRender(e);
-
 
             if (Host.EnableStrengthMeter)
             {
@@ -475,7 +466,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
             }
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

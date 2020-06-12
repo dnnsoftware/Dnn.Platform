@@ -76,7 +76,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         bool HasBeenPublished { get; }
 
-
         int CreatedByUserID { get; }
 
         DateTime CreatedOnDate { get; }

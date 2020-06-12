@@ -41,8 +41,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _webToolTip;
         private string _webURL;
 
-
-
         /// <summary>
         /// Gets or sets the CSS class for the option buttons and search button
         /// </summary>
@@ -443,8 +441,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-
-
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>
@@ -456,7 +452,6 @@ namespace DotNetNuke.UI.Skins.Controls
             Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Search/SearchSkinObjectPreview.js");
-
 
             this.cmdSearch.Click += this.CmdSearchClick;
             this.cmdSearchNew.Click += this.CmdSearchNewClick;

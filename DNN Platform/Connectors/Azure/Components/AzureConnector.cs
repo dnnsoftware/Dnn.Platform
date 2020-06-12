@@ -45,7 +45,6 @@ namespace Dnn.AzureConnector.Components
             get { return "~/DesktopModules/Connectors/Azure/Images/Azure.png"; }
         }
 
-
         public string PluginFolder
         {
             get { return "~/DesktopModules/Connectors/Azure/"; }
@@ -109,7 +108,6 @@ namespace Dnn.AzureConnector.Components
             var folderMapping = this.FindAzureFolderMapping(portalId, false);
 
             var settings = folderMapping != null ? folderMapping.FolderMappingSettings : new Hashtable();
-
 
             configs.Add("AccountName", this.GetSetting(settings, Constants.AzureAccountName, true));
             configs.Add("AccountKey", this.GetSetting(settings, Constants.AzureAccountKey, true));

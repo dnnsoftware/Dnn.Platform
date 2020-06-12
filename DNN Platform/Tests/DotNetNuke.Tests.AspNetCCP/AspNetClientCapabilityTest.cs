@@ -33,7 +33,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
 
         public const string winTabletPC = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.0.3705; Tablet PC 2.0)";
 
-
         public const string htcDesireVer1Sub22UserAgent = "Mozilla/5.0 (Linux; U; Android 2.2; sv-se; Desire_A8181 Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
         public const string blackBerry9105V1 = "BlackBerry9105/5.0.0.696 Profile/MIDP-2.1 Configuration/CLDC-1.1 VendorID/133";
 
@@ -66,7 +65,6 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Assert
             Assert.IsTrue(bIsMobile);
         }
-
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_True_For_IPhone()

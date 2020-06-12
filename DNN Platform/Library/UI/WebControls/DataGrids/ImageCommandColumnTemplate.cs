@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -38,8 +37,6 @@ namespace DotNetNuke.UI.WebControls
         {
             this.ItemType = itemType;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -188,7 +185,6 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public string VisibleField { get; set; }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// InstantiateIn instantiates the template (implementation of ITemplate)
@@ -273,9 +269,6 @@ namespace DotNetNuke.UI.WebControls
                     break;
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

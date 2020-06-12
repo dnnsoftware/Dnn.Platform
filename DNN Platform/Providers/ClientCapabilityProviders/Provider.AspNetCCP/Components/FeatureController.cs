@@ -31,8 +31,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
     {
         private const string ResourceFileRelativePath = "~/Providers/ClientCapabilityProviders/AspNetClientCapabilityProvider/App_LocalResources/SharedResources.resx";
 
-
-
         /// <summary>
         /// Handles upgrading the module and adding the module to the hosts menu.
         /// </summary>

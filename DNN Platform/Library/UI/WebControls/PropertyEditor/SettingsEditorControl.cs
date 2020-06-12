@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.ComponentModel;
@@ -42,8 +41,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the CustomEditors that are used by this control
@@ -60,8 +57,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>The CustomEditors object</value>
         /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -8,7 +8,6 @@ using System.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 
-
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
@@ -28,7 +27,6 @@ namespace DotNetNuke.Security.Permissions
 
         private int _StateID;
         private int _WorkflowStatePermissionID;
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -58,8 +56,6 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -96,8 +92,6 @@ namespace DotNetNuke.Security.Permissions
                 this._StateID = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -150,8 +144,6 @@ namespace DotNetNuke.Security.Permissions
                 return (this._StateID * 397) ^ this._WorkflowStatePermissionID;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

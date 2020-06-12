@@ -268,8 +268,6 @@ namespace log4net.Util
         /// </summary>
         private static Hashtable s_globalRulesRegistry;
 
-
-
         /// <summary>
         /// the pattern
         /// </summary>
@@ -284,8 +282,6 @@ namespace log4net.Util
         /// patterns defined on this PatternString only
         /// </summary>
         private Hashtable m_instanceRulesRegistry = new Hashtable();
-
-
 
         /// <summary>
         /// Initialize the global registry
@@ -322,8 +318,6 @@ namespace log4net.Util
 #endif
         }
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -351,7 +345,6 @@ namespace log4net.Util
             this.ActivateOptions();
         }
 
-
         /// <summary>
         /// Gets or sets the pattern formatting string
         /// </summary>
@@ -370,7 +363,6 @@ namespace log4net.Util
             get { return this.m_pattern;    }
             set { this.m_pattern = value; }
         }
-
 
         /// <summary>
         /// Initialize object options
@@ -392,7 +384,6 @@ namespace log4net.Util
         {
             this.m_head = this.CreatePatternParser(this.m_pattern).Parse();
         }
-
 
         /// <summary>
         /// Create the <see cref="PatternParser"/> used to parse the pattern

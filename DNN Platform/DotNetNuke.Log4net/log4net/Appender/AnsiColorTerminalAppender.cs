@@ -215,8 +215,6 @@ namespace log4net.Appender
             White   = 7,
         }
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AnsiColorTerminalAppender" /> class.
         /// </summary>
@@ -227,8 +225,6 @@ namespace log4net.Appender
         public AnsiColorTerminalAppender()
         {
         }
-
-
 
         /// <summary>
         /// Target is the value of the console output stream.
@@ -276,8 +272,6 @@ namespace log4net.Appender
         {
             this.m_levelMapping.Add(mapping);
         }
-
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -380,8 +374,6 @@ namespace log4net.Appender
             this.m_levelMapping.ActivateOptions();
         }
 
-
-
         /// <summary>
         /// The <see cref="AnsiColorTerminalAppender.Target"/> to use when writing to the Console
         /// standard output stream.
@@ -406,8 +398,6 @@ namespace log4net.Appender
         /// </remarks>
         public const string ConsoleError = "Console.Error";
 
-
-
         /// <summary>
         /// Flag to write output to the error stream rather than the standard output stream
         /// </summary>
@@ -422,8 +412,6 @@ namespace log4net.Appender
         /// Ansi code to reset terminal
         /// </summary>
         private const string PostEventCodes = "\x1b[0m";
-
-
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and

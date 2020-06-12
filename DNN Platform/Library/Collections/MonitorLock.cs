@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 namespace DotNetNuke.Collections.Internal
@@ -17,10 +16,8 @@ namespace DotNetNuke.Collections.Internal
             this._lockStrategy = lockStrategy;
         }
 
-
         // To detect redundant calls
         private bool _isDisposed;
-
 
         public void Dispose()
         {

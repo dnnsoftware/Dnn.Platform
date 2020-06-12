@@ -406,8 +406,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         }
          */
 
-
-
         private LoginResultData GetAuthorizationTokenFor(string uname, string upass)
         {
             var credentials = new { u = uname, p = upass };

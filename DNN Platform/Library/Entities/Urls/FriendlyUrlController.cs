@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +38,6 @@ namespace DotNetNuke.Entities.Urls
         {
             return new FriendlyUrlSettings(portalId);
         }
-
 
         /*
 /// <summary>
@@ -608,7 +606,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
 }
 */
 
-
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls)
         {
             return GetTabs(portalId, includeStdUrls, GetCurrentSettings(portalId));
@@ -988,7 +985,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             }
             return browserType;
         }
-
 
         public static string ValidateUrl(string cleanUrl, int validateUrlForTabId, PortalSettings settings, out bool modified)
         {

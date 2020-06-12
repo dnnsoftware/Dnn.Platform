@@ -78,7 +78,6 @@ namespace log4net.Layout.Pattern
             return returnValue;
         }
 
-
         /// <summary>
         /// The fully qualified type of the StackTraceDetailPatternConverter class.
         /// </summary>

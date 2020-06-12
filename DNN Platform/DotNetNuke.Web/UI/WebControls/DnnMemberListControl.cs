@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,9 +25,6 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private UserInfo _currentUser;
         private RelationshipController _relationshipController;
-
-
-
 
         /// <summary>
         /// Gets or sets the template for displaying the header section of a DnnMemberListControl object.
@@ -85,8 +81,6 @@ namespace DotNetNuke.Web.UI.WebControls
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string FooterTemplate { get; set; }
-
-
 
         /// <summary>
         /// Gets or sets the index of the currently displayed page.

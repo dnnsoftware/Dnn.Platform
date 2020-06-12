@@ -171,7 +171,6 @@ namespace DotNetNuke.Tests.Urls
                                         .Replace("{vanityUrl}", vanityUrl)
                                         .Replace("{defaultPage}", _defaultPage);
 
-
             if (!string.IsNullOrEmpty(parameters) && !parameters.StartsWith("&"))
             {
                 parameters = "&" + parameters;
@@ -187,7 +186,6 @@ namespace DotNetNuke.Tests.Urls
                     parameters = parameters.Replace("{userId}", user.UserID.ToString());
                 }
             }
-
 
             var baseUrl = httpAliasFull + "Default.aspx?TabId=" + tab.TabID + parameters;
             string testUrl;

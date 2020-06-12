@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Concurrent;
 using System.ComponentModel;
@@ -49,8 +48,6 @@ namespace DotNetNuke.Entities.Users
             this.IsSuperUser = Null.NullBoolean;
             this.AffiliateID = Null.NullInteger;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -109,7 +106,6 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
-
 
         /// <summary>
         /// Gets whether the user is in the portal's administrators role
@@ -182,7 +178,6 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         [Browsable(false)]
         public DateTime PasswordResetExpiration { get; set; }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -293,8 +288,6 @@ namespace DotNetNuke.Entities.Users
         public string Username { get; set; }
 
         public string VanityUrl { get; set; }
-
-
 
         /// <summary>
         /// Property access, initially provided for TokenReplace
@@ -424,9 +417,6 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-
-
-
         /// <summary>
         /// Determine, if accessing user is Administrator
         /// </summary>
@@ -450,8 +440,6 @@ namespace DotNetNuke.Entities.Users
         {
             return MembershipProvider.Instance().GetProviderUserKey(this)?.Replace("-", string.Empty) ?? string.Empty;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

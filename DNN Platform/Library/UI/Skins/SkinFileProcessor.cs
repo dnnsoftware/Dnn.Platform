@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.IO;
@@ -57,8 +56,6 @@ namespace DotNetNuke.UI.Skins
         private readonly string m_SkinPath;
         private readonly string m_SkinRoot;
         private string m_Message = string.Empty;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -278,8 +275,6 @@ namespace DotNetNuke.UI.Skins
             this.Message += objSkinFile.PrependASCXDirectives(this.ControlFactory.Registrations);
             return contents;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
@@ -545,8 +540,6 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
@@ -824,8 +817,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// Project  : DotNetNuke
         /// Class    : SkinFileProcessor.PathParser
@@ -872,7 +863,6 @@ namespace DotNetNuke.UI.Skins
             {
                 new Regex("(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)", PatternOptions),
             };
-
 
             /// -----------------------------------------------------------------------------
             /// <summary>
@@ -1036,8 +1026,6 @@ namespace DotNetNuke.UI.Skins
                 return strNewTag;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

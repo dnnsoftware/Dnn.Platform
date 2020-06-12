@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,8 +31,6 @@ namespace DotNetNuke.Modules.Admin.Security
         public delegate void SubscriptionUpdatedEventHandler(object sender, SubscriptionUpdatedEventArgs e);
 
         public event SubscriptionUpdatedEventHandler SubscriptionUpdated;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -105,8 +102,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -323,8 +318,6 @@ namespace DotNetNuke.Modules.Admin.Security
             return showTrial;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls
@@ -343,8 +336,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the SubscriptionUpdated Event
@@ -361,8 +352,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.SubscriptionUpdated(this, e);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -447,8 +436,6 @@ namespace DotNetNuke.Modules.Admin.Security
             // Rebind Grid
             this.DataBind();
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

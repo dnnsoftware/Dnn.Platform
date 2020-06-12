@@ -71,7 +71,6 @@ namespace Dnn.ExportImport.Components.Engines
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
 
-
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
 
             // Delete so we start a fresh export database; only if there is no previous checkpoint exists

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -36,8 +35,6 @@ namespace DotNetNuke.Entities.Users.Social
         {
             this._userInfo = userInfo;
         }
-
-
 
         /// <summary>
         /// Returns the Friend Relationship (if it exists with the current User)

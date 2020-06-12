@@ -81,8 +81,6 @@ namespace log4net.Filter
         /// </remarks>
         private IFilter m_next;
 
-
-
         /// <summary>
         /// Initialize the filter with the options set
         /// </summary>
@@ -106,8 +104,6 @@ namespace log4net.Filter
         public virtual void ActivateOptions()
         {
         }
-
-
 
         /// <summary>
         /// Decide if the <see cref="LoggingEvent"/> should be logged through an appender.

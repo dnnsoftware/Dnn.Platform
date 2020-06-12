@@ -43,8 +43,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveRelationshipType(RelationshipType relationshipType);
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Delete Relationship
@@ -88,8 +86,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// </remarks>
         /// -----------------------------------------------------------------------------
         void SaveRelationship(Relationship relationship);
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -136,8 +132,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveUserRelationship(UserRelationship userRelationship);
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Delete UserRelationshipPreference
@@ -175,15 +169,11 @@ namespace DotNetNuke.Entities.Users.Social
         /// -----------------------------------------------------------------------------
         void SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference);
 
-
-
         UserRelationship InitiateUserRelationship(UserInfo initiatingUser, UserInfo targetUser, Relationship relationship);
 
         void AcceptUserRelationship(int userRelationshipId);
 
         void RemoveUserRelationship(int userRelationshipId);
-
-
 
         UserRelationship GetFollowerRelationship(UserInfo targetUser);
         UserRelationship GetFollowerRelationship(UserInfo initiatingUser, UserInfo targetUser);
@@ -193,7 +183,6 @@ namespace DotNetNuke.Entities.Users.Social
 
         UserRelationship GetFriendRelationship(UserInfo targetUser);
         UserRelationship GetFriendRelationship(UserInfo initiatingUser, UserInfo targetUser);
-
 
         void CreateDefaultRelationshipsForPortal(int portalId);
 

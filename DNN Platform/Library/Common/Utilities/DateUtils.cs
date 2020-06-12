@@ -92,7 +92,6 @@ namespace DotNetNuke.Common.Utilities
             return DateTime.Now + _driftLocal;
         }
 
-
         /// <summary>
         /// Returns a string with the pretty printed amount of time since the specified date.
         /// </summary>

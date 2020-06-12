@@ -41,8 +41,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <returns>IDataReader with the retrieved data</returns>
         IDataReader GetNotificationTypeByName(string name);
 
-
-
         /// <summary>
         /// Creates a new Notification Type Action
         /// </summary>
@@ -82,8 +80,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <param name="notificationTypeId">Id of the Notification Type from which we want to get the associated Notification Type Actions</param>
         /// <returns>DataReader with the retrieved data</returns>
         IDataReader GetNotificationTypeActions(int notificationTypeId);
-
-
 
         /// <summary>
         /// Send a notification to its receivers
@@ -139,8 +135,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         /// <param name="context">Context of the Notification to get</param>
         /// <returns>DataReader with the retrieved data</returns>
         IDataReader GetNotificationByContext(int notificationTypeId, string context);
-
-
 
         /// <summary>
         /// Whether a Toast Notification is pending or not

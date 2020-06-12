@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Common;
@@ -121,7 +120,6 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 this.Percentage += percentForMiniStep;
             }
             this.Percentage = percentForEachStep * counter++;
-
 
             // Step 4 - Execute config file updates
             foreach (Version ver in versions)

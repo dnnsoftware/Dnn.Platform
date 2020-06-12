@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,15 +26,11 @@ namespace DotNetNuke.Security.Membership
         public abstract bool RequiresQuestionAndAnswer { get; set; }
         public abstract bool RequiresUniqueEmail { get; set; }
 
-
-
         // return the provider
         public static MembershipProvider Instance()
         {
             return ComponentFactory.GetComponent<MembershipProvider>();
         }
-
-
 
         // Users
         public abstract bool ChangePassword(UserInfo user, string oldPassword, string newPassword);
@@ -166,7 +161,6 @@ namespace DotNetNuke.Security.Membership
         {
             throw new NotImplementedException();
         }
-
 
         public virtual void ChangeUsername(int userId, string newUsername)
         {

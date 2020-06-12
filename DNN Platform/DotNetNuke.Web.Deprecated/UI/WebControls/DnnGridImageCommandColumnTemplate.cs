@@ -31,20 +31,17 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ItemType = itemType;
         }
 
-
         /// <summary>
         /// Gets or sets the CommandName for the Column
         /// </summary>
         /// <value>A String</value>
         public string CommandName { get; set; }
 
-
         /// <summary>
         /// Gets or sets the Design Mode of the Column
         /// </summary>
         /// <value>A Boolean</value>
         public bool DesignMode { get; set; }
-
 
         /// <summary>
         /// Gets or sets the CommandName for the Column
@@ -56,13 +53,11 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this._editMode = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the URL of the Image
         /// </summary>
         /// <value>A String</value>
         public string ImageURL { get; set; }
-
 
         /// <summary>
         /// The type of Template to Create
@@ -74,13 +69,11 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this._itemType = value; }
         }
 
-
         /// <summary>
         /// The Key Field that provides a Unique key to the data Item
         /// </summary>
         /// <value>A String</value>
         public string KeyField { get; set; }
-
 
         /// <summary>
         /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
@@ -88,20 +81,17 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String</value>
         public string NavigateURL { get; set; }
 
-
         /// <summary>
         /// Gets or sets the URL Formatting string
         /// </summary>
         /// <value>A String</value>
         public string NavigateURLFormatString { get; set; }
 
-
         /// <summary>
         /// Javascript text to attach to the OnClick Event
         /// </summary>
         /// <value>A String</value>
         public string OnClickJs { get; set; }
-
 
         /// <summary>
         /// Gets or sets whether an Image is displayed
@@ -114,13 +104,11 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this._showImage = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the Text (for Header/Footer Templates)
         /// </summary>
         /// <value>A String</value>
         public string Text { get; set; }
-
 
         /// <summary>
         /// An flag that indicates whether the buttons are visible (this is overridden if
@@ -134,13 +122,11 @@ namespace DotNetNuke.Web.UI.WebControls
             set { this._visible = value; }
         }
 
-
         /// <summary>
         /// An flag that indicates whether the buttons are visible.
         /// </summary>
         /// <value>A Boolean</value>
         public string VisibleField { get; set; }
-
 
         /// <summary>
         /// InstantiateIn instantiates the template (implementation of ITemplate)
@@ -214,7 +200,6 @@ namespace DotNetNuke.Web.UI.WebControls
             return new OrderedDictionary();
         }
 
-
         /// <summary>
         /// Gets whether theButton is visible
         /// </summary>
@@ -229,7 +214,6 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.Visible;
         }
 
-
         /// <summary>
         /// Gets the value of the key
         /// </summary>
@@ -243,7 +227,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             return keyValue;
         }
-
 
         /// <summary>
         /// Item_DataBinding runs when an Item of type GridItemType.Item is being data-bound

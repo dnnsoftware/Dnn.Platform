@@ -80,8 +80,6 @@ namespace log4net.Util
         private string m_password;
         private WindowsIdentity m_identity;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -93,8 +91,6 @@ namespace log4net.Util
         public WindowsSecurityContext()
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the impersonation mode for this security context
@@ -187,8 +183,6 @@ namespace log4net.Util
             set { this.m_password = value; }
         }
 
-
-
         /// <summary>
         /// Initialize the SecurityContext based on the options set.
         /// </summary>
@@ -233,7 +227,6 @@ namespace log4net.Util
                 this.m_identity = LogonUser(this.m_userName, this.m_domainName, this.m_password);
             }
         }
-
 
         /// <summary>
         /// Impersonate the Windows account specified by the <see cref="UserName"/> and <see cref="DomainName"/> properties.
@@ -332,8 +325,6 @@ namespace log4net.Util
 
         [DllImport("advapi32.dll", CharSet=CharSet.Auto, SetLastError=true)]
         private static extern bool DuplicateToken(IntPtr ExistingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr DuplicateTokenHandle);
-
-
 
         /// <summary>
         /// Adds <see cref="IDisposable"/> to <see cref="WindowsImpersonationContext"/>

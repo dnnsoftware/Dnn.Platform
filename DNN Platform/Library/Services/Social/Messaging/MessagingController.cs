@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +48,6 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const string ConstSortColumnSubject = "Subject";
         internal const bool ConstAscending = true;
         internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
-
-
 
         private readonly IDataService _dataService;
 

@@ -8,7 +8,6 @@ using System.Web.Caching;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.Html.Components;
 
-
 namespace DotNetNuke.Modules.Html
 {
     /// -----------------------------------------------------------------------------
@@ -28,7 +27,6 @@ namespace DotNetNuke.Modules.Html
         private const int WORKFLOW_CACHE_TIMEOUT = 20;
 
         private const CacheItemPriority WORKFLOW_CACHE_PRIORITY = CacheItemPriority.Normal;
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

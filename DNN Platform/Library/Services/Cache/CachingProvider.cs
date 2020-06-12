@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,8 +47,6 @@ namespace DotNetNuke.Services.Cache
         private static System.Web.Caching.Cache _cache;
         private const string CachePrefix = "DNN_";
 
-
-
         /// <summary>
         /// Gets the default cache provider.
         /// </summary>
@@ -67,8 +64,6 @@ namespace DotNetNuke.Services.Cache
         /// </summary>
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }
-
-
 
         /// <summary>
         /// Cleans the cache key by remove cache key prefix.
@@ -344,8 +339,6 @@ namespace DotNetNuke.Services.Cache
                 this.Remove(string.Format(GetCacheKey(CacheKeyBase), parameters));
             }
         }
-
-
 
         /// <summary>
         /// Clears the cache internal.

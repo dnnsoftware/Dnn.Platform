@@ -25,7 +25,6 @@ namespace DotNetNuke.Services.Journal
         public int UserId { get; set; }
         public string DisplayName { get; set; }
 
-
         public int KeyID
         {
             get
@@ -52,7 +51,6 @@ namespace DotNetNuke.Services.Journal
             }
             this.UserId = Null.SetNullInteger(dr["UserId"]);
             this.DisplayName = Null.SetNullString(dr["DisplayName"]);
-
 
         }
 

@@ -96,7 +96,6 @@ namespace DotNetNuke.Collections
             return value => trueValues.Contains(value, StringComparer.OrdinalIgnoreCase);
         }
 
-
         /// <summary>Gets the value from the dictionary.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
         /// <param name="dictionary">The dictionary.</param>
@@ -325,8 +324,6 @@ namespace DotNetNuke.Collections
         {
             return node.ToDictionary().GetValue(key, converter);
         }
-
-
 
         /// <summary>Gets the value from the dictionary, returning the default value of <typeparamref key="T" /> if the value doesn't exist.</summary>
         /// <typeparam name="T">The type of the value to retrieve</typeparam>
@@ -766,8 +763,6 @@ namespace DotNetNuke.Collections
             return value;
         }
 
-
-
         /// <summary>Gets the values from the lookup.</summary>
         /// <typeparam name="T">The type of the values to retrieve</typeparam>
         /// <param name="lookup">The lookup.</param>
@@ -817,7 +812,6 @@ namespace DotNetNuke.Collections
             return collection.ToLookup().GetValues(key, converter);
         }
 
-
         /// <summary>Converts the <paramref name="collection"/> to an <see cref="ILookup{TKey,TElement}"/>.</summary>
         /// <param name="collection">The collection.</param>
         /// <returns>An <see cref="ILookup{TKey,TElement}"/> instance.</returns>
@@ -856,7 +850,6 @@ namespace DotNetNuke.Collections
 
             return source;
         }
-
 
         /// <summary>Converts the <paramref name="value"/> into a <typeparamref name="T"/> instance.</summary>
         /// <typeparam name="T">The type of the value to return</typeparam>

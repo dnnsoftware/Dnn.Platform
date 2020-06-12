@@ -70,8 +70,6 @@ namespace log4net
         {
         }
 
-
-
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <overloads>Returns the named logger if it exists.</overloads>
         /// <summary>
@@ -287,8 +285,6 @@ namespace log4net
         {
             return WrapLogger(LoggerManager.GetLogger(repositoryAssembly, type));
         }
-
-
 
         /// <summary>
         /// Shuts down the log4net system.
@@ -770,8 +766,6 @@ namespace log4net
 #endif
             }
 
-
-
         /// <summary>
         /// Looks up the wrapper object for the logger specified.
         /// </summary>
@@ -807,8 +801,6 @@ namespace log4net
         {
             return new LogImpl(logger);
         }
-
-
 
         /// <summary>
         /// The wrapper map to use to hold the <see cref="LogImpl"/> objects.

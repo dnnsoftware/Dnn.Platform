@@ -71,8 +71,6 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.Ok(result);
         }
 
-
-
         // Test API Method 1
         [HttpGet]
         public IHttpActionResult TestGet()

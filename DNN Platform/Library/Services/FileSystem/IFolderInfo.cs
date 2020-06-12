@@ -53,7 +53,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         bool HasChildren { get; }
 
-
         int CreatedByUserID { get; }
 
         DateTime CreatedOnDate { get; }

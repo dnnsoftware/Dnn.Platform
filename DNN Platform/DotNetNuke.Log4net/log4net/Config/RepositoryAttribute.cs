@@ -53,7 +53,6 @@ namespace log4net.Config
         // Class is not sealed because DomainAttribute extends it while it is obsoleted
         //
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RepositoryAttribute" /> class.
         /// </summary>
@@ -80,8 +79,6 @@ namespace log4net.Config
         {
             this.m_name = name;
         }
-
-
 
         /// <summary>
         /// Gets or sets the name of the logging repository.

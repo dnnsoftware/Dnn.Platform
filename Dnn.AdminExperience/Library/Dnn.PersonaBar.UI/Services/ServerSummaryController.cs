@@ -39,7 +39,6 @@ namespace Dnn.PersonaBar.UI.Services
             Critical,
         }
 
-
         /// <summary>
         /// Return server info.
         /// </summary>

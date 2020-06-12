@@ -36,7 +36,6 @@ namespace DotNetNuke.Modules.Groups
             this.btnCancel.Click += this.Cancel_Click;
         }
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -71,7 +70,6 @@ namespace DotNetNuke.Modules.Groups
                     this.txtDescription.Text = roleInfo.Description;
                     this.rdAccessTypePrivate.Checked = !roleInfo.IsPublic;
                     this.rdAccessTypePublic.Checked = roleInfo.IsPublic;
-
 
                     if (roleInfo.Settings.ContainsKey("ReviewMembers"))
                     {

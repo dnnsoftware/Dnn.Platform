@@ -183,8 +183,6 @@ namespace log4net.Core
                 ':' + this.m_lineNumber + ')';
         }
 
-
-
         /// <summary>
         /// Gets the fully qualified class name of the caller making the logging
         /// request.
@@ -280,8 +278,6 @@ namespace log4net.Core
         }
 #endif
 
-
-
         private readonly string m_className;
         private readonly string m_fileName;
         private readonly string m_lineNumber;
@@ -290,8 +286,6 @@ namespace log4net.Core
 #if !(NETCF || NETSTANDARD1_3)
         private readonly StackFrameItem[] m_stackFrames;
 #endif
-
-
 
         /// <summary>
         /// The fully qualified type of the LocationInfo class.

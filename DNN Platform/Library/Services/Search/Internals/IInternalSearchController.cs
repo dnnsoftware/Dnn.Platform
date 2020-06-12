@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 
@@ -36,7 +35,6 @@ namespace DotNetNuke.Services.Search.Internals
         /// For SearchTypeId=module, ModuleDefitionId is also used. Module's display name is used unless an entry is found in
         /// ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].txt is found.</remarks>
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
-
 
         /// <summary>
         /// Add a Search Document to Search Index

@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.Journal.Components
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ExportModule implements the IPortable ExportModule Interface

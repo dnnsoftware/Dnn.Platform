@@ -4,7 +4,6 @@
 
 using System.Collections;
 
-
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------

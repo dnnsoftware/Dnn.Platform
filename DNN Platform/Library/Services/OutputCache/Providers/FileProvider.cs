@@ -47,7 +47,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
-
             if (! string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -41,8 +40,6 @@ namespace DotNetNuke.Services.Localization
                                                                        : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
             return locales;
         }
-
-
 
         /// <summary>
         /// Determines whether the language can be delete.

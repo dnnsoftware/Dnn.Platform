@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.Groups.Components
         internal const string MemberJoinedNotification = "MemberJoinedNotification"; // Sent to Group Owners when a new member has joined a public group.
         internal const string MemberRejectedNotification = "GroupMemberRejectedNotification"; // Sent to requesting member when membership is rejected.
 
-
         internal const string SharedResourcesPath = "~/DesktopModules/SocialGroups/App_LocalResources/SharedResources.resx";
         internal const string ModulePath = "~/DesktopModules/SocialGroups/";
 

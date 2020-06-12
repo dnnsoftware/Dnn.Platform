@@ -64,8 +64,6 @@ namespace log4net.Config
         {
         }
 
-
-
         /// <summary>
         /// Parses the configuration section.
         /// </summary>

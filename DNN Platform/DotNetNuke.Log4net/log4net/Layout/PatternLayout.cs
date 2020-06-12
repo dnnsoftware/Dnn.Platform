@@ -810,8 +810,6 @@ namespace log4net.Layout
         /// </remarks>
         public const string DetailConversionPattern = "%timestamp [%thread] %level %logger %ndc - %message%newline";
 
-
-
         /// <summary>
         /// Internal map of converter identifiers to converter types.
         /// </summary>
@@ -821,8 +819,6 @@ namespace log4net.Layout
         /// </para>
         /// </remarks>
         private static Hashtable s_globalRulesRegistry;
-
-
 
         /// <summary>
         /// the pattern
@@ -838,8 +834,6 @@ namespace log4net.Layout
         /// patterns defined on this PatternLayout only
         /// </summary>
         private Hashtable m_instanceRulesRegistry = new Hashtable();
-
-
 
         /// <summary>
         /// Initialize the global registry
@@ -933,8 +927,6 @@ namespace log4net.Layout
             s_globalRulesRegistry.Add("username", typeof(UserNamePatternConverter));
         }
 
-
-
         /// <summary>
         /// Constructs a PatternLayout using the DefaultConversionPattern
         /// </summary>
@@ -987,7 +979,6 @@ namespace log4net.Layout
             this.ActivateOptions();
         }
 
-
         /// <summary>
         /// The pattern formatting string
         /// </summary>
@@ -1036,7 +1027,6 @@ namespace log4net.Layout
             return patternParser;
         }
 
-
         /// <summary>
         /// Initialize layout options
         /// </summary>
@@ -1075,8 +1065,6 @@ namespace log4net.Layout
             }
         }
 
-
-
         /// <summary>
         /// Produces a formatted string as specified by the conversion pattern.
         /// </summary>
@@ -1108,7 +1096,6 @@ namespace log4net.Layout
                 c = c.Next;
             }
         }
-
 
         /// <summary>
         /// Add a converter to this PatternLayout

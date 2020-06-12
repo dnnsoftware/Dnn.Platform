@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 
@@ -33,7 +32,6 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <returns></returns>
         SearchType GetSearchTypeByName(string searchTypeName);
-
 
         /// <summary>
         /// Returns a list of Synonyms for a given word. E.g. leap, hop for jump
@@ -78,8 +76,6 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="cultureCode">culture code</param>
         void DeleteSynonymsGroup(int synonymsGroupId, int portalId, string cultureCode);
 
-
-
         /// <summary>
         /// Gets a search stop words
         /// </summary>
@@ -115,8 +111,6 @@ namespace DotNetNuke.Services.Search.Internals
         /// <param name="cultureCode"></param>
         void DeleteSearchStopWords(int stopWordsId, int portalId, string cultureCode);
 
-
-
         DateTime GetSearchReindexRequestTime(int portalId);
         DateTime SetSearchReindexRequestTime(int portalId);
         bool GetSearchCompactFlag();
@@ -131,7 +125,6 @@ namespace DotNetNuke.Services.Search.Internals
 
         string GetIndexerCheckpointData(int scheduleId, string indexerKey);
         void SetIndexerCheckpointData(int scheduleId, string indexerKey, string checkPointData);
-
 
         Tuple<int, int> GetSearchMinMaxLength();
         string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false);

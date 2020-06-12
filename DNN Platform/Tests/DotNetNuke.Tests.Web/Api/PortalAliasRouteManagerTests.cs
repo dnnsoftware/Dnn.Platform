@@ -36,7 +36,6 @@ namespace DotNetNuke.Tests.Web.Api
             TestableGlobals.ClearInstance();
         }
 
-
         [Test]
         [TestCase("mfn", "url", 0, "API/mfn/url")]
         [TestCase("mfn", "url", 1, "{prefix0}/API/mfn/url")]
@@ -45,7 +44,6 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetRouteUrl(string moduleFolderName, string url, int count, string expected)
         {
             // Arrange
-
 
             // Act
             string result = new PortalAliasRouteManager().GetRouteUrl(moduleFolderName, url, count);
@@ -60,7 +58,6 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetRouteUrlThrowsOnBadArguments(string moduleFolderName, int count, Type expectedException, string message)
         {
             // Arrange
-
 
             // Act
             try
@@ -223,7 +220,6 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
 
-
             // Act
             var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, count);
 
@@ -238,7 +234,6 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetRouteNameWithPortalAliasInfoHashesNameInCorrectFormat(string moduleFolderName, string routeName, string httpAlias, string expected)
         {
             // Arrange
-
 
             // Act
             var result = new PortalAliasRouteManager().GetRouteName(moduleFolderName, routeName, new PortalAliasInfo { HTTPAlias = httpAlias });
@@ -255,7 +250,6 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
 
-
             // Act
             new PortalAliasRouteManager().GetRouteName(moduleFolderName, string.Empty, 0);
 
@@ -268,7 +262,6 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
 
-
             // Act
             new PortalAliasRouteManager().GetRouteName("foo", string.Empty, -1);
 
@@ -279,7 +272,6 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetAllRouteValuesWorksWithNullRouteValues()
         {
             // Arrange
-
 
             // Act
             new PortalAliasRouteManager().GetAllRouteValues(new PortalAliasInfo { HTTPAlias = string.Empty }, null);
@@ -292,7 +284,6 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetAllRouteValuesPreservesPassedInRouteValues()
         {
             // Arrange
-
 
             // Act
             var result = new PortalAliasRouteManager().GetAllRouteValues(
@@ -309,7 +300,6 @@ namespace DotNetNuke.Tests.Web.Api
         {
             // Arrange
 
-
             // Act
             var result =
                 new PortalAliasRouteManager().GetAllRouteValues(
@@ -325,7 +315,6 @@ namespace DotNetNuke.Tests.Web.Api
         public void GetAllRouteValuesExtractsManyChildPortalParamsAndPreservesRouteValues()
         {
             // Arrange
-
 
             // Act
             var result =

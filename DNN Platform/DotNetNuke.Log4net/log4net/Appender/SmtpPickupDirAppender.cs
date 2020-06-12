@@ -68,8 +68,6 @@ namespace log4net.Appender
             this.m_fileExtension = string.Empty; // Default to empty string, not null
         }
 
-
-
         /// <summary>
         /// Gets or sets a semicolon-delimited list of recipient e-mail addresses.
         /// </summary>
@@ -189,8 +187,6 @@ namespace log4net.Appender
             set { this.m_securityContext = value; }
         }
 
-
-
         /// <summary>
         /// Sends the contents of the cyclic buffer as an e-mail message.
         /// </summary>
@@ -259,8 +255,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Activate the options on this appender.
         /// </summary>
@@ -305,8 +299,6 @@ namespace log4net.Appender
         {
             get { return true; }
         }
-
-
 
         /// <summary>
         /// Convert a path into a fully qualified path.

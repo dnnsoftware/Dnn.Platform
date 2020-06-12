@@ -487,9 +487,6 @@ namespace DotNetNuke.Security.Roles
             Instance.ClearRoleCache(portalId);
         }
 
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Adds a Role Group

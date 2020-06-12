@@ -96,7 +96,6 @@ namespace Dnn.PersonaBar.Library.Attributes
                 return hasPermission;
             }
 
-
             // when menu identifier not defined, will check the service scope permission.
             switch (this.Scope)
             {

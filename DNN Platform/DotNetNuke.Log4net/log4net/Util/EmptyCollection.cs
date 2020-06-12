@@ -53,8 +53,6 @@ namespace log4net.Util
         {
         }
 
-
-
         /// <summary>
         /// Gets the singleton instance of the empty collection.
         /// </summary>
@@ -68,8 +66,6 @@ namespace log4net.Util
         {
             get { return s_instance; }
         }
-
-
 
         /// <summary>
         /// Copies the elements of the <see cref="ICollection"/> to an
@@ -140,8 +136,6 @@ namespace log4net.Util
             get { return this; }
         }
 
-
-
         /// <summary>
         /// Returns an enumerator that can iterate through a collection.
         /// </summary>
@@ -158,8 +152,6 @@ namespace log4net.Util
         {
             return NullEnumerator.Instance;
         }
-
-
 
         /// <summary>
         /// The singleton instance of the empty collection.

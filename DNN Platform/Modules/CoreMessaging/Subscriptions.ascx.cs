@@ -83,8 +83,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-
-
         /// <summary>
         /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
         /// values that are automatically retrieved by Social Library such as portalId and moduleId.
@@ -99,7 +97,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             {
                 userPreference = userPreferenceController.GetUserPreference(user);
             }
-
 
             const int notifyFrequency = 2;
             const int messageFrequency = 0;

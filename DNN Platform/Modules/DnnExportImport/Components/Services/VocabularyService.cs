@@ -292,7 +292,6 @@ namespace Dnn.ExportImport.Components.Services
                         Weight = other.Weight,
                     };
 
-
                     other.LocalId = isHierarchical
                         ? dataService.AddHeirarchicalTerm(term, createdBy)
                         : dataService.AddSimpleTerm(term, createdBy);

@@ -12,8 +12,6 @@ using DotNetNuke.Modules.Html;
 using DotNetNuke.Modules.Html.Components;
 using DotNetNuke.Services.Exceptions;
 
-
-
 namespace DotNetNuke.Security.Permissions
 {
     /// -----------------------------------------------------------------------------
@@ -32,7 +30,6 @@ namespace DotNetNuke.Security.Permissions
 
         public const int WorkflowStatePermissionCacheTimeOut = 20;
         private static readonly DataProvider provider = DataProvider.Instance();
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -111,8 +108,6 @@ namespace DotNetNuke.Security.Permissions
             return dic;
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection
@@ -140,7 +135,6 @@ namespace DotNetNuke.Security.Permissions
 
             return WorkflowStatePermissions;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

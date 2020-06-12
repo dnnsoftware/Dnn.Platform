@@ -45,8 +45,6 @@ namespace log4net.Util
         /// </summary>
         private TextWriter m_writer;
 
-
-
         /// <summary>
         /// Create an instance of <see cref="TextWriterAdapter"/> that forwards all
         /// messages to a <see cref="TextWriter"/>.
@@ -64,8 +62,6 @@ namespace log4net.Util
             this.m_writer = writer;
         }
 
-
-
         /// <summary>
         /// Gets or sets the underlying <see cref="TextWriter" />.
         /// </summary>
@@ -82,8 +78,6 @@ namespace log4net.Util
             get { return this.m_writer; }
             set { this.m_writer = value; }
         }
-
-
 
         /// <summary>
         /// The Encoding in which the output is written
@@ -133,8 +127,6 @@ namespace log4net.Util
             get { return this.m_writer.NewLine; }
             set { this.m_writer.NewLine = value; }
         }
-
-
 
         /// <summary>
         /// Closes the writer and releases any system resources associated with the writer

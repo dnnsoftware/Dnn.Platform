@@ -93,8 +93,6 @@ namespace log4net
         {
         }
 
-
-
         /// <summary>
         /// The thread properties map
         /// </summary>
@@ -127,8 +125,6 @@ namespace log4net
         {
             get { return s_stacks; }
         }
-
-
 
         /// <summary>
         /// The thread context properties instance

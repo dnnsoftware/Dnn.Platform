@@ -62,8 +62,6 @@ namespace log4net.Util
             this.m_message = message;
         }
 
-
-
         /// <summary>
         /// Gets the number of the native error.
         /// </summary>
@@ -95,8 +93,6 @@ namespace log4net.Util
         {
             get { return this.m_message; }
         }
-
-
 
         /// <summary>
         /// Create a new instance of the <see cref="NativeError" /> class for the last Windows error.
@@ -200,8 +196,6 @@ namespace log4net.Util
             return msgBuf;
         }
 
-
-
         /// <summary>
         /// Return error information string
         /// </summary>
@@ -215,8 +209,6 @@ namespace log4net.Util
         {
             return string.Format(CultureInfo.InvariantCulture, "0x{0:x8}", this.Number) + (this.Message != null ? ": " + this.Message : string.Empty);
         }
-
-
 
         /// <summary>
         /// Formats a message string.

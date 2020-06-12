@@ -61,15 +61,12 @@ namespace log4net.Filter
         /// </summary>
         private Level m_levelMax;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
         public LevelRangeFilter()
         {
         }
-
 
         /// <summary>
         /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelMin"/> and <see cref="LevelMax"/>
@@ -122,7 +119,6 @@ namespace log4net.Filter
             get { return this.m_levelMax; }
             set { this.m_levelMax = value; }
         }
-
 
         /// <summary>
         /// Check if the event should be logged.

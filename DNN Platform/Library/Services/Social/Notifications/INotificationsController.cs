@@ -41,8 +41,6 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <returns>The notification type with the provided name.</returns>
         NotificationType GetNotificationType(string name);
 
-
-
         /// <summary>
         /// Deletes an existing notification type action.
         /// </summary>
@@ -77,8 +75,6 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="actions">The actions</param>
         /// <param name="notificationTypeId">Id of the notification type</param>
         void SetNotificationTypeActions(IList<NotificationTypeAction> actions, int notificationTypeId);
-
-
 
         /// <summary>
         /// Creates a new notification and sets is sender as the portal administrator.
@@ -161,8 +157,6 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="context">Context set by creator of the notification.</param>
         /// <returns>The filtered list of notifications sent to the provided user in the specified portal.</returns>
         IList<Notification> GetNotificationByContext(int notificationTypeId, string context);
-
-
 
         /// <summary>
         /// Is there a Toast that needs to be sent for a Notification

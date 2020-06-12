@@ -66,8 +66,6 @@ namespace log4net.Repository.Hierarchy
             this.Level = level;
         }
 
-
-
         /// <summary>
         /// Gets the assigned level value without walking the logger hierarchy.
         /// </summary>
@@ -114,8 +112,6 @@ namespace log4net.Repository.Hierarchy
                 }
             }
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the RootLogger class.

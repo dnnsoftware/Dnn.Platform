@@ -36,7 +36,6 @@ namespace Dnn.ExportImport.Components.Scheduler
         private const int EmergencyHistoryNumber = 1;
         private const int DefaultHistoryNumber = 60;
 
-
         public ExportImportScheduler(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;

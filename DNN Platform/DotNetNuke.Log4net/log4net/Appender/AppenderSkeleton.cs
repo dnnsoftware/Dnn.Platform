@@ -60,8 +60,6 @@ namespace log4net.Appender
             this.m_errorHandler = new OnlyOnceErrorHandler(this.GetType().Name);
         }
 
-
-
         /// <summary>
         /// Finalizes this appender by calling the implementation's
         /// <see cref="Close"/> method.
@@ -82,8 +80,6 @@ namespace log4net.Appender
                 this.Close();
             }
         }
-
-
 
         /// <summary>
         /// Gets or sets the threshold <see cref="Level"/> of this appender.
@@ -170,8 +166,6 @@ namespace log4net.Appender
             set { this.m_layout = value; }
         }
 
-
-
         /// <summary>
         /// Initialize the appender based on the options set
         /// </summary>
@@ -191,8 +185,6 @@ namespace log4net.Appender
         public virtual void ActivateOptions()
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the name of this appender.
@@ -332,8 +324,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// Performs threshold checks and invokes filters before
         /// delegating actual logging to the subclasses specific
@@ -437,7 +427,6 @@ namespace log4net.Appender
             }
         }
 
-
         /// <summary>
         /// Test if the logging event should we output by this appender
         /// </summary>
@@ -498,7 +487,6 @@ namespace log4net.Appender
             return true;
         }
 
-
         /// <summary>
         /// Adds a filter to the end of the filter chain.
         /// </summary>
@@ -542,8 +530,6 @@ namespace log4net.Appender
         {
             this.m_headFilter = this.m_tailFilter = null;
         }
-
-
 
         /// <summary>
         /// Checks if the message level is below this appender's threshold.
@@ -767,7 +753,6 @@ namespace log4net.Appender
             get { return false; }
         }
 
-
         /// <summary>
         /// Flushes any buffered log data.
         /// </summary>
@@ -779,7 +764,6 @@ namespace log4net.Appender
             {
             return true;
             }
-
 
         /// <summary>
         /// The layout of this appender.
@@ -862,8 +846,6 @@ namespace log4net.Appender
         /// </summary>
         private ReusableStringWriter m_renderWriter = null;
 
-
-
         /// <summary>
         /// Initial buffer size
         /// </summary>
@@ -873,8 +855,6 @@ namespace log4net.Appender
         /// Maximum buffer size before it is recycled
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
-
-
 
         /// <summary>
         /// The fully qualified type of the AppenderSkeleton class.

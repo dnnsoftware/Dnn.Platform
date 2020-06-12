@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Collections.Generic;
 using System.Xml;
 
@@ -26,8 +25,6 @@ namespace DotNetNuke.Services.Installer.Writers
         private readonly int _DependentPackageID;
         private readonly Locale _Language;
         private readonly LanguagePackType _PackageType;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -61,9 +58,6 @@ namespace DotNetNuke.Services.Installer.Writers
             this._PackageType = languagePack.PackageType;
             this._DependentPackageID = languagePack.DependentPackageID;
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

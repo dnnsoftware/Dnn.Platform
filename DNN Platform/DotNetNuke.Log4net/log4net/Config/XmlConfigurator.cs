@@ -53,8 +53,6 @@ namespace log4net.Config
         {
         }
 
-
-
 #if !NETCF
         /// <summary>
         /// Automatically configures the <see cref="ILoggerRepository"/> using settings
@@ -786,8 +784,6 @@ namespace log4net.Config
             }
         }
 
-
-
 #if !NETCF && !SSCLI
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <summary>
@@ -905,8 +901,6 @@ namespace log4net.Config
             }
         }
 #endif
-
-
 
 #if !NETCF && !SSCLI
         /// <summary>
@@ -1057,8 +1051,6 @@ namespace log4net.Config
         }
 #endif
 
-
-
         /// <summary>
         /// Configures the specified repository using a <c>log4net</c> element.
         /// </summary>
@@ -1106,8 +1098,6 @@ namespace log4net.Config
                 }
             }
         }
-
-
 
         /// <summary>
         /// Maps repository names to ConfigAndWatchHandler instances to allow a particular

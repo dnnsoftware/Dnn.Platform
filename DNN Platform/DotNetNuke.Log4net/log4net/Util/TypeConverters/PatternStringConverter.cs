@@ -92,8 +92,6 @@ namespace log4net.Util.TypeConverters
             throw ConversionNotSupportedException.Create(targetType, source);
         }
 
-
-
         /// <summary>
         /// Can the source type be converted to the type supported by this object
         /// </summary>

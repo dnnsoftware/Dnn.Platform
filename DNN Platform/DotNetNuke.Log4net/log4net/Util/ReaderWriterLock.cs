@@ -70,8 +70,6 @@ namespace log4net.Util
 #endif
         }
 
-
-
         /// <summary>
         /// Acquires a reader lock
         /// </summary>
@@ -173,8 +171,6 @@ namespace log4net.Util
 			System.Threading.Monitor.Exit(this);
 #endif
         }
-
-
 
 #if HAS_READERWRITERLOCK
 #if HAS_READERWRITERLOCKSLIM

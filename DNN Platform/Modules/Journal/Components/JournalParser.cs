@@ -42,7 +42,6 @@ namespace DotNetNuke.Modules.Journal.Components
         private static readonly Regex CdataRegex = new Regex(@"\<\!\[CDATA\[(?<text>[^\]]*)\]\]\>", RegexOptions.Compiled);
         private static readonly Regex TemplateRegex = new Regex("{CanComment}(.*?){/CanComment}", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-
         public JournalParser(PortalSettings portalSettings, int moduleId, int profileId, int socialGroupId, UserInfo userInfo)
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -325,7 +324,6 @@ namespace DotNetNuke.Modules.Journal.Components
                 sb.Append(" {resx:likethis}");
             }
         }
-
 
             sb.Append("</div>");
             return sb.ToString();

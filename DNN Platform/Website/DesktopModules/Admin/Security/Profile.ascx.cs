@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,8 +42,6 @@ namespace DesktopModules.Admin.Security
                 return Convert.ToBoolean(setting) && this.IsUser;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -111,8 +108,6 @@ namespace DesktopModules.Admin.Security
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DataBind binds the data to the controls
@@ -141,8 +136,6 @@ namespace DesktopModules.Admin.Security
             this.ProfileProperties.DataSource = properties;
             this.ProfileProperties.DataBind();
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

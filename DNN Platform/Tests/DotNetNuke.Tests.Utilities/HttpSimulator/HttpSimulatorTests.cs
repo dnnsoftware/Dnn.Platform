@@ -278,7 +278,6 @@ namespace UnitTests.Subtext
             var o = ReflectionHelper.GetPrivateInstanceFieldValue<object>("_configMapPath", environment);
             Console.WriteLine("_configMapPath: {0}", o ?? "{null}");
 
-
             var mappedPath = ReflectionHelper.InvokeNonPublicMethod<string>(environment, "MapPathActual", vpath, false);
             Console.WriteLine("MAPPED: " + mappedPath);
             Assert.AreEqual(expectedMapPath, HttpContext.Current.Request.MapPath(virtualPath));

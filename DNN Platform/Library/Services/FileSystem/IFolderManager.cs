@@ -282,7 +282,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The updated folder</returns>
         IFolderInfo UpdateFolder(IFolderInfo folder);
 
-
         /// <summary>
         /// Moves the specified folder and its contents to a new location.
         /// </summary>

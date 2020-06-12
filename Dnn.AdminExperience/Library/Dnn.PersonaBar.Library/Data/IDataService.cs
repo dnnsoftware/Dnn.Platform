@@ -15,7 +15,6 @@ namespace Dnn.PersonaBar.Library.Data
 
         void DeletePersonaBarMenuByIdentifier(string identifier);
 
-
         int SavePersonaBarExtension(string identifier, int menuId, string folderName, string controller, string container, string path,
             int order, bool enabled, int currentUserId);
 
@@ -23,11 +22,9 @@ namespace Dnn.PersonaBar.Library.Data
 
         IDataReader GetPersonaBarExtensions();
 
-
         int SavePersonaBarMenuDefaultPermissions(int menuId, string roleNames);
 
         string GetPersonaBarMenuDefaultPermissions(int menuId);
-
 
         int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId,
             int roleId, int userId, bool allowAccees, int currentUserId);

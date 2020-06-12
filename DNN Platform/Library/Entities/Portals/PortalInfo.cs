@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Security.Cryptography;
@@ -58,8 +57,6 @@ namespace DotNetNuke.Entities.Portals
         private int _pages = Null.NullInteger;
         private string _registeredRoleName;
 
-
-
         /// <summary>
         /// Create new Portalinfo instance
         /// </summary>
@@ -77,8 +74,6 @@ namespace DotNetNuke.Entities.Portals
         {
             this.Users = Null.NullInteger;
         }
-
-
 
         /// <summary>
         /// UserID of the user who is the admininistrator of the portal
@@ -633,8 +628,6 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("version")]
         public string Version { get; set; }
 
-
-
         /// <summary>
         /// The actual name of the Administrators group of the portal.
         /// This name is retrieved from the RoleController object
@@ -749,7 +742,6 @@ namespace DotNetNuke.Entities.Portals
         [XmlIgnore]
         [Obsolete("Deprecated in DNN 6.0. Scheduled removal in v10.0.0.")]
         public int TimeZoneOffset { get; set; }
-
 
         /// <summary>
         /// Fills a PortalInfo from a Data Reader

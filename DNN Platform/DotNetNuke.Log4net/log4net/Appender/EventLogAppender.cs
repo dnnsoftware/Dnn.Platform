@@ -120,8 +120,6 @@ namespace log4net.Appender
             this.Layout = layout;
         }
 
-
-
         /// <summary>
         /// The name of the log where messages will be stored.
         /// </summary>
@@ -236,7 +234,6 @@ namespace log4net.Appender
             set { this.m_eventId = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the <c>Category</c> to use unless one is explicitly specified via the <c>LoggingEvent</c>'s properties.
         /// </summary>
@@ -253,7 +250,6 @@ namespace log4net.Appender
             get { return this.m_category; }
             set { this.m_category = value; }
         }
-
 
         /// <summary>
         /// Initialize the appender based on the options set
@@ -340,7 +336,6 @@ namespace log4net.Appender
             }
         }
 
-
         /// <summary>
         /// Create an event log source
         /// </summary>
@@ -357,7 +352,6 @@ namespace log4net.Appender
 			EventLog.CreateEventSource(source, logName, machineName);
 #endif
         }
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/>
@@ -481,8 +475,6 @@ namespace log4net.Appender
             get { return true; }
         }
 
-
-
         /// <summary>
         /// Get the equivalent <see cref="EventLogEntryType"/> for a <see cref="Level"/> <paramref name="level"/>
         /// </summary>
@@ -517,8 +509,6 @@ namespace log4net.Appender
             // Default setting
             return EventLogEntryType.Information;
         }
-
-
 
         /// <summary>
         /// The log name is the section in the event logs where the messages
@@ -558,8 +548,6 @@ namespace log4net.Appender
         /// </summary>
         private short m_category = 0;
 
-
-
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and
         /// the color it should be displayed as.
@@ -588,8 +576,6 @@ namespace log4net.Appender
                 set { this.m_entryType = value; }
             }
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the EventLogAppender class.

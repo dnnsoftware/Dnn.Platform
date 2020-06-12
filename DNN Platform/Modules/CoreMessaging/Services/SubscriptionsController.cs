@@ -38,7 +38,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-
         /// <summary>
         /// Perform a search on Scoring Activities registered in the system.
         /// </summary>

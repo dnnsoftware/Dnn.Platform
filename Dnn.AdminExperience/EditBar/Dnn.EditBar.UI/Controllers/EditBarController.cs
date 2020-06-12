@@ -43,7 +43,6 @@ namespace Dnn.EditBar.UI.Controllers
             var portalSettings = PortalSettings.Current;
             var user = portalSettings.UserInfo;
 
-
             settings.Add("applicationPath", Globals.ApplicationPath);
             settings.Add("buildNumber", Host.CrmVersion.ToString(CultureInfo.InvariantCulture));
             settings.Add("userId", user.UserID);

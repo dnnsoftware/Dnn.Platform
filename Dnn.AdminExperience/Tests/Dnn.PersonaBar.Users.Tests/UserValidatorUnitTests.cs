@@ -22,7 +22,6 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
         private Mock<IContentVerifier> _contentVerifierMock;
 
-
         private UserValidator _userValidator;
 
         [SetUp]
@@ -67,7 +66,6 @@ namespace Dnn.PersonaBar.Users.Tests
             // Assert
             Assert.IsNull(result);
         }
-
 
         [Test]
         public void ValidateUser_IfUserNotAllowedInSiteGroup_ThenErrorResponse()

@@ -125,7 +125,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             Assert.AreEqual(1, affectedCount);
         }
 
-
         [Test]
         public void PreviewProfileController_GetProfilesByPortal_With_Valid_PortalID()
         {

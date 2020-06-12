@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Xml.XPath;
 
@@ -33,7 +32,6 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.LanguagePackType = type;
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -74,8 +72,6 @@ namespace DotNetNuke.Services.Installer.Installers
             get { return "resx, xml, tdf,template"; }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteLanguage method deletes the Language
@@ -111,8 +107,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadCustomManifest method reads the custom manifest items
@@ -146,8 +140,6 @@ namespace DotNetNuke.Services.Installer.Installers
             // Call base class
             base.ReadCustomManifest(nav);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

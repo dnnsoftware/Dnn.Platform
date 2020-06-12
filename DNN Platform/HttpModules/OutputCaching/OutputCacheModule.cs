@@ -34,7 +34,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
             httpApp.UpdateRequestCache += this.OnUpdateRequestCache;
         }
 
-
         public void Dispose()
         {
         }
@@ -86,7 +85,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     includeExclude = IncludeExcludeType.IncludeByDefault;
                 }
             }
-
 
             string tabOutputCacheProvider = tabSettings["CacheProvider"].ToString();
             this._app.Context.Items[ContextKeyTabOutputCacheProvider] = tabOutputCacheProvider;
@@ -187,7 +185,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
             {
                 varyBy.Add("alias", portalSettings.PortalAlias.HTTPAlias);
             }
-
 
             string cacheKey = OutputCachingProvider.Instance(tabOutputCacheProvider).GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy);
 

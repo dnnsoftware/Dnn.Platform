@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Xml.XPath;
 
@@ -24,8 +23,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private AuthenticationInfo AuthSystem;
         private AuthenticationInfo TempAuthSystem;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of allowable file extensions (in addition to the Host's List)
@@ -39,9 +36,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html";
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -65,9 +59,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

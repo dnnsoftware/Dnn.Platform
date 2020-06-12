@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -20,7 +19,6 @@ using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Utilities;
-
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
@@ -40,7 +38,6 @@ namespace DotNetNuke.UI.WebControls
             get { return this.Value as ProfileVisibility; }
             set { this.Value = value; }
         }
-
 
         /// <summary>
         /// Caption
@@ -64,8 +61,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Value</value>
         public object Value { get; set; }
-
-
 
         /// <summary>
         /// LoadPostData loads the Post Back Data and determines whether the value has change

@@ -66,8 +66,6 @@ namespace log4net.Config
             this.m_providerType = providerType;
         }
 
-
-
         /// <summary>
         /// Gets or sets the type of the provider to use.
         /// </summary>
@@ -85,8 +83,6 @@ namespace log4net.Config
             get { return this.m_providerType; }
             set { this.m_providerType = value; }
         }
-
-
 
         /// <summary>
         /// Configures the SecurityContextProvider
@@ -123,8 +119,6 @@ namespace log4net.Config
         }
 
         private Type m_providerType = null;
-
-
 
         /// <summary>
         /// The fully qualified type of the SecurityContextProviderAttribute class.

@@ -98,8 +98,6 @@ namespace log4net.Appender
             this.Writer = writer;
         }
 
-
-
         /// <summary>
         /// Gets or set whether the appender will flush at the end
         /// of each append operation.
@@ -160,8 +158,6 @@ namespace log4net.Appender
                 }
             }
         }
-
-
 
         /// <summary>
         /// This method determines if there is a sense in attempting to append.
@@ -306,8 +302,6 @@ namespace log4net.Appender
             get { return true; }
         }
 
-
-
         /// <summary>
         /// Writes the footer and closes the underlying <see cref="TextWriter"/>.
         /// </summary>
@@ -435,8 +429,6 @@ namespace log4net.Appender
             set { this.m_qtw = value; }
         }
 
-
-
         /// <summary>
         /// This is the <see cref="log4net.Util.QuietTextWriter"/> where logging events
         /// will be written to.
@@ -461,8 +453,6 @@ namespace log4net.Appender
         /// </remarks>
         private bool m_immediateFlush = true;
 
-
-
         /// <summary>
         /// The fully qualified type of the TextWriterAppender class.
         /// </summary>
@@ -471,7 +461,6 @@ namespace log4net.Appender
         /// log message.
         /// </remarks>
         private static readonly Type declaringType = typeof(TextWriterAppender);
-
 
         /// <summary>
         /// Flushes any buffered log data.

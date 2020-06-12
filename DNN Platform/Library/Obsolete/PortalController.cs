@@ -18,7 +18,6 @@ using DotNetNuke.Services.Log.EventLog;
 
 // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
-
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Portals
 {
@@ -84,7 +83,6 @@ namespace DotNetNuke.Entities.Portals
         {
             return GetCurrentPortalSettingsInternal();
         }
-
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.4.0. Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v10.0.0.")]

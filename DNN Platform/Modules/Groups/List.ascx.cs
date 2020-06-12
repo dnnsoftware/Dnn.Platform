@@ -43,7 +43,6 @@ namespace DotNetNuke.Modules.Groups
                 this.ctlGroupList.SortDirection = this.GroupListSortDirection;
             }
 
-
             if (!string.IsNullOrEmpty(this.GroupListTemplate))
             {
                 this.ctlGroupList.ItemTemplate = this.GroupListTemplate;

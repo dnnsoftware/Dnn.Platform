@@ -149,7 +149,6 @@ namespace Dnn.ExportImport.Components.Services
                                 var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
                                 string targetPath;
 
-
                                 if (checkFolder == "_default")
                                 {
                                     targetPath = Path.Combine(Globals.HostMapPath, relativePath);

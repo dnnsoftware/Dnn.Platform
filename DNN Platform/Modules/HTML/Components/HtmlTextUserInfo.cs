@@ -7,7 +7,6 @@ using System;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 
-
 namespace DotNetNuke.Modules.Html
 {
     /// -----------------------------------------------------------------------------
@@ -58,7 +57,6 @@ namespace DotNetNuke.Modules.Html
                 return this._Module;
             }
         }
-
 
         public int TabID { get; set; }
 

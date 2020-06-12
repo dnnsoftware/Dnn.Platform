@@ -98,7 +98,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
 
-
             // Arrange
             viewResultMock.Verify(v => v.ExecuteResult(It.IsAny<ControllerContext>(), It.IsAny<TextWriter>()));
         }
@@ -122,7 +121,6 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
-
 
             // Arrange
             viewResultMock.Verify(v => v.ExecuteResult(controllerContext, It.IsAny<TextWriter>()));

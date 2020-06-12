@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -74,8 +73,6 @@ namespace DotNetNuke.UI.Skins
 
         // ReSharper restore InconsistentNaming
 
-
-
         private ArrayList _actionEventListeners;
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;
@@ -85,7 +82,6 @@ namespace DotNetNuke.UI.Skins
             this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -104,7 +100,6 @@ namespace DotNetNuke.UI.Skins
 
         protected IModuleControlPipeline ModuleControlPipeline { get; }
         protected INavigationManager NavigationManager { get; }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -221,7 +216,6 @@ namespace DotNetNuke.UI.Skins
             }
             return null;
         }
-
 
         private bool CheckExpired()
         {
@@ -568,8 +562,6 @@ namespace DotNetNuke.UI.Skins
 
             return success;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

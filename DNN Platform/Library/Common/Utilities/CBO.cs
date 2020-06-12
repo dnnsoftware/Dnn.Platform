@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -426,9 +425,6 @@ namespace DotNetNuke.Common.Utilities
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
 
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CloneObject clones an object
@@ -502,8 +498,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateObject creates a new object of Type TObject.
@@ -556,8 +550,6 @@ namespace DotNetNuke.Common.Utilities
             }
             return objObject;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -704,8 +696,6 @@ namespace DotNetNuke.Common.Utilities
             return (List<T>)objFillCollection;
         }
 
-
-
         /// <summary>
         /// FillDictionary fills a Dictionary of objects from a DataReader
         /// </summary>
@@ -746,8 +736,6 @@ namespace DotNetNuke.Common.Utilities
         {
             return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -849,7 +837,6 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetCachedObject gets an object from the Cache
@@ -869,8 +856,6 @@ namespace DotNetNuke.Common.Utilities
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -893,8 +878,6 @@ namespace DotNetNuke.Common.Utilities
         {
             return GetObjectMapping(objType).Properties;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -935,8 +918,6 @@ namespace DotNetNuke.Common.Utilities
             }
             return objObject;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

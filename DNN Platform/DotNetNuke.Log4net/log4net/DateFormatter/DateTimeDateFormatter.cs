@@ -54,8 +54,6 @@ namespace log4net.DateFormatter
             this.m_dateTimeFormatInfo = DateTimeFormatInfo.InvariantInfo;
         }
 
-
-
         /// <summary>
         /// Formats the date without the milliseconds part
         /// </summary>
@@ -90,8 +88,6 @@ namespace log4net.DateFormatter
             // Append the 'HH:mm:ss'
             base.FormatDateWithoutMillis(dateToFormat, buffer);
         }
-
-
 
         /// <summary>
         /// The format info for the invariant culture.

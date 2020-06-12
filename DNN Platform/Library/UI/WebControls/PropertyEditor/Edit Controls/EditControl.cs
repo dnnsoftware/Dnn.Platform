@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Specialized;
 using System.Web.UI;
@@ -30,8 +29,6 @@ namespace DotNetNuke.UI.WebControls
     public abstract class EditControl : WebControl, IPostBackDataHandler
     {
         private object[] _CustomAttributes;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -156,8 +153,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadPostData loads the Post Back Data and determines whether the value has change
@@ -193,8 +188,6 @@ namespace DotNetNuke.UI.WebControls
         public event PropertyChangedEventHandler ItemDeleted;
         public event PropertyChangedEventHandler ValueChanged;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
@@ -202,8 +195,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected abstract void OnDataChanged(EventArgs e);
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

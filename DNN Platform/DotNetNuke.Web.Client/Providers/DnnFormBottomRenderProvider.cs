@@ -30,7 +30,6 @@ namespace DotNetNuke.Web.Client.Providers
         /// </summary>
         public const string DnnFormBottomPlaceHolderName = "ClientResourcesFormBottom";
 
-
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)
         {
             // Assign the provider a default name if it doesn't have one

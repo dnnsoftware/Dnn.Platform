@@ -39,8 +39,6 @@ namespace DotNetNuke.Services.Social.Notifications
         private readonly IDataService _dataService;
         private readonly Messaging.Data.IDataService _messagingDataService;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>

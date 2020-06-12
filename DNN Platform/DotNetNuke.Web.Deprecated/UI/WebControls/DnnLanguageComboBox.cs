@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -142,7 +141,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._englishCombo.DataSource = cultures.OrderBy(c => c.EnglishName);
             }
 
-
             this._nativeCombo.DataBind();
             this._englishCombo.DataBind();
 
@@ -199,7 +197,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ModeChanged(this, e);
             }
         }
-
 
         protected override void OnPreRender(EventArgs e)
         {

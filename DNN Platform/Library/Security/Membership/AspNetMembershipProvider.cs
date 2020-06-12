@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -603,7 +602,6 @@ namespace DotNetNuke.Security.Membership
             return System.Web.Security.Membership.GetUser(new Guid(userKey));
         }
 
-
         public override UserInfo GetUserByAuthToken(int portalId, string userToken, string authType)
         {
             IDataReader dr = this._dataProvider.GetUserByAuthToken(portalId, userToken, authType);
@@ -693,7 +691,6 @@ namespace DotNetNuke.Security.Membership
         {
             return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
-
 
         /// <summary>
         /// add new userportal record (used for creating sites with existing user)

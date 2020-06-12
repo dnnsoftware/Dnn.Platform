@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI.WebControls;
 
@@ -25,8 +24,6 @@ namespace DotNetNuke.UI.WebControls
     {
         public event DNNDataGridCheckedColumnEventHandler ItemCheckedChanged;
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Centralised Event that is raised whenever a check box is changed.
@@ -39,8 +36,6 @@ namespace DotNetNuke.UI.WebControls
                 this.ItemCheckedChanged(sender, e);
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

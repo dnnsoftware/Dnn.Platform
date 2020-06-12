@@ -57,15 +57,12 @@ namespace log4net.Filter
         /// </summary>
         private Level m_levelToMatch;
 
-
-
         /// <summary>
         /// Default constructor
         /// </summary>
         public LevelMatchFilter()
         {
         }
-
 
         /// <summary>
         /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/>
@@ -102,7 +99,6 @@ namespace log4net.Filter
             get { return this.m_levelToMatch; }
             set { this.m_levelToMatch = value; }
         }
-
 
         /// <summary>
         /// Tests if the <see cref="Level"/> of the logging event matches that of the filter

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -50,7 +49,6 @@ namespace DotNetNuke.Framework
         private const string jQueryUIVersionKey = "jQueryUIVersionKey";
         private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
         public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
-
 
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
@@ -380,8 +378,6 @@ namespace DotNetNuke.Framework
             }
             return scriptsrc;
         }
-
-
 
         /// <summary>
         /// Active the page with keep alive, so that authentication will not expire.

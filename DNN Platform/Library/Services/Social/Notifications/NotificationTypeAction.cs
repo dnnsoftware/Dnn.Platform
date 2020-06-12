@@ -78,7 +78,6 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public string APICall { get; set; }
 
-
         /// <summary>
         /// IHydratable.KeyID.
         /// </summary>

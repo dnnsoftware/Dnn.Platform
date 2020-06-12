@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -34,7 +33,6 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private string _AddedItem = Null.NullString;
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs a SkinsEditControl
@@ -54,8 +52,6 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             this.SystemType = type;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -175,9 +171,6 @@ namespace DotNetNuke.UI.Skins.Controls
                     break;
             }
         }
-
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

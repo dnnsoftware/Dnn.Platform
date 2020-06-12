@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -82,7 +81,6 @@ namespace DotNetNuke.Common
         public static readonly Regex ServicesFrameworkRegex = new Regex("/API/|DESKTOPMODULES/.+/API/", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         public static readonly string USERNAME_UNALLOWED_ASCII = "!\"#$%&'()*+,/:;<=>?[\\]^`{|}";
 
-
         /// <summary>
         /// Enumeration of site performance setting, say by another way that means how to set the cache.
         /// </summary>
@@ -120,8 +118,6 @@ namespace DotNetNuke.Common
             HeavyCaching = 6,
         }
 
-
-
         /// <summary>
         /// Enumeration Of Registration Type for portal.
         /// </summary>
@@ -156,8 +152,6 @@ namespace DotNetNuke.Common
             VerifiedRegistration = 3,
         }
 
-
-
         /// <summary>
         /// Enumeration Of Application upgrade status.
         /// </summary>
@@ -185,7 +179,6 @@ namespace DotNetNuke.Common
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
             Unknown,
         }
-
 
         /// <summary>
         /// Global role id for all users
@@ -664,7 +657,6 @@ namespace DotNetNuke.Common
             return false;
         }
 
-
         /// <summary>
         /// IsInstalled looks at various file artifacts to determine if DotNetNuke has already been installed.
         /// </summary>
@@ -822,7 +814,6 @@ namespace DotNetNuke.Common
                 return string.Join(",", listEntries.Select(l => l.Value));
             }
         }
-
 
         /// <summary>
         /// Builds the cross tab dataset.
@@ -2476,7 +2467,6 @@ namespace DotNetNuke.Common
             return returnValue;
         }
 
-
         /// <summary>
         /// Get the URL to show the "access denied" message.
         /// </summary>
@@ -3719,7 +3709,6 @@ namespace DotNetNuke.Common
             return isHostTab;
         }
 
-
         /// <summary>
         /// Return User Profile Picture Formatted Url. UserId, width and height can be passed to build a formatted Avatar Url.
         /// </summary>
@@ -3793,11 +3782,9 @@ namespace DotNetNuke.Common
 
         }
 
-
         // ****************************************************************************************
         // Constants are inlined in code and would require a rebuild of any module or skinobject
         // that may be using these constants.
-
 
         [Obsolete("This function has been replaced by DotNetNuke.Common.Utilities.HtmlUtils.FormatEmail. Scheduled removal in v11.0.0.")]
         public static string FormatEmail(string Email)

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -44,7 +43,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public DateTime MinDate { get; set; } = new DateTime(1900, 1, 1);
 
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
-
 
         protected override void OnPreRender(EventArgs e)
         {

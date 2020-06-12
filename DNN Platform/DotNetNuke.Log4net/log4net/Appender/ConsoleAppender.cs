@@ -99,8 +99,6 @@ namespace log4net.Appender
             this.m_writeToErrorStream = writeToErrorStream;
         }
 
-
-
         /// <summary>
         /// Target is the value of the console output stream.
         /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
@@ -132,8 +130,6 @@ namespace log4net.Appender
                 }
             }
         }
-
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -179,8 +175,6 @@ namespace log4net.Appender
         {
             get { return true; }
         }
-
-
 
         /// <summary>
         /// The <see cref="ConsoleAppender.Target"/> to use when writing to the Console

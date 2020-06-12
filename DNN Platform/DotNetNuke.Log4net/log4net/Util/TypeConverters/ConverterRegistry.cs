@@ -62,8 +62,6 @@ namespace log4net.Util.TypeConverters
         {
         }
 
-
-
         /// <summary>
         /// Static constructor.
         /// </summary>
@@ -82,8 +80,6 @@ namespace log4net.Util.TypeConverters
             AddConverter(typeof(log4net.Util.PatternString), typeof(PatternStringConverter));
             AddConverter(typeof(System.Net.IPAddress), typeof(IPAddressConverter));
         }
-
-
 
         /// <summary>
         /// Adds a converter for a specific type.
@@ -270,8 +266,6 @@ namespace log4net.Util.TypeConverters
             }
             return null;
         }
-
-
 
         /// <summary>
         /// The fully qualified type of the ConverterRegistry class.

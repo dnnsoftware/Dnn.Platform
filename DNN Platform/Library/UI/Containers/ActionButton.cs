@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.Entities.Modules.Actions;
@@ -26,7 +25,6 @@ namespace DotNetNuke.UI.Containers
     public class ActionButton : ActionBase
     {
         private ActionButtonList _ButtonList;
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -166,8 +164,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Action_Click responds to an Action Event in the contained actionButtonList
@@ -177,8 +173,6 @@ namespace DotNetNuke.UI.Containers
         {
             this.ProcessAction(e.Action.ID.ToString());
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -35,7 +35,6 @@ namespace DotNetNuke.Entities.Tabs
             return () => new TabWorkflowTracker();
         }
 
-
         /// <summary>
         /// Tracks a workflow instance when a module is added to a page
         /// </summary>
@@ -57,7 +56,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
         }
-
 
         /// <summary>
         /// Tracks a workflow instance when a module is deleted from a page
@@ -81,7 +79,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             this.TrackModuleAddition(module, moduleVersion, userId);
         }
-
 
         /// <summary>
         /// Tracks a workflow instance when a copied module is deleted from an exisitng page

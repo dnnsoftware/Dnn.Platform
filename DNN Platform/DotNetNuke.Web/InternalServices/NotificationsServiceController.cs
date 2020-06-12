@@ -42,7 +42,6 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-
         [HttpGet]
         public HttpResponseMessage GetToasts()
         {

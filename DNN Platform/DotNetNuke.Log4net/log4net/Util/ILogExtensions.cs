@@ -55,9 +55,6 @@ namespace log4net.Util
         /// </summary>
         private static readonly Type declaringType = typeof(ILogExtensions);
 
-
-
-
         /// <summary>
         /// Log a message object with the <see cref="Level.Debug"/> level.
         /// </summary>
@@ -131,8 +128,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <overloads>Log a message object with the <see cref="Level.Debug"/> level.</overloads> //TODO
         /// <summary>
@@ -208,8 +203,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
@@ -400,10 +393,6 @@ namespace log4net.Util
             }
         }
 
-
-
-
-
         /// <summary>
         /// Log a message object with the <see cref="Level.Info"/> level.
         /// </summary>
@@ -477,8 +466,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <overloads>Log a message object with the <see cref="Level.Info"/> level.</overloads> //TODO
         /// <summary>
@@ -554,8 +541,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
@@ -746,10 +731,6 @@ namespace log4net.Util
             }
         }
 
-
-
-
-
         /// <summary>
         /// Log a message object with the <see cref="Level.Warn"/> level.
         /// </summary>
@@ -823,8 +804,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <overloads>Log a message object with the <see cref="Level.Warn"/> level.</overloads> //TODO
         /// <summary>
@@ -900,8 +879,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
@@ -1092,10 +1069,6 @@ namespace log4net.Util
             }
         }
 
-
-
-
-
         /// <summary>
         /// Log a message object with the <see cref="Level.Error"/> level.
         /// </summary>
@@ -1169,8 +1142,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <overloads>Log a message object with the <see cref="Level.Error"/> level.</overloads> //TODO
         /// <summary>
@@ -1246,8 +1217,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
@@ -1438,10 +1407,6 @@ namespace log4net.Util
             }
         }
 
-
-
-
-
         /// <summary>
         /// Log a message object with the <see cref="Level.Fatal"/> level.
         /// </summary>
@@ -1515,8 +1480,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <overloads>Log a message object with the <see cref="Level.Fatal"/> level.</overloads> //TODO
         /// <summary>
@@ -1592,8 +1555,6 @@ namespace log4net.Util
                 log4net.Util.LogLog.Error(declaringType, "Exception while logging", ex);
             }
         }
-
-
 
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.

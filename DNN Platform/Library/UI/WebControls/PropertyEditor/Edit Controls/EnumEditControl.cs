@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Globalization;
 using System.Web.UI;
@@ -27,7 +26,6 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly Type EnumType;
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs an EnumEditControl
@@ -48,8 +46,6 @@ namespace DotNetNuke.UI.WebControls
             this.EnumType = Type.GetType(type);
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// StringValue is the value of the control expressed as a String
@@ -69,8 +65,6 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = setValue;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

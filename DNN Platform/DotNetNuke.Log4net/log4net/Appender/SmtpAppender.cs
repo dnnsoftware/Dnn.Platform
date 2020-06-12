@@ -86,8 +86,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// Gets or sets a comma- or semicolon-delimited list of recipient e-mail addresses (use semicolon on .NET 1.1 and comma for later versions).
         /// </summary>
@@ -373,8 +371,6 @@ namespace log4net.Appender
             set { this.m_bodyEncoding = value; }
         }
 
-
-
         /// <summary>
         /// Sends the contents of the cyclic buffer as an e-mail message.
         /// </summary>
@@ -413,8 +409,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </summary>
@@ -428,8 +422,6 @@ namespace log4net.Appender
         {
             get { return true; }
         }
-
-
 
         /// <summary>
         /// Send the email message
@@ -597,8 +589,6 @@ namespace log4net.Appender
         private bool m_enableSsl = false;
         private string m_replyTo;
 #endif
-
-
 
         /// <summary>
         /// Values for the <see cref="SmtpAppender.Authentication"/> property.

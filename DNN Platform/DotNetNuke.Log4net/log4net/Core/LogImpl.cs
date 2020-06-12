@@ -120,7 +120,6 @@ namespace log4net.Core
             this.ReloadLevels(logger.Repository);
         }
 
-
         /// <summary>
         /// Virtual method called when the configuration of the repository changes
         /// </summary>
@@ -140,7 +139,6 @@ namespace log4net.Core
             this.m_levelError = levelMap.LookupWithDefault(Level.Error);
             this.m_levelFatal = levelMap.LookupWithDefault(Level.Fatal);
         }
-
 
         /// <summary>
         /// Logs a message object with the <c>DEBUG</c> level.
@@ -1254,8 +1252,6 @@ namespace log4net.Core
             get { return this.Logger.IsEnabledFor(this.m_levelFatal); }
         }
 
-
-
         /// <summary>
         /// Event handler for the <see cref="log4net.Repository.ILoggerRepository.ConfigurationChanged"/> event
         /// </summary>
@@ -1269,8 +1265,6 @@ namespace log4net.Core
                 this.ReloadLevels(repository);
             }
         }
-
-
 
         /// <summary>
         /// The fully qualified name of this declaring type not the type of any subclass.

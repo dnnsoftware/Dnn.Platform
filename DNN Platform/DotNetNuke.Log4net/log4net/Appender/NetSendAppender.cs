@@ -163,8 +163,6 @@ namespace log4net.Appender
         /// </summary>
         private SecurityContext m_securityContext;
 
-
-
         /// <summary>
         /// Initializes the appender.
         /// </summary>
@@ -174,8 +172,6 @@ namespace log4net.Appender
         public NetSendAppender()
         {
         }
-
-
 
         /// <summary>
         /// Gets or sets the sender of the message.
@@ -247,8 +243,6 @@ namespace log4net.Appender
             set { this.m_securityContext = value; }
         }
 
-
-
         /// <summary>
         /// Initialize the appender based on the options set.
         /// </summary>
@@ -283,8 +277,6 @@ namespace log4net.Appender
                 this.m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
             }
         }
-
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -341,8 +333,6 @@ namespace log4net.Appender
         {
             get { return true; }
         }
-
-
 
         /// <summary>
         /// Sends a buffer of information to a registered message alias.

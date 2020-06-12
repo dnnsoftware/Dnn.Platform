@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -116,7 +115,6 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-
 
         public static int AddSkin(int skinPackageID, string skinSrc)
         {
@@ -338,7 +336,6 @@ namespace DotNetNuke.UI.Skins
         {
             return skinSrc.Contains(Globals.HostPath);
         }
-
 
         public static void SetSkin(string skinRoot, int portalId, SkinType skinType, string skinSrc)
         {

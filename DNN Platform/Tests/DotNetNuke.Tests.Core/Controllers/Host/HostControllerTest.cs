@@ -27,14 +27,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         private Mock<CachingProvider> _mockCache;
         private Mock<DataProvider> _mockData;
 
-
         [SetUp]
         public void SetUp()
         {
             this._mockCache = MockComponentProvider.CreateDataCacheProvider();
             MockComponentProvider.CreateEventLogController();
-
-
 
             this._hostSettingsTable = new DataTable("HostSettings");
 
@@ -54,11 +51,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             this._hostSettingsTable.Rows.Add("Bool_9_U", false, false);
             this._hostSettingsTable.Rows.Add("Bool_10_S", false, true);
 
-
             this._mockData = MockComponentProvider.CreateDataProvider();
             this._mockData.Setup(c => c.GetHostSettings()).Returns(this._hostSettingsTable.CreateDataReader());
             this._mockData.Setup(c => c.GetProviderPath()).Returns(string.Empty);
-
 
             DataCache.ClearCache();
         }
@@ -112,7 +107,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             // Act
             var settingsDic = HostController.Instance.GetSettingsDictionary();
-
 
             // Assert
             CollectionAssert.AreEquivalent(expectedDic.Values, settingsDic.Values);
@@ -275,7 +269,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             Assert.AreEqual(HostController.Instance.GetString(key, "Hello Default"), this.GetValue(key));
         }
 
-
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
@@ -346,7 +339,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             Assert.AreEqual(HostController.Instance.GetBoolean(key, true).ToString(), this.GetValue(key));
         }
 
-
         [Test]
         [TestCase("BadKey1")]
         [TestCase("AAAAAAA")]
@@ -363,7 +355,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             Assert.AreEqual(HostController.Instance.GetBoolean(key, true), true);
             Assert.AreEqual(HostController.Instance.GetBoolean(key, false), false);
         }
-
 
         [Test]
         [TestCase("")]

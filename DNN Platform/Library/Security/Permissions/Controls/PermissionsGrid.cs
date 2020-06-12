@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -83,8 +82,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 return false;
             }
         }
-
-
 
         /// <summary>
         /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel
@@ -193,7 +190,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-
         /// <summary>
         /// Gets the Id of the Administrator Role
         /// </summary>
@@ -272,8 +268,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Gets and Sets the ResourceFile to localize permissions
         /// </summary>
         public string ResourceFile { get; set; }
-
-
 
         /// <summary>
         /// Generate the Data Grid
@@ -1012,8 +1006,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-
-
         protected virtual void ParsePermissionKeys(PermissionInfoBase permission, string[] Settings)
         {
             permission.PermissionID = Convert.ToInt32(Settings[1]);
@@ -1182,8 +1174,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
             }
         }
-
-
 
         /// <summary>
         /// RoleGroupsSelectedIndexChanged runs when the Role Group is changed

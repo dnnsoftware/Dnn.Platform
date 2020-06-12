@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Specialized;
 using System.Globalization;
@@ -85,9 +84,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-
-
-
         /// <summary>
         /// getQSParams builds up a new querystring. This is necessary
         /// in order to prep for navigateUrl.
@@ -161,7 +157,6 @@ namespace DotNetNuke.UI.Skins.Controls
                                         }
                                         returnValue += arrKeys[i] + "=" + HttpUtility.UrlEncode(rawQueryStringCollection.Get(arrKeys[i]));
                                     }
-
 
                                 }
                                 // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content

@@ -85,8 +85,6 @@ namespace DotNetNuke.Tests.Web.Api
                     }, types);
         }
 
-
-
         [Test]
         public void NameSpaceRequiredOnMapRouteCalls([ValueSource("_emptyStringArrays")] string[] namespaces)
         {

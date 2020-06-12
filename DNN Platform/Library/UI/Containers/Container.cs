@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.IO;
@@ -49,8 +48,6 @@ namespace DotNetNuke.UI.Containers
         private ModuleInfo _moduleConfiguration;
         private ModuleHost _moduleHost;
 
-
-
         /// <summary>
         /// Gets the Content Pane Control (Id="ContentPane")
         /// </summary>
@@ -75,8 +72,6 @@ namespace DotNetNuke.UI.Containers
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -424,8 +419,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnInit runs when the Container is initialised.
@@ -443,7 +436,6 @@ namespace DotNetNuke.UI.Containers
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
 
             this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
         }
@@ -488,8 +480,6 @@ namespace DotNetNuke.UI.Containers
             this._moduleConfiguration = configuration;
             this.ProcessModule();
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

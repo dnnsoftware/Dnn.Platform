@@ -93,7 +93,6 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool IsTask { get; set; }
 
-
         /// <summary>
         /// IHydratable.KeyID.
         /// </summary>

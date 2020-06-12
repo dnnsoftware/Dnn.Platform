@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System.Web.UI;
 
 namespace DotNetNuke.Entities.Modules.Communications
@@ -46,7 +45,6 @@ namespace DotNetNuke.Entities.Modules.Communications
             }
         }
 
-
         /// <summary>
         /// Loads the communicator.
         /// </summary>
@@ -75,7 +73,6 @@ namespace DotNetNuke.Entities.Modules.Communications
             {
                 item.ModuleCommunication += this._ModuleListeners[i].OnModuleCommunication;
             }
-
 
             return returnData;
         }

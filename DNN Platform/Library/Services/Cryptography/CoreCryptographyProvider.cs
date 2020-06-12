@@ -175,7 +175,6 @@ namespace DotNetNuke.Services.Cryptography
                     Padding = PaddingMode.PKCS7,
                 };
 
-
                 byte[] dataToDecrypt = Convert.FromBase64String(message);
                 try
                 {

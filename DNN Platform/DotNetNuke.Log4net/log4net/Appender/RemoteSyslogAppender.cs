@@ -77,7 +77,6 @@ namespace log4net.Appender
         /// </summary>
         private const int DefaultSyslogPort = 514;
 
-
         /// <summary>
         /// syslog severities
         /// </summary>
@@ -260,8 +259,6 @@ namespace log4net.Appender
             Local7 = 23,
         }
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RemoteSyslogAppender" /> class.
         /// </summary>
@@ -276,8 +273,6 @@ namespace log4net.Appender
             this.RemoteAddress = System.Net.IPAddress.Parse("127.0.0.1");
             this.Encoding = System.Text.Encoding.ASCII;
         }
-
-
 
         /// <summary>
         /// Message identity
@@ -310,7 +305,6 @@ namespace log4net.Appender
             set { this.m_facility = value; }
         }
 
-
         /// <summary>
         /// Add a mapping of level to severity
         /// </summary>
@@ -324,7 +318,6 @@ namespace log4net.Appender
         {
             this.m_levelMapping.Add(mapping);
         }
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -438,8 +431,6 @@ namespace log4net.Appender
             this.m_levelMapping.ActivateOptions();
         }
 
-
-
         /// <summary>
         /// Translates a log4net level to a syslog severity.
         /// </summary>
@@ -488,8 +479,6 @@ namespace log4net.Appender
             return SyslogSeverity.Debug;
         }
 
-
-
         /// <summary>
         /// Generate a syslog priority.
         /// </summary>
@@ -519,8 +508,6 @@ namespace log4net.Appender
             }
         }
 
-
-
         /// <summary>
         /// The facility. The default facility is <see cref="SyslogFacility.User"/>.
         /// </summary>
@@ -545,7 +532,6 @@ namespace log4net.Appender
         /// Maximum buffer size before it is recycled
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
-
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and

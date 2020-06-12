@@ -22,7 +22,6 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalsController));
 
-
         /// GET: api/Portals/GetPortals
         /// <summary>
         /// Gets portals

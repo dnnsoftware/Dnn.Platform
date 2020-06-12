@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web;
 using System.Web.UI.WebControls;
@@ -27,7 +26,6 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String</value>
         public string CommandName { get; set; }
 
-
         /// <summary>
         /// EditMode for the Column
         /// </summary>
@@ -37,7 +35,6 @@ namespace DotNetNuke.UI.WebControls
             get { return this._editMode; }
             set { this._editMode = value; }
         }
-
 
         /// <summary>
         /// Gets or sets the URL of the Image
@@ -57,13 +54,11 @@ namespace DotNetNuke.UI.WebControls
             set { this._imageURL = value; }
         }
 
-
         /// <summary>
         /// The Icon Key to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconKey { get; set; }
-
 
         /// <summary>
         /// The Icon Siz to obtain ImageURL
@@ -71,13 +66,11 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String</value>
         public string IconSize { get; set; }
 
-
         /// <summary>
         /// The Icon Style to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconStyle { get; set; }
-
 
         /// <summary>
         /// The Key Field that provides a Unique key to the data Item
@@ -85,20 +78,17 @@ namespace DotNetNuke.UI.WebControls
         /// <value>A String</value>
         public string KeyField { get; set; }
 
-
         /// <summary>
         /// Gets or sets the URL of the Link (unless DataBinding through KeyField)
         /// </summary>
         /// <value>A String</value>
         public string NavigateURL { get; set; }
 
-
         /// <summary>
         /// Gets or sets the URL Formatting string
         /// </summary>
         /// <value>A String</value>
         public string NavigateURLFormatString { get; set; }
-
 
         /// <summary>
         /// Javascript text to attach to the OnClick Event
@@ -107,7 +97,6 @@ namespace DotNetNuke.UI.WebControls
 // ReSharper disable InconsistentNaming
         public string OnClickJS { get; set; }
 // ReSharper restore InconsistentNaming
-
 
         /// <summary>
         /// Gets or sets whether an Image is displayed
@@ -120,20 +109,17 @@ namespace DotNetNuke.UI.WebControls
             set { this._showImage = value; }
         }
 
-
         /// <summary>
         /// Gets or sets the Text (for Header/Footer Templates)
         /// </summary>
         /// <value>A String</value>
         public string Text { get; set; }
 
-
         /// <summary>
         /// An flag that indicates whether the buttons are visible.
         /// </summary>
         /// <value>A Boolean</value>
         public string VisibleField { get; set; }
-
 
         /// <summary>
         /// Creates a ImageCommandColumnTemplate
@@ -167,8 +153,6 @@ namespace DotNetNuke.UI.WebControls
 
             return template;
         }
-
-
 
         /// <summary>
         /// Initialises the Column

@@ -53,8 +53,6 @@ namespace log4net.Appender
         {
         }
 
-
-
         /// <summary>
         /// Closes the appender and releases resources.
         /// </summary>
@@ -114,8 +112,6 @@ namespace log4net.Appender
                 this.m_appenderAttachedImpl.AppendLoopOnAppenders(loggingEvents);
             }
         }
-
-
 
         /// <summary>
         /// Adds an <see cref="IAppender" /> to the list of appenders of this
@@ -261,8 +257,6 @@ namespace log4net.Appender
             }
             return null;
         }
-
-
 
         /// <summary>
         /// Implementation of the <see cref="IAppenderAttachable"/> interface

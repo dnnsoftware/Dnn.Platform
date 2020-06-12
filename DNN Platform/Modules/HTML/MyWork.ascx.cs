@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 
 using DotNetNuke.Abstractions;
@@ -32,8 +31,6 @@ namespace DotNetNuke.Modules.Html
             var objHtmlTextUser = (HtmlTextUserInfo)dataItem;
             return "<a href=\"" + this._navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
-
-
 
         /// <summary>
         ///   Page_Load runs when the control is loaded

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -34,8 +33,6 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblLabel;
         protected Panel pnlHelp;
         protected Label lblNoHelpLabel;
-
-
 
         /// <summary>
         /// ControlName is the Id of the control that is associated with the label
@@ -148,8 +145,6 @@ namespace DotNetNuke.UI.UserControls
                 this.lblLabel.Width = value;
             }
         }
-
-
 
         /// <summary>
         /// Page_Load runs when the control is loaded

@@ -8,7 +8,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.Html.Components;
 
-
 namespace DotNetNuke.Modules.Html
 {
     /// -----------------------------------------------------------------------------

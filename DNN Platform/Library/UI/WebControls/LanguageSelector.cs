@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections;
 using System.Globalization;
@@ -34,8 +33,6 @@ namespace DotNetNuke.UI.WebControls
             Vertical = 2,
         }
 
-
-
         /// <summary>
         /// Language Selection mode, offered to the user: single select or multiple select.
         /// </summary>
@@ -44,8 +41,6 @@ namespace DotNetNuke.UI.WebControls
             Multiple = 1,
             Single = 2,
         }
-
-
 
         /// <summary>
         /// Selection object: Language ("de", "en") or Locale ("de-DE", "en-US")
@@ -57,7 +52,6 @@ namespace DotNetNuke.UI.WebControls
         }
 
         private Panel pnlControl;
-
 
         /// <summary>
         /// Gets or sets selection mode (single, multiple)
@@ -256,8 +250,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
-
         /// <summary>
         /// Create Child Controls
         /// </summary>
@@ -318,8 +310,6 @@ namespace DotNetNuke.UI.WebControls
                 this.Visible = false;
             }
         }
-
-
 
         /// <summary>
         /// retrieve the cultures, currently supported by the portal

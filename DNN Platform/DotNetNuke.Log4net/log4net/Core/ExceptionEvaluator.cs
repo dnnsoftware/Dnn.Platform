@@ -92,7 +92,6 @@ namespace log4net.Core
             set { this.m_triggerOnSubclass = value; }
         }
 
-
         /// <summary>
         /// Is this <paramref name="loggingEvent"/> the triggering event?
         /// </summary>

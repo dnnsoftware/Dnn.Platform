@@ -70,8 +70,6 @@ namespace log4net.Core
         {
         }
 
-
-
         /// <summary>
         /// Hook the shutdown event
         /// </summary>
@@ -175,8 +173,6 @@ namespace log4net.Core
             AppDomain.CurrentDomain.DomainUnload += new EventHandler(OnDomainUnload);
 #endif
         }
-
-
 
         /// <summary>
         /// Return the default <see cref="ILoggerRepository"/> instance.
@@ -788,8 +784,6 @@ namespace log4net.Core
             set { s_repositorySelector = value; }
         }
 
-
-
         /// <summary>
         /// Internal method to get pertinent version info.
         /// </summary>
@@ -853,8 +847,6 @@ namespace log4net.Core
             Shutdown();
         }
 #endif
-
-
 
         /// <summary>
         /// The fully qualified type of the LoggerManager class.

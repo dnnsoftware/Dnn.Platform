@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Web.UI;
 
@@ -40,7 +39,6 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
         }
-
 
         /// <summary>
         /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
@@ -132,8 +130,6 @@ namespace DotNetNuke.UI.WebControls
                 return null;
             }
         }
-
-
 
         /// <summary>
         /// Returns node name

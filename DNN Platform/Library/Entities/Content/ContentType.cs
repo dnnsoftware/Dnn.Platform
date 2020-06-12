@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Linq;
@@ -67,7 +66,6 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-
         /// <summary>
         /// Gets or sets the content type id.
         /// </summary>
@@ -75,7 +73,6 @@ namespace DotNetNuke.Entities.Content
         /// The content type id.
         /// </value>
         public int ContentTypeId { get; set; }
-
 
         /// <summary>
         /// Fill this content object will the information from data reader.
@@ -105,7 +102,6 @@ namespace DotNetNuke.Entities.Content
                 this.ContentTypeId = value;
             }
         }
-
 
         /// <summary>
         /// override ToString to return content type

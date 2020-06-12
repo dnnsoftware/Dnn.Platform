@@ -30,7 +30,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
-
         public static StreamReader GetLanguageList()
         {
             string url = DotNetNukeContext.Current.Application.UpgradeUrl + "/languages.aspx";

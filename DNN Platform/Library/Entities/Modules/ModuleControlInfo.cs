@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Xml;
@@ -99,7 +98,6 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public int ViewOrder { get; set; }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a ModuleControlInfo from a Data Reader
@@ -138,8 +136,6 @@ namespace DotNetNuke.Entities.Modules
                 this.ModuleControlID = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

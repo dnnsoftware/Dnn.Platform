@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Tests.Utilities;
 
@@ -48,7 +47,6 @@ namespace DotNetNuke.Tests.Urls
                 UserController.RemoveUser(user);
             }
         }
-
 
         internal static string EmbeddedFilePath
         {

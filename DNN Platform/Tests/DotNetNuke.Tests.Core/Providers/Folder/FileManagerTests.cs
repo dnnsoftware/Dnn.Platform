@@ -190,7 +190,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._globals.Setup(g => g.GetSubFolderPath(Constants.FOLDER_ValidFilePath, Constants.CONTENT_ValidPortalId)).Returns(Constants.FOLDER_ValidFolderRelativePath);
 
-
             var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
 
             this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
@@ -201,7 +200,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._mockFileManager.Setup(mfm => mfm.IsAllowedExtension(Constants.FOLDER_ValidFileName)).Returns(true);
             this._mockFileManager.Setup(mfm => mfm.CreateFileContentItem()).Returns(new ContentItem());
             this._mockFileManager.Setup(mfm => mfm.IsImageFile(It.IsAny<IFileInfo>())).Returns(false);
-
 
             this._workflowManager.Setup(we => we.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 

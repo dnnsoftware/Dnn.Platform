@@ -65,7 +65,6 @@ namespace log4net.Layout
             set { this.m_key = value; }
         }
 
-
         /// <summary>
         /// Lookup the property for <see cref="Key"/>
         /// </summary>

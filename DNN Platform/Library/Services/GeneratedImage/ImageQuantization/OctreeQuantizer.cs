@@ -64,8 +64,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         {
             byte    paletteIndex = (byte)this._maxColors;   // The color at [_maxColors] is set to transparent
 
-
-
             // Get the palette index if this non-transparent
             if (pixel.Alpha > 0)
             {
@@ -171,7 +169,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                 // Decrement the leaf count after reducing the node
                 this._leafCount -= node.Reduce();
-
 
                 // And just in case I've reduced the last color to be added, and the next color to
                 // be added is the same, invalidate the previousNode...

@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +46,6 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -144,8 +142,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the current Page No
@@ -191,7 +187,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
                 this.userForm.DataSource = this.User;
-
 
                 // hide username field in UseEmailAsUserName mode
                 bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
@@ -346,9 +341,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Init runs when the control is initialised
@@ -371,7 +363,6 @@ namespace DotNetNuke.Modules.Admin.Users
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.Knockout);
-
 
             // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";

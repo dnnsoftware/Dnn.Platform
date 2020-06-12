@@ -253,8 +253,6 @@ namespace log4net.Appender
             Local7 = 23,
         }
 
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalSyslogAppender" /> class.
         /// </summary>
@@ -265,8 +263,6 @@ namespace log4net.Appender
         public LocalSyslogAppender()
         {
         }
-
-
 
         /// <summary>
         /// Message identity
@@ -299,7 +295,6 @@ namespace log4net.Appender
             set { this.m_facility = value; }
         }
 
-
         /// <summary>
         /// Add a mapping of level to severity
         /// </summary>
@@ -313,7 +308,6 @@ namespace log4net.Appender
         {
             this.m_levelMapping.Add(mapping);
         }
-
 
         /// <summary>
         /// Initialize the appender based on the options set.
@@ -355,8 +349,6 @@ namespace log4net.Appender
             // open syslog
             openlog(this.m_handleToIdentity, 1, this.m_facility);
         }
-
-
 
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
@@ -432,8 +424,6 @@ namespace log4net.Appender
             get { return true; }
         }
 
-
-
         /// <summary>
         /// Translates a log4net level to a syslog severity.
         /// </summary>
@@ -482,8 +472,6 @@ namespace log4net.Appender
             return SyslogSeverity.Debug;
         }
 
-
-
         /// <summary>
         /// Generate a syslog priority.
         /// </summary>
@@ -494,8 +482,6 @@ namespace log4net.Appender
         {
             return ((int)facility * 8) + (int)severity;
         }
-
-
 
         /// <summary>
         /// The facility. The default facility is <see cref="SyslogFacility.User"/>.
@@ -518,8 +504,6 @@ namespace log4net.Appender
         /// Mapping from level object to syslog severity
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
-
-
 
         /// <summary>
         /// Open connection to system logger.
@@ -547,8 +531,6 @@ namespace log4net.Appender
         /// </summary>
         [DllImport("libc")]
         private static extern void closelog();
-
-
 
         /// <summary>
         /// A class to act as a mapping between the level that a logging call is made at and

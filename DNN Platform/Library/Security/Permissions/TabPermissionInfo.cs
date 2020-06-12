@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Data;
 using System.Xml.Serialization;
@@ -29,8 +28,6 @@ namespace DotNetNuke.Security.Permissions
         private int _TabID;
         // local property declarations
         private int _TabPermissionID;
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -58,8 +55,6 @@ namespace DotNetNuke.Security.Permissions
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -98,8 +93,6 @@ namespace DotNetNuke.Security.Permissions
                 this._TabID = value;
             }
         }
-
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -60,8 +60,6 @@ namespace log4net.Util
             this.ErrorHandler = errorHandler;
         }
 
-
-
         /// <summary>
         /// Gets or sets the error handler that all errors are passed to.
         /// </summary>
@@ -102,8 +100,6 @@ namespace log4net.Util
         {
             get { return this.m_closed; }
         }
-
-
 
         /// <summary>
         /// Writes a character to the underlying writer
@@ -183,8 +179,6 @@ namespace log4net.Util
             this.m_closed = true;
             base.Close();
         }
-
-
 
         /// <summary>
         /// The error handler instance to pass all errors to

@@ -27,7 +27,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
             // Look for a module control

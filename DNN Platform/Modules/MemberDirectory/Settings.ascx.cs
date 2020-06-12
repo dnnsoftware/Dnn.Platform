@@ -3,7 +3,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -119,12 +118,9 @@ namespace DotNetNuke.Modules.MemberDirectory
                     this.relationShipList.AddItem(Localization.GetString(rel.Name, Localization.SharedResourceFile), rel.RelationshipId.ToString());
                 }
 
-
                 var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
-
                 System.Web.UI.WebControls.ListItemCollection propertiesCollection = this.GetPropertiesCollection(profileResourceFile);
-
 
                 // Bind the ListItemCollection to the list
                 this.propertyList.DataSource = propertiesCollection;

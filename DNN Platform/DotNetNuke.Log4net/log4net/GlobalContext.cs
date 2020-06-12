@@ -69,7 +69,6 @@ namespace log4net
             Properties[log4net.Core.LoggingEvent.HostNameProperty] = SystemInfo.HostName;
         }
 
-
         /// <summary>
         /// The global properties map.
         /// </summary>
@@ -85,8 +84,6 @@ namespace log4net
         {
             get { return s_properties; }
         }
-
-
 
         /// <summary>
         /// The global context properties instance
