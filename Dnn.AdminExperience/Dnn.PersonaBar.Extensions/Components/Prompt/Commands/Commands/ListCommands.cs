@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Repositories;
-using DotNetNuke.Instrumentation;
-
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
 {
+    using System;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Prompt.Components.Repositories;
+    using DotNetNuke.Instrumentation;
+
     [ConsoleCommand("list-commands", Constants.GeneralCategory, "Prompt_ListCommands_Description")]
     public class ListCommands : ConsoleCommandBase
     {

@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();

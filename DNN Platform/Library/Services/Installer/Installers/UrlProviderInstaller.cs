@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Urls;
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Linq;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Urls;
+
     internal class UrlProviderInstaller : ComponentInstallerBase
     {
         private ExtensionUrlProviderInfo _extensionUrlProvider;

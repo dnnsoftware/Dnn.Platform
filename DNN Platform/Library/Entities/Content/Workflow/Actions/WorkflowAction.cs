@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// This entity represents a workflow action implementation.
     /// </summary>

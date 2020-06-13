@@ -1,13 +1,11 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web.UI.HtmlControls;
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Web.UI.HtmlControls;
+
     /// -----------------------------------------------------------------------------
     /// <summary>A skin object which enables adding a <c>meta</c> element to the <c>head</c>.</summary>
     public partial class Meta : SkinObjectBase

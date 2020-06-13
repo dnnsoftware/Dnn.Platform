@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Linq;
-
-using DotNetNuke.Entities.Portals;
-
 namespace Dnn.PersonaBar.Library.Helper
 {
+    using System.Linq;
+
+    using DotNetNuke.Entities.Portals;
+
     public class ContentVerifier : IContentVerifier
     {
         private IPortalController _portalController;

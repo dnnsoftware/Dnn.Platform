@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Security
 {
+    using System;
+    using System.IO;
+    using System.Security.Cryptography;
+    using System.Text;
+
+    using DotNetNuke.Common;
+
     /// <summary>
     ///     This class implements a number of methods that can be safely used in a FIPS-140 compliant environment
     ///     FIPS compliant Algorithms:

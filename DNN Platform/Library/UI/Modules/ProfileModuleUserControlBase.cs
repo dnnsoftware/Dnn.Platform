@@ -1,22 +1,20 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Globalization;
-using System.Threading;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.UI.Modules
 {
+    using System;
+    using System.Globalization;
+    using System.Threading;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using Microsoft.Extensions.DependencyInjection;
+
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
     {
         protected INavigationManager NavigationManager { get; }

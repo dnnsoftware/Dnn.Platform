@@ -2,26 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-
-using Dnn.PersonaBar.Library.DTO.Tabs;
-using Dnn.PersonaBar.Library.Security;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-
-using Localization = DotNetNuke.Services.Localization.Localization;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Security;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class TabsController
     {
         private string IconHome => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Home.png");

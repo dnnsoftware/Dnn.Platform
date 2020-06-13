@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using System.Text;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Caching
 {
+    using System;
+    using System.Data;
+    using System.Text;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using NUnit.Framework;
+
     /// <summary>
     ///   Summary description for DataCacheTests.
     /// </summary>

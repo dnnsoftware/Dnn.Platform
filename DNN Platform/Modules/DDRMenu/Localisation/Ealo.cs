@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.WebControls;
-using effority.Ealo.Specialized;
-
-using EaloTabInfo = effority.Ealo.Specialized.TabInfo;
-using TabInfo = DotNetNuke.Entities.Tabs.TabInfo;
-
 namespace DotNetNuke.Web.DDRMenu.Localisation
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.UI.WebControls;
+    using effority.Ealo.Specialized;
+
+    using EaloTabInfo = effority.Ealo.Specialized.TabInfo;
+    using TabInfo = DotNetNuke.Entities.Tabs.TabInfo;
 
     [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]
     public class Ealo : ILocalisation

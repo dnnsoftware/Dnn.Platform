@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Telerik.Web.UI;
+
     public class DnnGridImageCommandColumnTemplate : IBindableTemplate
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;

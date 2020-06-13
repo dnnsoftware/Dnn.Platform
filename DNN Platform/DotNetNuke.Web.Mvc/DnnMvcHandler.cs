@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.SessionState;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.HttpModules.Membership;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
-
 namespace DotNetNuke.Web.Mvc
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.SessionState;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.HttpModules.Membership;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+
     public class DnnMvcHandler : IHttpHandler, IRequiresSessionState
     {
         public DnnMvcHandler(RequestContext requestContext)

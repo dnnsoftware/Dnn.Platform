@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+
     [ToolboxData("<{0}:DnnPageDropDownList runat='server'></{0}:DnnPageDropDownList>")]
     public class DnnPageDropDownList : DnnDropDownList
     {

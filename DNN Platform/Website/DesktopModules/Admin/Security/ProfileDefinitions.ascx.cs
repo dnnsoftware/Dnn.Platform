@@ -1,29 +1,27 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileDefinitions PortalModuleBase is used to manage the Profile Properties

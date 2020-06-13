@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Data;
-using DotNetNuke.Framework.Providers;
-
 namespace Dnn.PersonaBar.Servers.Components.Log
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework.Providers;
+
     public class LogController
     {
         public List<string> GetLogFilesList()

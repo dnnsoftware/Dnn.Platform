@@ -2,38 +2,38 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     [DnnAuthorize]
     public class ControlBarController : DnnApiController
     {

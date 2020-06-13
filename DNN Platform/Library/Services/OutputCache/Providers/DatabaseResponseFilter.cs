@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-
-using DotNetNuke.Data;
-
 namespace DotNetNuke.Services.OutputCache.Providers
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Data;
+
     /// <summary>
     /// FileResponseFilter implements the OutputCacheRepsonseFilter to capture the response into database.
     /// </summary>

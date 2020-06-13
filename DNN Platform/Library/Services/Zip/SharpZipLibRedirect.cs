@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Reflection;
-
 namespace DotNetNuke.Services.Zip
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// This class contains a fix for a breaking upgrade in DNN 9.2 regarding the ZIP.
     /// It is in charge of fixing an assembly rename which was necessary when DNN

@@ -1,24 +1,22 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Upgrade.Internals;
-using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
+    using System;
+    using System.IO;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// InstallSiteStep - Step that installs Website.
@@ -42,7 +40,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var counter = 0;
             foreach (var portal in installConfig.Portals)
             {
-                string description = Localization.Localization.GetString("CreatingSite", this.LocalInstallResourceFile);
+                string description = Localization.GetString("CreatingSite", this.LocalInstallResourceFile);
                 this.Details = string.Format(description, portal.PortalName);
                 this.CreateSite(portal, installConfig);
 
@@ -75,7 +73,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             // Verify that portal alias is not present
             if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
-                string description = Localization.Localization.GetString("SkipCreatingSite", this.LocalInstallResourceFile);
+                string description = Localization.GetString("SkipCreatingSite", this.LocalInstallResourceFile);
                 this.Details = string.Format(description, portalAlias);
                 return;
             }
@@ -104,12 +102,12 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 {
                     if (!Upgrade.InstallPackage(lpFilePath, "Language", false))
                     {
-                        culture = Localization.Localization.SystemLocale;
+                        culture = Localization.SystemLocale;
                     }
                 }
                 else
                 {
-                    culture = Localization.Localization.SystemLocale;
+                    culture = Localization.SystemLocale;
                 }
             }
 
@@ -168,7 +166,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
                 var locale = LocaleController.Instance.GetLocale("en-US");
-                Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId, true);
+                Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId, true);
             }
 
             // Log user in to site

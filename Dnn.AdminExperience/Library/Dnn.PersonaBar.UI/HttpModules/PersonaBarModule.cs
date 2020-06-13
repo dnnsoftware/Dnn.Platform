@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-
-using Dnn.PersonaBar.Library.AppEvents;
-using Dnn.PersonaBar.Library.Common;
-using DotNetNuke.Application;
-using DotNetNuke.Collections;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.UI.Skins.EventListeners;
-
 namespace Dnn.PersonaBar.UI.HttpModules
 {
+    using System;
+    using System.Web;
+
+    using Dnn.PersonaBar.Library.AppEvents;
+    using Dnn.PersonaBar.Library.Common;
+    using DotNetNuke.Application;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.UI.Skins.EventListeners;
+
     public class PersonaBarModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarModule));

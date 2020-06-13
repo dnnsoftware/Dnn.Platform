@@ -1,26 +1,23 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Log.EventLog;
-
-using Microsoft.VisualBasic;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.VisualBasic;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public class SchedulingController
     {
         [Obsolete("Obsoleted in 7.3.0 - use alternate overload. Scheduled removal in v10.0.0.")]

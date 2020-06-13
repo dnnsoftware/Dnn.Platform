@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
     internal class SubscriptionDataReaderMockHelper
     {
         internal static IDataReader CreateEmptySubscriptionReader()

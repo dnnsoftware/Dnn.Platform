@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Services.OutputCache.Providers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Log.EventLog;
+
     /// <summary>
     /// FileProvider implements the OutputCachingProvider for file storage.
     /// </summary>

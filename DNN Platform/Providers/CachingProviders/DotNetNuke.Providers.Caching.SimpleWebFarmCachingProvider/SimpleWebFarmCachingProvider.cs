@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-
-using HttpWebRequest = System.Net.HttpWebRequest;
-
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Threading;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+
+    using HttpWebRequest = System.Net.HttpWebRequest;
+
     public class SimpleWebFarmCachingProvider : CachingProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));

@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-
 namespace Dnn.EditBar.UI.Helpers
 {
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+
     /// <summary>
     /// This class offers some common methods to work with pages and their permission.
     /// </summary>

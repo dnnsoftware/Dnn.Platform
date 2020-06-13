@@ -2,30 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.QueryParsers;
-using Lucene.Net.Search;
-using Moq;
-using NUnit.Framework;
-
-using Directory = System.IO.Directory;
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Lucene.Net.Documents;
+    using Lucene.Net.Index;
+    using Lucene.Net.QueryParsers;
+    using Lucene.Net.Search;
+    using Moq;
+    using NUnit.Framework;
+
+    using Directory = System.IO.Directory;
+
     /// <summary>
     ///  Testing various aspects of LuceneController.
     /// </summary>

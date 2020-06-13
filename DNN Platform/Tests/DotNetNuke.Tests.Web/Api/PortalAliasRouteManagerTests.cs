@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Web.Api;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Web.Api;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PortalAliasRouteManagerTests
     {

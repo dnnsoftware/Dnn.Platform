@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Services.Social.Messaging
 {
+    using DotNetNuke.Entities.Users;
+
     /// <summary>
     /// This class is responsible to manage the Messaging User Preference.
     /// </summary>

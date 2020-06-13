@@ -2,43 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem.EventArgs;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Log.EventLog;
-using ICSharpCode.SharpZipLib.Zip;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Log.EventLog;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Exposes methods to manage files.
     /// </summary>
@@ -72,7 +74,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
@@ -86,7 +88,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
@@ -554,7 +556,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     throw new FolderProviderException(
-                        Localization.Localization.GetExceptionMessage(
+                        Localization.GetExceptionMessage(
                             "AddFileUnderlyingSystemError",
                             "The underlying system threw an exception. The file has not been added."),
                         ex);
@@ -582,7 +584,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
             {
-                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage(
+                throw new PermissionsNotMetException(Localization.GetExceptionMessage(
                     "AddFilePermissionsNotMet",
                     "Permissions are not met. The file has not been added."));
             }
@@ -591,7 +593,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFileExtensionException(
                     string.Format(
-                        Localization.Localization.GetExceptionMessage(
+                        Localization.GetExceptionMessage(
                             "AddFileExtensionNotAllowed",
                             "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
@@ -600,7 +602,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFilenameException(
                     string.Format(
-                        Localization.Localization.GetExceptionMessage(
+                        Localization.GetExceptionMessage(
                             "AddFilenameNotAllowed",
                             "The file name '{0}' is not allowed. The file has not been added."), fileName));
             }
@@ -672,7 +674,7 @@ namespace DotNetNuke.Services.FileSystem
             if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileContent.Length))
             {
                 throw new NoSpaceAvailableException(
-                    Localization.Localization.GetExceptionMessage(
+                    Localization.GetExceptionMessage(
                         "AddFileNoSpaceAvailable",
                         "The portal has no space available to store the specified file. The file has not been added."));
             }
@@ -681,7 +683,7 @@ namespace DotNetNuke.Services.FileSystem
             if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserId))
             {
                 throw new FileLockedException(
-                                Localization.Localization.GetExceptionMessage(
+                                Localization.GetExceptionMessage(
                                     "FileLockedOutOfPublishPeriodError",
                                     "File locked. The file cannot be updated because it is out of Publish Period"));
             }
@@ -689,7 +691,7 @@ namespace DotNetNuke.Services.FileSystem
             if (!FileSecurityController.Instance.Validate(fileName, fileContent))
             {
                 var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
-                var errorMessage = Localization.Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
+                var errorMessage = Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
                 throw new InvalidFileContentException(string.Format(errorMessage, fileName));
             }
         }
@@ -767,12 +769,12 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
                 {
-                    throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
+                    throw new PermissionsNotMetException(Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
                 }
 
                 if (!PortalController.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
                 {
-                    throw new NoSpaceAvailableException(Localization.Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
+                    throw new NoSpaceAvailableException(Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
                 }
 
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -791,7 +793,7 @@ namespace DotNetNuke.Services.FileSystem
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    throw new FolderProviderException(Localization.Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
+                    throw new FolderProviderException(Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
                 }
 
                 // copy Content Item
@@ -912,7 +914,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
 
             return existsFile;
@@ -1059,7 +1061,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     Logger.Error(ex);
 
-                    throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception"), ex);
+                    throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception"), ex);
                 }
             }
 
@@ -1125,7 +1127,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
@@ -1164,7 +1166,7 @@ namespace DotNetNuke.Services.FileSystem
             var lockReason = string.Empty;
             if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
             {
-                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
+                throw new FileLockedException(Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
 
             // check for existing file
@@ -1244,19 +1246,19 @@ namespace DotNetNuke.Services.FileSystem
 
             if (!this.IsAllowedExtension(newFileName))
             {
-                throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
+                throw new InvalidFileExtensionException(string.Format(Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
             }
 
             if (!this.IsValidFilename(newFileName))
             {
-                throw new InvalidFilenameException(string.Format(Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
+                throw new InvalidFilenameException(string.Format(Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
             }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (this.FileExists(folder, newFileName))
             {
-                throw new FileAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFileAlreadyExists", "This folder already contains a file with the same name. The file has not been renamed."));
+                throw new FileAlreadyExistsException(Localization.GetExceptionMessage("RenameFileAlreadyExists", "This folder already contains a file with the same name. The file has not been renamed."));
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1269,7 +1271,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
             }
 
             var oldfileName = file.FileName;
@@ -1305,7 +1307,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
@@ -1352,7 +1354,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (file.Extension != "zip")
             {
-                throw new ArgumentException(Localization.Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
             return this.ExtractFiles(file, destinationFolder, invalidFiles);
@@ -1475,7 +1477,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (!FolderPermissionController.Instance.CanViewFolder(folder))
             {
-                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
+                throw new PermissionsNotMetException(Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
             }
 
             if (this.IsFileAutoSyncEnabled())
@@ -1618,7 +1620,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             throw new FileLockedException(
-                Localization.Localization.GetExceptionMessage(
+                Localization.GetExceptionMessage(
                     "FileLockedRunningWorkflowError",
                     "File locked. The file cannot be updated because it has a running workflow"));
         }
@@ -2023,26 +2025,26 @@ namespace DotNetNuke.Services.FileSystem
             // TODO Use the MaxLength from MetadataInfo
             if (!string.IsNullOrEmpty(file.Title) && file.Title.Length > 256)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("MaxLengthExceeded", "The maximum length of the field {0} has been exceeded", DefaultMetadataNames.Title);
+                exceptionMessage = Localization.GetExceptionMessage("MaxLengthExceeded", "The maximum length of the field {0} has been exceeded", DefaultMetadataNames.Title);
                 return false;
             }
 
             if (file.StartDate == null || file.StartDate == Null.NullDate)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("StartDateRequired", "The Start Date is required");
+                exceptionMessage = Localization.GetExceptionMessage("StartDateRequired", "The Start Date is required");
                 return false;
             }
 
             var savedFile = FileManager.Instance.GetFile(file.FileId);
             if (file.StartDate < file.CreatedOnDate.Date && file.StartDate != savedFile.StartDate)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("StartDateMustNotBeInThePast", "The Start Date must not be in the past");
+                exceptionMessage = Localization.GetExceptionMessage("StartDateMustNotBeInThePast", "The Start Date must not be in the past");
                 return false;
             }
 
             if (file.EndDate != Null.NullDate && file.StartDate > file.EndDate)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("InvalidPublishPeriod", "The End Date must be after the Start Date");
+                exceptionMessage = Localization.GetExceptionMessage("InvalidPublishPeriod", "The End Date must be after the Start Date");
                 return false;
             }
 

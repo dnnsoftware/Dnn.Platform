@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.UI.Modules;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.UI.Modules;
+
     [Export(typeof(IToolBarButtonExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]
     [ExportMetadata("Name", "DigitalAssetsToolBarSyncMenuButton")]

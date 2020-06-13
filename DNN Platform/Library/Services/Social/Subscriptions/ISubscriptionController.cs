@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
     /// <summary>
     /// This controller is responsible to manage the user subscriptions.
     /// </summary>

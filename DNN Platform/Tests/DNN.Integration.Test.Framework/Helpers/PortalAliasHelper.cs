@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Entities.Portals;
-
 namespace DNN.Integration.Test.Framework.Helpers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Entities.Portals;
+
     public class PortalAliasHelper
     {
         public static PortalAliasInfo GetPrimaryPortalAlias(int portalId = 0)

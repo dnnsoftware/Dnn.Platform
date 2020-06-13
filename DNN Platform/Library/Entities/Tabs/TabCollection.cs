@@ -1,22 +1,20 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Security;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using System.Security;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
     /// Represents the collection of Tabs for a portal.
     /// </summary>

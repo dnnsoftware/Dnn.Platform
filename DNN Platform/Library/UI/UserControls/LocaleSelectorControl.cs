@@ -1,17 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   LocaleSelectorControl is a user control that provides all the server code to manage

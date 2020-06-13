@@ -1,26 +1,24 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.SearchResults
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;

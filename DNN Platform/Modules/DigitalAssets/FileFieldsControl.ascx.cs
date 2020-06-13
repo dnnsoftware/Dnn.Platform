@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
+    using DotNetNuke.Services.FileSystem;
+
     public partial class FileFieldsControl : PortalModuleBase, IFieldsControl
     {
         public virtual void PrepareProperties()

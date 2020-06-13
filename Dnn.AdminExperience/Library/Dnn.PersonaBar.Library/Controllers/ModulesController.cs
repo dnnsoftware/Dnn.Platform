@@ -2,24 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-
-using Dnn.PersonaBar.Library.Helper;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));

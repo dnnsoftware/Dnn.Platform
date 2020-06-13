@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Xml.Serialization;
-
-using DotNetNuke.Entities;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Entities;
+
     [Serializable]
     public class FileVersionInfo : BaseEntityInfo
     {

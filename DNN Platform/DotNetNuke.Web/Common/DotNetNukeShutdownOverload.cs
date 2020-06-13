@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Web.Common.Internal
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Instrumentation;
+
     internal static class DotNetNukeShutdownOverload
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeShutdownOverload));

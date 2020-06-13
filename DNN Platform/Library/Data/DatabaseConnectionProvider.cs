@@ -1,15 +1,13 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.ComponentModel;
-
 namespace DotNetNuke.Data
 {
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.ComponentModel;
+
     public abstract class DatabaseConnectionProvider
     {
         public static DatabaseConnectionProvider Instance()

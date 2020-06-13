@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Dto.Assets;
-using Dnn.ExportImport.Dto.Workflow;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-using Newtonsoft.Json;
-
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.Assets;
+    using Dnn.ExportImport.Dto.Workflow;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json;
+
+    using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
+
     public class AssetsExportService : BasePortableService
     {
         private const string DefaultUsersFoldersPath = "Users";

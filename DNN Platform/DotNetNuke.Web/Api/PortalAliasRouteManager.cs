@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Http.Routing;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.Http.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Portals;
+
     internal class PortalAliasRouteManager : IPortalAliasRouteManager
     {
         private List<int> _prefixCounts;

@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+
     public static class HttpConfigurationExtensions
     {
         private const string Key = "TabAndModuleInfoProvider";

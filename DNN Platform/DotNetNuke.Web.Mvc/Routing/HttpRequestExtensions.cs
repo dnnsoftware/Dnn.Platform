@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.UserRequest;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.NetworkInformation;
+    using System.Net.Sockets;
+    using System.Text;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.UserRequest;
+
     internal static class HttpRequestExtensions
     {
         public static int FindTabId(this HttpRequestBase request)

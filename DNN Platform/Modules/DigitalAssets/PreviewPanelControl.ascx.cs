@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+
     public partial class PreviewPanelControl : System.Web.UI.UserControl
     {
         protected string Title

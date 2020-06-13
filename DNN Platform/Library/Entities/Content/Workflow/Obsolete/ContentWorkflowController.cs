@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
 
 // ReSharper enable CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+
     [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
     public class ContentWorkflowController : ComponentBase<IContentWorkflowController, ContentWorkflowController>, IContentWorkflowController
     {

@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace DotNetNuke.Modules.Journal
+{
+    /*
 ' Copyright (c) 2011  DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,10 +16,8 @@
 '
 */
 
-using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules;
 
-namespace DotNetNuke.Modules.Journal
-{
     public class JournalSettingsBase : ModuleSettingsBase
     {
     }

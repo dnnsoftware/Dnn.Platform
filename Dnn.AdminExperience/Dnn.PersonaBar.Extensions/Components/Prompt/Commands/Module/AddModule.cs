@@ -2,22 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
-
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+
+    using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
+
     [ConsoleCommand("add-module", Constants.ModulesCategory, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommandBase
     {

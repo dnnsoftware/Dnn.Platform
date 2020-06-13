@@ -1,29 +1,27 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PropertyEditorControl control provides a way to display and edit any

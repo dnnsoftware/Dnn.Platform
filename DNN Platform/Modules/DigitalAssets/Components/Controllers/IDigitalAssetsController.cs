@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Services.Models;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 {
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.IO;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Services.Models;
+    using DotNetNuke.Services.FileSystem;
+
     public interface IDigitalAssetsController
     {
         /// <summary>

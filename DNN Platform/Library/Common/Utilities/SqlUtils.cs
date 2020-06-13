@@ -1,13 +1,11 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System.Data.SqlClient;
-using System.Text;
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System.Data.SqlClient;
+    using System.Text;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The SqlUtils class provides Shared/Static methods for working with SQL Server related code.

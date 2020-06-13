@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Mvc;
-
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Helpers;
-using Moq;
-using NUnit.Framework;
-
 // ReSharper disable ObjectCreationAsStatement
 namespace DotNetNuke.Tests.Web.Mvc.Helpers
 {
+    using System;
+    using System.Web.Mvc;
+
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Helpers;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnHelperTests
     {

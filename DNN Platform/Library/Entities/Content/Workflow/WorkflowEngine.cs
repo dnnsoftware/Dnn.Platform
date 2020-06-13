@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Workflow.Actions;
-using DotNetNuke.Entities.Content.Workflow.Dto;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Workflow.Actions;
+    using DotNetNuke.Entities.Content.Workflow.Dto;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Notifications;
+
     public class WorkflowEngine : ServiceLocator<IWorkflowEngine, WorkflowEngine>, IWorkflowEngine
     {
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";

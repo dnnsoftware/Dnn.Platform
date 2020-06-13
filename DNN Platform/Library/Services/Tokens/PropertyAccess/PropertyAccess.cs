@@ -1,17 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Globalization;
-using System.Reflection;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Globalization;
+    using System.Reflection;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Property Access to Objects using Relection.
     /// </summary>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Tokens
         public static string Boolean2LocalizedYesNo(bool value, CultureInfo formatProvider)
         {
             string strValue = Convert.ToString(value ? "Yes" : "No");
-            return Localization.Localization.GetString(strValue, null, formatProvider.ToString());
+            return Localization.GetString(strValue, null, formatProvider.ToString());
         }
 
         /// <summary>

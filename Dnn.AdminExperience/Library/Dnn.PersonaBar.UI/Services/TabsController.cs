@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class TabsController : PersonaBarApiController
     {

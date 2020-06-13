@@ -1,22 +1,20 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Services.Tokens;
+
     /// <summary>
     /// This control is used for displaying a template based list of users based upon various filter and sorting capabilities.
     /// </summary>

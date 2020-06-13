@@ -1,32 +1,29 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Dependencies;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.UI.Skins;
-
-using ICSharpCode.SharpZipLib.Zip;
-
 namespace DotNetNuke.Services.Installer.Packages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Dependencies;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.Skins;
+    using ICSharpCode.SharpZipLib.Zip;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PackageController class provides the business class for the packages.

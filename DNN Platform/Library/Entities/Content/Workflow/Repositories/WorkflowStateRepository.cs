@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Framework;
+
     internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
     {
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)

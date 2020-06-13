@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Web;
-
-using DotNetNuke.Common.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Services.DependencyInjection
 {
+    using System;
+    using System.Collections;
+    using System.Web;
+
+    using DotNetNuke.Common.Extensions;
+    using Microsoft.Extensions.DependencyInjection;
+
     public interface IScopeAccessor
     {
         IServiceScope GetScope();

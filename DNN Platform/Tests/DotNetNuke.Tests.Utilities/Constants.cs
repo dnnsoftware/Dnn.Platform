@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Caching;
-
-using DotNetNuke.Entities.Content.Taxonomy;
-
 // ReSharper disable InconsistentNaming
 namespace DotNetNuke.Tests.Utilities
 {
+    using System.Web.Caching;
+
+    using DotNetNuke.Entities.Content.Taxonomy;
+
     public class Constants
     {
         public const string CACHEING_InValidKey = "InValidKey";

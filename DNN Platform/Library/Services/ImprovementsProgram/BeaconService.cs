@@ -2,24 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.ImprovementsProgram
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+
     public class BeaconService : ServiceLocator<IBeaconService, BeaconService>, IBeaconService
     {
         private static readonly bool IsAlphaMode = DotNetNukeContext.Current?.Application?.Status == ReleaseMode.Alpha;

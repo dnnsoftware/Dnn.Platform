@@ -1,30 +1,28 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Linq;
-using System.Text;
-using System.Threading;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Admin.ViewProfile
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Services.Tokens;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.
     /// </summary>

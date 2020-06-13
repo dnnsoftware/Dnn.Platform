@@ -2,23 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Web.Caching;
 
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
 
     public abstract class BaseSettingsTests
     {

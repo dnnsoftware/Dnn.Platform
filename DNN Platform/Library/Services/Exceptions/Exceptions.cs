@@ -1,30 +1,27 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.UI.Modules;
-
-using Microsoft.VisualBasic.CompilerServices;
-
 namespace DotNetNuke.Services.Exceptions
 {
+    using System;
+    using System.Diagnostics;
+    using System.Reflection;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.VisualBasic.CompilerServices;
+
     /// <summary>
     /// Exceptions class provides operation to log most of the exceptions occured in system.
     /// </summary>
@@ -125,14 +122,14 @@ namespace DotNetNuke.Services.Exceptions
 
         public static void ProcessHttpException()
         {
-            var notFoundErrorString = Localization.Localization.GetString("ResourceNotFound", Localization.Localization.SharedResourceFile);
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
             var exc = new HttpException(404, notFoundErrorString);
             ProcessHttpException(exc, HttpContext.Current.Request.RawUrl);
         }
 
         public static void ProcessHttpException(string URL)
         {
-            var notFoundErrorString = Localization.Localization.GetString("ResourceNotFound", Localization.Localization.SharedResourceFile);
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
             var exc = new HttpException(404, notFoundErrorString);
             ProcessHttpException(exc, URL);
         }
@@ -144,14 +141,14 @@ namespace DotNetNuke.Services.Exceptions
 
         public static void ProcessHttpException(HttpRequest request)
         {
-            var notFoundErrorString = Localization.Localization.GetString("ResourceNotFound", Localization.Localization.SharedResourceFile);
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
             var exc = new HttpException(404, notFoundErrorString);
             ProcessHttpException(exc, request.RawUrl);
         }
 
         private static void ProcessHttpException(HttpException exc, string URL)
         {
-            var notFoundErrorString = Localization.Localization.GetString("ResourceNotFound", Localization.Localization.SharedResourceFile);
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
             Logger.Error(notFoundErrorString + ": - " + URL, exc);
 
             var log = new LogInfo
@@ -234,12 +231,12 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            string friendlyMessage = Localization.Localization.GetString("ErrorOccurred");
+            string friendlyMessage = Localization.GetString("ErrorOccurred");
             var ctrlModule = ctrl as IModuleControl;
             if (ctrlModule == null)
             {
                 // Regular Control
-                friendlyMessage = Localization.Localization.GetString("ErrorOccurred");
+                friendlyMessage = Localization.GetString("ErrorOccurred");
             }
             else
             {
@@ -250,7 +247,7 @@ namespace DotNetNuke.Services.Exceptions
                     moduleTitle = ctrlModule.ModuleContext.Configuration.ModuleTitle;
                 }
 
-                friendlyMessage = string.Format(Localization.Localization.GetString("ModuleUnavailable"), moduleTitle);
+                friendlyMessage = string.Format(Localization.GetString("ModuleUnavailable"), moduleTitle);
             }
 
             ProcessModuleLoadException(friendlyMessage, ctrl, exc, DisplayErrorMessage);

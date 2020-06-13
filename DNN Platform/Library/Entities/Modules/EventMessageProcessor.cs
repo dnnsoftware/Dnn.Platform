@@ -1,21 +1,19 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.EventQueue;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
+
     public class EventMessageProcessor : EventMessageProcessorBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventMessageProcessor));

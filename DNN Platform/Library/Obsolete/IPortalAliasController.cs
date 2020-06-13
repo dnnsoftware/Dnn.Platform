@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace DotNetNuke.Entities.Portals.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.

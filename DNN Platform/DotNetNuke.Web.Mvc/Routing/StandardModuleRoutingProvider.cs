@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Routing;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Routing;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class StandardModuleRoutingProvider : ModuleRoutingProvider
     {
         protected INavigationManager NavigationManager { get; }

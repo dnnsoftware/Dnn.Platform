@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-using DotNetNuke.Framework.Internal.Reflection;
-
 // ReSharper disable ConvertPropertyToExpressionBody
 namespace DotNetNuke.Framework.Reflections
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Framework.Internal.Reflection;
+
     public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
         private IAssemblyLocator _assemblyLocator;

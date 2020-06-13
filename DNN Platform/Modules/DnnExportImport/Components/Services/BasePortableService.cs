@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Models;
-using Dnn.ExportImport.Interfaces;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Models;
+    using Dnn.ExportImport.Interfaces;
+
     /// <summary>
     /// A abstract class specifying the ability to import and export site different areas.
     /// </summary>

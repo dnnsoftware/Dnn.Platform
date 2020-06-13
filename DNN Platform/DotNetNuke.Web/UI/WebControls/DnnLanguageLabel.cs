@@ -1,18 +1,16 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+
     public class DnnLanguageLabel : CompositeControl, ILocalizable
     {
         private Image _Flag;

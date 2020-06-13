@@ -1,19 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web.Compilation;
-
-using log4net.Config;
-
 namespace DotNetNuke.Instrumentation
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Web.Compilation;
+
+    using log4net.Config;
+
     [Obsolete("Deprecated in 7.0.1 due to poor performance, use LoggerSource.Instance. Scheduled removal in v11.0.0.")]
     public static class DnnLog
     {

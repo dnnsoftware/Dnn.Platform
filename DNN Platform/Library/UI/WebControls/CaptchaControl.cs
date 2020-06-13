@@ -1,34 +1,32 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-using Image = System.Web.UI.WebControls.Image;
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.Globalization;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.Security;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
+    using Image = System.Web.UI.WebControls.Image;
+
     /// <summary>
     /// The CaptchaControl control provides a Captcha Challenge control.
     /// </summary>

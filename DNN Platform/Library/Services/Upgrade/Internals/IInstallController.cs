@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
-
 namespace DotNetNuke.Services.Upgrade.Internals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   Interface for InstallController. This Interface is meant for Internal use only.

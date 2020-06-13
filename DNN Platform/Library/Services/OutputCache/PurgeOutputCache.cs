@@ -1,18 +1,16 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Scheduling;
-
 namespace DotNetNuke.Services.OutputCache
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Scheduling;
+
     public class PurgeOutputCache : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeOutputCache));

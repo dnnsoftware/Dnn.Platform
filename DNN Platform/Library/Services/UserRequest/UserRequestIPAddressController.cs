@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Web;
-
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.UserRequest
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Web;
+
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Framework;
+
     public class UserRequestIPAddressController : ServiceLocator<IUserRequestIPAddressController, UserRequestIPAddressController>, IUserRequestIPAddressController
     {
         public string GetUserRequestIPAddress(HttpRequestBase request)

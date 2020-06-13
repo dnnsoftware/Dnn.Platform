@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.UI.Skins.EventListeners;
-
 namespace Dnn.PersonaBar.Library.AppEvents
 {
+    using DotNetNuke.UI.Skins.EventListeners;
+
     /// <summary>
     /// This interface defines methods that need to be called in skins lifecycle.
     /// </summary>

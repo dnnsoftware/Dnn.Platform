@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Globalization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Modules.Journal.Components
 {
+    using System.Globalization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
     public class ProfilePicPropertyAccess : IPropertyAccess
     {
         private readonly int _userId;

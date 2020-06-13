@@ -1,28 +1,26 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+
     public class LanguageTokenReplace : TokenReplace
     {
         // see http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=6505

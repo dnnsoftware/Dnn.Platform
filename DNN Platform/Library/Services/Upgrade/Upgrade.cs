@@ -1,79 +1,77 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.Configuration;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Analytics;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.EventQueue.Config;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Dependencies;
-using DotNetNuke.Services.Installer.Log;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Localization.Internal;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Search;
-using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Upgrade.InternalController.Steps;
-using DotNetNuke.Services.Upgrade.Internals;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-using DotNetNuke.UI.Internals;
-
-using ICSharpCode.SharpZipLib.Zip;
-
-using Assembly = System.Reflection.Assembly;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
-using Util = DotNetNuke.Entities.Content.Common.Util;
-
 namespace DotNetNuke.Services.Upgrade
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Analytics;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.EventQueue.Config;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Dependencies;
+    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Localization.Internal;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Search;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Services.Upgrade.InternalController.Steps;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+    using DotNetNuke.UI.Internals;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using Assembly = System.Reflection.Assembly;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+    using Localization = DotNetNuke.Services.Localization.Localization;
+    using ModuleInfo = DotNetNuke.Entities.Modules.ModuleInfo;
+    using Util = DotNetNuke.Entities.Content.Common.Util;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///  The Upgrade class provides Shared/Static methods to Upgrade/Install
@@ -130,7 +128,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminPages:" + tabName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddAdminPages:" + tabName);
 
             // Call overload with InheritPermisions=True
             AddAdminPages(tabName, description, tabIconFile, tabIconFileLarge, isVisible, moduleDefId, moduleTitle, moduleIconFile, true);
@@ -138,7 +136,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddAdminRoleToPage(string tabPath)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminRoleToPage:" + tabPath);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddAdminRoleToPage:" + tabPath);
 
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
@@ -159,7 +157,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddConsoleModuleSettings(int moduleID)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddConsoleModuleSettings:" + moduleID);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddConsoleModuleSettings:" + moduleID);
 
             ModuleController.Instance.UpdateModuleSetting(moduleID, "DefaultSize", "IconFileLarge");
             ModuleController.Instance.UpdateModuleSetting(moduleID, "AllowSizeChange", "False");
@@ -208,7 +206,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL, bool supportsPartialRendering)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleControl:" + moduleDefId);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleControl:" + moduleDefId);
 
             // check if module control exists
             var moduleControl = ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefId);
@@ -271,7 +269,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, string businessControllerClass, bool isPortable, bool premium, bool admin)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleDefinition:" + desktopModuleName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleDefinition:" + desktopModuleName);
 
             // check if desktop module exists
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(desktopModuleName, Null.NullInteger);
@@ -403,7 +401,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static TabInfo AddPage(int portalId, int parentId, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, TabPermissionCollection permissions, bool isAdmin)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPage:" + tabName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddPage:" + tabName);
 
             TabInfo tab = TabController.Instance.GetTabByName(tabName, portalId, parentId);
 
@@ -450,7 +448,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static void AddPagePermission(TabPermissionCollection permissions, string key, int roleId)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPagePermission:" + key);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddPagePermission:" + key);
             var permissionController = new PermissionController();
             var permission = (PermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_TAB", key)[0];
 
@@ -467,7 +465,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static void AddSearchResults(int moduleDefId)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddSearchResults:" + moduleDefId);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddSearchResults:" + moduleDefId);
             var portals = PortalController.Instance.GetPortals();
             int intPortal;
 
@@ -502,7 +500,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static void AddSkinControl(string controlKey, string packageName, string controlSrc)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddSkinControl:" + controlKey);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddSkinControl:" + controlKey);
 
             // check if skin control exists
             SkinControlInfo skinControl = SkinControlController.GetSkinControlByKey(controlKey);
@@ -521,7 +519,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddDefaultModuleIcons()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddDefaultModuleIcons");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddDefaultModuleIcons");
             var pkg = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.Google Analytics");
             if (pkg != null)
             {
@@ -621,7 +619,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddModuleCategories()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleCategories");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleCategories");
             DesktopModuleController.AddModuleCategory("< None >");
             DesktopModuleController.AddModuleCategory("Admin");
             DesktopModuleController.AddModuleCategory("Common");
@@ -695,7 +693,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void EnableModalPopUps()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "EnableModalPopUps");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "EnableModalPopUps");
             foreach (var desktopModuleInfo in DesktopModuleController.GetDesktopModules(Null.NullInteger))
             {
                 switch (desktopModuleInfo.Value.ModuleName)
@@ -764,10 +762,10 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         internal static string ExecuteScript(string scriptFile, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ExecuteScript:" + scriptFile);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ExecuteScript:" + scriptFile);
             if (writeFeedback)
             {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ExecutingScript", Localization.Localization.GlobalResourceFile) + ":" + Path.GetFileName(scriptFile));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.GetString("ExecutingScript", Localization.GlobalResourceFile) + ":" + Path.GetFileName(scriptFile));
             }
 
             // read script file for installation
@@ -779,7 +777,7 @@ namespace DotNetNuke.Services.Upgrade
             // add installer logging
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "ExecuteScript:" + scriptFile);
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "ExecuteScript:" + scriptFile);
             }
             else
             {
@@ -875,7 +873,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         internal static string InstallMemberRoleProvider(string providerPath, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallMemberRoleProvider");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InstallMemberRoleProvider");
 
             string exceptions = string.Empty;
 
@@ -906,7 +904,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "InstallMemberRoleProvider");
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "InstallMemberRoleProvider");
             }
             else
             {
@@ -1015,7 +1013,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         private static void RemoveCoreModule(string desktopModuleName, string parentTabName, string tabName, bool removeTab)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveCoreModule:" + desktopModuleName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveCoreModule:" + desktopModuleName);
 
             int moduleDefId = Null.NullInteger;
             int desktopModuleId = 0;
@@ -1075,7 +1073,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveModule:" + desktopModuleName);
             TabInfo tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, parentId);
             int moduleDefId = 0;
             int count = 0;
@@ -1110,7 +1108,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void RemoveModuleControl(int moduleDefId, string controlKey)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModuleControl:" + moduleDefId);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveModuleControl:" + moduleDefId);
 
             // get Module Control
             var moduleControl = ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefId);
@@ -1122,7 +1120,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void RemoveModuleFromPortals(string friendlyName)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModuleFromPortals:" + friendlyName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveModuleFromPortals:" + friendlyName);
             DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByFriendlyName(friendlyName);
             if (desktopModule != null)
             {
@@ -1145,7 +1143,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void FavIconsToPortalSettings()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "FavIconsToPortalSettings");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "FavIconsToPortalSettings");
             const string fileName = "favicon.ico";
             var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>();
 
@@ -1188,7 +1186,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddIconToAllowedFiles()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddIconToAllowedFiles");
             var toAdd = new List<string> { ".ico" };
             HostController.Instance.Update("FileExtensions", Host.AllowedExtensionWhitelist.ToStorageString(toAdd));
         }
@@ -1575,7 +1573,7 @@ namespace DotNetNuke.Services.Upgrade
             var defaultLanguage = LocaleController.Instance.GetLocale("en-US") ?? new Locale();
             defaultLanguage.Code = "en-US";
             defaultLanguage.Text = "English (United States)";
-            Localization.Localization.SaveLanguage(defaultLanguage);
+            Localization.SaveLanguage(defaultLanguage);
 
             // Ensure that there is a Default Authorization System
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DefaultAuthentication");
@@ -1589,7 +1587,7 @@ namespace DotNetNuke.Services.Upgrade
                     PackageType = "Auth_System",
                     Version = new Version(1, 0, 0),
                     Owner = "DNN",
-                    License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile),
+                    License = Localization.GetString("License", Localization.GlobalResourceFile),
                     Organization = ".NET Foundation",
                     Url = "https://dnncommunity.org",
                     Email = "info@dnncommunity.org",
@@ -1891,7 +1889,7 @@ namespace DotNetNuke.Services.Upgrade
                 if (!IsLanguageEnabled(portal.PortalID, defaultLanguage))
                 {
                     Locale language = LocaleController.Instance.GetLocale(defaultLanguage);
-                    Localization.Localization.AddLanguageToPortal(portal.PortalID, language.LanguageId, true);
+                    Localization.AddLanguageToPortal(portal.PortalID, language.LanguageId, true);
                 }
 
                 // preemptively create any missing localization records rather than relying on dynamic creation
@@ -2124,7 +2122,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 // update timezoneinfo
 #pragma warning disable 612,618
-                TimeZoneInfo timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(portal.TimeZoneOffset);
+                TimeZoneInfo timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(portal.TimeZoneOffset);
 #pragma warning restore 612,618
                 PortalController.UpdatePortalSetting(portal.PortalID, "TimeZone", timeZoneInfo.Id, false);
 
@@ -3165,7 +3163,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpdateFoldersForParentId()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeFolders");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpgradeFolders");
 
             // Move old messages to new format. Do this in smaller batches so we can send feedback to browser and don't time out
             var foldersToConvert = DataProvider.Instance().GetLegacyFolderCount();
@@ -3202,7 +3200,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UninstallPackage(string packageName, string packageType, bool deleteFiles = true, string version = "")
         {
-            DnnInstallLogger.InstallLogInfo(string.Concat(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile), "Uninstallation of Package:", packageName, " Type:", packageType, " Version:", version));
+            DnnInstallLogger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Uninstallation of Package:", packageName, " Type:", packageType, " Version:", version));
 
             var searchInput = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
                 p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase)
@@ -3210,7 +3208,7 @@ namespace DotNetNuke.Services.Upgrade
                 && (string.IsNullOrEmpty(version) || p.Version.ToString() == version));
             if (searchInput != null)
             {
-                var searchInputInstaller = new Installer.Installer(searchInput, Globals.ApplicationMapPath);
+                var searchInputInstaller = new Installer(searchInput, Globals.ApplicationMapPath);
                 searchInputInstaller.UnInstall(deleteFiles);
             }
         }
@@ -3290,7 +3288,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void AddCoreNotificationTypesFor620()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddCoreNotificationTypesFor620");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddCoreNotificationTypesFor620");
             var actions = new List<NotificationTypeAction>();
 
             // Friend request
@@ -3328,7 +3326,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void ConvertOldMessages()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ConvertOldMessages");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ConvertOldMessages");
 
             // Move old messages to new format. Do this in smaller batches so we can send feedback to browser and don't time out
             var messagesToConvert = InternalMessagingController.Instance.CountLegacyMessages();
@@ -3364,7 +3362,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void ReplaceMessagingModule()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ReplaceMessagingModule");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ReplaceMessagingModule");
             var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
             if (moduleDefinition == null)
             {
@@ -3414,7 +3412,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void MovePhotoProperty()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "MovePhotoProperty");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "MovePhotoProperty");
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 var properties = ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID).Cast<ProfilePropertyDefinition>();
@@ -3438,7 +3436,7 @@ namespace DotNetNuke.Services.Upgrade
 
         private static void UpdateChildPortalsDefaultPage()
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateChildPortalsDefaultPage");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateChildPortalsDefaultPage");
 
             // Update Child Portal subHost.aspx
             foreach (PortalAliasInfo aliasInfo in PortalAliasController.Instance.GetPortalAliases().Values)
@@ -3611,7 +3609,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminPage:" + tabName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddAdminPage:" + tabName);
             TabInfo adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
 
             if (adminPage != null)
@@ -3638,7 +3636,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddHostPage:" + tabName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddHostPage:" + tabName);
             TabInfo hostPage = TabController.Instance.GetTabByName("Host", Null.NullInteger);
 
             if (hostPage != null)
@@ -3707,7 +3705,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
             ModuleInfo moduleInfo;
             int moduleId = Null.NullInteger;
 
@@ -3759,7 +3757,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
             }
 
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
             return moduleId;
         }
 
@@ -3819,7 +3817,7 @@ namespace DotNetNuke.Services.Upgrade
                     domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install", string.Empty);
                 }
 
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPortal:" + domain);
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddPortal:" + domain);
                 string portalName = XmlUtils.GetNodeValue(node.CreateNavigator(), "portalname");
                 if (status)
                 {
@@ -3956,7 +3954,7 @@ namespace DotNetNuke.Services.Upgrade
 
         internal static UserInfo CreateUserInfo(string firstName, string lastName, string userName, string password, string email)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "CreateUserInfo:" + userName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "CreateUserInfo:" + userName);
             var adminUser = new UserInfo
             {
                 FirstName = firstName,
@@ -3978,7 +3976,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             if (string.IsNullOrEmpty(currentCulture))
             {
-                currentCulture = Localization.Localization.SystemLocale;
+                currentCulture = Localization.SystemLocale;
             }
 
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
@@ -4021,7 +4019,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(currentCulture))
             {
-                currentCulture = Localization.Localization.SystemLocale;
+                currentCulture = Localization.SystemLocale;
             }
 
             currentCulture = currentCulture.ToLowerInvariant();
@@ -4185,7 +4183,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var stringVersion = GetStringVersionWithRevision(version);
 
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "DeleteFiles:" + stringVersion);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "DeleteFiles:" + stringVersion);
             string exceptions = string.Empty;
             if (writeFeedback)
             {
@@ -4252,7 +4250,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void ExecuteScripts(string strProviderPath)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ExecuteScripts:" + strProviderPath);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "ExecuteScripts:" + strProviderPath);
             string scriptPath = Globals.ApplicationMapPath + "\\Install\\Scripts\\";
             if (Directory.Exists(scriptPath))
             {
@@ -4460,7 +4458,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static UserInfo GetSuperUser(XmlDocument xmlTemplate, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "GetSuperUser");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "GetSuperUser");
             XmlNode node = xmlTemplate.SelectSingleNode("//dotnetnuke/superuser");
             UserInfo superUser = null;
             if (node != null)
@@ -4600,7 +4598,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void InitialiseHostSettings(XmlDocument xmlTemplate, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InitialiseHostSettings");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InitialiseHostSettings");
             XmlNode node = xmlTemplate.SelectSingleNode("//dotnetnuke/settings");
             if (node != null)
             {
@@ -4679,7 +4677,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static string InstallDatabase(Version version, string providerPath, XmlDocument xmlDoc, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallDatabase:" + Globals.FormatVersion(version));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InstallDatabase:" + Globals.FormatVersion(version));
             string defaultProvider = Config.GetDefaultProvider("data").Name;
             string message = Null.NullString;
 
@@ -4716,7 +4714,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void InstallDNN(string strProviderPath)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallDNN:" + strProviderPath);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InstallDNN:" + strProviderPath);
             var xmlDoc = new XmlDocument { XmlResolver = null };
 
             // open the Install Template XML file
@@ -4832,7 +4830,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void InstallFiles(XmlDocument xmlDoc, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallFiles");
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InstallFiles");
 
             // Parse the file nodes
             XmlNode node = xmlDoc.SelectSingleNode("//dotnetnuke/files");
@@ -4857,7 +4855,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static bool InstallPackage(string file, string packageType, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallPackage:" + file);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InstallPackage:" + file);
             bool success = Null.NullBoolean;
             if (writeFeedback)
             {
@@ -4870,7 +4868,7 @@ namespace DotNetNuke.Services.Upgrade
                 deleteTempFolder = Null.NullBoolean;
             }
 
-            var installer = new Installer.Installer(new FileStream(file, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, deleteTempFolder);
+            var installer = new Installer(new FileStream(file, FileMode.Open, FileAccess.Read), Globals.ApplicationMapPath, true, deleteTempFolder);
 
             // Check if manifest is valid
             if (installer.IsValid)
@@ -4893,7 +4891,7 @@ namespace DotNetNuke.Services.Upgrade
                             manifestWriter.Write(LegacyUtil.CreateSkinManifest(file, packageType, tempInstallFolder));
                         }
 
-                        installer = new Installer.Installer(tempInstallFolder, manifestFile, HttpContext.Current.Request.MapPath("."), true);
+                        installer = new Installer(tempInstallFolder, manifestFile, HttpContext.Current.Request.MapPath("."), true);
 
                         // Set the Repair flag to true for Batch Install
                         installer.InstallerInfo.RepairInstall = true;
@@ -4902,7 +4900,7 @@ namespace DotNetNuke.Services.Upgrade
                     }
                     else if (Globals.Status != Globals.UpgradeStatus.None)
                     {
-                        var message = string.Format(Localization.Localization.GetString("InstallPackageError", Localization.Localization.ExceptionsResourceFile), file, "Manifest file missing");
+                        var message = string.Format(Localization.GetString("InstallPackageError", Localization.ExceptionsResourceFile), file, "Manifest file missing");
                         DnnInstallLogger.InstallLogError(message);
                     }
                 }
@@ -5080,7 +5078,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static void InstallPackages(string packageType, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallPackages:" + packageType);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InstallPackages:" + packageType);
             if (writeFeedback)
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Installing Optional " + packageType + "s:<br>");
@@ -5137,7 +5135,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static void RemoveAdminPages(string tabPath)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAdminPages:" + tabPath);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveAdminPages:" + tabPath);
 
             var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
@@ -5152,7 +5150,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static void RemoveHostPage(string pageName)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveHostPage:" + pageName);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveHostPage:" + pageName);
             TabInfo skinsTab = TabController.Instance.GetTabByName(pageName, Null.NullInteger);
             if (skinsTab != null)
             {
@@ -5286,11 +5284,11 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static string UpgradeApplication(string providerPath, Version version, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + ": " + version.ToString(3));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + ": " + version.ToString(3));
             string exceptions = string.Empty;
             if (writeFeedback)
             {
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + GetStringVersionWithRevision(version));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + " : " + GetStringVersionWithRevision(version));
             }
 
             try
@@ -5470,7 +5468,7 @@ namespace DotNetNuke.Services.Upgrade
                 // log the results
                 if (string.IsNullOrEmpty(exceptions))
                 {
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + ": " + version.ToString(3));
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + ": " + version.ToString(3));
                 }
                 else
                 {
@@ -5781,7 +5779,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var stringVersion = GetStringVersionWithRevision(version);
 
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
             if (writeFeedback)
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, $"Updating Config Files: {stringVersion}");
@@ -5790,7 +5788,7 @@ namespace DotNetNuke.Services.Upgrade
             string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + stringVersion + ".config", version, "Core Upgrade");
             if (string.IsNullOrEmpty(strExceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + stringVersion);
             }
             else
             {
@@ -5807,7 +5805,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
             string exceptions = string.Empty;
             if (File.Exists(configFile))
             {
@@ -5834,7 +5832,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
             }
             else
             {
@@ -5846,7 +5844,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpdateConfig(string providerPath, string configFile, Version version, string reason)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
             string exceptions = string.Empty;
             if (File.Exists(configFile))
             {
@@ -5887,7 +5885,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
             }
             else
             {
@@ -5908,7 +5906,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static void UpgradeDNN(string providerPath, Version dataBaseVersion)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeDNN:" + Globals.FormatVersion(ApplicationVersion));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpgradeDNN:" + Globals.FormatVersion(ApplicationVersion));
             HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Upgrading to Version: " + Globals.FormatVersion(ApplicationVersion) + "<br/>");
 
             // Process the Upgrade Script files
@@ -5946,7 +5944,7 @@ namespace DotNetNuke.Services.Upgrade
 
             // perform general application upgrades
             HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Performing General Upgrades<br>");
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("GeneralUpgrades", Localization.Localization.GlobalResourceFile));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("GeneralUpgrades", Localization.GlobalResourceFile));
             UpgradeApplication();
 
             DataCache.ClearHostCache(true);
@@ -6070,7 +6068,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback, out bool scriptExecuted)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
             var version = new Version(GetFileNameWithoutExtension(scriptFile));
             string exceptions = Null.NullString;
             scriptExecuted = false;
@@ -6133,7 +6131,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpgradeVersion:" + scriptFile);
             }
             else
             {
@@ -6185,7 +6183,7 @@ namespace DotNetNuke.Services.Upgrade
             if (isLicensable)
             {
                 var sku = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")) ? "DNNENT" : "DNNPRO";
-                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ActivatingLicense", Localization.Localization.GlobalResourceFile));
+                HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.GetString("ActivatingLicense", Localization.GlobalResourceFile));
 
                 var installConfig = InstallController.Instance.GetInstallConfig();
                 var licenseConfig = (installConfig != null) ? installConfig.License : null;
@@ -6343,7 +6341,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             if (string.IsNullOrEmpty(cultureCode))
             {
-                cultureCode = Localization.Localization.SystemLocale;
+                cultureCode = Localization.SystemLocale;
             }
 
             if (resourcesDict.ContainsKey(cultureCode))
@@ -6360,7 +6358,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     languageFilePath = Path.Combine(
                         Globals.HostMapPath,
-                        string.Format("Default Website.template.{0}.resx", Localization.Localization.SystemLocale));
+                        string.Format("Default Website.template.{0}.resx", Localization.SystemLocale));
                 }
 
                 var xmlDocument = new XmlDocument { XmlResolver = null };

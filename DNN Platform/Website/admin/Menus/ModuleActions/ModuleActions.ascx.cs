@@ -2,27 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using System.Web.UI;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Containers;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 // ReSharper disable ConvertPropertyToExpressionBody
 // ReSharper disable InconsistentNaming
 
@@ -31,6 +10,27 @@ namespace DotNetNuke.Admin.Containers
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Script.Serialization;
+    using System.Web.UI;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Containers;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();

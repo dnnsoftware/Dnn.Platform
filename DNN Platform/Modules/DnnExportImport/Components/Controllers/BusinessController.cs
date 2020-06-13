@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Entities.Modules;
-
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
     ///
     /// </summary>

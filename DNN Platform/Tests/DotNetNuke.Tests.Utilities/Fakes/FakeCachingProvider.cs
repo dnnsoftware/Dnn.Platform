@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Caching;
-
-using DotNetNuke.Services.Cache;
-
 namespace DotNetNuke.Tests.Utilities.Fakes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web.Caching;
+
+    using DotNetNuke.Services.Cache;
+
     public class FakeCachingProvider : CachingProvider
     {
         private Dictionary<string, object> _dictionary;

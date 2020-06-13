@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.PersonaBar.Library.Prompt.Attributes
 {
+    using System;
+
     /// <summary>
     /// Attribute to define the help for the flag parameter.
     /// </summary>

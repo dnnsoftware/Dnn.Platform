@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Cache;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Xml;
-using System.Xml.Linq;
-
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Common.Utilities;
-
 namespace DNN.Integration.Test.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Cache;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Linq;
+
+    using DNN.Integration.Test.Framework.Controllers;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+
     internal class WebApiConnector : IWebApiConnector, IDisposable
     {
         private static readonly Dictionary<string, CachedWebPage> CachedPages = new Dictionary<string, CachedWebPage>();

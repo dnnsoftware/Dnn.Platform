@@ -1,23 +1,21 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.ComponentModel;
-using System.Data;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.UserControls;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.UserControls;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     /// <summary>
     /// The PropertyLabelControl control provides a standard UI component for displaying
     /// a label for a property. It contains a Label and Help Text and can be Data Bound.

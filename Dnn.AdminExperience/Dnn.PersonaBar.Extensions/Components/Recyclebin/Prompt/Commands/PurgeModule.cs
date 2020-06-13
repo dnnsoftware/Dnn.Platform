@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Text;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using System.Net;
-using Dnn.PersonaBar.Library.Controllers;
-
 namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 {
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Text;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("purge-module", Constants.RecylcleBinCategory, "Prompt_PurgeModule_Description")]
     public class PurgeModule : ConsoleCommandBase
     {

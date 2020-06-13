@@ -1,23 +1,21 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.RazorHost
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {

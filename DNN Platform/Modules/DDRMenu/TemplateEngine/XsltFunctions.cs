@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Security;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
-
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Security;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+
     public class XsltFunctions
     {
         public bool UserIsInRole(string roleName)

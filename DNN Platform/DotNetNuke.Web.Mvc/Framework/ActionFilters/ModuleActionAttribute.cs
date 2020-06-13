@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Mvc;
-
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     /// <summary>
     /// The ModuleActionAttribute is used to define a single ModuleAction.  It can be applied at the Controller level if all
     /// Action methods should have the same ModuleAction, but it is more likely to be used at the Action method level.

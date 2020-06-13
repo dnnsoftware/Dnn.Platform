@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Tabs.Dto;
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using DotNetNuke.Entities.Tabs.Dto;
+
     /// <summary>
     /// Class responsible to provide settings for Tab Changes.
     /// </summary>

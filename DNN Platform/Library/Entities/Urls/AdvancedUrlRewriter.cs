@@ -1,35 +1,33 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.Security;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.EventQueue;
-
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Principal;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.Security;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.EventQueue;
+
     public class AdvancedUrlRewriter : UrlRewriterBase
     {
         private static readonly Regex DefaultPageRegex = new Regex(@"(?<!(\?.+))/" + Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
@@ -91,7 +89,7 @@ namespace DotNetNuke.Entities.Urls
                 this.ProcessRequest(
                     app.Context,
                     app.Context.Request.Url,
-                    Host.Host.UseFriendlyUrls,
+                    Host.UseFriendlyUrls,
                     result,
                     this._settings,
                     true,
@@ -870,7 +868,7 @@ namespace DotNetNuke.Entities.Urls
             if (result.Action == ActionType.Output404 && CanAutoAddPortalAlias())
             {
                 // Need to determine if this is a real 404 or a possible new alias.
-                var portalId = Host.Host.HostPortalID;
+                var portalId = Host.HostPortalID;
                 if (portalId > Null.NullInteger)
                 {
                     if (string.IsNullOrEmpty(result.DomainName))
@@ -2211,9 +2209,9 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 // the domain name was not found so try using the host portal's first alias
-                if (Host.Host.HostPortalID != -1)
+                if (Host.HostPortalID != -1)
                 {
-                    result.PortalId = Host.Host.HostPortalID;
+                    result.PortalId = Host.HostPortalID;
 
                     // use the host portal, but replaced to the host portal home page
                     var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();

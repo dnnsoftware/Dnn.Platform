@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Services.Journal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+
     public interface IJournalController
     {
         // Journal Items

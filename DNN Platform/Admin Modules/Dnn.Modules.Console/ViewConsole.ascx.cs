@@ -1,34 +1,32 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web.UI.WebControls;
-
-using Dnn.Modules.Console.Components;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Dnn.Modules.Console
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web.UI.WebControls;
+
+    using Dnn.Modules.Console.Components;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class ViewConsole : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;

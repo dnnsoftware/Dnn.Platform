@@ -1,24 +1,24 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Common;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Services.Sitemap
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class SitemapBuilder
     {
         private const int SITEMAP_MAXURLS = 50000;
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Sitemap
                     var currentCulture = this.PortalSettings.CultureCode?.ToLowerInvariant();
                     if (string.IsNullOrEmpty(currentCulture))
                     {
-                        currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+                        currentCulture = Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
                     }
 
                     this._cacheFileName = string.Format("sitemap" + ".{0}.xml", currentCulture);
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 if (string.IsNullOrEmpty(this._cacheIndexFileNameFormat))
                 {
-                    var currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+                    var currentCulture = Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
                     this._cacheIndexFileNameFormat = string.Format("sitemap_{{0}}" + ".{0}.xml", currentCulture);
                 }
 
@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Sitemap
                     }
                     catch (Exception ex)
                     {
-                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage(
+                        Services.Exceptions.Exceptions.LogException(new Exception(Localization.GetExceptionMessage(
                             "SitemapProviderError",
                             "URL sitemap provider '{0}' failed with error: {1}",
                             _provider.Name, ex.Message)));
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void GetSitemapIndexFile(string index, TextWriter output)
         {
-            var currentCulture = Localization.Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
+            var currentCulture = Localization.GetPageLocale(this.PortalSettings).Name.ToLowerInvariant();
             this.WriteSitemapFileToOutput(string.Format("sitemap_{0}.{1}.xml", index, currentCulture), output);
         }
 

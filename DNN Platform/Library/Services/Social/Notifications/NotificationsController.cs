@@ -2,25 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Services.Social.Notifications.Data;
-
 namespace DotNetNuke.Services.Social.Notifications
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications.Data;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
     /// </summary>
@@ -133,17 +135,17 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (string.IsNullOrEmpty(notification.Subject) && string.IsNullOrEmpty(notification.Body))
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgSubjectOrBodyRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgSubjectOrBodyRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (roles == null && users == null)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgRolesOrUsersRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgRolesOrUsersRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (!string.IsNullOrEmpty(notification.Subject) && notification.Subject.Length > ConstMaxSubject)
             {
-                throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgSubjectTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxSubject, notification.Subject.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), ConstMaxSubject, notification.Subject.Length));
             }
 
             var sbTo = new StringBuilder();
@@ -165,12 +167,12 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (sbTo.Length == 0)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgEmptyToListFoundError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgEmptyToListFoundError", Localization.ExceptionsResourceFile));
             }
 
             if (sbTo.Length > ConstMaxTo)
             {
-                throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgToListTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
             }
 
             notification.To = sbTo.ToString().Trim(',');

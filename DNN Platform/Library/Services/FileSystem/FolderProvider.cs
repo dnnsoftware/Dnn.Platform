@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Security;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Security;
+
     /// <summary>
     ///   Base class that provides common functionallity to work with files and folders.
     /// </summary>

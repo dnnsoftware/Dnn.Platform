@@ -1,16 +1,14 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Users.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
+    using DotNetNuke.Framework;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("This class has been obsoleted in 7.3.0 - please use UserController instead. Scheduled removal in v10.0.0.")]
     public class TestableUserController : ServiceLocator<IUserController, TestableUserController>, IUserController

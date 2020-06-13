@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Entities.Groups;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Modules.Groups.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Entities.Groups;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Tokens;
+
     public class GroupItemTokenReplace : Services.Tokens.BaseCustomTokenReplace
     {
         public GroupItemTokenReplace(RoleInfo groupInfo)

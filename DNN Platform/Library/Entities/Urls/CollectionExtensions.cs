@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-
-using DotNetNuke.Collections.Internal;
-
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+
+    using DotNetNuke.Collections.Internal;
+
     public static class CollectionExtensions
     {
         public static void LoadFromXmlFile(this Dictionary<int, List<ParameterReplaceAction>> actions, string fileName, int portalId, bool portalSpecific, ref List<string> messages)

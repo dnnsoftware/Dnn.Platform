@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Threading;
-
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Web.Api
 {
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+
     public class RequireHostAttribute : AuthorizeAttributeBase
     {
         /// <summary>

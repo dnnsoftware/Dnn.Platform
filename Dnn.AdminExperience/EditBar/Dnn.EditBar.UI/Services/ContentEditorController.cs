@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using Dnn.EditBar.UI.Controllers;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using DotNetNuke.Web.InternalServices;
-
 namespace Dnn.EditBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.EditBar.UI.Controllers;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using DotNetNuke.Web.InternalServices;
+
     [DnnAuthorize]
     [DnnPageEditor]
     public class ContentEditorController : DnnApiController

@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.UI.Modules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+
     internal class ModuleInjectionManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInjectionManager));

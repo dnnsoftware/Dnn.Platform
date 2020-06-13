@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using System.Data.SqlServerCe;
-using System.IO;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Data;
-using DotNetNuke.Tests.Utilities;
-
 namespace DotNetNuke.Tests.Data
 {
+    using System;
+    using System.Data;
+    using System.Data.SqlServerCe;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Tests.Utilities;
+
     public class DataUtil
     {
         public static void CreateDatabase(string databaseName)

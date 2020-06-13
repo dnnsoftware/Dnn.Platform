@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Framework;
-
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+
+    using DotNetNuke.Framework;
+
     public class PagesController : ServiceLocator<IPagesController, PagesController>
     {
         protected override Func<IPagesController> GetFactory()

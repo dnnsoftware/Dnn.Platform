@@ -2,35 +2,37 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem.EventArgs;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net.NetworkInformation;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Log.EventLog;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Exposes methods to manage folders.
     /// </summary>
@@ -46,7 +48,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                return Localization.Localization.GetString("MyFolderName");
+                return Localization.GetString("MyFolderName");
             }
         }
 
@@ -165,7 +167,7 @@ namespace DotNetNuke.Services.FileSystem
                 Logger.Error(ex);
 
                 throw new FolderProviderException(
-                    Localization.Localization.GetExceptionMessage(
+                    Localization.GetExceptionMessage(
                         "DeleteFolderUnderlyingSystemError",
                         "The underlying system threw an exception. The folder has not been deleted."),
                     ex);
@@ -445,12 +447,12 @@ namespace DotNetNuke.Services.FileSystem
 
             if (this.FolderExists(folderMapping.PortalID, folderPath))
             {
-                throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("AddFolderAlreadyExists", "The provided folder path already exists. The folder has not been added."));
+                throw new FolderAlreadyExistsException(Localization.GetExceptionMessage("AddFolderAlreadyExists", "The provided folder path already exists. The folder has not been added."));
             }
 
             if (!this.IsValidFolderPath(folderPath))
             {
-                throw new InvalidFolderPathException(Localization.Localization.GetExceptionMessage("AddFolderNotAllowed", "The folder path '{0}' is not allowed. The folder has not been added.", folderPath));
+                throw new InvalidFolderPathException(Localization.GetExceptionMessage("AddFolderNotAllowed", "The folder path '{0}' is not allowed. The folder has not been added.", folderPath));
             }
 
             var parentFolder = this.GetParentFolder(folderMapping.PortalID, folderPath);
@@ -489,7 +491,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("AddFolderUnderlyingSystemError", "The underlying system threw an exception. The folder has not been added."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("AddFolderUnderlyingSystemError", "The underlying system threw an exception. The folder has not been added."), ex);
             }
 
             this.CreateFolderInFileSystem(PathUtils.Instance.GetPhysicalPath(folderMapping.PortalID, folderPath));
@@ -791,8 +793,8 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     if (folder.FolderID == userFolder.FolderID)
                     {
-                        folder.DisplayPath = Localization.Localization.GetString("MyFolderName") + "/";
-                        folder.DisplayName = Localization.Localization.GetString("MyFolderName");
+                        folder.DisplayPath = Localization.GetString("MyFolderName") + "/";
+                        folder.DisplayName = Localization.GetString("MyFolderName");
                     }
                     else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) // Allow UserFolder children
                     {
@@ -830,7 +832,7 @@ namespace DotNetNuke.Services.FileSystem
             if (this.FolderExists(folder.PortalID, newFolderPath))
             {
                 throw new InvalidOperationException(string.Format(
-                    Localization.Localization.GetExceptionMessage(
+                    Localization.GetExceptionMessage(
                         "CannotMoveFolderAlreadyExists",
                         "The folder with name '{0}' cannot be moved. A folder with that name already exists under the folder '{1}'.", folder.FolderName, destinationFolder.FolderName)));
             }
@@ -841,14 +843,14 @@ namespace DotNetNuke.Services.FileSystem
             if (!this.CanMoveBetweenFolderMappings(folderMapping, destinationFolderMapping))
             {
                 throw new InvalidOperationException(string.Format(
-                    Localization.Localization.GetExceptionMessage(
+                    Localization.GetExceptionMessage(
                         "CannotMoveFolderBetweenFolderType",
                         "The folder with name '{0}' cannot be moved. Move Folder operation between this two folder types is not allowed", folder.FolderName)));
             }
 
             if (!this.IsMoveOperationValid(folder, destinationFolder, newFolderPath))
             {
-                throw new InvalidOperationException(Localization.Localization.GetExceptionMessage("MoveFolderCannotComplete", "The operation cannot be completed."));
+                throw new InvalidOperationException(Localization.GetExceptionMessage("MoveFolderCannotComplete", "The operation cannot be completed."));
             }
 
             var currentFolderPath = folder.FolderPath;
@@ -905,7 +907,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (this.FolderExists(folder.PortalID, newFolderPath))
             {
-                throw new FolderAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFolderAlreadyExists", "The destination folder already exists. The folder has not been renamed."));
+                throw new FolderAlreadyExistsException(Localization.GetExceptionMessage("RenameFolderAlreadyExists", "The destination folder already exists. The folder has not been renamed."));
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
@@ -984,7 +986,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (this.AreThereFolderMappingsRequiringNetworkConnectivity(portalId, relativePath, isRecursive) && !this.IsNetworkAvailable())
             {
-                throw new NoNetworkAvailableException(Localization.Localization.GetExceptionMessage("NoNetworkAvailableError", "Network connectivity is needed but there is no network available."));
+                throw new NoNetworkAvailableException(Localization.GetExceptionMessage("NoNetworkAvailableError", "Network connectivity is needed but there is no network available."));
             }
 
             int? scriptTimeOut = null;

@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Globalization;
-using System.Linq;
-using System.Text;
-
-using DNN.Integration.Test.Framework.Helpers;
-using DNN.Integration.Test.Framework.Scripts;
-
 namespace DNN.Integration.Test.Framework.Controllers
 {
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+
+    using DNN.Integration.Test.Framework.Helpers;
+    using DNN.Integration.Test.Framework.Scripts;
+
     public static class RoleController
     {
         private const string PortalIdMarker = @"'$[portal_id]'";

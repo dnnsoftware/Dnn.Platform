@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Entities.Content.Workflow.Dto;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System;
+
+    using DotNetNuke.Entities.Content.Workflow.Dto;
+    using DotNetNuke.Entities.Users;
+
     /// <summary>
     /// This class represents the Workflow Engine.
     /// It allows start, complete/discard and move forward and backward the workflow associated to a ContentItem.

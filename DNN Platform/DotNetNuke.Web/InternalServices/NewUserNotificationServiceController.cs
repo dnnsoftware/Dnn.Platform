@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class NewUserNotificationServiceController : DnnApiController
     {

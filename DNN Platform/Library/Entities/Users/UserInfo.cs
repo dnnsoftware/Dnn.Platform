@@ -1,27 +1,25 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Concurrent;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.UI.WebControls;
-
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Tokens;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Users

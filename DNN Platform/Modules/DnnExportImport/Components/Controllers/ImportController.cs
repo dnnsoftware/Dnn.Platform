@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Providers;
-using Dnn.ExportImport.Repository;
-using Newtonsoft.Json;
-
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Repository;
+    using Newtonsoft.Json;
+
     public class ImportController : BaseController
     {
         public int QueueOperation(int userId, ImportDto importDto)

@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
     [ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
     public class ClearCache : ConsoleCommandBase
     {

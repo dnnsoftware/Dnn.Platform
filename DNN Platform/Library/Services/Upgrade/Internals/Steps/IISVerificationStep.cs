@@ -2,13 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-
-using Microsoft.Win32;
-
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
+    using System;
+    using System.Web;
+
+    using Microsoft.Win32;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Performs verifications about the IIS environment.
     /// </summary>
@@ -21,12 +23,12 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         {
             this.Status = StepStatus.Running;
 
-            this.Details = Localization.Localization.GetString("CheckingIIS", this.LocalInstallResourceFile);
+            this.Details = Localization.GetString("CheckingIIS", this.LocalInstallResourceFile);
 
             // Checks for integrated pipeline mode.
             if (!HttpRuntime.UsingIntegratedPipeline)
             {
-                this.Errors.Add(Localization.Localization.GetString("IISVerificationFail", this.LocalInstallResourceFile));
+                this.Errors.Add(Localization.GetString("IISVerificationFail", this.LocalInstallResourceFile));
                 this.Status = StepStatus.Abort;
                 return;
             }
@@ -34,7 +36,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             // Check for .Net Framework 4.7.2
             if (!IsDotNetVersionAtLeast(461808))
             {
-                this.Errors.Add(Localization.Localization.GetString("DotNetVersion472Required", this.LocalInstallResourceFile));
+                this.Errors.Add(Localization.GetString("DotNetVersion472Required", this.LocalInstallResourceFile));
                 this.Status = StepStatus.Abort;
                 return;
             }

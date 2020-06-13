@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI;
-using DotNetNuke.UI.Containers;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
-using DotNetNuke.Web.DDRMenu.TemplateEngine;
-
 namespace DotNetNuke.Web.DDRMenu
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI;
+    using DotNetNuke.UI.Containers;
+    using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+    using DotNetNuke.Web.DDRMenu.TemplateEngine;
+
     public class Actions : ActionBase
     {
         public string PathSystemScript { get; set; }

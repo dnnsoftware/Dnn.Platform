@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
+    using System.Net;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Services.Localization;
+
     public abstract class OAuthClientBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthClientBase));
@@ -686,7 +686,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                     int timeZone;
                     if (int.TryParse(user.Timezone, out timeZone))
                     {
-                        var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
+                        var timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
 
                         profileProperties.Add("PreferredTimeZone", timeZoneInfo.Id);
                     }

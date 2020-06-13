@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Security;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-
 namespace DotNetNuke.Web.DDRMenu
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
+    using System.Security;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
 
     public class Controller : IUpgradeable, IPortable

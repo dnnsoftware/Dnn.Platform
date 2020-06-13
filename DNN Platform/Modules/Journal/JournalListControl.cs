@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Modules.Journal.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:JournalListControl runat=server></{0}:JournalListControl>")]
     public class JournalListControl : WebControl

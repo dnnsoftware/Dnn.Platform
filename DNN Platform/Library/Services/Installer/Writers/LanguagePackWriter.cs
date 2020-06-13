@@ -1,22 +1,20 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LanguagePackWriter class.
@@ -61,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Writers
             XPathNavigator cultureNav = manifestNav.SelectSingleNode("Culture");
             this._Language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
             this._Language.Code = Util.ReadAttribute(cultureNav, "Code");
-            this._Language.Fallback = Localization.Localization.SystemLocale;
+            this._Language.Fallback = Localization.SystemLocale;
 
             // Create a Package
             this.Package = new PackageInfo(installer);

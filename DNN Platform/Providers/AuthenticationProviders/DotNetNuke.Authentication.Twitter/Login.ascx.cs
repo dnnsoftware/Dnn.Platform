@@ -1,18 +1,16 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-
-using DotNetNuke.Authentication.Twitter.Components;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
 namespace DotNetNuke.Authentication.Twitter
 {
+    using System;
+
+    using DotNetNuke.Authentication.Twitter.Components;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+
     public partial class Login : OAuthLoginBase
     {
         protected override string AuthSystemApplicationName

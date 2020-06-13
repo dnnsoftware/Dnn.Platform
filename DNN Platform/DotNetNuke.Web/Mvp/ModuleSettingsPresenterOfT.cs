@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Entities.Modules;
-
 namespace DotNetNuke.Web.Mvp
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Entities.Modules;
+
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public abstract class ModuleSettingsPresenter<TView, TModel> : ModulePresenterBase<TView>
         where TView : class, ISettingsView<TModel>

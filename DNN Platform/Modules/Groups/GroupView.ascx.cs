@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.WebControls;
-
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.WebControls;
+
     public partial class GroupView : GroupsModuleBase
     {
         protected void Page_Load(object sender, EventArgs e)

@@ -1,31 +1,28 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Modules.MemberDirectory.Presenters;
-using DotNetNuke.Modules.MemberDirectory.ViewModels;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Mvp;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
-using WebFormsMvp;
-
 namespace DotNetNuke.Modules.MemberDirectory
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Modules.MemberDirectory.Presenters;
+    using DotNetNuke.Modules.MemberDirectory.ViewModels;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Mvp;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+    using WebFormsMvp;
+
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     [PresenterBinding(typeof(ModuleSettingsPresenter))]
     public partial class Settings : SettingsView<MemberDirectorySettingsModel>

@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities.Mocks;
-using ICSharpCode.SharpZipLib.Zip;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using ICSharpCode.SharpZipLib.Zip;
+    using NUnit.Framework;
+
     /// <summary>
     ///   FileSystemUtilsTests.
     /// </summary>

@@ -1,20 +1,18 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.EventQueue;
-using DotNetNuke.Services.Installer.Log;
-using DotNetNuke.Services.Installer.Packages;
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ComponentInstallerBase is a base class for all Component Installers.

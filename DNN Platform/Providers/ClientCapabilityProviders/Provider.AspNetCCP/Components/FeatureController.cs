@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mobile;
-
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mobile;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The FeatureController class for the modules.

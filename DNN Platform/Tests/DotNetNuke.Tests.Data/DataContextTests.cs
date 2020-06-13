@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Configuration;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Tests.Utilities;
-using NUnit.Framework;
-using PetaPoco;
-
 namespace DotNetNuke.Tests.Data
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+    using PetaPoco;
+
     [TestFixture]
     public class DataContextTests
     {

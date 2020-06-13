@@ -1,36 +1,33 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration.Provider;
-using System.Data;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Security;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-
-// DNN-4016
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Security.Membership
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Configuration.Provider;
+    using System.Data;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Membership;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    // DNN-4016
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Provider.AspNetProvider

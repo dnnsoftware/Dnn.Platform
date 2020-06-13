@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Seo.Components
 {
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Entities.Users;
+
     public class ExtensionMenuController : IMenuItemController
     {
         public void UpdateParameters(MenuItem menuItem)

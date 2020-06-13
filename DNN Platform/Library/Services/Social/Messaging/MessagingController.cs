@@ -1,29 +1,29 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Social.Messaging.Data;
-using DotNetNuke.Services.Social.Messaging.Exceptions;
-using DotNetNuke.Services.Social.Messaging.Internal;
-
 namespace DotNetNuke.Services.Social.Messaging
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Internal;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Social.Messaging.Data;
+    using DotNetNuke.Services.Social.Messaging.Exceptions;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Controller class for social Messaging.
@@ -73,39 +73,39 @@ namespace DotNetNuke.Services.Social.Messaging
         {
             if (sender == null || sender.UserID <= 0)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgSenderRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgSenderRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (message == null)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgMessageRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgMessageRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (string.IsNullOrEmpty(message.Subject) && string.IsNullOrEmpty(message.Body))
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgSubjectOrBodyRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgSubjectOrBodyRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (roles == null && users == null)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgRolesOrUsersRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgRolesOrUsersRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (InternalMessagingController.Instance.DisablePrivateMessage(sender.PortalID) && !this.IsAdminOrHost(sender))
             {
-                throw new ArgumentException(Localization.Localization.GetString("PrivateMessageDisabledError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("PrivateMessageDisabledError", Localization.ExceptionsResourceFile));
             }
 
             if (!string.IsNullOrEmpty(message.Subject) && message.Subject.Length > ConstMaxSubject)
             {
-                throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgSubjectTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxSubject, message.Subject.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), ConstMaxSubject, message.Subject.Length));
             }
 
             if (roles != null && roles.Count > 0 && !this.IsAdminOrHost(sender))
             {
                 if (!roles.All(role => sender.Social.Roles.Any(userRoleInfo => role.RoleID == userRoleInfo.RoleID && userRoleInfo.IsOwner)))
                 {
-                    throw new ArgumentException(Localization.Localization.GetString("MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError", Localization.Localization.ExceptionsResourceFile));
+                    throw new ArgumentException(Localization.GetString("MsgOnlyHostOrAdminOrUserInGroupCanSendToRoleError", Localization.ExceptionsResourceFile));
                 }
             }
 
@@ -130,12 +130,12 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (sbTo.Length == 0)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgEmptyToListFoundError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgEmptyToListFoundError", Localization.ExceptionsResourceFile));
             }
 
             if (sbTo.Length > ConstMaxTo)
             {
-                throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgToListTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
             }
 
             // Cannot send message if within ThrottlingInterval
@@ -143,13 +143,13 @@ namespace DotNetNuke.Services.Social.Messaging
             if (waitTime > 0)
             {
                 var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingInterval);
-                throw new ThrottlingIntervalNotMetException(string.Format(Localization.Localization.GetString("MsgThrottlingIntervalNotMet", Localization.Localization.ExceptionsResourceFile), interval));
+                throw new ThrottlingIntervalNotMetException(string.Format(Localization.GetString("MsgThrottlingIntervalNotMet", Localization.ExceptionsResourceFile), interval));
             }
 
             // Cannot have attachments if it's not enabled
             if (fileIDs != null && fileIDs.Count > 0 && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
-                throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
+                throw new AttachmentsNotAllowed(Localization.GetString("MsgAttachmentsNotAllowed", Localization.ExceptionsResourceFile));
             }
 
             // Cannot exceed RecipientLimit
@@ -166,7 +166,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (recipientCount > InternalMessagingController.Instance.RecipientLimit(sender.PortalID))
             {
-                throw new RecipientLimitExceededException(Localization.Localization.GetString("MsgRecipientLimitExceeded", Localization.Localization.ExceptionsResourceFile));
+                throw new RecipientLimitExceededException(Localization.GetString("MsgRecipientLimitExceeded", Localization.ExceptionsResourceFile));
             }
 
             // Profanity Filter

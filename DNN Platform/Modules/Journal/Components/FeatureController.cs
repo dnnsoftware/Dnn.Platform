@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace DotNetNuke.Modules.Journal.Components
+{
+    /*
 ' Copyright (c) 2011 DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,28 +16,26 @@
 '
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
-using Microsoft.Extensions.DependencyInjection;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Entities;
+    using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.Journal.Components
-{
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Controller class for Journal.

@@ -2,35 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data;
-using System.Reflection;
-using System.Web;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.Mobile;
-using DotNetNuke.Tests.Core.Services.ClientCapability;
-using DotNetNuke.Tests.Instance.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Services.Mobile
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Data;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.ClientCapability;
+    using DotNetNuke.Services.Mobile;
+    using DotNetNuke.Tests.Core.Services.ClientCapability;
+    using DotNetNuke.Tests.Instance.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
     ///   Summary description for RedirectionControllerTests.
     /// </summary>

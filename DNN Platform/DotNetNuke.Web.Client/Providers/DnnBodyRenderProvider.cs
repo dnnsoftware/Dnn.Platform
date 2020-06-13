@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.UI.HtmlControls;
-
 namespace DotNetNuke.Web.Client.Providers
 {
     using System;
@@ -12,6 +10,7 @@ namespace DotNetNuke.Web.Client.Providers
     using System.Text;
     using System.Web;
     using System.Web.UI;
+    using System.Web.UI.HtmlControls;
 
     using ClientDependency.Core;
     using ClientDependency.Core.Config;

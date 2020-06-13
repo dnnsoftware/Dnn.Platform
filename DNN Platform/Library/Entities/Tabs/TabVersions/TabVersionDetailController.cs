@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+
     public class TabVersionDetailController : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();

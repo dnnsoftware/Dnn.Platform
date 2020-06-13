@@ -1,21 +1,19 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.ComponentModel;
-using System.Data;
-using System.IO;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Data;
+    using System.IO;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Services.Localization;
+
     [ToolboxData("<{0}:PagingControl runat=server></{0}:PagingControl>")]
     public class PagingControl : WebControl, IPostBackEventHandler
     {

@@ -2,30 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-using DotNetNuke.Modules.DigitalAssets.Services;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.UI;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
+    using DotNetNuke.Modules.DigitalAssets.Services;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.UI;
+
     public partial class FileProperties : PortalModuleBase
     {
         private readonly IDigitalAssetsController controller = new Factory().DigitalAssetsController;

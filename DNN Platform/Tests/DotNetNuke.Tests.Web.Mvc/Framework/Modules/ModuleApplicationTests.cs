@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ModuleApplicationTests
     {

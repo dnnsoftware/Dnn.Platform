@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-using System.Text;
-
-using DotNetNuke.Collections;
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Data
 {
+    using System;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Text;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     internal static class DataUtil
     {
         internal static string GenerateExecuteStoredProcedureSql(string procedureName, params object[] args)

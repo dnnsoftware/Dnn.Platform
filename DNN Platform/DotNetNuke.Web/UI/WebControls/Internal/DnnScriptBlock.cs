@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.IO;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
+    using System.IO;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+
     /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>

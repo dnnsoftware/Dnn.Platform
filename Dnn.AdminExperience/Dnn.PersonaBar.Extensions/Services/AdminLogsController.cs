@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.AdminLogs.Services.Dto;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json.Linq;
-
 namespace Dnn.PersonaBar.AdminLogs.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.AdminLogs.Services.Dto;
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+    using Newtonsoft.Json.Linq;
+
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class AdminLogsController : PersonaBarApiController
     {

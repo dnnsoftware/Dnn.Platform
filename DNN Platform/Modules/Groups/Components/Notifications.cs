@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace DotNetNuke.Modules.Groups.Components
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Notifications;
+
     public class Notifications
     {
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)

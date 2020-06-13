@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
 namespace DotNetNuke.Collections
 {
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
     /// <summary>
     /// Provides extensions to IEnumerable.
     /// </summary>

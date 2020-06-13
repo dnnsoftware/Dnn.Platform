@@ -1,33 +1,33 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net.Mail;
-using System.Net.Mime;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Messaging.Data;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Services.Mail
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net.Mail;
+    using System.Net.Mime;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Messaging.Data;
+    using DotNetNuke.Services.Tokens;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SendTokenizedBulkEmail Class is a class to manage the sending of bulk mails
@@ -212,10 +212,10 @@ namespace DotNetNuke.Services.Mail
             this.PortalAlias = this._portalSettings.PortalAlias.HTTPAlias;
             this.SendingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
             this._tokenReplace = new TokenReplace();
-            this._confirmBodyHTML = Localization.Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
-            this._confirmBodyText = Localization.Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
-            this._confirmSubject = Localization.Localization.GetString("EMAIL_BulkMailConf_Subject", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
-            this._noError = Localization.Localization.GetString("NoErrorsSending", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._confirmBodyHTML = Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._confirmBodyText = Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._confirmSubject = Localization.GetString("EMAIL_BulkMailConf_Subject", Localization.GlobalResourceFile, this._strSenderLanguage);
+            this._noError = Localization.GetString("NoErrorsSending", Localization.GlobalResourceFile, this._strSenderLanguage);
             this._smtpEnableSSL = Host.EnableSMTPSSL;
         }
 

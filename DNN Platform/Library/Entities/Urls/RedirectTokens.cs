@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-
 namespace DotNetNuke.Entities.Urls
 {
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// This class contains helpers which set the redirect action and reason tokens.  These are fake additions to the rewritten query string
     /// which are used as a type of property to store intent of a particular url in the page index.  This is done to keep the base type

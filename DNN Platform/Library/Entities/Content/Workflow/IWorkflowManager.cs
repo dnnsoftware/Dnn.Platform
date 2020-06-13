@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Content.Workflow.Entities;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+
     /// <summary>
     /// This class is responsible to manage the workflows of the portal.
     /// It provides CRUD operation methods and methods to know the usage of the workflow.

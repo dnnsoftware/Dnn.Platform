@@ -2,26 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Data;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Helpers;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Services.Social.Messaging.Data;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Helpers;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UserPreferencesControllerTests
     {

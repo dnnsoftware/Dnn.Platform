@@ -1,19 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Entities.Modules.Definitions
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+
     public enum ModuleDefinitionVersion
     {
         VUnknown = 0,

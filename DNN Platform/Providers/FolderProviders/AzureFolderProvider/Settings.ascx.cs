@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Linq;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Blob;
-
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Auth;
+    using Microsoft.WindowsAzure.Storage.Blob;
+
     /// <summary>
     /// Windows Azure Storage Settings Control.
     /// </summary>

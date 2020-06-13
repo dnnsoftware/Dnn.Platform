@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-
 namespace DotNetNuke.Common
 {
+    using System;
+    using System.Web;
+
     /// <summary>
     /// A unit testable alternative to HttpContext.Current.
     /// </summary>

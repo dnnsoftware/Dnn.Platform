@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Security;
-using System.Web;
-
-using log4net;
-using log4net.Config;
-using log4net.Core;
-using log4net.Repository;
-using log4net.Util;
-
 namespace DotNetNuke.Instrumentation
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Security;
+    using System.Web;
+
+    using log4net;
+    using log4net.Config;
+    using log4net.Core;
+    using log4net.Repository;
+    using log4net.Util;
+
     public class LoggerSourceImpl : ILoggerSource
     {
         public ILog GetLogger(Type type)

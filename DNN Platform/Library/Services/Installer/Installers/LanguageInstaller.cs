@@ -1,18 +1,16 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LanguageInstaller installs Language Packs to a DotNetNuke site.
@@ -96,7 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // we should not delete language when deleting language pack, as there is just a loose relationship
                 // if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
                 // {
-                //    Localization.Localization.DeleteLanguage(language);
+                //    Localization.DeleteLanguage(language);
                 // }
                 this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
             }
@@ -187,7 +185,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (this.LanguagePack.PackageType == LanguagePackType.Core)
                     {
                         // Update language
-                        Localization.Localization.SaveLanguage(this.Language);
+                        Localization.SaveLanguage(this.Language);
                     }
 
                     // Set properties for Language Pack
@@ -231,7 +229,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Temp Language - Rollback to Temp
-                Localization.Localization.SaveLanguage(this.TempLanguage);
+                Localization.SaveLanguage(this.TempLanguage);
             }
 
             // Call base class to prcoess files

@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+    using System.Web.Mvc.Html;
+
     /// <summary>
     /// Gets the HTML ID and name attributes of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
     /// </summary>

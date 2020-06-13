@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-using DotNetNuke.DependencyInjection;
-using DotNetNuke.DependencyInjection.Extensions;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.DependencyInjection;
-using DotNetNuke.Web.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.DependencyInjection;
+    using DotNetNuke.DependencyInjection.Extensions;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.DependencyInjection;
+    using DotNetNuke.Web.Extensions;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Startup : IDnnStartup
     {
         private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));

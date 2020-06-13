@@ -1,28 +1,28 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.SqlClient;
-using System.Globalization;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
-
 namespace DotNetNuke.Services.Upgrade.Internals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Common;
+    using System.Data.SqlClient;
+    using System.Globalization;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Controller class for Installer.
@@ -288,7 +288,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 installConfig.Version = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "version");
                 installConfig.SupportLocalization = XmlUtils.GetNodeValueBoolean(rootNode.CreateNavigator(), "supportLocalization");
-                installConfig.InstallCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture") ?? Localization.Localization.SystemLocale;
+                installConfig.InstallCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture") ?? Localization.SystemLocale;
             }
 
             // Parse the scripts node

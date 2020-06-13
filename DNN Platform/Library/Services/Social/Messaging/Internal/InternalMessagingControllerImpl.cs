@@ -1,24 +1,24 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Social.Messaging.Data;
-using DotNetNuke.Services.Social.Messaging.Exceptions;
-using DotNetNuke.Services.Social.Messaging.Internal.Views;
-
 namespace DotNetNuke.Services.Social.Messaging.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Messaging.Data;
+    using DotNetNuke.Services.Social.Messaging.Exceptions;
+    using DotNetNuke.Services.Social.Messaging.Internal.Views;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>The Controller class for social Messaging.</summary>
     internal class InternalMessagingControllerImpl : IInternalMessagingController
     {
@@ -101,18 +101,18 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             if (sender == null || sender.UserID <= 0)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgSenderRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgSenderRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (string.IsNullOrEmpty(body))
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgBodyRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgBodyRequiredError", Localization.ExceptionsResourceFile));
             }
 
             // Cannot have attachments if it's not enabled
             if (fileIDs != null && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
-                throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
+                throw new AttachmentsNotAllowed(Localization.GetString("MsgAttachmentsNotAllowed", Localization.ExceptionsResourceFile));
             }
 
             // Profanity Filter
@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             var messageId = this._dataService.CreateMessageReply(conversationId, PortalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
             if (messageId == -1) // Parent message was not found or Recipient was not found in the message
             {
-                throw new MessageOrRecipientNotFoundException(Localization.Localization.GetString("MsgMessageOrRecipientNotFound", Localization.Localization.ExceptionsResourceFile));
+                throw new MessageOrRecipientNotFoundException(Localization.GetString("MsgMessageOrRecipientNotFound", Localization.ExceptionsResourceFile));
             }
 
             // associate attachments

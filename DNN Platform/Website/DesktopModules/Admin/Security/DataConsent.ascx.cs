@@ -1,19 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Log.EventLog;
+
     public partial class DataConsent : UserModuleBase
     {
         public string DeleteMeConfirmString

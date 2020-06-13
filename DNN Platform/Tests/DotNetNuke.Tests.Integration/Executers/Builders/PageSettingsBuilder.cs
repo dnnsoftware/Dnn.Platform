@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Tests.Integration.Executers.Dto;
-using NTestDataBuilder;
-
 namespace DotNetNuke.Tests.Integration.Executers.Builders
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Tests.Integration.Executers.Dto;
+    using NTestDataBuilder;
+
     public class PageSettingsBuilder : TestDataBuilder<PageSettings, PageSettingsBuilder>
     {
         public PageSettingsBuilder()

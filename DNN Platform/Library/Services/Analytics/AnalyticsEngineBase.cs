@@ -1,14 +1,12 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Analytics.Config;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Services.Analytics
 {
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Analytics.Config;
+    using DotNetNuke.Services.Tokens;
+
     public abstract class AnalyticsEngineBase
     {
         public abstract string EngineName { get; }

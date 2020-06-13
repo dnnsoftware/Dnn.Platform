@@ -1,32 +1,30 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Containers;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Containers;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Skins

@@ -1,29 +1,27 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Web;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Security.Roles
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Tokens;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Roles

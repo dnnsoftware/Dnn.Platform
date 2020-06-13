@@ -1,21 +1,19 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.HttpModules.Services;
-using DotNetNuke.Services.Mobile;
-
 namespace DotNetNuke.HttpModules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.HttpModules.Services;
+    using DotNetNuke.Services.Mobile;
+
     public class MobileRedirectModule : IHttpModule
     {
         private IRedirectionController _redirectionController;

@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Interfaces;
-using DotNetNuke.Entities.Users;
-using Newtonsoft.Json;
-
 namespace Dnn.ExportImport.Components.Dto.Jobs
 {
+    using System;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Interfaces;
+    using DotNetNuke.Entities.Users;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class JobItem : IDateTimeConverter
     {

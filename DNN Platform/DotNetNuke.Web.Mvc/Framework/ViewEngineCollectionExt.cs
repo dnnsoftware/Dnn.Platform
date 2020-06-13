@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Caching;
-using System.Web.Mvc;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-
 namespace DotNetNuke.Web.Mvc.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web.Caching;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public static class ViewEngineCollectionExt
     {
         // Enable the call to ViewEngineCollection FindView method with useCache=false

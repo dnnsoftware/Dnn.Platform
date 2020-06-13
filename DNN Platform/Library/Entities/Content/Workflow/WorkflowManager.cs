@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class WorkflowManager : ServiceLocator<IWorkflowManager, WorkflowManager>, IWorkflowManager
     {
         private readonly DataProvider _dataProvider;

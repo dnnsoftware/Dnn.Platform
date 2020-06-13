@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
 
 // ReSharper enable CheckNamespace
 {
+    using System;
+
     /// <summary>
     /// This enum represents the possible list of WorkflowLogType.
     /// </summary>

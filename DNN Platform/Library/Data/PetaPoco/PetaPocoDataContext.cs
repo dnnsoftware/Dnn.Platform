@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-
-using DotNetNuke.Common;
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+
+    using DotNetNuke.Common;
+    using global::PetaPoco;
+
     [CLSCompliant(false)]
     public class PetaPocoDataContext : IDataContext
     {

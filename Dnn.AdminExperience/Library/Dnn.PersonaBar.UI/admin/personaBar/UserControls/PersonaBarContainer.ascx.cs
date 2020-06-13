@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-
-using Dnn.PersonaBar.Library.Containers;
-using Dnn.PersonaBar.Library.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.ControlPanels;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
-
-using Globals = DotNetNuke.Common.Globals;
-
 // ReSharper disable once CheckNamespace
 namespace Dnn.PersonaBar.UI.UserControls
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Containers;
+    using Dnn.PersonaBar.Library.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.ControlPanels;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Newtonsoft.Json;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public partial class PersonaBarContainer : ControlPanelBase
     {
         private readonly IPersonaBarContainer _personaBarContainer = Library.Containers.PersonaBarContainer.Instance;

@@ -2,20 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Tests.Utilities;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Services.Installer
 {
+    using System;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Reflection;
+    using System.Xml;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class XmlMergeTests : DnnUnitTest
     {

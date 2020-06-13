@@ -1,24 +1,22 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Data;
-using System.Linq;
-using System.Web.Script.Serialization;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Entities.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Data;
+    using System.Linq;
+    using System.Web.Script.Serialization;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.FileSystem;
+
     /// <summary>
     /// The ContentItem class which itself inherits from BaseEntityInfo paves the way for easily adding support for taxonomy,
     /// tagging and other ContentItem dependant features to your DotNetNuke extensions.

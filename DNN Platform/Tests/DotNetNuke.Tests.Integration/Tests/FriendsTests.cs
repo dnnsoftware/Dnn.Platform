@@ -2,30 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Controllers;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Localization;
+    using NUnit.Framework;
+
     public class FriendsTests : IntegrationTestBase
     {
         private const int PortalId = 0;

@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Net.Http;
-using System.Web;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.UserRequest;
-
 namespace DotNetNuke.Web.Api
 {
+    using System.Net.Http;
+    using System.Web;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.UserRequest;
+
     public static class HttpRequestMessageExtensions
     {
         public static int FindTabId(this HttpRequestMessage request)

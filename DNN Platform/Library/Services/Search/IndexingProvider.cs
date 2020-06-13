@@ -1,19 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-
 namespace DotNetNuke.Services.Search
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+
     /// <summary>A base class for search indexers.</summary>
     [Obsolete("Legacy Indexing base class -- Deprecated in DNN 7.1. Use 'IndexingProviderBase' instead.. Scheduled removal in v10.0.0.")]
     public abstract class IndexingProvider

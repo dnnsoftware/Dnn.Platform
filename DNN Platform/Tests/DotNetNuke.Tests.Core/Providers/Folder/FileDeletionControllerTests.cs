@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Tests.Core.Providers.Builders;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Tests.Core.Providers.Builders;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     public class FileDeletionControllerTests
     {
         private Mock<IFileLockingController> _mockFileLockingController;

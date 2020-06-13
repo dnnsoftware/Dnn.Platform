@@ -2,23 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Services.Assets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class AssetManager : ComponentBase<IAssetManager, AssetManager>, IAssetManager
     {
         private const string UserHasNoPermissionToBrowseFolderDefaultMessage = "The user has no permission to browse this folder";
@@ -40,7 +42,7 @@ namespace DotNetNuke.Services.Assets
 
             if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("UserHasNoPermissionToBrowseFolder", UserHasNoPermissionToBrowseFolderDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("UserHasNoPermissionToBrowseFolder", UserHasNoPermissionToBrowseFolderDefaultMessage));
             }
 
             var sortProperties = SortProperties.Parse(sortExpression);
@@ -192,7 +194,7 @@ namespace DotNetNuke.Services.Assets
 
             if (string.IsNullOrEmpty(filteredName))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FileNameInvalid", FileNameInvalidDefaultMessage, newFileName));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FileNameInvalid", FileNameInvalidDefaultMessage, newFileName));
             }
 
             // Chech if the new name has invalid chars
@@ -204,7 +206,7 @@ namespace DotNetNuke.Services.Assets
             // Check if the new name is a reserved name
             if (this.IsReservedName(filteredName))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
             var file = FileManager.Instance.GetFile(fileId, true);
@@ -219,7 +221,7 @@ namespace DotNetNuke.Services.Assets
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             if (!HasPermission(folder, "MANAGE"))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("UserHasNoPermissionToEditFile", UserHasNoPermissionToEditFileDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("UserHasNoPermissionToEditFile", UserHasNoPermissionToEditFileDefaultMessage));
             }
 
             return FileManager.Instance.RenameFile(file, newFileName);
@@ -240,7 +242,7 @@ namespace DotNetNuke.Services.Assets
             // Check if the name is reserved
             if (this.IsReservedName(newFolderName))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
             var folder = this.GetFolderInfo(folderId);
@@ -248,7 +250,7 @@ namespace DotNetNuke.Services.Assets
             // Check if user has appropiate permissions
             if (!HasPermission(folder, "MANAGE"))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("UserHasNoPermissionToEditFolder", UserHasNoPermissionToEditFolderDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("UserHasNoPermissionToEditFolder", UserHasNoPermissionToEditFolderDefaultMessage));
             }
 
             // check if the name has not changed
@@ -268,7 +270,7 @@ namespace DotNetNuke.Services.Assets
             // Check if the new folder already exists
             if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderAlreadyExists", FolderAlreadyExistsDefultMessage, newFolderName));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FolderAlreadyExists", FolderAlreadyExistsDefultMessage, newFolderName));
             }
 
             FolderManager.Instance.RenameFolder(folder, newFolderName);
@@ -289,14 +291,14 @@ namespace DotNetNuke.Services.Assets
             // Check if the new name is a reserved name
             if (this.IsReservedName(filterFolderName))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FolderFileNameIsReserved", FolderFileNameIsReservedDefaultMessage));
             }
 
             var parentFolder = this.GetFolderInfo(folderParentId);
 
             if (!HasPermission(parentFolder, "ADD"))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("UserHasNoPermissionToAdd", UserHasNoPermissionToAddDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("UserHasNoPermissionToAdd", UserHasNoPermissionToAddDefaultMessage));
             }
 
             var folderPath = PathUtils.Instance.FormatFolderPath(
@@ -307,7 +309,7 @@ namespace DotNetNuke.Services.Assets
 
             if (!MappedPathRegex.IsMatch(mappedPath))
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("InvalidMappedPath", InvalidMappedPathDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("InvalidMappedPath", InvalidMappedPathDefaultMessage));
             }
 
             try
@@ -317,7 +319,7 @@ namespace DotNetNuke.Services.Assets
             }
             catch (FolderAlreadyExistsException)
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderAlreadyExists", FolderAlreadyExistsDefaultMessage, filterFolderName));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FolderAlreadyExists", FolderAlreadyExistsDefaultMessage, filterFolderName));
             }
         }
 
@@ -417,7 +419,7 @@ namespace DotNetNuke.Services.Assets
 
         private string GetInvalidCharsErrorText()
         {
-            throw new AssetManagerException(Localization.Localization.GetExceptionMessage(
+            throw new AssetManagerException(Localization.GetExceptionMessage(
                 "FolderFileNameHasInvalidcharacters",
                 FolderFileNameHasInvalidcharactersDefaultMessage, "\\:/*?\"<>|"));
         }
@@ -439,7 +441,7 @@ namespace DotNetNuke.Services.Assets
             var folder = FolderManager.Instance.GetFolder(folderId);
             if (folder == null)
             {
-                throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderDoesNotExists", DefaultMessageDefaultMessage));
+                throw new AssetManagerException(Localization.GetExceptionMessage("FolderDoesNotExists", DefaultMessageDefaultMessage));
             }
 
             return folder;

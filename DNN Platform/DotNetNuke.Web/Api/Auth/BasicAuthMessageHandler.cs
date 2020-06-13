@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Web.ConfigSection;
-
 namespace DotNetNuke.Web.Api.Auth
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Principal;
+    using System.Text;
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Web.ConfigSection;
+
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
         public override string AuthScheme => "Basic";

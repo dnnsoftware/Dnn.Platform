@@ -2,31 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-
-using Dnn.EditBar.Library;
-using Dnn.EditBar.Library.Items;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.UI;
-using Newtonsoft.Json.Linq;
-
 namespace Dnn.EditBar.UI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+
+    using Dnn.EditBar.Library;
+    using Dnn.EditBar.Library.Items;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.UI;
+    using Newtonsoft.Json.Linq;
+
     public class EditBarController : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));

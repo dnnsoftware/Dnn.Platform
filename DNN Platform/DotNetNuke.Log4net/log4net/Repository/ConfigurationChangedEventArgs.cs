@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace log4net.Repository
+{
+    /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,11 +25,9 @@
  *
 */
 
-using System;
-using System.Collections;
+    using System;
+    using System.Collections;
 
-namespace log4net.Repository
-{
     /// <summary>
     ///
     /// </summary>

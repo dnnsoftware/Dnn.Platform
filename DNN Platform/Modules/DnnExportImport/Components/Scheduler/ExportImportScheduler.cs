@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Text;
-using System.Threading;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Engines;
-using Dnn.ExportImport.Components.Models;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Scheduling;
-
 namespace Dnn.ExportImport.Components.Scheduler
 {
+    using System;
+    using System.Text;
+    using System.Threading;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Controllers;
+    using Dnn.ExportImport.Components.Engines;
+    using Dnn.ExportImport.Components.Models;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Scheduling;
+
     /// <summary>
     /// Implements a SchedulerClient for the Exporting/Importing of site items.
     /// </summary>

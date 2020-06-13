@@ -2,37 +2,37 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Xml;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Tokens;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.Html.Components;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Services.Tokens;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke

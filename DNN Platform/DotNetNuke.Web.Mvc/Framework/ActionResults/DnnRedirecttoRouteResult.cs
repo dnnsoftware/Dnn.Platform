@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using System.Web.Routing;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Helpers;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Helpers;
+    using Microsoft.Extensions.DependencyInjection;
+
     internal class DnnRedirecttoRouteResult : RedirectToRouteResult
     {
         protected INavigationManager NavigationManager { get; }

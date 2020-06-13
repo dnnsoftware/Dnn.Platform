@@ -2,40 +2,40 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Messaging.Data;
-
-using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
-
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users.Membership;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Messaging.Data;
+
+    using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
+
     /// <summary>
     /// The UserController class provides Business Layer methods for Users.
     /// </summary>

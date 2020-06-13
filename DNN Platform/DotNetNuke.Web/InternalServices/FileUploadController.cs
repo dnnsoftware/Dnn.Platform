@@ -2,43 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common.Utils;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-
-using ContentDisposition = System.Net.Mime.ContentDisposition;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using System.Runtime.Serialization;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+
+    using ContentDisposition = System.Net.Mime.ContentDisposition;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     [DnnAuthorize]
     public class FileUploadController : DnnApiController
     {

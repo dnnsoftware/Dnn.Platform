@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Content.Workflow.Actions;
-
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using DotNetNuke.Entities.Content.Workflow.Actions;
+
     /// <summary>
     /// This class is responsible to persist and retrieve workflow action entity.
     /// </summary>

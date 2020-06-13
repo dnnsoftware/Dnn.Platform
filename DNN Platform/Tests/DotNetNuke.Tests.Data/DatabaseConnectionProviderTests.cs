@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Tests.Data.Fakes;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Data
 {
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Tests.Data.Fakes;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DatabaseConnectionProviderTests
     {

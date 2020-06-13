@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+
     public interface IFolderInfo
     {
         string DisplayName { get; set; }

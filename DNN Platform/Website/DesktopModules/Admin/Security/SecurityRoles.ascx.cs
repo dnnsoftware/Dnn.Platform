@@ -1,37 +1,35 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.Utilities;
-using Microsoft.Extensions.DependencyInjection;
-
-using Calendar = DotNetNuke.Common.Utilities.Calendar;
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Modules.Admin.Security
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Calendar = DotNetNuke.Common.Utilities.Calendar;
+    using Globals = DotNetNuke.Common.Globals;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SecurityRoles PortalModuleBase is used to manage the users and roles they

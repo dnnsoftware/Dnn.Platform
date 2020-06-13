@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Xml.Serialization;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Services.FileSystem;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Services.FileSystem;
+
     /// <summary>
     /// The UserProfile class provides a Business Layer entity for the Users Profile.
     /// </summary>

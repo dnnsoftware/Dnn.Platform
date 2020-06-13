@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Dnn.PersonaBar.Library.DTO;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-
 namespace Dnn.PersonaBar.Library.Helper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.DTO;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+
     public static class PermissionHelper
     {
         public static void AddUserPermission(this DTO.Permissions dto, PermissionInfoBase permissionInfo)

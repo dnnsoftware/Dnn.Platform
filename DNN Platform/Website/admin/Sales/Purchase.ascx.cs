@@ -1,26 +1,24 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Net;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Admin.Sales
 {
+    using System;
+    using System.IO;
+    using System.Net;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using Microsoft.Extensions.DependencyInjection;
+
     using Host = DotNetNuke.Entities.Host.Host;
 
     public partial class Purchase : PortalModuleBase

@@ -1,17 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-
-using DotNetNuke.Common;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.WebControls;
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.WebControls;
+
     [Obsolete("Support was removed for SolPart & Similar Modules in DNN 8.x, this control is no-longer functional to that point.  Usage of DDRMenu is suggested.  Scheduled removal in v10.0.0.")]
     public partial class Nav : NavObjectBase
     {

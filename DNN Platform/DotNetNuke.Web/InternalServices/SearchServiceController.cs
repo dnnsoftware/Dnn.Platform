@@ -2,32 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.InternalServices.Views.Search;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.InternalServices.Views.Search;
+
     [DnnAuthorize(StaticRoles = "Administrators")]
     public class SearchServiceController : DnnApiController
     {

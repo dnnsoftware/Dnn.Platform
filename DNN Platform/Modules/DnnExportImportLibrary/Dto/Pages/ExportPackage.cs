@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 // ReSharper disable InconsistentNaming
 namespace Dnn.ExportImport.Dto.Pages
 {
+    using System;
+
     public class ExportPackage : BasicExportImportDto
     {
         public string PackageType { get; set; }

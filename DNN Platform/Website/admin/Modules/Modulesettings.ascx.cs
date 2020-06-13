@@ -1,41 +1,39 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web.UI;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
-using Microsoft.Extensions.DependencyInjection;
-
-using Globals = DotNetNuke.Common.Globals;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Modules.Admin.Modules
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// <summary>
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
     /// module.

@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
+    using System;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+
     /// <summary>
     /// This Class ofers a set of methods useful and reusable along the Tab Version API.
     /// </summary>

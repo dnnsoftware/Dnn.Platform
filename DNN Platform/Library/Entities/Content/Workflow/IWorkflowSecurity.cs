@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+
     /// <summary>
     /// This class is responsible of provide information around Workflow Review permission.
     /// </summary>

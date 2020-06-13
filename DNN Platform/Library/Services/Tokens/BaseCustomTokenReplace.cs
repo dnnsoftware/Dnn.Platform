@@ -2,15 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Entities.Users;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
     /// </summary>
@@ -53,7 +55,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 if (this.DebugMessages)
                 {
-                    string message = Localization.Localization.GetString("TokenReplaceUnknownObject", Localization.Localization.SharedResourceFile, this.FormatProvider.ToString());
+                    string message = Localization.GetString("TokenReplaceUnknownObject", Localization.SharedResourceFile, this.FormatProvider.ToString());
                     if (message == string.Empty)
                     {
                         message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
@@ -68,11 +70,11 @@ namespace DotNetNuke.Services.Tokens
                 string message;
                 if (result == PropertyAccess.ContentLocked)
                 {
-                    message = Localization.Localization.GetString("TokenReplaceRestrictedProperty", Localization.Localization.GlobalResourceFile, this.FormatProvider.ToString());
+                    message = Localization.GetString("TokenReplaceRestrictedProperty", Localization.GlobalResourceFile, this.FormatProvider.ToString());
                 }
                 else
                 {
-                    message = Localization.Localization.GetString("TokenReplaceUnknownProperty", Localization.Localization.GlobalResourceFile, this.FormatProvider.ToString());
+                    message = Localization.GetString("TokenReplaceUnknownProperty", Localization.GlobalResourceFile, this.FormatProvider.ToString());
                 }
 
                 if (message == string.Empty)

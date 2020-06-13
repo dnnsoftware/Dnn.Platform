@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Caching;
-using System.Web.Security;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Security.Cookies
 {
+    using System;
+    using System.Web.Caching;
+    using System.Web.Security;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+
     public class AuthCookieController : ServiceLocator<IAuthCookieController, AuthCookieController>, IAuthCookieController
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();

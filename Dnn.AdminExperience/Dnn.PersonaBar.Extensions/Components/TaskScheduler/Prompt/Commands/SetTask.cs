@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Scheduling;
-
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Scheduling;
+
     [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
     public class SetTask : ConsoleCommandBase
     {

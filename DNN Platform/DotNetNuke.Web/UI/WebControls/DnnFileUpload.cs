@@ -2,24 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Web.Services.Description;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.Common;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.Services.Description;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Common;
+
     [ToolboxData("<{0}:DnnFileUpload runat='server'></{0}:DnnFileUpload>")]
     public class DnnFileUpload : Control, INamingContainer
     {

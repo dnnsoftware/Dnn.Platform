@@ -2,23 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dnn.PersonaBar.Pages.Components.Dto;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Pages.Components.Dto;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class PageUrlsController : ServiceLocator<IPageUrlsController, PageUrlsController>, IPageUrlsController
     {
         private enum SortingFields { None = 0, Url, Locale, Status };

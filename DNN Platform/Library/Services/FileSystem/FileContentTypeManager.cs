@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Common.Lists;
-using DotNetNuke.ComponentModel;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.ComponentModel;
+
     public class FileContentTypeManager : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
     {
         private IDictionary<string, string> _contentTypes;

@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Routing;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Portals;
+
     internal class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
         private List<int> _prefixCounts;

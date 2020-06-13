@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel.DataAnnotations;
-
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// This entity represents a Workflow Log.
     /// </summary>

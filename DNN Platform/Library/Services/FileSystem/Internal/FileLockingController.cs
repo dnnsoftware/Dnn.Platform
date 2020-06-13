@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.FileSystem.Internal
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+
     public class FileLockingController : ServiceLocator<IFileLockingController, FileLockingController>, IFileLockingController
     {
         public bool IsFileLocked(IFileInfo file, out string lockReasonKey)

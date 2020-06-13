@@ -1,16 +1,14 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Globalization;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+
     public class CulturePropertyAccess : IPropertyAccess
     {
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)

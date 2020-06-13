@@ -1,21 +1,19 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Linq;
-using System.Web.UI;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.Utilities;
-
 namespace DotNetNuke.Framework
 {
+    using System;
+    using System.Linq;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.Utilities;
+
     // -----------------------------------------------------------------------------
     // Project  : DotNetNuke
     // Class    : CDefault

@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Instrumentation;
-
 // ReSharper disable ConvertPropertyToExpressionBody
 namespace DotNetNuke.Common.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.Instrumentation;
+
     internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventHandlersContainer<T>));

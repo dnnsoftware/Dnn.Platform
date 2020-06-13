@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Mvc;
-
-using DotNetNuke.Tests.Web.Mvc.Fakes;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using Moq;
-using Moq.Protected;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
+    using System;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Tests.Web.Mvc.Fakes;
+    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+    using Moq;
+    using Moq.Protected;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnHandleErrorAttributeTests
     {

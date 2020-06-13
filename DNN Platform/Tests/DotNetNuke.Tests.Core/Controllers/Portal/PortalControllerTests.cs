@@ -2,19 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Internal;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PortalControllerTests
     {

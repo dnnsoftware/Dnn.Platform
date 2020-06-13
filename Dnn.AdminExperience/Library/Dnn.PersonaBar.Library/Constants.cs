@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.PersonaBar.Library
 {
+    using System;
+
     public static class Constants
     {
         public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Prompt/App_LocalResources/Prompt.resx";

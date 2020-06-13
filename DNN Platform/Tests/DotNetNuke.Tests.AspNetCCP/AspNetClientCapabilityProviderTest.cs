@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Web.Hosting;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Providers.AspNetClientCapabilityProvider;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Web.Hosting;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Providers.AspNetClientCapabilityProvider;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AspNetClientCapabilityProviderTest
     {

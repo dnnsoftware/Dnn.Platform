@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Reflection;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Utilities
 {
+    using System;
+    using System.Reflection;
+
+    using NUnit.Framework;
+
     [Obsolete("Use Assert.Exception or ExpectedExceptionAttribute. Scheduled removal in v11.0.0.")]
     public static class ExceptionAssert
     {

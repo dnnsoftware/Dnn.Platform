@@ -1,19 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Web.Compilation;
-
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-
 namespace DotNetNuke.ComponentModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Web.Compilation;
+
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+
     public class ProviderInstaller : IComponentInstaller
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProviderInstaller));

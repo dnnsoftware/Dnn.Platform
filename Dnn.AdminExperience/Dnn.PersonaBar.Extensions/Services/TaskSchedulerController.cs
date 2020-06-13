@@ -2,29 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.TaskScheduler.Services.Dto;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Web.Api;
-using Microsoft.VisualBasic;
-
 namespace Dnn.PersonaBar.TaskScheduler.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.TaskScheduler.Services.Dto;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Web.Api;
+    using Microsoft.VisualBasic;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class TaskSchedulerController : PersonaBarApiController
     {

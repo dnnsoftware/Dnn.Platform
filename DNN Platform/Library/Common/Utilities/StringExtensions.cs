@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     public static class StringExtensions
     {
         public static string TrimToLength(this string source, int maxLength)

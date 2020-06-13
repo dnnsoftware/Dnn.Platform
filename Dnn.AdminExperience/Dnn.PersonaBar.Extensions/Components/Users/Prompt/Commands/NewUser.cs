@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Common;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Users.Components.Contracts;
-using Dnn.PersonaBar.Users.Components.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Common;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components.Contracts;
+    using Dnn.PersonaBar.Users.Components.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("new-user", Constants.UsersCategory, "Prompt_NewUser_Description")]
     public class NewUser : ConsoleCommandBase
     {

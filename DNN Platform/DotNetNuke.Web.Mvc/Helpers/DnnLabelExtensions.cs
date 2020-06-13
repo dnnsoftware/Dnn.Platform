@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+
     public static class DnnLabelExtensions
     {
         public static MvcHtmlString Label<TModel>(this DnnHelper<TModel> dnnHelper, string expression, string labelText, string helpText)

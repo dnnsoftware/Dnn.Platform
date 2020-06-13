@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.
     /// </summary>

@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.FileSystem.Internal;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     /// <summary>
     ///   Represents the FolderMapping object and holds the Properties of that object.
     /// </summary>

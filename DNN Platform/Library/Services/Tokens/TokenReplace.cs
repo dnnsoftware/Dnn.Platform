@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections;
-using System.Data;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Services.Tokens
 {
+    using System.Collections;
+    using System.Data;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     /// <summary>
     /// The TokenReplace class provides the option to replace tokens formatted
     /// [object:property] or [object:property|format] or [custom:no] within a string

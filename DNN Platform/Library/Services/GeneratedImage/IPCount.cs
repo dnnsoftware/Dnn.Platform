@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
-
-using DotNetNuke.Common.Utils;
-using DotNetNuke.Services.UserRequest;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Hosting;
+
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.Services.UserRequest;
+
     public class IPCount
     {
         private const string TempFileExtension = ".tmp";

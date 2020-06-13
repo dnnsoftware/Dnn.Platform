@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Tests.Utilities;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Tests.Utilities;
+
     internal class UserPreferenceBuilder
     {
         private int userId;

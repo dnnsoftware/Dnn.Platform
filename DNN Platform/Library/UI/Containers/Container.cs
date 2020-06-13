@@ -1,40 +1,37 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.IO;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Application;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Containers.EventListeners;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Containers.EventListeners;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// <summary>
     /// Container is the base for the Containers.

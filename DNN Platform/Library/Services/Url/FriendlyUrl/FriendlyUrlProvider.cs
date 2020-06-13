@@ -1,17 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-
 namespace DotNetNuke.Services.Url.FriendlyUrl
 {
+    using System;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+
     public abstract class FriendlyUrlProvider
     {
         // return the provider

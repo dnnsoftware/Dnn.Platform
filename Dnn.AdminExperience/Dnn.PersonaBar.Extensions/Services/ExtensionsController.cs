@@ -2,48 +2,50 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Xml;
-using System.Xml.XPath;
-using Dnn.PersonaBar.Extensions.Components;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Editors;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using Constants = Dnn.PersonaBar.Extensions.Components.Constants;
-using Util = DotNetNuke.Entities.Content.Common.Util;
-
 namespace Dnn.PersonaBar.Extensions.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using System.Reflection;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web.Http;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using Dnn.PersonaBar.Extensions.Components;
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Editors;
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+
+    using Constants = Dnn.PersonaBar.Extensions.Components.Constants;
+    using Util = DotNetNuke.Entities.Content.Common.Util;
+
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class ExtensionsController : PersonaBarApiController
     {

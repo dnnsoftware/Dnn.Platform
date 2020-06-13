@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using Dnn.PersonaBar.Library.DTO;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Personalization;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.DTO;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Personalization;
+
     public class PersonaBarUserSettingsController : ServiceLocator<IPersonaBarUserSettingsController, PersonaBarUserSettingsController>, IPersonaBarUserSettingsController
     {
         private const string ContainerName = "AdminPersonaBar";

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Library.DTO;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using Dnn.PersonaBar.Library.DTO;
+
     public interface IPersonaBarUserSettingsController
     {
         /// <summary>

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Runtime.Serialization;
-
 namespace DotNetNuke.Modules.CoreMessaging.ViewModels
 {
+    using System.Runtime.Serialization;
+
     public class InboxSubscriptionViewModel
     {
         [DataMember(Name = "notifyFreq")]

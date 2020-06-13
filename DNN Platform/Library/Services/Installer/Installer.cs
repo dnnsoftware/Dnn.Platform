@@ -1,30 +1,27 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Installers;
-using DotNetNuke.Services.Installer.Log;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Services.Installer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Installers;
+    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

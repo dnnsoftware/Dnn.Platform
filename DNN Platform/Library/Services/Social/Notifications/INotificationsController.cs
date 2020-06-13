@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-
 namespace DotNetNuke.Services.Social.Notifications
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+
     /// <summary>
     /// Defines the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
     /// </summary>

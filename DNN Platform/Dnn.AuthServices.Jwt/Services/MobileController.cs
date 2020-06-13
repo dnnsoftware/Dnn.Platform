@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Net.Http.Headers;
-using System.Web.Http;
-
-using Dnn.AuthServices.Jwt.Components.Common.Controllers;
-using Dnn.AuthServices.Jwt.Components.Entity;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
-
 namespace Dnn.AuthServices.Jwt.Services
 {
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+
+    using Dnn.AuthServices.Jwt.Components.Common.Controllers;
+    using Dnn.AuthServices.Jwt.Components.Entity;
+    using DotNetNuke.Web.Api;
+    using Newtonsoft.Json;
+
     [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {

@@ -1,33 +1,31 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Web.Caching;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.WebControls;
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.WebControls;
+
     public enum DisplayMode
     {
         All = 0,

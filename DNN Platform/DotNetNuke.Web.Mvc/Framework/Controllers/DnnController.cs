@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Text;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.ActionResults;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Helpers;
-
 namespace DotNetNuke.Web.Mvc.Framework.Controllers
 {
+    using System;
+    using System.Text;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.ActionResults;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Helpers;
+
     public abstract class DnnController : Controller, IDnnController
     {
         protected DnnController()

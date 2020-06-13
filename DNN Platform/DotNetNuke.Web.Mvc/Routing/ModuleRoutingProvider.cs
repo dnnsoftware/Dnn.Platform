@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web;
-using System.Web.Routing;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System.Web;
+    using System.Web.Routing;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+
     public abstract class ModuleRoutingProvider
     {
         public static ModuleRoutingProvider Instance()

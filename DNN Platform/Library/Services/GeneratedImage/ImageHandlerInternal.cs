@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.GeneratedImage.ImageQuantization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.UserRequest;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.GeneratedImage.ImageQuantization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.UserRequest;
+
     internal class ImageHandlerInternal
     {
         private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);

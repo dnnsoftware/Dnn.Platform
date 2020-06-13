@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System.Web.Mvc;
+    using System.Web.Mvc.Html;
+
     /// <summary>
     /// Represents the functionality to render a partial view as an HTML-encoded string.
     /// </summary>

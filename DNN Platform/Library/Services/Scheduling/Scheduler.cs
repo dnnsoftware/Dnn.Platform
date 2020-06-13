@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Log.EventLog;
-using Microsoft.VisualBasic;
-
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Principal;
+    using System.Text;
+    using System.Threading;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Log.EventLog;
+    using Microsoft.VisualBasic;
+
     internal static class Scheduler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Scheduler));

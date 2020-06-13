@@ -2,29 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Web.Validators;
-
-using Moq;
-
-using FileController = DotNetNuke.Entities.Content.AttachmentController;
-
 namespace DotNetNuke.Tests.Content.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Web.Validators;
+    using Moq;
+
+    using FileController = DotNetNuke.Entities.Content.AttachmentController;
+
     public static class MockHelper
     {
         internal static IQueryable<Vocabulary> TestVocabularies

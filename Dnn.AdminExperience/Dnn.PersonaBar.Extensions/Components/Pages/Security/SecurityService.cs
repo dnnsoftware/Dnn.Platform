@@ -2,23 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Security.Permissions;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Permissions;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-using Newtonsoft.Json.Linq;
-
 namespace Dnn.PersonaBar.Pages.Components.Security
 {
+    using System;
+    using System.Security.Permissions;
+
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Permissions;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json.Linq;
+
     public class SecurityService : ISecurityService
     {
         private readonly ITabController _tabController;

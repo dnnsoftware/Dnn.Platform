@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+
     internal class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(TabWorkflowTracker));

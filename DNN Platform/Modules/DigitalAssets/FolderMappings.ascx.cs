@@ -2,26 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Application;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-using Telerik.Web.UI;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+    using Telerik.Web.UI;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public partial class FolderMappings : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;

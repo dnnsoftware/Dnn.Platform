@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem.Internal;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     public class StandardFolderProvider : FolderProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));

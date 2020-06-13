@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-
 // ReSharper disable ConvertPropertyToExpressionBody
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public class DnnHelper
     {
         public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)

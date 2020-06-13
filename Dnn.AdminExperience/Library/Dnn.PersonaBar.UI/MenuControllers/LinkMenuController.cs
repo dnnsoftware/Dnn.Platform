@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Dnn.PersonaBar.UI.MenuControllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class LinkMenuController : IMenuItemController
     {
         protected INavigationManager NavigationManager { get; }

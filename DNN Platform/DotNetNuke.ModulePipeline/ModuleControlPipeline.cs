@@ -1,8 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
+/* Unmerged change from project 'DotNetNuke.ModulePipeline (net472)'
+Before:
 // See the LICENSE file in the project root for more information
 
 using 
+After:
+// See the LICENSE file in the project root for more information
+
+
+#if NET472
+using 
+*/
+// See the LICENSE file in the project root for more information
+
+#if NET472
+using System.Web.UI;
+
+#endif
+
+namespace DotNetNuke.ModulePipeline
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using 
 /* Unmerged change from project 'DotNetNuke.ModulePipeline(net472)'
 Before:
 using System.IO;
@@ -27,24 +51,13 @@ using DotNetNuke.Web.Mvc;
 using DotNetNuke.Web.Razor;
 */
 DotNetNuke.Entities.Modules;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Modules.Html5;
-using DotNetNuke.Web.Mvc;
-using DotNetNuke.Web.Razor;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Modules.Html5;
+    using DotNetNuke.Web.Mvc;
+    using DotNetNuke.Web.Razor;
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-#if NET472
-using System.Web.UI;
-
-#endif
-
-namespace DotNetNuke.ModulePipeline
-{
     /// <summary>
     /// The Module Pipeline that determines which Module pattern
     /// to invoke based on the input module type.

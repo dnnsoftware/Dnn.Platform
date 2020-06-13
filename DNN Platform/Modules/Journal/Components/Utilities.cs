@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-
 namespace DotNetNuke.Modules.Journal.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+
     public class Utilities
     {
         private static readonly Regex PageRegex = new Regex(

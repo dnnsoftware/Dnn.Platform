@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Routing;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web.Routing;
+
     /// <summary>
     /// Validates that the constraints on a Route are of a type that can be processed by <see cref="System.Web.Routing.Route" />.
     /// </summary>

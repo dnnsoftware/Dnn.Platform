@@ -2,39 +2,39 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Configuration;
-using System.Net;
-using System.Reflection;
-using System.Web;
-using System.Web.Security;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Modules.HTMLEditorProvider;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search;
-using DotNetNuke.Services.Sitemap;
-using DotNetNuke.Services.Url.FriendlyUrl;
-
-using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
-using RoleProvider = DotNetNuke.Security.Roles.RoleProvider;
-
 namespace DotNetNuke.Tests.Utilities
 {
+    using System;
+    using System.Configuration;
+    using System.Net;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.HTMLEditorProvider;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.ClientCapability;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.OutputCache;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search;
+    using DotNetNuke.Services.Sitemap;
+    using DotNetNuke.Services.Url.FriendlyUrl;
+
+    using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
+    using RoleProvider = DotNetNuke.Security.Roles.RoleProvider;
+
     public class DnnWebTest : DnnUnitTest
     {
         public int PortalId { get; private set; }

@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Services.Tokens
 {
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TokenReplaceTests
     {

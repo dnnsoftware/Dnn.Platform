@@ -1,28 +1,26 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Caching;
-
-using Dnn.PersonaBar.Library.Data;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-
-using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
-
 namespace Dnn.PersonaBar.Library.Permissions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Caching;
+
+    using Dnn.PersonaBar.Library.Data;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+
+    using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
+
     public class MenuPermissionController
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));

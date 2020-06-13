@@ -2,14 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Instrumentation;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// ------------------------------------------------------------------------------------------------
     /// <summary>
     /// DatabaseVerificationStep - Step that performs database verification checks prior to installation.
@@ -30,7 +32,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             if (!string.IsNullOrEmpty(strError))
             {
-                this.Errors.Add(Localization.Localization.GetString("InstallVersion", this.LocalInstallResourceFile) + ": " + strError);
+                this.Errors.Add(Localization.GetString("InstallVersion", this.LocalInstallResourceFile) + ": " + strError);
                 Logger.TraceFormat("Adding InstallVersion : {0}", strError);
             }
 

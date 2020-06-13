@@ -1,67 +1,65 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.Caching;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Xml;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Application;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Services.Url.FriendlyUrl;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Utilities;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic.CompilerServices;
-
-using DataCache = DotNetNuke.UI.Utilities.DataCache;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Common
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Runtime.InteropServices;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Application;
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.Services.Url.FriendlyUrl;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Utilities;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.VisualBasic.CompilerServices;
+
+    using DataCache = DotNetNuke.UI.Utilities.DataCache;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     /// <summary>
     /// The global instance of DotNetNuke. all basic functions and properties are defined in this instance.
     /// </summary>

@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.ExtensionPoints.Filters;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using System.ComponentModel;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.ExtensionPoints.Filters;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:ToolBarButtonExtensionControl runat=server></{0}:ToolBarButtonExtensionControl>")]
     public class ToolBarButtonExtensionControl : DefaultExtensionControl

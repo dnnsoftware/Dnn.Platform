@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq.Expressions;
-using System.Web.Caching;
-
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Linq.Expressions;
+    using System.Web.Caching;
+
+    using global::PetaPoco;
+
     public static class FluentMapperExtensions
     {
         public static FluentMapper<TModel> AddFluentMapper<TModel>(this IDataContext dataContext)

@@ -2,29 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.CoreMessaging
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";

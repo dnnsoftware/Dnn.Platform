@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-
 namespace DotNetNuke.Modules.MemberDirectory.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
     public class Member
     {
         private UserInfo _user;

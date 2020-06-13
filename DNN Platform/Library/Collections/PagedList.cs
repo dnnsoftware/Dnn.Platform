@@ -1,14 +1,12 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DotNetNuke.Collections
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     // Taken from Rob Conery's Blog post on the ASP.Net MVC PagedList Helper
     // http://blog.wekeroad.com/2007/12/10/aspnet-mvc-pagedlistt/
 

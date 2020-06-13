@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
-
 namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.OutputCache;
+
     public class PerformanceController
     {
         public object GetPageStatePersistenceOptions()

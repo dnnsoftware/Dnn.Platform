@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Modules;
-
 // ReSharper disable MemberCanBePrivate.Global
 namespace DotNetNuke.Security.Cookies
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     [TableName("AuthCookies")]
     [PrimaryKey("CookieId")]

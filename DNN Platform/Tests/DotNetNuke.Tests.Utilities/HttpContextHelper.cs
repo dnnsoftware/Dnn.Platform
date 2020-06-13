@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections;
-using System.Collections.Specialized;
-using System.IO;
-using System.Web;
-
-using DotNetNuke.Common;
-using Moq;
-
 namespace DotNetNuke.Tests.Utilities
 {
+    using System.Collections;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using Moq;
+
     public class HttpContextHelper
     {
         private static Mock<HttpContextBase> CrateMockHttpContext()

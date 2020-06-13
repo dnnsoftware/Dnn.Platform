@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Services.Localization.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+
     internal class LocalizationImpl : ILocalization
     {
         public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)

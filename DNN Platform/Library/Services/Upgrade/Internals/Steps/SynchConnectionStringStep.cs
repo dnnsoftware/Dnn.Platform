@@ -1,17 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Services.Upgrade.Internals;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SynchConnectionStringStep - Step that synchs connection string between DotNetNuke.Install.Config and Web.Config
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             if (string.IsNullOrEmpty(connectionConfig.File) && string.IsNullOrEmpty(connectionConfig.Database))
             {
-                this.Errors.Add(Localization.Localization.GetString("RequiresFileOrDatabase", this.LocalInstallResourceFile));
+                this.Errors.Add(Localization.GetString("RequiresFileOrDatabase", this.LocalInstallResourceFile));
                 this.Status = StepStatus.Abort;
                 return;
             }

@@ -1,26 +1,24 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Services.Sitemap
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
     public class CoreSitemapProvider : SitemapProvider
     {
         private bool includeHiddenPages;
@@ -52,7 +50,7 @@ namespace DotNetNuke.Services.Sitemap
             var currentLanguage = ps.CultureCode;
             if (string.IsNullOrEmpty(currentLanguage))
             {
-                currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
+                currentLanguage = Localization.GetPageLocale(ps).Name;
             }
 
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
@@ -83,7 +81,7 @@ namespace DotNetNuke.Services.Sitemap
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(new Exception(Localization.Localization.GetExceptionMessage(
+                    Services.Exceptions.Exceptions.LogException(new Exception(Localization.GetExceptionMessage(
                         "SitemapUrlGenerationError",
                         "URL sitemap generation for page '{0} - {1}' caused an exception: {2}",
                         tab.TabID, tab.TabName, ex.Message)));

@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class RelationshipServiceController : DnnApiController
     {

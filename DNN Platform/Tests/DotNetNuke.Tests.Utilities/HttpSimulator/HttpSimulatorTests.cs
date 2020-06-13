@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-
-using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
-
-using NUnit.Framework;
-
 namespace UnitTests.Subtext
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Hosting;
+
+    using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
+    using NUnit.Framework;
+
     ////[TestFixture]
     public class HttpSimulatorTests
     {

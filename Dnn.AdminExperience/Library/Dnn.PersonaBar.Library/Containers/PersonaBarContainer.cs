@@ -2,29 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-
-using Dnn.PersonaBar.Library.Common;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Application;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.ImprovementsProgram;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace Dnn.PersonaBar.Library.Containers
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+
+    using Dnn.PersonaBar.Library.Common;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.ImprovementsProgram;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json.Linq;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public class PersonaBarContainer : IPersonaBarContainer
     {
         protected INavigationManager NavigationManager { get; }

@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Profile;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Profile;
+
     /// <summary>
     /// this class handles profile changes.
     /// </summary>

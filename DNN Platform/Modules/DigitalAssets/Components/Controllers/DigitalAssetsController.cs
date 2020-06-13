@@ -2,39 +2,39 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel.Composition;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-using DotNetNuke.Modules.DigitalAssets.Services.Models;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.EventArgs;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Web.UI;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.ComponentModel.Composition;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
+    using DotNetNuke.Modules.DigitalAssets.Services.Models;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.Web.UI;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     [Export(typeof(IDigitalAssetsController))]
     [ExportMetadata("Edition", "CE")]
     public class DigitalAssetsController : IDigitalAssetsController, IUpgradeable

@@ -1,23 +1,21 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Globalization;
-using System.IO;
-using System.Runtime.CompilerServices;
-using System.Web;
-using System.Web.Compilation;
-using System.Web.WebPages;
-
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Razor.Helpers;
-
 namespace DotNetNuke.Web.Razor
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Runtime.CompilerServices;
+    using System.Web;
+    using System.Web.Compilation;
+    using System.Web.WebPages;
+
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Razor.Helpers;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public class RazorEngine
     {

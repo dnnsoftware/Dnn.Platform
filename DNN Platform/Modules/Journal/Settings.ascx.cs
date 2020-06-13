@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace DotNetNuke.Modules.Journal
+{
+    /*
 ' Copyright (c) 2011  DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,18 +16,16 @@
 '
 */
 
-using System;
-using System.Web.UI.WebControls;
+    using System;
+    using System.Web.UI.WebControls;
 
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Journal.Internal;
-using DotNetNuke.Services.Localization;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Journal.Internal;
+    using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Modules.Journal
-{
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Settings class manages Module Settings.

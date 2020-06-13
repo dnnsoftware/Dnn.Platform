@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DNN.Integration.Test.Framework.Helpers
 {
+    using System;
+
     public static class HostSettingsHelper
     {
         public static string GetHostSettingValue(string hostSettingName)

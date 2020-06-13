@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Framework;
-using DotNetNuke.UI.Skins;
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.UI.Skins;
+
     public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
         public ArrayList GetTabModules(TabInfo tab)

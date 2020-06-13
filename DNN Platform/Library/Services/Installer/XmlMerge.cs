@@ -1,22 +1,22 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Xml;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Upgrade;
-
 namespace DotNetNuke.Services.Installer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Upgrade;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The XmlMerge class is a utility class for XmlSplicing config files.
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Installer
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
                     rootNode.AppendChild(this.TargetConfig.ImportNode(child, true));
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddNode:" + child.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddNode:" + child.InnerXml.ToString());
                     changedNode = true;
                 }
             }
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Installer
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
                     rootNode.PrependChild(this.TargetConfig.ImportNode(child, true));
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "PrependNode:" + child.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "PrependNode:" + child.InnerXml.ToString());
                     changedNode = true;
                 }
             }
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Installer
             {
                 if (child.NodeType == XmlNodeType.Element || child.NodeType == XmlNodeType.Comment)
                 {
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InsertNode:" + child.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "InsertNode:" + child.InnerXml.ToString());
                     switch (mode)
                     {
                         case NodeInsertType.Before:
@@ -408,7 +408,7 @@ namespace DotNetNuke.Services.Installer
                     if (rootNode.Attributes[attributeName] != null)
                     {
                         rootNode.Attributes.Remove(rootNode.Attributes[attributeName]);
-                        DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveAttribute:attributeName=" + attributeName.ToString());
+                        DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveAttribute:attributeName=" + attributeName.ToString());
                         changedNode = true;
                     }
                 }
@@ -429,7 +429,7 @@ namespace DotNetNuke.Services.Installer
                 if (parentNode != null)
                 {
                     parentNode.RemoveChild(node);
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveNode:" + node.InnerXml.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RemoveNode:" + node.InnerXml.ToString());
                     changedNode = true;
                 }
             }
@@ -449,7 +449,7 @@ namespace DotNetNuke.Services.Installer
                 string attributeValue = actionNode.Attributes["value"].Value;
                 if (!string.IsNullOrEmpty(attributeName))
                 {
-                    DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateAttribute:attributeName=" + attributeName.ToString());
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateAttribute:attributeName=" + attributeName.ToString());
                     if (rootNode.Attributes[attributeName] == null)
                     {
                         rootNode.Attributes.Append(this.TargetConfig.CreateAttribute(attributeName));
@@ -477,7 +477,7 @@ namespace DotNetNuke.Services.Installer
             if (actionNode.Attributes["key"] != null)
             {
                 keyAttribute = actionNode.Attributes["key"].Value;
-                DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateNode: keyAttribute=" + keyAttribute.ToString());
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateNode: keyAttribute=" + keyAttribute.ToString());
             }
 
             foreach (XmlNode child in actionNode.ChildNodes)
@@ -520,7 +520,7 @@ namespace DotNetNuke.Services.Installer
                             break;
                         case "save":
                             string commentHeaderText = string.Format(
-                                Localization.Localization.GetString("XMLMERGE_Upgrade", Localization.Localization.SharedResourceFile),
+                                Localization.GetString("XMLMERGE_Upgrade", Localization.SharedResourceFile),
                                 Environment.NewLine,
                                 this.Sender,
                                 this.Version,

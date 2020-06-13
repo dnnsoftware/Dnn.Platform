@@ -1,33 +1,33 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Search.Entities;
-using Lucene.Net.Analysis;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
-using Lucene.Net.Search.Vectorhighlight;
-using Lucene.Net.Store;
-
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Search.Entities;
+    using Lucene.Net.Analysis;
+    using Lucene.Net.Documents;
+    using Lucene.Net.Index;
+    using Lucene.Net.Search;
+    using Lucene.Net.Search.Vectorhighlight;
+    using Lucene.Net.Store;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Impl Controller class for Lucene.
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
             {
-                throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
+                throw new ObjectDisposedException(Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
             }
         }
 
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Search.Internals
                                 {
 #pragma warning disable 0618
                                     throw new SearchException(
-                                        Localization.Localization.GetExceptionMessage("UnableToCreateLuceneWriter", "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
+                                        Localization.GetExceptionMessage("UnableToCreateLuceneWriter", "Unable to create Lucene writer (lock file is in use). Please recycle AppPool in IIS to release lock."),
                                         e, new SearchItemInfo());
 #pragma warning restore 0618
                                 }
@@ -210,7 +210,7 @@ namespace DotNetNuke.Services.Search.Internals
         {
             if (!this.ValidateIndexFolder())
             {
-                throw new SearchIndexEmptyException(Localization.Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid", "Search indexing directory is either empty or does not exist"));
+                throw new SearchIndexEmptyException(Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid", "Search indexing directory is either empty or does not exist"));
             }
         }
 
@@ -501,7 +501,7 @@ namespace DotNetNuke.Services.Search.Internals
                         if (analyzer == null)
                         {
                             throw new ArgumentException(string.Format(
-                                Localization.Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."),
+                                Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."),
                                 customAnalyzerType));
                         }
 

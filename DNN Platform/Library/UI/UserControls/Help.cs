@@ -1,25 +1,23 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     public abstract class Help : PortalModuleBase
     {
         private string MyFileName = "Help.ascx";

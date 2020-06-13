@@ -2,27 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Configuration;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.Hosting;
-using System.Xml;
-using System.Xml.XPath;
-
-using ClientDependency.Core.CompositeFiles.Providers;
-using ClientDependency.Core.Config;
-using DotNetNuke;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
     using System.Threading;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.Hosting;
     using System.Web.UI;
+    using System.Xml;
+    using System.Xml.XPath;
 
     using ClientDependency.Core;
+    using ClientDependency.Core.CompositeFiles.Providers;
+    using ClientDependency.Core.Config;
+    using DotNetNuke;
+    using DotNetNuke.Instrumentation;
 
     /// <summary>
     /// Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.

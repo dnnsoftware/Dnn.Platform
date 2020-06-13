@@ -1,26 +1,24 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.CoreMessaging
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The View class displays the content.

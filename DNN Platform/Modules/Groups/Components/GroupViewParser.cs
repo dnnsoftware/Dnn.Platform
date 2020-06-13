@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Groups.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class GroupViewParser
     {
         protected INavigationManager NavigationManager { get; }

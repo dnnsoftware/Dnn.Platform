@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-
 namespace DotNetNuke.Web.Api.Internal.Auth
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Text.RegularExpressions;
+
     internal class DigestAuthenticationRequest
     {
         private static readonly Regex AuthHeaderRegex = new Regex("\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))", RegexOptions.Compiled);

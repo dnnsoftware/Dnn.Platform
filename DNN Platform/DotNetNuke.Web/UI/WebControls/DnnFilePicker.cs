@@ -1,28 +1,26 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     /// <summary>
     ///   The FilePicker Class provides a File Picker Control for DotNetNuke.
     /// </summary>

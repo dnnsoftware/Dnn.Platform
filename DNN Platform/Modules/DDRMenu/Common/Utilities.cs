@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
-using System.Web.Caching;
-using System.Xml;
-using System.Xml.Serialization;
-using System.Xml.Xsl;
-
 namespace DotNetNuke.Web.DDRMenu.DNNCommon
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Xml;
+    using System.Xml.Serialization;
+    using System.Xml.Xsl;
+
     internal static class Utilities
     {
         private static readonly Dictionary<Type, XmlSerializer> serialisers = new Dictionary<Type, XmlSerializer>();

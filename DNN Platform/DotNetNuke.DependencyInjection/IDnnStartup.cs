@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.DependencyInjection
 {
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// An interface for adding extension points to the DNN Startup Logic.
     /// </summary>

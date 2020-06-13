@@ -1,31 +1,29 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditExtension control is used to edit a Extension.

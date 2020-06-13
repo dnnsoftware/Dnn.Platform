@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-
-using PortalGroupInfo = Dnn.PersonaBar.SiteGroups.Models.PortalGroupInfo;
-using PortalInfo = Dnn.PersonaBar.SiteGroups.Models.PortalInfo;
-
 namespace Dnn.PersonaBar.SiteGroups
 {
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+
+    using PortalGroupInfo = Dnn.PersonaBar.SiteGroups.Models.PortalGroupInfo;
+    using PortalInfo = Dnn.PersonaBar.SiteGroups.Models.PortalInfo;
+
     public class PortalGroupAdapter : IManagePortalGroups
     {
         IPortalGroupController PortalGroupController

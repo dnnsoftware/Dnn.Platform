@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Web.Caching;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.Html;
-using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Services.Exceptions;
-
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Modules.Html;
+    using DotNetNuke.Modules.Html.Components;
+    using DotNetNuke.Services.Exceptions;
+
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions

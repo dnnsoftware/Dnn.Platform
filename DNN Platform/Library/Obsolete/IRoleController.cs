@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace DotNetNuke.Security.Roles.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("This class has been obsoleted in 7.3.0 - please use version in DotNetNuke.Security.Roles instead. Scheduled removal in v10.0.0.")]
     public interface IRoleController

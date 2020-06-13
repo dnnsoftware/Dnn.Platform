@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Social.Subscriptions;
-using DotNetNuke.Services.Social.Subscriptions.Data;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
+    using System;
+
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Subscriptions;
+    using DotNetNuke.Services.Social.Subscriptions.Data;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SubscriptionControllerTests
     {

@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net.Http;
-using System.Security.Principal;
-using System.Threading;
-
-using Dnn.AuthServices.Jwt.Components.Common.Controllers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Api.Auth;
-using DotNetNuke.Web.ConfigSection;
-
 namespace Dnn.AuthServices.Jwt.Auth
 {
+    using System;
+    using System.Net.Http;
+    using System.Security.Principal;
+    using System.Threading;
+
+    using Dnn.AuthServices.Jwt.Components.Common.Controllers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Api.Auth;
+    using DotNetNuke.Web.ConfigSection;
+
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
     /// For detailed description of JWT refer to:

@@ -1,33 +1,31 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.Caching;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search.Entities;
-using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Analysis.Tokenattributes;
-using Lucene.Net.Util;
-
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.SqlTypes;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search.Entities;
+    using Lucene.Net.Analysis;
+    using Lucene.Net.Analysis.Standard;
+    using Lucene.Net.Analysis.Tokenattributes;
+    using Lucene.Net.Util;
+
     internal class SearchHelperImpl : ISearchHelper
     {
         private const string SearchTypesCacheKey = "SearchTypes";
@@ -454,7 +452,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (minWordLength > maxWordLength)
             {
-                var exceptionMessage = Localization.Localization.GetExceptionMessage("SearchAnalyzerMinWordLength", "Search Analyzer: min word length ({0}) is greater than max word length ({1}) value");
+                var exceptionMessage = Localization.GetExceptionMessage("SearchAnalyzerMinWordLength", "Search Analyzer: min word length ({0}) is greater than max word length ({1}) value");
                 throw new InvalidDataException(
                     string.Format(exceptionMessage, minWordLength, maxWordLength));
             }
@@ -741,7 +739,7 @@ namespace DotNetNuke.Services.Search.Internals
                 if (currentStopWords == null || currentStopWords.Count == 0)
                 {
                     // Add Default StopWord
-                    var defaultStopWords = Localization.Localization.GetString("DefaultStopwordGroup", resourceFile);
+                    var defaultStopWords = Localization.GetString("DefaultStopwordGroup", resourceFile);
                     if (!string.IsNullOrEmpty(defaultStopWords))
                     {
                         DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
@@ -752,7 +750,7 @@ namespace DotNetNuke.Services.Search.Internals
                 if (currentSynonymGroups == null || currentSynonymGroups.Count == 0)
                 {
                     // Add Default Synonym
-                    var defaultSynonymsGroup = Localization.Localization.GetString("DefaultSynonymGroup", resourceFile);
+                    var defaultSynonymsGroup = Localization.GetString("DefaultSynonymGroup", resourceFile);
                     if (!string.IsNullOrEmpty(defaultSynonymsGroup))
                     {
                         DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);

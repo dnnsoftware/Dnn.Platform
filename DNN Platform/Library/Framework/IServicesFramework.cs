@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Framework
 {
+    using System;
+
     /// <summary>
     /// Do not implement.  This interface is only implemented by the DotNetNuke core framework. Outside the framework it should used as a type and for unit test purposes only.
     /// There is no guarantee that this interface will not change.

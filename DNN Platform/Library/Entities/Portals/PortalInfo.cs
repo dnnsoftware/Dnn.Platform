@@ -1,22 +1,20 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Data;
-using System.Security.Cryptography;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Data;
+    using System.Security.Cryptography;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+
     /// <summary>
     /// PortalInfo provides a base class for Portal information
     /// This class inherites from the <c>BaseEntityInfo</c> and is <c>Hydratable</c>.

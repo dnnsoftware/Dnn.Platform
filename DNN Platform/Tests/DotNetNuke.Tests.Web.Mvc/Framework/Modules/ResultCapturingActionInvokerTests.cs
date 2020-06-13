@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-using DotNetNuke.Tests.Web.Mvc.Fakes;
-using DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Tests.Web.Mvc.Fakes;
+    using DotNetNuke.Tests.Web.Mvc.Fakes.Filters;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ResultCapturingActionInvokerTests
     {

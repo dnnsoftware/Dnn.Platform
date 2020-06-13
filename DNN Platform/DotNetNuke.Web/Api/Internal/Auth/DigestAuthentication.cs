@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Security.Cryptography;
-using System.Security.Principal;
-using System.Text;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-
 namespace DotNetNuke.Web.Api.Internal.Auth
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Security.Principal;
+    using System.Text;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+
     internal class DigestAuthentication
     {
         internal const string AuthenticationScheme = "Digest";

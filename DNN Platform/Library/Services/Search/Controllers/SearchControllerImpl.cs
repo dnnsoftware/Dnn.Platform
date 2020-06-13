@@ -1,30 +1,27 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Web.Caching;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.QueryParsers;
-using Lucene.Net.Search;
-
 namespace DotNetNuke.Services.Search.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+    using Lucene.Net.Documents;
+    using Lucene.Net.Index;
+    using Lucene.Net.QueryParsers;
+    using Lucene.Net.Search;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Impl Controller class for Search.
@@ -56,7 +53,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
             if ((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId)))
             {
-                throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
+                throw new ArgumentException(Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
             }
 
             if (searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
@@ -147,7 +144,7 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 var localeQuery = new BooleanQuery();
 
-                var languageId = Localization.Localization.GetCultureLanguageID(searchQuery.CultureCode);
+                var languageId = Localization.GetCultureLanguageID(searchQuery.CultureCode);
                 localeQuery.Add(NumericRangeQuery.NewIntRange(Constants.LocaleTag, languageId, languageId, true, true), Occur.SHOULD);
                 localeQuery.Add(NumericRangeQuery.NewIntRange(Constants.LocaleTag, Null.NullInteger, Null.NullInteger, true, true), Occur.SHOULD);
                 query.Add(localeQuery, Occur.MUST);

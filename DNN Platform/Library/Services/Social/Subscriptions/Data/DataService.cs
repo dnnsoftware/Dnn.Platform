@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.Social.Subscriptions.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+
     public class DataService : ServiceLocator<IDataService, DataService>, IDataService
     {
         private readonly DataProvider provider;

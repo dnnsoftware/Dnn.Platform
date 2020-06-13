@@ -2,30 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Content.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-
-using NUnit.Framework;
-
-using FileController = DotNetNuke.Entities.Content.AttachmentController;
-using Util = DotNetNuke.Entities.Content.Common.Util;
-
 namespace DotNetNuke.Tests.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Content.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
+    using FileController = DotNetNuke.Entities.Content.AttachmentController;
+    using Util = DotNetNuke.Entities.Content.Common.Util;
+
     [TestFixture]
     public class AttachmentControllerTests
     {

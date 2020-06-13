@@ -2,23 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Content.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Content
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Content.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
     ///   Summary description for ScopeTypeTests.
     /// </summary>

@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web.Hosting;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Cache;
-
 namespace DotNetNuke.Services.Localization
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.Hosting;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Cache;
+
     public class LocalizationProvider : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));

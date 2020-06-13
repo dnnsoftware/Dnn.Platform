@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Web.Api
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+
     public sealed class StandardTabAndModuleInfoProvider : ITabAndModuleInfoProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));

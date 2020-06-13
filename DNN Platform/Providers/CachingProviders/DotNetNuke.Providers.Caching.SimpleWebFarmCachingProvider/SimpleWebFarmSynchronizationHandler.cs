@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Services.Cache;
-
 namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Services.Cache;
+
     /// <summary>
     ///     This synchronization handler receives requests from other servers and passes them to the cache system for
     ///     processing.  Error handling is purposefully allowed to bubble up from here to ensure the caller is notified.

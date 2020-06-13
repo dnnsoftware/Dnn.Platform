@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs.Dto;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs.Dto;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
+
     public class TabChangeSettings : ServiceLocator<ITabChangeSettings, TabChangeSettings>, ITabChangeSettings
     {
         public bool IsChangeControlEnabled(int portalId, int tabId)

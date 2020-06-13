@@ -2,22 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SecureFolderProviderTests
     {

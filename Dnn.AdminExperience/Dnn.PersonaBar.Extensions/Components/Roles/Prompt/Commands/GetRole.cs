@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Roles.Components.Prompt.Models;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Roles.Components.Prompt.Models;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("get-role", Constants.RolesCategory, "Prompt_GetRole_Description")]
     public class GetRole : ConsoleCommandBase
     {

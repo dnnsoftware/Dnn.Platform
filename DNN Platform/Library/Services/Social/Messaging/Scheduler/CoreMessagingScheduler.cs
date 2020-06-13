@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Text.RegularExpressions;
-
 namespace DotNetNuke.Services.Social.Messaging.Scheduler
 {
     using System;
@@ -11,6 +9,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
     using System.Globalization;
     using System.Linq;
     using System.Net.Mail;
+    using System.Text.RegularExpressions;
     using System.Web.Caching;
 
     using DotNetNuke.Common;
@@ -23,6 +22,8 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Social.Messaging.Internal;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>
     /// A SchedulerClient instance that handles all the offline messaging actions.
@@ -192,7 +193,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The email body template item from the Global Resource File: EMAIL_MESSAGING_DISPATCH_ITEM.</returns>
         private static string GetEmailBodyItemTemplate(string language)
         {
-            return Localization.Localization.GetString("EMAIL_MESSAGING_DISPATCH_ITEM", Localization.Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_MESSAGING_DISPATCH_ITEM", Localization.GlobalResourceFile, language);
         }
 
         /// <summary>Gets the email body template.</summary>
@@ -200,7 +201,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The email body template from the Global Resource File: EMAIL_MESSAGING_DISPATCH_BODY.</returns>
         private static string GetEmailBodyTemplate(string language)
         {
-            return Localization.Localization.GetString("EMAIL_MESSAGING_DISPATCH_BODY", Localization.Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_MESSAGING_DISPATCH_BODY", Localization.GlobalResourceFile, language);
         }
 
         /// <summary>Gets the email subject template.</summary>
@@ -208,7 +209,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The email subject template from the Global Resource File: EMAIL_SUBJECT_FORMAT.</returns>
         private static string GetEmailSubjectTemplate(string language)
         {
-            return Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.GlobalResourceFile, language);
         }
 
         /// <summary>Gets the friend request actions template.</summary>
@@ -216,7 +217,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The friend request actions defined in the Global Resource File: EMAIL_SOCIAL_FRIENDREQUESTACTIONS.</returns>
         private static string GetFriendRequestActionsTemplate(string language)
         {
-            return Localization.Localization.GetString("EMAIL_SOCIAL_FRIENDREQUESTACTIONS", Localization.Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_SOCIAL_FRIENDREQUESTACTIONS", Localization.GlobalResourceFile, language);
         }
 
         /// <summary>Gets the follow request actions template.</summary>
@@ -224,7 +225,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The follow request actions defined in the Global Resource File: EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.</returns>
         private static string GetFollowRequestActionsTemplate(string language)
         {
-            return Localization.Localization.GetString("EMAIL_SOCIAL_FOLLOWREQUESTACTIONS", Localization.Localization.GlobalResourceFile, language);
+            return Localization.GetString("EMAIL_SOCIAL_FOLLOWREQUESTACTIONS", Localization.GlobalResourceFile, language);
         }
 
         /// <summary>Gets the name of the sender.</summary>

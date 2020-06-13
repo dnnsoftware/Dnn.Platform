@@ -2,32 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Web.Caching;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Tests.Core.Providers.Builders;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Tests.Core.Providers.Builders;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     [TestFixture]
     public class FolderManagerTests
     {

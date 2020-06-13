@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.Caching;
-
-using Dnn.AuthServices.Jwt.Components.Entity;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-
 namespace Dnn.AuthServices.Jwt.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Caching;
+
+    using Dnn.AuthServices.Jwt.Components.Entity;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///  This class provides the Data Access Layer for the JWT Authentication library.

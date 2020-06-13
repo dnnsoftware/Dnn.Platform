@@ -2,18 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Net;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
-
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
+    using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
+
     [ConsoleCommand("get-module", Constants.ModulesCategory, "Prompt_GetModule_Description")]
     public class GetModule : ConsoleCommandBase
     {

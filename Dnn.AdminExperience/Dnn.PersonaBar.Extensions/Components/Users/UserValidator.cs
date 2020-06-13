@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using System.Collections.Generic;
-using System.Net;
-
 namespace Dnn.PersonaBar.Users.Components
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+
     public class UserValidator : IUserValidator
     {
         private IPortalController _portalController;

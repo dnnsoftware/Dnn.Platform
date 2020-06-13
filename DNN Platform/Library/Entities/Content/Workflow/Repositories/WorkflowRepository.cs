@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Framework;
+
     // TODO: add interface metadata documentation
     // TODO: removed unused SPRoc and DataProvider layer
     internal class WorkflowRepository : ServiceLocator<IWorkflowRepository, WorkflowRepository>, IWorkflowRepository

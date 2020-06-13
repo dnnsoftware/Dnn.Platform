@@ -1,26 +1,23 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Installer.Packages;
-
-using Telerik.Web.UI;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Installer.Packages;
+    using Telerik.Web.UI;
+
     public class DnnModuleComboBox : WebControl
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";

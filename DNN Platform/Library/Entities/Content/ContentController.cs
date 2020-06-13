@@ -1,25 +1,23 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-
 namespace DotNetNuke.Entities.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+
     public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
         private readonly IDataService _dataService;

@@ -2,44 +2,44 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.ExtensionPoints.Filters;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Services;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-using Telerik.Web.UI;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.ExtensionPoints.Filters;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Services;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+    using Telerik.Web.UI;
+
     public partial class View : PortalModuleBase, IActionable
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();

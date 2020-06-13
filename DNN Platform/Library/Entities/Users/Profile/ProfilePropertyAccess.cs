@@ -1,31 +1,29 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Tokens;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Tokens;
+
     public class ProfilePropertyAccess : IPropertyAccess
     {
         private readonly UserInfo user;

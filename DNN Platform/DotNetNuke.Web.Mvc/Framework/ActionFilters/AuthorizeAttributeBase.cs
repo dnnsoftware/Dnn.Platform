@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common;
+
     public abstract class AuthorizeAttributeBase : FilterAttribute, IAuthorizationFilter
     {
         protected virtual bool AuthorizeCore(HttpContextBase httpContext)

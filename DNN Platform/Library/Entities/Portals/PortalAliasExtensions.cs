@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-
-using DotNetNuke.Entities.Urls;
-
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Entities.Urls;
+
     public static class PortalAliasExtensions
     {
         public static bool ContainsAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string httpAlias)

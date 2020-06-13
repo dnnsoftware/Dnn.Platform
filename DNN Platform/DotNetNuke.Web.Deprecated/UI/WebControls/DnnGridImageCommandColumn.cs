@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.UI.WebControls;
+    using Telerik.Web.UI;
+
     public class DnnGridImageCommandColumn : DnnGridTemplateColumn
     {
         private ImageCommandColumnEditMode _editMode = ImageCommandColumnEditMode.Command;

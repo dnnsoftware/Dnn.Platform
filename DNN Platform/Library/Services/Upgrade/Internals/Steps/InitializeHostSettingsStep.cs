@@ -1,21 +1,21 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Upgrade.Internals;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-
 namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
+    using System;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// InstallSuperUserStep - Step that installs SuperUser Account.
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Percentage = 0;
             this.Status = StepStatus.Running;
 
-            this.Details = Localization.Localization.GetString("InitHostSetting", this.LocalInstallResourceFile);
+            this.Details = Localization.GetString("InitHostSetting", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
 
             // if any super user (even deleted) is found - exit

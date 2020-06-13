@@ -1,18 +1,16 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Services.Exceptions;
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.Html.Components;
+    using DotNetNuke.Services.Exceptions;
+
     /// <summary>
     ///   The Settings ModuleSettingsBase is used to manage the
     ///   settings for the HTML Module.

@@ -2,24 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Xml;
-
-using DotNetNuke.Common;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
-
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+
     public class TemplateDefinition
     {
         internal string Folder;

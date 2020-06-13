@@ -1,28 +1,26 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
     /// Class    : PortalModuleBase

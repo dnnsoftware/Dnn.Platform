@@ -1,14 +1,12 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+
     /// <summary>
     ///   Helper class to enable the data binding logic generate column names at runtime.
     /// </summary>

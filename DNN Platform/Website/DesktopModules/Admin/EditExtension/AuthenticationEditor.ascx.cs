@@ -1,20 +1,18 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties.

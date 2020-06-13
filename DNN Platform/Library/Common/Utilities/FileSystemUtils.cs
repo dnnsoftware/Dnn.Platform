@@ -1,38 +1,36 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip;
-
-using Directory = SchwabenCode.QuickIO.QuickIODirectory;
-using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
-using File = SchwabenCode.QuickIO.QuickIOFile;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using ICSharpCode.SharpZipLib.Checksums;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using Directory = SchwabenCode.QuickIO.QuickIODirectory;
+    using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
+    using File = SchwabenCode.QuickIO.QuickIOFile;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class FileSystemUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));

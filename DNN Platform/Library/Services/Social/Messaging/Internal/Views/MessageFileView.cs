@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
+    using System;
+
     /// <summary>The MessageFileView class contains details about the attachment.</summary>
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke

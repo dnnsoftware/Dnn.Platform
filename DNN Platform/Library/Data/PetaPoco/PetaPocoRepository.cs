@@ -1,18 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using global::PetaPoco;
+
     public class PetaPocoRepository<T> : RepositoryBase<T>
         where T : class
     {

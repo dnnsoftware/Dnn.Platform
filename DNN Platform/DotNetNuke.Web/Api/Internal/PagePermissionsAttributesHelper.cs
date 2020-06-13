@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Threading;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Web.Api.Internal
 {
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+
     public class PagePermissionsAttributesHelper
     {
         public static bool HasTabPermission(string permissionKey)

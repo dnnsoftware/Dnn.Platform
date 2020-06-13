@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-using Dnn.PersonaBar.Library.AppEvents.Attributes;
-using Dnn.PersonaBar.Library.Common;
-using DotNetNuke.Collections;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
-
 namespace Dnn.PersonaBar.Library.AppEvents
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using Dnn.PersonaBar.Library.AppEvents.Attributes;
+    using Dnn.PersonaBar.Library.Common;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+
     public class EventsController : ServiceLocator<IEventsController, EventsController>, IEventsController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventsController));

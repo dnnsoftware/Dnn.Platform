@@ -2,30 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-
-using Dnn.AuthServices.Jwt.Auth;
-using Dnn.AuthServices.Jwt.Components.Entity;
-using Dnn.AuthServices.Jwt.Data;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Web.ConfigSection;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Threading;
+
+    using Dnn.AuthServices.Jwt.Auth;
+    using Dnn.AuthServices.Jwt.Components.Entity;
+    using Dnn.AuthServices.Jwt.Data;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using DotNetNuke.Web.ConfigSection;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class JwtAuthMessageHandlerTests
     {

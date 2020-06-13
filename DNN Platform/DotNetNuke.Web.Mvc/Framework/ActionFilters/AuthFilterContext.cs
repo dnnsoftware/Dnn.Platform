@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Web.Mvc;
-
-using DotNetNuke.Entities.Host;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Host;
+
     public class AuthFilterContext
     {
         public AuthFilterContext(AuthorizationContext filterContext, string authFailureMessage)

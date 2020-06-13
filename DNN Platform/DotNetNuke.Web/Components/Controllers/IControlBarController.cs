@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Web.Components.Controllers.Models;
-
 namespace DotNetNuke.Web.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Web.Components.Controllers.Models;
+
     public interface IControlBarController
     {
         /// <summary>

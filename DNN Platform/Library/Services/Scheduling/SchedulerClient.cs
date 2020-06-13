@@ -1,16 +1,14 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Threading;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Threading;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
     /// This class is inherited by any class that wants to run tasks in the scheduler.
     /// </summary>

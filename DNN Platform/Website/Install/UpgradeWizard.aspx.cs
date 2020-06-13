@@ -1,34 +1,33 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Xml.XPath;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.Services.Localization.Internal;
-using DotNetNuke.Services.Upgrade.InternalController.Steps;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-using DotNetNuke.Services.UserRequest;
-
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Services.Install
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Localization.Internal;
+    using DotNetNuke.Services.Upgrade.InternalController.Steps;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+    using DotNetNuke.Services.UserRequest;
+
+    using Globals = DotNetNuke.Common.Globals;
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallWizard class provides the Installation Wizard for DotNetNuke.
@@ -160,7 +159,7 @@ namespace DotNetNuke.Services.Install
 
         private static string LocalizeStringStatic(string key)
         {
-            return Localization.Localization.GetString(key, LocalResourceFile, _culture);
+            return Localization.GetString(key, LocalResourceFile, _culture);
         }
 
         private static void LaunchUpgrade()
@@ -195,7 +194,7 @@ namespace DotNetNuke.Services.Install
 
             // Output the current time for the user
             CurrentStepActivity(string.Concat(
-                Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
+                Localization.GetString("UpgradeStarted", LocalResourceFile),
                 ":", DateTime.Now.ToString()));
 
             foreach (var step in _steps)
@@ -209,7 +208,7 @@ namespace DotNetNuke.Services.Install
                 }
                 catch (Exception ex)
                 {
-                    CurrentStepActivity(Localization.Localization.GetString("ErrorInStep", LocalResourceFile) + ": " + ex.Message);
+                    CurrentStepActivity(Localization.GetString("ErrorInStep", LocalResourceFile) + ": " + ex.Message);
                     _upgradeRunning = false;
                     return;
                 }
@@ -224,7 +223,7 @@ namespace DotNetNuke.Services.Install
                         if (_currentStep.Status != StepStatus.Done)
                         {
                             CurrentStepActivity(string.Format(
-                                Localization.Localization.GetString("ErrorInStep", LocalResourceFile),
+                                Localization.GetString("ErrorInStep", LocalResourceFile),
                                 _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
                             _upgradeRunning = false;
                             return;
@@ -245,7 +244,7 @@ namespace DotNetNuke.Services.Install
 
             _currentStep = null;
             _upgradeProgress = 100;
-            CurrentStepActivity(Localization.Localization.GetString("UpgradeDone", LocalResourceFile));
+            CurrentStepActivity(Localization.GetString("UpgradeDone", LocalResourceFile));
 
             // indicate we are done
             _upgradeRunning = false;
@@ -327,7 +326,7 @@ namespace DotNetNuke.Services.Install
 
         protected string LocalizeString(string key)
         {
-            return Localization.Localization.GetString(key, LocalResourceFile, _culture);
+            return Localization.GetString(key, LocalResourceFile, _culture);
         }
 
         protected override void OnError(EventArgs e)
@@ -504,7 +503,7 @@ namespace DotNetNuke.Services.Install
 
                 if (errorLogged == false)
                 {
-                    Localization.Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                    Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
                 }
             }
             catch (Exception)

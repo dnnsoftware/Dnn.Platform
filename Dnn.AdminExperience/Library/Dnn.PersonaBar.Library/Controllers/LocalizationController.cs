@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web.Caching;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Cache;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.Caching;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Cache;
+
     public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);

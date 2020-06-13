@@ -2,18 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.ComponentModel
 {
+    using System;
+    using System.Collections;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
     ///   Summary description for ComponentFactoryTests.
     /// </summary>

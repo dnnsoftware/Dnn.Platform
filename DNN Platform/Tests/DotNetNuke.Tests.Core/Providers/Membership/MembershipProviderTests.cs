@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Reflection;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Tests.Utilities;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Membership
 {
+    using System;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Membership;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class MembershipProviderTests : DnnUnitTest
     {

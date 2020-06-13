@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Services.Social.Notifications.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+
     internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();

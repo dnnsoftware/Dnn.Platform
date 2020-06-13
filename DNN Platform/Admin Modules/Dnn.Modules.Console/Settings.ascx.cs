@@ -1,28 +1,26 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI.WebControls;
-
-using Dnn.Modules.Console.Components;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Common;
-using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.Web.UI.WebControls.Internal;
-
 namespace Dnn.Modules.Console
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using Dnn.Modules.Console.Components;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Common;
+    using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Web.UI.WebControls.Internal;
+
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));

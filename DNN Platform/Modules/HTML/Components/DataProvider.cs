@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-
 namespace DotNetNuke.Modules.Html.Components
 {
+    using System;
+    using System.Data;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The DataProvider is an abstract class that provides the Data Access Layer for the HtmlText module.

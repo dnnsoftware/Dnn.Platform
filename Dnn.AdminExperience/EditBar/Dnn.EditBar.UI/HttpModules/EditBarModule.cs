@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-
-using Dnn.EditBar.UI.Controllers;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
-
 namespace Dnn.EditBar.UI.HttpModules
 {
+    using System;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+
+    using Dnn.EditBar.UI.Controllers;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.UI.Skins.EventListeners;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Newtonsoft.Json;
+
     public class EditBarModule : IHttpModule
     {
         private static readonly object LockAppStarted = new object();

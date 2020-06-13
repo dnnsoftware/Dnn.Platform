@@ -2,44 +2,44 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Engines;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Providers;
-using Dnn.ExportImport.Dto.Pages;
-using Dnn.ExportImport.Dto.Workflow;
-using Dnn.ExportImport.Repository;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
-
-using InstallerUtil = DotNetNuke.Services.Installer.Util;
-using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
-using Util = Dnn.ExportImport.Components.Common.Util;
-
 // ReSharper disable SuggestBaseTypeForParameter
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Controllers;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Engines;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Dto.Pages;
+    using Dnn.ExportImport.Dto.Workflow;
+    using Dnn.ExportImport.Repository;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
+    using InstallerUtil = DotNetNuke.Services.Installer.Util;
+    using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
+    using Util = Dnn.ExportImport.Components.Common.Util;
+
     /// <summary>
     /// Service to export/import pages/tabs.
     /// </summary>

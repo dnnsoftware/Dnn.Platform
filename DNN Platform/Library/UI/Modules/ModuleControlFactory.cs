@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules.Html5;
-
 namespace DotNetNuke.UI.Modules
 {
+    using System;
+    using System.IO;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules.Html5;
+
     [Obsolete("This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlFactory. Scheduled removal in v11.0.0.")]
     public class ModuleControlFactory
     {

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.FileSystem.EventArgs;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using DotNetNuke.Services.FileSystem.EventArgs;
+
     public interface IFileEventHandlers
     {
         void FileDeleted(object sender, FileDeletedEventArgs args);

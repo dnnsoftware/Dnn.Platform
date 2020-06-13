@@ -2,32 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Text;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Drawing;
+    using System.IO;
+    using System.Reflection;
+    using System.Text;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class FileContentTypeManagerTests
     {

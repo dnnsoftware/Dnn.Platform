@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using global::PetaPoco;
+
     public static class PetaPocoHelper
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));

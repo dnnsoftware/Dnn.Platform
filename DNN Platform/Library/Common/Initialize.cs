@@ -1,36 +1,34 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.IO;
-using System.Reflection;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Connections;
-using DotNetNuke.Services.EventQueue;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.UI.Modules;
-using Microsoft.Win32;
-
 namespace DotNetNuke.Common
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Reflection;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Hosting;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Connections;
+    using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Win32;
+
     /// <summary>
     /// The Object to initialize application.
     /// </summary>

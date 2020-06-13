@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Reflection;
-
 namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 {
+    using System;
+    using System.Reflection;
+
     /// <summary>
     /// Helper class to simplify common reflection tasks.
     /// </summary>

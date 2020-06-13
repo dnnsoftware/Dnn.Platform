@@ -1,16 +1,14 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.ComponentModel;
-
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Common.Lists
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+
+    using DotNetNuke.Instrumentation;
+
     [Serializable]
     [Obsolete("Obsoleted in 6.0.1.  Replaced by using generic collections of ListEntryInfo objects. Scheduled removal in v10.0.0.")]
     [EditorBrowsable(EditorBrowsableState.Never)]

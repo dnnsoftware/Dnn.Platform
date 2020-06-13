@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
-
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Newtonsoft.Json;
+
     public class StylesheetDto
     {
         [JsonProperty("path")]

@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Framework;
+
     internal class WorkflowStatePermissionsRepository : ServiceLocator<IWorkflowStatePermissionsRepository, WorkflowStatePermissionsRepository>, IWorkflowStatePermissionsRepository
     {
         public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)

@@ -2,26 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class MenuExtensionsController : PersonaBarApiController
     {

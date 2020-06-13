@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Library.Prompt.Common;
-using DotNetNuke.Services.Scheduling;
-
 namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
 {
+    using Dnn.PersonaBar.Library.Prompt.Common;
+    using DotNetNuke.Services.Scheduling;
+
     /// <summary>
     /// Represents a DNN ScheduleItem
     /// </summary>

@@ -1,27 +1,25 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-
 namespace DotNetNuke.Services.Installer
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LegacyUtil class is a Utility class that provides helper methods to transfer
@@ -225,7 +223,7 @@ namespace DotNetNuke.Services.Installer
 
             if (package.Owner == "DotNetNuke" || package.Owner == "DNN")
             {
-                package.License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile);
+                package.License = Localization.GetString("License", Localization.GlobalResourceFile);
                 package.Organization = ".NET Foundation";
                 package.Url = "https://dnncommunity.org";
                 package.Email = "info@dnncommunity.org";
@@ -242,7 +240,7 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         public static void ProcessLegacyLanguages()
         {
-            string filePath = Globals.ApplicationMapPath + Localization.Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
+            string filePath = Globals.ApplicationMapPath + Localization.SupportedLocalesFile.Substring(1).Replace("/", "\\");
             if (File.Exists(filePath))
             {
                 var doc = new XPathDocument(filePath);
@@ -271,8 +269,8 @@ namespace DotNetNuke.Services.Installer
                         language.Fallback = Util.ReadAttribute(nav, "fallback");
 
                         // Save Language
-                        Localization.Localization.SaveLanguage(language);
-                        if (language.Code != Localization.Localization.SystemLocale)
+                        Localization.SaveLanguage(language);
+                        if (language.Code != Localization.SystemLocale)
                         {
                             // Create a Package
                             var package = new PackageInfo(new InstallerInfo())
@@ -310,7 +308,7 @@ namespace DotNetNuke.Services.Installer
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 int portalID = portal.PortalID;
-                filePath = string.Format(Globals.ApplicationMapPath + Localization.Localization.ApplicationResourceDirectory.Substring(1).Replace("/", "\\") + "\\Locales.Portal-{0}.xml", portalID);
+                filePath = string.Format(Globals.ApplicationMapPath + Localization.ApplicationResourceDirectory.Substring(1).Replace("/", "\\") + "\\Locales.Portal-{0}.xml", portalID);
 
                 if (File.Exists(filePath))
                 {
@@ -347,7 +345,7 @@ namespace DotNetNuke.Services.Installer
                         if (!bFound)
                         {
                             // Language is enabled - add to portal
-                            Localization.Localization.AddLanguageToPortal(portalID, installedLanguage.LanguageId, false);
+                            Localization.AddLanguageToPortal(portalID, installedLanguage.LanguageId, false);
                         }
                     }
                 }
@@ -356,7 +354,7 @@ namespace DotNetNuke.Services.Installer
                     foreach (Locale installedLanguage in LocaleController.Instance.GetLocales(Null.NullInteger).Values)
                     {
                         // Language is enabled - add to portal
-                        Localization.Localization.AddLanguageToPortal(portalID, installedLanguage.LanguageId, false);
+                        Localization.AddLanguageToPortal(portalID, installedLanguage.LanguageId, false);
                     }
                 }
             }

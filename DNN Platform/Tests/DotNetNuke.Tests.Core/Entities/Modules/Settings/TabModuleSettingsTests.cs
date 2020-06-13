@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Settings;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Settings;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TabModuleSettingsTests : BaseSettingsTests
     {

@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Framework
 {
+    using System;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+
     /// <summary>
     /// Enables modules to support Services Framework features.
     /// </summary>

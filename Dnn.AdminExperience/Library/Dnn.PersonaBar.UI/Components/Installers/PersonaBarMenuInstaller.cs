@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.XPath;
-
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Permissions;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Installers;
-
 namespace Dnn.PersonaBar.UI.Components.Installers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.XPath;
+
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Permissions;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Installers;
+
     /// <summary>
     /// Installer for persona bar menus.
     /// </summary>

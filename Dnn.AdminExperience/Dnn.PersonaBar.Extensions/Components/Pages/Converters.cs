@@ -2,28 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Pages.Components.Security;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using Dnn.PersonaBar.Themes.Components;
-using Dnn.PersonaBar.Themes.Components.DTO;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using Dnn.PersonaBar.Themes.Components;
+    using Dnn.PersonaBar.Themes.Components.DTO;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
+
     public static class Converters
     {
         private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

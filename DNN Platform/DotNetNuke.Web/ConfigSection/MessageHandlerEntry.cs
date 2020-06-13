@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Configuration;
-
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.ConfigSection
 {
+    using System.Configuration;
+
+    using DotNetNuke.Web.Api;
+
     public class MessageHandlerEntry : ConfigurationElement
     {
         private const string NameTag = "name";

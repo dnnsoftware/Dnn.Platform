@@ -20,11 +20,11 @@
 //
 #define TRACE
 
-using log4net.Core;
-using log4net.Layout;
-
 namespace log4net.Appender
 {
+    using log4net.Core;
+    using log4net.Layout;
+
     /// <summary>
     /// Appends log events to the <see cref="System.Diagnostics.Trace"/> system.
     /// </summary>

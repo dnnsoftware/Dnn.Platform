@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Web.Helpers;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Framework
 {
+    using System;
+    using System.Globalization;
+    using System.Web.Helpers;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     internal class ServicesFrameworkImpl : IServicesFramework, IServiceFrameworkInternals
     {
         private const string AntiForgeryKey = "dnnAntiForgeryRequested";

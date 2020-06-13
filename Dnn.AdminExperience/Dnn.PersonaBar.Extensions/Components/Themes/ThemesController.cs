@@ -2,25 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using Dnn.PersonaBar.Themes.Components.DTO;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Skins;
-using Image = System.Drawing.Image;
-
 namespace Dnn.PersonaBar.Themes.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Themes.Components.DTO;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Skins;
+
+    using Image = System.Drawing.Image;
+
     public class ThemesController : ServiceLocator<IThemesController, ThemesController>, IThemesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));

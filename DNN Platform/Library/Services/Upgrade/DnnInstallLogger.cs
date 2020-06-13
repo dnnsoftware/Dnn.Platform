@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Web.Compilation;
-
-using DotNetNuke.Services.Upgrade.Internals;
-
 namespace DotNetNuke.Services.Upgrade
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Web.Compilation;
+
+    using DotNetNuke.Services.Upgrade.Internals;
+
     /// <summary>
     /// This class is used to write log into separate installer log file.
     /// </summary>

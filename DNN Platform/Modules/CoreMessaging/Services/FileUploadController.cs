@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using Newtonsoft.Json;
-
 namespace DotNetNuke.Modules.CoreMessaging.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using Newtonsoft.Json;
+
     public class FileUploadController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));

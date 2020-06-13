@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Common;
-
 namespace DotNetNuke.HttpModules.Services
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common;
+
     public class ServicesModule : IHttpModule
     {
         public static readonly Regex ServiceApi = Globals.ServicesFrameworkRegex;

@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace DotNetNuke.Modules.Journal
+{
+    /*
 ' Copyright (c) 2010 DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,12 +16,10 @@
 '
 */
 
-using System;
+    using System;
 
-using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Modules.Journal.Components;
 
-namespace DotNetNuke.Modules.Journal
-{
     public class JournalModuleBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         public enum JournalMode

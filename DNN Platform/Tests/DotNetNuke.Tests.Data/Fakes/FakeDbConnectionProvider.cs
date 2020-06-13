@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Data;
-
 namespace DotNetNuke.Tests.Data.Fakes
 {
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Data;
+
     internal class FakeDbConnectionProvider : DatabaseConnectionProvider
     {
         public override int ExecuteNonQuery(string connectionString, CommandType commandType, int commandTimeout, string query)

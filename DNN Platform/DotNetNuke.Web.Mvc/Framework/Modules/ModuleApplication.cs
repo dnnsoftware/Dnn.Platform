@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-using DotNetNuke.Common;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Web.Infrastructure.DynamicValidationHelper;
-
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Web.Infrastructure.DynamicValidationHelper;
+
     public class ModuleApplication
     {
         protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";

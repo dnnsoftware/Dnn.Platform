@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Mail;
-
-using static DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Mail;
+
+    using static DotNetNuke.Common.Globals;
+
     public class UserRegistrationEmailNotifier
     {
         private static UserInfo CurrentUser => UserController.Instance.GetCurrentUserInfo();

@@ -2,19 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     public class UrlTestBase : DnnWebTest
     {
         public UrlTestBase(int portalId)

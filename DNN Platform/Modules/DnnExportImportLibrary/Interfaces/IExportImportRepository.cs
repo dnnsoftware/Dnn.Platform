@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
-using Dnn.ExportImport.Dto;
-
 namespace Dnn.ExportImport.Interfaces
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+
+    using Dnn.ExportImport.Dto;
+
     public interface IExportImportRepository : IDisposable
     {
         T AddSingleItem<T>(T item)

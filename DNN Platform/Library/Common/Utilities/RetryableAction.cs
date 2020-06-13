@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Threading;
-
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Common.Utilities.Internal
 {
+    using System;
+    using System.Threading;
+
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
     /// Allows an action to be run and retried after a delay when an exception is thrown.
     /// <remarks>If the action never succeeds the final exception will be re-thrown for the caller to catch.</remarks>

@@ -1,15 +1,13 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-
 namespace DotNetNuke.Services.Installer.Packages
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security;
+
     /// <summary>
     /// This class allows PackageType to have a memeber named PackageType
     /// to remain compatible with the original VB implementation.

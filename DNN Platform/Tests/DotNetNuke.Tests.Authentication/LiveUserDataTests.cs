@@ -2,14 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Authentication.LiveConnect.Components;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Authentication.OAuth;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Authentication
 {
+    using DotNetNuke.Authentication.LiveConnect.Components;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using NUnit.Framework;
+
     [TestFixture]
     public class LiveUserDataTests
     {

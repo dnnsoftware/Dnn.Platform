@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Runtime.Serialization;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users.Membership;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users.Membership;
+
     [DataContract]
     public class DnnPaswordStrengthOptions
     {

@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Analytics.Config;
-using DotNetNuke.Services.Connections;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
 namespace DNN.Connectors.GoogleAnalytics
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Analytics.Config;
+    using DotNetNuke.Services.Connections;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     public class GoogleAnalyticsConnector : IConnector
     {
         private const string DefaultDisplayName = "Google Analytics";

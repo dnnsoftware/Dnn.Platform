@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public class Html5HostControl : ModuleControlBase, IActionable
     {
         private readonly string _html5File;

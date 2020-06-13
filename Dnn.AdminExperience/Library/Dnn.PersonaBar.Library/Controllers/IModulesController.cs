@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Net;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     public interface IModulesController
     {
         List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId,

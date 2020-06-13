@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Web;
-
-using DotNetNuke.Services.ClientCapability;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Services.ClientCapability
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Services.ClientCapability;
+    using NUnit.Framework;
+
     /// <summary>
     ///   Summary description for FacebookRequestController.
     /// </summary>

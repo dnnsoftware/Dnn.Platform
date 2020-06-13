@@ -1,44 +1,42 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Security;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-using DotNetNuke.HttpModules.DependencyInjection;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.HTMLEditorProvider;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Security.Cookies;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.Cryptography;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Services.Sitemap;
-using DotNetNuke.Services.Url.FriendlyUrl;
-
 namespace DotNetNuke.Web.Common.Internal
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+    using DotNetNuke.HttpModules.DependencyInjection;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.HTMLEditorProvider;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Security.Cookies;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.ClientCapability;
+    using DotNetNuke.Services.Cryptography;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.OutputCache;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Services.Sitemap;
+    using DotNetNuke.Services.Url.FriendlyUrl;
+
     /// <summary>
     /// DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
     /// </summary>

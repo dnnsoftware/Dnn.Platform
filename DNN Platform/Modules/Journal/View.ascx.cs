@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace DotNetNuke.Modules.Journal
+{
+    /*
 ' Copyright (c) 2011  DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,24 +16,22 @@
 '
 */
 
-using System;
+    using System;
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.Extensions.DependencyInjection;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.Journal
-{
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ViewJournal class displays the content.

@@ -2,32 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Journal.Internal;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.Journal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Journal.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [SupportedModules("Journal")]
     public class ServicesController : DnnApiController

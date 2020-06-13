@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using System.Web.Routing;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using Moq;
-using Moq.Protected;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+    using Moq;
+    using Moq.Protected;
+    using NUnit.Framework;
+
     [TestFixture]
     internal class DnnModuleAuthorizeAttributeTests
     {

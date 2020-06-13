@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+
     /// <summary>
     /// Wrapper class for any object that maps string key onto the object value (like Dictionary).
     /// </summary>

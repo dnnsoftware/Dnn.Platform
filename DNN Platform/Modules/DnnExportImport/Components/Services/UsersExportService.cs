@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Dto.Users;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data.PetaPoco;
-
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.Users;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data.PetaPoco;
+
+    using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
+
     /// <summary>
     /// Service to export/import users.
     /// </summary>

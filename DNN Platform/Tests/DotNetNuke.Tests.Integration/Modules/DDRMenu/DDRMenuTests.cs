@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Tests.Integration.Executers;
-using DotNetNuke.Tests.Integration.Executers.Builders;
-using DotNetNuke.Tests.Integration.Executers.Dto;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Controllers;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Tests.Integration.Executers;
+    using DotNetNuke.Tests.Integration.Executers.Builders;
+    using DotNetNuke.Tests.Integration.Executers.Dto;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DDRMenuTests : IntegrationTestBase
     {

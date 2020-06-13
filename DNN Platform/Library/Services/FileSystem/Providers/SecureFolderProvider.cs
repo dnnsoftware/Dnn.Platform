@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-
-using DotNetNuke.Common;
-using DotNetNuke.Services.FileSystem.Internal;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
 
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     public class SecureFolderProvider : StandardFolderProvider
     {
         /// <summary>

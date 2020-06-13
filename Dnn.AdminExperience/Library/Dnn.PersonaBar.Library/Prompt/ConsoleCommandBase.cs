@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.ComponentModel;
-
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.Library.Prompt
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+
     public abstract class ConsoleCommandBase : IConsoleCommand
     {
         public abstract string LocalResourceFile { get; }

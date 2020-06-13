@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Permissions;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Collections;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Web.Api;
-
 namespace Dnn.PersonaBar.Library.Attributes
 {
+    using System;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Permissions;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Web.Api;
+
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
     public class AdvancedPermissionAttribute : AuthorizeAttributeBase
     {

@@ -1,37 +1,36 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.Caching;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
-
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
-
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Entities;
+    using Lucene.Net.Documents;
+    using Lucene.Net.Index;
+    using Lucene.Net.Search;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   The Impl Controller class for Lucene.
@@ -96,7 +95,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         foreach (var def in list)
                         {
-                            var text = Localization.Localization.GetSafeJSString("Module_" + def.DefinitionName, LocalizedResxFile);
+                            var text = Localization.GetSafeJSString("Module_" + def.DefinitionName, LocalizedResxFile);
                             if (string.IsNullOrEmpty(text))
                             {
                                 text = def.FriendlyName;
@@ -120,7 +119,7 @@ namespace DotNetNuke.Services.Search.Internals
 
                         var resultControllerType = Reflection.CreateType(crawler.SearchResultClass);
                         var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);
-                        var localizedName = Localization.Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
+                        var localizedName = Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
 
                         results.Add(new SearchContentSource
                         {
@@ -195,24 +194,24 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 if (searchDocument.ModuleDefId <= 0)
                 {
-                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero", "ModuleDefId must be greater than zero when SearchTypeId is for a module"));
+                    throw new ArgumentException(Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero", "ModuleDefId must be greater than zero when SearchTypeId is for a module"));
                 }
 
                 if (searchDocument.ModuleId <= 0)
                 {
-                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustBeGreaterThanZero", "ModuleId must be greater than zero when SearchTypeId is for a module"));
+                    throw new ArgumentException(Localization.GetExceptionMessage("ModuleIdMustBeGreaterThanZero", "ModuleId must be greater than zero when SearchTypeId is for a module"));
                 }
             }
             else
             {
                 if (searchDocument.ModuleDefId > 0)
                 {
-                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdWhenSearchTypeForModule", "ModuleDefId is needed only when SearchTypeId is for a module"));
+                    throw new ArgumentException(Localization.GetExceptionMessage("ModuleDefIdWhenSearchTypeForModule", "ModuleDefId is needed only when SearchTypeId is for a module"));
                 }
 
                 if (searchDocument.ModuleId > 0)
                 {
-                    throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdWhenSearchTypeForModule", "ModuleId is needed only when SearchTypeId is for a module"));
+                    throw new ArgumentException(Localization.GetExceptionMessage("ModuleIdWhenSearchTypeForModule", "ModuleId is needed only when SearchTypeId is for a module"));
                 }
             }
 
@@ -345,7 +344,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (!string.IsNullOrEmpty(searchDocument.CultureCode))
             {
-                query.Add(NumericValueQuery(Constants.LocaleTag, Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
+                query.Add(NumericValueQuery(Constants.LocaleTag, Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
             }
 
             LuceneController.Instance.Delete(query);
@@ -408,7 +407,7 @@ namespace DotNetNuke.Services.Search.Internals
             doc.Add(new NumericField(Constants.PortalIdTag, Field.Store.YES, true).SetIntValue(searchDocument.PortalId));
             doc.Add(new NumericField(Constants.SearchTypeTag, Field.Store.YES, true).SetIntValue(searchDocument.SearchTypeId));
             doc.Add(!string.IsNullOrEmpty(searchDocument.CultureCode)
-                        ? new NumericField(Constants.LocaleTag, Field.Store.YES, true).SetIntValue(Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode))
+                        ? new NumericField(Constants.LocaleTag, Field.Store.YES, true).SetIntValue(Localization.GetCultureLanguageID(searchDocument.CultureCode))
                         : new NumericField(Constants.LocaleTag, Field.Store.YES, true).SetIntValue(-1));
 
             if (!string.IsNullOrEmpty(searchDocument.Title))

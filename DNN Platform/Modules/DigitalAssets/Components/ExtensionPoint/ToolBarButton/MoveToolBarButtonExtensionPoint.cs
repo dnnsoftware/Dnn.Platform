@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel.Composition;
-
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.UI.Modules;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
+    using System.ComponentModel.Composition;
+
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.UI.Modules;
+
     // TODO Create the Custom IToolBarButtonExtensionPoint Export attribute
     [Export(typeof(IToolBarButtonExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]

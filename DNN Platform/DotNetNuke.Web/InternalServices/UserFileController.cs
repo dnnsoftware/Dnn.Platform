@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+
     public class UserFileController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));

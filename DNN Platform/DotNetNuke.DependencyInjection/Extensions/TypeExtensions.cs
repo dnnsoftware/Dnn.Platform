@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Reflection;
-
 namespace DotNetNuke.DependencyInjection.Extensions
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// <see cref="Type"/> specific extensions to be used
     /// in Dependency Injection invocations.

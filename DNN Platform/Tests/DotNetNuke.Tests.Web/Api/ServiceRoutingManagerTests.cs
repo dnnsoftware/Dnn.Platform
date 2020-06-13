@@ -2,26 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Routing;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.DependencyInjection;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework.Internal.Reflection;
-using DotNetNuke.Framework.Reflections;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using NUnit.Framework;
-
-using ServicesRoutingManager = DotNetNuke.Web.Api.Internal.ServicesRoutingManager;
-
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Routing;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework.Internal.Reflection;
+    using DotNetNuke.Framework.Reflections;
+    using Microsoft.Extensions.DependencyInjection;
+    using Moq;
+    using NUnit.Framework;
+
+    using ServicesRoutingManager = DotNetNuke.Web.Api.Internal.ServicesRoutingManager;
+
     [TestFixture]
     public class ServiceRoutingManagerTests
     {

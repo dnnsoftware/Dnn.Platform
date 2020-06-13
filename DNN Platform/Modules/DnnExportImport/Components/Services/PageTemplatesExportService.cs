@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Dto.PageTemplates;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
-using Newtonsoft.Json;
-
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.PageTemplates;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json;
+
+    using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
+
     public class PageTemplatesExportService : AssetsExportService
     {
         private readonly string _templatesFolder =

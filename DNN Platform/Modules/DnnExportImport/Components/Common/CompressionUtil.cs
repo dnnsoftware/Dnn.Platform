@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.IO.MemoryMappedFiles;
-using System.Linq;
-using System.Text;
-
 namespace Dnn.ExportImport.Components.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.IO.Compression;
+    using System.IO.MemoryMappedFiles;
+    using System.Linq;
+    using System.Text;
+
     public static class CompressionUtil
     {
         /// <summary>

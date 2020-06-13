@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Caching;
-
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Interfaces;
-using Dnn.ExportImport.Components.Providers;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Caching;
+
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Interfaces;
+    using Dnn.ExportImport.Components.Providers;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+
     public class SettingsController : ServiceLocator<ISettingsController, SettingsController>, ISettingsController
     {
         private const string CacheKey = "ExportImport_Settings";

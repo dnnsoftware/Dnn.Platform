@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Linq;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.Skins;
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.Skins;
+
     /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>

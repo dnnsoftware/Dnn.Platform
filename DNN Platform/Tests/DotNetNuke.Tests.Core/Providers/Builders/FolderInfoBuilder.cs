@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Utilities;
-using Moq;
-
 namespace DotNetNuke.Tests.Core.Providers.Builders
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Utilities;
+    using Moq;
+
     internal class FolderInfoBuilder
     {
         private int portalId;

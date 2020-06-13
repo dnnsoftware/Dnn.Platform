@@ -1,17 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using Telerik.Web.UI;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using Telerik.Web.UI;
+
     public class DnnGrid : RadGrid
     {
         public int ScreenRowNumber { get; set; }

@@ -1,17 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System.Collections;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Modules.HTMLEditorProvider
 {
+    using System.Collections;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Framework;
+
     public abstract class HtmlEditorProvider : UserControlBase
     {
         public abstract Control HtmlEditorControl { get; }

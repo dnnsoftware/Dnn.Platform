@@ -1,19 +1,17 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Data.SqlClient;
+    using System.Diagnostics;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Exceptions;
+
     public class ExceptionLogController : LogController
     {
         public enum ExceptionLogType
@@ -36,7 +34,7 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             var log = new LogInfo
             {
-                Exception = Exceptions.Exceptions.GetExceptionInfo(objBasePortalException),
+                Exception = Exceptions.GetExceptionInfo(objBasePortalException),
             };
             log.Exception.AssemblyVersion = objBasePortalException.AssemblyVersion;
             log.Exception.PortalId = objBasePortalException.PortalID;

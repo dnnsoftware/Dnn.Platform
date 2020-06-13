@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Permissions;
-
 namespace Dnn.ExportImport.Components.Providers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Entities;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security.Permissions;
+
     internal class DataProvider
     {
         private static readonly DataProvider Provider;

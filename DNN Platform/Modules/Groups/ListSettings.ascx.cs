@@ -1,23 +1,21 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Settings class manages Module Settings.

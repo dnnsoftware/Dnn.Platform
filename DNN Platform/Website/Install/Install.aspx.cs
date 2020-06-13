@@ -2,31 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-using System.Xml;
-
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Upgrade.InternalController.Steps;
-using DotNetNuke.Services.Upgrade.Internals;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Install
 {
+    using System;
+    using System.Data;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Upgrade.InternalController.Steps;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Install : Page
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Install
                         if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
                         {
                             var locale = LocaleController.Instance.GetLocale("en-US");
-                            Localization.Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
+                            Localization.RemoveLanguageFromPortal(0, locale.LanguageId, true);
                         }
 
                         var licenseConfig = installConfig.License;
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Install
             HtmlUtils.WriteFeedback(
                 HttpContext.Current.Response,
                 0,
-                Localization.Localization.GetString("ThereIsAInstallationCurrentlyInProgress.Error", Localization.Localization.GlobalResourceFile) + "<br>");
+                Localization.GetString("ThereIsAInstallationCurrentlyInProgress.Error", Localization.GlobalResourceFile) + "<br>");
             this.Response.Flush();
         }
 

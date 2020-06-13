@@ -1,17 +1,15 @@
-﻿
-
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Security.Membership
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Users;
+
     public abstract class MembershipProvider
     {
         public abstract bool CanEditProviderProperties { get; }

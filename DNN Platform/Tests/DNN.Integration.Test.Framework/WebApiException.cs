@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net.Http;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
 namespace DNN.Integration.Test.Framework
 {
+    using System;
+    using System.Net.Http;
+
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     /// <summary>
     /// Represents a non successful response while executing a WebApi call.
     /// </summary>

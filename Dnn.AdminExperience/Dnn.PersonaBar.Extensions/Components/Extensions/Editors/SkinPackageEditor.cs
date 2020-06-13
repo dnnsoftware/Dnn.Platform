@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.UI.Skins;
-
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
+    using System;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.UI.Skins;
+
     public class SkinPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinPackageEditor));

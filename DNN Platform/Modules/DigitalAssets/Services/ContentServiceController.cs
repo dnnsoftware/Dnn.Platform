@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Services.Models;
-using DotNetNuke.Security;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.DigitalAssets.Services
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Services.Models;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Api;
+
     [SupportedModules("DotNetNuke.Modules.DigitalAssets")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DamExceptionFilter]
