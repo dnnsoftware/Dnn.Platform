@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -53,14 +53,7 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var logFilePath = Path.Combine(Globals.ApplicationMapPath, @"portals\_default\logs", fileName);
-
-                this.ValidateFilePath(logFilePath);
-
-                using (var reader = File.OpenText(logFilePath))
-                {
-                    var logText = reader.ReadToEnd();
-                    return this.Request.CreateResponse(HttpStatusCode.OK, logText);
-                }
+                return CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
             {
@@ -78,23 +71,9 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             try
             {
-                var upgradeText = string.Empty;
                 var providerPath = DataProvider.Instance().GetProviderPath();
-                var logFilePath = Path.Combine(providerPath, logName + ".log.resources");
-
-                this.ValidateFilePath(logFilePath);
-
-                if (File.Exists(logFilePath))
-                {
-                    using (var reader = File.OpenText(logFilePath))
-                    {
-                        upgradeText = reader.ReadToEnd();
-                        upgradeText = upgradeText.Replace("\n", "<br>");
-                        reader.Close();
-                    }
-                }
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, upgradeText);
+                var logFilePath = Path.Combine(providerPath, logName);
+                return CreateLogFileResponse(logFilePath);
             }
             catch (ArgumentException exc)
             {
@@ -107,12 +86,30 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private void ValidateFilePath(string physicalPath)
+        [NonAction]
+        private static void ValidateFilePath(string physicalPath)
         {
             var fileInfo = new FileInfo(physicalPath);
             if (!fileInfo.DirectoryName.StartsWith(Globals.ApplicationMapPath, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new ArgumentException("Invalid File Path");
+            }
+        }
+
+        [NonAction]
+        private HttpResponseMessage CreateLogFileResponse(string logFilePath)
+        {
+            ValidateFilePath(logFilePath);
+            if (!File.Exists(logFilePath))
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+
+            }
+
+            using (var reader = File.OpenText(logFilePath))
+            {
+                var logText = reader.ReadToEnd();
+                return Request.CreateResponse(HttpStatusCode.OK, logText);
             }
         }
     }
