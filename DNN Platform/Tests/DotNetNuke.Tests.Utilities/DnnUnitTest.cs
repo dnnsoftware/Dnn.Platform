@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Configuration;
-using System.IO;
-using System.Reflection;
-using System.Web;
-
 namespace DotNetNuke.Tests.Utilities
 {
+    using System.Configuration;
+    using System.IO;
+    using System.Reflection;
+    using System.Web;
+
     public class DnnUnitTest
     {
         public DnnUnitTest()

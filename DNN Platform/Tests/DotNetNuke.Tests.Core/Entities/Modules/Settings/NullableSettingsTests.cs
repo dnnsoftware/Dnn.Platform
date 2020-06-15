@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Settings;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules.Settings;
+    using NUnit.Framework;
+
     [TestFixture]
     public class NullableSettingsTests : BaseSettingsTests
     {
@@ -30,7 +31,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             public TimeSpan? TimeSpanProperty { get; set; } = TimeSpan.FromHours(12);
         }
 
-        public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings> { }
+        public class MyNullableSettingsRepository : SettingsRepository<MyNullableSettings>
+        {
+        }
 
         [Test]
         [TestCaseSource(nameof(NullableCases))]
@@ -98,7 +101,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         private void SaveSettings_CallsUpdateSetting_WithRightParameters(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new MyNullableSettings
             {
@@ -121,17 +124,17 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new MyNullableSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void SaveSettings_UpdatesCache()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new MyNullableSettings();
 
@@ -140,26 +143,26 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new MyNullableSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSettings_CallsGetCachedObject()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
 
             this.MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new MyNullableSettings());
             var settingsRepository = new MyNullableSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
@@ -229,7 +232,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         private void GetSettings_GetsValues_FromCorrectSettings(string stringValue, int? integerValue, DateTime? datetimeValue, TimeSpan? timeSpanValue)
         {
-            //Arrange
+            // Arrange
             var expectedStringValue = stringValue ?? string.Empty;
             var moduleInfo = GetModuleInfo;
             var portalSettings = new Dictionary<string, string> { ["IntegerProperty"] = integerValue?.ToString() ?? string.Empty, };
@@ -242,10 +245,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new MyNullableSettingsRepository();
 
-            //Act
+            // Act
             var settings = settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expectedStringValue, settings.StringProperty, "The retrieved string property value is not equal to the stored one");
             Assert.AreEqual(integerValue, settings.IntegerProperty, "The retrieved integer property value is not equal to the stored one");
             Assert.AreEqual(datetimeValue, settings.DateTimeProperty, "The retrieved datetime property value is not equal to the stored one");
@@ -256,7 +259,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public readonly object[] NullableCases =
         {
             new object[] { null, null, null, null, },
-            new object[] { "", -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
+            new object[] { string.Empty, -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
             new object[] { "lorem ipsum", 456, DateTime.Now, DateTime.Today - DateTime.Now, },
         };
     }

@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.ExportImport.Components.Dto;
-
 namespace Dnn.ExportImport.Components.Common
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Dto;
+
     public class SummaryList : List<SummaryItem>
     {
         public new void Add(SummaryItem item)

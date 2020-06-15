@@ -1,34 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI.WebControls;
-using Dnn.Modules.Console.Components;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Common;
-using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.Web.UI.WebControls.Internal;
-
-#endregion
-
 namespace Dnn.Modules.Console
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using Dnn.Modules.Console.Components;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Common;
+    using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Web.UI.WebControls.Internal;
 
     public partial class Settings : ModuleSettingsBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Settings));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
         private void BindTabs(int tabId, bool includeParent)
         {
@@ -48,7 +43,6 @@ namespace Dnn.Modules.Console
                 }
             }
 
-
             foreach (TabInfo tab in tempTabs)
             {
                 bool canShowTab = TabPermissionController.CanViewPage(tab) &&
@@ -59,12 +53,14 @@ namespace Dnn.Modules.Console
                 {
                     continue;
                 }
-                if ((tabIdList.Contains(tab.ParentId)))
+
+                if (tabIdList.Contains(tab.ParentId))
                 {
-                    if ((!tabIdList.Contains(tab.TabID)))
+                    if (!tabIdList.Contains(tab.TabID))
                     {
                         tabIdList.Add(tab.TabID);
                     }
+
                     tabList.Add(tab);
                 }
             }
@@ -80,6 +76,7 @@ namespace Dnn.Modules.Console
             {
                 parentTabId = Convert.ToInt32(this.Settings["ParentTabID"]);
             }
+
             switch (this.modeList.SelectedValue)
             {
                 case "Normal":
@@ -97,7 +94,7 @@ namespace Dnn.Modules.Console
                     this.parentTabRow.Visible = true;
                     this.includeParentRow.Visible = true;
                     this.tabVisibilityRow.Visible = true;
-                   break;
+                    break;
             }
 
             this.ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, this.PortalId);
@@ -118,9 +115,10 @@ namespace Dnn.Modules.Console
 
                     foreach (string val in ConsoleController.GetSizeValues())
                     {
-                        //DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
+                        // DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultSize.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
+
                     this.SelectDropDownListItem(ref this.DefaultSize, "DefaultSize");
 
                     this.SelectDropDownListItem(ref this.modeList, "Mode");
@@ -129,32 +127,39 @@ namespace Dnn.Modules.Console
                     {
                         this.AllowResize.Checked = Convert.ToBoolean(this.Settings["AllowSizeChange"]);
                     }
+
                     foreach (var val in ConsoleController.GetViewValues())
                     {
-                        //DefaultView.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
+                        // DefaultView.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultView.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
+
                     this.SelectDropDownListItem(ref this.DefaultView, "DefaultView");
                     if (this.Settings.ContainsKey("IncludeParent"))
                     {
                         this.IncludeParent.Checked = Convert.ToBoolean(this.Settings["IncludeParent"]);
                     }
+
                     if (this.Settings.ContainsKey("AllowViewChange"))
                     {
                         this.AllowViewChange.Checked = Convert.ToBoolean(this.Settings["AllowViewChange"]);
                     }
+
                     if (this.Settings.ContainsKey("ShowTooltip"))
                     {
                         this.ShowTooltip.Checked = Convert.ToBoolean(this.Settings["ShowTooltip"]);
                     }
-					if (this.Settings.ContainsKey("OrderTabsByHierarchy"))
-					{
-						this.OrderTabsByHierarchy.Checked = Convert.ToBoolean(this.Settings["OrderTabsByHierarchy"]);
-					}
+
+                    if (this.Settings.ContainsKey("OrderTabsByHierarchy"))
+                    {
+                        this.OrderTabsByHierarchy.Checked = Convert.ToBoolean(this.Settings["OrderTabsByHierarchy"]);
+                    }
+
                     if (this.Settings.ContainsKey("IncludeHiddenPages"))
                     {
                         this.IncludeHiddenPages.Checked = Convert.ToBoolean(this.Settings["IncludeHiddenPages"]);
                     }
+
                     if (this.Settings.ContainsKey("ConsoleWidth"))
                     {
                         this.ConsoleWidth.Text = Convert.ToString(this.Settings["ConsoleWidth"]);
@@ -162,9 +167,8 @@ namespace Dnn.Modules.Console
 
                     this.SwitchMode();
                 }
-
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -174,9 +178,9 @@ namespace Dnn.Modules.Console
         {
             try
             {
-				//validate console width value
+                // validate console width value
                 var wdth = string.Empty;
-                if ((this.ConsoleWidth.Text.Trim().Length > 0))
+                if (this.ConsoleWidth.Text.Trim().Length > 0)
                 {
                     try
                     {
@@ -189,6 +193,7 @@ namespace Dnn.Modules.Console
                         throw new Exception("ConsoleWidth value is invalid. Value must be numeric.");
                     }
                 }
+
                 if (this.ParentTab.SelectedItemValueAsInt == Null.NullInteger)
                 {
                     ModuleController.Instance.DeleteModuleSetting(this.ModuleId, "ParentTabID");
@@ -213,10 +218,10 @@ namespace Dnn.Modules.Console
                 {
                     if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
                     {
-	                    var tabPath = (item.FindControl("tabPath") as HiddenField).Value;
-						var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
+                        var tabPath = (item.FindControl("tabPath") as HiddenField).Value;
+                        var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
 
-                        var key = String.Format("TabVisibility{0}", tabPath.Replace("//","-"));
+                        var key = string.Format("TabVisibility{0}", tabPath.Replace("//", "-"));
                         ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, visibility);
                     }
                 }
@@ -231,7 +236,7 @@ namespace Dnn.Modules.Console
         {
             base.OnInit(e);
 
-            this.tabs.ItemDataBound +=  this.tabs_ItemDataBound;
+            this.tabs.ItemDataBound += this.tabs_ItemDataBound;
             this.modeList.SelectedIndexChanged += this.modeList_SelectedIndexChanged;
 
             this.ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
@@ -240,7 +245,6 @@ namespace Dnn.Modules.Console
         private void modeList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.SwitchMode();
-
         }
 
         protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
@@ -248,33 +252,31 @@ namespace Dnn.Modules.Console
             this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
         }
 
-        void tabs_ItemDataBound(Object Sender, RepeaterItemEventArgs e)
+        private void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)
         {
-
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var tab = (TabInfo) e.Item.DataItem;
+                var tab = (TabInfo)e.Item.DataItem;
                 DnnComboBox visibilityDropDown = (DnnComboBox)e.Item.FindControl("tabVisibility");
 
-                var tabLabel = (Label) e.Item.FindControl("tabLabel");
-                var tabPathField = (HiddenField) e.Item.FindControl("tabPath");
+                var tabLabel = (Label)e.Item.FindControl("tabLabel");
+                var tabPathField = (HiddenField)e.Item.FindControl("tabPath");
 
                 visibilityDropDown.Items.Clear();
-                //visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));
+
+                // visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));
                 visibilityDropDown.AddItem(this.LocalizeString("AllUsers"), "AllUsers");
                 if (this.modeList.SelectedValue == "Profile")
                 {
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("Friends"), "Friends"));
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("User"), "User"));
-
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Friends"), "Friends"));
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("User"), "User"));
                     visibilityDropDown.AddItem(this.LocalizeString("Friends"), "Friends");
                     visibilityDropDown.AddItem(this.LocalizeString("User"), "User");
                 }
                 else
                 {
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("Owner"), "Owner"));
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("Members"), "Members"));
-
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Owner"), "Owner"));
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Members"), "Members"));
                     visibilityDropDown.AddItem(this.LocalizeString("Owner"), "Owner");
                     visibilityDropDown.AddItem(this.LocalizeString("Members"), "Members");
                 }
@@ -282,10 +284,10 @@ namespace Dnn.Modules.Console
                 tabLabel.Text = tab.TabName;
                 tabPathField.Value = tab.TabPath;
 
-                var key = String.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
+                var key = string.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
                 this.SelectDropDownListItem(ref visibilityDropDown, key);
             }
-        }    
+        }
 
         private void SelectDropDownListItem(ref DnnComboBox ddl, string key)
         {
@@ -299,6 +301,5 @@ namespace Dnn.Modules.Console
                 }
             }
         }
-
     }
 }

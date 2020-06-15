@@ -1,47 +1,37 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections.Generic;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Installer.Log;
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System.Collections.Generic;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The FileComponentWriter class handles creating the manifest for File Component(s)
+    /// The FileComponentWriter class handles creating the manifest for File Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class FileComponentWriter
     {
-		#region "Private Members"
-
         private readonly string _BasePath;
         private readonly Dictionary<string, InstallFile> _Files;
         private readonly PackageInfo _Package;
         private int _InstallOrder = Null.NullInteger;
         private int _UnInstallOrder = Null.NullInteger;
 
-		#endregion
-
-		#region "Constructors"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the FileComponentWriter
+        /// Initializes a new instance of the <see cref="FileComponentWriter"/> class.
+        /// Constructs the FileComponentWriter.
         /// </summary>
-        /// <param name="basePath">The Base Path for the files</param>
-        /// <param name="files">A Dictionary of files</param>
+        /// <param name="basePath">The Base Path for the files.</param>
+        /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
         public FileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
@@ -50,16 +40,12 @@ namespace DotNetNuke.Services.Installer.Writers
             this._BasePath = basePath;
             this._Package = package;
         }
-		
-		#endregion
-
-		#region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("files")
+        /// Gets the name of the Collection Node ("files").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string CollectionNodeName
         {
@@ -71,9 +57,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("File")
+        /// Gets the name of the Component Type ("File").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string ComponentType
         {
@@ -85,9 +71,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("file")
+        /// Gets the name of the Item Node ("file").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string ItemNodeName
         {
@@ -99,9 +85,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Logger
+        /// Gets the Logger.
         /// </summary>
-        /// <value>A Logger</value>
+        /// <value>A Logger.</value>
         /// -----------------------------------------------------------------------------
         protected virtual Logger Log
         {
@@ -113,9 +99,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Package
+        /// Gets the Package.
         /// </summary>
-        /// <value>A PackageInfo</value>
+        /// <value>A PackageInfo.</value>
         /// -----------------------------------------------------------------------------
         protected virtual PackageInfo Package
         {
@@ -124,10 +110,6 @@ namespace DotNetNuke.Services.Installer.Writers
                 return this._Package;
             }
         }
-		
-		#endregion
-
-		#region "Public Properties"
 
         public int InstallOrder
         {
@@ -135,6 +117,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._InstallOrder;
             }
+
             set
             {
                 this._InstallOrder = value;
@@ -147,23 +130,19 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._UnInstallOrder;
             }
+
             set
             {
                 this._UnInstallOrder = value;
             }
         }
-		
-		#endregion
-
-		#region "Protected Methods"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The WriteCustomManifest method writes the custom manifest items (that subclasses
-        /// of FileComponentWriter may need)
+        /// of FileComponentWriter may need).
         /// </summary>
-        /// <param name="writer">The Xmlwriter to use</param>
+        /// <param name="writer">The Xmlwriter to use.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void WriteCustomManifest(XmlWriter writer)
         {
@@ -173,10 +152,10 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
 
-            //Start file Element
+            // Start file Element
             writer.WriteStartElement(this.ItemNodeName);
 
-            //Write path
+            // Write path
             if (!string.IsNullOrEmpty(file.Path))
             {
                 string path = file.Path;
@@ -184,66 +163,63 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     if (file.Path.ToLowerInvariant().Contains(this._BasePath.ToLowerInvariant()))
                     {
-                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", "");
+                        path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", string.Empty);
                     }
                 }
+
                 writer.WriteElementString("path", path);
             }
-			
-            //Write name
+
+            // Write name
             writer.WriteElementString("name", file.Name);
 
-            //Write sourceFileName
+            // Write sourceFileName
             if (!string.IsNullOrEmpty(file.SourceFileName))
             {
                 writer.WriteElementString("sourceFileName", file.SourceFileName);
             }
-			
-            //Close file Element
+
+            // Close file Element
             writer.WriteEndElement();
         }
-		
-		#endregion
-
-		#region "Public Methods"
 
         public virtual void WriteManifest(XmlWriter writer)
         {
-			//Start component Element
+            // Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", this.ComponentType);
             if (this.InstallOrder > Null.NullInteger)
             {
                 writer.WriteAttributeString("installOrder", this.InstallOrder.ToString());
             }
+
             if (this.UnInstallOrder > Null.NullInteger)
             {
                 writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
             }
-			
-            //Start files element
+
+            // Start files element
             writer.WriteStartElement(this.CollectionNodeName);
 
-            //Write custom manifest items
+            // Write custom manifest items
             this.WriteCustomManifest(writer);
 
-            //Write basePath Element
+            // Write basePath Element
             if (!string.IsNullOrEmpty(this._BasePath))
             {
                 writer.WriteElementString("basePath", this._BasePath);
             }
+
             foreach (InstallFile file in this._Files.Values)
             {
                 this.WriteFileElement(writer, file);
             }
-			
-            //End files Element
+
+            // End files Element
             writer.WriteEndElement();
 
-            //End component Element
+            // End component Element
             writer.WriteEndElement();
         }
-		
-		#endregion
     }
 }

@@ -2,35 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
-
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class LocalizationController : PersonaBarApiController
     {
         private static object _threadLocker = new object();
 
-        #region Public API methods
-        
         /// <summary>
-        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture. 
+        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetTable(string culture)
         {
@@ -58,13 +58,8 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
-
             if (!this.Expired(culture))
             {
                 var jsonFileContent = this.GetJsonFileContent(culture);
@@ -146,9 +141,9 @@ namespace Dnn.PersonaBar.UI.Services
                 var fallbackCulture = this.GetFallbackCulture(culture);
                 var folder = Path.GetDirectoryName(relativePath)?.Replace("\\", "/");
                 var fileName = Path.GetFileNameWithoutExtension(relativePath)?
-                                .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), "");
+                                .ToLowerInvariant().Replace("." + culture.ToLowerInvariant(), string.Empty);
                 var culturePart = fallbackCulture.Equals(Localization.SystemLocale, StringComparison.InvariantCultureIgnoreCase)
-                                    ? "" : "." + fallbackCulture;
+                                    ? string.Empty : "." + fallbackCulture;
                 var fallbackFilePath = $"{folder}//{fileName}{culturePart}.resx";
                 if (!File.Exists(HttpContext.Current.Server.MapPath(fallbackFilePath)))
                 {
@@ -219,7 +214,7 @@ namespace Dnn.PersonaBar.UI.Services
                     var cultureSpecificFile = allFiles.FirstOrDefault(f =>
                     {
                         var name = Path.GetFileName(f);
-                        return !string.IsNullOrEmpty(name) 
+                        return !string.IsNullOrEmpty(name)
                                     && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                     });
 
@@ -233,7 +228,6 @@ namespace Dnn.PersonaBar.UI.Services
                             return !string.IsNullOrEmpty(name)
                                         && name.Equals(cultureSpecificFileName, StringComparison.InvariantCultureIgnoreCase);
                         });
-
                     }
 
                     if (!string.IsNullOrEmpty(cultureSpecificFile))
@@ -246,14 +240,11 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             return resourceFiles;
-        } 
-
-        #endregion
+        }
     }
 
     [Serializable]
     public class CacheDto
     {
-        
     }
 }

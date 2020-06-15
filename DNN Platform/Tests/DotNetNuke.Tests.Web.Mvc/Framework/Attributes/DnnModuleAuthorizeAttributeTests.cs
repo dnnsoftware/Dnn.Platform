@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using Moq;
-using Moq.Protected;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+    using Moq;
+    using Moq.Protected;
+    using NUnit.Framework;
+
     [TestFixture]
-    class DnnModuleAuthorizeAttributeTests
+    internal class DnnModuleAuthorizeAttributeTests
     {
         private MockRepository _mockRepository;
         private Mock<ActionDescriptor> _mockActionDescriptor;
@@ -40,11 +41,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             this._mockDnnModuleAuthorizeAttribute.Protected().Setup("HandleUnauthorizedRequest", ItExpr.IsAny<AuthorizationContext>());
             var sut = this._mockDnnModuleAuthorizeAttribute.Object;
 
-            this._mockActionDescriptor.Setup(x => x.IsDefined(typeof (AllowAnonymousAttribute), true)).Returns(false);
+            this._mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             this._mockControllerDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(false);
             this._mockActionDescriptor.SetupGet(x => x.ControllerDescriptor).Returns(this._mockControllerDescriptor.Object);
 
-            var fakeController = new Fakes.FakeDnnController { ModuleContext = new ModuleInstanceContext() };            
+            var fakeController = new Fakes.FakeDnnController { ModuleContext = new ModuleInstanceContext() };
             var controllerContext = new ControllerContext(new RequestContext(), fakeController);
             var context = new AuthorizationContext(controllerContext, this._mockActionDescriptor.Object);
 
@@ -83,7 +84,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             var sut = this._mockDnnModuleAuthorizeAttribute.Object;
 
             this._mockActionDescriptor.Setup(x => x.IsDefined(typeof(AllowAnonymousAttribute), true)).Returns(true);
-            
+
             var fakeController = new Fakes.FakeDnnController { ModuleContext = new ModuleInstanceContext() };
             var controllerContext = new ControllerContext(new RequestContext(), fakeController);
             var context = new AuthorizationContext(controllerContext, this._mockActionDescriptor.Object);
@@ -92,7 +93,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             sut.OnAuthorization(context);
 
             // Assert
-            //Assert.IsTrue(a.IsAuthorized);
+            // Assert.IsTrue(a.IsAuthorized);
             this._mockRepository.VerifyAll();
         }
 
@@ -113,7 +114,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             var fakeController = new Fakes.FakeDnnController { ModuleContext = moduleContext };
             var controllerContext = new ControllerContext(new RequestContext(), fakeController);
             var context = new AuthorizationContext(controllerContext, this._mockActionDescriptor.Object);
-            
+
             // Act
             sut.OnAuthorization(context);
 

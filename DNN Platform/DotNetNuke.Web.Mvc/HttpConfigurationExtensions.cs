@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Web.Http;
-
 namespace DotNetNuke.Web.Mvc
 {
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+
     public static class HttpConfigurationExtensions
     {
         private const string Key = "MvcTabAndModuleInfoProvider";
@@ -42,7 +43,7 @@ namespace DotNetNuke.Web.Mvc
 
             if (providers == null)
             {
-                //shouldn't ever happen outside of unit tests
+                // shouldn't ever happen outside of unit tests
                 return new ITabAndModuleInfoProvider[] { };
             }
 

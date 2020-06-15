@@ -2,26 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Collections;
-using DotNetNuke.Data;
-using DotNetNuke.Services.Connections;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Localization;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.RetryPolicies;
-
 namespace Dnn.AzureConnector.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Connections;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Auth;
+    using Microsoft.WindowsAzure.Storage.RetryPolicies;
+
     public class AzureConnector : IConnector
     {
-        #region Properties
         private static readonly DataProvider dataProvider = DataProvider.Instance();
         private const string DefaultDisplayName = "Azure Storage";
 
@@ -31,6 +31,7 @@ namespace Dnn.AzureConnector.Components
         }
 
         private string _displayName;
+
         public string DisplayName
         {
             get
@@ -38,6 +39,7 @@ namespace Dnn.AzureConnector.Components
                 return
                     string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
             }
+
             set { this._displayName = value; }
         }
 
@@ -45,7 +47,6 @@ namespace Dnn.AzureConnector.Components
         {
             get { return "~/DesktopModules/Connectors/Azure/Images/Azure.png"; }
         }
-
 
         public string PluginFolder
         {
@@ -66,9 +67,6 @@ namespace Dnn.AzureConnector.Components
 
         public bool SupportsMultiple => true;
 
-        #endregion
-
-        #region Public Methods
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             var connectors = this.FindAzureFolderMappings(portalId);
@@ -83,6 +81,7 @@ namespace Dnn.AzureConnector.Components
                 });
                 return finalCon;
             }
+
             return new List<IConnector> { this };
         }
 
@@ -114,13 +113,12 @@ namespace Dnn.AzureConnector.Components
 
             var settings = folderMapping != null ? folderMapping.FolderMappingSettings : new Hashtable();
 
-            
             configs.Add("AccountName", this.GetSetting(settings, Constants.AzureAccountName, true));
             configs.Add("AccountKey", this.GetSetting(settings, Constants.AzureAccountKey, true));
             configs.Add("Container", this.GetSetting(settings, Constants.AzureContainerName));
             configs.Add("Connected", !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
 
-            //This setting will improve the UI to set password-type inputs on secure settings
+            // This setting will improve the UI to set password-type inputs on secure settings
             configs.Add("SecureSettings", "AccountKey");
             configs.Add("Id", Convert.ToString(folderMapping?.FolderMappingID));
             return configs;
@@ -133,21 +131,26 @@ namespace Dnn.AzureConnector.Components
             var azureAccountKey = values[Constants.AzureAccountKey];
             var azureContainerName = values.ContainsKey(Constants.AzureContainerName) ? values[Constants.AzureContainerName] : string.Empty;
 
-            var emptyFields = String.IsNullOrEmpty(azureAccountKey) && String.IsNullOrEmpty(azureAccountName);
+            var emptyFields = string.IsNullOrEmpty(azureAccountKey) && string.IsNullOrEmpty(azureAccountName);
 
             validated = true;
             if (emptyFields)
             {
                 if (this.SupportsMultiple)
+                {
                     throw new Exception(Localization.GetString("ErrorRequiredFields", Constants.LocalResourceFile));
+                }
+
                 DeleteAzureFolderMapping(portalId);
                 return true;
             }
+
             if (!this.Validation(azureAccountName, azureAccountKey, azureContainerName))
             {
                 validated = false;
                 return true;
             }
+
             if (this.FolderMappingNameExists(portalId, this.DisplayName,
                 Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
             {
@@ -190,7 +193,7 @@ namespace Dnn.AzureConnector.Components
 
                 settings[Constants.AzureAccountName] = folderProvider.EncryptValue(azureAccountName);
                 settings[Constants.AzureAccountKey] = folderProvider.EncryptValue(azureAccountKey);
-                
+
                 if (values.ContainsKey(Constants.AzureContainerName) && !string.IsNullOrEmpty(values[Constants.AzureContainerName]))
                 {
                     settings[Constants.AzureContainerName] = values[Constants.AzureContainerName];
@@ -204,15 +207,18 @@ namespace Dnn.AzureConnector.Components
                 {
                     folderMapping.FolderMappingSettings[Constants.DirectLink] = "True";
                 }
+
                 if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.UseHttps))
                 {
                     folderMapping.FolderMappingSettings[Constants.UseHttps] = "True";
                 }
+
                 if (folderMapping.MappingName != this.DisplayName && !string.IsNullOrEmpty(this.DisplayName) &&
                    this.DisplayName != DefaultDisplayName)
                 {
                     folderMapping.MappingName = this.DisplayName;
                 }
+
                 if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.SyncBatchSize))
                 {
                     folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString();
@@ -229,24 +235,24 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(azureAccountName))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString("AccountNameCannotBeEmpty.ErrorMessage",
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "AccountNameCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
+
                 if (string.IsNullOrWhiteSpace(azureAccountKey))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString("AccountKeyCannotBeEmpty.ErrorMessage",
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "AccountKeyCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
+
                 StorageCredentials sc = new StorageCredentials(azureAccountName, azureAccountKey);
                 var csa = new CloudStorageAccount(sc, true);
                 var blobClient = csa.CreateCloudBlobClient();
@@ -260,7 +266,8 @@ namespace Dnn.AzureConnector.Components
                     {
                         if (!containers.Any(container => container.Name == azureContainerName))
                         {
-                            throw new Exception(Localization.GetString("ErrorInvalidContainerName",
+                            throw new Exception(Localization.GetString(
+                                "ErrorInvalidContainerName",
                                 Constants.LocalResourceFile));
                         }
                         else
@@ -275,7 +282,8 @@ namespace Dnn.AzureConnector.Components
                 }
                 else
                 {
-                    throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                    throw new Exception(Localization.GetString(
+                        "AccountNotFound.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
             }
@@ -285,12 +293,14 @@ namespace Dnn.AzureConnector.Components
                 {
                     if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccountNotFound")
                     {
-                        throw new Exception(Localization.GetString("AccountNotFound.ErrorMessage",
+                        throw new Exception(Localization.GetString(
+                            "AccountNotFound.ErrorMessage",
                             Constants.LocalResourceFile));
                     }
                     else if (ex.RequestInformation.ExtendedErrorInformation.ErrorCode == "AccessDenied")
                     {
-                        throw new Exception(Localization.GetString("AccessDenied.ErrorMessage",
+                        throw new Exception(Localization.GetString(
+                            "AccessDenied.ErrorMessage",
                             Constants.LocalResourceFile));
                     }
                     else
@@ -303,12 +313,15 @@ namespace Dnn.AzureConnector.Components
             }
             catch (FormatException ex)
             {
-                if (ex.GetType() == typeof (UriFormatException))
+                if (ex.GetType() == typeof(UriFormatException))
                 {
-                    throw new ConnectorArgumentException(Localization.GetString("InvalidAccountName.ErrorMessage",
+                    throw new ConnectorArgumentException(Localization.GetString(
+                        "InvalidAccountName.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
-                throw new ConnectorArgumentException(Localization.GetString("InvalidAccountKey.ErrorMessage",
+
+                throw new ConnectorArgumentException(Localization.GetString(
+                    "InvalidAccountKey.ErrorMessage",
                     Constants.LocalResourceFile));
             }
         }
@@ -336,12 +349,15 @@ namespace Dnn.AzureConnector.Components
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType);
 
             if (folderMappingId != null)
+            {
                 return folderMappings.FirstOrDefault(x => x.FolderMappingID == folderMappingId);
+            }
 
             if (!folderMappings.Any() && autoCreate)
             {
                 return CreateAzureFolderMappingStatic(portalId);
             }
+
             return folderMappings.FirstOrDefault();
         }
 
@@ -350,14 +366,16 @@ namespace Dnn.AzureConnector.Components
             var folderMappings = FolderMappingController.Instance.GetFolderMappings(portalId)
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType).ToList();
 
-            //Create new mapping if none is found.
+            // Create new mapping if none is found.
             if (!folderMappings.Any() && autoCreate)
             {
                 return this.CreateAzureFolderMapping(portalId, DefaultDisplayName);
             }
 
             if ((checkId && string.IsNullOrEmpty(this.Id)) || !this.SupportsMultiple)
+            {
                 return folderMappings.FirstOrDefault();
+            }
 
             var folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString() == this.Id);
 
@@ -365,6 +383,7 @@ namespace Dnn.AzureConnector.Components
             {
                 folderMapping = this.CreateAzureFolderMapping(portalId);
             }
+
             return folderMapping;
         }
 
@@ -399,7 +418,7 @@ namespace Dnn.AzureConnector.Components
                     string.IsNullOrEmpty(mappingName)
                         ? $"{DefaultDisplayName}_{DateTime.Now.Ticks}"
                         : mappingName,
-                FolderProviderType = Constants.FolderProviderType
+                FolderProviderType = Constants.FolderProviderType,
             };
             folderMapping.FolderMappingID = FolderMappingController.Instance.AddFolderMapping(folderMapping);
             return folderMapping;
@@ -475,7 +494,5 @@ namespace Dnn.AzureConnector.Components
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -2,31 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem.Internal;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     public class StandardFolderProvider : FolderProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
-        #region Public Properties
-
         /// <summary>
-        /// Gets a value indicating if the provider requires network connectivity to do its tasks.
+        /// Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.
         /// </summary>
         public override bool RequiresNetworkConnectivity
         {
@@ -49,9 +49,6 @@ namespace DotNetNuke.Services.FileSystem
             get { return true; }
         }
 
-        #endregion
-
-        #region Abstract Methods
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -59,7 +56,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             var filePath = this.GetActualPath(folderMapping, folderPath, fileName);
             var newFilePath = this.GetActualPath(folderMapping, newFolderPath, fileName);
@@ -176,23 +176,24 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
 
             var portalSettings = file.PortalId == PortalSettings.Current?.PortalId ?
-                PortalSettings.Current : 
+                PortalSettings.Current :
                 this.GetPortalSettings(file.PortalId);
 
             var rootFolder = file.PortalId == Null.NullInteger ? Globals.HostPath : portalSettings.HomeDirectory;
 
             var fullPath = rootFolder + file.Folder + file.FileName;
 
-            //check if a filename has a character that is not valid for urls
+            // check if a filename has a character that is not valid for urls
             if (fullPath.IndexOfAny(InvalidFileUrlChars) >= 0)
             {
-                return Globals.LinkClick($"fileid={file.FileId}", 
-                    Null.NullInteger, 
-                    Null.NullInteger, 
-                    true, 
-                    false, 
-                    portalSettings.PortalId, 
-                    portalSettings.EnableUrlLanguage, 
+                return Globals.LinkClick(
+                    $"fileid={file.FileId}",
+                    Null.NullInteger,
+                    Null.NullInteger,
+                    true,
+                    false,
+                    portalSettings.PortalId,
+                    portalSettings.EnableUrlLanguage,
                     portalSettings.GUID.ToString());
             }
 
@@ -342,10 +343,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal virtual string GetHash(IFileInfo file)
         {
             var fileManager = new FileManager();
@@ -357,16 +354,13 @@ namespace DotNetNuke.Services.FileSystem
             return new PortalSettings(portalId);
         }
 
-        #endregion
-
-        #region Protected Methods
         /// <summary>
-        /// Get actual path to a file
+        /// Get actual path to a file.
         /// </summary>
-        /// <param name="folderMapping">Folder Mapping of the folder</param>
-        /// <param name="folderPath">Folder Path where the file is contained</param>
-        /// <param name="fileName">Name of the file</param>
-        /// <returns>A windows supported path to the file</returns>
+        /// <param name="folderMapping">Folder Mapping of the folder.</param>
+        /// <param name="folderPath">Folder Path where the file is contained.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
         {
             var actualFolderPath = this.GetActualPath(folderMapping, folderPath);
@@ -374,42 +368,42 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Get actual path to an IFileInfo
+        /// Get actual path to an IFileInfo.
         /// </summary>
-        /// <param name="file">The file</param>
-        /// <returns>A windows supported path to the file</returns>
+        /// <param name="file">The file.</param>
+        /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(IFileInfo file)
         {
             return file.PhysicalPath;
         }
 
         /// <summary>
-        /// Get actual path to a file in specified folder
+        /// Get actual path to a file in specified folder.
         /// </summary>
-        /// <param name="folder">The folder that contains the file</param>
-        /// <param name="fileName">The file name</param>
-        /// <returns>A windows supported path to the file</returns>
+        /// <param name="folder">The folder that contains the file.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(IFolderInfo folder, string fileName)
         {
             return Path.Combine(folder.PhysicalPath, fileName);
         }
 
         /// <summary>
-        /// Get actual path to a folder in the specified folder mapping
+        /// Get actual path to a folder in the specified folder mapping.
         /// </summary>
-        /// <param name="folderMapping">The folder mapping</param>
-        /// <param name="folderPath">The folder path</param>
-        /// <returns>A windows supported path to the folder</returns>
+        /// <param name="folderMapping">The folder mapping.</param>
+        /// <param name="folderPath">The folder path.</param>
+        /// <returns>A windows supported path to the folder.</returns>
         protected virtual string GetActualPath(FolderMappingInfo folderMapping, string folderPath)
         {
             return PathUtils.Instance.GetPhysicalPath(folderMapping.PortalID, folderPath);
         }
 
         /// <summary>
-        /// Get actual path to a folder
+        /// Get actual path to a folder.
         /// </summary>
-        /// <param name="folder">The folder</param>
-        /// <returns>A windows supported path to the folder</returns>
+        /// <param name="folder">The folder.</param>
+        /// <returns>A windows supported path to the folder.</returns>
         protected virtual string GetActualPath(IFolderInfo folder)
         {
             return folder.PhysicalPath;
@@ -436,17 +430,14 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Get the path relative to the root of the FolderMapping
+        /// Get the path relative to the root of the FolderMapping.
         /// </summary>
-        /// <param name="folderMapping">Path is relative to this</param>
-        /// <param name="path">The path</param>
-        /// <returns>A relative path</returns>
+        /// <param name="folderMapping">Path is relative to this.</param>
+        /// <param name="path">The path.</param>
+        /// <returns>A relative path.</returns>
         protected virtual string GetRelativePath(FolderMappingInfo folderMapping, string path)
         {
             return PathUtils.Instance.GetRelativePath(folderMapping.PortalID, path);
         }
-
-        #endregion
-
     }
 }

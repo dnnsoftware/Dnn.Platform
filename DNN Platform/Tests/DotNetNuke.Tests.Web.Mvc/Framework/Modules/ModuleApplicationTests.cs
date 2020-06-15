@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ModuleApplicationTests
     {
@@ -175,8 +176,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Assert
             controller.Verify(c => c.Execute(It.Is<RequestContext>(rc =>
                     rc.HttpContext == moduleRequestContext.HttpContext &&
-                    rc.RouteData.GetRequiredString("controller") == ControllerName))
-                );
+                    rc.RouteData.GetRequiredString("controller") == ControllerName)));
         }
 
         [Test]
@@ -245,14 +245,13 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             routeData.Values.Add("controller", controllerName);
             routeData.Values.Add("action", actionName);
 
-            var moduleContext = new ModuleInstanceContext {Configuration = new ModuleInfo {ModuleID = 42}};
+            var moduleContext = new ModuleInstanceContext { Configuration = new ModuleInfo { ModuleID = 42 } };
             return new ModuleRequestContext
                         {
                             HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
                             RouteData = routeData,
-                            ModuleContext = moduleContext
+                            ModuleContext = moduleContext,
                         };
         }
-
     }
 }

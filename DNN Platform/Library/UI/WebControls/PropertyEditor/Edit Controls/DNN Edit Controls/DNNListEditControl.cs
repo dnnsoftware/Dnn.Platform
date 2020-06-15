@@ -1,26 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -28,72 +23,72 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNListEditControl control provides a standard UI component for selecting
-    /// from Lists
+    /// from Lists.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
     public class DNNListEditControl : EditControl, IPostBackEventHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DNNListEditControl));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNListEditControl));
         private List<ListEntryInfo> _listEntries;
-        private string _listName = "";
+        private string _listName = string.Empty;
 
         public DNNListEditControl()
         {
             this.ValueField = ListBoundField.Value;
             this.TextField = ListBoundField.Text;
-            this.ParentKey = "";
+            this.ParentKey = string.Empty;
             this.SortAlphabetically = false;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Determines whether the List Auto Posts Back
+        /// Gets or sets a value indicating whether determines whether the List Auto Posts Back.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool AutoPostBack { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// If true the list will be sorted on the value of Text before rendering
+        /// Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool SortAlphabetically { get; set; }
-        
-        #region "Protected Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IntegerValue returns the Integer representation of the Value
+        /// Gets integerValue returns the Integer representation of the Value.
         /// </summary>
-        /// <value>An integer representing the Value</value>
+        /// <value>An integer representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected int IntegerValue
         {
             get
             {
                 int intValue = Null.NullInteger;
-				if (this.Value == null || string.IsNullOrEmpty((string)this.Value))
-				{
-					return intValue;
-				}
-				try
+                if (this.Value == null || string.IsNullOrEmpty((string)this.Value))
+                {
+                    return intValue;
+                }
+
+                try
                 {
                     intValue = Convert.ToInt32(this.Value);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
+
                 return intValue;
             }
         }
 
         /// <summary>
-        /// List gets the List associated with the control
+        /// Gets list gets the List associated with the control.
         /// </summary>
-        [Obsolete("Obsoleted in 6.0.1 use ListEntries instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use ListEntries instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         protected ListEntryInfoCollection List
         {
             get
@@ -104,13 +99,13 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the ListEntryInfo objects associated witht the control
+        /// Gets the ListEntryInfo objects associated witht the control.
         /// </summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
             get
             {
-                if(this._listEntries == null)
+                if (this._listEntries == null)
                 {
                     var listController = new ListController();
                     if (this.SortAlphabetically)
@@ -127,10 +122,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ListName is the name of the List to display
+        /// Gets or sets listName is the name of the List to display.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual string ListName
@@ -141,8 +135,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._listName = this.DataField;
                 }
+
                 return this._listName;
             }
+
             set
             {
                 this._listName = value;
@@ -151,9 +147,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldIntegerValue returns the Integer representation of the OldValue
+        /// Gets oldIntegerValue returns the Integer representation of the OldValue.
         /// </summary>
-        /// <value>An integer representing the OldValue</value>
+        /// <value>An integer representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected int OldIntegerValue
         {
@@ -162,24 +158,25 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 if (this.OldValue == null || string.IsNullOrEmpty(this.OldValue.ToString()))
                 {
-					return intValue;
-	            }
-	            try
+                    return intValue;
+                }
+
+                try
                 {
-					//Try and cast the value to an Integer
+                    // Try and cast the value to an Integer
                     intValue = Convert.ToInt32(this.OldValue);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
+
                 return intValue;
             }
         }
 
         /// <summary>
-        /// The parent key of the List to display
+        /// Gets or sets the parent key of the List to display.
         /// </summary>
         protected virtual string ParentKey { get; set; }
 
@@ -192,20 +189,20 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// The field to display in the combo
+        /// Gets or sets the field to display in the combo.
         /// </summary>
         protected virtual ListBoundField TextField { get; set; }
 
         /// <summary>
-        /// The field to use as the combo item values
+        /// Gets or sets the field to use as the combo item values.
         /// </summary>
         protected virtual ListBoundField ValueField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldStringValue returns the Boolean representation of the OldValue
+        /// Gets oldStringValue returns the Boolean representation of the OldValue.
         /// </summary>
-        /// <value>A String representing the OldValue</value>
+        /// <value>A String representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
@@ -217,9 +214,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -227,24 +224,21 @@ namespace DotNetNuke.UI.WebControls
             {
                 return Convert.ToString(this.Value);
             }
+
             set
             {
                 if (this.ValueField == ListBoundField.Id)
                 {
-					//Integer type field
-                    this.Value = Int32.Parse(value);
+                    // Integer type field
+                    this.Value = int.Parse(value);
                 }
                 else
                 {
-					//String type Field
+                    // String type Field
                     this.Value = value;
                 }
             }
         }
-		
-		#endregion
-
-        #region IPostBackEventHandler Members
 
         public void RaisePostBackEvent(string eventArgument)
         {
@@ -254,34 +248,27 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
-
         public event PropertyChangedEventHandler ItemChanged;
-		
-		#region "Private Methods"
 
         private PropertyEditorEventArgs GetEventArgs()
         {
             var args = new PropertyEditorEventArgs(this.Name);
             if (this.ValueField == ListBoundField.Id)
             {
-				//This is an Integer Value
+                // This is an Integer Value
                 args.Value = this.IntegerValue;
                 args.OldValue = this.OldIntegerValue;
             }
             else
             {
-				//This is a String Value
+                // This is a String Value
                 args.Value = this.StringValue;
                 args.OldValue = this.OldStringValue;
             }
+
             args.StringValue = this.StringValue;
             return args;
         }
-		
-		#endregion
-
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -290,14 +277,14 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnAttributesChanged()
         {
-			//Get the List settings out of the "Attributes"
-            if ((this.CustomAttributes != null))
+            // Get the List settings out of the "Attributes"
+            if (this.CustomAttributes != null)
             {
                 foreach (Attribute attribute in this.CustomAttributes)
                 {
                     if (attribute is ListAttribute)
                     {
-                        var listAtt = (ListAttribute) attribute;
+                        var listAtt = (ListAttribute)attribute;
                         this.ListName = listAtt.ListName;
                         this.ParentKey = listAtt.ParentKey;
                         this.TextField = listAtt.TextField;
@@ -311,17 +298,17 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            base.OnValueChanged(this.GetEventArgs());
+            this.OnValueChanged(this.GetEventArgs());
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnItemChanged runs when the Item has changed
+        /// OnItemChanged runs when the Item has changed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemChanged(PropertyEditorEventArgs e)
@@ -334,7 +321,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
@@ -355,6 +342,7 @@ namespace DotNetNuke.UI.WebControls
                     entry = objListController.GetListEntryInfo(this.ListName, this.StringValue);
                     break;
             }
+
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             if (entry != null)
@@ -376,34 +364,35 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(entryText);
             }
-			
-			//Close Select Tag
+
+            // Close Select Tag
             writer.RenderEndTag();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            //Render the Select Tag
+            // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
-			writer.AddAttribute("data-name", this.Name);
-			writer.AddAttribute("data-list", this.ListName);
-			writer.AddAttribute("data-category", this.Category);
-			writer.AddAttribute("data-editor", "DNNListEditControl");
+            writer.AddAttribute("data-name", this.Name);
+            writer.AddAttribute("data-list", this.ListName);
+            writer.AddAttribute("data-category", this.Category);
+            writer.AddAttribute("data-editor", "DNNListEditControl");
             if (this.AutoPostBack)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, this.Page.ClientScript.GetPostBackEventReference(this, this.ID));
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
-            //Add the Not Specified Option
+            // Add the Not Specified Option
             if (this.ValueField == ListBoundField.Text)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
@@ -412,9 +401,10 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
             }
+
             if (this.StringValue == Null.NullString)
             {
-				//Add the Selected Attribute
+                // Add the Selected Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
 
@@ -422,13 +412,13 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write(defaultText);
             writer.RenderEndTag();
-            
+
             foreach (ListEntryInfo item in this.ListEntries)
             {
                 string itemValue = Null.NullString;
-                
-				//Add the Value Attribute
-				switch (this.ValueField)
+
+                // Add the Value Attribute
+                switch (this.ValueField)
                 {
                     case ListBoundField.Id:
                         itemValue = item.EntryID.ToString();
@@ -440,15 +430,16 @@ namespace DotNetNuke.UI.WebControls
                         itemValue = item.Value;
                         break;
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, itemValue);
                 if (this.StringValue == itemValue)
                 {
-					//Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-                
-				//Render Option Tag
-				writer.RenderBeginTag(HtmlTextWriterTag.Option);
+
+                // Render Option Tag
+                writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 switch (this.TextField)
                 {
                     case ListBoundField.Id:
@@ -461,13 +452,12 @@ namespace DotNetNuke.UI.WebControls
                         writer.Write(item.Value.Trim());
                         break;
                 }
+
                 writer.RenderEndTag();
             }
-            
-			//Close Select Tag
-			writer.RenderEndTag();
+
+            // Close Select Tag
+            writer.RenderEndTag();
         }
-		
-		#endregion
     }
 }

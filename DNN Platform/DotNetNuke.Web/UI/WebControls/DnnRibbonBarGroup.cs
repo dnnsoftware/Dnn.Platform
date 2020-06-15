@@ -1,24 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
     [ParseChildren(true)]
     public class DnnRibbonBarGroup : WebControl
     {
         private bool _CheckToolVisibility = true;
         private HtmlGenericControl _contentContainer;
 
-        public DnnRibbonBarGroup() : base("div")
+        public DnnRibbonBarGroup()
+            : base("div")
         {
             this.CssClass = "dnnRibbonGroup";
         }
@@ -44,6 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._CheckToolVisibility;
             }
+
             set
             {
                 this._CheckToolVisibility = value;
@@ -91,13 +88,14 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool CheckVisibility()
         {
             bool returnValue = true;
-            if ((this.Visible && this.CheckToolVisibility))
+            if (this.Visible && this.CheckToolVisibility)
             {
-                //Hide group if all tools are invisible
+                // Hide group if all tools are invisible
                 bool foundTool = false;
                 ControlCollection controls = this._contentContainer.Controls;
                 returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);
             }
+
             return returnValue;
         }
 
@@ -107,10 +105,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
             foreach (Control ctrl in children)
             {
-                if ((ctrl is IDnnRibbonBarTool))
+                if (ctrl is IDnnRibbonBarTool)
                 {
                     foundTool = true;
-                    if ((ctrl.Visible))
+                    if (ctrl.Visible)
                     {
                         returnValue = true;
                         break;
@@ -119,9 +117,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 else
                 {
                     ControlCollection controls = ctrl.Controls;
-                    if ((this.AreChildToolsVisible(ref controls, ref foundTool)))
+                    if (this.AreChildToolsVisible(ref controls, ref foundTool))
                     {
-                        if ((foundTool))
+                        if (foundTool)
                         {
                             returnValue = true;
                             break;
@@ -130,7 +128,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
 
-            if ((!foundTool))
+            if (!foundTool)
             {
                 return true;
             }
@@ -146,11 +144,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public override void RenderControl(HtmlTextWriter writer)
         {
-            if ((this.CheckVisibility()))
+            if (this.CheckVisibility())
             {
-                base.RenderBeginTag(writer);
-                base.RenderChildren(writer);
-                base.RenderEndTag(writer);
+                this.RenderBeginTag(writer);
+                this.RenderChildren(writer);
+                this.RenderEndTag(writer);
             }
         }
     }

@@ -1,36 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-
-using Localize = DotNetNuke.Services.Localization.Localization;
-
-#endregion
-
 namespace DotNetNuke.Services.Mail
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Mail;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
+    using Localize = DotNetNuke.Services.Localization.Localization;
+
     public class Mail
     {
-        #region Private Methods
-
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
 
         private static string SendMailInternal(MailMessage mailMessage, string subject, string body, MailPriority priority,
@@ -40,15 +33,14 @@ namespace DotNetNuke.Services.Mail
             string retValue = string.Empty;
 
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
-            mailMessage.IsBodyHtml = (bodyFormat == MailFormat.Html);
-
+            mailMessage.IsBodyHtml = bodyFormat == MailFormat.Html;
 
             // Only modify senderAdress if smtpAuthentication is enabled
-            // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM. 
+            // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM.
             if (smtpAuthentication == "1" || smtpAuthentication == "2")
             {
-                //if the senderAddress is the email address of the Host then switch it smtpUsername if different
-                //if display name of senderAddress is empty, then use Host.HostTitle for it
+                // if the senderAddress is the email address of the Host then switch it smtpUsername if different
+                // if display name of senderAddress is empty, then use Host.HostTitle for it
                 if (mailMessage.Sender != null)
                 {
                     var senderAddress = mailMessage.Sender.Address;
@@ -60,11 +52,13 @@ namespace DotNetNuke.Services.Mail
                         senderAddress = smtpUsername;
                         needUpdateSender = true;
                     }
+
                     if (string.IsNullOrEmpty(senderDisplayName))
                     {
                         senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
                         needUpdateSender = true;
                     }
+
                     if (needUpdateSender)
                     {
                         mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
@@ -76,19 +70,19 @@ namespace DotNetNuke.Services.Mail
                 }
             }
 
-            //attachments
+            // attachments
             foreach (var attachment in attachments)
             {
                 mailMessage.Attachments.Add(attachment);
             }
 
-            //message
+            // message
             mailMessage.SubjectEncoding = bodyEncoding;
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(subject, true);
             mailMessage.BodyEncoding = bodyEncoding;
 
-            //added support for multipart html messages
-            //add text part as alternate view
+            // added support for multipart html messages
+            // add text part as alternate view
             var PlainView = AlternateView.CreateAlternateViewFromString(ConvertToText(body), null, "text/plain");
             mailMessage.AlternateViews.Add(PlainView);
             if (mailMessage.IsBodyHtml)
@@ -102,7 +96,7 @@ namespace DotNetNuke.Services.Mail
             {
                 try
                 {
-                    //to workaround problem in 4.0 need to specify host name
+                    // to workaround problem in 4.0 need to specify host name
                     using (var smtpClient = new SmtpClient())
                     {
                         var smtpHostParts = smtpServer.Split(':');
@@ -118,27 +112,29 @@ namespace DotNetNuke.Services.Mail
 
                             smtpClient.Port = port;
                         }
-                        // else the port defaults to 25 by .NET when not set
 
+                        // else the port defaults to 25 by .NET when not set
                         smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
                         smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
 
                         switch (smtpAuthentication)
                         {
                             case "":
-                            case "0": //anonymous
+                            case "0": // anonymous
                                 break;
-                            case "1": //basic
-                                if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
+                            case "1": // basic
+                                if (!string.IsNullOrEmpty(smtpUsername) && !string.IsNullOrEmpty(smtpPassword))
                                 {
                                     smtpClient.UseDefaultCredentials = false;
                                     smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
                                 }
+
                                 break;
-                            case "2": //NTLM
+                            case "2": // NTLM
                                 smtpClient.UseDefaultCredentials = true;
                                 break;
                         }
+
                         smtpClient.EnableSsl = smtpEnableSSL;
                         smtpClient.Send(mailMessage);
                         smtpClient.Dispose();
@@ -156,7 +152,7 @@ namespace DotNetNuke.Services.Mail
                         retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
                     }
 
-                    //mail configuration problem
+                    // mail configuration problem
                     if (exc.InnerException != null)
                     {
                         retValue += string.Concat(exc.Message, Environment.NewLine, exc.InnerException.Message);
@@ -181,10 +177,6 @@ namespace DotNetNuke.Services.Mail
             return retValue;
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static string ConvertToText(string sHTML)
         {
             var formattedHtml = HtmlUtils.FormatText(sHTML, true);
@@ -195,11 +187,13 @@ namespace DotNetNuke.Services.Mail
         public static bool IsValidEmailAddress(string Email, int portalid)
         {
             string pattern = Null.NullString;
-            //During install Wizard we may not have a valid PortalID
+
+            // During install Wizard we may not have a valid PortalID
             if (portalid != Null.NullInteger)
             {
                 pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"]);
             }
+
             pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
             return Regex.Match(Email, pattern).Success;
         }
@@ -228,7 +222,7 @@ namespace DotNetNuke.Services.Mail
 
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
-            if ((string.IsNullOrWhiteSpace(Host.SMTPServer)))
+            if (string.IsNullOrWhiteSpace(Host.SMTPServer))
             {
                 return "SMTP Server not configured";
             }
@@ -247,9 +241,9 @@ namespace DotNetNuke.Services.Mail
         /// <summary>
         /// <summary>Send an email notification</summary>
         /// </summary>
-        /// <param name="user">The user to whom the message is being sent</param>
-        /// <param name="msgType">The type of message being sent</param>
-        /// <param name="settings">Portal Settings</param>
+        /// <param name="user">The user to whom the message is being sent.</param>
+        /// <param name="msgType">The type of message being sent.</param>
+        /// <param name="settings">Portal Settings.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -262,16 +256,16 @@ namespace DotNetNuke.Services.Mail
         /// <summary>
         /// <summary>Send an email notification</summary>
         /// </summary>
-        /// <param name="portalId">The PortalId of the user to whom the message is being sent</param>
-        /// <param name="userId">The UserId of the user to whom the message is being sent</param>
-        /// <param name="msgType">The type of message being sent</param>
-        /// <param name="settings">Portal Settings</param>
+        /// <param name="portalId">The PortalId of the user to whom the message is being sent.</param>
+        /// <param name="userId">The UserId of the user to whom the message is being sent.</param>
+        /// <param name="msgType">The type of message being sent.</param>
+        /// <param name="settings">Portal Settings.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string SendMail(int portalId, int userId, MessageType msgType, PortalSettings settings)
         {
-            //Send Notification to User
+            // Send Notification to User
             var user = UserController.Instance.GetUserById(portalId, userId);
             int toUser = user.UserID;
             string locale = user.Profile.PreferredLocale;
@@ -308,10 +302,11 @@ namespace DotNetNuke.Services.Mail
                         custom = new ArrayList
                         {
                             HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
-                            HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", String.Empty, null,
-                                user, Scope.SystemMessages, ref propertyNotFound))
+                            HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", string.Empty, null,
+                                user, Scope.SystemMessages, ref propertyNotFound)),
                         };
                     }
+
                     break;
                 case MessageType.PasswordReminder:
                     subject = "EMAIL_PASSWORD_REMINDER_SUBJECT";
@@ -343,11 +338,11 @@ namespace DotNetNuke.Services.Mail
                     break;
             }
 
-            subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
-            body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
+            subject = Localize.GetSystemMessage(locale, settings, subject, user, Localize.GlobalResourceFile, custom, string.Empty, settings.AdministratorId);
+            body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, string.Empty, settings.AdministratorId);
 
             var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
-                String.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
+                string.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
             SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
 
             return Null.NullString;
@@ -375,7 +370,7 @@ namespace DotNetNuke.Services.Mail
                                       string smtpUsername, string smtpPassword)
         {
             MailFormat bodyFormat = MailFormat.Text;
-            if (!String.IsNullOrEmpty(bodyType))
+            if (!string.IsNullOrEmpty(bodyType))
             {
                 switch (bodyType.ToLowerInvariant())
                 {
@@ -387,7 +382,8 @@ namespace DotNetNuke.Services.Mail
                         break;
                 }
             }
-            return SendMail(mailFrom, mailTo, "", bcc, MailPriority.Normal, subject, bodyFormat, Encoding.UTF8, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword);
+
+            return SendMail(mailFrom, mailTo, string.Empty, bcc, MailPriority.Normal, subject, bodyFormat, Encoding.UTF8, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword);
         }
 
         /// -----------------------------------------------------------------------------
@@ -418,146 +414,153 @@ namespace DotNetNuke.Services.Mail
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body,
                                       string attachment, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            return SendMail(mailFrom,
-                            mailTo,
-                            cc,
-                            bcc,
-                            mailFrom,
-                            priority,
-                            subject,
-                            bodyFormat,
-                            bodyEncoding,
-                            body,
-                            attachment.Split('|'),
-                            smtpServer,
-                            smtpAuthentication,
-                            smtpUsername,
-                            smtpPassword,
-                            smtpEnableSSL);
+            return SendMail(
+                mailFrom,
+                mailTo,
+                cc,
+                bcc,
+                mailFrom,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachment.Split('|'),
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL);
         }
 
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding, string body,
                                       string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            return SendMail(mailFrom,
-                            mailTo,
-                            cc,
-                            bcc,
-                            mailFrom,
-                            priority,
-                            subject,
-                            bodyFormat,
-                            bodyEncoding,
-                            body,
-                            attachments,
-                            smtpServer,
-                            smtpAuthentication,
-                            smtpUsername,
-                            smtpPassword,
-                            smtpEnableSSL);
+            return SendMail(
+                mailFrom,
+                mailTo,
+                cc,
+                bcc,
+                mailFrom,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL);
         }
 
         /// <summary>
         /// Sends an email based on params.
         /// </summary>
-        /// <param name="mailFrom">Email sender</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons</param>
-        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons</param>
-        /// <param name="replyTo">Reply-to email to be displayed for recipients</param>
-        /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/></param>
-        /// <param name="subject">Subject of email</param>
-        /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/></param>
-        /// <param name="bodyEncoding">Email Encoding from System.Text.Encoding</param>
-        /// <param name="body">Body of email</param>
-        /// <param name="attachments">List of filenames to attach to email</param>
-        /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings</param>
+        /// <param name="mailFrom">Email sender.</param>
+        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="replyTo">Reply-to email to be displayed for recipients.</param>
+        /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
+        /// <param name="subject">Subject of email.</param>
+        /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/>.</param>
+        /// <param name="bodyEncoding">Email Encoding from System.Text.Encoding.</param>
+        /// <param name="body">Body of email.</param>
+        /// <param name="attachments">List of filenames to attach to email.</param>
+        /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpEnableSSL">Enable or disable SSL.</param>
         /// <returns>Returns an empty string on success mail sending. Otherwise returns an error description.</returns>
-        /// <example>SendMail(	"admin@email.com",
-        ///						"user@email.com",
-        ///						"user1@email.com;user2@email.com",
-        ///						"user3@email.com",
-        ///						"no-reply@email.com",
-        ///						MailPriority.Low,
-        ///						"This is test email",
-        ///						MailFormat.Text,
-        ///						Encoding.UTF8,
-        ///						"Test body. Test body. Test body.",
-        ///						new string[] {"d:\documents\doc1.doc","d:\documents\doc2.doc"},
-        ///						"mail.email.com",
-        ///						"1",
-        ///						"admin@email.com",
-        ///						"AdminPassword",
-        ///						false);
-        ///	</example>
+        /// <example>SendMail(  "admin@email.com",
+        ///                         "user@email.com",
+        ///                         "user1@email.com;user2@email.com",
+        ///                         "user3@email.com",
+        ///                         "no-reply@email.com",
+        ///                         MailPriority.Low,
+        ///                         "This is test email",
+        ///                         MailFormat.Text,
+        ///                         Encoding.UTF8,
+        ///                         "Test body. Test body. Test body.",
+        ///                         new string[] {"d:\documents\doc1.doc","d:\documents\doc2.doc"},
+        ///                         "mail.email.com",
+        ///                         "1",
+        ///                         "admin@email.com",
+        ///                         "AdminPassword",
+        ///                         false).
+        ///     </example>
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             var attachmentList = (from attachment in attachments
-                                  where !String.IsNullOrEmpty(attachment)
+                                  where !string.IsNullOrEmpty(attachment)
                                   select new Attachment(attachment))
                                   .ToList();
 
-            return SendMail(mailFrom,
-                            mailTo,
-                            cc,
-                            bcc,
-                            replyTo,
-                            priority,
-                            subject,
-                            bodyFormat,
-                            bodyEncoding,
-                            body,
-                            attachmentList,
-                            smtpServer,
-                            smtpAuthentication,
-                            smtpUsername,
-                            smtpPassword,
-                            smtpEnableSSL);
+            return SendMail(
+                mailFrom,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachmentList,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL);
         }
 
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                               string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            return SendMail(mailFrom,
-                    string.Empty,
-                    mailTo,
-                    cc,
-                    bcc,
-                    replyTo,
-                    priority,
-                    subject,
-                    bodyFormat,
-                    bodyEncoding,
-                    body,
-                    attachments,
-                    smtpServer,
-                    smtpAuthentication,
-                    smtpUsername,
-                    smtpPassword,
-                    smtpEnableSSL);
+            return SendMail(
+                mailFrom,
+                string.Empty,
+                mailTo,
+                cc,
+                bcc,
+                replyTo,
+                priority,
+                subject,
+                bodyFormat,
+                bodyEncoding,
+                body,
+                attachments,
+                smtpServer,
+                smtpAuthentication,
+                smtpUsername,
+                smtpPassword,
+                smtpEnableSSL);
         }
 
         public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            //SMTP server configuration
+            // SMTP server configuration
             if (string.IsNullOrWhiteSpace(smtpServer) && !string.IsNullOrWhiteSpace(Host.SMTPServer))
             {
                 smtpServer = Host.SMTPServer;
             }
+
             if (string.IsNullOrEmpty(smtpAuthentication) && !string.IsNullOrEmpty(Host.SMTPAuthentication))
             {
                 smtpAuthentication = Host.SMTPAuthentication;
             }
+
             if (string.IsNullOrEmpty(smtpUsername) && !string.IsNullOrEmpty(Host.SMTPUsername))
             {
                 smtpUsername = Host.SMTPUsername;
             }
+
             if (string.IsNullOrEmpty(smtpPassword) && !string.IsNullOrEmpty(Host.SMTPPassword))
             {
                 smtpPassword = Host.SMTPPassword;
@@ -570,8 +573,9 @@ namespace DotNetNuke.Services.Mail
                     ? new MailMessage
                     {
                         From =
-                            new MailAddress(mailFrom,
-                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName)
+                            new MailAddress(
+                                mailFrom,
+                                UserController.GetUserByEmail(PortalSettings.Current.PortalId, mailFrom).DisplayName),
                     }
                     : new MailMessage { From = new MailAddress(mailFrom) };
             }
@@ -585,24 +589,27 @@ namespace DotNetNuke.Services.Mail
                 mailMessage.Sender = new MailAddress(mailSender);
             }
 
-            if (!String.IsNullOrEmpty(mailTo))
+            if (!string.IsNullOrEmpty(mailTo))
             {
-                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 mailTo = mailTo.Replace(";", ",");
                 mailMessage.To.Add(mailTo);
             }
-            if (!String.IsNullOrEmpty(cc))
+
+            if (!string.IsNullOrEmpty(cc))
             {
-                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 cc = cc.Replace(";", ",");
                 mailMessage.CC.Add(cc);
             }
-            if (!String.IsNullOrEmpty(bcc))
+
+            if (!string.IsNullOrEmpty(bcc))
             {
-                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 bcc = bcc.Replace(";", ",");
                 mailMessage.Bcc.Add(bcc);
             }
+
             if (replyTo != string.Empty)
             {
                 mailMessage.ReplyToList.Add(new MailAddress(replyTo));
@@ -614,7 +621,5 @@ namespace DotNetNuke.Services.Mail
                     attachments, smtpServer, smtpAuthentication, smtpUsername, smtpPassword, smtpEnableSSL);
             }
         }
-
-        #endregion
     }
 }

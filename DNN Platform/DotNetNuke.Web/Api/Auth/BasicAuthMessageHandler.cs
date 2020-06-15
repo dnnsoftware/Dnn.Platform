@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Web.ConfigSection;
-
 namespace DotNetNuke.Web.Api.Auth
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Principal;
+    using System.Text;
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Web.ConfigSection;
+
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
         public override string AuthScheme => "Basic";
@@ -29,7 +30,7 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(this.NeedsAuthentication(request))
+            if (this.NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
@@ -68,8 +69,8 @@ namespace DotNetNuke.Web.Api.Auth
             var status = UserLoginStatus.LOGIN_FAILURE;
             string ipAddress = request.GetIPAddress();
 
-            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", "",
-                                                        "a portal", ipAddress ?? "", ref status);
+            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", string.Empty,
+                                                        "a portal", ipAddress ?? string.Empty, ref status);
 
             if (user != null)
             {
@@ -90,14 +91,14 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             string authorization = request?.Headers.Authorization.Parameter;
-            if (String.IsNullOrEmpty(authorization))
+            if (string.IsNullOrEmpty(authorization))
             {
                 return null;
             }
 
             string decoded = this._encoding.GetString(Convert.FromBase64String(authorization));
 
-            string[] parts = decoded.Split(new[] {':'}, 2);
+            string[] parts = decoded.Split(new[] { ':' }, 2);
             if (parts.Length < 2)
             {
                 return null;
@@ -105,8 +106,6 @@ namespace DotNetNuke.Web.Api.Auth
 
             return new UserCredentials(parts[0], parts[1]);
         }
-
-        #region Nested type: UserCredentials
 
         internal class UserCredentials
         {
@@ -117,9 +116,8 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             public string Password { get; set; }
+
             public string UserName { get; set; }
         }
-
-        #endregion
     }
 }

@@ -1,22 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
 namespace DotNetNuke.Services.Authentication
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationLogoffBase class provides a base class for Authentiication 
-    /// Logoff controls
+    /// The AuthenticationLogoffBase class provides a base class for Authentiication
+    /// Logoff controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLogoffBase : UserModuleBase
@@ -25,7 +21,7 @@ namespace DotNetNuke.Services.Authentication
         private string _RedirectURL = Null.NullString;
 
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered 
+        /// Gets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>
@@ -40,7 +36,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Type of Authentication associated with this control
+        /// Gets or sets and Sets the Type of Authentication associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType
@@ -49,6 +45,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 return this._AuthenticationType;
             }
+
             set
             {
                 this._AuthenticationType = value;
@@ -56,6 +53,7 @@ namespace DotNetNuke.Services.Authentication
         }
 
         public event EventHandler LogOff;
+
         public event EventHandler Redirect;
 
         protected virtual void OnLogOff(EventArgs a)

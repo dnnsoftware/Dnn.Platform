@@ -2,23 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Entities.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+
     /// <summary>Implementation of <see cref="IAttachmentController"/>.</summary>
     public class AttachmentController : IAttachmentController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AttachmentController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
+
         public AttachmentController()
             : this(Util.GetContentController())
         {
@@ -31,14 +33,12 @@ namespace DotNetNuke.Entities.Content
 
         private readonly IContentController _contentController;
 
-        #region Implementation of IFileController
-
         private void AddToContent(int contentItemId, Action<ContentItem> action)
         {
             var contentItem = this._contentController.GetContentItem(contentItemId);
 
             action(contentItem);
-            
+
             this._contentController.UpdateContentItem(contentItem);
         }
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Content
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
         }
-        
+
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddVideosToContent(contentItemId, new[] { fileInfo });
@@ -92,10 +92,6 @@ namespace DotNetNuke.Entities.Content
 
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
-
-        #endregion
-
-        #region Internal utility methods
 
         private static void SerializeToMetadata(IList<IFileInfo> files, NameValueCollection nvc, string key)
         {
@@ -159,7 +155,7 @@ namespace DotNetNuke.Entities.Content
             {
                 yield break;
             }
-            
+
             foreach (var file in content.FromJson<int[]>().ToArray())
             {
                 IFileInfo fileInfo = null;
@@ -174,7 +170,6 @@ namespace DotNetNuke.Entities.Content
                     // On second thought, I don't know how much sense it makes to be throwing an exception here.  If the file
                     // has been deleted or is otherwise unavailable, there's really no reason we can't continue on handling the
                     // ContentItem without its attachment.  Better than the yellow screen of death? --cbond
-
                     Logger.WarnFormat("Unable to load file properties for File ID {0}", file);
                 }
 
@@ -196,15 +191,9 @@ namespace DotNetNuke.Entities.Content
             return fileList.ToJson();
         }
 
-        #endregion
-
-        #region Private
-
         internal const string FilesKey = "Files";
         internal const string ImageKey = "Images";
         internal const string VideoKey = "Videos";
         internal const string TitleKey = "Title";
-
-        #endregion
     }
 }

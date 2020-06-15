@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Data;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 {
+    using System.Data;
+
     internal class SubscriptionTypeDataReaderMockHelper
     {
         internal static IDataReader CreateEmptySubscriptionTypeReader()

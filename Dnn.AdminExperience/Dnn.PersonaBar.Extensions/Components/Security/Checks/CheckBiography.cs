@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+
     public class CheckBiography : IAuditCheck
     {
         public string Id => "CheckBiography";

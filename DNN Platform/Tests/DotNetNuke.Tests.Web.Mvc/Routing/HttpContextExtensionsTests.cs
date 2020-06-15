@@ -2,42 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc.Routing
 {
+    using System.Web;
+
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class HttpContextExtensionsTests
     {
         [Test]
         public void GetModuleRequestResult_Returns_ModuleRequestResult_If_Present()
         {
-            //Arrange
+            // Arrange
             var httpContext = MockHelper.CreateMockHttpContext();
             var expectedResult = new ModuleRequestResult();
             httpContext.Items[HttpContextExtensions.ModuleRequestResultKey] = expectedResult;
 
-            //Act
+            // Act
             var result = httpContext.GetModuleRequestResult();
 
-            //Assert
+            // Assert
             Assert.AreSame(expectedResult, result);
         }
 
         [Test]
         public void GetModuleRequestResult_Returns_Null_If_Not_Present()
         {
-            //Arrange
+            // Arrange
             var httpContext = MockHelper.CreateMockHttpContext();
 
-            //Act
+            // Act
             var result = httpContext.GetModuleRequestResult();
 
-            //Assert
+            // Assert
             Assert.IsNull(result);
         }
 
@@ -49,7 +50,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
             var expectedResult = new ModuleRequestResult();
             httpContext.Items[HttpContextExtensions.ModuleRequestResultKey] = expectedResult;
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsTrue(httpContext.HasModuleRequestResult());
         }
 

@@ -1,28 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds
+    ///   Helper class that provides memory and disk caching of the downloaded feeds.
     /// </summary>
     internal class RssDownloadManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RssDownloadManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
         private const string RSS_Dir = "/RSS/";
         private static readonly RssDownloadManager _theManager = new RssDownloadManager();
 
@@ -129,10 +124,10 @@ namespace DotNetNuke.Services.Syndication
                     {
                         File.Delete(rssFilename);
                     }
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
 
                     // try next file
                     continue;

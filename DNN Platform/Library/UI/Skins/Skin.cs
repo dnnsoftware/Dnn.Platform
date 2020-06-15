@@ -1,99 +1,84 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Application;
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Modules.Communications;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.ControlPanels;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic;
-
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Modules.Communications;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.ControlPanels;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.Skins.EventListeners;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.VisualBasic;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Skins
-    /// Class	 : Skin
+    /// Class    : Skin
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Skin is the base for the Skins
+    /// Skin is the base for the Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class Skin : UserControlBase
     {
-        #region Public Constants
-
         // ReSharper disable InconsistentNaming
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
         public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
         public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
 
         public const string OnInitMessage = "Skin_InitMessage";
-		public const string OnInitMessageType = "Skin_InitMessageType";
+        public const string OnInitMessageType = "Skin_InitMessageType";
 
         private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
+
         // ReSharper restore InconsistentNaming
-
-        #endregion
-
-        #region Private Members
-
         private ArrayList _actionEventListeners;
         private Control _controlPanel;
         private Dictionary<string, Pane> _panes;
-
-        #endregion
 
         public Skin()
         {
             this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -111,16 +96,14 @@ namespace DotNetNuke.UI.Skins
         }
 
         protected IModuleControlPipeline ModuleControlPipeline { get; }
-        protected INavigationManager NavigationManager { get; }
-        #endregion
 
-        #region Friend Properties
-        
+        protected INavigationManager NavigationManager { get; }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleCommunicate instance for the skin
+        /// Gets the ModuleCommunicate instance for the skin.
         /// </summary>
-        /// <returns>The ModuleCommunicate instance for the Skin</returns>
+        /// <returns>The ModuleCommunicate instance for the Skin.</returns>
         internal ModuleCommunicate Communicator
         {
             get
@@ -128,9 +111,7 @@ namespace DotNetNuke.UI.Skins
                 return this._communicator;
             }
         }
-        #endregion
 
-        #region Public Properties
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a Dictionary of Panes.
@@ -148,7 +129,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an ArrayList of ActionEventListeners
+        /// Gets or sets an ArrayList of ActionEventListeners.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ArrayList ActionEventListeners
@@ -157,6 +138,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._actionEventListeners ?? (this._actionEventListeners = new ArrayList());
             }
+
             set
             {
                 this._actionEventListeners = value;
@@ -165,9 +147,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path for this skin
+        /// Gets the Path for this skin.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string SkinPath
         {
@@ -179,21 +161,17 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Source for this skin
+        /// Gets or sets the Source for this skin.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string SkinSrc { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
         {
             if (control != null)
             {
-                if (!String.IsNullOrEmpty(message))
+                if (!string.IsNullOrEmpty(message))
                 {
                     var messagePlaceHolder = ControlUtilities.FindControl<PlaceHolder>(control, "MessagePlaceHolder", true);
                     if (messagePlaceHolder != null)
@@ -208,7 +186,7 @@ namespace DotNetNuke.UI.Skins
 
         private static void AddPageMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
         {
-            if (!String.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(message))
             {
                 Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
 
@@ -222,16 +200,22 @@ namespace DotNetNuke.UI.Skins
 
         private static Control FindControlRecursive(Control rootControl, string controlId)
         {
-            if (rootControl.ID == controlId) return rootControl;
+            if (rootControl.ID == controlId)
+            {
+                return rootControl;
+            }
 
             foreach (Control controlToSearch in rootControl.Controls)
             {
                 Control controlToReturn = FindControlRecursive(controlToSearch, controlId);
-                if (controlToReturn != null) return controlToReturn;
+                if (controlToReturn != null)
+                {
+                    return controlToReturn;
+                }
             }
+
             return null;
         }
-
 
         private bool CheckExpired()
         {
@@ -243,6 +227,7 @@ namespace DotNetNuke.UI.Skins
                     blnExpired = true;
                 }
             }
+
             return blnExpired;
         }
 
@@ -261,18 +246,18 @@ namespace DotNetNuke.UI.Skins
 
         private void InjectControlPanel()
         {
-            //if querystring dnnprintmode=true, controlpanel will not be shown
+            // if querystring dnnprintmode=true, controlpanel will not be shown
             if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && this.Request.QueryString["hidecommandbar"] != "true")
             {
-                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
+                if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal()))
                 {
-                    //ControlPanel processing
+                    // ControlPanel processing
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
                     var form = (HtmlForm)this.Parent.FindControl("Form");
 
                     if (controlPanel.IncludeInControlHierarchy)
                     {
-                        //inject ControlPanel control into skin
+                        // inject ControlPanel control into skin
                         if (this.ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
                         {
                             if (form != null)
@@ -289,7 +274,7 @@ namespace DotNetNuke.UI.Skins
                             this.ControlPanel.Controls.Add(controlPanel);
                         }
 
-                        //register admin.css
+                        // register admin.css
                         ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                     }
                 }
@@ -311,15 +296,15 @@ namespace DotNetNuke.UI.Skins
 
         private void LoadPanes()
         {
-            //iterate page controls
+            // iterate page controls
             foreach (Control ctlControl in this.Controls)
             {
                 var objPaneControl = ctlControl as HtmlContainerControl;
 
-                //Panes must be runat=server controls so they have to have an ID
+                // Panes must be runat=server controls so they have to have an ID
                 if (objPaneControl != null && !string.IsNullOrEmpty(objPaneControl.ID))
                 {
-                    //load the skin panes
+                    // load the skin panes
                     switch (objPaneControl.TagName.ToLowerInvariant())
                     {
                         case "td":
@@ -332,20 +317,21 @@ namespace DotNetNuke.UI.Skins
                         case "main":
                         case "article":
                         case "aside":
-                            //content pane
+                            // content pane
                             if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                //Add to the PortalSettings (for use in the Control Panel)
+                                // Add to the PortalSettings (for use in the Control Panel)
                                 this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
 
-                                //Add to the Panes collection
+                                // Add to the Panes collection
                                 this.Panes.Add(objPaneControl.ID.ToLowerInvariant(), new Pane(objPaneControl));
                             }
                             else
                             {
-                                //Control Panel pane
+                                // Control Panel pane
                                 this._controlPanel = objPaneControl;
                             }
+
                             break;
                     }
                 }
@@ -362,24 +348,28 @@ namespace DotNetNuke.UI.Skins
                 {
                     skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
                 }
+
                 ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
                 ctlSkin.SkinSrc = skinSrc;
-                //call databind so that any server logic in the skin is executed
+
+                // call databind so that any server logic in the skin is executed
                 ctlSkin.DataBind();
             }
             catch (Exception exc)
             {
-                //could not load user control
+                // could not load user control
                 var lex = new PageLoadException("Unhandled error loading page.", exc);
                 if (TabPermissionController.CanAdminPage())
                 {
-                    //only display the error to administrators
+                    // only display the error to administrators
                     var skinError = (Label)page.FindControl("SkinError");
                     skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                     skinError.Visible = true;
                 }
+
                 Exceptions.LogException(lex);
             }
+
             return ctlSkin;
         }
 
@@ -388,7 +378,7 @@ namespace DotNetNuke.UI.Skins
             var success = true;
             if (ModuleInjectionManager.CanInjectModule(module, this.PortalSettings))
             {
-                //We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
+                // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
                 this.EnsureContentItemForModule(module);
 
                 Pane pane = this.GetPane(module);
@@ -404,12 +394,13 @@ namespace DotNetNuke.UI.Skins
                     Exceptions.LogException(lex);
                 }
             }
+
             return success;
         }
 
         /// <summary>
-        /// Handle access denied errors by displaying an error message 
-        /// or by performing a redirect to a predefined "access denied URL"
+        /// Handle access denied errors by displaying an error message
+        /// or by performing a redirect to a predefined "access denied URL".
         /// </summary>
         /// <param name="redirect"></param>
         private void HandleAccesDenied(bool redirect = false)
@@ -422,7 +413,7 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-                AddPageMessage(this, "", message, ModuleMessage.ModuleMessageType.YellowWarning);
+                AddPageMessage(this, string.Empty, message, ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
 
@@ -431,7 +422,7 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
-                //We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
+                // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
                 this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
 
                 // Versioning checks.
@@ -455,7 +446,7 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
 
-                //check portal expiry date
+                // check portal expiry date
                 if (!this.CheckExpired())
                 {
                     if ((this.PortalSettings.ActiveTab.StartDate < DateAndTime.Now && this.PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
@@ -472,43 +463,45 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    AddPageMessage(this,
-                                   "",
-                                   string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
-                                   ModuleMessage.ModuleMessageType.RedError);
+                    AddPageMessage(
+                        this,
+                        string.Empty,
+                        string.Format(Localization.GetString("ContractExpired.Error"), this.PortalSettings.PortalName, Globals.GetMediumDate(this.PortalSettings.ExpiryDate.ToString(CultureInfo.InvariantCulture)), this.PortalSettings.Email),
+                        ModuleMessage.ModuleMessageType.RedError);
                 }
             }
             else
             {
-				//If request localized page which haven't complete translate yet, redirect to default language version.
-	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
-                
+                // If request localized page which haven't complete translate yet, redirect to default language version.
+                var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
+
                 // Current locale will use default if did'nt find any
                 Locale currentLocale = LocaleController.Instance.GetCurrentLocale(this.PortalSettings.PortalId);
-	            if (this.PortalSettings.ContentLocalizationEnabled &&
-	                TabController.CurrentPage.CultureCode != currentLocale.Code)
-	            {
-		            redirectUrl = new LanguageTokenReplace {Language = currentLocale.Code}.ReplaceEnvironmentTokens("[URL]");
-	            }
+                if (this.PortalSettings.ContentLocalizationEnabled &&
+                    TabController.CurrentPage.CultureCode != currentLocale.Code)
+                {
+                    redirectUrl = new LanguageTokenReplace { Language = currentLocale.Code }.ReplaceEnvironmentTokens("[URL]");
+                }
 
-				this.Response.Redirect(redirectUrl, true);
+                this.Response.Redirect(redirectUrl, true);
             }
+
             return success;
         }
 
         private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
         {
-            //If tab exists but ContentItem not, then we create it
+            // If tab exists but ContentItem not, then we create it
             if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
             {
                 TabController.Instance.CreateContentItem(tabInfo);
-                TabController.Instance.UpdateTab(tabInfo);    
+                TabController.Instance.UpdateTab(tabInfo);
             }
         }
 
         private void EnsureContentItemForModule(ModuleInfo module)
         {
-            //If module exists but ContentItem not, then we create it
+            // If module exists but ContentItem not, then we create it
             if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
             {
                 ModuleController.Instance.CreateContentItem(module);
@@ -535,10 +528,11 @@ namespace DotNetNuke.UI.Skins
             this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
             slaveModule.PaneName = Globals.glbDefaultPane;
             slaveModule.ContainerSrc = this.PortalSettings.ActiveTab.ContainerSrc;
-            if (String.IsNullOrEmpty(slaveModule.ContainerSrc))
+            if (string.IsNullOrEmpty(slaveModule.ContainerSrc))
             {
                 slaveModule.ContainerSrc = this.PortalSettings.DefaultPortalContainer;
             }
+
             slaveModule.ContainerSrc = SkinController.FormatSkinSrc(slaveModule.ContainerSrc, this.PortalSettings);
             slaveModule.ContainerPath = SkinController.FormatSkinPath(slaveModule.ContainerSrc);
 
@@ -547,7 +541,7 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ModuleControlId = moduleControl.ModuleControlID;
                 slaveModule.IconFile = moduleControl.IconFile;
-                
+
                 string permissionKey;
                 switch (slaveModule.ModuleControl.ControlSrc)
                 {
@@ -578,10 +572,6 @@ namespace DotNetNuke.UI.Skins
             return success;
         }
 
-        #endregion
-
-        #region Protected Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnInit runs when the Skin is initialised.
@@ -591,16 +581,16 @@ namespace DotNetNuke.UI.Skins
         {
             base.OnInit(e);
 
-            //Load the Panes
+            // Load the Panes
             this.LoadPanes();
 
-            //Load the Module Control(s)
+            // Load the Module Control(s)
             bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule() : this.ProcessMasterModules();
 
-            //Load the Control Panel
+            // Load the Control Panel
             this.InjectControlPanel();
 
-            //Register any error messages on the Skin
+            // Register any error messages on the Skin
             if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
                 AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
@@ -618,7 +608,7 @@ namespace DotNetNuke.UI.Skins
 
             if (!TabPermissionController.CanAdminPage() && !success)
             {
-                //only display the warning to non-administrators (administrators will see the errors)
+                // only display the warning to non-administrators (administrators will see the errors)
                 AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
             }
 
@@ -626,18 +616,19 @@ namespace DotNetNuke.UI.Skins
 
             if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
             {
-	            var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
-				if (HttpContext.Current.Items.Contains(OnInitMessageType))
-				{
-					messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof (ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
-				}
-				AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+                var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                if (HttpContext.Current.Items.Contains(OnInitMessageType))
+                {
+                    messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+                }
+
+                AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
 
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             }
 
-            //Process the Panes attributes
+            // Process the Panes attributes
             this.ProcessPanes();
         }
 
@@ -666,12 +657,12 @@ namespace DotNetNuke.UI.Skins
             var isSpecialPageMode = UrlUtils.InPopUp() || this.Request.QueryString["dnnprintmode"] == "true";
             if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
             {
-                //Register Drag and Drop plugin
+                // Register Drag and Drop plugin
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                 ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.dragDrop.js");
 
-                //Register Client Script
+                // Register Client Script
                 var sb = new StringBuilder();
                 sb.AppendLine(" (function ($) {");
                 sb.AppendLine("     $(document).ready(function () {");
@@ -696,7 +687,6 @@ namespace DotNetNuke.UI.Skins
                     this.Page.ClientScript.RegisterStartupScript(this.GetType(), "DragAndDrop", script, true);
                 }
             }
-
         }
 
         /// -----------------------------------------------------------------------------
@@ -711,13 +701,9 @@ namespace DotNetNuke.UI.Skins
             this.InvokeSkinEvents(SkinEventType.OnSkinUnLoad);
         }
 
-        #endregion
-
-        #region Public Methods
-
         public static void AddModuleMessage(PortalModuleBase control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
-            AddModuleMessage(control, "", message, moduleMessageType, Null.NullString);
+            AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
         }
 
         public static void AddModuleMessage(PortalModuleBase control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
@@ -727,25 +713,25 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleMessage adds a Moduel Message control to the Skin
+        /// AddModuleMessage adds a Moduel Message control to the Skin.
         /// </summary>
-        /// <param name="message">The Message Text</param>
-        /// <param name="control">The current control</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="control">The current control.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
-            AddModuleMessage(control, "", message, moduleMessageType, Null.NullString);
+            AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleMessage adds a Moduel Message control to the Skin
+        /// AddModuleMessage adds a Moduel Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="control">The current control</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="control">The current control.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -754,12 +740,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="iconSrc">The Icon to diplay</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="page">The Page</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="iconSrc">The Icon to diplay.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="page">The Page.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Page page, string heading, string message, string iconSrc)
         {
@@ -768,12 +754,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="iconSrc">The Icon to diplay</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="skin">The skin</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="iconSrc">The Icon to diplay.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="skin">The skin.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Skin skin, string heading, string message, string iconSrc)
         {
@@ -782,12 +768,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="skin">The skin</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="skin">The skin.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Skin skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -796,12 +782,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="page">The Page</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="page">The Page.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -810,11 +796,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties
+        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="iconImage">The Message Icon</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="iconImage">The Message Icon.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, string iconImage)
         {
@@ -823,11 +810,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties
+        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="moduleMessageType">The type of message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="moduleMessageType">The type of message.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -836,18 +824,18 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties
+        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="iconImage">The Message Icon</param>
-        /// <param name="moduleMessageType">The type of message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="iconImage">The Message Icon.</param>
+        /// <param name="moduleMessageType">The type of message.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
         {
-
-            //Use this to get a module message control
-            //with a standard DotNetNuke icon
+            // Use this to get a module message control
+            // with a standard DotNetNuke icon
             var s = new Skin();
             var moduleMessage = (ModuleMessage)s.LoadControl("~/admin/skins/ModuleMessage.ascx");
             moduleMessage.Heading = heading;
@@ -859,9 +847,10 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetParentSkin gets the Parent Skin for a control
+        /// GetParentSkin gets the Parent Skin for a control.
         /// </summary>
-        /// <param name="module">The control whose Parent Skin is requested</param>
+        /// <param name="module">The control whose Parent Skin is requested.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(PortalModuleBase module)
         {
@@ -870,9 +859,10 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetParentSkin gets the Parent Skin for a control
+        /// GetParentSkin gets the Parent Skin for a control.
         /// </summary>
-        /// <param name="control">The control whose Parent Skin is requested</param>
+        /// <param name="control">The control whose Parent Skin is requested.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(Control control)
         {
@@ -883,15 +873,16 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// GetPopUpSkin gets the Skin that is used in modal popup.
         /// </summary>
-        /// <param name="page">The Page</param>
+        /// <param name="page">The Page.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetPopUpSkin(PageBase page)
         {
             Skin skin = null;
 
-            //attempt to find and load a popup skin from the assigned skinned source
+            // attempt to find and load a popup skin from the assigned skinned source
             string skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
-            if (!String.IsNullOrEmpty(skinSource))
+            if (!string.IsNullOrEmpty(skinSource))
             {
                 skinSource = SkinController.FormatSkinSrc(SkinController.FormatSkinPath(skinSource) + "popUpSkin.ascx", page.PortalSettings);
 
@@ -901,17 +892,17 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            //error loading popup skin - load default popup skin
+            // error loading popup skin - load default popup skin
             if (skin == null)
             {
                 skinSource = Globals.HostPath + "Skins/_default/popUpSkin.ascx";
                 skin = LoadSkin(page, skinSource);
             }
 
-            //set skin path
+            // set skin path
             page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
 
-            //set skin id to an explicit short name to reduce page payload and make it standards compliant
+            // set skin id to an explicit short name to reduce page payload and make it standards compliant
             skin.ID = "dnn";
 
             return skin;
@@ -919,29 +910,30 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSkin gets the Skin
+        /// GetSkin gets the Skin.
         /// </summary>
-        /// <param name="page">The Page</param>
+        /// <param name="page">The Page.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetSkin(PageBase page)
         {
             Skin skin = null;
             string skinSource = Null.NullString;
 
-            //skin preview
-            if ((page.Request.QueryString["SkinSrc"] != null))
+            // skin preview
+            if (page.Request.QueryString["SkinSrc"] != null)
             {
                 skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", page.PortalSettings);
                 skin = LoadSkin(page, skinSource);
             }
 
-            //load user skin ( based on cookie )
+            // load user skin ( based on cookie )
             if (skin == null)
             {
                 HttpCookie skinCookie = page.Request.Cookies["_SkinSrc" + page.PortalSettings.PortalId];
                 if (skinCookie != null)
                 {
-                    if (!String.IsNullOrEmpty(skinCookie.Value))
+                    if (!string.IsNullOrEmpty(skinCookie.Value))
                     {
                         skinSource = SkinController.FormatSkinSrc(skinCookie.Value + ".ascx", page.PortalSettings);
                         skin = LoadSkin(page, skinSource);
@@ -949,31 +941,31 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            //load assigned skin
+            // load assigned skin
             if (skin == null)
             {
-                //DNN-6170 ensure skin value is culture specific
-                //skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                // DNN-6170 ensure skin value is culture specific
+                // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
                 skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId,
                     Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
-                if (!String.IsNullOrEmpty(skinSource))
+                if (!string.IsNullOrEmpty(skinSource))
                 {
                     skinSource = SkinController.FormatSkinSrc(skinSource, page.PortalSettings);
                     skin = LoadSkin(page, skinSource);
                 }
             }
 
-            //error loading skin - load default
+            // error loading skin - load default
             if (skin == null)
             {
                 skinSource = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalSkin(), page.PortalSettings);
                 skin = LoadSkin(page, skinSource);
             }
 
-            //set skin path
+            // set skin path
             page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
 
-            //set skin id to an explicit short name to reduce page payload and make it standards compliant
+            // set skin id to an explicit short name to reduce page payload and make it standards compliant
             skin.ID = "dnn";
 
             return skin;
@@ -981,50 +973,51 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InjectModule injects the module into the Pane
+        /// InjectModule injects the module into the Pane.
         /// </summary>
-        /// <param name="module">The module to inject</param>
-        /// <param name="pane">The pane</param>
+        /// <param name="module">The module to inject.</param>
+        /// <param name="pane">The pane.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool InjectModule(Pane pane, ModuleInfo module)
         {
             bool bSuccess = true;
 
-            //try to inject the module into the pane
+            // try to inject the module into the pane
             try
             {
-                if(this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId || this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId)
+                if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId || this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId)
                 {
                     var profileModule = this.ModuleControlPipeline.LoadModuleControl(this.Page, module) as IProfileModule;
                     if (profileModule == null || profileModule.DisplayModule)
                     {
                         pane.InjectModule(module);
-                    }                    
+                    }
                 }
                 else
                 {
-                    pane.InjectModule(module);                   
+                    pane.InjectModule(module);
                 }
-
             }
             catch (ThreadAbortException)
             {
-                //Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
+                // Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
                 bSuccess = false;
             }
+
             return bSuccess;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RegisterModuleActionEvent registers a Module Action Event
+        /// RegisterModuleActionEvent registers a Module Action Event.
         /// </summary>
-        /// <param name="moduleId">The ID of the module</param>
-        /// <param name="e">An Action Event Handler</param>
+        /// <param name="moduleId">The ID of the module.</param>
+        /// <param name="e">An Action Event Handler.</param>
         /// -----------------------------------------------------------------------------
         public void RegisterModuleActionEvent(int moduleId, ActionEventHandler e)
         {
@@ -1039,6 +1032,7 @@ namespace DotNetNuke.UI.Skins
             {
                 defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
             }
+
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
         }
 
@@ -1051,13 +1045,12 @@ namespace DotNetNuke.UI.Skins
                 {
                     var skin = new InstalledSkinInfo();
                     skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
-                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, "");
+                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
                     list.Add(skin);
                 }
             }
+
             return list;
         }
-
-        #endregion
     }
 }

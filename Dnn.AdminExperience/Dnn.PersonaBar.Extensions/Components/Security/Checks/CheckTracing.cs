@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Web;
-using System.Web.Compilation;
-using System.Web.Configuration;
-using System.Web.UI;
-using DotNetNuke.Common;
-
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System;
+    using System.IO;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Compilation;
+    using System.Web.Configuration;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+
     public class CheckTracing : IAuditCheck
     {
         public string Id => "CheckTracing";

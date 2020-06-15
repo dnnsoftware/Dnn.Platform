@@ -1,48 +1,41 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-
-#endregion
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+
     [XmlRoot("tab", IsNullable = false)]
     [Serializable]
     public class TabInfo : ContentItem, IPropertyAccess
     {
-        #region Private Members
-
         private string _administratorRoles;
         private string _authorizedRoles;
         private TabInfo _defaultLanguageTab;
@@ -62,17 +55,10 @@ namespace DotNetNuke.Entities.Tabs
         private List<TabUrlInfo> _tabUrls;
         private ArrayList _modules;
 
-
-        #endregion
-
-        #region Constructors
-
         public TabInfo()
             : this(new SharedDictionary<string, string>(), new SharedDictionary<string, string>())
         {
-
         }
-
 
         private TabInfo(SharedDictionary<string, string> localizedTabNameDictionary, SharedDictionary<string, string> fullUrlDictionary)
         {
@@ -99,12 +85,12 @@ namespace DotNetNuke.Entities.Tabs
             this.PageHeadText = Null.NullString;
             this.SiteMapPriority = 0.5F;
 
-            //UniqueId, Version Guid, and Localized Version Guid should be initialised to a new value
+            // UniqueId, Version Guid, and Localized Version Guid should be initialised to a new value
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
             this.LocalizedVersionGuid = Guid.NewGuid();
 
-            //Default Language Guid should be initialised to a null Guid
+            // Default Language Guid should be initialised to a null Guid
             this.DefaultLanguageGuid = Null.NullGuid;
 
             this.IsVisible = true;
@@ -115,10 +101,6 @@ namespace DotNetNuke.Entities.Tabs
 
             this.IsSystem = false;
         }
-
-        #endregion
-
-        #region Auto-Properties
 
         [XmlIgnore]
         public ArrayList BreadCrumbs { get; set; }
@@ -169,10 +151,11 @@ namespace DotNetNuke.Entities.Tabs
         public bool HasBeenPublished { get; set; }
 
         [XmlIgnore]
-        public bool HasAVisibleVersion {
+        public bool HasAVisibleVersion
+        {
             get
             {
-			    return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
+                return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
             }
         }
 
@@ -186,16 +169,17 @@ namespace DotNetNuke.Entities.Tabs
         public Guid LocalizedVersionGuid { get; set; }
 
         [XmlIgnore]
-        public ArrayList Modules 
+        public ArrayList Modules
         {
             get
             {
                 return this._modules ?? (this._modules = TabModulesController.Instance.GetTabModules(this));
             }
+
             set
             {
                 this._modules = value;
-            } 
+            }
         }
 
         [XmlElement("pageheadtext")]
@@ -246,10 +230,6 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
 
-        #endregion
-
-        #region Public Properties
-
         [XmlIgnore]
         public Dictionary<int, ModuleInfo> ChildModules
         {
@@ -268,6 +248,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     this._defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(this.PortalID) where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
+
                 return this._defaultLanguageTab;
             }
         }
@@ -286,6 +267,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     doNotRedirect = false;
                 }
+
                 return doNotRedirect;
             }
         }
@@ -332,6 +314,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     indentedTabName += "...";
                 }
+
                 indentedTabName += this.LocalizedTabName;
                 return indentedTabName;
             }
@@ -342,7 +325,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return (this.DefaultLanguageGuid == Null.NullGuid);
+                return this.DefaultLanguageGuid == Null.NullGuid;
             }
         }
 
@@ -364,8 +347,10 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     return this._isSuperTab;
                 }
-                return (this.PortalID == Null.NullInteger);
+
+                return this.PortalID == Null.NullInteger;
             }
+
             set
             {
                 this._isSuperTab = value;
@@ -381,9 +366,10 @@ namespace DotNetNuke.Entities.Tabs
                 bool isTranslated = true;
                 if (this.DefaultLanguageTab != null)
                 {
-                    //Child language
-                    isTranslated = (this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid);
+                    // Child language
+                    isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid;
                 }
+
                 return isTranslated;
             }
         }
@@ -395,6 +381,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return this.TabID;
             }
+
             set
             {
                 this.TabID = value;
@@ -406,7 +393,10 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                if (String.IsNullOrEmpty(this.TabPath)) return this.TabName;
+                if (string.IsNullOrEmpty(this.TabPath))
+                {
+                    return this.TabName;
+                }
 
                 var key = Thread.CurrentThread.CurrentUICulture.ToString();
                 string localizedTabName;
@@ -415,7 +405,7 @@ namespace DotNetNuke.Entities.Tabs
                     this._localizedTabNameDictionary.TryGetValue(key, out localizedTabName);
                 }
 
-                if (String.IsNullOrEmpty(localizedTabName))
+                if (string.IsNullOrEmpty(localizedTabName))
                 {
                     using (this._localizedTabNameDictionary.GetWriteLock())
                     {
@@ -448,6 +438,7 @@ namespace DotNetNuke.Entities.Tabs
                          where kvp.Value.DefaultLanguageGuid == this.UniqueId && LocaleController.Instance.GetLocale(this.PortalID, kvp.Value.CultureCode) != null
                          select kvp.Value).ToDictionary(t => t.CultureCode);
                 }
+
                 return this._localizedTabs;
             }
         }
@@ -465,15 +456,18 @@ namespace DotNetNuke.Entities.Tabs
                         this._skinDoctype = Host.Host.DefaultDocType;
                     }
                 }
+
                 return this._skinDoctype;
             }
+
             set
             {
                 this._skinDoctype = value;
             }
         }
 
-        [XmlArray("tabpermissions"), XmlArrayItem("permission")]
+        [XmlArray("tabpermissions")]
+        [XmlArrayItem("permission")]
         public TabPermissionCollection TabPermissions
         {
             get
@@ -499,10 +493,6 @@ namespace DotNetNuke.Entities.Tabs
                 return Globals.GetURLType(this.Url);
             }
         }
-
-        #endregion
-
-        #region Url Properties
 
         [XmlIgnore]
         public List<TabAliasSkinInfo> AliasSkins
@@ -536,26 +526,26 @@ namespace DotNetNuke.Entities.Tabs
                     this._fullUrlDictionary.TryGetValue(key, out fullUrl);
                 }
 
-                if (String.IsNullOrEmpty(fullUrl))
+                if (string.IsNullOrEmpty(fullUrl))
                 {
                     using (this._fullUrlDictionary.GetWriteLock())
                     {
                         switch (this.TabType)
                         {
                             case TabType.Normal:
-                                //normal tab
+                                // normal tab
                                 fullUrl = TestableGlobals.Instance.NavigateURL(this.TabID, this.IsSuperTab);
                                 break;
                             case TabType.Tab:
-                                //alternate tab url
+                                // alternate tab url
                                 fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url));
                                 break;
                             case TabType.File:
-                                //file url
+                                // file url
                                 fullUrl = TestableGlobals.Instance.LinkClick(this.Url, this.TabID, Null.NullInteger);
                                 break;
                             case TabType.Url:
-                                //external url
+                                // external url
                                 fullUrl = this.Url;
                                 break;
                         }
@@ -595,10 +585,6 @@ namespace DotNetNuke.Entities.Tabs
         [XmlIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
 
-        #endregion
-
-        #region IPropertyAccess Members
-
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;
@@ -613,6 +599,7 @@ namespace DotNetNuke.Entities.Tabs
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
 
             string result = string.Empty;
@@ -621,16 +608,16 @@ namespace DotNetNuke.Entities.Tabs
             {
                 case "tabid":
                     propertyNotFound = false;
-                    result = (this.TabID.ToString(outputFormat, formatProvider));
+                    result = this.TabID.ToString(outputFormat, formatProvider);
                     break;
                 case "taborder":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.TabOrder.ToString(outputFormat, formatProvider));
+                    result = this.TabOrder.ToString(outputFormat, formatProvider);
                     break;
                 case "portalid":
                     propertyNotFound = false;
-                    result = (this.PortalID.ToString(outputFormat, formatProvider));
+                    result = this.PortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabname":
                     propertyNotFound = false;
@@ -639,17 +626,17 @@ namespace DotNetNuke.Entities.Tabs
                 case "isvisible":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsVisible, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsVisible, formatProvider);
                     break;
                 case "parentid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ParentId.ToString(outputFormat, formatProvider));
+                    result = this.ParentId.ToString(outputFormat, formatProvider);
                     break;
                 case "level":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.Level.ToString(outputFormat, formatProvider));
+                    result = this.Level.ToString(outputFormat, formatProvider);
                     break;
                 case "iconfile":
                     propertyNotFound = false;
@@ -662,7 +649,7 @@ namespace DotNetNuke.Entities.Tabs
                 case "disablelink":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisableLink, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisableLink, formatProvider);
                     break;
                 case "title":
                     propertyNotFound = false;
@@ -679,7 +666,7 @@ namespace DotNetNuke.Entities.Tabs
                 case "isdeleted":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider);
                     break;
                 case "url":
                     propertyNotFound = false;
@@ -702,22 +689,22 @@ namespace DotNetNuke.Entities.Tabs
                 case "startdate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.StartDate.ToString(outputFormat, formatProvider));
+                    result = this.StartDate.ToString(outputFormat, formatProvider);
                     break;
                 case "enddate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.EndDate.ToString(outputFormat, formatProvider));
+                    result = this.EndDate.ToString(outputFormat, formatProvider);
                     break;
                 case "haschildren":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.HasChildren, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.HasChildren, formatProvider);
                     break;
                 case "refreshinterval":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.RefreshInterval.ToString(outputFormat, formatProvider));
+                    result = this.RefreshInterval.ToString(outputFormat, formatProvider);
                     break;
                 case "pageheadtext":
                     isPublic = false;
@@ -742,7 +729,7 @@ namespace DotNetNuke.Entities.Tabs
                 case "issupertab":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsSuperTab, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsSuperTab, formatProvider);
                     break;
                 case "fullurl":
                     propertyNotFound = false;
@@ -753,11 +740,13 @@ namespace DotNetNuke.Entities.Tabs
                     result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(), format);
                     break;
             }
+
             if (!isPublic && currentScope != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
 
@@ -768,10 +757,6 @@ namespace DotNetNuke.Entities.Tabs
                 return CacheLevel.fullyCacheable;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
         private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
@@ -786,41 +771,51 @@ namespace DotNetNuke.Entities.Tabs
         private string CheckIfDoctypeConfigExists()
         {
             if (string.IsNullOrEmpty(this.SkinSrc))
+            {
                 return string.Empty;
+            }
 
             // loading an XML document from disk for each page request is expensive
             // let's implement some local caching
-            if (!_docTypeCache.ContainsKey(this.SkinSrc)) {
+            if (!_docTypeCache.ContainsKey(this.SkinSrc))
+            {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
                 _docTypeCacheLock.EnterWriteLock();
-                try {
-
+                try
+                {
                     var docType = this.LoadDocType();
                     _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
-
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Exceptions.LogException(ex);
-                } finally {
+                }
+                finally
+                {
                     _docTypeCacheLock.ExitWriteLock();
                 }
             }
 
             // return if file exists from cache
             _docTypeCacheLock.EnterReadLock();
-            try {
+            try
+            {
                 return _docTypeCache[this.SkinSrc];
-            } finally {
+            }
+            finally
+            {
                 _docTypeCacheLock.ExitReadLock();
             }
         }
 
-        XmlDocument LoadDocType()
+        private XmlDocument LoadDocType()
         {
             var xmlSkinDocType = new XmlDocument { XmlResolver = null };
 
             // default to the skinname.doctype.xml to allow the individual skin to override the skin package
             var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
-            if (File.Exists(skinFileName)) {
+            if (File.Exists(skinFileName))
+            {
                 xmlSkinDocType.Load(skinFileName);
                 return xmlSkinDocType;
             }
@@ -839,11 +834,11 @@ namespace DotNetNuke.Entities.Tabs
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
         {
-            if ((!String.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
+            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
             {
                 iconFile = iconRaw;
             }
-            else if (iconFile == null && !String.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
+            else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
             {
                 IFileInfo fileInfo;
                 if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
@@ -860,10 +855,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        #endregion
-
-        #region Internal Methods
-
         internal void ClearTabUrls()
         {
             this._tabUrls = null;
@@ -873,10 +864,6 @@ namespace DotNetNuke.Entities.Tabs
         {
             this._settings = null;
         }
-
-        #endregion
-
-        #region Public Methods
 
         public TabInfo Clone()
         {
@@ -911,7 +898,7 @@ namespace DotNetNuke.Entities.Tabs
                 PageHeadText = this.PageHeadText,
                 IsSecure = this.IsSecure,
                 PermanentRedirect = this.PermanentRedirect,
-                IsSystem = this.IsSystem
+                IsSystem = this.IsSystem,
             };
 
             if (this.BreadCrumbs != null)
@@ -925,7 +912,7 @@ namespace DotNetNuke.Entities.Tabs
 
             this.Clone(clonedTab, this);
 
-            //localized properties
+            // localized properties
             clonedTab.UniqueId = this.UniqueId;
             clonedTab.VersionGuid = this.VersionGuid;
             clonedTab.DefaultLanguageGuid = this.DefaultLanguageGuid;
@@ -940,14 +927,14 @@ namespace DotNetNuke.Entities.Tabs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a TabInfo from a Data Reader
+        /// Fills a TabInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
             this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
             this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
             this.DefaultLanguageGuid = Null.SetNullGuid(dr["DefaultLanguageGuid"]);
@@ -996,14 +983,13 @@ namespace DotNetNuke.Entities.Tabs
                     url = tabUrl.Url;
                 }
             }
-            return url ?? ("");
+
+            return url ?? string.Empty;
         }
 
         public string GetTags()
         {
             return string.Join(",", this.Terms.Select(t => t.Name));
         }
-
-        #endregion
     }
 }

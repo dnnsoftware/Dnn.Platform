@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.UI;
-
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System;
+    using System.Web;
+    using System.Web.UI;
+
     using ClientDependency.Core.Controls;
 
     /// <summary>
@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceLoader : ClientDependencyLoader
     {
-        private bool AsyncPostBackHandlerEnabled 
+        private bool AsyncPostBackHandlerEnabled
         {
             get
             {

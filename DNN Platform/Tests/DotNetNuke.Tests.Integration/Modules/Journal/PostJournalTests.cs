@@ -2,29 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using DotNetNuke.Common.Utilities;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Modules.Journal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PostJournalTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly string _hostName;
         private readonly string _hostPass;
 
         private readonly int PortalId = 0;
-
-        #endregion
-
-        #region SetUp
 
         public PostJournalTests()
         {
@@ -40,17 +35,15 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                {
                     DatabaseHelper.ExecuteNonQuery("TRUNCATE TABLE {objectQualifier}JsonWebTokens");
+                }
             }
             catch (Exception)
             {
                 // ignored
             }
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void Journal_Should_Able_To_Attach_Files_Upload_By_Himself()
@@ -59,18 +52,17 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
                 profileId = userId,
                 groupId = -1,
                 journalType = "file",
-                securitySet  = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                securitySet = "E",
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
-            
-            
+
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
         }
 
@@ -81,7 +73,8 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
             fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MIN(FileId) FROM {{objectQualifier}}Files WHERE PortalId = {this.PortalId}");
-            //POST JOURNAL
+
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -89,7 +82,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             var exceptionThrown = false;
@@ -103,7 +96,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionThrown = true;
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
-            
+
             Assert.IsTrue(exceptionThrown, "Should throw out exception");
             Assert.AreEqual("you have no permission to attach files not belongs to you.", exceptionMessage);
         }
@@ -115,7 +108,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -123,7 +116,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             var exceptionThrown = false;
@@ -150,13 +143,13 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
-            //ADD FRIENDS
-            connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new {friendId = userId2}, this.GetRequestHeaders("Member Directory"));
+            // ADD FRIENDS
+            connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
-            connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId  = notificationId }, this.GetRequestHeaders());
+            connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId = notificationId }, this.GetRequestHeaders());
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username1} Post",
@@ -164,7 +157,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}",
             };
 
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -179,7 +172,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var groupId = this.CreateNewGroup(username.Replace("testuser", "testrole"));
             this.AddUserToGroup(groupId, userId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -187,7 +180,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = groupId,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -201,7 +194,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
             var groupId = this.CreateNewGroup(username.Replace("testuser", "testrole"));
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -209,7 +202,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = groupId,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             var exceptionThrown = false;
@@ -235,7 +228,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -243,7 +236,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"javascript:alert(1);\\\" onerror=\\\"alert(2);.png\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"javascript:alert(1);\\\" onerror=\\\"alert(2);.png\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -263,7 +256,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -271,7 +264,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"javascript:alert(1);\", \"Title\": \"Test.png\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"javascript:alert(1);\", \"Title\": \"Test.png\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -289,7 +282,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -297,7 +290,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"http://www.dnnsoftware.com\", \"Title\": \"Test.png\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"http://www.dnnsoftware.com\", \"Title\": \"Test.png\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -315,7 +308,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username} Post";
             var postData = new
             {
@@ -324,7 +317,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "E",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -345,7 +338,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username1} Post";
             var postData = new
             {
@@ -354,7 +347,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "C",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}",
             };
 
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -376,14 +369,13 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
             var connector3 = this.PrepareNewUser(out userId3, out username3, out fileId3);
 
-            //ADD FRIENDS
+            // ADD FRIENDS
             connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
             connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId = notificationId }, this.GetRequestHeaders());
 
-
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username1} Post";
             var postData = new
             {
@@ -392,7 +384,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "F",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId1}\"}}",
             };
 
             connector1.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -411,7 +403,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username} Post";
             var postData = new
             {
@@ -420,7 +412,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 groupId = -1,
                 journalType = "file",
                 securitySet = "P",
-                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
+                itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}",
             };
 
             connector.PostJson("/API/Journal/Services/Create", postData, this.GetRequestHeaders());
@@ -433,9 +425,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             Assert.AreEqual(response.IndexOf(journalText), -1);
         }
 
-        #endregion
-
-        #region Private Methods
         private static readonly Random rnd = new Random();
 
         private IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId)
@@ -458,7 +447,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 status = 1,
                 isPublic = true,
                 autoAssign = false,
-                isSystem = false
+                isSystem = false,
             });
 
             return DatabaseHelper.ExecuteScalar<int>($"SELECT RoleId FROM {{objectQualifier}}Roles WHERE RoleName = '{roleName}' AND PortalId = {this.PortalId}");
@@ -473,7 +462,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             {
                 userId = userId,
                 roleId = groupId,
-                isAdd = true
+                isAdd = true,
             });
         }
 
@@ -481,7 +470,5 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
         {
             return WebApiTestHelper.GetRequestHeaders("//ActivityFeed", moduleName, this.PortalId);
         }
-
-        #endregion
     }
 }

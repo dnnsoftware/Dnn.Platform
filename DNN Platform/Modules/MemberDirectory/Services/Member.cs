@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Net;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-using System.Web;
-
 namespace DotNetNuke.Modules.MemberDirectory.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
     public class Member
     {
         private UserInfo _user;
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string Email
         {
-            get { return (this._viewer.IsInRole(this._settings.AdministratorRoleName)) ? this._user.Email : String.Empty; }
+            get { return this._viewer.IsInRole(this._settings.AdministratorRoleName) ? this._user.Email : string.Empty; }
         }
 
         public string FirstName
@@ -101,17 +101,19 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 var properties = new Dictionary<string, string>();
                 bool propertyNotFound = false;
                 var propertyAccess = new ProfilePropertyAccess(this._user);
-                foreach(ProfilePropertyDefinition property in this._user.Profile.ProfileProperties)
+                foreach (ProfilePropertyDefinition property in this._user.Profile.ProfileProperties)
                 {
-                    string value = propertyAccess.GetProperty(property.PropertyName,
-                                                             String.Empty,
-                                                             Thread.CurrentThread.CurrentUICulture,
-                                                             this._viewer,
-                                                             Scope.DefaultSettings,
-                                                             ref propertyNotFound);
+                    string value = propertyAccess.GetProperty(
+                        property.PropertyName,
+                        string.Empty,
+                        Thread.CurrentThread.CurrentUICulture,
+                        this._viewer,
+                        Scope.DefaultSettings,
+                        ref propertyNotFound);
 
-                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? "" : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
+                    properties[property.PropertyName] = string.IsNullOrEmpty(value) ? string.Empty : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
                 }
+
                 return properties;
             }
         }
@@ -123,7 +125,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string UserName
         {
-            get { return (this._viewer.IsInRole(this._settings.AdministratorRoleName)) ? this._user.Username : String.Empty; }
+            get { return this._viewer.IsInRole(this._settings.AdministratorRoleName) ? this._user.Username : string.Empty; }
         }
 
         public string Website
@@ -137,10 +139,10 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         }
 
         /// <summary>
-        /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string
+        /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string.
         /// </summary>
-        /// <param name="propertyName">property name</param>
-        /// <returns>property value</returns>
+        /// <param name="propertyName">property name.</param>
+        /// <returns>property value.</returns>
         private string GetProfileProperty(string propertyName)
         {
             var profileProperties = this.ProfileProperties;

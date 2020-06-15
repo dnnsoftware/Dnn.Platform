@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
-	/// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
+    using System;
+    using System.Web.UI;
+
+    /// <summary>The NavDataSourceView class encapsulates the capabilities of the NavDataSource data source control.</summary>
     public class NavDataSourceView : HierarchicalDataSourceView
     {
         private readonly string m_sKey;
@@ -19,9 +14,9 @@ namespace DotNetNuke.UI.WebControls
 
         public NavDataSourceView(string viewPath)
         {
-            if (String.IsNullOrEmpty(viewPath))
+            if (string.IsNullOrEmpty(viewPath))
             {
-                this.m_sKey = "";
+                this.m_sKey = string.Empty;
             }
             else if (viewPath.IndexOf("\\") > -1)
             {
@@ -39,6 +34,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.m_sNamespace;
             }
+
             set
             {
                 this.m_sNamespace = value;
@@ -58,14 +54,16 @@ namespace DotNetNuke.UI.WebControls
             var objPages = new NavDataPageHierarchicalEnumerable();
             DNNNodeCollection objNodes;
             objNodes = Navigation.GetNavigationNodes(this.m_sNamespace);
-            if (!String.IsNullOrEmpty(this.m_sKey))
+            if (!string.IsNullOrEmpty(this.m_sKey))
             {
                 objNodes = objNodes.FindNodeByKey(this.m_sKey).DNNNodes;
             }
+
             foreach (DNNNode objNode in objNodes)
             {
                 objPages.Add(new NavDataPageHierarchyData(objNode));
             }
+
             return objPages;
         }
     }

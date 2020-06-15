@@ -1,27 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Project:    DotNetNuke
     /// Class:      CommandButton
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CommandButton Class provides an enhanced Button control for DotNetNuke
+    /// The CommandButton Class provides an enhanced Button control for DotNetNuke.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -35,10 +30,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Separator between Buttons
+        /// Gets or sets the Separator between Buttons.
         /// </summary>
-        /// <remarks>Defaults to 1 non-breaking spaces</remarks>
-        /// <value>A String</value>
+        /// <remarks>Defaults to 1 non-breaking spaces.</remarks>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
@@ -47,6 +42,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.separator.Text;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -56,10 +52,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the control causes Validation to occur
+        /// Gets or sets a value indicating whether gets or sets whether the control causes Validation to occur.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool CausesValidation
         {
@@ -68,6 +64,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.CausesValidation;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -78,9 +75,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the command argument for this command button
+        /// Gets or sets the command argument for this command button.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CommandArgument
         {
@@ -89,6 +86,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.CommandArgument;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -99,9 +97,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the command name for this command button
+        /// Gets or sets the command name for this command button.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CommandName
         {
@@ -110,6 +108,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.CommandName;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -120,10 +119,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the link is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the link is displayed.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
@@ -132,6 +131,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Visible;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -141,10 +141,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the icon is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
@@ -153,6 +153,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.icon.Visible;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -162,20 +163,23 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Image used for the Icon
+        /// Gets or sets the Image used for the Icon.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ImageUrl
         {
             get
             {
-                this.EnsureChildControls();                
+                this.EnsureChildControls();
                 if (string.IsNullOrEmpty(this.icon.ImageUrl))
+                {
                     this.icon.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
+                }
 
                 return this.icon.ImageUrl;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -185,33 +189,33 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Key to obtain ImageURL
+        /// Gets or sets the Icon Key to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Siz to obtain ImageURL
+        /// Gets or sets the Icon Siz to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconSize { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Style to obtain ImageURL
+        /// Gets or sets the Icon Style to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconStyle { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the "onClick" Attribute
+        /// Gets or sets the "onClick" Attribute.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string OnClick
         {
@@ -220,10 +224,11 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Attributes["onclick"];
             }
+
             set
             {
                 this.EnsureChildControls();
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     this.icon.Attributes.Remove("onclick");
                     this.link.Attributes.Remove("onclick");
@@ -238,9 +243,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the "OnClientClick" Property
+        ///   Gets or sets the "OnClientClick" Property.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string OnClientClick
         {
@@ -249,6 +254,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.OnClientClick;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -259,9 +265,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Resource Key used for the Control
+        /// Gets or sets the Resource Key used for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ResourceKey
         {
@@ -270,10 +276,11 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Attributes["resourcekey"];
             }
+
             set
             {
                 this.EnsureChildControls();
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     this.icon.Attributes.Remove("resourcekey");
                     this.link.Attributes.Remove("resourcekey");
@@ -288,9 +295,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Text used for the Control
+        /// Gets or sets the Text used for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Text
         {
@@ -299,6 +306,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Text;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -308,17 +316,17 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the tooltip resource key used for the Control
+        /// Gets or sets the tooltip resource key used for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ToolTipKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Validation Group that this control "validates"
+        /// Gets or sets the Validation Group that this control "validates".
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ValidationGroup
         {
@@ -327,6 +335,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.ValidationGroup;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -338,12 +347,13 @@ namespace DotNetNuke.UI.WebControls
         public string LocalResourceFile { get; set; }
 
         public event EventHandler Click;
+
         public event CommandEventHandler Command;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateChildControls overrides the Base class's method to correctly build the
-        /// control based on the configuration
+        /// control based on the configuration.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -351,10 +361,11 @@ namespace DotNetNuke.UI.WebControls
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
-            if (String.IsNullOrEmpty(this.CssClass))
+            if (string.IsNullOrEmpty(this.CssClass))
             {
                 this.CssClass = "CommandButton";
             }
+
             this.icon = new ImageButton();
             this.icon.Visible = true;
             this.icon.CausesValidation = true;
@@ -370,10 +381,11 @@ namespace DotNetNuke.UI.WebControls
             this.link.Click += this.RaiseClick;
             this.link.Command += this.RaiseCommand;
             this.Controls.Add(this.link);
-            if (this.DisplayIcon && !String.IsNullOrEmpty(this.ImageUrl))
+            if (this.DisplayIcon && !string.IsNullOrEmpty(this.ImageUrl))
             {
                 this.icon.EnableViewState = this.EnableViewState;
             }
+
             if (this.DisplayLink)
             {
                 this.link.CssClass = this.CssClass;
@@ -383,7 +395,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnButtonClick raises the CommandButton control's Click event
+        /// OnButtonClick raises the CommandButton control's Click event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnButtonClick(EventArgs e)
@@ -396,7 +408,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnCommand raises the CommandButton control's Command event
+        /// OnCommand raises the CommandButton control's Command event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnCommand(CommandEventArgs e)
@@ -409,7 +421,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs just before the Render phase of the Page Life Cycle
+        /// OnPreRender runs just before the Render phase of the Page Life Cycle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -445,12 +457,12 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RaiseClick runs when one of the contained Link buttons is clciked
+        /// RaiseClick runs when one of the contained Link buttons is clciked.
         /// </summary>
         /// <remarks>It raises a Click Event.
         /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An EventArgs object</param>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An EventArgs object.</param>
         /// -----------------------------------------------------------------------------
         private void RaiseClick(object sender, EventArgs e)
         {
@@ -459,12 +471,12 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RaiseCommand runs when one of the contained Link buttons is clicked
+        /// RaiseCommand runs when one of the contained Link buttons is clicked.
         /// </summary>
         /// <remarks>It raises a Command Event.
         /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An CommandEventArgs object</param>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An CommandEventArgs object.</param>
         /// -----------------------------------------------------------------------------
         private void RaiseCommand(object sender, CommandEventArgs e)
         {
@@ -473,12 +485,12 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RaiseImageClick runs when the Image button is clicked
+        /// RaiseImageClick runs when the Image button is clicked.
         /// </summary>
         /// <remarks>It raises a Command Event.
         /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An ImageClickEventArgs object</param>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An ImageClickEventArgs object.</param>
         /// -----------------------------------------------------------------------------
         protected void RaiseImageClick(object sender, ImageClickEventArgs e)
         {

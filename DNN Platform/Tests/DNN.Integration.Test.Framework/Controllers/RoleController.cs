@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using DNN.Integration.Test.Framework.Helpers;
-using DNN.Integration.Test.Framework.Scripts;
-
 namespace DNN.Integration.Test.Framework.Controllers
 {
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+
+    using DNN.Integration.Test.Framework.Helpers;
+    using DNN.Integration.Test.Framework.Scripts;
+
     public static class RoleController
     {
         private const string PortalIdMarker = @"'$[portal_id]'";
@@ -52,16 +53,18 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Get RoleId for role "Registered Users"
+        /// Get RoleId for role "Registered Users".
         /// </summary>
+        /// <returns></returns>
         public static int GetRegisteredUsersRoleId(int portalId = 0)
         {
             return GetRoleId("Registered Users", portalId);
         }
 
         /// <summary>
-        /// Get RoleId for role "Administrators"
+        /// Get RoleId for role "Administrators".
         /// </summary>
+        /// <returns></returns>
         public static int GetAdministratorsRoleId(int portalId = 0)
         {
             return GetRoleId("Administrators", portalId);
@@ -71,8 +74,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         {
             // The fix for DNN-4288 prevented virtual roles from getting virtual
             // roles (i.e., with RoleID <= 0 which includes Administrator role).
-            //var results = DatabaseHelper.ExecuteStoredProcedure("GetRolesBasicSearch", portalId, 0, 10, roleName);
-
+            // var results = DatabaseHelper.ExecuteStoredProcedure("GetRolesBasicSearch", portalId, 0, 10, roleName);
             roleName = roleName.Replace("'", string.Empty);
             var query = string.Format("SELECT RoleID FROM {{objectQualifier}}Roles WHERE RoleName = N'{0}' AND PortalID={1};", roleName, portalId);
             var results = DatabaseHelper.ExecuteQuery(query).ToArray();

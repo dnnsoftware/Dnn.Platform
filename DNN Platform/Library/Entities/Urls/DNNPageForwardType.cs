@@ -8,6 +8,6 @@ namespace DotNetNuke.Entities.Urls
     {
         NoForward,
         Redirect302,
-        Redirect301
+        Redirect301,
     }
 }

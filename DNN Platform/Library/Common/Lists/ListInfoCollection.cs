@@ -1,27 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Common.Lists
 {
+    using System;
+    using System.Collections;
+
+    using DotNetNuke.Instrumentation;
+
     [Serializable]
     public class ListInfoCollection : CollectionBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ListInfoCollection));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListInfoCollection));
         private readonly Hashtable mKeyIndexLookup = new Hashtable();
 
         public ListInfo GetChildren(string ParentName)
         {
-            return (ListInfo) this.Item(ParentName);
+            return (ListInfo)this.Item(ParentName);
         }
 
         internal new void Clear()
@@ -33,10 +28,11 @@ namespace DotNetNuke.Common.Lists
         public void Add(string key, object value)
         {
             int index;
-            //<tam:note key to be lowercase for appropiated seeking>
+
+            // <tam:note key to be lowercase for appropiated seeking>
             try
             {
-                index = base.List.Add(value);
+                index = this.List.Add(value);
                 this.mKeyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)
@@ -50,7 +46,7 @@ namespace DotNetNuke.Common.Lists
             try
             {
                 object obj;
-                obj = base.List[index];
+                obj = this.List[index];
                 return obj;
             }
             catch (Exception exc)
@@ -64,7 +60,7 @@ namespace DotNetNuke.Common.Lists
         {
             int index;
             object obj;
-            try //Do validation first
+            try // Do validation first
             {
                 if (this.mKeyIndexLookup[key.ToLowerInvariant()] == null)
                 {
@@ -76,8 +72,9 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
+
             index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
-            obj = base.List[index];
+            obj = this.List[index];
             return obj;
         }
 
@@ -87,7 +84,7 @@ namespace DotNetNuke.Common.Lists
             int index;
             object obj = null;
             bool itemExists = false;
-            try //Do validation first
+            try // Do validation first
             {
                 if (this.mKeyIndexLookup[key.ToLowerInvariant()] != null)
                 {
@@ -98,14 +95,16 @@ namespace DotNetNuke.Common.Lists
             {
                 Logger.Error(exc);
             }
-            //key will be in format Country.US:Region
+
+            // key will be in format Country.US:Region
             if (!itemExists)
             {
                 var ctlLists = new ListController();
                 string listName = key.Substring(key.IndexOf(":") + 1);
-                string parentKey = key.Replace(listName, "").TrimEnd(':');
+                string parentKey = key.Replace(listName, string.Empty).TrimEnd(':');
                 ListInfo listInfo = ctlLists.GetListInfo(listName, parentKey);
-                //the collection has been cache, so add this entry list into it if specified
+
+                // the collection has been cache, so add this entry list into it if specified
                 if (Cache)
                 {
                     this.Add(listInfo.Key, listInfo);
@@ -115,8 +114,9 @@ namespace DotNetNuke.Common.Lists
             else
             {
                 index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
-                obj = base.List[index];
+                obj = this.List[index];
             }
+
             return obj;
         }
 
@@ -125,11 +125,12 @@ namespace DotNetNuke.Common.Lists
             var childList = new ArrayList();
             foreach (object child in this.List)
             {
-                if (((ListInfo) child).Key.IndexOf(ParentKey.ToLowerInvariant()) > -1)
+                if (((ListInfo)child).Key.IndexOf(ParentKey.ToLowerInvariant()) > -1)
                 {
                     childList.Add(child);
                 }
             }
+
             return childList;
         }
     }

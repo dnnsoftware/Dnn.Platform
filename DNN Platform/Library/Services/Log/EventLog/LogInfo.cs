@@ -1,45 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using DotNetNuke.Services.Exceptions;
-
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+
+    using DotNetNuke.Services.Exceptions;
+
     [Serializable]
     public class LogInfo
     {
-		#region Constructors
-
         public LogInfo()
         {
             this.LogGUID = Guid.NewGuid().ToString();
             this.BypassBuffering = false;
             this.LogProperties = new LogProperties();
             this.LogPortalID = -1;
-            this.LogPortalName = "";
+            this.LogPortalName = string.Empty;
             this.LogUserID = -1;
             this.LogEventID = -1;
-            this.LogUserName = "";
-			this.Exception = new ExceptionInfo();
+            this.LogUserName = string.Empty;
+            this.Exception = new ExceptionInfo();
         }
 
-        public LogInfo(string content) : this()
+        public LogInfo(string content)
+            : this()
         {
             this.Deserialize(content);
         }
-		
-		#endregion
-
-		#region "Properties"
 
         public string LogGUID { get; set; }
 
@@ -69,11 +60,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string LogConfigID { get; set; }
 
-		public ExceptionInfo Exception { get; set; }
-
-        #endregion
-
-		#region Public Methods
+        public ExceptionInfo Exception { get; set; }
 
         public void AddProperty(string PropertyName, string PropertyValue)
         {
@@ -83,14 +70,17 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     PropertyValue = string.Empty;
                 }
+
                 if (PropertyName.Length > 50)
                 {
                     PropertyName = PropertyName.Substring(0, 50);
                 }
+
                 if (PropertyValue.Length > 500)
                 {
                     PropertyValue = "(TRUNCATED TO 500 CHARS): " + PropertyValue.Substring(0, 500);
                 }
+
                 var objLogDetailInfo = new LogDetailInfo();
                 objLogDetailInfo.PropertyName = PropertyName;
                 objLogDetailInfo.PropertyValue = PropertyValue;
@@ -98,7 +88,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             catch (Exception exc)
             {
-                Exceptions.Exceptions.LogException(exc);
+                Exceptions.LogException(exc);
             }
         }
 
@@ -110,6 +100,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     this.ReadXml(reader);
                 }
+
                 reader.Close();
             }
         }
@@ -158,28 +149,29 @@ namespace DotNetNuke.Services.Log.EventLog
                         case "LogServerName":
                             this.LogServerName = reader.ReadContentAsString();
                             break;
-						case "LogConfigID":
-							this.LogConfigID = reader.ReadContentAsString();
-							break;
-					}
+                        case "LogConfigID":
+                            this.LogConfigID = reader.ReadContentAsString();
+                            break;
+                    }
                 }
             }
-			
-            //Check for LogProperties child node
+
+            // Check for LogProperties child node
             reader.Read();
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
             {
                 reader.ReadStartElement("LogProperties");
-                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !String.IsNullOrEmpty(reader.LocalName))
+                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
                 {
                     this.LogProperties.ReadXml(reader);
                 }
-			}
-			//Check for Exception child node
-			if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
-	        {
-				this.Exception.ReadXml(reader);
-	        }
+            }
+
+            // Check for Exception child node
+            if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
+            {
+                this.Exception.ReadXml(reader);
+            }
         }
 
         public static bool IsSystemType(string PropName)
@@ -199,6 +191,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 case "LogServerName":
                     return true;
             }
+
             return false;
         }
 
@@ -229,10 +222,11 @@ namespace DotNetNuke.Services.Log.EventLog
             str.Append("<p><strong>CreateDate:</strong>" + this.LogCreateDate + "</p>");
             str.Append("<p><strong>ServerName:</strong>" + this.LogServerName + "</p>");
             str.Append(this.LogProperties.ToString());
-	        if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
-	        {
-				str.Append(this.Exception.ToString());
-			}
+            if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
+            {
+                str.Append(this.Exception.ToString());
+            }
+
             return str.ToString();
         }
 
@@ -251,15 +245,14 @@ namespace DotNetNuke.Services.Log.EventLog
             writer.WriteAttributeString("LogCreateDateNum", this.LogCreateDateNum.ToString());
             writer.WriteAttributeString("BypassBuffering", this.BypassBuffering.ToString());
             writer.WriteAttributeString("LogServerName", this.LogServerName);
-			writer.WriteAttributeString("LogConfigID", this.LogConfigID);
+            writer.WriteAttributeString("LogConfigID", this.LogConfigID);
             this.LogProperties.WriteXml(writer);
-	        if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
-	        {
-		        this.Exception.WriteXml(writer);
-	        }
+            if (!string.IsNullOrEmpty(this.Exception.ExceptionHash))
+            {
+                this.Exception.WriteXml(writer);
+            }
+
             writer.WriteEndElement();
         }
-		
-		#endregion
     }
 }

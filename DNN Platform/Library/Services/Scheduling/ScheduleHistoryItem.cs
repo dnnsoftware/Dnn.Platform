@@ -1,20 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-using System.Text;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Data;
+    using System.Text;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
     [Serializable]
     public class ScheduleHistoryItem : ScheduleItem
     {
@@ -102,6 +97,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._LogNotes.ToString();
             }
+
             set
             {
                 this._LogNotes = new StringBuilder(value);
@@ -173,6 +169,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._ScheduleHistoryID;
             }
+
             set
             {
                 this._ScheduleHistoryID = value;
@@ -185,6 +182,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._Server;
             }
+
             set
             {
                 this._Server = value;
@@ -197,6 +195,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._StartDate;
             }
+
             set
             {
                 this._StartDate = value;
@@ -209,11 +208,14 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._Succeeded;
             }
+
             set
             {
                 this._Succeeded = value;
                 if (_tracelLogger.IsDebugEnabled)
+                {
                     _tracelLogger.Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {this.FriendlyName}");
+                }
             }
         }
 
@@ -221,7 +223,9 @@ namespace DotNetNuke.Services.Scheduling
         {
             this._LogNotes.Append(notes);
             if (_tracelLogger.IsTraceEnabled)
+            {
                 _tracelLogger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
+            }
         }
 
         public override void Fill(IDataReader dr)

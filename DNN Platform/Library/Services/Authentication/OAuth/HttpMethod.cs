@@ -9,6 +9,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
         GET,
         POST,
         PUT,
-        DELETE
+        DELETE,
     }
 }

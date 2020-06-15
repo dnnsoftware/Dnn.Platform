@@ -2,43 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Security;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Security;
+
     /// <summary>
     ///   Base class that provides common functionallity to work with files and folders.
     /// </summary>
     public abstract class FolderProvider
     {
-        #region Constants
-
         private const string SettingsControlId = "Settings.ascx";
-
-        #endregion
-
-        #region Private Variables
-
         private string _providerName;
-
-        #endregion
-
-        #region Static Provider Methods
 
         /// <summary>
         ///   Get the list of all the folder providers.
         /// </summary>
+        /// <returns></returns>
         public static Dictionary<string, FolderProvider> GetProviderList()
         {
             var providerList = ComponentFactory.GetComponents<FolderProvider>();
@@ -54,6 +45,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Gets an instance of a specific FolderProvider of a given name.
         /// </summary>
+        /// <returns></returns>
         public static FolderProvider Instance(string friendlyName)
         {
             var provider = ComponentFactory.GetComponent<FolderProvider>(friendlyName);
@@ -63,12 +55,8 @@ namespace DotNetNuke.Services.FileSystem
             return provider;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
+        /// Gets a value indicating whether gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
         /// </summary>
         /// <remarks>
         /// Some providers (e.g. Standard) store their files/folders in a way that allows for anonymous access that bypasses DotNetNuke.
@@ -83,7 +71,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a value indicating if the provider requires network connectivity to do its tasks.
+        /// Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.
         /// </summary>
         public virtual bool RequiresNetworkConnectivity
         {
@@ -94,11 +82,11 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Indicates if the folder provider supports mapped paths when creating new folders
+        /// Gets a value indicating whether indicates if the folder provider supports mapped paths when creating new folders.
         /// </summary>
         /// <remarks>
-        /// If this method is not overrided it returns false
-        /// </remarks>        
+        /// If this method is not overrided it returns false.
+        /// </remarks>
         public virtual bool SupportsMappedPaths
         {
             get
@@ -124,10 +112,6 @@ namespace DotNetNuke.Services.FileSystem
         {
             get { return false; }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static void AddFolderAndMoveFiles(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
         {
@@ -165,13 +149,10 @@ namespace DotNetNuke.Services.FileSystem
                         folderProvider.AddFile(newFolder, file, fileContent);
                     }
                 }
+
                 folderProvider.DeleteFile(new FileInfo { FileName = file, Folder = folder.FolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID });
             }
         }
-
-        #endregion
-
-        #region Virtual Methods
 
         public virtual void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
         {
@@ -188,13 +169,16 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
-			var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
+            var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
 
-			Requires.NotNull("sourceFolder", sourceFolder);
-			Requires.NotNull("destinationFolder", destinationFolder);
+            Requires.NotNull("sourceFolder", sourceFolder);
+            Requires.NotNull("destinationFolder", destinationFolder);
 
             using (var fileContent = this.GetFileStream(sourceFolder, fileName))
             {
@@ -215,6 +199,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public virtual Stream GetFileStream(IFolderInfo folder, IFileInfo file, int version)
         {
             return this.GetFileStream(folder, FileVersionController.GetVersionedFilename(file, version));
@@ -247,7 +232,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Moves a file to a new folder
+        /// Moves a file to a new folder.
         /// </summary>
         /// <param name="file"></param>
         public virtual void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
@@ -283,18 +268,18 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets the decrypted value of an encrypted folder mapping setting
+        /// Gets the decrypted value of an encrypted folder mapping setting.
         /// </summary>
-        /// <remarks>If the value is not set the method returns null</remarks>
-        /// <param name="folderMappingSettings">Folder mapping settings</param>
-        /// <param name="settingName">Setting name</param>
-        /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null</exception>
-        /// <returns>decrypted value</returns>
+        /// <remarks>If the value is not set the method returns null.</remarks>
+        /// <param name="folderMappingSettings">Folder mapping settings.</param>
+        /// <param name="settingName">Setting name.</param>
+        /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null.</exception>
+        /// <returns>decrypted value.</returns>
         public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
         {
             Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);
             Requires.NotNullOrEmpty(nameof(settingName), settingName);
-            
+
             return PortalSecurity.Instance.Decrypt(Host.GUID, folderMappingSettings[settingName]?.ToString());
         }
 
@@ -305,11 +290,12 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual string GetHashCode(IFileInfo file)
         {
-            var currentHashCode = String.Empty;
+            var currentHashCode = string.Empty;
             using (var fileContent = this.GetFileStream(file))
             {
                 currentHashCode = this.GetHashCode(file, fileContent);
             }
+
             return currentHashCode;
         }
 
@@ -337,10 +323,6 @@ namespace DotNetNuke.Services.FileSystem
             return hashText.ToString();
         }
 
-        #endregion
-
-        #region Abstract Methods
-
         /// <summary>
         ///   Adds a new file to the specified folder.
         /// </summary>
@@ -367,11 +349,13 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Checks the existence of the specified file in the underlying system.
         /// </summary>
+        /// <returns></returns>
         public abstract bool FileExists(IFolderInfo folder, string fileName);
 
         /// <summary>
         ///   Checks the existence of the specified folder in the underlying system.
         /// </summary>
+        /// <returns></returns>
         public abstract bool FolderExists(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>
@@ -380,51 +364,61 @@ namespace DotNetNuke.Services.FileSystem
         /// <remarks>
         ///   Because some Providers don't support file attributes, this methods returns a nullable type to allow them to return null.
         /// </remarks>
+        /// <returns></returns>
         public abstract FileAttributes? GetFileAttributes(IFileInfo file);
 
         /// <summary>
         ///   Gets the list of file names contained in the specified folder.
         /// </summary>
+        /// <returns></returns>
         public abstract string[] GetFiles(IFolderInfo folder);
 
         /// <summary>
         /// Gets the file length.
         /// </summary>
+        /// <returns></returns>
         public abstract long GetFileSize(IFileInfo file);
 
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public abstract Stream GetFileStream(IFileInfo file);
 
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public abstract Stream GetFileStream(IFolderInfo folder, string fileName);
 
         /// <summary>
         /// Gets the direct Url to the file.
         /// </summary>
+        /// <returns></returns>
         public abstract string GetFileUrl(IFileInfo file);
 
         /// <summary>
         ///   Gets the URL of the image to display in FileManager tree.
         /// </summary>
+        /// <returns></returns>
         public abstract string GetFolderProviderIconPath();
 
         /// <summary>
         ///   Gets the time when the specified file was last modified.
         /// </summary>
+        /// <returns></returns>
         public abstract DateTime GetLastModificationTime(IFileInfo file);
 
         /// <summary>
         ///   Gets the list of subfolders for the specified folder.
         /// </summary>
+        /// <returns></returns>
         public abstract IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>
         ///   Indicates if the specified file is synchronized.
         /// </summary>
+        /// <returns></returns>
         public abstract bool IsInSync(IFileInfo file);
 
         /// <summary>
@@ -445,6 +439,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Gets a value indicating if the underlying system supports file attributes.
         /// </summary>
+        /// <returns></returns>
         public abstract bool SupportsFileAttributes();
 
         /// <summary>
@@ -462,7 +457,5 @@ namespace DotNetNuke.Services.FileSystem
         ///   Do not close content Stream.
         /// </remarks>
         public abstract void UpdateFile(IFolderInfo folder, string fileName, Stream content);
-
-        #endregion
     }
 }

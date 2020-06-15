@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-
 namespace DotNetNuke.Web.Client.Providers
 {
+    using System;
+    using System.IO;
+
     using ClientDependency.Core;
     using ClientDependency.Core.CompositeFiles;
     using ClientDependency.Core.CompositeFiles.Providers;
 
     /// <summary>
-    /// A provider for combining, minifying, compressing and saving composite scripts/css files
+    /// A provider for combining, minifying, compressing and saving composite scripts/css files.
     /// </summary>
     public class DnnCompositeFileProcessingProvider : CompositeFileProcessingProvider
     {
@@ -23,10 +23,14 @@ namespace DotNetNuke.Web.Client.Providers
             Func<Stream, string> streamToString = stream =>
             {
                 if (!stream.CanRead)
+                {
                     throw new InvalidOperationException("Cannot read input stream");
+                }
 
                 if (stream.CanSeek)
+                {
                     stream.Position = 0;
+                }
 
                 var reader = new StreamReader(stream);
                 return reader.ReadToEnd();
@@ -52,9 +56,11 @@ namespace DotNetNuke.Web.Client.Providers
                 case ClientDependencyType.Javascript:
                 {
                     if (!this.MinifyJs)
-                        return fileContents;
+                        {
+                            return fileContents;
+                        }
 
-                    using (var ms = new MemoryStream())
+                        using (var ms = new MemoryStream())
                     using (var writer = new StreamWriter(ms))
                     {
                         writer.Write(fileContents);
@@ -62,6 +68,7 @@ namespace DotNetNuke.Web.Client.Providers
                         return JSMin.CompressJS(ms);
                     }
                 }
+
                 default:
                     return fileContents;
             }

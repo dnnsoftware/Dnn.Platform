@@ -1,25 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties
+    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -33,14 +29,8 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-		#region "Private Members"
-
         private AuthenticationInfo _AuthSystem;
         private AuthenticationSettingsBase _SettingsControl;
-
-        #endregion
-
-        #region "Protected Properties"
 
         protected AuthenticationInfo AuthSystem
         {
@@ -50,6 +40,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this._AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
                 }
+
                 return this._AuthSystem;
             }
         }
@@ -68,19 +59,16 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             {
                 if (this._SettingsControl == null && !string.IsNullOrEmpty(this.AuthSystem.SettingsControlSrc))
                 {
-                    this._SettingsControl = (AuthenticationSettingsBase) this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
+                    this._SettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
                 }
+
                 return this._SettingsControl;
             }
         }
 
-		#endregion
-
-		#region "Private Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine Binds the Authentication System
+        /// This routine Binds the Authentication System.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void BindAuthentication()
@@ -97,17 +85,17 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     this.authenticationForm.DataSource = this.AuthSystem;
                     this.authenticationForm.DataBind();
                 }
+
                 this.authenticationFormReadOnly.Visible = this.IsSuperTab && (this.AuthSystem.AuthenticationType == "DNN");
                 this.authenticationForm.Visible = this.IsSuperTab && this.AuthSystem.AuthenticationType != "DNN";
 
-
                 if (this.SettingsControl != null)
                 {
-					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-                    //this is necessary for the Localization in PageBase
+                    // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+                    // this is necessary for the Localization in PageBase
                     this.SettingsControl.ID = Path.GetFileNameWithoutExtension(this.AuthSystem.SettingsControlSrc);
 
-                    //Add Container to Controls
+                    // Add Container to Controls
                     this.pnlSettings.Controls.AddAt(0, this.SettingsControl);
                 }
                 else
@@ -116,10 +104,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
             }
         }
-
-		#endregion
-
-		#region "Public Methods"
 
         public override void Initialize()
         {
@@ -139,6 +123,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     this.lblHelp.Text = Localization.GetString("AdminHelp", this.LocalResourceFile);
                 }
             }
+
             this.BindAuthentication();
         }
 
@@ -153,10 +138,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
             }
         }
-
-		#endregion
-
-		#region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -175,9 +156,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
             var displayMode = this.DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
+            {
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+            }
         }
-
-		#endregion
     }
 }

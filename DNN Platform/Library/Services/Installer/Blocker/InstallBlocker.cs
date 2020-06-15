@@ -2,34 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities.Internal;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.Installer.Blocker
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities.Internal;
+    using DotNetNuke.Framework;
+
     /// <summary>
     /// This class ...
     /// </summary>
     public class InstallBlocker : ServiceLocator<IInstallBlocker, InstallBlocker>, IInstallBlocker
     {
-        #region Constants
-
-        const string installBlockerFile = "\\installBlocker.lock";
-        #endregion
-
-        #region Members
+        private const string installBlockerFile = "\\installBlocker.lock";
         private bool fileCreated = false;
-        #endregion
-
-        #region Public Methods
 
         public void RegisterInstallBegining()
-        {          
-            if(!this.fileCreated)  
+        {
+            if (!this.fileCreated)
+            {
                 File.Create(Globals.ApplicationMapPath + installBlockerFile);
+            }
+
             this.fileCreated = true;
         }
 
@@ -40,7 +36,8 @@ namespace DotNetNuke.Services.Installer.Blocker
 
         public void RegisterInstallEnd()
         {
-            var retryable = new RetryableAction(() =>
+            var retryable = new RetryableAction(
+                () =>
             {
                 if (this.IsInstallInProgress() && this.fileCreated)
                 {
@@ -52,16 +49,9 @@ namespace DotNetNuke.Services.Installer.Blocker
             this.fileCreated = false;
         }
 
-        #endregion
-
-        #region Private Methods
-        #endregion
-
-        #region Service Locator
         protected override Func<IInstallBlocker> GetFactory()
         {
             return () => new InstallBlocker();
         }
-        #endregion
     }
 }

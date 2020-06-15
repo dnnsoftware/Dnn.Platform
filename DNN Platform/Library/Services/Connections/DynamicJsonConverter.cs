@@ -2,23 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
-
 namespace DotNetNuke.Services.Connections
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Dynamic;
+    using System.Linq;
+    using System.Text;
+    using System.Web.Script.Serialization;
+
     public sealed class DynamicJsonConverter : JavaScriptConverter
     {
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
             if (dictionary == null)
+            {
                 throw new ArgumentNullException("dictionary");
+            }
 
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
         }
@@ -33,8 +35,6 @@ namespace DotNetNuke.Services.Connections
             get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
 
-        #region Nested type: DynamicJsonObject
-
         private sealed class DynamicJsonObject : DynamicObject
         {
             private readonly IDictionary<string, object> _dictionary;
@@ -42,7 +42,10 @@ namespace DotNetNuke.Services.Connections
             public DynamicJsonObject(IDictionary<string, object> dictionary)
             {
                 if (dictionary == null)
+                {
                     throw new ArgumentNullException("dictionary");
+                }
+
                 this._dictionary = dictionary;
             }
 
@@ -84,11 +87,12 @@ namespace DotNetNuke.Services.Connections
                             {
                                 sb.Append(",");
                             }
+
                             firstInArray = false;
 
                             if (arrayValue is IDictionary<string, object>)
                             {
-                                sb.Append(new DynamicJsonObject((IDictionary<string, object>) arrayValue).ToString());
+                                sb.Append(new DynamicJsonObject((IDictionary<string, object>)arrayValue).ToString());
                             }
                             else if (arrayValue is string)
                             {
@@ -98,8 +102,8 @@ namespace DotNetNuke.Services.Connections
                             {
                                 sb.AppendFormat("{0}", arrayValue);
                             }
-
                         }
+
                         sb.Append("]");
                     }
                     else
@@ -107,6 +111,7 @@ namespace DotNetNuke.Services.Connections
                         sb.AppendFormat("{0}:{1}", name, value);
                     }
                 }
+
                 sb.Append("}");
             }
 
@@ -145,7 +150,9 @@ namespace DotNetNuke.Services.Connections
             {
                 var dictionary = result as IDictionary<string, object>;
                 if (dictionary != null)
+                {
                     return new DynamicJsonObject(dictionary);
+                }
 
                 var arrayList = result as ArrayList;
                 if (arrayList != null && arrayList.Count > 0)
@@ -158,7 +165,5 @@ namespace DotNetNuke.Services.Connections
                 return result;
             }
         }
-
-        #endregion
     }
 }

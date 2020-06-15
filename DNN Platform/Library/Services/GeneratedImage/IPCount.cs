@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Utils;
-using DotNetNuke.Services.UserRequest;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Hosting;
+
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.Services.UserRequest;
+
     public class IPCount
     {
         private const string TempFileExtension = ".tmp";
@@ -27,16 +28,19 @@ namespace DotNetNuke.Services.GeneratedImage
         public static string CachePath
         {
             get { return _cachePath; }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (!Directory.Exists(value))
                 {
                     Directory.CreateDirectory(value);
                 }
+
                 _cachePath = value;
             }
         }
@@ -47,16 +51,19 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _purgeInterval;
             }
+
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
+
                 _purgeInterval = value;
             }
         }
@@ -75,13 +82,15 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
                 else
                 {
-                    File.WriteAllText(CachePath + "_lastpurge", "");
+                    File.WriteAllText(CachePath + "_lastpurge", string.Empty);
                 }
+
                 return lastPurge;
             }
+
             set
             {
-                File.WriteAllText(CachePath + "_lastpurge", "");
+                File.WriteAllText(CachePath + "_lastpurge", string.Empty);
             }
         }
 
@@ -120,6 +129,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                 }
                             }
                         }
+
                         Thread.Sleep(0);
                         foreach (var fileinfo in toTryDeleteAgain)
                         {
@@ -132,13 +142,14 @@ namespace DotNetNuke.Services.GeneratedImage
                                 // do nothing at this point, try to delete file during next purge
                             }
                         }
+
                         LastPurge = DateTime.Now;
 
                         _purgeQueued = false;
                     }
                 }
             }
-            
+
             var path = BuildFilePath(ipAddress);
             var count = 1;
             lock (FileLock)
@@ -149,11 +160,14 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (int.TryParse(strCount, out count))
                     {
                         if (count > MaxCount)
+                        {
                             return false;
+                        }
 
                         count++;
                     }
                 }
+
                 File.WriteAllText(path, count.ToString());
                 return true;
             }
@@ -167,13 +181,13 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// method to get Client ip address
+        /// method to get Client ip address.
         /// </summary>
-        /// <returns>IP Address of visitor</returns>
+        /// <returns>IP Address of visitor.</returns>
         [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
         public static string GetVisitorIPAddress(HttpContextBase context)
         {
-            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);            
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
         }
     }
 }

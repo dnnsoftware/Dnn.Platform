@@ -8,13 +8,13 @@ namespace DotNetNuke.HttpModules.RequestFilter
     {
         Redirect,
         PermanentRedirect,
-        NotFound
+        NotFound,
     }
 
     public enum RequestFilterOperatorType
     {
         Equal,
         NotEqual,
-        Regex
+        Regex,
     }
 }

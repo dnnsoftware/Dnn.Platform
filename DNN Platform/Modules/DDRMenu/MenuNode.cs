@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-using DotNetNuke.Common;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
-
 namespace DotNetNuke.Web.DDRMenu
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+
     [Serializable]
     [XmlRoot("root", Namespace = "")]
     public class MenuNode : IXmlSerializable
@@ -21,24 +22,47 @@ namespace DotNetNuke.Web.DDRMenu
         {
             var result = new List<MenuNode>();
             foreach (DNNNode node in dnnNodes)
+            {
                 result.Add(new MenuNode(node, parent));
+            }
+
             return result;
         }
 
         public int TabId { get; set; }
+
         public string Text { get; set; }
+
         public string Title { get; set; }
+
         public string Url { get; set; }
+
         public bool Enabled { get; set; }
+
         public bool Selected { get; set; }
+
         public bool Breadcrumb { get; set; }
+
         public bool Separator { get; set; }
+
         public string Icon { get; set; }
+
         public string LargeImage { get; set; }
+
         public string CommandName { get; set; }
+
         public string CommandArgument { get; set; }
-        public bool First { get { return (this.Parent == null) || (this.Parent.Children[0] == this); } }
-        public bool Last { get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); } }
+
+        public bool First
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
+        }
+
+        public bool Last
+        {
+            get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
+        }
+
         public string Target { get; set; }
 
         public int Depth
@@ -52,15 +76,21 @@ namespace DotNetNuke.Web.DDRMenu
                     result++;
                     current = current.Parent;
                 }
+
                 return result;
             }
         }
 
         public string Keywords { get; set; }
+
         public string Description { get; set; }
 
         private List<MenuNode> _Children;
-        public List<MenuNode> Children { get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; } }
+
+        public List<MenuNode> Children
+        {
+            get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; }
+        }
 
         public MenuNode Parent { get; set; }
 
@@ -85,7 +115,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.Text = dnnNode.Text;
             this.Url = (dnnNode.ClickAction == eClickAction.PostBack)
                     ? "postback:" + dnnNode.ID
-                    : String.IsNullOrEmpty(dnnNode.JSFunction) ? dnnNode.NavigateURL : "javascript:" + dnnNode.JSFunction;
+                    : string.IsNullOrEmpty(dnnNode.JSFunction) ? dnnNode.NavigateURL : "javascript:" + dnnNode.JSFunction;
             this.Enabled = dnnNode.Enabled;
             this.Selected = dnnNode.Selected;
             this.Breadcrumb = dnnNode.BreadCrumb;
@@ -102,19 +132,25 @@ namespace DotNetNuke.Web.DDRMenu
             DNNAbstract.DNNNodeToMenuNode(dnnNode, this);
 
             if ((dnnNode.DNNNodes != null) && (dnnNode.DNNNodes.Count > 0))
+            {
                 this.Children = ConvertDNNNodeCollection(dnnNode.DNNNodes, this);
+            }
         }
 
         public MenuNode FindById(int tabId)
         {
             if (tabId == this.TabId)
+            {
                 return this;
+            }
 
             foreach (var child in this.Children)
             {
                 var result = child.FindById(tabId);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -123,13 +159,17 @@ namespace DotNetNuke.Web.DDRMenu
         public MenuNode FindByName(string tabName)
         {
             if (tabName.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return this;
+            }
 
             foreach (var child in this.Children)
             {
                 var result = child.FindByName(tabName);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -137,7 +177,6 @@ namespace DotNetNuke.Web.DDRMenu
 
         public List<MenuNode> FlattenChildren(MenuNode root)
         {
-
             var flattened = new List<MenuNode>();
             if (root.TabId != 0)
             {
@@ -160,15 +199,22 @@ namespace DotNetNuke.Web.DDRMenu
         public MenuNode FindByNameOrId(string tabNameOrId)
         {
             if (tabNameOrId.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return this;
+            }
+
             if (tabNameOrId == this.TabId.ToString())
+            {
                 return this;
+            }
 
             foreach (var child in this.Children)
             {
                 var result = child.FindByNameOrId(tabNameOrId);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -181,11 +227,11 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 child.RemoveAll(filteredNodes);
             }
-        }        
+        }
 
         public bool HasChildren()
         {
-            return (this.Children.Count > 0);
+            return this.Children.Count > 0;
         }
 
         internal void ApplyContext(string defaultImagePath)
@@ -205,13 +251,18 @@ namespace DotNetNuke.Web.DDRMenu
         private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
         {
             var result = imagePath;
-            if (!String.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
                 if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
+                {
                     result = Globals.ResolveUrl(result);
+                }
                 else if (!(result.Contains("://") || result.StartsWith("/")))
+                {
                     result = defaultImagePath + result;
+                }
             }
+
             return result;
         }
 
@@ -243,16 +294,16 @@ namespace DotNetNuke.Web.DDRMenu
                             this.Url = reader.Value;
                             break;
                         case "enabled":
-                            this.Enabled = (reader.Value == "1");
+                            this.Enabled = reader.Value == "1";
                             break;
                         case "selected":
-                            this.Selected = (reader.Value == "1");
+                            this.Selected = reader.Value == "1";
                             break;
                         case "breadcrumb":
-                            this.Breadcrumb = (reader.Value == "1");
+                            this.Breadcrumb = reader.Value == "1";
                             break;
                         case "separator":
-                            this.Separator = (reader.Value == "1");
+                            this.Separator = reader.Value == "1";
                             break;
                         case "icon":
                             this.Icon = reader.Value;
@@ -269,7 +320,8 @@ namespace DotNetNuke.Web.DDRMenu
                         case "target":
                             this.Target = reader.Value;
                             break;
-                        //default:
+
+                        // default:
                         //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
                     }
                 }
@@ -277,7 +329,9 @@ namespace DotNetNuke.Web.DDRMenu
             }
 
             if (empty)
+            {
                 return;
+            }
 
             while (reader.Read())
             {
@@ -300,8 +354,9 @@ namespace DotNetNuke.Web.DDRMenu
                             case "root":
                                 break;
                             default:
-                                throw new XmlException(String.Format("Unexpected element '{0}'", reader.Name));
+                                throw new XmlException(string.Format("Unexpected element '{0}'", reader.Name));
                         }
+
                         break;
                     case XmlNodeType.EndElement:
                         reader.ReadEndElement();
@@ -340,13 +395,17 @@ namespace DotNetNuke.Web.DDRMenu
             this.Children.ForEach(c => c.WriteXml(writer));
 
             if (this.Parent != null)
+            {
                 writer.WriteEndElement();
+            }
         }
 
         private static void AddXmlAttribute(XmlWriter writer, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
+            {
                 writer.WriteAttributeString(name, value);
+            }
         }
 
         private static void AddXmlAttribute(XmlWriter writer, string name, int value)
@@ -361,8 +420,10 @@ namespace DotNetNuke.Web.DDRMenu
 
         private static void AddXmlElement(XmlWriter writer, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
+            {
                 writer.WriteElementString(name, value);
+            }
         }
     }
 }

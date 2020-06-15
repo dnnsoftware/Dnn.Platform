@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Management.Automation.Runspaces;
-using System.Management.Automation;
-
 namespace DotNetNuke.Tests.UI.WatiN.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Management.Automation;
+    using System.Management.Automation.Runspaces;
+    using System.Text;
+
     public class PowershellManager
     {
         public static void ExecutePowershellScript(string scriptPath, string executionPolicy, params string[] parameters)
@@ -21,9 +21,9 @@ namespace DotNetNuke.Tests.UI.WatiN.Utilities
 
             using (RunspaceInvoke invoker = new RunspaceInvoke())
             {
-                invoker.Invoke(String.Format("Set-ExecutionPolicy {0}", executionPolicy));
+                invoker.Invoke(string.Format("Set-ExecutionPolicy {0}", executionPolicy));
                 Command myCommand = new Command(scriptPath);
-                for(int i=0; i < parameters.Length; i++)
+                for (int i = 0; i < parameters.Length; i++)
                 {
                     myCommand.Parameters.Add(new CommandParameter(null, parameters[i]));
                 }

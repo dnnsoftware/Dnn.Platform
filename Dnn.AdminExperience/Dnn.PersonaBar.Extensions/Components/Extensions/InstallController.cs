@@ -2,25 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Data;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Common.Utilities;
-using ICSharpCode.SharpZipLib;
-
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer;
+    using ICSharpCode.SharpZipLib;
+
     public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));

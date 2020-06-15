@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities;
-
 namespace DotNetNuke.Tests.Core.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities;
+
     public class ConfigurationSettingsComparer : EqualityComparer<ConfigurationSetting>
     {
         public override bool Equals(ConfigurationSetting x, ConfigurationSetting y)

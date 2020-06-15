@@ -9,12 +9,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
         public WorkflowInvalidOperationException(string message)
             : base(message)
         {
-
         }
 
         public WorkflowInvalidOperationException()
         {
-            
         }
     }
 }

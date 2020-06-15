@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Security.Cryptography;
-using System.Security.Principal;
-using System.Text;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-
 namespace DotNetNuke.Web.Api.Internal.Auth
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Security.Principal;
+    using System.Text;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+
     internal class DigestAuthentication
     {
         internal const string AuthenticationScheme = "Digest";
@@ -41,18 +42,19 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         {
             this._request = request;
             this._portalId = portalId;
-            this._ipAddress = ipAddress ?? "";
+            this._ipAddress = ipAddress ?? string.Empty;
             this.AuthenticateRequest();
         }
 
         private void AuthenticateRequest()
         {
             this._password = this.GetPassword(this.Request);
-            if(this._password != null)
+            if (this._password != null)
             {
-                this.IsNonceStale = ! (IsNonceValid(this._request.RequestParams["nonce"]));
-                //Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
-                if ((! this.IsNonceStale) && this._request.RequestParams["response"] == this.CalculateHashedDigest())
+                this.IsNonceStale = ! IsNonceValid(this._request.RequestParams["nonce"]);
+
+                // Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
+                if ((!this.IsNonceStale) && this._request.RequestParams["response"] == this.CalculateHashedDigest())
                 {
                     this.IsValid = true;
                     this.User = new GenericPrincipal(new GenericIdentity(this._request.RawUsername, AuthenticationScheme), null);
@@ -67,64 +69,69 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 user = UserController.GetUserByName(this._portalId, request.RawUsername);
             }
+
             if (user == null)
             {
                 return null;
             }
-            var password = UserController.GetPassword(ref user, "");
-            
-            //Try to validate user
+
+            var password = UserController.GetPassword(ref user, string.Empty);
+
+            // Try to validate user
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", "", this._ipAddress, ref loginStatus);
+            user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", string.Empty, this._ipAddress, ref loginStatus);
 
             return user != null ? password : null;
         }
 
         private string GenerateUnhashedDigest()
         {
-            string a1 = String.Format("{0}:{1}:{2}", this._request.RequestParams["username"].Replace("\\\\", "\\"),
+            string a1 = string.Format("{0}:{1}:{2}", this._request.RequestParams["username"].Replace("\\\\", "\\"),
                                       this._request.RequestParams["realm"], this._password);
             string ha1 = CreateMd5HashBinHex(a1);
-            string a2 = String.Format("{0}:{1}", this._request.HttpMethod, this._request.RequestParams["uri"]);
+            string a2 = string.Format("{0}:{1}", this._request.HttpMethod, this._request.RequestParams["uri"]);
             string ha2 = CreateMd5HashBinHex(a2);
             string unhashedDigest;
             if (this._request.RequestParams["qop"] != null)
             {
-                unhashedDigest = String.Format("{0}:{1}:{2}:{3}:{4}:{5}", ha1, this._request.RequestParams["nonce"],
+                unhashedDigest = string.Format("{0}:{1}:{2}:{3}:{4}:{5}", ha1, this._request.RequestParams["nonce"],
                                                this._request.RequestParams["nc"], this._request.RequestParams["cnonce"],
                                                this._request.RequestParams["qop"], ha2);
             }
             else
             {
-                unhashedDigest = String.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
+                unhashedDigest = string.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
             }
-            //Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
+
+            // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return unhashedDigest;
         }
 
         private static string CreateMd5HashBinHex(string val)
         {
-            //Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
-            //Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
+            // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
+            // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
             byte[] bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
-            string ha1 = "";
+            string ha1 = string.Empty;
             for (int i = 0; i <= 15; i++)
             {
-                ha1 += String.Format("{0:x02}", bha1[i]);
+                ha1 += string.Format("{0:x02}", bha1[i]);
             }
+
             return ha1;
         }
 
-        //the nonce is created in DotNetNuke.Web.Api.DigestAuthMessageHandler
+        // the nonce is created in DotNetNuke.Web.Api.DigestAuthMessageHandler
         private static bool IsNonceValid(string nonce)
         {
             DateTime expireTime;
 
-            int numPadChars = nonce.Length%4;
+            int numPadChars = nonce.Length % 4;
             if (numPadChars > 0)
             {
                 numPadChars = 4 - numPadChars;
             }
+
             string newNonce = nonce.PadRight(nonce.Length + numPadChars, '=');
 
             try
@@ -138,7 +145,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 return false;
             }
 
-            return (DateTime.Now <= expireTime);
+            return DateTime.Now <= expireTime;
         }
     }
 }

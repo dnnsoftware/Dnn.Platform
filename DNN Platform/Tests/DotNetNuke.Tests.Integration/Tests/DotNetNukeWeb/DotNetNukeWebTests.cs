@@ -2,21 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Configuration;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using DNN.Integration.Test.Framework;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
 {
+    using System;
+    using System.Configuration;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+
+    using DNN.Integration.Test.Framework;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DotNetNukeWebTests : IntegrationTestBase
     {
-        #region private data
-
         private readonly HttpClient _httpClient;
 
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
@@ -31,10 +30,6 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
             this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
         }
 
-        #endregion
-
-        #region tests
-
         [Test]
         [TestCase(GetMonikerQuery)]
         [TestCase(GetModuleDetailsQuery)]
@@ -45,7 +40,5 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
-
-        #endregion
     }
 }

@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-#endregion
-
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     [Serializable]
     public class SharedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable
     {
@@ -20,7 +15,8 @@ namespace DotNetNuke.Collections.Internal
         private bool _isDisposed;
         private ILockStrategy _lockController;
 
-        public SharedDictionary() : this(LockingStrategy.ReaderWriter)
+        public SharedDictionary()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
@@ -30,7 +26,8 @@ namespace DotNetNuke.Collections.Internal
             this._lockController = lockStrategy;
         }
 
-        public SharedDictionary(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        public SharedDictionary(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
@@ -41,8 +38,6 @@ namespace DotNetNuke.Collections.Internal
                 return this._dict;
             }
         }
-
-        #region IDictionary<TKey,TValue> Members
 
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
@@ -145,6 +140,7 @@ namespace DotNetNuke.Collections.Internal
                 this.EnsureReadAccess();
                 return this._dict[key];
             }
+
             set
             {
                 this.EnsureNotDisposed();
@@ -173,18 +169,12 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        #endregion
-
-        #region IDisposable Members
-
         public void Dispose()
         {
             this.Dispose(true);
 
             GC.SuppressFinalize(this);
         }
-
-        #endregion
 
         public ISharedCollectionLock GetReadLock()
         {
@@ -218,10 +208,9 @@ namespace DotNetNuke.Collections.Internal
             return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-
         private void EnsureReadAccess()
         {
-            if (!(this._lockController.ThreadCanRead))
+            if (! this._lockController.ThreadCanRead)
             {
                 throw new ReadLockRequiredException();
             }
@@ -240,7 +229,7 @@ namespace DotNetNuke.Collections.Internal
             this.EnsureNotDisposed();
             this.EnsureReadAccess();
 
-            //todo nothing ensures read lock is held for life of enumerator
+            // todo nothing ensures read lock is held for life of enumerator
             return this._dict.GetEnumerator();
         }
 
@@ -258,11 +247,11 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    //dispose managed resrources here
+                    // dispose managed resrources here
                     this._dict = null;
                 }
 
-                //dispose unmanaged resrources here
+                // dispose unmanaged resrources here
                 this._lockController.Dispose();
                 this._lockController = null;
                 this._isDisposed = true;

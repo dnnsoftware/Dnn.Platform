@@ -2,42 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     [TestFixture]
     public class DatabaseFolderProviderTests
     {
-        #region Private Variables
-
         private DatabaseFolderProvider _dfp;
         private Mock<DataProvider> _mockData;
         private Mock<IFolderInfo> _folderInfo;
         private Mock<IFileInfo> _fileInfo;
         private Mock<IFolderManager> _folderManager;
         private Mock<IFileManager> _fileManager;
-
-        #endregion
-
-        #region Setup & TearDown
 
         [SetUp]
         public void Setup()
@@ -59,10 +51,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             MockComponentProvider.ResetContainer();
         }
 
-        #endregion
-
-        #region AddFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AddFile_Throws_On_Null_Folder()
@@ -83,10 +71,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._dfp.AddFile(this._folderInfo.Object, fileName, stream.Object);
         }
 
-        #endregion
-
-        #region DeleteFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
@@ -103,10 +87,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockData.Verify(md => md.ClearFileContent(Constants.FOLDER_ValidFileId), Times.Once());
         }
-
-        #endregion
-
-        #region FileExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -148,10 +128,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsFalse(result);
         }
-
-        #endregion
-
-        #region FolderExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -196,10 +172,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsFalse(result);
         }
 
-        #endregion
-
-        #region GetFileAttributes
-
         [Test]
         public void GetFileAttributes_Returns_Null()
         {
@@ -207,10 +179,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsNull(result);
         }
-
-        #endregion
-
-        #region GetFiles
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -224,9 +192,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             var fileInfos = new List<IFileInfo>
             {
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" }
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty },
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -239,13 +207,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetFiles_Count_Equals_DataProvider_GetFiles_Count()
         {
-            var expectedFiles = new string[] { "", "", "" };
+            var expectedFiles = new string[] { string.Empty, string.Empty, string.Empty };
 
             var fileInfos = new List<IFileInfo>
             {
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" },
-                new FileInfo { FileName = "" }
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty },
+                new FileInfo { FileName = string.Empty },
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -264,7 +232,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             {
                 new FileInfo { FileName = "file1.txt" },
                 new FileInfo { FileName = "file2.txt" },
-                new FileInfo { FileName = "file3.txt" }
+                new FileInfo { FileName = "file3.txt" },
             };
 
             this._folderManager.Setup(fm => fm.GetFiles(this._folderInfo.Object)).Returns((IList<IFileInfo>)fileInfos);
@@ -273,10 +241,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedFiles, files);
         }
-
-        #endregion
-
-        #region GetFileContent
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -334,6 +298,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 {
                     ms.Write(buffer, 0, read);
                 }
+
                 resultBytes = ms.ToArray();
             }
 
@@ -354,10 +319,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsNull(result);
         }
 
-        #endregion
-
-        #region GetFolderProviderIconPath
-
         [Test]
         public void GetImageUrl_Calls_IconControllerWrapper_IconURL()
         {
@@ -369,10 +330,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             iconControllerWrapper.Verify(icw => icw.IconURL("FolderDatabase", "32x32"), Times.Once());
         }
 
-        #endregion
-
-        #region GetLastModificationTime
-
         [Test]
         public void GetLastModificationTime_Returns_Null_Date()
         {
@@ -382,10 +339,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.AreEqual(expectedResult, result);
         }
-
-        #endregion
-
-        #region GetSubFolders
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -423,9 +376,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var folderMapping = new FolderMappingInfo();
             folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
 
-            var subFolders = new List<IFolderInfo>() {
+            var subFolders = new List<IFolderInfo>()
+            {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
-                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath }
+                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath },
             };
 
             this._folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(this._folderInfo.Object);
@@ -439,17 +393,19 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Returns_Valid_SubFolders_When_Folder_Is_Not_Empty()
         {
-            var expectedResult = new List<string> {
+            var expectedResult = new List<string>
+            {
                 Constants.FOLDER_ValidSubFolderRelativePath,
-                Constants.FOLDER_OtherValidSubFolderRelativePath
+                Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
 
             var folderMapping = new FolderMappingInfo();
             folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
 
-            var subFolders = new List<IFolderInfo> {
+            var subFolders = new List<IFolderInfo>
+            {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
-                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath }
+                new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath },
             };
 
             this._folderManager.Setup(fm => fm.GetFolder(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderRelativePath)).Returns(this._folderInfo.Object);
@@ -460,10 +416,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CollectionAssert.AreEqual(expectedResult, result);
         }
 
-        #endregion
-
-        #region IsInSync
-
         [Test]
         public void IsInSync_Returns_True()
         {
@@ -471,10 +423,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsTrue(result);
         }
-
-        #endregion
-
-        #region SupportsFileAttributes
 
         [Test]
         public void SupportsFileAttributes_Returns_False()
@@ -484,16 +432,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsFalse(result);
         }
 
-        #endregion
-
-        #region UpdateFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void UpdateFile_Throws_On_Null_Folder()
         {
             var stream = new Mock<Stream>();
-            
+
             this._dfp.UpdateFile(null, Constants.FOLDER_ValidFileName, stream.Object);
         }
 
@@ -535,7 +479,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._mockData.Verify(md => md.UpdateFileContent(It.IsAny<int>(), It.IsAny<byte[]>()), Times.Never());
         }
-
-        #endregion
     }
 }

@@ -1,266 +1,257 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Linq;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using DotNetNuke.Common.Utilities;
-using System.Web.UI.HtmlControls;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using System.Collections.Generic;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Client;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
-{	/// -----------------------------------------------------------------------------
-	/// Project:    DotNetNuke
-	/// Namespace:  DotNetNuke.UI.WebControls
-	/// Class:      DNNRegionEditControl
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// The DNNRegionEditControl control provides a standard UI component for editing
-	/// Regions
-	/// </summary>
-	/// -----------------------------------------------------------------------------
-	[ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
-	public class DNNRegionEditControl : EditControl
-	{
+{       using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
 
-		#region Controls
-		private DropDownList _Regions;
-		private DropDownList Regions
-		{
-			get
-			{
-				if (this._Regions == null)
-				{
-					this._Regions = new DropDownList();
-				}
-				return this._Regions;
-			}
-		}
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
-		private TextBox _Region;
-		private TextBox Region
-		{
-			get
-			{
-				if (this._Region == null)
-				{
-					this._Region = new TextBox();
-				}
-				return this._Region;
-			}
-		}
+/// -----------------------------------------------------------------------------
+    /// Project:    DotNetNuke
+    /// Namespace:  DotNetNuke.UI.WebControls
+    /// Class:      DNNRegionEditControl
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// The DNNRegionEditControl control provides a standard UI component for editing
+    /// Regions.
+    /// </summary>
+    /// -----------------------------------------------------------------------------
+    [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
+    public class DNNRegionEditControl : EditControl
+    {
+        private DropDownList _Regions;
 
-		private HtmlInputHidden _InitialValue;
-		private HtmlInputHidden RegionCode
-		{
-			get
-			{
-				if (this._InitialValue == null)
-				{
-					this._InitialValue = new HtmlInputHidden();
-				}
-				return this._InitialValue;
-			}
-		}
-		#endregion
+        private DropDownList Regions
+        {
+            get
+            {
+                if (this._Regions == null)
+                {
+                    this._Regions = new DropDownList();
+                }
 
-		#region Properties
-		protected override string StringValue
-		{
-			get
-			{
-				string strValue = Null.NullString;
-				if (this.Value != null)
-				{
-					strValue = Convert.ToString(this.Value);
-				}
-				return strValue;
-			}
-			set { this.Value = value; }
-		}
+                return this._Regions;
+            }
+        }
 
-		protected string OldStringValue
-		{
-			get { return Convert.ToString(this.OldValue); }
-		}
+        private TextBox _Region;
 
-		/// <summary>
-		/// The parent key of the List to display
-		/// </summary>
-		public string ParentKey { get; set; }
+        private TextBox Region
+        {
+            get
+            {
+                if (this._Region == null)
+                {
+                    this._Region = new TextBox();
+                }
 
-		private List<ListEntryInfo> _listEntries;
-		/// <summary>
-		/// Gets the ListEntryInfo objects associated witht the control
-		/// </summary>
-		protected IEnumerable<ListEntryInfo> ListEntries
-		{
-			get
-			{
-				if (this._listEntries == null)
-				{
-					var listController = new ListController();
-					this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
-				}
+                return this._Region;
+            }
+        }
 
-				return this._listEntries;
-			}
-		}
+        private HtmlInputHidden _InitialValue;
 
-		protected int PortalId
-		{
-			get
-			{
-				return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
-			}
-		}
-		#endregion
+        private HtmlInputHidden RegionCode
+        {
+            get
+            {
+                if (this._InitialValue == null)
+                {
+                    this._InitialValue = new HtmlInputHidden();
+                }
 
-		#region Constructors
-		public DNNRegionEditControl()
-		{
-			this.Init += this.DnnRegionControl_Init;
-		}
-		public DNNRegionEditControl(string type)
-		{
-			this.Init += this.DnnRegionControl_Init;
-			this.SystemType = type;
-		}
-		#endregion
+                return this._InitialValue;
+            }
+        }
 
-		#region Overrides
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// OnAttributesChanged runs when the CustomAttributes property has changed.
-		/// </summary>
-		/// -----------------------------------------------------------------------------
-		protected override void OnAttributesChanged()
-		{
-			//Get the List settings out of the "Attributes"
-			if ((this.CustomAttributes != null))
-			{
-				foreach (Attribute attribute in this.CustomAttributes)
-				{
-					if (attribute is ListAttribute)
-					{
-						var listAtt = (ListAttribute)attribute;
-						this.ParentKey = listAtt.ParentKey;
-						this._listEntries = null;
-						break;
-					}
-				}
-			}
-		}
+        protected override string StringValue
+        {
+            get
+            {
+                string strValue = Null.NullString;
+                if (this.Value != null)
+                {
+                    strValue = Convert.ToString(this.Value);
+                }
 
-		protected override void OnDataChanged(EventArgs e)
-		{
-			PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
-			args.Value = this.StringValue;
-			args.OldValue = this.OldStringValue;
-			args.StringValue = this.StringValue;
-			base.OnValueChanged(args);
-		}
+                return strValue;
+            }
 
-		protected override void CreateChildControls()
-		{
-			base.CreateChildControls();
+            set { this.Value = value; }
+        }
 
-			this.Regions.ControlStyle.CopyFrom(this.ControlStyle);
-			this.Regions.ID = this.ID + "_dropdown";
-			this.Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
-			this.Regions.Attributes.Add("aria-label", "Region");
-            this.Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = "" });
-			this.Controls.Add(this.Regions);
+        protected string OldStringValue
+        {
+            get { return Convert.ToString(this.OldValue); }
+        }
 
-			this.Region.ControlStyle.CopyFrom(this.ControlStyle);
-			this.Region.ID = this.ID + "_text";
-			this.Region.Attributes.Add("data-editor", "DNNRegionEditControl_Text");
-			this.Controls.Add(this.Region);
+        /// <summary>
+        /// Gets or sets the parent key of the List to display.
+        /// </summary>
+        public string ParentKey { get; set; }
 
-			this.RegionCode.ID = this.ID + "_value";
-			this.RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
-			this.Controls.Add(this.RegionCode);
+        private List<ListEntryInfo> _listEntries;
 
-		}
+        /// <summary>
+        /// Gets the ListEntryInfo objects associated witht the control.
+        /// </summary>
+        protected IEnumerable<ListEntryInfo> ListEntries
+        {
+            get
+            {
+                if (this._listEntries == null)
+                {
+                    var listController = new ListController();
+                    this._listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                }
 
-		public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
-		{
-			bool dataChanged = false;
-			string presentValue = this.StringValue;
-			string postedValue = postCollection[postDataKey + "_value"];
-			if (!presentValue.Equals(postedValue))
-			{
-				this.Value = postedValue;
-				dataChanged = true;
-			}
-			return dataChanged;
-		}
+                return this._listEntries;
+            }
+        }
 
-		protected override void OnPreRender(System.EventArgs e)
-		{
-			base.OnPreRender(e);
+        protected int PortalId
+        {
+            get
+            {
+                return PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+            }
+        }
 
-			this.LoadControls();
+        public DNNRegionEditControl()
+        {
+            this.Init += this.DnnRegionControl_Init;
+        }
 
-			if (this.Page != null & this.EditMode == PropertyEditorMode.Edit)
-			{
-				this.Page.RegisterRequiresPostBack(this);
-				this.Page.RegisterRequiresPostBack(this.RegionCode);
-			}
+        public DNNRegionEditControl(string type)
+        {
+            this.Init += this.DnnRegionControl_Init;
+            this.SystemType = type;
+        }
 
-		}
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnAttributesChanged runs when the CustomAttributes property has changed.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnAttributesChanged()
+        {
+            // Get the List settings out of the "Attributes"
+            if (this.CustomAttributes != null)
+            {
+                foreach (Attribute attribute in this.CustomAttributes)
+                {
+                    if (attribute is ListAttribute)
+                    {
+                        var listAtt = (ListAttribute)attribute;
+                        this.ParentKey = listAtt.ParentKey;
+                        this._listEntries = null;
+                        break;
+                    }
+                }
+            }
+        }
 
-		protected override void RenderEditMode(HtmlTextWriter writer)
-		{
-			if (this.ListEntries != null && this.ListEntries.Any())
-			{
-				foreach (ListEntryInfo item in this.ListEntries)
-				{
-					this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
-				}
-			}
-			this.ControlStyle.AddAttributesToRender(writer);
-			writer.AddAttribute("data-name", this.Name);
-			writer.AddAttribute("data-list", "Region");
-			writer.AddAttribute("data-category", this.Category);
-			writer.AddAttribute("data-required", this.Required.ToString().ToLowerInvariant());
-			writer.RenderBeginTag(HtmlTextWriterTag.Div);
-			this.RenderChildren(writer);
-			writer.RenderEndTag();
-		}
-		#endregion
+        protected override void OnDataChanged(EventArgs e)
+        {
+            PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.StringValue;
+            args.OldValue = this.OldStringValue;
+            args.StringValue = this.StringValue;
+            this.OnValueChanged(args);
+        }
 
-		#region Page Events
-		private void DnnRegionControl_Init(object sender, System.EventArgs e)
-		{
-			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
-			ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
-			JavaScript.RequestRegistration(CommonJs.jQuery);
-			JavaScript.RequestRegistration(CommonJs.jQueryUI);
-		}
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
 
-		#endregion
+            this.Regions.ControlStyle.CopyFrom(this.ControlStyle);
+            this.Regions.ID = this.ID + "_dropdown";
+            this.Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
+            this.Regions.Attributes.Add("aria-label", "Region");
+            this.Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = string.Empty });
+            this.Controls.Add(this.Regions);
 
-		#region Private Methods
-		private void LoadControls()
-		{
-			this.RegionCode.Value = this.StringValue;
-		}
-		#endregion
+            this.Region.ControlStyle.CopyFrom(this.ControlStyle);
+            this.Region.ID = this.ID + "_text";
+            this.Region.Attributes.Add("data-editor", "DNNRegionEditControl_Text");
+            this.Controls.Add(this.Region);
 
-	}
+            this.RegionCode.ID = this.ID + "_value";
+            this.RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
+            this.Controls.Add(this.RegionCode);
+        }
+
+        public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+        {
+            bool dataChanged = false;
+            string presentValue = this.StringValue;
+            string postedValue = postCollection[postDataKey + "_value"];
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
+
+            return dataChanged;
+        }
+
+        protected override void OnPreRender(System.EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            this.LoadControls();
+
+            if (this.Page != null & this.EditMode == PropertyEditorMode.Edit)
+            {
+                this.Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this.RegionCode);
+            }
+        }
+
+        protected override void RenderEditMode(HtmlTextWriter writer)
+        {
+            if (this.ListEntries != null && this.ListEntries.Any())
+            {
+                foreach (ListEntryInfo item in this.ListEntries)
+                {
+                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
+                }
+            }
+
+            this.ControlStyle.AddAttributesToRender(writer);
+            writer.AddAttribute("data-name", this.Name);
+            writer.AddAttribute("data-list", "Region");
+            writer.AddAttribute("data-category", this.Category);
+            writer.AddAttribute("data-required", this.Required.ToString().ToLowerInvariant());
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            this.RenderChildren(writer);
+            writer.RenderEndTag();
+        }
+
+        private void DnnRegionControl_Init(object sender, System.EventArgs e)
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
+            ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+        }
+
+        private void LoadControls()
+        {
+            this.RegionCode.Value = this.StringValue;
+        }
+    }
 }

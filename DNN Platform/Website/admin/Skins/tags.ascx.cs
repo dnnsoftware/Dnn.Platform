@@ -1,19 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Icons;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Icons;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class Tags : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
@@ -39,6 +35,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._AddImageUrl;
             }
+
             set
             {
                 this._AddImageUrl = value;
@@ -51,6 +48,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._AllowTagging;
             }
+
             set
             {
                 this._AllowTagging = value;
@@ -63,6 +61,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._CancelImageUrl;
             }
+
             set
             {
                 this._CancelImageUrl = value;
@@ -77,6 +76,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._ObjectType;
             }
+
             set
             {
                 this._ObjectType = value;
@@ -89,6 +89,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._RepeatDirection;
             }
+
             set
             {
                 this._RepeatDirection = value;
@@ -101,6 +102,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._SaveImageUrl;
             }
+
             set
             {
                 this._SaveImageUrl = value;
@@ -113,6 +115,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._Separator;
             }
+
             set
             {
                 this._Separator = value;
@@ -125,6 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._ShowCategories;
             }
+
             set
             {
                 this._ShowCategories = value;
@@ -137,6 +141,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._ShowTags;
             }
+
             set
             {
                 this._ShowTags = value;
@@ -163,7 +168,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.tagsControl.CssClass = this.CssClass;
 
             this.tagsControl.AllowTagging = this.AllowTagging && this.Request.IsAuthenticated;
-            this.tagsControl.NavigateUrlFormatString = this._navigationManager.NavigateURL(this.PortalSettings.SearchTabId, "", "Tag={0}");
+            this.tagsControl.NavigateUrlFormatString = this._navigationManager.NavigateURL(this.PortalSettings.SearchTabId, string.Empty, "Tag={0}");
             this.tagsControl.RepeatDirection = this.RepeatDirection;
             this.tagsControl.Separator = this.Separator;
             this.tagsControl.ShowCategories = this.ShowCategories;

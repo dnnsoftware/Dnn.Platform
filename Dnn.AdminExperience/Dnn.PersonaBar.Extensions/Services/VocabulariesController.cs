@@ -2,25 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Vocabularies.Exceptions;
-using Dnn.PersonaBar.Vocabularies.Services.Dto;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
-
 namespace Dnn.PersonaBar.Vocabularies.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Vocabularies.Exceptions;
+    using Dnn.PersonaBar.Vocabularies.Services.Dto;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+
+    using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
+
     [MenuPermission(MenuName = Constants.MenuIdentifier)]
     public class VocabulariesController : PersonaBarApiController
     {

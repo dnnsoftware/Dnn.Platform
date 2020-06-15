@@ -1,40 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Common;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
-	/// -----------------------------------------------------------------------------
-	/// Project	 : DotNetNuke
-	/// Class	 : TreeViewMenu
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// TreeViewMenu is a Skin Object that creates a Menu using the DNN Treeview Control
-	/// to provide a Windows Explore like Menu.
-	/// </summary>
-	/// <remarks></remarks>
-	/// -----------------------------------------------------------------------------
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.WebControls;
+
+    /// -----------------------------------------------------------------------------
+    /// Project  : DotNetNuke
+    /// Class    : TreeViewMenu
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// TreeViewMenu is a Skin Object that creates a Menu using the DNN Treeview Control
+    /// to provide a Windows Explore like Menu.
+    /// </summary>
+    /// <remarks></remarks>
+    /// -----------------------------------------------------------------------------
     public partial class TreeViewMenu : NavObjectBase
     {
-		#region "Private Members"
-		
         private const string MyFileName = "TreeViewMenu.ascx";
-        private string _bodyCssClass = "";
-        private string _cssClass = "";
-        private string _headerCssClass = "";
-        private string _headerText = "";
+        private string _bodyCssClass = string.Empty;
+        private string _cssClass = string.Empty;
+        private string _headerCssClass = string.Empty;
+        private string _headerText = string.Empty;
         private string _headerTextCssClass = "Head";
         private bool _includeHeader = true;
         private string _nodeChildCssClass = "Normal";
@@ -46,15 +39,11 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _nodeOpenImage = "~/images/folderopen.gif";
         private string _nodeOverCssClass = "Normal";
         private string _nodeSelectedCssClass = "Normal";
-        private string _resourceKey = "";
-        private string _treeCssClass = "";
+        private string _resourceKey = string.Empty;
+        private string _treeCssClass = string.Empty;
         private string _treeGoUpImage = "~/images/folderup.gif";
         private int _treeIndentWidth = 10;
         private string _width = "100%";
-
-		#endregion
-
-		#region "Public Properties"
 
         public string BodyCssClass
         {
@@ -62,6 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._bodyCssClass;
             }
+
             set
             {
                 this._bodyCssClass = value;
@@ -74,6 +64,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._cssClass;
             }
+
             set
             {
                 this._cssClass = value;
@@ -86,6 +77,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._headerCssClass;
             }
+
             set
             {
                 this._headerCssClass = value;
@@ -98,6 +90,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._headerTextCssClass;
             }
+
             set
             {
                 this._headerTextCssClass = value;
@@ -110,6 +103,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._headerText;
             }
+
             set
             {
                 this._headerText = value;
@@ -122,6 +116,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._includeHeader;
             }
+
             set
             {
                 this._includeHeader = value;
@@ -134,6 +129,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeChildCssClass;
             }
+
             set
             {
                 this._nodeChildCssClass = value;
@@ -146,6 +142,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeClosedImage;
             }
+
             set
             {
                 this._nodeClosedImage = value;
@@ -158,6 +155,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeCollapseImage;
             }
+
             set
             {
                 this._nodeCollapseImage = value;
@@ -170,6 +168,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeCssClass;
             }
+
             set
             {
                 this._nodeCssClass = value;
@@ -182,6 +181,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeExpandImage;
             }
+
             set
             {
                 this._nodeExpandImage = value;
@@ -194,6 +194,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeLeafImage;
             }
+
             set
             {
                 this._nodeLeafImage = value;
@@ -206,6 +207,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeOpenImage;
             }
+
             set
             {
                 this._nodeOpenImage = value;
@@ -218,6 +220,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeOverCssClass;
             }
+
             set
             {
                 this._nodeOverCssClass = value;
@@ -230,6 +233,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeSelectedCssClass;
             }
+
             set
             {
                 this._nodeSelectedCssClass = value;
@@ -244,6 +248,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._resourceKey;
             }
+
             set
             {
                 this._resourceKey = value;
@@ -256,6 +261,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._treeCssClass;
             }
+
             set
             {
                 this._treeCssClass = value;
@@ -268,6 +274,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._treeGoUpImage;
             }
+
             set
             {
                 this._treeGoUpImage = value;
@@ -280,6 +287,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._treeIndentWidth;
             }
+
             set
             {
                 this._treeIndentWidth = value;
@@ -292,6 +300,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._width;
             }
+
             set
             {
                 this._width = value;
@@ -302,13 +311,9 @@ namespace DotNetNuke.UI.Skins.Controls
         {
         }
 
-		#endregion
-
-		#region "Private Methods"
-		
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The BuildTree helper method is used to build the tree
+        /// The BuildTree helper method is used to build the tree.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -335,12 +340,13 @@ namespace DotNetNuke.UI.Skins.Controls
                             {
                                 blnAddUpNode = true;
                             }
+
                             break;
                     }
                 }
             }
-			
-			//add goto Parent node
+
+            // add goto Parent node
             if (blnAddUpNode)
             {
                 var objParentNode = new DNNNode();
@@ -353,20 +359,22 @@ namespace DotNetNuke.UI.Skins.Controls
                 objParentNode.ClickAction = eClickAction.PostBack;
                 objNodes.InsertBefore(0, objParentNode);
             }
-            foreach (DNNNode objPNode in objNodes) //clean up to do in processnodes???
+
+            foreach (DNNNode objPNode in objNodes) // clean up to do in processnodes???
             {
                 this.ProcessNodes(objPNode);
             }
+
             this.Bind(objNodes);
 
-            //technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
+            // technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
             if (this.Control.NavigationControl is DnnTree)
             {
-                var objTree = (DnnTree) this.Control.NavigationControl;
+                var objTree = (DnnTree)this.Control.NavigationControl;
                 if (objTree.SelectedTreeNodes.Count > 0)
                 {
-                    var objTNode = (TreeNode) objTree.SelectedTreeNodes[1];
-                    if (objTNode.DNNNodes.Count > 0) //only expand it if nodes are not pending
+                    var objTNode = (TreeNode)objTree.SelectedTreeNodes[1];
+                    if (objTNode.DNNNodes.Count > 0) // only expand it if nodes are not pending
                     {
                         objTNode.Expand();
                     }
@@ -376,10 +384,10 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private void ProcessNodes(DNNNode objParent)
         {
-            if (!String.IsNullOrEmpty(objParent.Image))
+            if (!string.IsNullOrEmpty(objParent.Image))
             {
             }
-            else if (objParent.HasNodes) //imagepath applied in provider...
+            else if (objParent.HasNodes) // imagepath applied in provider...
             {
                 objParent.Image = this.ResolveUrl(this.NodeClosedImage);
             }
@@ -387,6 +395,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 objParent.Image = this.ResolveUrl(this.NodeLeafImage);
             }
+
             foreach (DNNNode objNode in objParent.DNNNodes)
             {
                 this.ProcessNodes(objNode);
@@ -395,66 +404,73 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets common properties on DNNTree control
+        /// Sets common properties on DNNTree control.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private void InitializeTree()
         {
-            if (String.IsNullOrEmpty(this.PathImage))
+            if (string.IsNullOrEmpty(this.PathImage))
             {
                 this.PathImage = this.PortalSettings.HomeDirectory;
             }
-            if (String.IsNullOrEmpty(this.PathSystemImage))
+
+            if (string.IsNullOrEmpty(this.PathSystemImage))
             {
                 this.PathSystemImage = this.ResolveUrl("~/images/");
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageRoot))
+
+            if (string.IsNullOrEmpty(this.IndicateChildImageRoot))
             {
                 this.IndicateChildImageRoot = this.ResolveUrl(this.NodeExpandImage);
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageSub))
+
+            if (string.IsNullOrEmpty(this.IndicateChildImageSub))
             {
                 this.IndicateChildImageSub = this.ResolveUrl(this.NodeExpandImage);
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageExpandedRoot))
+
+            if (string.IsNullOrEmpty(this.IndicateChildImageExpandedRoot))
             {
                 this.IndicateChildImageExpandedRoot = this.ResolveUrl(this.NodeCollapseImage);
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageExpandedSub))
+
+            if (string.IsNullOrEmpty(this.IndicateChildImageExpandedSub))
             {
                 this.IndicateChildImageExpandedSub = this.ResolveUrl(this.NodeCollapseImage);
             }
-            if (String.IsNullOrEmpty(this.CSSNode))
+
+            if (string.IsNullOrEmpty(this.CSSNode))
             {
                 this.CSSNode = this.NodeChildCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeRoot))
+
+            if (string.IsNullOrEmpty(this.CSSNodeRoot))
             {
                 this.CSSNodeRoot = this.NodeCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeHover))
+
+            if (string.IsNullOrEmpty(this.CSSNodeHover))
             {
                 this.CSSNodeHover = this.NodeOverCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeSelectedRoot))
+
+            if (string.IsNullOrEmpty(this.CSSNodeSelectedRoot))
             {
                 this.CSSNodeSelectedRoot = this.NodeSelectedCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeSelectedSub))
+
+            if (string.IsNullOrEmpty(this.CSSNodeSelectedSub))
             {
                 this.CSSNodeSelectedSub = this.NodeSelectedCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSControl))
+
+            if (string.IsNullOrEmpty(this.CSSControl))
             {
                 this.CSSControl = this.TreeCssClass;
             }
         }
-
-		#endregion
-
-		#region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -473,50 +489,50 @@ namespace DotNetNuke.UI.Skins.Controls
                 if (this.Page.IsPostBack == false)
                 {
                     this.BuildTree(null, false);
-					
-					//Main Table Properties
-                    if (!String.IsNullOrEmpty(this.Width))
+
+                    // Main Table Properties
+                    if (!string.IsNullOrEmpty(this.Width))
                     {
                         this.tblMain.Width = this.Width;
                     }
-					
-                    if (!String.IsNullOrEmpty(this.CssClass))
+
+                    if (!string.IsNullOrEmpty(this.CssClass))
                     {
                         this.tblMain.Attributes.Add("class", this.CssClass);
                     }
-					
-					//Header Properties
-                    if (!String.IsNullOrEmpty(this.HeaderCssClass))
+
+                    // Header Properties
+                    if (!string.IsNullOrEmpty(this.HeaderCssClass))
                     {
                         this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
                     }
-					
-                    if (!String.IsNullOrEmpty(this.HeaderTextCssClass))
+
+                    if (!string.IsNullOrEmpty(this.HeaderTextCssClass))
                     {
                         this.lblHeader.CssClass = this.HeaderTextCssClass;
                     }
-					
-					//Header Text (if set)
-                    if (!String.IsNullOrEmpty(this.HeaderText))
+
+                    // Header Text (if set)
+                    if (!string.IsNullOrEmpty(this.HeaderText))
                     {
                         this.lblHeader.Text = this.HeaderText;
                     }
-					
-					//ResourceKey overrides if found
-                    if (!String.IsNullOrEmpty(this.ResourceKey))
+
+                    // ResourceKey overrides if found
+                    if (!string.IsNullOrEmpty(this.ResourceKey))
                     {
                         string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
-                        if (!String.IsNullOrEmpty(strHeader))
+                        if (!string.IsNullOrEmpty(strHeader))
                         {
                             this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
                         }
                     }
-					
-					//If still not set get default key
-                    if (String.IsNullOrEmpty(this.lblHeader.Text))
+
+                    // If still not set get default key
+                    if (string.IsNullOrEmpty(this.lblHeader.Text))
                     {
                         string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
-                        if (!String.IsNullOrEmpty(strHeader))
+                        if (!string.IsNullOrEmpty(strHeader))
                         {
                             this.lblHeader.Text = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
                         }
@@ -525,13 +541,15 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.lblHeader.Text = "Site Navigation";
                         }
                     }
+
                     this.tblHeader.Visible = this.IncludeHeader;
-					
-					//Main Panel Properties
-                    if (!String.IsNullOrEmpty(this.BodyCssClass))
+
+                    // Main Panel Properties
+                    if (!string.IsNullOrEmpty(this.BodyCssClass))
                     {
                         this.cellBody.Attributes.Add("class", this.BodyCssClass);
                     }
+
                     this.cellBody.NoWrap = this.NoWrap;
                 }
             }
@@ -544,7 +562,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DNNTree_NodeClick server event handler on this user control runs when a
-        /// Node (Page) in the TreeView is clicked
+        /// Node (Page) in the TreeView is clicked.
         /// </summary>
         /// <remarks>The event only fires when the Node contains child nodes, as leaf nodes
         /// have their NavigateUrl Property set.
@@ -556,6 +574,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
+
             this.Response.Redirect(Globals.ApplicationURL(int.Parse(args.Node.Key)), true);
         }
 
@@ -565,6 +584,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
+
             this.BuildTree(args.Node, true);
         }
 
@@ -577,19 +597,13 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnInit(e);
             this.InitializeComponent();
         }
-		
-		#endregion
-
-        #region Nested type: eImageType
 
         private enum eImageType
         {
             FolderClosed = 0,
             FolderOpen = 1,
             Page = 2,
-            GotoParent = 3
+            GotoParent = 3,
         }
-
-        #endregion
     }
 }

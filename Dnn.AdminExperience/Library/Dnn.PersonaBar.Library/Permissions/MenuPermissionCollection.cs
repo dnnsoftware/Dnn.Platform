@@ -1,22 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Permissions;
-
-#endregion
-
 namespace Dnn.PersonaBar.Library.Permissions
 {
-    /// -----------------------------------------------------------------------------
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security.Permissions;
+
+    // -----------------------------------------------------------------------------
     [Serializable]
     public class MenuPermissionCollection : CollectionBase
     {
@@ -49,8 +45,9 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             get
             {
-                return (MenuPermissionInfo) this.List[index];
+                return (MenuPermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;
@@ -76,14 +73,15 @@ namespace Dnn.PersonaBar.Library.Permissions
                 {
                     if (permission.PortalId == value.PortalId
                             && permission.MenuId == value.MenuId
-                            && permission.PermissionID == value.PermissionID 
-                            && permission.UserID == value.UserID 
+                            && permission.PermissionID == value.PermissionID
+                            && permission.UserID == value.UserID
                             && permission.RoleID == value.RoleID)
                     {
                         isMatch = true;
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
                     id = this.Add(value);
@@ -120,16 +118,18 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 return false;
             }
+
             this.InnerList.Sort(new CompareMenuPermissions());
             menuPermissionCollection.InnerList.Sort(new CompareMenuPermissions());
             for (int i = 0; i <= this.Count - 1; i++)
             {
-                if (menuPermissionCollection[i].MenuPermissionId != this[i].MenuPermissionId 
+                if (menuPermissionCollection[i].MenuPermissionId != this[i].MenuPermissionId
                     || menuPermissionCollection[i].AllowAccess != this[i].AllowAccess)
                 {
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -172,6 +172,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 list.Add(permission);
             }
+
             return list;
         }
 

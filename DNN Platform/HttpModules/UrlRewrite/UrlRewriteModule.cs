@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Web;
-
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.HttpModules.UrlRewrite;
-
-#endregion
-
 namespace DotNetNuke.HttpModules
 {
+    using System.Web;
+
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.HttpModules.UrlRewrite;
+
     public class UrlRewriteModule : IHttpModule
     {
         private string _providerToUse;
@@ -24,22 +19,20 @@ namespace DotNetNuke.HttpModules
             get { return "UrlRewriteModule"; }
         }
 
-        #region IHttpModule Members
-
         public void Init(HttpApplication application)
         {
             this._providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
 
-            //bind events depending on currently configured friendly url provider
-            //note that the current configured friendly url provider determines what type 
-            //of url rewriting is required.
-
+            // bind events depending on currently configured friendly url provider
+            // note that the current configured friendly url provider determines what type
+            // of url rewriting is required.
             switch (this._providerToUse)
             {
                 case "advanced":
                     var advancedRewriter = new AdvancedUrlRewriter();
                     this._urlRewriter = advancedRewriter;
-                    //bind the rewrite event to the begin request event
+
+                    // bind the rewrite event to the begin request event
                     application.BeginRequest += this._urlRewriter.RewriteUrl;
                     break;
                 default:
@@ -53,7 +46,5 @@ namespace DotNetNuke.HttpModules
         public void Dispose()
         {
         }
-
-        #endregion
     }
 }

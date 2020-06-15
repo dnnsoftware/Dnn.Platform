@@ -2,24 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Modules;
-
 namespace Dnn.ExportImport.Components.Entities
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     [TableName("ExportImportJobLogs")]
     [PrimaryKey("JobLogId")]
     public class ExportImportJobLog : IHydratable
     {
         public int JobLogId { get; set; }
+
         public int JobId { get; set; }
+
         public string Name { get; set; }
+
         public string Value { get; set; }
+
         public int Level { get; set; }
+
         public DateTime CreatedOnDate { get; set; }
 
         public int KeyID

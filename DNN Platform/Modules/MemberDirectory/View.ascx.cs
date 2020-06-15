@@ -1,28 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Reflection;
-using System.Web.Routing;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
 namespace DotNetNuke.Modules.MemberDirectory
 {
+    using System;
+    using System.Collections;
+    using System.Reflection;
+    using System.Web.Routing;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class View : ProfileModuleUserControlBase
     {
         protected override void OnInit(EventArgs e)
@@ -36,7 +31,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.AddIe7StyleSheet();
 
             this.searchBar.Visible = this.DisplaySearch != "None";
-	        this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
+            this.advancedSearchBar.Visible = this.DisplaySearch == "Both";
             this.popUpPanel.Visible = this.EnablePopUp;
             this.loadMore.Visible = !this.DisablePaging;
 
@@ -75,8 +70,9 @@ namespace DotNetNuke.Modules.MemberDirectory
                 int groupId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["GroupId"]))
                 {
-                    groupId = Int32.Parse(this.Request.Params["GroupId"]);
+                    groupId = int.Parse(this.Request.Params["GroupId"]);
                 }
+
                 return groupId;
             }
         }
@@ -144,31 +140,28 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, "", "userId=PROFILEUSER");
+                return this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.UserTabId, string.Empty, "userId=PROFILEUSER");
             }
         }
 
-		protected bool DisablePrivateMessage
-		{
-			get
-			{
-				return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
-					&& !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+        protected bool DisablePrivateMessage
+        {
+            get
+            {
+                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+            }
+        }
 
-			}
-		}
+        protected PortalSettings PortalSettings
+        {
+            get { return PortalController.Instance.GetCurrentPortalSettings(); }
+        }
 
-	    protected PortalSettings PortalSettings
-	    {
-		    get { return PortalController.Instance.GetCurrentPortalSettings(); }
-	    }
-
-		protected UserInfo UserInfo
-		{
-			get { return UserController.Instance.GetCurrentUserInfo(); }
-		}
-
-        #region Private Helper Functions
+        protected UserInfo UserInfo
+        {
+            get { return UserController.Instance.GetCurrentUserInfo(); }
+        }
 
         private void AddIe7StyleSheet()
         {
@@ -187,6 +180,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 setting = Convert.ToString(settings[key]);
             }
+
             return setting;
         }
 
@@ -197,9 +191,8 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 setting = Convert.ToInt32(settings[key]);
             }
+
             return setting;
         }
-
-        #endregion
     }
 }

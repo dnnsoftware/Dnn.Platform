@@ -1,22 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections.Generic;
-using System.Xml;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System.Collections.Generic;
+    using System.Xml;
+
     /// <summary>
-    ///   Base class for RSS channel (for strongly-typed and late-bound channel types)
+    ///   Base class for RSS channel (for strongly-typed and late-bound channel types).
     /// </summary>
     /// <typeparam name = "RssItemType"></typeparam>
     /// <typeparam name = "RssImageType"></typeparam>
-    public abstract class RssChannelBase<RssItemType, RssImageType> : RssElementBase where RssItemType : RssElementBase, new() where RssImageType : RssElementBase, new()
+    public abstract class RssChannelBase<RssItemType, RssImageType> : RssElementBase
+        where RssItemType : RssElementBase, new()
+        where RssImageType : RssElementBase, new()
     {
         private readonly List<RssItemType> _items = new List<RssItemType>();
         private RssImageType _image;

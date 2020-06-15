@@ -2,23 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class NaiveLockingList<T> : IList<T>
     {
         private readonly SharedList<T> _list = new SharedList<T>();
-        //TODO is no recursion the correct policy
-        
-        void DoInReadLock(Action action)
+
+        // TODO is no recursion the correct policy
+        private void DoInReadLock(Action action)
         {
-            this.DoInReadLock(() =>{ action.Invoke(); return true; });
+            this.DoInReadLock(() =>
+            {
+                action.Invoke();
+                return true;
+            });
         }
 
-        TRet DoInReadLock<TRet>(Func<TRet> func)
+        private TRet DoInReadLock<TRet>(Func<TRet> func)
         {
             using (this._list.GetReadLock())
             {
@@ -26,9 +30,13 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        void DoInWriteLock(Action action)
+        private void DoInWriteLock(Action action)
         {
-            this.DoInWriteLock(() => { action.Invoke(); return true; });
+            this.DoInWriteLock(() =>
+            {
+                action.Invoke();
+                return true;
+            });
         }
 
         private TRet DoInWriteLock<TRet>(Func<TRet> func)
@@ -40,7 +48,7 @@ namespace DotNetNuke.Collections.Internal
         }
 
         /// <summary>
-        /// Access to the underlying SharedList
+        /// Gets access to the underlying SharedList.
         /// <remarks>
         /// Allows locking to be explicitly managed for the sake of effeciency
         /// </remarks>
@@ -55,9 +63,9 @@ namespace DotNetNuke.Collections.Internal
 
         public IEnumerator<T> GetEnumerator()
         {
-            //disposal of enumerator will release read lock
-            //TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
-            //if using RWLS
+            // disposal of enumerator will release read lock
+            // TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
+            // if using RWLS
             var readLock = this._list.GetReadLock();
             return new NaiveLockingEnumerator(this._list.GetEnumerator(), readLock);
         }
@@ -129,6 +137,7 @@ namespace DotNetNuke.Collections.Internal
             {
                 return this.DoInReadLock(() => this._list[index]);
             }
+
             set
             {
                 this.DoInWriteLock(() => this._list[index] = value);
@@ -186,12 +195,12 @@ namespace DotNetNuke.Collections.Internal
                 {
                     if (disposing)
                     {
-                        //dispose managed resrources here
+                        // dispose managed resrources here
                         this._enumerator.Dispose();
                         this._readLock.Dispose();
                     }
 
-                    //dispose unmanaged resrources here
+                    // dispose unmanaged resrources here
                     this._isDisposed = true;
                 }
             }

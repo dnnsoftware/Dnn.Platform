@@ -1,23 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Data;
-
-#endregion
-
 namespace DotNetNuke.Services.Messaging.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Data;
+
     public class MessagingDataService : IMessagingDataService
     {
         private readonly DataProvider provider = DataProvider.Instance();
-
-        #region IMessagingDataService Members
 
         public IDataReader GetMessageByID(int messageId)
         {
@@ -36,19 +29,20 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public long SaveMessage(Message objMessaging)
         {
-            return this.provider.ExecuteScalar<long>("Messaging_Save_Message",
-                                                      objMessaging.PortalID,
-                                                      objMessaging.FromUserID,
-                                                      objMessaging.ToUserID,
-                                                      objMessaging.ToRoleID,
-                                                      (int) objMessaging.Status,
-                                                      objMessaging.Subject,
-                                                      objMessaging.Body,
-                                                      objMessaging.MessageDate,
-                                                      objMessaging.Conversation,
-                                                      objMessaging.ReplyTo,
-                                                      objMessaging.AllowReply,
-                                                      objMessaging.SkipInbox);
+            return this.provider.ExecuteScalar<long>(
+                "Messaging_Save_Message",
+                objMessaging.PortalID,
+                objMessaging.FromUserID,
+                objMessaging.ToUserID,
+                objMessaging.ToRoleID,
+                (int)objMessaging.Status,
+                objMessaging.Subject,
+                objMessaging.Body,
+                objMessaging.MessageDate,
+                objMessaging.Conversation,
+                objMessaging.ReplyTo,
+                objMessaging.AllowReply,
+                objMessaging.SkipInbox);
         }
 
         public int GetNewMessageCount(int PortalID, int UserID)
@@ -68,19 +62,18 @@ namespace DotNetNuke.Services.Messaging.Data
 
         public void UpdateMessage(Message message)
         {
-            this.provider.ExecuteNonQuery("Messaging_UpdateMessage",
-                                     message.MessageID,
-                                     message.ToUserID,
-                                     message.ToRoleID,
-                                     (int) message.Status,
-                                     message.Subject,
-                                     message.Body,
-                                     message.MessageDate,
-                                     message.ReplyTo,
-                                     message.AllowReply,
-                                     message.SkipInbox);
+            this.provider.ExecuteNonQuery(
+                "Messaging_UpdateMessage",
+                message.MessageID,
+                message.ToUserID,
+                message.ToRoleID,
+                (int)message.Status,
+                message.Subject,
+                message.Body,
+                message.MessageDate,
+                message.ReplyTo,
+                message.AllowReply,
+                message.SkipInbox);
         }
-
-        #endregion
     }
 }

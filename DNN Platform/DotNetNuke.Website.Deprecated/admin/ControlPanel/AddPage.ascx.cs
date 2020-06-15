@@ -1,43 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.UI;
-using DotNetNuke.Web.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.ControlPanel
 {
-    using DotNetNuke.Abstractions;
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.UI;
+    using DotNetNuke.Web.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class AddPage : UserControl, IDnnRibbonBarTool
     {
         private readonly INavigationManager _navigationManager;
+
         public AddPage()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -56,9 +49,10 @@ namespace DotNetNuke.UI.ControlPanel
                     this.cmdAddPage.Enabled = false;
                     this.cmdAddPage.ToolTip = Localization.GetString("ExceededQuota", this.LocalResourceFile);
                 }
+
                 if (!this.IsPostBack)
                 {
-                    if ((this.Visible))
+                    if (this.Visible)
                     {
                         this.LoadAllLists();
                     }
@@ -72,9 +66,9 @@ namespace DotNetNuke.UI.ControlPanel
 
         protected void CmdAddPageClick(object sender, EventArgs e)
         {
-            int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
+            int selectedTabID = int.Parse(this.PageLst.SelectedValue);
             TabInfo selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
-            var tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), this.LocationLst.SelectedValue);
+            var tabLocation = (TabRelativeLocation)Enum.Parse(typeof(TabRelativeLocation), this.LocationLst.SelectedValue);
             TabInfo newTab = RibbonBarManager.InitTabInfoObject(selectedTab, tabLocation);
 
             newTab.TabName = this.Name.Text;
@@ -83,7 +77,7 @@ namespace DotNetNuke.UI.ControlPanel
             string errMsg = string.Empty;
             try
             {
-				RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, this.TemplateLst.SelectedValue);
+                RibbonBarManager.SaveTabInfoObject(newTab, selectedTab, tabLocation, this.TemplateLst.SelectedValue);
             }
             catch (DotNetNukeException ex)
             {
@@ -96,30 +90,26 @@ namespace DotNetNuke.UI.ControlPanel
                 errMsg = ex.Message;
             }
 
-            //Clear the Tab's Cached modules
+            // Clear the Tab's Cached modules
             DataCache.ClearModuleCache(PortalSettings.ActiveTab.TabID);
 
-            //Update Cached Tabs as TabPath may be needed before cache is cleared
+            // Update Cached Tabs as TabPath may be needed before cache is cleared
             TabInfo tempTab;
             if (TabController.Instance.GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(newTab.TabID, out tempTab))
             {
                 tempTab.TabPath = newTab.TabPath;
             }
 
-            if ((string.IsNullOrEmpty(errMsg)))
+            if (string.IsNullOrEmpty(errMsg))
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL(newTab.TabID));
             }
             else
             {
                 errMsg = string.Format("<p>{0}</p><p>{1}</p>", this.GetString("Err.Header"), errMsg);
-                Web.UI.Utilities.RegisterAlertOnPageLoad(this, new MessageWindowParameters(errMsg) { Title = this.GetString("Err.Title")});
+                Web.UI.Utilities.RegisterAlertOnPageLoad(this, new MessageWindowParameters(errMsg) { Title = this.GetString("Err.Title") });
             }
         }
-
-        #endregion
-
-        #region "Properties"
 
         public override bool Visible
         {
@@ -127,6 +117,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return base.Visible && TabPermissionController.CanAddPage();
             }
+
             set
             {
                 base.Visible = value;
@@ -139,15 +130,12 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickAddPage";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");
             }
         }
-
-        #endregion
-
-        #region "Methods"
 
         private TabInfo _newTabObject;
 
@@ -155,10 +143,11 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                if (((this._newTabObject == null)))
+                if (this._newTabObject == null)
                 {
                     this._newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
                 }
+
                 return this._newTabObject;
             }
         }
@@ -191,11 +180,11 @@ namespace DotNetNuke.UI.ControlPanel
             this.TemplateLst.ClearSelection();
             this.TemplateLst.Items.Clear();
 
-            //Get Templates Folder
+            // Get Templates Folder
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
-                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", ""), dnnFile.Value);
+                var item = new DnnComboBoxItem(dnnFile.Text.Replace(".page.template", string.Empty), dnnFile.Value);
                 this.TemplateLst.Items.Add(item);
                 if (item.Text == "Default")
                 {
@@ -203,7 +192,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            this.TemplateLst.InsertItem(0, this.GetString("NoTemplate"), "");
+            this.TemplateLst.InsertItem(0, this.GetString("NoTemplate"), string.Empty);
         }
 
         private void LoadLocationList()
@@ -211,10 +200,9 @@ namespace DotNetNuke.UI.ControlPanel
             this.LocationLst.ClearSelection();
             this.LocationLst.Items.Clear();
 
-            //LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
-            //LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
-            //LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
-
+            // LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
+            // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
+            // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
             this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
             this.LocationLst.AddItem(this.GetString("After"), "AFTER");
             this.LocationLst.AddItem(this.GetString("Child"), "CHILD");
@@ -233,7 +221,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PageLst.DataBind();
 
             var item = this.PageLst.FindItemByValue(PortalSettings.ActiveTab.TabID.ToString());
-            if (((item != null)))
+            if (item != null)
             {
                 item.Selected = true;
             }
@@ -243,7 +231,5 @@ namespace DotNetNuke.UI.ControlPanel
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
-
-        #endregion
     }
 }

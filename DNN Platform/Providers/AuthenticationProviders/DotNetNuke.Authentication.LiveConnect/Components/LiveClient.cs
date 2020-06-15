@@ -1,28 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Script.Serialization;
-
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
 namespace DotNetNuke.Authentication.LiveConnect.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Script.Serialization;
+
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+
     public class LiveClient : OAuthClientBase
     {
-        #region Constructors
-
-        public LiveClient(int portalId, AuthMode mode) : base(portalId, mode, "Live")
+        public LiveClient(int portalId, AuthMode mode)
+            : base(portalId, mode, "Live")
         {
-            //DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
+            // DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
             // Add TokenMethod of Post to conform to other OAuth extensions
             this.TokenMethod = HttpMethod.POST;
             this.TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");
@@ -35,10 +29,8 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
 
             this.OAuthVersion = "2.0";
 
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
-
-        #endregion
 
         protected override TimeSpan GetExpiry(string responseText)
         {

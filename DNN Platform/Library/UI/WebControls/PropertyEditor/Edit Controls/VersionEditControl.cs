@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Web.UI;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -25,13 +20,11 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:VersionEditControl runat=server></{0}:VersionEditControl>")]
     public class VersionEditControl : EditControl
     {
-		#region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -39,6 +32,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.Value.ToString();
             }
+
             set
             {
                 this.Value = new Version(value);
@@ -52,42 +46,38 @@ namespace DotNetNuke.UI.WebControls
                 return this.Value as Version;
             }
         }
-		
-		#endregion
 
         protected void RenderDropDownList(HtmlTextWriter writer, string type, int val)
         {
-            //Render the Select Tag
+            // Render the Select Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + type);
             writer.AddStyleAttribute("width", "60px");
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
             for (int i = 0; i <= 99; i++)
             {
-                //Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString());
                 if (val == i)
                 {
-                    //Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-				
-                //Render Option Tag
+
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(i.ToString("00"));
                 writer.RenderEndTag();
             }
-			
-            //Close Select Tag
+
+            // Close Select Tag
             writer.RenderEndTag();
         }
-		
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
@@ -97,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
             args.OldValue = this.OldValue;
             args.StringValue = this.StringValue;
 
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------
@@ -118,36 +108,36 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            //Render a containing span Tag
+            // Render a containing span Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-            //Render Major
+            // Render Major
             this.RenderDropDownList(writer, "Major", this.Version.Major);
 
             writer.Write("&nbsp;");
 
-            //Render Minor
+            // Render Minor
             this.RenderDropDownList(writer, "Minor", this.Version.Minor);
 
             writer.Write("&nbsp;");
 
-            //Render Build
+            // Render Build
             this.RenderDropDownList(writer, "Build", this.Version.Build);
 
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
@@ -159,6 +149,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(this.Version.ToString(3));
             }
+
             writer.RenderEndTag();
         }
 
@@ -175,9 +166,8 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
-		
-		#endregion
     }
 }

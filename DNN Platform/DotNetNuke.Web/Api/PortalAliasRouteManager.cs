@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Http.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.Http.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Portals;
+
     internal class PortalAliasRouteManager : IPortalAliasRouteManager
     {
         private List<int> _prefixCounts;
@@ -22,7 +23,7 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
             Requires.NotNegative("count", count);
-            
+
             return moduleFolderName + "-" + routeName + "-" + count.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -38,6 +39,7 @@ namespace DotNetNuke.Web.Api
                     alias = alias.Remove(i, appPath.Length);
                 }
             }
+
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
@@ -45,10 +47,10 @@ namespace DotNetNuke.Web.Api
         {
             if (count == 0)
             {
-                return "";
+                return string.Empty;
             }
-            
-            string prefix = "";
+
+            string prefix = string.Empty;
 
             for (int i = count - 1; i >= 0; i--)
             {
@@ -63,10 +65,10 @@ namespace DotNetNuke.Web.Api
             var allRouteValues = new HttpRouteValueDictionary(routeValues);
 
             var segments = portalAliasInfo.HTTPAlias.Split('/');
-            
-            if(segments.Length > 1)
+
+            if (segments.Length > 1)
             {
-                  for(int i = 1; i < segments.Length; i++)
+                  for (int i = 1; i < segments.Length; i++)
                   {
                       var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
                       var value = segments[i];
@@ -85,7 +87,7 @@ namespace DotNetNuke.Web.Api
             return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
         }
 
-        //TODO: this method need remove after drop use old api format.
+        // TODO: this method need remove after drop use old api format.
         [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
         public static string GetOldRouteUrl(string moduleFolderName, string url, int count)
         {
@@ -104,12 +106,9 @@ namespace DotNetNuke.Web.Api
         {
             if (this._prefixCounts == null)
             {
-                //prefixCounts are required for each route that is mapped but they only change
-                //when a new portal is added so cache them until that time
-
-                
+                // prefixCounts are required for each route that is mapped but they only change
+                // when a new portal is added so cache them until that time
                 var portals = PortalController.Instance.GetPortals();
-               
 
                 var segmentCounts1 = new List<int>();
 
@@ -129,6 +128,7 @@ namespace DotNetNuke.Web.Api
                         }
                     }
                 }
+
                 IEnumerable<int> segmentCounts = segmentCounts1;
                 this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }
@@ -145,7 +145,7 @@ namespace DotNetNuke.Web.Api
         {
             string appPath = TestableGlobals.Instance.ApplicationPath;
 
-            if (String.IsNullOrEmpty(appPath))
+            if (string.IsNullOrEmpty(appPath))
             {
                 return aliases;
             }

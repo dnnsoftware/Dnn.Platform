@@ -2,36 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-using System.IO;
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Threading;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
-    ///  Testing various aspects of SearchController
+    ///  Testing various aspects of SearchController.
     /// </summary>
     [TestFixture]
     public class InternalSearchControllerTests
     {
-
-        #region Constants
-
         public enum SearchTypeIds
         {
             ModuleSearchTypeId = 1,
@@ -39,15 +35,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             DocumentSearchTypeId,
             UrlSearchTypeId,
             OtherSearchTypeId,
-            UnknownSearchTypeId
+            UnknownSearchTypeId,
         }
 
-        private const int ModuleSearchTypeId = (int) SearchTypeIds.ModuleSearchTypeId;
-        private const int TabSearchTypeId = (int) SearchTypeIds.TabSearchTypeId;
-        private const int DocumentSearchTypeId = (int) SearchTypeIds.DocumentSearchTypeId;
-        private const int UrlSearchTypeId = (int) SearchTypeIds.UrlSearchTypeId;
-        private const int OtherSearchTypeId = (int) SearchTypeIds.OtherSearchTypeId;
-        private const int UnknownSearchTypeId = (int) SearchTypeIds.UnknownSearchTypeId;
+        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
+        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
+        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
+        private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
+        private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
+        private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
 
         private const int PortalId0 = 0;
         private const int PortalId1 = 1;
@@ -80,14 +76,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int LanguageIdItIt = 3;
         private const int LanguageIdEsEs = 4;
 
-
         private const string SearchIndexFolder = @"App_Data\InternalSearchTests";
         private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
-
-        #endregion
-
-        #region Private Properties
-
         private Mock<IHostController> _mockHostController;
         private Mock<CachingProvider> _mockCachingProvider;
         private Mock<DataProvider> _mockDataProvider;
@@ -97,10 +87,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private IInternalSearchController _internalSearchController;
         private LuceneControllerImpl _luceneController;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -125,7 +111,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 .Returns((int portalId, int userId) => this.GetUserByIdCallback(portalId, userId));
             UserController.SetTestableInstance(this._mockUserController.Object);
 
-
             this.CreateNewLuceneControllerInstance();
         }
 
@@ -141,10 +126,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController = null;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void CreateNewLuceneControllerInstance()
         {
             this.DeleteIndexFolder();
@@ -156,6 +137,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 LuceneController.ClearInstance();
                 this._luceneController.Dispose();
             }
+
             this._luceneController = new LuceneControllerImpl();
             LuceneController.SetTestableInstance(this._luceneController);
         }
@@ -177,23 +159,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void SetupLocaleController()
         {
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale {LanguageId = -1, Code = string.Empty});
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale {LanguageId = LanguageIdEnUs, Code = CultureEnUs});
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale {LanguageId = LanguageIdEnFr, Code = CultureEnCa});
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale {LanguageId = LanguageIdItIt, Code = CultureItIt});
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale {LanguageId = LanguageIdEsEs, Code = CultureEsEs});
+            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
 
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale {LanguageId = LanguageIdEnUs, Code = CultureEnUs});
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale {LanguageId = LanguageIdEnUs, Code = CultureEnUs});
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale {LanguageId = LanguageIdEnFr, Code = CultureEnCa});
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale {LanguageId = LanguageIdItIt, Code = CultureItIt});
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale {LanguageId = LanguageIdEsEs, Code = CultureEsEs});
+            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
         }
 
         private void SetupDataProvider()
         {
-            //Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            // Standard DataProvider Path for Logging
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             DataTableReader searchTypes = null;
             this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
@@ -221,7 +203,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId",
                 "LoginTabId", "RegisterTabId",
                 "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID",
-                "LastModifiedOnDate", "CultureCode"
+                "LastModifiedOnDate", "CultureCode",
             };
 
             foreach (var col in cols)
@@ -244,7 +226,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns<int, string, string>(this.GetSynonymsCallBack);
             this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>()))
-                .Returns((string name) => new SearchType {SearchTypeId = 0, SearchTypeName = name});
+                .Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
             this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
             this._mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
             this._mockSearchHelper.Setup(c => c.GetSynonymsGroups(It.IsAny<int>(), It.IsAny<string>())).Returns(this.GetSynonymsGroupsCallBack);
@@ -255,7 +237,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     CultureCode = CultureEsEs,
                     StopWords = "los,de,el",
                 });
-			this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
             this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
             SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
@@ -265,9 +247,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var groups = new List<SynonymsGroup>
             {
-                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke)},
-                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook)},
-                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop)}
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke) },
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook) },
+                new SynonymsGroup { PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop) },
             };
 
             return groups;
@@ -275,7 +257,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private SearchType GetSearchTypeByNameCallback(string searchTypeName)
         {
-            var searchType = new SearchType {SearchTypeName = searchTypeName, SearchTypeId = 0};
+            var searchType = new SearchType { SearchTypeName = searchTypeName, SearchTypeId = 0 };
             switch (searchTypeName)
             {
                 case ModuleSearchTypeName:
@@ -302,25 +284,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var synonyms = new List<string>();
             if (term == "fox")
+            {
                 synonyms.Add("wolf");
+            }
 
             return synonyms;
         }
 
         private UserInfo GetUserByIdCallback(int portalId, int userId)
         {
-            return new UserInfo {UserID = userId, DisplayName = "User" + userId, PortalID = portalId};
+            return new UserInfo { UserID = userId, DisplayName = "User" + userId, PortalID = portalId };
         }
 
         private DataTable GetAllSearchTypes()
         {
             var dtSearchTypes = new DataTable("SearchTypes");
-            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof (int));
-            dtSearchTypes.Columns.Add("SearchTypeName", typeof (string));
-            dtSearchTypes.Columns.Add("SearchResultClass", typeof (string));
-            dtSearchTypes.PrimaryKey = new[] {pkId};
+            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof(int));
+            dtSearchTypes.Columns.Add("SearchTypeName", typeof(string));
+            dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
+            dtSearchTypes.PrimaryKey = new[] { pkId };
 
-            //Create default Crawler
+            // Create default Crawler
             dtSearchTypes.Rows.Add(ModuleSearchTypeId, ModuleSearchTypeName, FakeResultControllerClass);
             dtSearchTypes.Rows.Add(TabSearchTypeId, TabSearchTypeName, FakeResultControllerClass);
             dtSearchTypes.Rows.Add(OtherSearchTypeId, OtherSearchTypeName, FakeResultControllerClass);
@@ -334,16 +318,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var searchTypes = new List<SearchType>
             {
-                new SearchType {SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass},
-                new SearchType {SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass},
-                new SearchType {SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass},
+                new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
                 new SearchType
                 {
                     SearchTypeId = DocumentSearchTypeId,
                     SearchTypeName = DocumentSearchTypeName,
-                    SearchResultClass = NoPermissionFakeResultControllerClass
+                    SearchResultClass = NoPermissionFakeResultControllerClass,
                 },
-                new SearchType {SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass}
+                new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
             };
 
             return searchTypes;
@@ -354,7 +338,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             try
             {
                 if (Directory.Exists(SearchIndexFolder))
+                {
                     Directory.Delete(SearchIndexFolder, true);
+                }
             }
             catch (Exception ex)
             {
@@ -362,102 +348,93 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
         }
 
-        #endregion
-
-        #region Add Tests
-
         [Test]
         public void SearchController_Add_Throws_On_Null_SearchDocument()
         {
-            //Arrange            
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this._internalSearchController.AddSearchDocument(null));
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Null_Or_Empty_UniqueuKey()
         {
-            //Arrange            
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentException>(() => this._internalSearchController.AddSearchDocument(new SearchDocument()));
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Null_OrEmpty_Title()
         {
-            //Arrange            
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}));
+                () => this._internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
         }
-
 
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Null_OrEmpty_Title()
         {
-            //Arrange            
-            var documents = new List<SearchDocument> {new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}};
+            // Arrange
+            var documents = new List<SearchDocument> { new SearchDocument { UniqueKey = Guid.NewGuid().ToString() } };
 
-            //Act, Assert
+            // Act, Assert
             this._internalSearchController.AddSearchDocuments(documents);
         }
 
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Empty_Search_Document()
         {
-            //Arrange            
-            var documents = new List<SearchDocument> {new SearchDocument()};
+            // Arrange
+            var documents = new List<SearchDocument> { new SearchDocument() };
 
-            //Act, Assert
+            // Act, Assert
             this._internalSearchController.AddSearchDocuments(documents);
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Zero_SearchTypeId()
         {
-            //Arrange            
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}));
+                () => this._internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString() }));
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Negative_SearchTypeId()
         {
-            //Arrange            
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
                 () =>
-                    this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = -1}));
+                    this._internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = -1 }));
         }
 
         [Test]
         public void SearchController_Add_Throws_On_DateTimeMin_ModifiedTimeUtc()
         {
-            //Arrange            
+            // Arrange
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentException>(
-                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = 1}));
+                () => this._internalSearchController.AddSearchDocument(new SearchDocument { UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = 1 }));
         }
-
-        #endregion
-
-        #region Delete Tests
 
         [Test]
         public void SearchController_Add_Then_Delete_ModuleDefinition_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -473,24 +450,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
-            var searchDoc = new SearchDocument {ModuleDefId = totalDocs};
+            // Act - delete last item
+            var searchDoc = new SearchDocument { ModuleDefId = totalDocs };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
-            searchDoc = new SearchDocument {ModuleDefId = 1};
+            // Act - delete first item
+            searchDoc = new SearchDocument { ModuleDefId = 1 };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -499,11 +476,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Module_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -519,24 +496,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
-            var searchDoc = new SearchDocument {ModuleId = totalDocs};
+            // Act - delete last item
+            var searchDoc = new SearchDocument { ModuleId = totalDocs };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
-            searchDoc = new SearchDocument {ModuleId = 1};
+            // Act - delete first item
+            searchDoc = new SearchDocument { ModuleId = 1 };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -545,16 +522,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Portals_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10; // must be even
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
                 {
-                    PortalId = i <= (totalDocs/2) ? PortalId0 : PortalId1,
+                    PortalId = i <= (totalDocs / 2) ? PortalId0 : PortalId1,
                     UniqueKey = Guid.NewGuid().ToString(),
                     SearchTypeId = ModuleSearchTypeId,
                     ModifiedTimeUtc = now,
@@ -565,28 +542,28 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete all portal 1 items
-            var searchDoc = new SearchDocument {PortalId = PortalId1};
+            // Act - delete all portal 1 items
+            var searchDoc = new SearchDocument { PortalId = PortalId1 };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert - delete all portal 1
+            // Assert - delete all portal 1
             stats = this.GetSearchStatistics();
-            Assert.AreEqual(totalDocs/2, stats.TotalActiveDocuments);
-            Assert.AreEqual(totalDocs/2, stats.TotalDeletedDocuments);
+            Assert.AreEqual(totalDocs / 2, stats.TotalActiveDocuments);
+            Assert.AreEqual(totalDocs / 2, stats.TotalDeletedDocuments);
         }
 
         [Test]
         public void SearchController_Add_Then_Delete_Roles_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -603,24 +580,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
-            var searchDoc = new SearchDocument {RoleId = totalDocs};
+            // Act - delete last item
+            var searchDoc = new SearchDocument { RoleId = totalDocs };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
-            searchDoc = new SearchDocument {RoleId = 1};
+            // Act - delete first item
+            searchDoc = new SearchDocument { RoleId = 1 };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -629,11 +606,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Tabs_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -648,24 +625,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
-            var searchDoc = new SearchDocument {TabId = totalDocs};
+            // Act - delete last item
+            var searchDoc = new SearchDocument { TabId = totalDocs };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
-            searchDoc = new SearchDocument {TabId = 1};
+            // Act - delete first item
+            searchDoc = new SearchDocument { TabId = 1 };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -674,11 +651,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Users_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -695,24 +672,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
-            var searchDoc = new SearchDocument {AuthorUserId = totalDocs};
+            // Act - delete last item
+            var searchDoc = new SearchDocument { AuthorUserId = totalDocs };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
-            searchDoc = new SearchDocument {AuthorUserId = 1};
+            // Act - delete first item
+            searchDoc = new SearchDocument { AuthorUserId = 1 };
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -756,8 +733,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<ArgumentOutOfRangeException>(() => _internalSearchController.DeleteSearchDocument(searchDoc));
         }
 #endif
-
-        #endregion
 
     }
 }

@@ -8,6 +8,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Services.Models
     {
         public int FileId { get; set; }
 
-        public bool Overwrite { get; set; }        
+        public bool Overwrite { get; set; }
     }
 }

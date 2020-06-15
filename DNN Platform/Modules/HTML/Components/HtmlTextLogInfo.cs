@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextLogInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlTextLog object
+    ///   Defines an instance of an HtmlTextLog object.
     /// </summary>
     /// <remarks>
     /// </remarks>

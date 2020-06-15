@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+    using System.Web.Mvc.Html;
+
     /// <summary>
     /// Provides a mechanism to get display names.
     /// </summary>
@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name.
         /// </returns>
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name for the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name for the model.
         /// </returns>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name for the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name for the model.
         /// </returns>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Gets the display name for the model.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The display name for the model.
         /// </returns>

@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Linq;
-using System.Text;
-
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    using System.Linq;
+    using System.Text;
+
     public class ModuleInfoModel
     {
         public string __ModuleId { get; set; }   // command link

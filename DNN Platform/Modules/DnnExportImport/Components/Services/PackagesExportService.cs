@@ -2,23 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Common.Utilities;
-using System.Linq;
-using DotNetNuke.Common;
-using Dnn.ExportImport.Components.Common;
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
-using Dnn.ExportImport.Dto.Pages;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using Newtonsoft.Json;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.Pages;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using Newtonsoft.Json;
+
     public class PackagesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PackagesExportService));
@@ -31,16 +32,22 @@ namespace Dnn.ExportImport.Components.Services
 
         public override string ParentCategory => null;
 
-        public override uint Priority => 18; //execute before pages service.
+        public override uint Priority => 18; // execute before pages service.
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckCancelled(exportJob)) return;
-            //Skip the export if all the folders have been processed already.
-            if (this.CheckPoint.Stage >= 1)
+            if (this.CheckCancelled(exportJob))
+            {
                 return;
+            }
 
-            //Create Zip File to hold files
+            // Skip the export if all the folders have been processed already.
+            if (this.CheckPoint.Stage >= 1)
+            {
+                return;
+            }
+
+            // Create Zip File to hold files
             var skip = this.GetCurrentSkip();
             var currentIndex = skip;
             var totalPackagesExported = 0;
@@ -54,14 +61,17 @@ namespace Dnn.ExportImport.Components.Services
                     var fromDate = exportDto.FromDateUtc ?? Constants.MinDbTime;
                     var toDate = exportDto.ToDateUtc;
 
-                    //export skin packages.
+                    // export skin packages.
                     var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
                     var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => this.IsValidPackage(f, fromDate, toDate)).ToList();
                     var totalPackages = skinPackageFiles.Count;
 
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalPackages : this.CheckPoint.TotalItems;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
 
                     foreach (var file in skinPackageFiles)
                     {
@@ -78,8 +88,12 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.ProcessedItems++;
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
                         currentIndex++;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
+
+                        // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                        {
+                            return;
+                        }
                     }
 
                     this.CheckPoint.Stage++;
@@ -98,10 +112,16 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
-            //Skip the export if all the templates have been processed already.
-            if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
+            if (this.CheckCancelled(importJob))
+            {
                 return;
+            }
+
+            // Skip the export if all the templates have been processed already.
+            if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
+            {
+                return;
+            }
 
             this._exportImportJob = importJob;
 
@@ -120,6 +140,7 @@ namespace Dnn.ExportImport.Components.Services
                 dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
+
             return 0;
         }
 
@@ -155,7 +176,7 @@ namespace Dnn.ExportImport.Components.Services
             return new ExportPackage { PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version };
         }
 
-        private void ProcessImportModulePackage(ExportPackage exportPackage, String tempFolder, CollisionResolution collisionResolution)
+        private void ProcessImportModulePackage(ExportPackage exportPackage, string tempFolder, CollisionResolution collisionResolution)
         {
             try
             {
@@ -169,25 +190,27 @@ namespace Dnn.ExportImport.Components.Services
                 var packageName = exportPackage.PackageName;
                 var version = exportPackage.Version;
 
-                var existPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger,
+                var existPackage = PackageController.Instance.GetExtensionPackage(
+                    Null.NullInteger,
                     p => p.PackageType == packageType && p.Name == packageName);
                 if (existPackage != null &&
                     (existPackage.Version > version ||
                      (existPackage.Version == version &&
                       collisionResolution == CollisionResolution.Ignore)))
                 {
-                    this.Result.AddLogEntry("Import Package ignores",
+                    this.Result.AddLogEntry(
+                        "Import Package ignores",
                         $"{packageName} has higher version {existPackage.Version} installed, ignore import it");
                     return;
                 }
 
                 this.InstallPackage(filePath);
                 this.Result.AddLogEntry("Import Package completed", $"{packageName} version: {version}");
-
             }
             catch (Exception ex)
             {
-                this.Result.AddLogEntry("Import Package error",
+                this.Result.AddLogEntry(
+                    "Import Package error",
                     $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
                 Logger.Error(ex);
             }
@@ -203,7 +226,10 @@ namespace Dnn.ExportImport.Components.Services
                 var exportPackages = this.Repository.GetAllItems<ExportPackage>().ToList();
 
                 this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportPackages.Count : this.CheckPoint.TotalItems;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -211,14 +237,16 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         foreach (var exportPackage in exportPackages)
                         {
-
                             this.ProcessImportModulePackage(exportPackage, tempFolder, importDto.CollisionResolution);
 
                             this.CheckPoint.ProcessedItems++;
                             this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / exportPackages.Count;
-                            if (this.CheckPointStageCallback(this)) break;
-
+                            if (this.CheckPointStageCallback(this))
+                            {
+                                break;
+                            }
                         }
+
                         this.CheckPoint.Stage++;
                         this.CheckPoint.Completed = true;
                     }
@@ -231,7 +259,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         catch (Exception)
                         {
-                            //ignore
+                            // ignore
                         }
                     }
                 }
@@ -254,16 +282,16 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (installer.IsValid)
                     {
-                        //Reset Log
+                        // Reset Log
                         installer.InstallerInfo.Log.Logs.Clear();
 
-                        //Set the IgnnoreWhiteList flag
+                        // Set the IgnnoreWhiteList flag
                         installer.InstallerInfo.IgnoreWhiteList = true;
 
-                        //Set the Repair flag
+                        // Set the Repair flag
                         installer.InstallerInfo.RepairInstall = true;
 
-                        //Install
+                        // Install
                         installer.Install();
                     }
                 }
@@ -279,10 +307,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
             {
-                InstallerInfo = { PortalID = Null.NullInteger }
+                InstallerInfo = { PortalID = Null.NullInteger },
             };
 
-            //Read the manifest
+            // Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)
             {
                 installer.ReadManifest(true);
@@ -290,7 +318,5 @@ namespace Dnn.ExportImport.Components.Services
 
             return installer;
         }
-
-
     }
 }

@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-using Newtonsoft.Json;
-
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+    using Newtonsoft.Json;
+
     public class ModuleLocalizationDto
     {
         [JsonProperty("key")]
@@ -36,13 +37,14 @@ namespace DotNetNuke.UI.Modules.Html5
             string returnValue = string.Empty;
 
             string resourceFile = model.LocalResourceFile;
-            if (String.IsNullOrEmpty(resourceFile))
+            if (string.IsNullOrEmpty(resourceFile))
             {
                 var fileName = Path.GetFileName(this._html5File);
-                var path = this._html5File.Replace(fileName, "");
+                var path = this._html5File.Replace(fileName, string.Empty);
                 resourceFile = Path.Combine(path, Localization.LocalResourceDirectory + "/", Path.ChangeExtension(fileName, "resx"));
             }
-            if (!String.IsNullOrEmpty(model.Key))
+
+            if (!string.IsNullOrEmpty(model.Key))
             {
                 returnValue = Localization.GetString(model.Key, resourceFile);
             }

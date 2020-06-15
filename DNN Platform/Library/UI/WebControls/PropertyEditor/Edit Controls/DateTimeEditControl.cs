@@ -1,21 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -38,11 +33,11 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DefaultFormat is a string that will be used to format the date in the absence of a 
-        /// FormatAttribute
+        /// Gets defaultFormat is a string that will be used to format the date in the absence of a
+        /// FormatAttribute.
         /// </summary>
-        /// <value>A String representing the default format to use to render the date</value>
-        /// <returns>A Format String</returns>
+        /// <value>A String representing the default format to use to render the date.</value>
+        /// <returns>A Format String.</returns>
         /// -----------------------------------------------------------------------------
         protected override string DefaultFormat
         {
@@ -73,10 +68,12 @@ namespace DotNetNuke.UI.WebControls
                 minHour = 0;
                 maxHour = 23;
             }
+
             for (int i = minHour; i <= maxHour; i++)
             {
                 this.hourField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
             }
+
             this.hourField.ControlStyle.CopyFrom(this.ControlStyle);
             this.hourField.ID = this.ID + "hours";
             this.Controls.Add(this.hourField);
@@ -86,6 +83,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.minutesField.Items.Add(new ListItem(i.ToString("00"), i.ToString()));
             }
+
             this.minutesField.ControlStyle.CopyFrom(this.ControlStyle);
             this.minutesField.ID = this.ID + "minutes";
             this.Controls.Add(this.minutesField);
@@ -114,19 +112,23 @@ namespace DotNetNuke.UI.WebControls
                     hour -= 12;
                     isAM = false;
                 }
+
                 if (hour == 0)
                 {
                     hour = 12;
                 }
             }
+
             if (this.hourField.Items.FindByValue(hour.ToString()) != null)
             {
                 this.hourField.Items.FindByValue(hour.ToString()).Selected = true;
             }
+
             if (this.minutesField.Items.FindByValue(minute.ToString()) != null)
             {
                 this.minutesField.Items.FindByValue(minute.ToString()).Selected = true;
             }
+
             if (!this.is24HourClock)
             {
                 if (isAM)
@@ -153,21 +155,28 @@ namespace DotNetNuke.UI.WebControls
             {
                 DateTime.TryParse(postedDate, out postedValue);
             }
+
             if (postedHours != "12" || this.is24HourClock)
             {
-                int hours = 0;                
-                if(Int32.TryParse(postedHours, out hours)) postedValue = postedValue.AddHours(hours);
+                int hours = 0;
+                if (int.TryParse(postedHours, out hours))
+                {
+                    postedValue = postedValue.AddHours(hours);
+                }
             }
-            postedValue = postedValue.AddMinutes(Int32.Parse(postedMinutes));
+
+            postedValue = postedValue.AddMinutes(int.Parse(postedMinutes));
             if (!this.is24HourClock && postedAMPM.Equals("PM"))
             {
                 postedValue = postedValue.AddHours(12);
             }
+
             if (!presentValue.Equals(postedValue))
             {
                 this.Value = postedValue.ToString(CultureInfo.InvariantCulture);
                 dataChanged = true;
             }
+
             return dataChanged;
         }
     }

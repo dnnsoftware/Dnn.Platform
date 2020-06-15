@@ -1,24 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionCommandButton
+    /// Class    : ActionCommandButton
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionCommandButton provides a button for a single action.
@@ -29,20 +24,14 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionCommandButton : CommandButton, IActionControl
     {
-		#region "Private Members"
-
         private ActionManager _ActionManager;
         private ModuleAction _ModuleAction;
 
-		#endregion
-
-		#region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleAction for this Action control
+        /// Gets or sets and sets the ModuleAction for this Action control.
         /// </summary>
-        /// <returns>A ModuleAction object</returns>
+        /// <returns>A ModuleAction object.</returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction ModuleAction
         {
@@ -52,23 +41,23 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ModuleAction = this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
                 }
+
                 return this._ModuleAction;
             }
+
             set
             {
                 this._ModuleAction = value;
             }
         }
 
-        #region IActionControl Members
-
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
@@ -78,42 +67,37 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionManager = new ActionManager(this);
                 }
+
                 return this._ActionManager;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An IModuleControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
-		
-		#endregion
-
-		#region "Protected Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateChildControls builds the control tree
+        /// CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-			//Call base class method to ensure Control Tree is built
+            // Call base class method to ensure Control Tree is built
             base.CreateChildControls();
 
-            //Set Causes Validation and Enables ViewState to false
+            // Set Causes Validation and Enables ViewState to false
             this.CausesValidation = false;
             this.EnableViewState = false;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event
+        /// OnAction raises the Action Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
@@ -126,7 +110,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnButtonClick runs when the underlying CommandButton is clicked
+        /// OnButtonClick runs when the underlying CommandButton is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnButtonClick(EventArgs e)
@@ -140,7 +124,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs when just before the Render phase of the Page Lifecycle
+        /// OnPreRender runs when just before the Render phase of the Page Lifecycle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -170,6 +154,7 @@ namespace DotNetNuke.UI.Containers
                         }
                     }
                 }
+
                 this.ActionManager.GetClientScriptURL(this.ModuleAction, this);
             }
             else
@@ -177,7 +162,5 @@ namespace DotNetNuke.UI.Containers
                 this.Visible = false;
             }
         }
-		
-		#endregion
     }
 }

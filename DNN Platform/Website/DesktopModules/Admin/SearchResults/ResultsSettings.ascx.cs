@@ -1,38 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Search.Internals;
-
-#endregion
-
 namespace DotNetNuke.Modules.SearchResults
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Search.Internals;
+
     public partial class ResultsSettings : ModuleSettingsBase
     {
-		#region "Base Method Implementations"
-
         public override void LoadSettings()
         {
             try
             {
-                if ((this.Page.IsPostBack == false))
+                if (this.Page.IsPostBack == false)
                 {
-                    if (!String.IsNullOrEmpty(Convert.ToString(this.Settings["LinkTarget"])))
+                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["LinkTarget"])))
                     {
                         this.comboBoxLinkTarget.SelectedValue = Convert.ToString(this.Settings["LinkTarget"]);
                     }
@@ -45,7 +39,7 @@ namespace DotNetNuke.Modules.SearchResults
                         {
                             foreach (var portal in portalList)
                             {
-                                var item = new ListItem(portal[0], portal[1]) {Selected = list.Contains(portal[1])};
+                                var item = new ListItem(portal[0], portal[1]) { Selected = list.Contains(portal[1]) };
                                 this.comboBoxPortals.Items.Add(item);
                             }
                         }
@@ -71,14 +65,13 @@ namespace DotNetNuke.Modules.SearchResults
                         }
                     }
 
-                    
                     if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForFilters"])))
                     {
                         var list = Convert.ToString(this.Settings["ScopeForFilters"]).Split('|').ToList();
                         var filterList = this.LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new ListItem(filter, filter) {Selected = list.Contains(filter)};
+                            var item = new ListItem(filter, filter) { Selected = list.Contains(filter) };
                             this.comboBoxFilters.Items.Add(item);
                         }
                     }
@@ -87,16 +80,16 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = this.LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new ListItem(filter, filter) {Selected = true};
+                            var item = new ListItem(filter, filter) { Selected = true };
                             this.comboBoxFilters.Items.Add(item);
                         }
                     }
 
-                    var scopeForRoles = 
+                    var scopeForRoles =
                         PortalController.GetPortalSetting("SearchResult_ScopeForRoles", this.PortalId, string.Empty)
-                        .Split(new []{','}, StringSplitOptions.RemoveEmptyEntries);
+                        .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                     var roles = RoleController.Instance.GetRoles(this.PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
-                    roles.Insert(0, new RoleInfo(){RoleName = "Superusers" });
+                    roles.Insert(0, new RoleInfo() { RoleName = "Superusers" });
 
                     foreach (var role in roles)
                     {
@@ -115,7 +108,7 @@ namespace DotNetNuke.Modules.SearchResults
                     this.txtMaxDescriptionLength.Text = this.GetStringSetting("MaxDescriptionLength", "100");
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -153,6 +146,7 @@ namespace DotNetNuke.Modules.SearchResults
                     {
                         maxDescriptionLength = "100";
                     }
+
                     ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "MaxDescriptionLength", maxDescriptionLength);
                 }
             }
@@ -161,10 +155,8 @@ namespace DotNetNuke.Modules.SearchResults
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-			DataCache.RemoveCache(string.Format("ModuleInfos{0}", this.PortalSettings.PortalId));
+            DataCache.RemoveCache(string.Format("ModuleInfos{0}", this.PortalSettings.PortalId));
         }
-		
-		#endregion
 
         protected IEnumerable<string[]> LoadPortalsList()
         {
@@ -179,7 +171,7 @@ namespace DotNetNuke.Modules.SearchResults
             if (mygroup != null && mygroup.Any())
             {
                 result.AddRange(mygroup.Select(
-                    pi => new[] {pi.PortalName, pi.PortalID.ToString(CultureInfo.InvariantCulture)}));
+                    pi => new[] { pi.PortalName, pi.PortalID.ToString(CultureInfo.InvariantCulture) }));
             }
 
             return result;
@@ -206,6 +198,7 @@ namespace DotNetNuke.Modules.SearchResults
                     }
                 }
             }
+
             return result;
         }
 

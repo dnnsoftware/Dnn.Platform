@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Net.Http;
-using System.Web;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Web.Api;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Net.Http;
+    using System.Web;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using DotNetNuke.Web.Api;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class StandardTabAndModuleInfoProviderTests
     {
@@ -45,7 +46,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             MockComponentProvider.CreateDataCacheProvider();
             this._mockDataProvider = MockComponentProvider.CreateDataProvider();
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
             this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(GetPortalsCallBack);
 
             this.RegisterMock(ModuleController.SetTestableInstance, out this._mockModuleController, out this._moduleController);
@@ -55,7 +56,7 @@ namespace DotNetNuke.Tests.Web.Api
             this._tabInfo = new TabInfo { TabID = ValidTabId };
             this._moduleInfo = new ModuleInfo
             {
-                TabModuleID  = ValidTabModuleId, TabID = ValidTabId, ModuleID = ValidModuleId, PortalID = ValidPortalId
+                TabModuleID = ValidTabModuleId, TabID = ValidTabId, ModuleID = ValidModuleId, PortalID = ValidPortalId,
             };
 
             this._mockTabController.Setup(x => x.GetTab(ValidTabId, ValidPortalId)).Returns(this._tabInfo);
@@ -87,7 +88,7 @@ namespace DotNetNuke.Tests.Web.Api
                 "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
                 "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
                 "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                "CultureCode"
+                "CultureCode",
             };
 
             foreach (var col in cols)
@@ -113,7 +114,8 @@ namespace DotNetNuke.Tests.Web.Api
             TabController.ClearInstance();
         }
 
-        private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance) where T : class
+        private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance)
+            where T : class
         {
             mock = new Mock<T>();
             instance = mock.Object;
@@ -123,16 +125,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void ValidTabAndModuleIdLoadsActiveModule()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
             request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
-            
-            //Act
+
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             Assert.IsTrue(result);
             Assert.AreSame(this._moduleInfo, returnedModuleInfo);
         }
@@ -140,15 +142,15 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void ExistingMonikerValueInHeaderShouldFindTheCorrectModuleInfo()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add("X-DNN-MONIKER", MonikerSettingValue);
 
-            //Act
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             Assert.IsTrue(result);
             Assert.AreSame(this._moduleInfo, returnedModuleInfo);
         }
@@ -156,16 +158,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void ExistingMonikerValueInQueryStringShouldFindTheCorrectModuleInfo()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.RequestUri = new Uri(
                 "http://mysite.lvh.me/API/internalservices/controlbar/ToggleUserMode?moniker=" + HttpUtility.UrlEncode(MonikerSettingValue));
 
-            //Act
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             Assert.IsTrue(result);
             Assert.AreSame(this._moduleInfo, returnedModuleInfo);
         }
@@ -173,15 +175,15 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void NonExistingMonikerValueShouldFailToReturnResult()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add("X-DNN-MONIKER", "This moniker does not exist");
 
-            //Act
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             Assert.IsFalse(result);
             Assert.IsNull(returnedModuleInfo);
         }
@@ -189,14 +191,14 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void MissingAllHeadersShouldFailToReturnResult()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
 
-            //Act
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             Assert.IsFalse(result);
             Assert.IsNull(returnedModuleInfo);
         }
@@ -204,16 +206,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void OmittedTabIdWillNotLoadModule()
         {
-            //Arrange
-            //no tabid
+            // Arrange
+            // no tabid
             var request = new HttpRequestMessage();
             request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
-            
-            //Act
+
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             this._mockTabController.Verify(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
             this._mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never());
             Assert.IsNull(returnedModuleInfo);
@@ -223,16 +225,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void OmittedModuleIdWillNotLoadModule()
         {
-            //Arrange
-            //no moduleid
+            // Arrange
+            // no moduleid
             var request = new HttpRequestMessage();
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
 
-            //Act
+            // Act
             ModuleInfo returnedModuleInfo;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
 
-            //Assert
+            // Assert
             this._mockModuleController.Verify(x => x.GetModule(It.IsAny<int>(), It.IsAny<int>(), false), Times.Never());
             Assert.IsNull(returnedModuleInfo);
             Assert.IsFalse(result);
@@ -241,16 +243,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void TabIdInHeaderTakesPriority()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
             request.RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", "tabid", ValidTabId + 1));
-            
-            //Act
+
+            // Act
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidTabId, tabId);
             Assert.IsTrue(result);
         }
@@ -258,16 +260,16 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void ModuleIdInHeaderTakesPriority()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add("moduleid", ValidTabId.ToString(CultureInfo.InvariantCulture));
             request.RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", "moduleid", ValidTabId + 1));
 
-            //Act
+            // Act
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidTabId, moduleId);
             Assert.IsTrue(result);
         }
@@ -278,15 +280,15 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("tAbiD")]
         public void TabIdInHeaderAllowsTabIdToBeFound(string headerName)
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add(headerName, ValidTabId.ToString(CultureInfo.InvariantCulture));
 
-            //Act
+            // Act
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidTabId, tabId);
             Assert.IsTrue(result);
         }
@@ -297,15 +299,15 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("modULeid")]
         public void ModuleIdInHeaderAllowsModuleIdToBeFound(string headerName)
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add(headerName, ValidModuleId.ToString(CultureInfo.InvariantCulture));
 
-            //Act
+            // Act
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidModuleId, moduleId);
             Assert.IsTrue(result);
         }
@@ -316,15 +318,15 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("X-DNN-MONIKER")]
         public void MonikerInHeaderAllowsModuleToBeFound(string headerName)
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             request.Headers.Add(headerName, MonikerSettingValue);
 
-            //Act
+            // Act
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            //Assert
+            // Assert
             Assert.IsTrue(result);
             Assert.AreEqual(ValidModuleId, moduleId);
         }
@@ -335,17 +337,17 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("tAbiD")]
         public void TabIdInQueryStringAllowsTabIdToBeFound(string paramName)
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidTabId))
+                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidTabId)),
             };
 
-            //Act
+            // Act
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(request, out tabId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidTabId, tabId);
             Assert.IsTrue(result);
         }
@@ -356,17 +358,17 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase("modULeid")]
         public void ModuleIdInQueryStringAllowsModuleIdToBeFound(string paramName)
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidModuleId))
+                RequestUri = new Uri(string.Format("http://foo.com?{0}={1}", paramName, ValidModuleId)),
             };
 
-            //Act
+            // Act
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(request, out moduleId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ValidModuleId, moduleId);
             Assert.IsTrue(result);
         }
@@ -374,13 +376,13 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void NoTabIdInRequestReturnsNoTabId()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             int tabId;
             var result = new StandardTabAndModuleInfoProvider().TryFindTabId(new HttpRequestMessage(), out tabId);
 
-            //Assert
+            // Assert
             Assert.IsFalse(result);
             Assert.AreEqual(-1, tabId);
         }
@@ -388,13 +390,13 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void NoModuleIdInRequestReturnsNoModuleId()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             int moduleId;
             var result = new StandardTabAndModuleInfoProvider().TryFindModuleId(new HttpRequestMessage(), out moduleId);
 
-            //Assert
+            // Assert
             Assert.IsFalse(result);
             Assert.AreEqual(-1, moduleId);
         }

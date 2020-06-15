@@ -5,7 +5,7 @@
 namespace DotNetNuke.Common
 {
     /// <summary>
-    /// This class handles basic elements about File Items. Is is a basic Get/Set for Value and Text
+    /// This class handles basic elements about File Items. Is is a basic Get/Set for Value and Text.
     /// </summary>
     public class FileItem
     {

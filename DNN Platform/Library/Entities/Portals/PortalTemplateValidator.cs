@@ -1,18 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using DotNetNuke.Common;
-
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
+    using DotNetNuke.Common;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PortalTemplateValidator Class is used to validate the Portal Template
+    /// The PortalTemplateValidator Class is used to validate the Portal Template.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -20,7 +15,7 @@ namespace DotNetNuke.Entities.Portals
     {
         public bool Validate(string xmlFilename, string schemaFileName)
         {
-            this.SchemaSet.Add("", schemaFileName);
+            this.SchemaSet.Add(string.Empty, schemaFileName);
             return this.Validate(xmlFilename);
         }
     }

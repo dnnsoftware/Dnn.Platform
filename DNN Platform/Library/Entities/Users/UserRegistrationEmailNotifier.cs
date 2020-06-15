@@ -2,15 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Mail;
-using static DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Mail;
+
+    using static DotNetNuke.Common.Globals;
+
     public class UserRegistrationEmailNotifier
     {
         private static UserInfo CurrentUser => UserController.Instance.GetCurrentUserInfo();
@@ -22,15 +24,15 @@ namespace DotNetNuke.Entities.Users
         public static void NotifyAdministrator(UserInfo user)
         {
             // avoid self-notification (i.e. on site installation/super user creation)
-            if (CurrentUser != null && 
+            if (CurrentUser != null &&
                 (CurrentUser.UserID == Null.NullInteger || CurrentUser.UserID == user.UserID))
             {
                 return;
             }
 
-            //send notification to portal administrator of new user registration
-            //check the receive notification setting first, but if register type is Private, we will always send the notification email.
-            //because the user need administrators to do the approve action so that he can continue use the website.
+            // send notification to portal administrator of new user registration
+            // check the receive notification setting first, but if register type is Private, we will always send the notification email.
+            // because the user need administrators to do the approve action so that he can continue use the website.
             if (PortalSettings.Current.EnableRegisterNotification || PortalSettings.Current.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
             {
                 NotifyUser(user, MessageType.UserRegistrationAdmin);

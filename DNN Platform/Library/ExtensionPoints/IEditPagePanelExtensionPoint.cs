@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.ExtensionPoints
 {
-    public interface IEditPagePanelExtensionPoint: IUserControlExtensionPoint
+    using System;
+
+    public interface IEditPagePanelExtensionPoint : IUserControlExtensionPoint
     {
         string EditPagePanelId { get; }
-        string CssClass { get; }        
+
+        string CssClass { get; }
     }
 }

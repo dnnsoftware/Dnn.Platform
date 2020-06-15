@@ -2,19 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
-
 namespace Dnn.PersonaBar.Library.Prompt.Common
 {
+    using System;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+
     public class EmailValidator
     {
         private bool _invalid;
+
         public bool IsValid(string emailToTest)
         {
             if (string.IsNullOrEmpty(emailToTest))
+            {
                 return false;
+            }
 
             // Use IdnMapping class to convert unicode domain names (https://msdn.microsoft.com/en-us/library/system.globalization.idnmapping(v=vs.110).aspx)
             try
@@ -27,7 +30,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             }
 
             if (this._invalid)
+            {
                 return false;
+            }
 
             // Return True if valid email format
             try
@@ -54,6 +59,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             {
                 this._invalid = true;
             }
+
             return match.Groups[1].Value + domainName;
         }
     }

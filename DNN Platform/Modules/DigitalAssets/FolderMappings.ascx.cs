@@ -2,40 +2,36 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Application;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.UI.WebControls;
-using Telerik.Web.UI;
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+    using Telerik.Web.UI;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public partial class FolderMappings : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public FolderMappings()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Variables
-
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
-
-        #endregion
-
-        #region Properties
 
         public int FolderPortalID
         {
@@ -64,20 +60,19 @@ namespace DotNetNuke.Modules.DigitalAssets
                             obj = new List<FolderMappingInfo>();
                         }
                     }
+
                     return (List<FolderMappingInfo>)obj;
                 }
                 catch
                 {
                     this.Session["FolderMappingsList"] = null;
                 }
+
                 return new List<FolderMappingInfo>();
             }
+
             set { this.Session["FolderMappingsList"] = value; }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -135,19 +130,28 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected void MappingsGrid_OnItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem) return;
+            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem)
+            {
+                return;
+            }
 
-            var folderMapping = (e.Item.DataItem as FolderMappingInfo);
+            var folderMapping = e.Item.DataItem as FolderMappingInfo;
             if (folderMapping == null || !folderMapping.IsEditable)
             {
                 return;
             }
 
-            var cmdEditMapping = (e.Item.FindControl("EditMappingButton") as CommandButton);
-            if (cmdEditMapping != null) cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
+            var cmdEditMapping = e.Item.FindControl("EditMappingButton") as CommandButton;
+            if (cmdEditMapping != null)
+            {
+                cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
+            }
 
-            var cmdDeleteMapping = (e.Item.FindControl("DeleteMappingButton") as CommandButton);
-            if (cmdDeleteMapping == null) return;
+            var cmdDeleteMapping = e.Item.FindControl("DeleteMappingButton") as CommandButton;
+            if (cmdDeleteMapping == null)
+            {
+                return;
+            }
 
             cmdDeleteMapping.ToolTip = Localization.GetString("cmdDelete");
 
@@ -172,10 +176,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void UpdateFolderMappings(IList<FolderMappingInfo> folderMappingsList)
         {
             for (var i = 3; i < folderMappingsList.Count; i++)
@@ -184,8 +184,5 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this._folderMappingController.UpdateFolderMapping(folderMappingsList[i]);
             }
         }
-
-        #endregion
-
     }
 }

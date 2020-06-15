@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Microsoft.WindowsAzure.Storage.Blob;
-
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
+    using Microsoft.WindowsAzure.Storage.Blob;
+
     internal static class BlobItemExtensions
     {
         public static string RelativePath(this IListBlobItem item)

@@ -8,6 +8,6 @@ namespace DotNetNuke.Security.Membership
     {
         Clear = 0,
         Hashed = 1,
-        Encrypted = 2
+        Encrypted = 2,
     }
 }

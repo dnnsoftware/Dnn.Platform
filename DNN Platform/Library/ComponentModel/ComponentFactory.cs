@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-#endregion
-
 namespace DotNetNuke.ComponentModel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public static class ComponentFactory
     {
         public static IContainer Container { get; set; }
@@ -22,6 +17,7 @@ namespace DotNetNuke.ComponentModel
             {
                 throw new ArgumentNullException("installers");
             }
+
             VerifyContainer();
             foreach (IComponentInstaller installer in installers)
             {
@@ -29,6 +25,7 @@ namespace DotNetNuke.ComponentModel
                 {
                     throw new ArgumentNullException("installers");
                 }
+
                 installer.InstallComponents(Container);
             }
         }
@@ -91,6 +88,7 @@ namespace DotNetNuke.ComponentModel
             {
                 components[componentName] = GetComponent<TContract>(componentName);
             }
+
             return components;
         }
 
@@ -112,13 +110,15 @@ namespace DotNetNuke.ComponentModel
             return Container.GetComponentSettings<TComponent>();
         }
 
-        public static void RegisterComponent<TComponent>() where TComponent : class
+        public static void RegisterComponent<TComponent>()
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TComponent>();
         }
 
-        public static void RegisterComponent<TContract, TComponent>() where TComponent : class
+        public static void RegisterComponent<TContract, TComponent>()
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TContract, TComponent>();
@@ -136,13 +136,15 @@ namespace DotNetNuke.ComponentModel
             Container.RegisterComponent(contractType, componentType);
         }
 
-        public static void RegisterComponent<TComponent>(string name) where TComponent : class
+        public static void RegisterComponent<TComponent>(string name)
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TComponent>(name);
         }
 
-        public static void RegisterComponent<TContract, TComponent>(string name) where TComponent : class
+        public static void RegisterComponent<TContract, TComponent>(string name)
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TContract, TComponent>(name);

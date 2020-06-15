@@ -1,38 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Common;
-
-#endregion
-
 namespace DotNetNuke.Modules.CoreMessaging
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The View class displays the content
+    /// The View class displays the content.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class View : PortalModuleBase
     {
-        #region Public Properties
-
         public int ProfileUserId
         {
             get
@@ -40,8 +33,9 @@ namespace DotNetNuke.Modules.CoreMessaging
                 var userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = Int32.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"]);
                 }
+
                 return userId;
             }
         }
@@ -55,30 +49,25 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-	    public bool ShowSubscriptionTab
-	    {
-		    get
-		    {
-			    return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
-			           this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
-		    }
-	    }
+        public bool ShowSubscriptionTab
+        {
+            get
+            {
+                return !this.Settings.ContainsKey("ShowSubscriptionTab") ||
+                       this.Settings["ShowSubscriptionTab"].ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
 
-	    public bool DisablePrivateMessage
-	    {
-		    get
-		    {
-			    return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser 
-					&& !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+        public bool DisablePrivateMessage
+        {
+            get
+            {
+                return this.PortalSettings.DisablePrivateMessage && !this.UserInfo.IsSuperUser
+                    && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
+            }
+        }
 
-		    }
-	    }
-
-        #endregion
-
-        #region Event Handlers
-
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             if (!this.Request.IsAuthenticated)
             {
@@ -87,13 +76,14 @@ namespace DotNetNuke.Modules.CoreMessaging
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ContentNotAvailable", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                 return;
             }
+
             if (this.UserId != this.ProfileUserId && (this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId || this.TabId == this.PortalSettings.UserTabId))
             {
-				// Do not redirect but hide the content of the module.
-				this.CoreMessagingContainer.Visible = false;
-				return;
+                // Do not redirect but hide the content of the module.
+                this.CoreMessagingContainer.Visible = false;
+                return;
             }
-            
+
             if (this.IsEditable && this.PermissionsNotProperlySet())
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PermissionsNotProperlySet", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
@@ -109,10 +99,6 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             base.OnInit(e);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void AddIe7StyleSheet()
         {
@@ -145,7 +131,5 @@ namespace DotNetNuke.Modules.CoreMessaging
         {
             return p.PermissionKey == "VIEW" && p.AllowAccess && (p.RoleName == Globals.glbRoleAllUsersName || p.RoleName == Globals.glbRoleUnauthUserName);
         }
-
-        #endregion
     }
 }

@@ -2,27 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Mvc.Common;
-using System.Web.Http;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Http;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Mvc.Common;
+
     public sealed class MvcRoutingManager : IMapRoute
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (MvcRoutingManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
         private readonly Dictionary<string, int> _moduleUsage = new Dictionary<string, int>();
         private readonly RouteCollection _routes;
         private readonly PortalAliasMvcRouteManager _portalAliasMvcRouteManager;
 
-        public MvcRoutingManager() : this(RouteTable.Routes)
+        public MvcRoutingManager()
+            : this(RouteTable.Routes)
         {
         }
 
@@ -33,9 +35,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             this.TypeLocator = new TypeLocator();
         }
 
-           internal ITypeLocator TypeLocator { get; set; }
-
-        #region IMapRoute Members
+        internal ITypeLocator TypeLocator { get; set; }
 
         public Route MapRoute(string moduleFolderName, string routeName, string url, string[] namespaces)
         {
@@ -49,11 +49,12 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public Route MapRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
-            if (namespaces == null || namespaces.Length == 0 || String.IsNullOrEmpty(namespaces[0]))
+            if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
             {
-                throw new ArgumentException(Localization.GetExceptionMessage("ArgumentCannotBeNullOrEmpty",
-                                                                             "The argument '{0}' cannot be null or empty.",
-                                                                             "namespaces"));
+                throw new ArgumentException(Localization.GetExceptionMessage(
+                    "ArgumentCannotBeNullOrEmpty",
+                    "The argument '{0}' cannot be null or empty.",
+                    "namespaces"));
             }
 
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -64,7 +65,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             Route route = null;
 
             if (url == null)
+            {
                 throw new ArgumentNullException(nameof(url));
+            }
 
             foreach (var count in prefixCounts)
             {
@@ -78,17 +81,16 @@ namespace DotNetNuke.Web.Mvc.Routing
             return route;
         }
 
-        #endregion
-
         public void RegisterRoutes()
         {
-            //add standard tab and module id provider
+            // add standard tab and module id provider
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (this._routes.GetWriteLock())
             {
-                //_routes.Clear(); -- don't use; it will remove original WEP API maps
+                // _routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
             }
+
             Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
         }
 
@@ -126,7 +128,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static void RegisterSystemRoutes()
         {
-            //_routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private IEnumerable<IMvcRouteMapper> GetServiceRouteMappers()
@@ -169,17 +171,19 @@ namespace DotNetNuke.Web.Mvc.Routing
             var route = new Route(url, new DnnMvcRouteHandler())
             {
                 Defaults = CreateRouteValueDictionaryUncached(defaults),
-                Constraints = CreateRouteValueDictionaryUncached(constraints)
+                Constraints = CreateRouteValueDictionaryUncached(constraints),
             };
             if (route.DataTokens == null)
             {
                 route.DataTokens = new RouteValueDictionary();
             }
+
             ConstraintValidation.Validate(route);
             if ((namespaces != null) && (namespaces.Length > 0))
             {
                 route.SetNameSpaces(namespaces);
             }
+
             route.SetName(name);
             return route;
         }

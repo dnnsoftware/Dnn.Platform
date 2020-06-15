@@ -2,21 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Tests.Utilities;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Tests.Portals
 {
+    using System;
+    using System.Linq;
+
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PortalInfoTests : DnnWebTest
     {
-        public PortalInfoTests() : base(Constants.PORTAL_Zero)
+        public PortalInfoTests()
+            : base(Constants.PORTAL_Zero)
         {
         }
 
@@ -35,7 +37,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
 
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
-            Assert.AreNotEqual(result, "");
+            Assert.AreNotEqual(result, string.Empty);
             Assert.AreNotEqual(result, decrypted);
             Assert.AreEqual(decrypted, newPassword);
         }

@@ -1,26 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNMultiStateBoxColumnTemplate
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The DNNMultiStateBoxColumnTemplate provides a Template for the DNNMultiStateBoxColumn
+    /// The DNNMultiStateBoxColumnTemplate provides a Template for the DNNMultiStateBoxColumn.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class DNNMultiStateBoxColumnTemplate : ITemplate
@@ -28,13 +23,14 @@ namespace DotNetNuke.UI.WebControls
         private string mDataField = Null.NullString;
         private bool mEnabled = true;
         private string mEnabledField = Null.NullString;
-        private string mImagePath = "";
+        private string mImagePath = string.Empty;
         private ListItemType mItemType = ListItemType.Item;
-        private string mSelectedStateKey = "";
+        private string mSelectedStateKey = string.Empty;
         private DNNMultiStateCollection mStates;
-        private string mText = "";
+        private string mText = string.Empty;
 
-        public DNNMultiStateBoxColumnTemplate() : this(ListItemType.Item)
+        public DNNMultiStateBoxColumnTemplate()
+            : this(ListItemType.Item)
         {
         }
 
@@ -43,19 +39,19 @@ namespace DotNetNuke.UI.WebControls
             this.ItemType = itemType;
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets and sets whether the column fires a postback when the control changes
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when the control changes.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the selected state of the DNNMultiStateBox (unless DataBound)
+        /// Gets or sets and sets the selected state of the DNNMultiStateBox (unless DataBound).
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public string SelectedStateKey
         {
@@ -63,6 +59,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mSelectedStateKey;
             }
+
             set
             {
                 this.mSelectedStateKey = value;
@@ -71,9 +68,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field that the column should bind to
+        /// Gets or sets the Data Field that the column should bind to.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string DataField
         {
@@ -81,27 +78,28 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mDataField;
             }
+
             set
             {
                 this.mDataField = value;
             }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets or sets the Design Mode of the Column
-		/// </summary>
-		/// <value>A Boolean</value>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// An flag that indicates whether the control is enabled (this is overridden if
+        /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
         /// the EnabledField is set
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool Enabled
         {
@@ -109,6 +107,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEnabled;
             }
+
             set
             {
                 this.mEnabled = value;
@@ -117,10 +116,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field that determines whether the control is Enabled
-        /// changed
+        /// Gets or sets the Data Field that determines whether the control is Enabled
+        /// changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string EnabledField
         {
@@ -128,6 +127,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEnabledField;
             }
+
             set
             {
                 this.mEnabledField = value;
@@ -136,9 +136,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public ListItemType ItemType
         {
@@ -146,6 +146,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mItemType;
             }
+
             set
             {
                 this.mItemType = value;
@@ -154,9 +155,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Text to display in a Header Template
+        /// Gets or sets the Text to display in a Header Template.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Text
         {
@@ -164,6 +165,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mText;
             }
+
             set
             {
                 this.mText = value;
@@ -172,9 +174,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the image path of the DNNMultiStateBox
+        /// Gets or sets and sets the image path of the DNNMultiStateBox.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public string ImagePath
         {
@@ -182,6 +184,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mImagePath;
             }
+
             set
             {
                 this.mImagePath = value;
@@ -190,9 +193,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the state collection of the DNNMultiStateBox
+        /// Gets or sets and sets the state collection of the DNNMultiStateBox.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public DNNMultiStateCollection States
         {
@@ -202,28 +205,29 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
                 }
+
                 return this.mStates;
             }
+
             set
             {
                 this.mStates = value;
             }
         }
 
-        #region ITemplate Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InstantiateIn is called when the Template is instantiated by the parent control
+        /// InstantiateIn is called when the Template is instantiated by the parent control.
         /// </summary>
-        /// <param name="container">The container control</param>
-		/// -----------------------------------------------------------------------------
+        /// <param name="container">The container control.</param>
+        /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
-            if (!String.IsNullOrEmpty(this.Text))
+            if (!string.IsNullOrEmpty(this.Text))
             {
                 container.Controls.Add(new LiteralControl(this.Text + "<br/>"));
             }
+
             if (this.ItemType != ListItemType.Header)
             {
                 var box = new DNNMultiStateBox();
@@ -233,27 +237,26 @@ namespace DotNetNuke.UI.WebControls
                 {
                     box.States.Add(objState);
                 }
+
                 box.DataBinding += this.Item_DataBinding;
                 container.Controls.Add(box);
             }
         }
 
-        #endregion
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Called when the template item is Data Bound
+        /// Called when the template item is Data Bound.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {
-            var box = (DNNMultiStateBox) sender;
-            var container = (DataGridItem) box.NamingContainer;
-            if (!String.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
+            var box = (DNNMultiStateBox)sender;
+            var container = (DataGridItem)box.NamingContainer;
+            if (!string.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
             {
                 if (this.DesignMode)
                 {
-                    box.SelectedStateKey = "";
+                    box.SelectedStateKey = string.Empty;
                 }
                 else
                 {
@@ -264,7 +267,8 @@ namespace DotNetNuke.UI.WebControls
             {
                 box.SelectedStateKey = this.SelectedStateKey;
             }
-            if (!String.IsNullOrEmpty(this.EnabledField))
+
+            if (!string.IsNullOrEmpty(this.EnabledField))
             {
                 if (this.DesignMode)
                 {

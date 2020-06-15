@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
-using Dnn.PersonaBar.Pages.Components.Prompt.Models;
-using Dnn.PersonaBar.Pages.Components.Security;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 {
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Pages.Components.Exceptions;
+    using Dnn.PersonaBar.Pages.Components.Prompt.Models;
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("new-page", Constants.PagesCategory, "Prompt_NewPage_Description")]
     public class NewPage : ConsoleCommandBase
     {

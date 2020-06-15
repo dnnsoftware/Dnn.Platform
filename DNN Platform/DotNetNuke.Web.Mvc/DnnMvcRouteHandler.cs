@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.SessionState;
-
 namespace DotNetNuke.Web.Mvc
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.SessionState;
+
     public class DnnMvcRouteHandler : IRouteHandler
     {
         private readonly IControllerFactory _controllerFactory;
-       
+
         public DnnMvcRouteHandler()
         {
         }
@@ -41,13 +41,9 @@ namespace DotNetNuke.Web.Mvc
             return controllerFactory.GetControllerSessionBehavior(requestContext, controllerName);
         }
 
-        #region IRouteHandler Members
-
         IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
         {
             return this.GetHttpHandler(requestContext);
         }
-
-        #endregion
     }
 }

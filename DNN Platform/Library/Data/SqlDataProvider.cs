@@ -1,39 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
 namespace DotNetNuke.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Log.EventLog;
+
     public sealed class SqlDataProvider : DataProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
-
-        #region Private Members
-
         private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
-
-        #endregion
-
-        #region Public Properties
 
         public override bool IsConnectionValid
         {
@@ -50,10 +38,6 @@ namespace DotNetNuke.Data
                 return ComponentFactory.GetComponentSettings<SqlDataProvider>() as Dictionary<string, string>;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static bool CanConnect(string connectionString, string owner, string qualifier)
         {
@@ -76,16 +60,15 @@ namespace DotNetNuke.Data
 
         private string ExecuteScriptInternal(string connectionString, string script, int timeoutSec = 0)
         {
-            string exceptions = "";
+            string exceptions = string.Empty;
 
             var sqlDelimiterRegex = RegexUtils.GetCachedRegex(ScriptDelimiter, RegexOptions.IgnoreCase | RegexOptions.Multiline);
             string[] sqlStatements = sqlDelimiterRegex.Split(script);
             foreach (string statement in sqlStatements)
             {
                 var sql = statement.Trim();
-                if (!String.IsNullOrEmpty(sql))
+                if (!string.IsNullOrEmpty(sql))
                 {
-
                     // script dynamic substitution
                     sql = DataUtil.ReplaceTokens(sql);
 
@@ -117,16 +100,18 @@ namespace DotNetNuke.Data
             try
             {
                 sql = DataUtil.ReplaceTokens(sql);
-                errorMessage = "";
+                errorMessage = string.Empty;
 
                 if (string.IsNullOrEmpty(connectionString))
+                {
                     throw new ArgumentNullException(nameof(connectionString));
+                }
 
                 return _dbConnectionProvider.ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
             }
             catch (SqlException sqlException)
             {
-                //error in SQL query
+                // error in SQL query
                 Logger.Error(sqlException);
                 errorMessage = sqlException.Message;
             }
@@ -135,6 +120,7 @@ namespace DotNetNuke.Data
                 Logger.Error(ex);
                 errorMessage = ex.ToString();
             }
+
             errorMessage += Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             return null;
         }
@@ -143,8 +129,8 @@ namespace DotNetNuke.Data
         {
             string DBUser = "public";
 
-            //If connection string does not use integrated security, then get user id.
-            //Normalize to uppercase before all of the comparisons
+            // If connection string does not use integrated security, then get user id.
+            // Normalize to uppercase before all of the comparisons
             var connectionStringUppercase = this.ConnectionString.ToUpper();
             if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
             {
@@ -162,12 +148,13 @@ namespace DotNetNuke.Data
                     }
                 }
             }
+
             return DBUser;
         }
 
         private string GrantStoredProceduresPermission(string Permission, string LoginOrRole)
         {
-            //grant rights to a login or role for all stored procedures
+            // grant rights to a login or role for all stored procedures
             var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
                 + "  begin"
                 + "    declare @exec nvarchar(2000) "
@@ -194,7 +181,7 @@ namespace DotNetNuke.Data
 
         private string GrantUserDefinedFunctionsPermission(string ScalarPermission, string TablePermission, string LoginOrRole)
         {
-            //grant EXECUTE rights to a login or role for all functions
+            // grant EXECUTE rights to a login or role for all functions
             var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
                 + "  begin"
                 + "    declare @exec nvarchar(2000) "
@@ -244,12 +231,9 @@ namespace DotNetNuke.Data
 
                 exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             }
+
             return exceptions;
         }
-
-        #endregion
-
-        #region Abstract Methods
 
         public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
         {
@@ -310,15 +294,15 @@ namespace DotNetNuke.Data
         {
             string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
 
-            //if the upgrade connection string is specified or or db_owner setting is not set to dbo
+            // if the upgrade connection string is specified or or db_owner setting is not set to dbo
             if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
             {
                 try
                 {
-                    //grant execute rights to the public role or userid for all stored procedures. This is
-                    //necesary because the UpgradeConnectionString will create stored procedures
-                    //which restrict execute permissions for the ConnectionString user account. This is also
-                    //necessary when db_owner is not set to "dbo" 
+                    // grant execute rights to the public role or userid for all stored procedures. This is
+                    // necesary because the UpgradeConnectionString will create stored procedures
+                    // which restrict execute permissions for the ConnectionString user account. This is also
+                    // necessary when db_owner is not set to "dbo"
                     exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)
@@ -330,11 +314,11 @@ namespace DotNetNuke.Data
 
                 try
                 {
-                    //grant execute or select rights to the public role or userid for all user defined functions based
-                    //on what type of function it is (scalar function or table function). This is
-                    //necesary because the UpgradeConnectionString will create user defined functions
-                    //which restrict execute permissions for the ConnectionString user account.  This is also
-                    //necessary when db_owner is not set to "dbo" 
+                    // grant execute or select rights to the public role or userid for all user defined functions based
+                    // on what type of function it is (scalar function or table function). This is
+                    // necesary because the UpgradeConnectionString will create user defined functions
+                    // which restrict execute permissions for the ConnectionString user account.  This is also
+                    // necessary when db_owner is not set to "dbo"
                     exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)
@@ -344,6 +328,7 @@ namespace DotNetNuke.Data
                     exceptions += objException + Environment.NewLine + Environment.NewLine + script + Environment.NewLine + Environment.NewLine;
                 }
             }
+
             return exceptions;
         }
 
@@ -388,7 +373,5 @@ namespace DotNetNuke.Data
         {
             return this.ExecuteSQLInternal(connectionString, sql, timeoutSec, out errorMessage);
         }
-
-        #endregion
     }
 }

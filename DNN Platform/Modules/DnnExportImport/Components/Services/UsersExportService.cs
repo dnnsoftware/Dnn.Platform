@@ -2,20 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using DotNetNuke.Common.Utilities;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Dto.Users;
-using DotNetNuke.Data.PetaPoco;
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.Users;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data.PetaPoco;
+
+    using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
+
     /// <summary>
     /// Service to export/import users.
     /// </summary>
@@ -29,7 +31,11 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
+
             var fromDateUtc = exportDto.FromDateUtc;
             var toDateUtc = exportDto.ToDateUtc;
 
@@ -50,27 +56,39 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
                 return;
             }
+
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
-            //Skip the export if all the users has been processed already.
+            // Skip the export if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
+            {
                 return;
+            }
 
-            //Check if there is any pending stage or partially processed data.
+            // Check if there is any pending stage or partially processed data.
             if (this.CheckPoint.Stage > 0)
             {
                 pageIndex = this.CheckPoint.Stage;
             }
-            //Update the total items count in the check points. This should be updated only once.
+
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             this.CheckPoint.ProcessedItems = this.CheckPoint.Stage * pageSize;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var includeProfile = exportDto.IncludeProperfileProperties;
             try
             {
                 while (pageIndex < totalPages)
                 {
-                    if (this.CheckCancelled(exportJob)) return;
+                    if (this.CheckCancelled(exportJob))
+                    {
+                        return;
+                    }
+
                     var exportUsersList = new List<ExportUser>();
                     var exportAspnetUserList = new List<ExportAspnetUser>();
                     var exportAspnetMembershipList = new List<ExportAspnetMembership>();
@@ -96,6 +114,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 CBO.FillCollection(reader, exportUserProfileList, false);
                             }
+
                             reader.NextResult();
 
                             CBO.FillCollection(reader, exportUserPortalList, false);
@@ -135,6 +154,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Repository.CreateItems(exportUserProfileList, null);
                             totalProfilesExported += exportUserProfileList.Count;
                         }
+
                         exportUserPortalList.ForEach(
                             x =>
                             {
@@ -163,12 +183,17 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        this.Result.AddLogEntry($"Exporting Users from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
+                        this.Result.AddLogEntry($"Exporting Users from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                     }
+
                     this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                     this.CheckPoint.Stage++;
-                    if (this.CheckPointStageCallback(this)) return;
-                    //Rebuild the indexes in the exported database.
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
+
+                    // Rebuild the indexes in the exported database.
                     this.Repository.RebuildIndex<ExportUser>(x => x.Id, true);
                     this.Repository.RebuildIndex<ExportUserPortal>(x => x.ReferenceId);
                     this.Repository.RebuildIndex<ExportAspnetUser>(x => x.ReferenceId);
@@ -176,9 +201,13 @@ namespace Dnn.ExportImport.Components.Services
                     this.Repository.RebuildIndex<ExportUserAuthentication>(x => x.ReferenceId);
                     this.Repository.RebuildIndex<ExportUserRole>(x => x.ReferenceId);
                     if (includeProfile)
+                    {
                         this.Repository.RebuildIndex<ExportUserProfile>(x => x.ReferenceId);
+                    }
+
                     pageIndex++;
                 }
+
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Progress = 100;
             }
@@ -192,6 +221,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     this.Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
                 }
+
                 this.Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
                 this.Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
                 this.Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
@@ -200,7 +230,10 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
 
             const int pageSize = Constants.DefaultPageSize;
             var totalUsersImported = 0;
@@ -215,17 +248,26 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
                 return;
             }
+
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
-            //Skip the import if all the users has been processed already.
+
+            // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
+            {
                 return;
+            }
 
             var pageIndex = this.CheckPoint.Stage;
 
-            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
-            //Update the total items count in the check points. This should be updated only once.
+            var totalUsersToBeProcessed = totalUsers - (pageIndex * pageSize);
+
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             try
             {
                 this.Repository.RebuildIndex<ExportUser>(x => x.Id, true);
@@ -242,7 +284,11 @@ namespace Dnn.ExportImport.Components.Services
                         UsersDatasetColumns.Select(column => new DataColumn(column.Item1, column.Item2)).ToArray());
                     while (totalUsersImported < totalUsersToBeProcessed)
                     {
-                        if (this.CheckCancelled(importJob)) return;
+                        if (this.CheckCancelled(importJob))
+                        {
+                            return;
+                        }
+
                         var users =
                             this.Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
                         var tempAspUserCount = 0;
@@ -253,12 +299,17 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             foreach (var user in users)
                             {
-                                if (this.CheckCancelled(importJob)) return;
+                                if (this.CheckCancelled(importJob))
+                                {
+                                    return;
+                                }
+
                                 var row = table.NewRow();
 
                                 var userPortal = this.Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
                                 var userAuthentication = this.Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                                //Aspnet Users and Membership
+
+                                // Aspnet Users and Membership
                                 var aspNetUser = this.Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
                                 var aspnetMembership = aspNetUser != null
                                     ? this.Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault()
@@ -294,6 +345,7 @@ namespace Dnn.ExportImport.Components.Services
                                     row["RefreshRoles"] = DBNull.Value;
                                     row["IsDeleted"] = DBNull.Value;
                                 }
+
                                 if (userAuthentication != null)
                                 {
                                     tempUserAuthenticationCount += 1;
@@ -350,8 +402,10 @@ namespace Dnn.ExportImport.Components.Services
 
                                 table.Rows.Add(row);
                             }
+
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
-                            //Bulk insert the data in DB
+
+                            // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUsersBulk", "@DataTable", table, new Dictionary<string, object> { { "Overwrite", overwrite } });
                             totalUsersImported += users.Count;
@@ -363,16 +417,21 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         catch (Exception ex)
                         {
-                            this.Result.AddLogEntry($"Importing Users from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
+                            this.Result.AddLogEntry($"Importing Users from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                         }
+
                         table.Rows.Clear();
                         pageIndex++;
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                         this.CheckPoint.Stage++;
                         this.CheckPoint.StageData = null;
-                        if (this.CheckPointStageCallback(this)) return;
+                        if (this.CheckPointStageCallback(this))
+                        {
+                            return;
+                        }
                     }
                 }
+
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Progress = 100;
             }
@@ -395,51 +454,53 @@ namespace Dnn.ExportImport.Components.Services
         private Guid GetApplicationId()
         {
             using (var db =
-                new PetaPocoDataContext(DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
+                new PetaPocoDataContext(
+                    DotNetNuke.Data.DataProvider.Instance().Settings["connectionStringName"],
                     "aspnet_"))
             {
-                return db.ExecuteScalar<Guid>(CommandType.Text,
+                return db.ExecuteScalar<Guid>(
+                    CommandType.Text,
                     "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
             }
         }
 
         private static readonly Tuple<string, Type>[] UsersDatasetColumns =
         {
-            new Tuple<string, Type>("PortalId", typeof (int)),
-            new Tuple<string, Type>("Username", typeof (string)),
-            new Tuple<string, Type>("FirstName", typeof (string)),
-            new Tuple<string, Type>("LastName", typeof (string)),
-            new Tuple<string, Type>("AffiliateId", typeof (int)),
-            new Tuple<string, Type>("IsSuperUser", typeof (bool)),
-            new Tuple<string, Type>("Email", typeof (string)),
-            new Tuple<string, Type>("DisplayName", typeof (string)),
-            new Tuple<string, Type>("UpdatePassword", typeof (bool)),
-            new Tuple<string, Type>("Authorised", typeof (bool)),
-            new Tuple<string, Type>("CreatedByUserID", typeof (int)),
-            new Tuple<string, Type>("VanityUrl", typeof (string)),
-            new Tuple<string, Type>("RefreshRoles", typeof (bool)),
-            new Tuple<string, Type>("LastIPAddress", typeof (string)),
-            new Tuple<string, Type>("PasswordResetToken", typeof (Guid)),
-            new Tuple<string, Type>("PasswordResetExpiration", typeof (DateTime)),
-            new Tuple<string, Type>("IsDeleted", typeof (bool)),
-            new Tuple<string, Type>("LastModifiedByUserID", typeof (int)),
-            new Tuple<string, Type>("ApplicationId", typeof (Guid)),
-            new Tuple<string, Type>("AspUserId", typeof (Guid)),
-            new Tuple<string, Type>("MobileAlias", typeof (string)),
-            new Tuple<string, Type>("IsAnonymous", typeof (bool)),
-            new Tuple<string, Type>("Password", typeof (string)),
-            new Tuple<string, Type>("PasswordFormat", typeof (int)),
-            new Tuple<string, Type>("PasswordSalt", typeof (string)),
-            new Tuple<string, Type>("MobilePIN", typeof (string)),
-            new Tuple<string, Type>("PasswordQuestion", typeof (string)),
-            new Tuple<string, Type>("PasswordAnswer", typeof (string)),
-            new Tuple<string, Type>("IsApproved", typeof (bool)),
-            new Tuple<string, Type>("IsLockedOut", typeof (bool)),
-            new Tuple<string, Type>("FailedPasswordAttemptCount", typeof (int)),
-            new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof (int)),
-            new Tuple<string, Type>("Comment", typeof (string)),
-            new Tuple<string, Type>("AuthenticationType", typeof (string)),
-            new Tuple<string, Type>("AuthenticationToken", typeof (string))
+            new Tuple<string, Type>("PortalId", typeof(int)),
+            new Tuple<string, Type>("Username", typeof(string)),
+            new Tuple<string, Type>("FirstName", typeof(string)),
+            new Tuple<string, Type>("LastName", typeof(string)),
+            new Tuple<string, Type>("AffiliateId", typeof(int)),
+            new Tuple<string, Type>("IsSuperUser", typeof(bool)),
+            new Tuple<string, Type>("Email", typeof(string)),
+            new Tuple<string, Type>("DisplayName", typeof(string)),
+            new Tuple<string, Type>("UpdatePassword", typeof(bool)),
+            new Tuple<string, Type>("Authorised", typeof(bool)),
+            new Tuple<string, Type>("CreatedByUserID", typeof(int)),
+            new Tuple<string, Type>("VanityUrl", typeof(string)),
+            new Tuple<string, Type>("RefreshRoles", typeof(bool)),
+            new Tuple<string, Type>("LastIPAddress", typeof(string)),
+            new Tuple<string, Type>("PasswordResetToken", typeof(Guid)),
+            new Tuple<string, Type>("PasswordResetExpiration", typeof(DateTime)),
+            new Tuple<string, Type>("IsDeleted", typeof(bool)),
+            new Tuple<string, Type>("LastModifiedByUserID", typeof(int)),
+            new Tuple<string, Type>("ApplicationId", typeof(Guid)),
+            new Tuple<string, Type>("AspUserId", typeof(Guid)),
+            new Tuple<string, Type>("MobileAlias", typeof(string)),
+            new Tuple<string, Type>("IsAnonymous", typeof(bool)),
+            new Tuple<string, Type>("Password", typeof(string)),
+            new Tuple<string, Type>("PasswordFormat", typeof(int)),
+            new Tuple<string, Type>("PasswordSalt", typeof(string)),
+            new Tuple<string, Type>("MobilePIN", typeof(string)),
+            new Tuple<string, Type>("PasswordQuestion", typeof(string)),
+            new Tuple<string, Type>("PasswordAnswer", typeof(string)),
+            new Tuple<string, Type>("IsApproved", typeof(bool)),
+            new Tuple<string, Type>("IsLockedOut", typeof(bool)),
+            new Tuple<string, Type>("FailedPasswordAttemptCount", typeof(int)),
+            new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof(int)),
+            new Tuple<string, Type>("Comment", typeof(string)),
+            new Tuple<string, Type>("AuthenticationType", typeof(string)),
+            new Tuple<string, Type>("AuthenticationToken", typeof(string)),
         };
     }
 }

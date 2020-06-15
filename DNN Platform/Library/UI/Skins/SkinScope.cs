@@ -8,6 +8,6 @@ namespace DotNetNuke.UI.Skins
     {
         All = 0,
         Host = 1,
-        Site = 2
+        Site = 2,
     }
 }

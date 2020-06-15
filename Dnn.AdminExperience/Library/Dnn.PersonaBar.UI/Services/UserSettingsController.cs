@@ -2,28 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.DTO;
-using DotNetNuke.Collections;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Web.Api;
-
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.DTO;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class UserSettingsController : PersonaBarApiController
     {
         /// <summary>
-        /// Update Person Bar's User Settings
+        /// Update Person Bar's User Settings.
         /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateUserSettings(IDictionary<string, object> settings)
@@ -40,7 +42,7 @@ namespace Dnn.PersonaBar.UI.Services
                 });
 
                 controller.UpdatePersonaBarUserSettings(userSettings, this.UserInfo.UserID, portalId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             catch (Exception ex)
             {

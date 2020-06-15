@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.ComponentModel;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.ComponentModel
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.ComponentModel;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SimpleContainerTests
     {
         [Test]
-        //DNN-17622  http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=17622&PROJID=2
+
+        // DNN-17622  http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=17622&PROJID=2
         public void GetComponenetListSupportsInterfaces()
         {
             var container = new SimpleContainer();
@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
 
             var retrieved = container.GetComponentList(typeof(IList));
 
-            CollectionAssert.AreEqual(new List<string> {"payload"}, retrieved);
+            CollectionAssert.AreEqual(new List<string> { "payload" }, retrieved);
         }
 
         [Test]

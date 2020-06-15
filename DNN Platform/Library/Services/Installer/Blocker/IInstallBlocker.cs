@@ -10,7 +10,9 @@ namespace DotNetNuke.Services.Installer.Blocker
     public interface IInstallBlocker
     {
         void RegisterInstallBegining();
+
         void RegisterInstallEnd();
+
         bool IsInstallInProgress();
     }
 }

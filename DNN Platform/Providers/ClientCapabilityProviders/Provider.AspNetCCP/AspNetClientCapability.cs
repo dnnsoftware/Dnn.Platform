@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Configuration;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
-
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Configuration;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
+
     /// <summary>
-    /// AspNet Browser Implementation of IClientCapability
+    /// AspNet Browser Implementation of IClientCapability.
     /// </summary>
     public class AspNetClientCapability : Services.ClientCapability.ClientCapability
     {
@@ -35,9 +36,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        #region Constructor
-
         /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
         public AspNetClientCapability(string userAgent, HttpCapabilitiesBase browserCaps)
@@ -51,8 +51,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
                 this.IsTouchScreen = false;
                 this.BrowserName = browserCaps.Browser;
-                if(browserCaps.Capabilities != null)
-                { 
+                if (browserCaps.Capabilities != null)
+                {
                     this.Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
                         .ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value));
                 }
@@ -60,6 +60,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 {
                     this.Capabilities = new Dictionary<string, string>();
                 }
+
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 
@@ -84,14 +85,16 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
-        public AspNetClientCapability(HttpRequest request) : this(request.UserAgent ?? "", request.Browser)
+        public AspNetClientCapability(HttpRequest request)
+            : this(request.UserAgent ?? string.Empty, request.Browser)
         {
-            
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
         public AspNetClientCapability(IDictionary<string, string> properties)
@@ -105,6 +108,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.IsMobile = GetBoolValue(this._properties, "IsMobile");
                 this.ScreenResolutionWidthInPixels = GetIntValue(this._properties, "ScreenPixelsWidth");
                 this.ScreenResolutionHeightInPixels = GetIntValue(this._properties, "ScreenPixelsHeight");
+
                 // Set Premium properties
                 this.IsTablet = GetBoolValue(this._properties, "IsTablet");
                 this.IsTouchScreen = GetBoolValue(this._properties, "HasTouchScreen");
@@ -114,15 +118,13 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 
-                //set IsMobile to false when IsTablet is true.
+                // set IsMobile to false when IsTablet is true.
                 if (this.IsTablet)
+                {
                     this.IsMobile = false;
+                }
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         /// <summary>
         /// Returns a dictionary of capability names and values as strings based on the object
@@ -133,7 +135,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <returns>Device related capabilities with property names and values converted to strings.</returns>
         private static IDictionary<string, string> GetCapabilities(IDictionary<string, string> properties)
         {
-            return properties.Keys.ToDictionary(key => key, key => String.Join(Constants.ValueSeperator, properties[key].ToArray()));
+            return properties.Keys.ToDictionary(key => key, key => string.Join(Constants.ValueSeperator, properties[key].ToArray()));
         }
 
         /// <summary>
@@ -148,7 +150,10 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             bool value;
             if (properties.ContainsKey(property) &&
                 bool.TryParse(properties[property], out value))
+            {
                 return value;
+            }
+
             return false;
         }
 
@@ -164,7 +169,10 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             int value;
             if (properties.ContainsKey(property) &&
                 int.TryParse(properties[property], out value))
+            {
                 return value;
+            }
+
             return 0;
         }
 
@@ -249,7 +257,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
             else
             {
-                //TODO: detect others. maybe through an external service such as:
+                // TODO: detect others. maybe through an external service such as:
                 // http://www.useragentstring.com/pages/api.php
                 // or see this thread: http://www.geekpedia.com/code47_Detect-operating-system-from-user-agent-string.html
                 // or port this open source PHP project to C# from https://github.com/piwik/device-detector
@@ -260,10 +268,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             {
                 properties.Add("PlatformVendor", platformVendor);
             }
+
             if (!properties.ContainsKey("PlatformName"))
             {
                 properties.Add("PlatformName", platformName);
             }
+
             if (!properties.ContainsKey("PlatformVersion"))
             {
                 properties.Add("PlatformVersion", platformVersion);
@@ -285,7 +295,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 case "6.0":
                     return "Vista";
                 case "5.2":
-                    //platformName = "Windows Server 2003; Windows XP x64 Edition";
+                    // platformName = "Windows Server 2003; Windows XP x64 Edition";
                     return "XP x64 Edition";
                 case "5.1":
                     return "XP";
@@ -311,7 +321,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         private const string UnixAgent2 = "i586";
         private const string UnixAgent3 = "i386";
         private const string X11Agent = "x11";
-        private static readonly char[] Separators = {';', ')'};
+        private static readonly char[] Separators = { ';', ')' };
 
         private static bool CheckAgentAndVersion(string queryAgent, string userAgent, ref string version)
         {
@@ -334,7 +344,5 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
             return true;
         }
-
-        #endregion
     }
 }

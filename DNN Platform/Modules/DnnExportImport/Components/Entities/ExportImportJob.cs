@@ -2,32 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using Dnn.ExportImport.Components.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Modules;
-
 namespace Dnn.ExportImport.Components.Entities
 {
+    using System;
+    using System.Data;
+
+    using Dnn.ExportImport.Components.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     [TableName("ExportImportJobs")]
     [PrimaryKey("JobId")]
     public class ExportImportJob : IHydratable
     {
         public int JobId { get; set; }
+
         public int PortalId { get; set; }
+
         public JobType JobType { get; set; }
+
         public JobStatus JobStatus { get; set; }
+
         public bool IsCancelled { get; set; }
+
         public string Name { get; set; }
+
         public string Description { get; set; }
+
         public int CreatedByUserId { get; set; }
+
         public DateTime CreatedOnDate { get; set; }
+
         public DateTime LastModifiedOnDate { get; set; }
+
         public DateTime? CompletedOnDate { get; set; }
+
         public string Directory { get; set; }
+
         public string JobObject { get; set; }
 
         public int KeyID
@@ -59,6 +72,7 @@ namespace Dnn.ExportImport.Components.Entities
                     this.CreatedOnDate.Hour, this.CreatedOnDate.Minute, this.CreatedOnDate.Second,
                     this.CreatedOnDate.Millisecond, DateTimeKind.Utc);
             }
+
             if (this.LastModifiedOnDate.Kind != DateTimeKind.Utc)
             {
                 this.LastModifiedOnDate = new DateTime(

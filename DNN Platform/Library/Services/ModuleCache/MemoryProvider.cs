@@ -1,22 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Web.Caching;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Cache;
-
-#endregion
-
 namespace DotNetNuke.Services.ModuleCache
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Cache;
+
     public class MemoryProvider : ModuleCachingProvider
     {
         private const string cachePrefix = "ModuleCache:";
@@ -25,13 +20,14 @@ namespace DotNetNuke.Services.ModuleCache
         {
             var keys = new List<string>();
             IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
-            while ((CacheEnum.MoveNext()))
+            while (CacheEnum.MoveNext())
             {
                 if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
                 {
                     keys.Add(CacheEnum.Key.ToString());
                 }
             }
+
             return keys;
         }
 
@@ -45,6 +41,7 @@ namespace DotNetNuke.Services.ModuleCache
                     cacheKey.Append(string.Concat(kvp.Key.ToLowerInvariant(), "=", kvp.Value, "|"));
                 }
             }
+
             return string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());
         }
 
@@ -76,7 +73,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void PurgeExpiredItems(int portalId)
         {
-            //throw new NotSupportedException();
+            // throw new NotSupportedException();
         }
     }
 }

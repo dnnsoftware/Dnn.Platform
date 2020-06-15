@@ -2,29 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Caching;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-
 namespace DotNetNuke.Data
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
-    {
-        #region Constructors
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Caching;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
+    public abstract class RepositoryBase<T> : IRepository<T>
+        where T : class
+    {
         protected RepositoryBase()
         {
             this.InitializeInternal();
         }
-
-        #endregion
-
-        #region IRepository<T> Implementation
 
         public void Delete(T item)
         {
@@ -49,9 +45,9 @@ namespace DotNetNuke.Data
         {
             this.CheckIfScoped();
 
-            if(this.IsCacheable)
+            if (this.IsCacheable)
             {
-                this.CacheArgs.CacheKey = String.Format(this.CacheArgs.CacheKey, scopeValue);
+                this.CacheArgs.CacheKey = string.Format(this.CacheArgs.CacheKey, scopeValue);
             }
 
             return this.IsCacheable
@@ -103,10 +99,6 @@ namespace DotNetNuke.Data
 
         public abstract void Update(string sqlCondition, params object[] args);
 
-        #endregion
-
-        #region Private Methods
-
         private void CheckIfScoped()
         {
             if (!this.IsScoped)
@@ -120,15 +112,15 @@ namespace DotNetNuke.Data
             if (this.IsCacheable)
             {
                 DataCache.RemoveCache(this.IsScoped
-                                          ? String.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
+                                          ? string.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
                                           : this.CacheArgs.CacheKey);
             }
         }
 
         private void InitializeInternal()
         {
-            var type = typeof (T);
-            this.Scope = String.Empty;
+            var type = typeof(T);
+            this.Scope = string.Empty;
             this.IsCacheable = false;
             this.IsScoped = false;
             this.CacheArgs = null;
@@ -139,15 +131,15 @@ namespace DotNetNuke.Data
                 this.Scope = scopeAttribute.Scope;
             }
 
-            this.IsScoped = (!String.IsNullOrEmpty(this.Scope));
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
 
             var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
             if (cacheableAttribute != null)
             {
                 this.IsCacheable = true;
-                var cacheKey = !String.IsNullOrEmpty(cacheableAttribute.CacheKey)
+                var cacheKey = !string.IsNullOrEmpty(cacheableAttribute.CacheKey)
                                 ? cacheableAttribute.CacheKey
-                                : String.Format("OR_{0}", type.Name);
+                                : string.Format("OR_{0}", type.Name);
                 var cachePriority = cacheableAttribute.CachePriority;
                 var cacheTimeOut = cacheableAttribute.CacheTimeOut;
 
@@ -160,10 +152,6 @@ namespace DotNetNuke.Data
             }
         }
 
-        #endregion
-
-        #region Protected Properties
-
         protected CacheItemArgs CacheArgs { get; private set; }
 
         protected string Scope { get; private set; }
@@ -171,8 +159,6 @@ namespace DotNetNuke.Data
         protected bool IsCacheable { get; private set; }
 
         protected bool IsScoped { get; private set; }
-
-        #endregion
 
         protected int CompareTo<TProperty>(TProperty first, TProperty second)
         {
@@ -184,6 +170,7 @@ namespace DotNetNuke.Data
 
 // ReSharper disable PossibleNullReferenceException
             return firstComparable.CompareTo(secondComparable);
+
 // ReSharper restore PossibleNullReferenceException
         }
 
@@ -202,8 +189,6 @@ namespace DotNetNuke.Data
             return DataUtil.GetPropertyValue<T, TProperty>(item, this.Scope);
         }
 
-        #region Abstract Methods
-
         protected abstract void DeleteInternal(T item);
 
         protected abstract IEnumerable<T> GetInternal();
@@ -220,19 +205,18 @@ namespace DotNetNuke.Data
 
         protected abstract void UpdateInternal(T item);
 
-        #endregion
-
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
         {
             this.Scope = scope;
-            this.IsScoped = (!String.IsNullOrEmpty(this.Scope));
-            this.IsCacheable = (!String.IsNullOrEmpty(cacheKey));
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
+            this.IsCacheable = !string.IsNullOrEmpty(cacheKey);
             if (this.IsCacheable)
             {
                 if (this.IsScoped)
                 {
                     cacheKey += "_" + this.Scope + "_{0}";
                 }
+
                 this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
             }
             else

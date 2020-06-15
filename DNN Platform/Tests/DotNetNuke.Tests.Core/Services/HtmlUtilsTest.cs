@@ -2,12 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Utilities;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Services
 {
+    using DotNetNuke.Common.Utilities;
+    using NUnit.Framework;
+
     /// <summary>
     /// </summary>
     [TestFixture]
@@ -17,7 +16,7 @@ namespace DotNetNuke.Tests.Core.Services
             "Hello World!<br /><br />This is a sample HTML text for testing!<br /><br /><img alt=\"HappyFaceAlt\" title=\"HappyFaceTitle\" test=\"noShow\" src=\"/dotnetnuke_enterprise/Portals/0/Telerik/images/Emoticons/1.gif\" /><br /><br /><img alt=\"\" src=\"http://localhost/dotnetnuke_enterprise/Portals/0/aspnet.gif\" /><br /><br /><a href=\"https://www.dnnsoftware.com\">DotNetNuke Corp.</a>";
 
         private const string Filters = "alt|href|src|title";
-        private string _expected = "";
+        private string _expected = string.Empty;
 
         [SetUp]
         public void SetUp()
@@ -49,8 +48,6 @@ namespace DotNetNuke.Tests.Core.Services
         {
         }
 
-        #region HTML Cleaning Tests
-
         [Test]
         public void HtmlUtils_CleanWithTagInfo_Should_Return_Clean_Content_With_Attribute_Values()
         {
@@ -61,6 +58,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
@@ -77,6 +75,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
@@ -94,6 +93,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
@@ -110,13 +110,12 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
             // TearDown
             this.TearDown();
         }
-
-        #endregion
     }
 }

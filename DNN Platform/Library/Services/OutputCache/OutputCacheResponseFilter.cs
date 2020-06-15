@@ -1,23 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Text;
-
-#endregion
-
 namespace DotNetNuke.Services.OutputCache
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
     // helper class to capture the response into a file
     public abstract class OutputCacheResponseFilter : Stream
     {
         private Stream _captureStream;
-
-        #region "Constructors"
 
         public OutputCacheResponseFilter(Stream filterChain, string cacheKey, TimeSpan cacheDuration, int maxVaryByCount)
         {
@@ -27,10 +20,6 @@ namespace DotNetNuke.Services.OutputCache
             this.MaxVaryByCount = maxVaryByCount;
             this._captureStream = this.CaptureStream;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public TimeSpan CacheDuration { get; set; }
 
@@ -42,6 +31,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 return this._captureStream;
             }
+
             set
             {
                 this._captureStream = value;
@@ -92,15 +82,12 @@ namespace DotNetNuke.Services.OutputCache
             {
                 throw new NotSupportedException();
             }
+
             set
             {
                 throw new NotSupportedException();
             }
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public override void Flush()
         {
@@ -109,7 +96,8 @@ namespace DotNetNuke.Services.OutputCache
             {
                 return;
             }
-            if ((((this._captureStream) != null)))
+
+            if ( this._captureStream != null)
             {
                 this._captureStream.Flush();
             }
@@ -122,7 +110,8 @@ namespace DotNetNuke.Services.OutputCache
             {
                 return;
             }
-            if ((((this._captureStream) != null)))
+
+            if ( this._captureStream != null)
             {
                 this._captureStream.Write(buffer, offset, count);
             }
@@ -143,8 +132,6 @@ namespace DotNetNuke.Services.OutputCache
             throw new NotSupportedException();
         }
 
-        #endregion
-
         protected virtual void AddItemToCache(int itemId, string output)
         {
         }
@@ -160,7 +147,7 @@ namespace DotNetNuke.Services.OutputCache
                 return null;
             }
 
-            if ((((this.CaptureStream) != null)))
+            if ( this.CaptureStream != null)
             {
                 this.CaptureStream.Position = 0;
                 using (var reader = new StreamReader(this.CaptureStream, Encoding.Default))
@@ -168,13 +155,16 @@ namespace DotNetNuke.Services.OutputCache
                     string output = reader.ReadToEnd();
                     this.AddItemToCache(itemId, output);
                 }
+
                 this.CaptureStream.Close();
                 this.CaptureStream = null;
             }
+
             if (deleteData)
             {
                 this.RemoveItemFromCache(itemId);
             }
+
             return null;
         }
     }

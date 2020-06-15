@@ -2,34 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Cryptography;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Cryptography;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class StandardFolderProviderTests
     {
-        #region Private Variables
-
         private StandardFolderProvider _sfp;
         private Mock<IFolderInfo> _folderInfo;
         private Mock<IFileInfo> _fileInfo;
@@ -41,9 +38,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IPortalController> _portalControllerMock;
         private Mock<CryptographyProvider> _cryptographyProviderMock;
         private Mock<ILocaleController> _localeControllerMock;
-        #endregion
 
-        #region Setup
         [TestFixtureSetUp]
         public void FixtureSetup()
         {
@@ -72,9 +67,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Guid.NewGuid().ToString("N"));
             this._localeControllerMock = new Mock<ILocaleController>();
-            this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string,Locale>
+            this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string, Locale>
             {
-                {"en-us", new Locale()}
+                { "en-us", new Locale() },
             });
 
             FileWrapper.RegisterInstance(this._fileWrapper.Object);
@@ -89,12 +84,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
         private Dictionary<string, string> GetPortalSettingsDictionaryMock()
         {
-            var portalSettingsDictionary = new Dictionary<string,string>();
+            var portalSettingsDictionary = new Dictionary<string, string>();
             portalSettingsDictionary.Add("AddCachebusterToResourceUris", true.ToString());
 
             return portalSettingsDictionary;
         }
-        
+
         private PortalSettings GetPortalSettingsMock()
         {
             var portalSettingsMock = new Mock<PortalSettings>();
@@ -113,10 +108,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             TestableGlobals.ClearInstance();
             PortalController.ClearInstance();
         }
-
-        #endregion
-
-        #region AddFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -145,10 +136,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.AddFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null);
         }
 
-        #endregion
-
-        #region DeleteFile
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeleteFile_Throws_On_Null_File()
@@ -156,34 +143,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.DeleteFile(null);
         }
 
-        //[Test]
-        //public void DeleteFile_Calls_FileWrapper_Delete_When_File_Exists()
-        //{
+        // [Test]
+        // public void DeleteFile_Calls_FileWrapper_Delete_When_File_Exists()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
+        // _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
 
-        //    _sfp.DeleteFile(_fileInfo.Object);
+        // _sfp.DeleteFile(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Once());
+        // }
 
-        //[Test]
-        //public void DeleteFile_Does_Not_Call_FileWrapper_Delete_When_File_Does_Not_Exist()
-        //{
+        // [Test]
+        // public void DeleteFile_Does_Not_Call_FileWrapper_Delete_When_File_Does_Not_Exist()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
+        // _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
 
-        //    _sfp.DeleteFile(_fileInfo.Object);
+        // _sfp.DeleteFile(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Never());
-        //}
-
-        #endregion
-
-        #region FileExists
-
+        // _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Never());
+        // }
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ExistsFile_Throws_On_Null_Folder()
@@ -231,10 +213,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsFalse(result);
         }
-
-        #endregion
-
-        #region FolderExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -292,10 +270,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsFalse(result);
         }
 
-        #endregion
-
-        #region GetFileAttributes
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileAttributes_Throws_On_Null_File()
@@ -303,30 +277,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.GetFileAttributes(null);
         }
 
-        //[Test]
-        //public void GetFileAttributes_Calls_FileWrapper_GetAttributes()
-        //{
+        // [Test]
+        // public void GetFileAttributes_Calls_FileWrapper_GetAttributes()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _sfp.GetFileAttributes(_fileInfo.Object);
+        // _sfp.GetFileAttributes(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath), Times.Once());
+        // }
 
-        //[Test]
-        //public void GetFileAttributes_Returns_File_Attributes_When_File_Exists()
-        //{
+        // [Test]
+        // public void GetFileAttributes_Returns_File_Attributes_When_File_Exists()
+        // {
         //    var expectedFileAttributes = FileAttributes.Normal;
 
-        //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+        // _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath)).Returns(expectedFileAttributes);
+        // _fileWrapper.Setup(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath)).Returns(expectedFileAttributes);
 
-        //    var result = _sfp.GetFileAttributes(_fileInfo.Object);
+        // var result = _sfp.GetFileAttributes(_fileInfo.Object);
 
-        //    Assert.AreEqual(expectedFileAttributes, result);
-        //}
-
+        // Assert.AreEqual(expectedFileAttributes, result);
+        // }
         [Test]
         public void GetFileAttributes_Returns_Null_When_File_Does_Not_Exist()
         {
@@ -338,10 +311,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsNull(result);
         }
-
-        #endregion
-
-        #region GetFiles
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -365,7 +334,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
 
-            var filesReturned = new[] { "", "", "" };
+            var filesReturned = new[] { string.Empty, string.Empty, string.Empty };
 
             this._directoryWrapper.Setup(dw => dw.GetFiles(Constants.FOLDER_ValidFolderPath)).Returns(filesReturned);
 
@@ -388,10 +357,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedValues, files);
         }
-
-        #endregion
-
-        #region GetFileContent
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -438,6 +403,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 {
                     ms.Write(buffer, 0, read);
                 }
+
                 resultBytes = ms.ToArray();
             }
 
@@ -456,10 +422,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsNull(result);
         }
 
-        #endregion
-
-        #region GetFolderProviderIconPath
-
         [Test]
         public void GetImageUrl_Calls_IconControllerWrapper_IconURL()
         {
@@ -471,10 +433,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             iconControllerWrapper.Verify(icw => icw.IconURL("FolderStandard", "32x32"), Times.Once());
         }
 
-        #endregion
-
-        #region GetLastModificationTime
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetLastModificationTime_Throws_On_Null_File()
@@ -482,30 +440,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.GetLastModificationTime(null);
         }
 
-        //[Test]
-        //public void GetLastModificationTime_Calls_FileWrapper_GetLastWriteTime()
-        //{
+        // [Test]
+        // public void GetLastModificationTime_Calls_FileWrapper_GetLastWriteTime()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _sfp.GetLastModificationTime(_fileInfo.Object);
+        // _sfp.GetLastModificationTime(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath), Times.Once());
+        // }
 
-        //[Test]
-        //public void GetLastModificationTime_Returns_Valid_Date_When_File_Exists()
-        //{
+        // [Test]
+        // public void GetLastModificationTime_Returns_Valid_Date_When_File_Exists()
+        // {
         //    var expectedDate = DateTime.Now;
 
-        //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+        // _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath)).Returns(expectedDate);
+        // _fileWrapper.Setup(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath)).Returns(expectedDate);
 
-        //    var result = _sfp.GetLastModificationTime(_fileInfo.Object);
+        // var result = _sfp.GetLastModificationTime(_fileInfo.Object);
 
-        //    Assert.AreEqual(expectedDate, result);
-        //}
-
+        // Assert.AreEqual(expectedDate, result);
+        // }
         [Test]
         public void GetLastModificationTime_Returns_Null_Date_When_File_Does_Not_Exist()
         {
@@ -519,10 +476,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.AreEqual(expectedDate, result);
         }
-
-        #endregion
-
-        #region GetSubFolders
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -561,9 +514,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
-            var subFolders = new[] {
+            var subFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderPath,
-                Constants.FOLDER_OtherValidSubFolderPath
+                Constants.FOLDER_OtherValidSubFolderPath,
             };
 
             this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
@@ -576,9 +530,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Returns_Valid_SubFolders_When_Folder_Is_Not_Empty()
         {
-            var expectedSubFolders = new[] {
+            var expectedSubFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderRelativePath,
-                Constants.FOLDER_OtherValidSubFolderRelativePath
+                Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
 
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
@@ -587,9 +542,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
-            var subFolders = new[] {
+            var subFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderPath,
-                Constants.FOLDER_OtherValidSubFolderPath
+                Constants.FOLDER_OtherValidSubFolderPath,
             };
 
             this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
@@ -598,10 +554,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedSubFolders, result);
         }
-
-        #endregion
-
-        #region GetFilesUrl
 
         [Test]
         public void GetFileUrl_WhenCurrentPortalSettingsReturnsNull_DontThrow()
@@ -636,23 +588,23 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         [TestCase("(")]
         [TestCase(")")]
-        [TestCase("")]        
+        [TestCase("")]
         public void GetFileUrl_ReturnsStandardUrl_WhenFileUrlDoesNotContainInvalidCharactes(string fileNameChar)
         {
-            //Arrange
+            // Arrange
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
             var portalSettingsMock = this.GetPortalSettingsMock();
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
             this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
             this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            
-            //Act
+
+            // Act
             var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
-            //Assert
+            // Assert
             Assert.IsFalse(fileUrl.ToLowerInvariant().Contains("linkclick"));
         }
-        
+
         [Test]
         [TestCase("?")]
         [TestCase("&")]
@@ -666,22 +618,19 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("%")]
         public void GetFileUrl_ReturnsLinkclickUrl_WhenFileUrlContainsInvalidCharactes(string fileNameChar)
         {
-            //Arrange
+            // Arrange
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
             var portalSettingsMock = this.GetPortalSettingsMock();
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
             this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
             this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
 
-            //Act
+            // Act
             var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
-            //Assert
+            // Assert
             Assert.IsTrue(fileUrl.ToLowerInvariant().Contains("linkclick"));
         }
-        #endregion
-
-        #region IsInSync
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -715,10 +664,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsTrue(result);
         }
-
-        #endregion
-
-        #region RenameFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -761,10 +706,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._fileWrapper.Verify(fw => fw.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
-        #endregion
-
-        #region SetFileAttributes
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SetFileAttributes_Throws_On_Null_File()
@@ -772,22 +713,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.SetFileAttributes(null, FileAttributes.Archive);
         }
 
-        //[Test]
-        //public void SetFileAttributes_Calls_FileWrapper_SetAttributes()
-        //{
+        // [Test]
+        // public void SetFileAttributes_Calls_FileWrapper_SetAttributes()
+        // {
         //    const FileAttributes validFileAttributes = FileAttributes.Archive;
 
-        //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+        // _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _sfp.SetFileAttributes(_fileInfo.Object, validFileAttributes);
+        // _sfp.SetFileAttributes(_fileInfo.Object, validFileAttributes);
 
-        //    _fileWrapper.Verify(fw => fw.SetAttributes(Constants.FOLDER_ValidFilePath, validFileAttributes), Times.Once());
-        //}
-
-        #endregion
-
-        #region SupportsFileAttributes
-
+        // _fileWrapper.Verify(fw => fw.SetAttributes(Constants.FOLDER_ValidFilePath, validFileAttributes), Times.Once());
+        // }
         [Test]
         public void SupportsFileAttributes_Returns_True()
         {
@@ -795,10 +731,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsTrue(result);
         }
-
-        #endregion
-
-        #region UpdateFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -854,7 +786,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._fileWrapper.Verify(fw => fw.Create(Constants.FOLDER_ValidFilePath), Times.Once());
         }
-
-        #endregion
     }
 }

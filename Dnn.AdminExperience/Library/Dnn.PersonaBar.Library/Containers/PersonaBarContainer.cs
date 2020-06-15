@@ -2,36 +2,37 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Library.Common;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Application;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.ImprovementsProgram;
-using Newtonsoft.Json.Linq;
-using Globals = DotNetNuke.Common.Globals;
-
 namespace Dnn.PersonaBar.Library.Containers
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+
+    using Dnn.PersonaBar.Library.Common;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Application;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.ImprovementsProgram;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json.Linq;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     public class PersonaBarContainer : IPersonaBarContainer
     {
         protected INavigationManager NavigationManager { get; }
+
         public PersonaBarContainer(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
-
-        #region Instance Methods
 
         private static IPersonaBarContainer _instance;
 
@@ -61,17 +62,12 @@ namespace Dnn.PersonaBar.Library.Containers
             _instance = null;
         }
 
-        #endregion
-
-        #region IPersonaBarContainer Implements
-
-        public virtual IList<string> RootItems => new List<string> {"Content", "Manage", "Settings", "Edit"};
+        public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
 
         public virtual bool Visible => true;
 
         public virtual void Initialize(UserControl personaBarControl)
         {
-
         }
 
         public virtual IDictionary<string, object> GetConfiguration()
@@ -83,12 +79,7 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
-
         }
-
-        #endregion
-
-        #region Private Methods
 
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
         {
@@ -141,7 +132,5 @@ namespace Dnn.PersonaBar.Library.Containers
             var user = UserController.Instance.GetCurrentUserInfo();
             return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
         }
-
-        #endregion
     }
 }

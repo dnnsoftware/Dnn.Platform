@@ -2,51 +2,49 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using DotNetNuke.Collections;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.UI;
-using DotNetNuke.UI.Containers;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls;
-using Globals = DotNetNuke.Common.Globals;
-using Newtonsoft.Json;
-
 namespace Dnn.EditBar.UI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using DotNetNuke.UI;
+    using DotNetNuke.UI.Containers;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls;
+    using Newtonsoft.Json;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// <summary>
-    /// Content Editor Manager
+    /// Content Editor Manager.
     /// </summary>
     public class ContentEditorManager : UserControlBase
     {
-        #region Fields
         private const int CssFileOrder = 40;
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
         private bool _supportAjax = true;
-        #endregion
-
-        #region Properties
 
         public Skin Skin { get; set; }
 
@@ -61,15 +59,12 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 return ScriptManager.GetCurrent(this.Page) != null && this._supportAjax;
             }
+
             set
             {
                 this._supportAjax = value;
             }
         }
-
-        #endregion
-
-        #region Static Methods
 
         internal static ContentEditorManager GetCurrent(Page page)
         {
@@ -80,10 +75,6 @@ namespace Dnn.EditBar.UI.Controllers
 
             return null;
         }
-
-        #endregion
-
-        #region Override Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -117,10 +108,10 @@ namespace Dnn.EditBar.UI.Controllers
 
             this.Page.Items.Add("ContentEditorManager", this);
 
-            //if there is pending work cookie, then reset it
+            // if there is pending work cookie, then reset it
             this.CheckPendingData();
 
-            //if there is callback data cookie, then process the module for drag.
+            // if there is callback data cookie, then process the module for drag.
             this.CheckCallbackData();
 
             this.EnsureChildControls();
@@ -146,17 +137,17 @@ namespace Dnn.EditBar.UI.Controllers
                     continue;
                 }
 
-                //create update panel
+                // create update panel
                 var updatePanel = new UpdatePanel
                 {
                     UpdateMode = UpdatePanelUpdateMode.Conditional,
                     ID = pane.ID + "_SyncPanel",
-                    ChildrenAsTriggers = true
+                    ChildrenAsTriggers = true,
                 };
 
                 try
                 {
-                    //find update panels in pane and fire the unload event for a known issue: CONTENT-4039
+                    // find update panels in pane and fire the unload event for a known issue: CONTENT-4039
                     var updatePanels = this.GetUpdatePanelsInPane(pane);
                     updatePanels.ForEach(p => p.Unload += this.UpdatePanelUnloadEvent);
                     updatePanel.Unload += this.UpdatePanelUnloadEvent;
@@ -193,8 +184,8 @@ namespace Dnn.EditBar.UI.Controllers
 
                         if (moduleControl != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
                         {
-                            ((HtmlContainerControl) moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
-                            
+                            ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+
                             if (this.HaveContentLayoutModuleOnPage())
                             {
                                 this.Page.Items[typeof(ProxyPage)] = moduleControl;
@@ -219,17 +210,15 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 ScriptManager.RegisterStartupScript(this.Page, script.Type, script.Key, script.Script, script.AddScriptTags);
             }
+
             base.Render(writer);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void RegisterClientResources()
         {
             ClientResourceManager.EnableAsyncPostBackHandler();
-            //register drop down list required resources
+
+            // register drop down list required resources
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
@@ -247,16 +236,19 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ExistingModuleDialog.js"));
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ModuleService.js"));
             ClientResourceManager.RegisterScript(this.Page, Path.Combine(ControlFolder, "ContentEditorManager/Js/ContentEditor.js"));
-            ClientResourceManager.RegisterStyleSheet(this.Page,
+            ClientResourceManager.RegisterStyleSheet(
+                this.Page,
                 Path.Combine(ControlFolder, "ContentEditorManager/Styles/ContentEditor.css"), CssFileOrder);
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            //We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
+
+            // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
-            ClientResourceManager.RegisterStyleSheet(this.Page,
+            ClientResourceManager.RegisterStyleSheet(
+                this.Page,
                 "~/Resources/Shared/Components/Tokeninput/Themes/token-input-facebook.css");
         }
 
@@ -274,13 +266,11 @@ namespace Dnn.EditBar.UI.Controllers
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/Dnn.EditBar/scripts/editBarContainer.js");
 
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/admin/Dnn.EditBar/css/editBarContainer.css");
-
         }
 
         private bool IsPageEditor()
         {
             return HasTabPermission("EDIT");
-
         }
 
         public static bool HasTabPermission(string permissionKey)
@@ -294,7 +284,10 @@ namespace Dnn.EditBar.UI.Controllers
             var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
-            if (isAdminUser) return true;
+            if (isAdminUser)
+            {
+                return true;
+            }
 
             return TabPermissionController.HasTabPermission(permissionKey);
         }
@@ -324,13 +317,12 @@ namespace Dnn.EditBar.UI.Controllers
 
         private static void FindControlRecursive(Control rootControl, string controlId, ICollection<Control> foundControls)
         {
-
             if (rootControl.ID == controlId)
             {
                 foundControls.Add(rootControl);
             }
 
-            foreach(Control subControl in rootControl.Controls)
+            foreach (Control subControl in rootControl.Controls)
             {
                 FindControlRecursive(subControl, controlId, foundControls);
             }
@@ -364,10 +356,11 @@ namespace Dnn.EditBar.UI.Controllers
             var panes = string.Join(",", this.PortalSettings.ActiveTab.Panes.Cast<string>());
             var panesClientIds = this.GetPanesClientIds(this.GetPaneClientIdCollection());
             const string scriptFormat = @"dnn.ContentEditorManager.init({{type: 'moduleManager', panes: '{0}', panesClientIds: '{2}', supportAjax: {1}}});";
-            var script = string.Format(scriptFormat,
-                                            panes,
-                                            this.SupportAjax ? "true" : "false",
-                                            panesClientIds);
+            var script = string.Format(
+                scriptFormat,
+                panes,
+                this.SupportAjax ? "true" : "false",
+                panesClientIds);
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -382,7 +375,7 @@ namespace Dnn.EditBar.UI.Controllers
 
         private string GetPanesClientIds(IEnumerable<IEnumerable<string>> panelCliendIdCollection)
         {
-            return string.Join(";", panelCliendIdCollection.Select(x => String.Join(",", x)));
+            return string.Join(";", panelCliendIdCollection.Select(x => string.Join(",", x)));
         }
 
         private void RegisterLocalResources()
@@ -419,7 +412,8 @@ namespace Dnn.EditBar.UI.Controllers
                                                                                     makeCopy: '{28}'
                                                                                 }};";
 
-            var script = string.Format(scriptFormat,
+            var script = string.Format(
+                scriptFormat,
                 Localization.GetSafeJSString("AddModule.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("NoModules.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("DragTip.Text", this.LocalResourcesFile),
@@ -448,8 +442,7 @@ namespace Dnn.EditBar.UI.Controllers
                 Localization.GetSafeJSString("Site.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("Page.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("AddExistingModule.Text", this.LocalResourcesFile),
-                Localization.GetSafeJSString("MakeCopy.Text", this.LocalResourcesFile)
-                );
+                Localization.GetSafeJSString("MakeCopy.Text", this.LocalResourcesFile));
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {
@@ -473,14 +466,14 @@ namespace Dnn.EditBar.UI.Controllers
                     var tabId = this.PortalSettings.ActiveTab.TabID;
                     int moduleId;
                     if (pendingData.StartsWith("module-")
-                        && Int32.TryParse(pendingData.Substring(7), out moduleId))
+                        && int.TryParse(pendingData.Substring(7), out moduleId))
                     {
                         var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                         if (module != null)
                         {
                             this.RemoveTabModule(tabId, moduleId);
 
-                            //remove related modules
+                            // remove related modules
                             ModuleController.Instance.GetTabModules(tabId).Values
                                 .Where(m => m.CreatedOnDate > module.CreatedOnDate && m.CreatedByUserID == module.CreatedByUserID)
                                 .ForEach(m =>
@@ -500,8 +493,9 @@ namespace Dnn.EditBar.UI.Controllers
         {
             ModuleController.Instance.DeleteTabModule(tabId, moduleId, false);
 
-            //remove that module control
-            var moduleControl = ControlUtilities.FindFirstDescendent<Container>(this.Skin,
+            // remove that module control
+            var moduleControl = ControlUtilities.FindFirstDescendent<Container>(
+                this.Skin,
                 c => c.ID == "ctr" + moduleId);
 
             if (moduleControl != null)
@@ -524,7 +518,7 @@ namespace Dnn.EditBar.UI.Controllers
                     var moduleInfo = this.FindModuleInfo(moduleId);
                     if (moduleContainer != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
                     {
-                        ((HtmlContainerControl) moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+                        ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
                         this.ProcessDragTipShown(moduleContainer);
                     }
                 }
@@ -537,7 +531,7 @@ namespace Dnn.EditBar.UI.Controllers
             if (string.IsNullOrEmpty(dragTipShown) && moduleContainer.Parent is HtmlContainerControl && this.Request.Cookies["noFloat"] == null)
             {
                 Personalization.SetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId, "true");
-                ((HtmlContainerControl) moduleContainer.Parent).Attributes["class"] += " dragtip";
+                ((HtmlContainerControl)moduleContainer.Parent).Attributes["class"] += " dragtip";
             }
         }
 
@@ -575,7 +569,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 panels.Add(parent as UpdatePanel);
             }
-            else if(parent != null && !this.IsListControl(parent))
+            else if (parent != null && !this.IsListControl(parent))
             {
                 foreach (Control childControl in parent.Controls)
                 {
@@ -597,7 +591,8 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 var methodInfo = typeof(ScriptManager).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
                             .First(i => i.Name.Equals("System.Web.UI.IScriptManagerInternal.RegisterUpdatePanel"));
-                methodInfo.Invoke(ScriptManager.GetCurrent(this.Page),
+                methodInfo.Invoke(
+                    ScriptManager.GetCurrent(this.Page),
                     new[] { sender });
             }
             catch (Exception ex)
@@ -628,7 +623,9 @@ namespace Dnn.EditBar.UI.Controllers
         {
             var cookie = this.Request.Cookies["LastPageId"];
             if (cookie != null)
+            {
                 return cookie.Value;
+            }
 
             return "NEW";
         }
@@ -652,7 +649,6 @@ namespace Dnn.EditBar.UI.Controllers
                     this.SetUserMode("EDIT");
                     this.SetLastPageHistory(pageId);
                     this.Response.Redirect(this.Request.RawUrl, true);
-
                 }
 
                 return;
@@ -684,15 +680,10 @@ namespace Dnn.EditBar.UI.Controllers
             return user.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
         }
 
-
-        #endregion
-
-        #region Helper Classes
-
-
         public class ProxyPage : CDefault
         {
             private readonly Page _originalPage;
+
             public ProxyPage(Page originalPage)
             {
                 this._originalPage = originalPage;
@@ -726,7 +717,7 @@ namespace Dnn.EditBar.UI.Controllers
                 var property = typeof(Page).GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 if (property != null)
                 {
-                    var value = property.GetValue(original, new object[]{});
+                    var value = property.GetValue(original, new object[] { });
 
                     property.SetValue(this, value, new object[] { });
                 }
@@ -737,7 +728,5 @@ namespace Dnn.EditBar.UI.Controllers
                 return this._originalPage.FindControl(id);
             }
         }
-
-        #endregion
     }
 }

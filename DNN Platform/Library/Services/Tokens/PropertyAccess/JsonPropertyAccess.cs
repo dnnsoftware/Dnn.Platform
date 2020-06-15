@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using DotNetNuke.Entities.Users;
-using Newtonsoft.Json;
-
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Users;
+    using Newtonsoft.Json;
+
     public abstract class JsonPropertyAccess<TModel> : IPropertyAccess
     {
         public virtual CacheLevel Cacheability

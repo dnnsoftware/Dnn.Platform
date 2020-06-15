@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.UI;
-
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
+    using System.Web.UI;
+
     using ClientDependency.Core.Controls;
 
     /// <summary>
-    /// Registers a JavaScript resource
+    /// Registers a JavaScript resource.
     /// </summary>
     public class DnnJsInclude : JsInclude
     {
         /// <summary>
-        /// Sets up default settings for the control
+        /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
+        /// Sets up default settings for the control.
         /// </summary>
         public DnnJsInclude()
         {

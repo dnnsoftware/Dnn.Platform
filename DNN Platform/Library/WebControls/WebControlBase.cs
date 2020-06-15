@@ -1,31 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+
     public abstract class WebControlBase : WebControl
     {
-		#region "Private Members"
-
-        private string _styleSheetUrl = "";
-        private string _theme = "";
-		
-		#endregion
-
-		#region "Public Properties"
+        private string _styleSheetUrl = string.Empty;
+        private string _theme = string.Empty;
 
         public string Theme
         {
@@ -33,6 +22,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._theme;
             }
+
             set
             {
                 this._theme = value;
@@ -51,7 +41,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if ((this._styleSheetUrl.StartsWith("~")))
+                if (this._styleSheetUrl.StartsWith("~"))
                 {
                     return Globals.ResolveUrl(this._styleSheetUrl);
                 }
@@ -60,6 +50,7 @@ namespace DotNetNuke.UI.WebControls
                     return this._styleSheetUrl;
                 }
             }
+
             set
             {
                 this._styleSheetUrl = value;
@@ -70,11 +61,12 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-            	return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get
@@ -82,8 +74,6 @@ namespace DotNetNuke.UI.WebControls
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
-		
-		#endregion
 
         public abstract string HtmlOutput { get; }
 

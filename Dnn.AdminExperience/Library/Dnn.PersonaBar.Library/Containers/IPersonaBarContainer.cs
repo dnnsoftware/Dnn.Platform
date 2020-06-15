@@ -2,24 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Web.UI;
-using Dnn.PersonaBar.Library.Model;
-
 namespace Dnn.PersonaBar.Library.Containers
 {
+    using System.Collections.Generic;
+    using System.Web.UI;
+
+    using Dnn.PersonaBar.Library.Model;
+
     /// <summary>
     /// Persona Bar Container.
     /// </summary>
     public interface IPersonaBarContainer
     {
         /// <summary>
-        /// Items allowed to defined in root level.
+        /// Gets items allowed to defined in root level.
         /// </summary>
-        IList<string> RootItems { get; } 
+        IList<string> RootItems { get; }
 
         /// <summary>
-        /// Indicate whether persona bar is available.
+        /// Gets a value indicating whether indicate whether persona bar is available.
         /// </summary>
         bool Visible { get; }
 

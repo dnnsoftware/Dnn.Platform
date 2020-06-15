@@ -2,21 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Permissions;
-
 namespace Dnn.ExportImport.Components.Providers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Entities;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security.Permissions;
+
     internal class DataProvider
     {
-        #region Shared/Static Methods
-
         private static readonly DataProvider Provider;
 
         private readonly DotNetNuke.Data.DataProvider _dataProvider = DotNetNuke.Data.DataProvider.Instance();
@@ -35,8 +34,6 @@ namespace Dnn.ExportImport.Components.Providers
         {
             // so it can't be instantiated outside this class
         }
-
-        #endregion
 
         public void UpdateRecordChangers(string tableName, string primaryKeyName, int primaryKeyId, int? createdBy, int? modifiedBy)
         {
@@ -71,7 +68,9 @@ namespace Dnn.ExportImport.Components.Providers
         {
             DateTime? completeDate = null;
             if (jobStatus == JobStatus.Failed || jobStatus == JobStatus.Successful)
+            {
                 completeDate = DateUtils.GetDatabaseUtcTime();
+            }
 
             this._dataProvider.ExecuteNonQuery(
                 "ExportImportJobs_UpdateStatus", jobId, jobStatus, completeDate);
@@ -92,6 +91,7 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return this._dataProvider.ExecuteReader("ExportImport_Settings");
         }
+
         public void AddExportImportSetting(ExportImportSetting exportImportSetting)
         {
             this._dataProvider.ExecuteNonQuery("ExportImport_AddSetting", exportImportSetting.SettingName,
@@ -143,12 +143,14 @@ namespace Dnn.ExportImport.Components.Providers
                 var d = datim.Value;
                 datim = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
             }
+
             return datim;
         }
 
         public void UpsertJobChekpoint(ExportImportChekpoint checkpoint)
         {
-            this._dataProvider.ExecuteNonQuery("ExportImportCheckpoints_Upsert",
+            this._dataProvider.ExecuteNonQuery(
+                "ExportImportCheckpoints_Upsert",
                 checkpoint.JobId, checkpoint.AssemblyName, checkpoint.Category, checkpoint.Stage, checkpoint.StageData,
                 Null.SetNullInteger(Math.Floor(checkpoint.Progress)), checkpoint.TotalItems, checkpoint.ProcessedItems, this._dataProvider.GetNull(checkpoint.StartDate), checkpoint.Completed);
         }
@@ -192,7 +194,6 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return this._dataProvider.ExecuteScalar<int>("Export_RoleIdByName", this._dataProvider.GetNull(portalId), roleName);
         }
-
 
         public void SetRoleAutoAssign(int roleId)
         {
@@ -263,7 +264,9 @@ namespace Dnn.ExportImport.Components.Providers
         public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
         {
             return
-                CBO.GetCachedObject<IEnumerable<PermissionInfo>>(new CacheItemArgs(DataCache.PermissionsCacheKey,
+                CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                    new CacheItemArgs(
+                    DataCache.PermissionsCacheKey,
                     DataCache.PermissionsCacheTimeout,
                     DataCache.PermissionsCachePriority),
                     c =>

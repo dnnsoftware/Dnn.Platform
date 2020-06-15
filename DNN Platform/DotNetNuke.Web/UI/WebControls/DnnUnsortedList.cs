@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.UI;
-using System.ComponentModel;
-using System.Web.UI.WebControls;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     /// <summary>
     /// Creates a control that renders its childs as a bulleted list.
     /// </summary>
     /// <remarks>
-    /// Control renders an unordered list HTML contol. 
+    /// Control renders an unordered list HTML contol.
     /// Each child control in <see cref="DnnUnsortedList"/> is rendered as a separate list item.
-    /// To obtain a control over list item style, add a <see cref="DnnUnsortedListItem" /> to a controls list, 
+    /// To obtain a control over list item style, add a <see cref="DnnUnsortedListItem" /> to a controls list,
     /// and tune this object appropriately.
     /// </remarks>
     public class DnnUnsortedList : WebControl, INamingContainer
     {
         private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> _listItems = null;
 
-        public DnnUnsortedList() : base(HtmlTextWriterTag.Ul)
+        public DnnUnsortedList()
+            : base(HtmlTextWriterTag.Ul)
         {
         }
 
@@ -31,7 +32,8 @@ namespace DotNetNuke.Web.UI.WebControls
             return new TypedControlCollection<DnnUnsortedListItem>(this);
         }
 
-        [PersistenceMode(PersistenceMode.InnerDefaultProperty), MergableProperty(false)]
+        [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
+        [MergableProperty(false)]
         public virtual UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> ListItems
         {
             get
@@ -50,7 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// A "macro" that adds a set of controls or control as a single list item (li).  Use ListItems.Add(UnsortedListItem) method
+        /// A "macro" that adds a set of controls or control as a single list item (li).  Use ListItems.Add(UnsortedListItem) method.
         /// </summary>
         /// <remarks>
         /// All controls from the list will be rendered as a childs of a single list item.
@@ -61,7 +63,5 @@ namespace DotNetNuke.Web.UI.WebControls
             listItem.AddControls(listItemControls);
             this.ListItems.Add(listItem);
         }
-
     }
-
 }

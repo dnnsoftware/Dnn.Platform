@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Routing;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web.Routing;
+
     public static class MvcRouteExtensions
     {
         private const string NamespaceKey = "namespaces";
@@ -22,12 +22,12 @@ namespace DotNetNuke.Web.Mvc.Routing
         }
 
         /// <summary>
-        /// Get Namespaces that are searched for controllers for this route
+        /// Get Namespaces that are searched for controllers for this route.
         /// </summary>
-        /// <returns>Namespaces</returns>
+        /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
-            return (string[]) route.DataTokens[NamespaceKey];
+            return (string[])route.DataTokens[NamespaceKey];
         }
 
         internal static void SetName(this Route route, string name)
@@ -35,14 +35,13 @@ namespace DotNetNuke.Web.Mvc.Routing
             route.DataTokens[NameKey] = name;
         }
 
-
         /// <summary>
-        /// Get the name of the route
+        /// Get the name of the route.
         /// </summary>
-        /// <returns>Route name</returns>
+        /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
-            return (string) route.DataTokens[NameKey];
+            return (string)route.DataTokens[NameKey];
         }
     }
 }

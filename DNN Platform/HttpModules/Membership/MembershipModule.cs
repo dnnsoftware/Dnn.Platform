@@ -1,40 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Security;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.HttpModules.Services;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.Skins.EventListeners;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.UserRequest;
-
-#endregion
-
 namespace DotNetNuke.HttpModules.Membership
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Security.Principal;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.HttpModules.Services;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using DotNetNuke.Services.UserRequest;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.Skins.EventListeners;
+
     /// <summary>
-    /// Information about membership
+    /// Information about membership.
     /// </summary>
     public class MembershipModule : IHttpModule
     {
@@ -43,11 +39,12 @@ namespace DotNetNuke.HttpModules.Membership
         private static readonly Regex NameRegex = new Regex(@"\w+[\\]+(?=)", RegexOptions.Compiled);
 
         private static string _cultureCode;
+
         /// <summary>
         /// Gets the name of the module.
         /// </summary>
         /// <value>
-        /// The name of the module: "DNNMembershipModule"
+        /// The name of the module: "DNNMembershipModule".
         /// </value>
         public string ModuleName
         {
@@ -63,14 +60,12 @@ namespace DotNetNuke.HttpModules.Membership
             {
                 if (string.IsNullOrEmpty(_cultureCode))
                 {
-                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name; 
+                    _cultureCode = Localization.GetPageLocale(PortalSettings.Current).Name;
                 }
 
                 return _cultureCode;
             }
         }
-
-        #region IHttpModule Members
 
         /// <summary>
         /// Initializes the specified application.
@@ -89,16 +84,14 @@ namespace DotNetNuke.HttpModules.Membership
         {
         }
 
-        #endregion
-
         private void OnAuthenticateRequest(object sender, EventArgs e)
         {
-            var application = (HttpApplication) sender;
+            var application = (HttpApplication)sender;
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
 
-        //DNN-6973: if the authentication cookie set by cookie slide in membership,
-        //then use SignIn method instead if current portal is in portal group.
+        // DNN-6973: if the authentication cookie set by cookie slide in membership,
+        // then use SignIn method instead if current portal is in portal group.
         private void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
@@ -121,7 +114,6 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-
         /// <summary>
         /// Called when unverified user skin initialize.
         /// </summary>
@@ -130,7 +122,7 @@ namespace DotNetNuke.HttpModules.Membership
         public static void OnUnverifiedUserSkinInit(object sender, SkinEventArgs e)
         {
             var strMessage = Localization.GetString("UnverifiedUser", Localization.SharedResourceFile, CurrentCulture);
-            UI.Skins.Skin.AddPageMessage(e.Skin, "", strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
+            UI.Skins.Skin.AddPageMessage(e.Skin, string.Empty, strMessage, ModuleMessage.ModuleMessageType.YellowWarning);
         }
 
         /// <summary>
@@ -143,13 +135,13 @@ namespace DotNetNuke.HttpModules.Membership
             HttpRequestBase request = context.Request;
             HttpResponseBase response = context.Response;
 
-            //First check if we are upgrading/installing
+            // First check if we are upgrading/installing
             if (!Initialize.ProcessHttpModule(context.ApplicationInstance.Request, allowUnknownExtensions, false))
             {
                 return;
             }
 
-            //Obtain PortalSettings from Current Context
+            // Obtain PortalSettings from Current Context
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isActiveDirectoryAuthHeaderPresent = false;
@@ -162,28 +154,29 @@ namespace DotNetNuke.HttpModules.Membership
                 }
             }
 
-            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
+            if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
-                //if current login is from windows authentication, the ignore the process
+
+                // if current login is from windows authentication, the ignore the process
                 if (user == null && context.User is WindowsPrincipal)
                 {
                     return;
                 }
 
-                //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
+                // authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set )
                 if (RequireLogout(context, user))
                 {
                     var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
 
-                    //Remove user from cache
+                    // Remove user from cache
                     if (user != null)
                     {
                         DataCache.ClearUserCache(portalSettings.PortalId, context.User.Identity.Name);
                     }
 
-                    //Redirect browser back to home page
+                    // Redirect browser back to home page
                     response.Redirect(request.RawUrl, true);
                     return;
                 }
@@ -199,16 +192,16 @@ namespace DotNetNuke.HttpModules.Membership
                     HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
 
-                //if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
+                // if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
                 if (DateTime.Compare(user.Membership.LastActivityDate.AddMinutes(Host.UsersOnlineTimeWindow), DateTime.Now) < 0)
                 {
-                    //update LastActivityDate and IP Address for user
+                    // update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
                     user.LastIPAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
                     UserController.UpdateUser(portalSettings.PortalId, user, false, false);
                 }
 
-                //check for RSVP code
+                // check for RSVP code
                 if (request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
                 {
                     foreach (var role in RoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
@@ -220,7 +213,7 @@ namespace DotNetNuke.HttpModules.Membership
                     }
                 }
 
-                //save userinfo object in context
+                // save userinfo object in context
                 if (context.Items["UserInfo"] != null)
                 {
                     context.Items["UserInfo"] = user;
@@ -230,7 +223,7 @@ namespace DotNetNuke.HttpModules.Membership
                     context.Items.Add("UserInfo", user);
                 }
 
-                //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
+                // Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
                 if (request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
                     Localization.SetLanguage(user.Profile.PreferredLocale);
@@ -248,7 +241,7 @@ namespace DotNetNuke.HttpModules.Membership
             try
             {
                 if (user == null || user.IsDeleted || user.Membership.LockedOut
-                    || !user.Membership.Approved && !user.IsInRole("Unverified Users")
+                    || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
                     || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return true;

@@ -2,28 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Web.Services.Description;
-using System.Web.UI;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.Common;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.Services.Description;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Common;
 
     [ToolboxData("<{0}:DnnFileUpload runat='server'></{0}:DnnFileUpload>")]
     public class DnnFileUpload : Control, INamingContainer
     {
-
         private readonly Lazy<DnnFileUploadOptions> _options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
 
         public DnnFileUploadOptions Options
@@ -80,7 +79,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            jQuery.RegisterFileUpload(this.Page);            
+            jQuery.RegisterFileUpload(this.Page);
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -121,7 +120,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 this.Options.FolderPicker.InitialState = new DnnDropDownListState
                 {
-                    SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null
+                    SelectedItem = (folder != null) ? new SerializableKeyValuePair<string, string>(folder.FolderID.ToString(CultureInfo.InvariantCulture), rootFolder) : null,
                 };
             }
 
@@ -140,6 +139,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString();
             }
+
             this.Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
             this.Options.FolderPicker.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";
             this.Options.FolderPicker.Services.SearchTreeMethod = "ItemListService/SearchFolders";
@@ -160,8 +160,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID + "DnnFileUpload", script, true);
             }
-
         }
-
     }
 }

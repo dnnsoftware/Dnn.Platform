@@ -2,32 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using NUnit.Framework;
-using Moq;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Recyclebin.Components;
-using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Prompt.Models;
-
 namespace Dnn.PersonaBar.Pages.Tests
 {
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Recyclebin.Components;
+    using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RestorePageUnitTests
     {
-        TabInfo _tab;
-        string _message;
-        PortalSettings _portalSettings;
-        IConsoleCommand _restorePage;
+        private TabInfo _tab;
+        private string _message;
+        private PortalSettings _portalSettings;
+        private IConsoleCommand _restorePage;
 
-        Mock<ITabController> _tabControllerMock;
-        Mock<IRecyclebinController> _recyclebinControllerMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IRecyclebinController> _recyclebinControllerMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
 
-        int _tabId = 91;
-        int _testPortalId = 1;
+        private int _tabId = 91;
+        private int _testPortalId = 1;
 
         [SetUp]
         public void RunBeforeAnyTest()
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_RestorePage_WithValidCommand_ShouldReturnSuccessResponse()
         {
-            // Arrange                      
+            // Arrange
             this.SetupCommand();
 
             // Act

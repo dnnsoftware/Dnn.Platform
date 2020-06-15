@@ -1,53 +1,39 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Xml.XPath;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using Microsoft.Extensions.FileSystemGlobbing;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using Microsoft.Extensions.FileSystemGlobbing;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CleanupInstaller cleans up (removes) files from previous versions
+    /// The CleanupInstaller cleans up (removes) files from previous versions.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class CleanupInstaller : FileInstaller
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (CleanupInstaller));
-		#region "Private Members"
-
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
         private string _fileName;
         private string _glob;
 
-		#endregion
-
-		#region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles => "*";
-
-        #endregion
-
-	#region "Private Methods"
 
         private bool ProcessCleanupFile()
         {
@@ -63,9 +49,11 @@ namespace DotNetNuke.Services.Installer.Installers
             catch (Exception ex)
             {
                 this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
-                //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
-                //return false;
+
+                // DNN-9202: MUST NOT fail installation when cleanup files deletion fails
+                // return false;
             }
+
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
@@ -91,31 +79,29 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
             }
+
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
-		
-		#endregion
-
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The CleanupFile method cleansup a single file.
         /// </summary>
-        /// <param name="insFile">The InstallFile to clean up</param>
+        /// <param name="insFile">The InstallFile to clean up.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected bool CleanupFile(InstallFile insFile)
         {
             try
             {
-				//Backup File
+                // Backup File
                 if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                 {
                     Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                 }
-				
-				//Delete file
+
+                // Delete file
                 Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
                 return true;
             }
@@ -129,10 +115,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node
+        /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
-        /// <param name="file">The file represented by the node</param>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -151,7 +137,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The RollbackFile method rolls back the cleanup of a single file.
         /// </summary>
-        /// <param name="installFile">The InstallFile to commit</param>
+        /// <param name="installFile">The InstallFile to commit.</param>
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile installFile)
         {
@@ -160,27 +146,22 @@ namespace DotNetNuke.Services.Installer.Installers
                 Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Clenup this is not neccessary</remarks>
+        /// <remarks>In the case of Clenup this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
-			//Do nothing
+            // Do nothing
             base.Commit();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method cleansup the files
+        /// The Install method cleansup the files.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -207,6 +188,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     bSuccess = this.ProcessGlob();
                 }
+
                 this.Completed = bSuccess;
             }
             catch (Exception ex)
@@ -224,14 +206,12 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the file component
+        /// The UnInstall method uninstalls the file component.
         /// </summary>
-        /// <remarks>There is no uninstall for this component</remarks>
+        /// <remarks>There is no uninstall for this component.</remarks>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
         }
-		
-		#endregion
     }
 }

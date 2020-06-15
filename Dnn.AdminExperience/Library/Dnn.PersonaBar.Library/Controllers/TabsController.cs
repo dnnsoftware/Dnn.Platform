@@ -2,24 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Dnn.PersonaBar.Library.DTO.Tabs;
-using Dnn.PersonaBar.Library.Security;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using Localization = DotNetNuke.Services.Localization.Localization;
-
 namespace Dnn.PersonaBar.Library.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Library.Security;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class TabsController
     {
         private string IconHome => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Home.png");
@@ -50,7 +52,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ImageUrl = this.IconPortal,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ChildTabs = new List<TabDto>(),
-                HasChildren = true
+                HasChildren = true,
             };
             var tabs = new List<TabInfo>();
 
@@ -91,6 +93,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 tabs = this.ValidateModuleInTab(tabs, validateTab).ToList();
             }
+
             var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
             rootNode.HasChildren = tabs.Count > 0;
             rootNode.Selectable = SecurityService.Instance.IsPagesAdminUser();
@@ -100,17 +103,18 @@ namespace Dnn.PersonaBar.Library.Controllers
                 var nodeIcon = this.GetNodeIcon(tab, out tooltip);
                 var node = new TabDto
                 {
-                    Name = tab.LocalizedTabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    Name = tab.LocalizedTabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
                     TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                     ImageUrl = nodeIcon,
                     Tooltip = tooltip,
                     ParentTabId = tab.ParentId,
                     HasChildren = tab.HasChildren,
                     Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
-                    ChildTabs = new List<TabDto>()
+                    ChildTabs = new List<TabDto>(),
                 };
                 rootNode.ChildTabs.Add(node);
             }
+
             rootNode.ChildTabs = ApplySort(rootNode.ChildTabs, sortOrder).ToList();
 
             return selectedTabId > -1
@@ -126,7 +130,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 ImageUrl = this.IconPortal,
                 TabId = Null.NullInteger.ToString(CultureInfo.InvariantCulture),
                 ChildTabs = new List<TabDto>(),
-                HasChildren = true
+                HasChildren = true,
             };
             Func<TabInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
@@ -138,6 +142,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 searchFunc =
                     page => page.LocalizedTabName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
+
             var tabs = new List<TabInfo>();
             if (portalId > -1)
             {
@@ -185,15 +190,17 @@ namespace Dnn.PersonaBar.Library.Controllers
                     ImageUrl = nodeIcon,
                     ParentTabId = tab.ParentId,
                     HasChildren = false,
-                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab)
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
                 };
                 rootNode.ChildTabs.Add(node);
             }
+
             rootNode.ChildTabs = ApplySort(rootNode.ChildTabs, sortOrder).ToList();
             if (!string.IsNullOrEmpty(validateTab))
             {
                 rootNode.ChildTabs = this.ValidateModuleInTab(rootNode.ChildTabs, validateTab).ToList();
             }
+
             return rootNode;
         }
 
@@ -205,6 +212,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                      Globals.ValidateModuleInTab(Convert.ToInt32(tab.TabId), validateTab)) ||
                     Convert.ToInt32(tab.TabId) == Null.NullInteger);
         }
+
         private IEnumerable<TabInfo> ValidateModuleInTab(IEnumerable<TabInfo> tabs, string validateTab)
         {
             return tabs.Where(tab => (tab.TabID > 0 && Globals.ValidateModuleInTab(tab.TabID, validateTab)) || tab.TabID == Null.NullInteger);
@@ -226,8 +234,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                                         roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger &&
                                         p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
                         .Where(t => !disabledNotSelectable || !t.DisableLink)
-                        .Select(t => t.TabID)
-                    );
+                        .Select(t => t.TabID));
             }
             else
             {
@@ -253,10 +260,15 @@ namespace Dnn.PersonaBar.Library.Controllers
                     do
                     {
                         parentTab = this.GetTabByCulture(parentTab.ParentTabId, portalInfo.PortalID, locale);
-                        if (parentTab != null) tempTabs.Add(Convert.ToInt32(parentTab.TabId));
-                    } while (parentTab != null && parentTab.ParentTabId > Null.NullInteger);
+                        if (parentTab != null)
+                        {
+                            tempTabs.Add(Convert.ToInt32(parentTab.TabId));
+                        }
+                    }
+                    while (parentTab != null && parentTab.ParentTabId > Null.NullInteger);
                 }
             }
+
             tempTabs.Reverse();
             rootNode.ChildTabs = this.GetDescendantsForTabs(tempTabs, rootNode.ChildTabs, selectedTabId, portalInfo.PortalID,
                 cultureCode, isMultiLanguage).ToList();
@@ -264,6 +276,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 rootNode.ChildTabs = this.ValidateModuleInTab(rootNode.ChildTabs, validateTab).ToList();
             }
+
             return rootNode;
         }
 
@@ -272,7 +285,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             int portalId, string cultureCode, bool isMultiLanguage)
         {
             var enumerable = tabIds as int[] ?? tabIds.ToArray();
-            if (tabs == null || tabIds == null || !enumerable.Any()) return tabs;
+            if (tabs == null || tabIds == null || !enumerable.Any())
+            {
+                return tabs;
+            }
+
             var tabDtos = tabs as List<TabDto> ?? tabs.ToList();
             var tabId = enumerable.First();
             if (selectedTabId != tabId)
@@ -282,21 +299,23 @@ namespace Dnn.PersonaBar.Library.Controllers
                     return this.GetDescendantsForTabs(enumerable.Except(new List<int> { tabId }), tabDtos, selectedTabId,
                         portalId, cultureCode, isMultiLanguage);
                 }
+
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
                     this.GetTabsDescendants(portalId, tabId, cultureCode,
                         isMultiLanguage).ToList();
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).IsOpen = true;
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs =
-                    this.GetDescendantsForTabs(enumerable.Except(new List<int> { tabId }),
+                    this.GetDescendantsForTabs(
+                        enumerable.Except(new List<int> { tabId }),
                         tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).ChildTabs, selectedTabId,
                         portalId, cultureCode, isMultiLanguage).ToList();
             }
             else
             {
-
                 tabDtos.First(x => Convert.ToInt32(x.TabId) == tabId).CheckedState =
                     NodeCheckedState.Checked;
             }
+
             return tabDtos;
         }
 
@@ -307,14 +326,14 @@ namespace Dnn.PersonaBar.Library.Controllers
             var nodeIcon = this.GetNodeIcon(tab, out tooltip);
             return new TabDto
             {
-                Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
                 TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                 ImageUrl = nodeIcon,
                 Tooltip = tooltip,
                 ParentTabId = tab.ParentId,
                 HasChildren = tab.HasChildren,
                 ChildTabs = new List<TabDto>(),
-                Selectable = TabPermissionController.CanAddPage(tab)
+                Selectable = TabPermissionController.CanAddPage(tab),
             };
         }
 
@@ -336,7 +355,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                     .WithCulture(cultureCode, true))
                     .WithParentId(parentId).ToList();
 
-
             if (!string.IsNullOrEmpty(validateTab))
             {
                 tabs = this.ValidateModuleInTab(tabs, validateTab).ToList();
@@ -344,25 +362,26 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
             foreach (var tab in tabs.Where(
-                x => x.ParentId == parentId && 
+                x => x.ParentId == parentId &&
                 (
-                    includeDeletedChildren || 
+                    includeDeletedChildren ||
                     !x.IsDeleted)))
             {
                 string tooltip;
                 var nodeIcon = this.GetNodeIcon(tab, out tooltip);
                 var node = new TabDto
                 {
-                    Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
                     TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                     ImageUrl = nodeIcon,
                     Tooltip = tooltip,
                     ParentTabId = tab.ParentId,
                     HasChildren = tab.HasChildren,
-                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab)
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
                 };
                 descendants.Add(node);
             }
+
             return ApplySort(descendants, sortOrder);
         }
 
@@ -426,8 +445,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                     .All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
         }
 
-        #region Sort
-
         private static IEnumerable<TabDto> ApplySort(IEnumerable<TabDto> items, int sortOrder)
         {
             switch (sortOrder)
@@ -440,8 +457,5 @@ namespace Dnn.PersonaBar.Library.Controllers
                     return items;
             }
         }
-
-        #endregion
-
     }
 }

@@ -2,24 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using NUnit.Framework;
-using Moq;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Recyclebin.Components;
-using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using Dnn.PersonaBar.Library.Helper;
-
 namespace Dnn.PersonaBar.Pages.Tests
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Recyclebin.Components;
+    using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PurgePageUnitTests
     {
-        Mock<ITabController> _tabControllerMock;
-        Mock<IRecyclebinController> _recyclebinControllerMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IRecyclebinController> _recyclebinControllerMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
 
         [SetUp]
         public void RunBeforeAnyTest()
@@ -42,7 +43,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             portalSettings.PortalId = testPortalId;
 
             this._tabControllerMock.Setup(t => t.GetTab(tabId, testPortalId)).Returns(tab);
-            this._contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(testPortalId, portalSettings, It.IsAny<Boolean>())).Returns(true);
+            this._contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(testPortalId, portalSettings, It.IsAny<bool>())).Returns(true);
 
             IConsoleCommand purgeCommand = new PurgePage(this._tabControllerMock.Object, this._recyclebinControllerMock.Object, this._contentVerifierMock.Object);
 
@@ -69,7 +70,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             portalSettings.PortalId = portalId;
 
             this._tabControllerMock.Setup(t => t.GetTab(tabId, portalId)).Returns(tab);
-            this._contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(portalId, portalSettings, It.IsAny<Boolean>())).Returns(false);
+            this._contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(portalId, portalSettings, It.IsAny<bool>())).Returns(false);
 
             IConsoleCommand purgeCommand = new PurgePage(this._tabControllerMock.Object, this._recyclebinControllerMock.Object, this._contentVerifierMock.Object);
 

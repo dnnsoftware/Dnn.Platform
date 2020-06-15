@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Security.Cryptography;
-using System.Text;
-
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Tests.Utilities
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Text;
+
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Services.FileSystem;
+
     public class ContentTestHelper
     {
         public static ContentItem CreateValidContentItem()
         {
-            ContentItem content = new ContentItem {Content = Constants.CONTENT_ValidContent, ContentKey = Constants.CONTENT_ValidContentKey, Indexed = Constants.CONTENT_IndexedFalse};
+            ContentItem content = new ContentItem { Content = Constants.CONTENT_ValidContent, ContentKey = Constants.CONTENT_ValidContentKey, Indexed = Constants.CONTENT_IndexedFalse };
             return content;
         }
 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static Term CreateValidHeirarchicalTerm(int vocabularyId, int parentId)
         {
-            Term term = new Term(vocabularyId) {Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight, ParentTermId = parentId};
+            Term term = new Term(vocabularyId) { Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight, ParentTermId = parentId };
             return term;
         }
 
@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static Term CreateValidSimpleTerm(int vocabularyId)
         {
-            Term term = new Term(vocabularyId) {Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight};
+            Term term = new Term(vocabularyId) { Name = Constants.TERM_ValidName, Description = Constants.TERM_ValidName, Weight = Constants.TERM_ValidWeight };
             return term;
         }
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Utilities
                                             Type = Constants.VOCABULARY_ValidType,
                                             ScopeTypeId = Constants.VOCABULARY_ValidScopeTypeId,
                                             ScopeId = Constants.VOCABULARY_ValidScopeId,
-                                            Weight = Constants.VOCABULARY_ValidWeight
+                                            Weight = Constants.VOCABULARY_ValidWeight,
                                         };
 
             return vocabulary;
@@ -87,39 +87,39 @@ namespace DotNetNuke.Tests.Utilities
                     StorageLocation = 0,
                     UniqueId = Guid.NewGuid(),
                     VersionGuid = Guid.NewGuid(),
-                    Width = 0
+                    Width = 0,
                 };
             }
         }
 
         public static string GetContent(int i)
         {
-            return String.Format(String.Format(Constants.CONTENT_ValidContentFormat, i));
+            return string.Format(string.Format(Constants.CONTENT_ValidContentFormat, i));
         }
 
         public static string GetContentKey(int i)
         {
-            return String.Format(String.Format(Constants.CONTENT_ValidContentKeyFormat, i));
+            return string.Format(string.Format(Constants.CONTENT_ValidContentKeyFormat, i));
         }
 
         public static string GetContentType(int i)
         {
-            return String.Format(Constants.CONTENTTYPE_ValidContentTypeFormat, i);
+            return string.Format(Constants.CONTENTTYPE_ValidContentTypeFormat, i);
         }
 
         public static string GetScopeType(int i)
         {
-            return String.Format(Constants.SCOPETYPE_ValidScopeTypeFormat, i);
+            return string.Format(Constants.SCOPETYPE_ValidScopeTypeFormat, i);
         }
 
         public static string GetTermName(int i)
         {
-            return String.Format(Constants.TERM_ValidNameFormat, i);
+            return string.Format(Constants.TERM_ValidNameFormat, i);
         }
 
         public static string GetVocabularyName(int i)
         {
-            return String.Format(Constants.VOCABULARY_ValidNameFormat, i);
+            return string.Format(Constants.VOCABULARY_ValidNameFormat, i);
         }
     }
 }

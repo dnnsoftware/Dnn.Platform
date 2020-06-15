@@ -2,23 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.Journal;
+namespace DotNetNuke.Modules.Journal.Components
+{
+    using DotNetNuke.Services.Journal;
 
-namespace DotNetNuke.Modules.Journal.Components {
-    public class JournalItemTokenReplace : Services.Tokens.BaseCustomTokenReplace {
-        public JournalItemTokenReplace(JournalItem journalItem, JournalControl journalControl) {
+    public class JournalItemTokenReplace : Services.Tokens.BaseCustomTokenReplace
+    {
+        public JournalItemTokenReplace(JournalItem journalItem, JournalControl journalControl)
+        {
             this.PropertySource["journalitem"] = journalItem;
             this.PropertySource["journalcontrol"] = journalControl;
-            if (journalItem.ItemData != null) {
+            if (journalItem.ItemData != null)
+            {
                 this.PropertySource["journaldata"] = journalItem.ItemData;
             }
-            if (journalItem.JournalAuthor != null) {
+
+            if (journalItem.JournalAuthor != null)
+            {
                 this.PropertySource["journalauthor"] = journalItem.JournalAuthor;
                 this.PropertySource["journalprofile"] = new ProfilePicPropertyAccess(journalItem.JournalAuthor.Id);
             }
-             
         }
-        public string ReplaceJournalItemTokens(string source) {
+
+        public string ReplaceJournalItemTokens(string source)
+        {
             return this.ReplaceTokens(source);
         }
     }

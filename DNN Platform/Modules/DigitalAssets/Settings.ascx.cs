@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them
+        /// LoadSettings loads the settings from the Database and displays them.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void LoadSettings()
@@ -80,18 +80,21 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// UpdateSettings saves the modified settings to the Database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
             this.Page.Validate();
-            if (!this.Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
             try
             {
                 SettingsRepository.SaveDefaultFolderTypeId(this.ModuleId, Convert.ToInt32(this.DefaultFolderTypeComboBox.SelectedValue));
-                
+
                 SettingsRepository.SaveMode(this.ModuleId, this.SelectedDigitalAssestsMode);
 
                 this.UpdateFilterViewSettings();
@@ -115,12 +118,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void LoadFilterViewSettings()
         {
-            //handle upgrades where FilterCondition didn't exist
+            // handle upgrades where FilterCondition didn't exist
             SettingsRepository.SetDefaultFilterCondition(this.ModuleId);
 
             this.FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(this.ModuleId).ToString();
             this.SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(this.ModuleId).ToString();
-            
+
             if (this.FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
             {
                 var folderId = SettingsRepository.GetRootFolderId(this.ModuleId);

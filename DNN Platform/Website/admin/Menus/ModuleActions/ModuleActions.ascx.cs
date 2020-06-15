@@ -2,37 +2,39 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.Script.Serialization;
-using System.Web.UI;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Containers;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 // ReSharper disable ConvertPropertyToExpressionBody
 // ReSharper disable InconsistentNaming
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Admin.Containers
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Script.Serialization;
+    using System.Web.UI;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Containers;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class ModuleActions : ActionBase
     {
         private readonly List<int> validIDs = new List<int>();
-        
+
         protected string AdminActionsJSON { get; set; }
 
         protected string AdminText
@@ -86,7 +88,7 @@ namespace DotNetNuke.Admin.Containers
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
-        void actionButton_Click(object sender, EventArgs e)
+        private void actionButton_Click(object sender, EventArgs e)
         {
             this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
         }
@@ -109,7 +111,7 @@ namespace DotNetNuke.Admin.Containers
                 if (quickSettingsControl != null)
                 {
                     this.SupportsQuickSettings = true;
-                    var control  = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    var control = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     control.ID += this.ModuleContext.ModuleId;
                     this.quickSettings.Controls.Add(control);
 
@@ -121,10 +123,10 @@ namespace DotNetNuke.Admin.Containers
 
                 if (this.ActionRoot.Visible)
                 {
-                    //Add Menu Items
+                    // Add Menu Items
                     foreach (ModuleAction rootAction in this.ActionRoot.Actions)
                     {
-                        //Process Children
+                        // Process Children
                         var actions = new List<ModuleAction>();
                         foreach (ModuleAction action in rootAction.Actions)
                         {
@@ -139,6 +141,7 @@ namespace DotNetNuke.Admin.Containers
                                     {
                                         action.Icon = "~/images/" + action.Icon;
                                     }
+
                                     if (action.Icon.StartsWith("~/"))
                                     {
                                         action.Icon = Globals.ResolveUrl(action.Icon);
@@ -146,13 +149,12 @@ namespace DotNetNuke.Admin.Containers
 
                                     actions.Add(action);
 
-                                    if(String.IsNullOrEmpty(action.Url))
+                                    if (string.IsNullOrEmpty(action.Url))
                                     {
                                         this.validIDs.Add(action.ID);
                                     }
                                 }
                             }
-
                         }
 
                         var oSerializer = new JavaScriptSerializer();
@@ -168,17 +170,18 @@ namespace DotNetNuke.Admin.Containers
                             }
                             else
                             {
-                                this.SupportsMove = (actions.Count > 0);
+                                this.SupportsMove = actions.Count > 0;
                                 this.Panes = oSerializer.Serialize(this.PortalSettings.ActiveTab.Panes);
                             }
                         }
                     }
+
                     this.IsShared = this.ModuleContext.Configuration.AllTabs
                         || PortalGroupController.Instance.IsModuleShared(this.ModuleContext.ModuleId, PortalController.Instance.GetPortal(this.PortalSettings.PortalId))
                         || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -188,10 +191,10 @@ namespace DotNetNuke.Admin.Containers
         {
             base.Render(writer);
 
-            foreach(int id in this.validIDs)
+            foreach (int id in this.validIDs)
             {
                 this.Page.ClientScript.RegisterForEventValidation(this.actionButton.UniqueID, id.ToString());
             }
         }
-    }    
+    }
 }

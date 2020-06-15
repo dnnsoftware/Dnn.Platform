@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using System.Web;
-using System.Reflection;
-using DotNetNuke.Web.Mvc.Common;
-using Microsoft.Web.Infrastructure.DynamicValidationHelper;
-using DotNetNuke.Common;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Web.Infrastructure.DynamicValidationHelper;
+
     public class ModuleApplication
     {
         protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
@@ -27,27 +28,35 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
 
         public RequestContext RequestContext { get; private set; }
+
         internal static readonly string MvcVersion = GetMvcVersionString();
         private const string MvcVersionHeaderName = "X-AspNetMvc-Version";
+
         private static bool DisableMvcResponseHeader { get; set; }
 
         private bool _initialized;
         private readonly object _lock = new object();
 
-        public ModuleApplication():this(null, false)
+        public ModuleApplication()
+            : this(null, false)
         {
         }
-        public ModuleApplication(bool disableMvcResponseHeader) : this(null, disableMvcResponseHeader)
+
+        public ModuleApplication(bool disableMvcResponseHeader)
+            : this(null, disableMvcResponseHeader)
         {
         }
+
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)
         {
             this.RequestContext = requestContext;
+
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             DisableMvcResponseHeader = disableMvcResponseHeader;
             this.ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
             this.ViewEngines = new ViewEngineCollection();
-            //ViewEngines.Add(new ModuleDelegatingViewEngine());
+
+            // ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
         public virtual IControllerFactory ControllerFactory { get; set; }
@@ -68,10 +77,18 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         {
             // Double-check lock to wait for initialization
             // TODO: Is there a better (preferably using events and waits) way to do this?
-            if (this._initialized) return;
+            if (this._initialized)
+            {
+                return;
+            }
+
             lock (this._lock)
             {
-                if (this._initialized) return;
+                if (this._initialized)
+                {
+                    return;
+                }
+
                 this.Init();
                 this._initialized = true;
             }
@@ -90,12 +107,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     ValidationUtility.EnableDynamicValidation(currentContext);
                 }
             }
+
             this.AddVersionHeader(this.RequestContext.HttpContext);
             this.RemoveOptionalRoutingParameters();
 
             var controllerName = this.RequestContext.RouteData.GetRequiredString("controller");
 
-            //Construct the controller using the ControllerFactory
+            // Construct the controller using the ControllerFactory
             var controller = this.ControllerFactory.CreateController(this.RequestContext, controllerName);
             try
             {
@@ -115,12 +133,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ModuleContext = context.ModuleContext;
 
-                moduleController.LocalResourceFile = String.Format("~/DesktopModules/MVC/{0}/{1}/{2}.resx",
-                                                    context.ModuleContext.Configuration.DesktopModule.FolderName,
-                                                    Localization.LocalResourceDirectory,
-                                                    controllerName);
+                moduleController.LocalResourceFile = string.Format(
+                    "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
+                    context.ModuleContext.Configuration.DesktopModule.FolderName,
+                    Localization.LocalResourceDirectory,
+                    controllerName);
 
                 moduleController.ViewEngineCollectionEx = this.ViewEngines;
+
                 // Execute the controller and capture the result
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
@@ -134,7 +154,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                                     ControllerContext = moduleController.ControllerContext,
                                     ModuleActions = moduleController.ModuleActions,
                                     ModuleContext = context.ModuleContext,
-                                    ModuleApplication = this
+                                    ModuleApplication = this,
                                 };
             }
             finally
@@ -147,23 +167,23 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         {
             var prefix = NormalizeFolderPath(this.FolderPath);
             string[] masterFormats =
-            { 
+            {
                 string.Format(CultureInfo.InvariantCulture, ControllerMasterFormat, prefix),
-                string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix)
+                string.Format(CultureInfo.InvariantCulture, SharedMasterFormat, prefix),
             };
             string[] viewFormats =
-            { 
+            {
                 string.Format(CultureInfo.InvariantCulture, ControllerViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, SharedViewFormat, prefix),
                 string.Format(CultureInfo.InvariantCulture, ControllerPartialFormat, prefix),
-                string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix)
+                string.Format(CultureInfo.InvariantCulture, SharedPartialFormat, prefix),
             };
 
             this.ViewEngines.Add(new RazorViewEngine
                                     {
                                         MasterLocationFormats = masterFormats,
                                         ViewLocationFormats = viewFormats,
-                                        PartialViewLocationFormats = viewFormats
+                                        PartialViewLocationFormats = viewFormats,
                                     });
         }
 

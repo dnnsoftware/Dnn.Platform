@@ -2,18 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.Social.Subscriptions.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+
     public class DataService : ServiceLocator<IDataService, DataService>, IDataService
     {
-        #region Private Members
         private readonly DataProvider provider;
-        #endregion
 
         public DataService()
         {
@@ -25,7 +24,6 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
             return () => new DataService();
         }
 
-        #region Subscription Types
         public int AddSubscriptionType(string subscriptionName, string friendlyName, int desktopModuleId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_AddSubscriptionType", subscriptionName, friendlyName, desktopModuleId);
@@ -40,17 +38,15 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscriptionType", subscriptionTypeId) == 0;
         }
-        #endregion
 
-
-        #region Subscriptions
         public int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId, string objectData)
         {
-            return this.provider.ExecuteScalar<int>("CoreMessaging_AddSubscription", 
-                userId, 
+            return this.provider.ExecuteScalar<int>(
+                "CoreMessaging_AddSubscription",
+                userId,
                 this.provider.GetNull(portalId),
-                subscriptionTypeId, 
-                objectKey, 
+                subscriptionTypeId,
+                objectKey,
                 description,
                 this.provider.GetNull(moduleId),
                 this.provider.GetNull(tabId),
@@ -69,11 +65,12 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
 
         public IDataReader IsSubscribed(int portalId, int userId, int subscriptionTypeId, string objectKey, int moduleId, int tabId)
         {
-            return this.provider.ExecuteReader("CoreMessaging_IsSubscribed",
-                this.provider.GetNull(portalId), 
-                userId, 
-                subscriptionTypeId, 
-                objectKey, 
+            return this.provider.ExecuteReader(
+                "CoreMessaging_IsSubscribed",
+                this.provider.GetNull(portalId),
+                userId,
+                subscriptionTypeId,
+                objectKey,
                 this.provider.GetNull(moduleId),
                 this.provider.GetNull(tabId));
         }
@@ -85,7 +82,8 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
 
         public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
         {
-            return this.provider.ExecuteScalar<int>("CoreMessaging_UpdateSubscriptionDescription",
+            return this.provider.ExecuteScalar<int>(
+                "CoreMessaging_UpdateSubscriptionDescription",
                 objectKey,
                 portalId,
                 newDescription);
@@ -95,7 +93,5 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         {
             this.provider.ExecuteNonQuery("CoreMessaging_DeleteSubscriptionsByObjectKey", portalId, objectKey);
         }
-
-        #endregion
     }
 }

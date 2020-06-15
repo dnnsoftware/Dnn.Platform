@@ -1,49 +1,44 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.Tokens;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Linq;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.Tokens;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : ModuleInfo
+    /// Class    : ModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleInfo provides the Entity Layer for Modules
+    /// ModuleInfo provides the Entity Layer for Modules.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [XmlRoot("module", IsNullable = false)]
     [Serializable]
     public class ModuleInfo : ContentItem, IPropertyAccess
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleInfo));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInfo));
         private string _authorizedEditRoles;
         private string _authorizedViewRoles;
         private string _cultureCode;
@@ -59,11 +54,10 @@ namespace DotNetNuke.Entities.Modules
         private Hashtable _moduleSettings;
         private Hashtable _tabModuleSettings;
 
-
         public ModuleInfo()
         {
-            //initialize the properties that can be null
-            //in the database
+            // initialize the properties that can be null
+            // in the database
             this.PortalID = Null.NullInteger;
             this.OwnerPortalID = Null.NullInteger;
             this.TabModuleID = Null.NullInteger;
@@ -86,12 +80,12 @@ namespace DotNetNuke.Entities.Modules
             this.DisplayPrint = true;
             this.DisplaySyndicate = false;
 
-            //Guid, Version Guid, and Localized Version Guid should be initialised to a new value
+            // Guid, Version Guid, and Localized Version Guid should be initialised to a new value
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
             this._localizedVersionGuid = Guid.NewGuid();
 
-            //Default Language Guid should be initialised to a null Guid
+            // Default Language Guid should be initialised to a null Guid
             this._defaultLanguageGuid = Null.NullGuid;
         }
 
@@ -124,14 +118,15 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Associated Desktop Module
+        /// Gets the Associated Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public DesktopModuleInfo DesktopModule
         {
-            get {
+            get
+            {
                 return this._desktopModule ??
                        (this._desktopModule = this.DesktopModuleID > Null.NullInteger
                             ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID)
@@ -141,9 +136,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ID of the Associated Desktop Module
+        /// Gets or sets and sets the ID of the Associated Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int DesktopModuleID { get; set; }
@@ -178,7 +173,7 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 bool val;
-                Boolean.TryParse(setting.ToString(), out val);
+                bool.TryParse(setting.ToString(), out val);
                 return val;
             }
         }
@@ -215,7 +210,8 @@ namespace DotNetNuke.Entities.Modules
 
         public ModuleControlInfo ModuleControl
         {
-            get {
+            get
+            {
                 return this._moduleControl ??
                        (this._moduleControl = this.ModuleControlId > Null.NullInteger
                             ? ModuleControlController.GetModuleControl(this.ModuleControlId)
@@ -228,23 +224,24 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ID of the Associated Module Definition
+        /// Gets or sets and sets the ID of the Associated Module Definition.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Associated Module Definition
+        /// Gets the Associated Module Definition.
         /// </summary>
-        /// <returns>A ModuleDefinitionInfo</returns>
+        /// <returns>A ModuleDefinitionInfo.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public ModuleDefinitionInfo ModuleDefinition
         {
-            get {
+            get
+            {
                 return this._moduleDefinition ??
                        (this._moduleDefinition = this.ModuleDefID > Null.NullInteger
                             ? ModuleDefinitionController.GetModuleDefinitionByID(this.ModuleDefID)
@@ -256,22 +253,24 @@ namespace DotNetNuke.Entities.Modules
         public int ModuleOrder { get; set; }
 
         /// <summary>
-        /// Get the ModulePermissions for the Module DO NOT USE THE SETTTER
+        /// Gets or sets get the ModulePermissions for the Module DO NOT USE THE SETTTER.
         /// <remarks>
         /// Since 5.0 the setter has been obsolete, directly setting the ModulePermissionCollection is likely an error, change the contenst of the collection instead.
         /// The setter still exists to preserve binary compatibility without the obsolete attribute since c# will not allow only a setter to be obsolete.
         /// </remarks>
         /// </summary>
-        [XmlArray("modulepermissions"), XmlArrayItem("permission")]
+        [XmlArray("modulepermissions")]
+        [XmlArrayItem("permission")]
         public ModulePermissionCollection ModulePermissions
         {
             get
             {
-                return this._modulePermissions ?? 
+                return this._modulePermissions ??
                     (this._modulePermissions = this.ModuleID > 0
                             ? new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabID))
                             : new ModulePermissionCollection());
             }
+
             set
             {
                 this._modulePermissions = value;
@@ -294,6 +293,7 @@ namespace DotNetNuke.Entities.Modules
                         this._moduleSettings = new ModuleController().GetModuleSettings(this.ModuleID, this.TabID);
                     }
                 }
+
                 return this._moduleSettings;
             }
         }
@@ -364,8 +364,6 @@ namespace DotNetNuke.Entities.Modules
         [XmlElement("webslicettl")]
         public int WebSliceTTL { get; set; }
 
-        #region Localization Properties
-
         [XmlElement("cultureCode")]
         public string CultureCode
         {
@@ -373,6 +371,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._cultureCode;
             }
+
             set
             {
                 this._cultureCode = value;
@@ -386,6 +385,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._defaultLanguageGuid;
             }
+
             set
             {
                 this._defaultLanguageGuid = value;
@@ -402,6 +402,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     this._defaultLanguageModule = (from kvp in this.ParentTab.DefaultLanguageTab.ChildModules where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
+
                 return this._defaultLanguageModule;
             }
         }
@@ -410,7 +411,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return (this.DefaultLanguageGuid == Null.NullGuid);
+                return this.DefaultLanguageGuid == Null.NullGuid;
             }
         }
 
@@ -421,9 +422,10 @@ namespace DotNetNuke.Entities.Modules
                 bool isLocalized = true;
                 if (this.DefaultLanguageModule != null)
                 {
-                    //Child language
+                    // Child language
                     isLocalized = this.ModuleID != this.DefaultLanguageModule.ModuleID;
                 }
+
                 return isLocalized;
             }
         }
@@ -444,9 +446,10 @@ namespace DotNetNuke.Entities.Modules
                 bool isTranslated = true;
                 if (this.DefaultLanguageModule != null)
                 {
-                    //Child language
-                    isTranslated = (this.LocalizedVersionGuid == this.DefaultLanguageModule.LocalizedVersionGuid);
+                    // Child language
+                    isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageModule.LocalizedVersionGuid;
                 }
+
                 return isTranslated;
             }
         }
@@ -456,9 +459,9 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._localizedModules == null && (this.DefaultLanguageGuid.Equals(Null.NullGuid)) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
+                if (this._localizedModules == null && this.DefaultLanguageGuid.Equals(Null.NullGuid) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
                 {
-                    //Cycle through all localized tabs looking for this module
+                    // Cycle through all localized tabs looking for this module
                     this._localizedModules = new Dictionary<string, ModuleInfo>();
                     foreach (TabInfo t in this.ParentTab.LocalizedTabs.Values)
                     {
@@ -472,6 +475,7 @@ namespace DotNetNuke.Entities.Modules
                         }
                     }
                 }
+
                 return this._localizedModules;
             }
         }
@@ -483,15 +487,12 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._localizedVersionGuid;
             }
+
             set
             {
                 this._localizedVersionGuid = value;
             }
         }
-
-        #endregion
-
-        #region Tab Properties
 
         public TabInfo ParentTab
         {
@@ -509,24 +510,21 @@ namespace DotNetNuke.Entities.Modules
                         this._parentTab = TabController.Instance.GetTabByCulture(this.TabID, this.PortalID, locale);
                     }
                 }
+
                 return this._parentTab;
             }
         }
 
-        #endregion
-
-        #region IHydratable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModuleInfo from a Data Reader
+        /// Fills a ModuleInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class properties
-            base.FillInternal(dr);
+            // Call the base classes fill method to populate base class properties
+            this.FillInternal(dr);
 
             this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
             this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);
@@ -535,28 +533,28 @@ namespace DotNetNuke.Entities.Modules
             this.CultureCode = Null.SetNullString(dr["CultureCode"]);
 
             this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-			if (dr.GetSchemaTable().Select("ColumnName = 'OwnerPortalID'").Length > 0)
-			{
-				this.OwnerPortalID = Null.SetNullInteger(dr["OwnerPortalID"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'OwnerPortalID'").Length > 0)
+            {
+                this.OwnerPortalID = Null.SetNullInteger(dr["OwnerPortalID"]);
+            }
 
-	        this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
+            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
             this.ModuleTitle = Null.SetNullString(dr["ModuleTitle"]);
             this.AllTabs = Null.SetNullBoolean(dr["AllTabs"]);
             this.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
             this.InheritViewPermissions = Null.SetNullBoolean(dr["InheritViewPermissions"]);
 
-			if (dr.GetSchemaTable().Select("ColumnName = 'IsShareable'").Length > 0)
-			{
-				this.IsShareable = Null.SetNullBoolean(dr["IsShareable"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'IsShareable'").Length > 0)
+            {
+                this.IsShareable = Null.SetNullBoolean(dr["IsShareable"]);
+            }
 
-			if (dr.GetSchemaTable().Select("ColumnName = 'IsShareableViewOnly'").Length > 0)
-			{
-				this.IsShareableViewOnly = Null.SetNullBoolean(dr["IsShareableViewOnly"]);
-			}
+            if (dr.GetSchemaTable().Select("ColumnName = 'IsShareableViewOnly'").Length > 0)
+            {
+                this.IsShareableViewOnly = Null.SetNullBoolean(dr["IsShareableViewOnly"]);
+            }
 
-	        this.Header = Null.SetNullString(dr["Header"]);
+            this.Header = Null.SetNullString(dr["Header"]);
             this.Footer = Null.SetNullString(dr["Footer"]);
             this.StartDate = Null.SetNullDateTime(dr["StartDate"]);
             this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
@@ -592,6 +590,7 @@ namespace DotNetNuke.Entities.Modules
                             break;
                     }
                 }
+
                 this.ContainerSrc = Null.SetNullString(dr["ContainerSrc"]);
                 this.DisplayTitle = Null.SetNullBoolean(dr["DisplayTitle"]);
                 this.DisplayPrint = Null.SetNullBoolean(dr["DisplayPrint"]);
@@ -603,6 +602,7 @@ namespace DotNetNuke.Entities.Modules
                     this.WebSliceExpiryDate = Null.SetNullDateTime(dr["WebSliceExpiryDate"]);
                     this.WebSliceTTL = Null.SetNullInteger(dr["WebSliceTTL"]);
                 }
+
                 this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
                 this.ModuleControlId = Null.SetNullInteger(dr["ModuleControlID"]);
             }
@@ -612,12 +612,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public override int KeyID
@@ -626,15 +625,12 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleID;
             }
+
             set
             {
                 this.ModuleID = value;
             }
         }
-
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -643,11 +639,13 @@ namespace DotNetNuke.Entities.Modules
             {
                 outputFormat = "g";
             }
+
             if (currentScope == Scope.NoSettings)
             {
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
             string result = string.Empty;
             bool isPublic = true;
@@ -655,33 +653,33 @@ namespace DotNetNuke.Entities.Modules
             {
                 case "portalid":
                     propertyNotFound = false;
-                    result = (this.PortalID.ToString(outputFormat, formatProvider));
+                    result = this.PortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "displayportalid":
                     propertyNotFound = false;
-                    result = (this.OwnerPortalID.ToString(outputFormat, formatProvider));
+                    result = this.OwnerPortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabid":
                     propertyNotFound = false;
-                    result = (this.TabID.ToString(outputFormat, formatProvider));
+                    result = this.TabID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabmoduleid":
                     propertyNotFound = false;
-                    result = (this.TabModuleID.ToString(outputFormat, formatProvider));
+                    result = this.TabModuleID.ToString(outputFormat, formatProvider);
                     break;
                 case "moduleid":
                     propertyNotFound = false;
-                    result = (this.ModuleID.ToString(outputFormat, formatProvider));
+                    result = this.ModuleID.ToString(outputFormat, formatProvider);
                     break;
                 case "moduledefid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleDefID.ToString(outputFormat, formatProvider));
+                    result = this.ModuleDefID.ToString(outputFormat, formatProvider);
                     break;
                 case "moduleorder":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleOrder.ToString(outputFormat, formatProvider));
+                    result = this.ModuleOrder.ToString(outputFormat, formatProvider);
                     break;
                 case "panename":
                     propertyNotFound = false;
@@ -694,7 +692,7 @@ namespace DotNetNuke.Entities.Modules
                 case "cachetime":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.CacheTime.ToString(outputFormat, formatProvider));
+                    result = this.CacheTime.ToString(outputFormat, formatProvider);
                     break;
                 case "cachemethod":
                     isPublic = false;
@@ -720,12 +718,12 @@ namespace DotNetNuke.Entities.Modules
                 case "alltabs":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.AllTabs, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.AllTabs, formatProvider);
                     break;
                 case "isdeleted":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider);
                     break;
                 case "header":
                     propertyNotFound = false;
@@ -738,12 +736,12 @@ namespace DotNetNuke.Entities.Modules
                 case "startdate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.StartDate.ToString(outputFormat, formatProvider));
+                    result = this.StartDate.ToString(outputFormat, formatProvider);
                     break;
                 case "enddate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.EndDate.ToString(outputFormat, formatProvider));
+                    result = this.EndDate.ToString(outputFormat, formatProvider);
                     break;
                 case "containersrc":
                     isPublic = false;
@@ -753,22 +751,22 @@ namespace DotNetNuke.Entities.Modules
                 case "displaytitle":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisplayTitle, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplayTitle, formatProvider);
                     break;
                 case "displayprint":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisplayPrint, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplayPrint, formatProvider);
                     break;
                 case "displaysyndicate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisplaySyndicate, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplaySyndicate, formatProvider);
                     break;
                 case "iswebslice":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsWebSlice, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsWebSlice, formatProvider);
                     break;
                 case "webslicetitle":
                     isPublic = false;
@@ -778,32 +776,32 @@ namespace DotNetNuke.Entities.Modules
                 case "websliceexpirydate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.WebSliceExpiryDate.ToString(outputFormat, formatProvider));
+                    result = this.WebSliceExpiryDate.ToString(outputFormat, formatProvider);
                     break;
                 case "webslicettl":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.WebSliceTTL.ToString(outputFormat, formatProvider));
+                    result = this.WebSliceTTL.ToString(outputFormat, formatProvider);
                     break;
                 case "inheritviewpermissions":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.InheritViewPermissions, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.InheritViewPermissions, formatProvider);
                     break;
                 case "isshareable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsShareable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsShareable, formatProvider);
                     break;
                 case "isshareableviewonly":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsShareableViewOnly, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsShareableViewOnly, formatProvider);
                     break;
                 case "desktopmoduleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.DesktopModuleID.ToString(outputFormat, formatProvider));
+                    result = this.DesktopModuleID.ToString(outputFormat, formatProvider);
                     break;
                 case "friendlyname":
                     propertyNotFound = false;
@@ -824,12 +822,12 @@ namespace DotNetNuke.Entities.Modules
                 case "ispremium":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPremium, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPremium, formatProvider);
                     break;
                 case "isadmin":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsAdmin, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsAdmin, formatProvider);
                     break;
                 case "businesscontrollerclass":
                     propertyNotFound = false;
@@ -842,7 +840,7 @@ namespace DotNetNuke.Entities.Modules
                 case "supportedfeatures":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.DesktopModule.SupportedFeatures.ToString(outputFormat, formatProvider));
+                    result = this.DesktopModule.SupportedFeatures.ToString(outputFormat, formatProvider);
                     break;
                 case "compatibleversions":
                     isPublic = false;
@@ -862,12 +860,12 @@ namespace DotNetNuke.Entities.Modules
                 case "defaultcachetime":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleDefinition.DefaultCacheTime.ToString(outputFormat, formatProvider));
+                    result = this.ModuleDefinition.DefaultCacheTime.ToString(outputFormat, formatProvider);
                     break;
                 case "modulecontrolid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleControlId.ToString(outputFormat, formatProvider));
+                    result = this.ModuleControlId.ToString(outputFormat, formatProvider);
                     break;
                 case "controlsrc":
                     isPublic = false;
@@ -884,7 +882,7 @@ namespace DotNetNuke.Entities.Modules
                     break;
                 case "supportspartialrendering":
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.ModuleControl.SupportsPartialRendering, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.ModuleControl.SupportsPartialRendering, formatProvider);
                     break;
                 case "containerpath":
                     isPublic = false;
@@ -894,37 +892,37 @@ namespace DotNetNuke.Entities.Modules
                 case "panemoduleindex":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.PaneModuleIndex.ToString(outputFormat, formatProvider));
+                    result = this.PaneModuleIndex.ToString(outputFormat, formatProvider);
                     break;
                 case "panemodulecount":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.PaneModuleCount.ToString(outputFormat, formatProvider));
+                    result = this.PaneModuleCount.ToString(outputFormat, formatProvider);
                     break;
                 case "isdefaultmodule":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsDefaultModule, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDefaultModule, formatProvider);
                     break;
                 case "allmodules":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.AllModules, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.AllModules, formatProvider);
                     break;
                 case "isportable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPortable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPortable, formatProvider);
                     break;
                 case "issearchable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsSearchable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsSearchable, formatProvider);
                     break;
                 case "isupgradeable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsUpgradeable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsUpgradeable, formatProvider);
                     break;
                 case "adminpage":
                     isPublic = false;
@@ -937,11 +935,13 @@ namespace DotNetNuke.Entities.Modules
                     result = PropertyAccess.FormatString(this.DesktopModule.HostPage, format);
                     break;
             }
+
             if (!isPublic && currentScope != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
 
@@ -952,8 +952,6 @@ namespace DotNetNuke.Entities.Modules
                 return CacheLevel.fullyCacheable;
             }
         }
-
-        #endregion
 
         public ModuleInfo Clone()
         {
@@ -1003,11 +1001,11 @@ namespace DotNetNuke.Entities.Modules
                                         VersionGuid = Guid.NewGuid(),
                                         DefaultLanguageGuid = this.DefaultLanguageGuid,
                                         LocalizedVersionGuid = this.LocalizedVersionGuid,
-                                        CultureCode = this.CultureCode
+                                        CultureCode = this.CultureCode,
                                     };
 
-            //localized properties
-	        this.Clone(objModuleInfo, this);
+            // localized properties
+            this.Clone(objModuleInfo, this);
             return objModuleInfo;
         }
 
@@ -1027,10 +1025,12 @@ namespace DotNetNuke.Entities.Modules
                 var defaultModuleCache = ComponentFactory.GetComponent<ModuleCachingProvider>();
                 effectiveCacheMethod = (from provider in ModuleCachingProvider.GetProviderList() where provider.Value.Equals(defaultModuleCache) select provider.Key).SingleOrDefault();
             }
+
             if (string.IsNullOrEmpty(effectiveCacheMethod))
             {
                 throw new InvalidOperationException(Localization.GetString("EXCEPTION_ModuleCacheMissing"));
             }
+
             return effectiveCacheMethod;
         }
 
@@ -1059,7 +1059,7 @@ namespace DotNetNuke.Entities.Modules
             this.DisplayPrint = false;
             this.DisplaySyndicate = Null.NullBoolean;
             this.IsWebSlice = Null.NullBoolean;
-            this.WebSliceTitle = "";
+            this.WebSliceTitle = string.Empty;
             this.WebSliceExpiryDate = Null.NullDate;
             this.WebSliceTTL = 0;
             this.InheritViewPermissions = Null.NullBoolean;

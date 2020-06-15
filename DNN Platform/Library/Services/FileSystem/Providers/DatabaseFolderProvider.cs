@@ -2,25 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+
     public class DatabaseFolderProvider : SecureFolderProvider
     {
-        #region Private Methods
-
         private Stream GetFileStreamInternal(IDataReader dr)
         {
             byte[] bytes = null;
@@ -77,10 +76,6 @@ namespace DotNetNuke.Services.FileSystem
             UpdateFileContent(fileId, fileContent);
         }
 
-        #endregion
-
-        #region Abstract Methods
-
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -88,7 +83,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
             var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
@@ -132,7 +130,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.PropertyNotNull("fileName", fileName);
 
-            return (FileManager.Instance.GetFile(folder, fileName, true) != null);
+            return FileManager.Instance.GetFile(folder, fileName, true) != null;
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
@@ -140,7 +138,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            return (FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath) != null);
+            return FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath) != null;
         }
 
         public override FileAttributes? GetFileAttributes(IFileInfo file)
@@ -248,14 +246,13 @@ namespace DotNetNuke.Services.FileSystem
 
             var file = FileManager.Instance.GetFile(folder, fileName, true);
 
-            if (file == null) return;
+            if (file == null)
+            {
+                return;
+            }
 
             this.UpdateFileInternal(file.FileId, content);
         }
-
-        #endregion
-
-        #region Static Methods
 
         /// <summary>
         /// Clears the content of the file in the database.
@@ -285,6 +282,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         ms.Write(buffer, 0, read);
                     }
+
                     fileContent = ms.ToArray();
                 }
 
@@ -305,7 +303,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="content">The new content.</param>
         public static void UpdateFileContent(int fileId, byte[] content)
         {
-            if(content != null)
+            if (content != null)
             {
                 DataProvider.Instance().UpdateFileContent(fileId, content);
                 DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
@@ -315,7 +313,5 @@ namespace DotNetNuke.Services.FileSystem
                 ClearFileContent(fileId);
             }
         }
-
-        #endregion
     }
 }

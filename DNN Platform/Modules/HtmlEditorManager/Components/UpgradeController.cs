@@ -2,37 +2,36 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.IO;
-using System.Text;
-using System.Xml;
-using DotNetNuke.Common;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Installer.Packages;
-
 namespace DotNetNuke.Modules.HtmlEditorManager.Components
 {
     using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade;
 
     /// <summary>
-    /// Class that contains upgrade procedures
+    /// Class that contains upgrade procedures.
     /// </summary>
     public class UpgradeController : IUpgradeable
     {
-        /// <summary>The module folder location</summary>
+        /// <summary>The module folder location.</summary>
         private const string ModuleFolder = "~/DesktopModules/Admin/HtmlEditorManager";
 
         /// <summary>Called when a module is upgraded.</summary>
         /// <param name="version">The version.</param>
-        /// <returns>Success if all goes well, otherwise, Failed</returns>
+        /// <returns>Success if all goes well, otherwise, Failed.</returns>
         public string UpgradeModule(string version)
         {
             try
@@ -71,22 +70,26 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                         {
                             UpdateRadCfgFiles();
                         }
+
                         if (this.TelerikAssemblyExists())
                         {
                             UpdateWebConfigFile();
                         }
+
                         break;
                     case "09.02.00":
                         if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                         }
+
                         break;
                     case "09.02.01":
                         if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
                         }
+
                         break;
                 }
             }
@@ -104,7 +107,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         /// <summary>Gets the module definition identifier.</summary>
         /// <param name="moduleName">Name of the module.</param>
         /// <param name="moduleDefinitionName">Name of the module definition.</param>
-        /// <returns>The Module Id for the HTML Editor Management module</returns>
+        /// <returns>The Module Id for the HTML Editor Management module.</returns>
         private int GetModuleDefinitionID(string moduleName, string moduleDefinitionName)
         {
             // get desktop module
@@ -149,7 +152,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             var files = Directory.GetFiles(folder, mask);
             foreach (var fname in files)
             {
-                if (fname.Contains(".Original.xml")) continue;
+                if (fname.Contains(".Original.xml"))
+                {
+                    continue;
+                }
 
                 try
                 {
@@ -165,7 +171,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                             if (filter.InnerText == "*.*")
                             {
                                 changed = true;
-                                filter.InnerXml = "";
+                                filter.InnerXml = string.Empty;
                                 foreach (var extension in allowedDocExtensions)
                                 {
                                     var node = doc.CreateElement("item");
@@ -199,28 +205,28 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         {
             const string defaultValue = "MDEyMzQ1Njc4OUFCQ0RFRjAxMjM0NTY3ODlBQkNERUYwMTIzNDU2Nzg5QUJDREVG";
 
-            var strError = "";
+            var strError = string.Empty;
             var currentKey = Config.GetSetting(keyName);
             if (string.IsNullOrEmpty(currentKey) || defaultValue.Equals(currentKey) || currentKey.Length < 40)
             {
                 try
                 {
-                    //open the web.config
+                    // open the web.config
                     var xmlConfig = Config.Load();
 
-                    //save the current config file
+                    // save the current config file
                     Config.BackupConfig();
 
-                    //create a random Telerik encryption key and add it under <appSettings>
+                    // create a random Telerik encryption key and add it under <appSettings>
                     var newKey = PortalSecurity.Instance.CreateKey(32);
                     newKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(newKey));
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 
-                    //save a copy of the exitsing web.config
+                    // save a copy of the exitsing web.config
                     var backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                     strError += Config.Save(xmlConfig, backupFolder + "web_.config") + Environment.NewLine;
 
-                    //save the web.config
+                    // save the web.config
                     strError += Config.Save(xmlConfig) + Environment.NewLine;
                 }
                 catch (Exception ex)
@@ -228,7 +234,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                     strError += ex.Message;
                 }
             }
+
             return strError;
         }
-    } 
+    }
 }

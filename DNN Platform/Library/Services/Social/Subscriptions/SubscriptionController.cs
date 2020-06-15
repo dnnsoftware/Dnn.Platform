@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Social.Subscriptions.Data;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Social.Subscriptions.Data;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
     /// <summary>
     /// This controller is responsible to manage the user subscriptions.
     /// </summary>
@@ -33,7 +34,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return () => new SubscriptionController();
         }
 
-        #region Implemented Methods
         public IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1)
         {
             var subscriptions = CBO.FillCollection<Subscription>(this.dataService.GetSubscriptionsByUser(
@@ -74,14 +74,15 @@ namespace DotNetNuke.Services.Social.Subscriptions
             Requires.NotNegative("subscription.SubscriptionTypeId", subscription.SubscriptionTypeId);
             Requires.PropertyNotNull("subscription.ObjectKey", subscription.ObjectKey);
 
-            subscription.SubscriptionId = this.dataService.AddSubscription(subscription.UserId,
-                                               subscription.PortalId,
-                                               subscription.SubscriptionTypeId,
-                                               subscription.ObjectKey,
-                                               subscription.Description,
-                                               subscription.ModuleId,
-                                               subscription.TabId,
-                                               subscription.ObjectData);
+            subscription.SubscriptionId = this.dataService.AddSubscription(
+                subscription.UserId,
+                subscription.PortalId,
+                subscription.SubscriptionTypeId,
+                subscription.ObjectKey,
+                subscription.Description,
+                subscription.ModuleId,
+                subscription.TabId,
+                subscription.ObjectData);
         }
 
         public void DeleteSubscription(Subscription subscription)
@@ -96,7 +97,10 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 subscription.ModuleId,
                 subscription.TabId));
 
-            if (subscriptionToDelete == null) return;
+            if (subscriptionToDelete == null)
+            {
+                return;
+            }
 
             this.dataService.DeleteSubscription(subscriptionToDelete.SubscriptionId);
         }
@@ -113,7 +117,5 @@ namespace DotNetNuke.Services.Social.Subscriptions
         {
             this.dataService.DeleteSubscriptionsByObjectKey(portalId, objectKey);
         }
-
-        #endregion
     }
 }

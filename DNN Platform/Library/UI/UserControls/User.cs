@@ -1,41 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The User UserControl is used to manage User Details
+    /// The User UserControl is used to manage User Details.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public abstract class User : UserControlBase
     {
-		#region "Private Members"
-
         protected HtmlTableRow ConfirmPasswordRow;
         private string MyFileName = "User.ascx";
         protected HtmlTableRow PasswordRow;
         private string _Confirm;
-        private string _ControlColumnWidth = "";
+        private string _ControlColumnWidth = string.Empty;
         private string _Email;
         private string _FirstName;
         private string _IM;
-        private string _LabelColumnWidth = "";
+        private string _LabelColumnWidth = string.Empty;
         private string _LastName;
         private int _ModuleId;
         private string _Password;
@@ -44,12 +37,7 @@ namespace DotNetNuke.UI.UserControls
         private string _UserName;
         private string _Website;
         protected Label lblUsername;
-
-		#endregion
-
-		#region "Protected Members"
-
-		protected Label lblUsernameAsterisk;
+        protected Label lblUsernameAsterisk;
         protected LabelControl plConfirm;
         protected LabelControl plEmail;
         protected LabelControl plFirstName;
@@ -75,16 +63,13 @@ namespace DotNetNuke.UI.UserControls
         protected RequiredFieldValidator valPassword;
         protected RequiredFieldValidator valUsername;
 
-		#endregion
-
-		#region "Public Properties"
-
-		public int ModuleId
+        public int ModuleId
         {
             get
             {
                 return Convert.ToInt32(this.ViewState["ModuleId"]);
             }
+
             set
             {
                 this._ModuleId = value;
@@ -97,6 +82,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["LabelColumnWidth"]);
             }
+
             set
             {
                 this._LabelColumnWidth = value;
@@ -109,6 +95,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["ControlColumnWidth"]);
             }
+
             set
             {
                 this._ControlColumnWidth = value;
@@ -121,6 +108,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtFirstName.Text;
             }
+
             set
             {
                 this._FirstName = value;
@@ -133,6 +121,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtLastName.Text;
             }
+
             set
             {
                 this._LastName = value;
@@ -145,6 +134,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtUsername.Text;
             }
+
             set
             {
                 this._UserName = value;
@@ -157,6 +147,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtPassword.Text;
             }
+
             set
             {
                 this._Password = value;
@@ -169,6 +160,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtConfirm.Text;
             }
+
             set
             {
                 this._Confirm = value;
@@ -181,6 +173,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtEmail.Text;
             }
+
             set
             {
                 this._Email = value;
@@ -193,6 +186,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtWebsite.Text;
             }
+
             set
             {
                 this._Website = value;
@@ -205,6 +199,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtIM.Text;
             }
+
             set
             {
                 this._IM = value;
@@ -235,13 +230,9 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-		#endregion
-
-		#region "Event Handlers"
-
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -263,24 +254,25 @@ namespace DotNetNuke.UI.UserControls
                     this.txtIM.TabIndex = Convert.ToInt16(this._StartTabIndex + 7);
                     this.txtFirstName.Text = this._FirstName;
                     this.txtLastName.Text = this._LastName;
-                    this.txtEmail.Text = this._Email;		    
+                    this.txtEmail.Text = this._Email;
                     this.txtUsername.Text = this._UserName;
                     this.lblUsername.Text = this._UserName;
                     this.txtPassword.Text = this._Password;
                     this.txtConfirm.Text = this._Confirm;
                     this.txtWebsite.Text = this._Website;
                     this.txtIM.Text = this._IM;
-                    if (!String.IsNullOrEmpty(this._ControlColumnWidth))
+                    if (!string.IsNullOrEmpty(this._ControlColumnWidth))
                     {
                         this.txtFirstName.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtLastName.Width = Unit.Parse(this._ControlColumnWidth);
-                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);			
+                        this.txtEmail.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtUsername.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtPassword.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtConfirm.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtWebsite.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtIM.Width = Unit.Parse(this._ControlColumnWidth);
                     }
+
                     if (!this._ShowPassword)
                     {
                         this.valPassword.Enabled = false;
@@ -305,10 +297,12 @@ namespace DotNetNuke.UI.UserControls
                         this.PasswordRow.Visible = true;
                         this.ConfirmPasswordRow.Visible = true;
                     }
+
                     this.ViewState["ModuleId"] = Convert.ToString(this._ModuleId);
                     this.ViewState["LabelColumnWidth"] = this._LabelColumnWidth;
                     this.ViewState["ControlColumnWidth"] = this._ControlColumnWidth;
                 }
+
                 this.txtPassword.Attributes.Add("value", this.txtPassword.Text);
                 this.txtConfirm.Attributes.Add("value", this.txtConfirm.Text);
             }
@@ -316,8 +310,6 @@ namespace DotNetNuke.UI.UserControls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-		}
-
-		#endregion
-	}
+        }
+    }
 }

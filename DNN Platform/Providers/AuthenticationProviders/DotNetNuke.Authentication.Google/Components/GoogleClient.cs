@@ -1,26 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Script.Serialization;
-
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
 namespace DotNetNuke.Authentication.Google.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Script.Serialization;
+
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+
     public class GoogleClient : OAuthClientBase
     {
-        #region Constructors
-
-        public GoogleClient(int portalId, AuthMode mode) 
+        public GoogleClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Google")
         {
             this.TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
@@ -34,10 +27,8 @@ namespace DotNetNuke.Authentication.Google.Components
 
             this.OAuthVersion = "2.0";
 
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
-
-        #endregion
 
         protected override TimeSpan GetExpiry(string responseText)
         {

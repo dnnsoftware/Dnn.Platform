@@ -1,29 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class UrlController
     {
         public ArrayList GetUrls(int PortalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof (UrlInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof(UrlInfo));
         }
 
         public UrlInfo GetUrl(int PortalID, string Url)
@@ -43,7 +38,7 @@ namespace DotNetNuke.Common.Utilities
 
         public void UpdateUrl(int PortalID, string Url, string UrlType, int Clicks, DateTime LastClick, DateTime CreatedDate, bool LogActivity, bool TrackClicks, int ModuleID, bool NewWindow)
         {
-            if (!String.IsNullOrEmpty(Url))
+            if (!string.IsNullOrEmpty(Url))
             {
                 if (UrlType == "U")
                 {
@@ -52,6 +47,7 @@ namespace DotNetNuke.Common.Utilities
                         DataProvider.Instance().AddUrl(PortalID, Url.Replace(@"\", @"/"));
                     }
                 }
+
                 UrlTrackingInfo objURLTracking = this.GetUrlTracking(PortalID, Url, ModuleID);
                 if (objURLTracking == null)
                 {
@@ -74,7 +70,7 @@ namespace DotNetNuke.Common.Utilities
             TabType UrlType = Globals.GetURLType(Url);
             if (UrlType == TabType.File && Url.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
             {
-				//to handle legacy scenarios before the introduction of the FileServerHandler
+                // to handle legacy scenarios before the introduction of the FileServerHandler
                 var fileName = Path.GetFileName(Url);
 
                 var folderPath = Url.Substring(0, Url.LastIndexOf(fileName));
@@ -84,6 +80,7 @@ namespace DotNetNuke.Common.Utilities
 
                 Url = "FileID=" + file.FileId;
             }
+
             UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
@@ -96,6 +93,7 @@ namespace DotNetNuke.Common.Utilities
                         {
                             UserID = UserController.Instance.GetCurrentUserInfo().UserID;
                         }
+
                         DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, UserID);
                     }
                 }
@@ -108,8 +106,9 @@ namespace DotNetNuke.Common.Utilities
             UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
-                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof (UrlLogInfo));
+                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof(UrlLogInfo));
             }
+
             return arrUrlLog;
         }
     }

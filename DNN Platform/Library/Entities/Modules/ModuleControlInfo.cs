@@ -1,31 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
-	/// -----------------------------------------------------------------------------
-	/// Project	 : DotNetNuke
-	/// Namespace: DotNetNuke.Entities.Modules
-	/// Class	 : ModuleControlInfo
-	/// -----------------------------------------------------------------------------
-	/// <summary>
-	/// ModuleControlInfo provides the Entity Layer for Module Controls
-	/// </summary>
-	/// -----------------------------------------------------------------------------
+    using System;
+    using System.Data;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security;
+
+    /// -----------------------------------------------------------------------------
+    /// Project  : DotNetNuke
+    /// Namespace: DotNetNuke.Entities.Modules
+    /// Class    : ModuleControlInfo
+    /// -----------------------------------------------------------------------------
+    /// <summary>
+    /// ModuleControlInfo provides the Entity Layer for Module Controls.
+    /// </summary>
+    /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModuleControlInfo : ControlInfo, IXmlSerializable, IHydratable
     {
@@ -39,75 +34,73 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Control Title
+        /// Gets or sets and sets the Control Title.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ControlTitle { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Control Type
+        /// Gets or sets and sets the Control Type.
         /// </summary>
-        /// <returns>A SecurityAccessLevel</returns>
+        /// <returns>A SecurityAccessLevel.</returns>
         /// -----------------------------------------------------------------------------
         public SecurityAccessLevel ControlType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Help URL
+        /// Gets or sets and sets the Help URL.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Icon  Source
+        /// Gets or sets and sets the Icon  Source.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
-		
-		/// -----------------------------------------------------------------------------
+
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Control ID
+        /// Gets or sets and sets the Module Control ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleControlID { get; set; }
-		
-		/// -----------------------------------------------------------------------------
+
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Definition ID
+        /// Gets or sets and sets the Module Definition ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether to support popup.
+        /// Gets or sets a value indicating whether gets and sets whether to support popup.
         /// </summary>
-        /// <returns>A Boolean value</returns>
+        /// <returns>A Boolean value.</returns>
         /// -----------------------------------------------------------------------------
         public bool SupportsPopUps { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the View Order
+        /// Gets or sets and sets the View Order.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ViewOrder { get; set; }
 
-        #region IHydratable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModuleControlInfo from a Data Reader
+        /// Fills a ModuleControlInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -117,18 +110,19 @@ namespace DotNetNuke.Entities.Modules
             this.ControlTitle = Null.SetNullString(dr["ControlTitle"]);
             this.IconFile = Null.SetNullString(dr["IconFile"]);
             this.HelpURL = Null.SetNullString(dr["HelpUrl"]);
-            this.ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
+            this.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
             this.ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
             this.SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
-			//Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -136,20 +130,18 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleControlID;
             }
+
             set
             {
                 this.ModuleControlID = value;
             }
         }
 
-        #endregion
-
-        #region IXmlSerializable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the ModuleControlInfo
+        /// Gets an XmlSchema for the ModuleControlInfo.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -158,9 +150,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a ModuleControlInfo from an XmlReader
+        /// Reads a ModuleControlInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -170,10 +162,12 @@ namespace DotNetNuke.Entities.Modules
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 this.ReadXmlInternal(reader);
                 switch (reader.Name)
                 {
@@ -181,7 +175,7 @@ namespace DotNetNuke.Entities.Modules
                         this.ControlTitle = reader.ReadElementContentAsString();
                         break;
                     case "controlType":
-                        this.ControlType = (SecurityAccessLevel) Enum.Parse(typeof (SecurityAccessLevel), reader.ReadElementContentAsString());
+                        this.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), reader.ReadElementContentAsString());
                         break;
                     case "iconFile":
                         this.IconFile = reader.ReadElementContentAsString();
@@ -190,7 +184,7 @@ namespace DotNetNuke.Entities.Modules
                         this.HelpURL = reader.ReadElementContentAsString();
                         break;
                     case "supportsPopUps":
-                        this.SupportsPopUps = Boolean.Parse(reader.ReadElementContentAsString());
+                        this.SupportsPopUps = bool.Parse(reader.ReadElementContentAsString());
                         break;
                     case "viewOrder":
                         string elementvalue = reader.ReadElementContentAsString();
@@ -198,12 +192,14 @@ namespace DotNetNuke.Entities.Modules
                         {
                             this.ViewOrder = int.Parse(elementvalue);
                         }
+
                         break;
                     default:
-                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }
+
                         break;
                 }
             }
@@ -211,16 +207,16 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a ModuleControlInfo to an XmlWriter
+        /// Writes a ModuleControlInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("moduleControl");
 
-            //write out properties
+            // write out properties
             this.WriteXmlInternal(writer);
             writer.WriteElementString("controlTitle", this.ControlTitle);
             writer.WriteElementString("controlType", this.ControlType.ToString());
@@ -231,10 +227,9 @@ namespace DotNetNuke.Entities.Modules
             {
                 writer.WriteElementString("viewOrder", this.ViewOrder.ToString());
             }
-            //Write end of main element
+
+            // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
     }
 }

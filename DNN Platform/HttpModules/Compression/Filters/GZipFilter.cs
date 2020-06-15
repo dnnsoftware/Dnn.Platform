@@ -1,24 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.IO;
-using System.IO.Compression;
-
-#endregion
-
 namespace DotNetNuke.HttpModules.Compression
 {
+    using System.IO;
+    using System.IO.Compression;
+
     /// <summary>
-    /// This is a little filter to support HTTP compression using GZip
+    /// This is a little filter to support HTTP compression using GZip.
     /// </summary>
     public class GZipFilter : CompressingFilter
     {
         private readonly GZipStream m_stream;
 
-        public GZipFilter(Stream baseStream) : base(baseStream)
+        public GZipFilter(Stream baseStream)
+            : base(baseStream)
         {
             this.m_stream = new GZipStream(baseStream, CompressionMode.Compress);
         }
@@ -37,6 +33,7 @@ namespace DotNetNuke.HttpModules.Compression
             {
                 this.WriteHeaders();
             }
+
             this.m_stream.Write(buffer, offset, count);
         }
 

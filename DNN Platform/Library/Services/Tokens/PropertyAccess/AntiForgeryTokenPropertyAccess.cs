@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+
     public class AntiForgeryTokenPropertyAccess : IPropertyAccess
     {
         public CacheLevel Cacheability
@@ -20,7 +21,7 @@ namespace DotNetNuke.Services.Tokens
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

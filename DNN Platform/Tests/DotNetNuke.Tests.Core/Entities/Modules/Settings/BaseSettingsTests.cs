@@ -2,22 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Web.Caching;
 
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
 
     public abstract class BaseSettingsTests
     {
@@ -42,9 +41,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         [SetUp]
-        public virtual  void SetUp()
+        public virtual void SetUp()
         {
-            //Mock Repository and component factory
+            // Mock Repository and component factory
             this.MockRepository = new MockRepository(MockBehavior.Default);
             ComponentFactory.Container = new SimpleContainer();
 
@@ -77,13 +76,13 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public enum TestingEnum
         {
             Value1,
-            Value2
+            Value2,
         }
 
         public readonly object[] SettingsCases =
         {
-            new object[] { "AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1, new ComplexType(), },
-            new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1,5,6,7), TestingEnum.Value2, new ComplexType(8, -10), },
+            new object[] { "AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1, default(ComplexType), },
+            new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1, 5, 6, 7), TestingEnum.Value2, new ComplexType(8, -10), },
         };
 
         protected static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId, PortalID = PortalId, };

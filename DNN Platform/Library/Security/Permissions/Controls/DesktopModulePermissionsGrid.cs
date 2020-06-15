@@ -1,35 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-
-#endregion
-
 namespace DotNetNuke.Security.Permissions.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+
     public class DesktopModulePermissionsGrid : PermissionsGrid
     {
-        #region "Private Members"
-
         private DesktopModulePermissionCollection _DesktopModulePermissions;
         private List<PermissionInfoBase> _PermissionsList;
         private int _PortalDesktopModuleID = -1;
-
-        #endregion
-
-        #region "Protected Properties"
 
         protected override List<PermissionInfoBase> PermissionsList
         {
@@ -39,34 +28,31 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._PermissionsList = this._DesktopModulePermissions.ToList();
                 }
+
                 return this._PermissionsList;
             }
         }
 
-        #endregion
-
-        #region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Permissions Collection
+        /// Gets the Permissions Collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionCollection Permissions
         {
             get
             {
-                //First Update Permissions in case they have been changed
+                // First Update Permissions in case they have been changed
                 this.UpdatePermissions();
 
-                //Return the DesktopModulePermissions
+                // Return the DesktopModulePermissions
                 return this._DesktopModulePermissions;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Id of the PortalDesktopModule
+        /// Gets or sets and Sets the Id of the PortalDesktopModule.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID
@@ -75,6 +61,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this._PortalDesktopModuleID;
             }
+
             set
             {
                 int oldValue = this._PortalDesktopModuleID;
@@ -86,13 +73,9 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the DesktopModulePermissions from the Data Store
+        /// Gets the DesktopModulePermissions from the Data Store.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void GetDesktopModulePermissions()
@@ -102,17 +85,17 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
         /// </summary>
-        /// <param name="Settings">A string array of settings</param>
+        /// <param name="Settings">A string array of settings.</param>
         /// -----------------------------------------------------------------------------
         private DesktopModulePermissionInfo ParseKeys(string[] Settings)
         {
             var objDesktopModulePermission = new DesktopModulePermissionInfo();
 
-            //Call base class to load base properties
-            base.ParsePermissionKeys(objDesktopModulePermission, Settings);
-            if (String.IsNullOrEmpty(Settings[2]))
+            // Call base class to load base properties
+            this.ParsePermissionKeys(objDesktopModulePermission, Settings);
+            if (string.IsNullOrEmpty(Settings[2]))
             {
                 objDesktopModulePermission.DesktopModulePermissionID = -1;
             }
@@ -120,13 +103,10 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(Settings[2]);
             }
+
             objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;
             return objDesktopModulePermission;
         }
-
-        #endregion
-
-        #region "Protected Methods"
 
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
@@ -139,20 +119,20 @@ namespace DotNetNuke.Security.Permissions.Controls
             objPermission.DisplayName = displayName;
             this._DesktopModulePermissions.Add(objPermission, true);
 
-            //Clear Permission List
+            // Clear Permission List
             this._PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Permission
+        /// Updates a Permission.
         /// </summary>
-        /// <param name="permissions">The permissions collection</param>
-        /// <param name="user">The user to add</param>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="user">The user to add.</param>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
-            //Search DesktopModulePermission Collection for the user 
+            // Search DesktopModulePermission Collection for the user
             bool isMatch = false;
             foreach (DesktopModulePermissionInfo objDesktopModulePermission in this._DesktopModulePermissions)
             {
@@ -163,7 +143,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
             }
 
-            //user not found so add new
+            // user not found so add new
             if (!isMatch)
             {
                 foreach (PermissionInfo objPermission in permissions)
@@ -178,20 +158,20 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Permission
+        /// Updates a Permission.
         /// </summary>
-        /// <param name="permissions">The permissions collection</param>
-        /// <param name="role">The roleto add</param>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="role">The roleto add.</param>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            //Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user
             if (this._DesktopModulePermissions.Cast<DesktopModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;
             }
 
-            //role not found so add new
+            // role not found so add new
             foreach (PermissionInfo objPermission in permissions)
             {
                 if (objPermission.PermissionKey == "DEPLOY")
@@ -203,8 +183,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the permissions from the Database
+        /// Gets the permissions from the Database.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
@@ -213,37 +194,37 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Load the ViewState
+        /// Load the ViewState.
         /// </summary>
-        /// <param name="savedState">The saved state</param>
+        /// <param name="savedState">The saved state.</param>
         /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
             {
-                //Load State from the array of objects that was saved with SaveViewState.
+                // Load State from the array of objects that was saved with SaveViewState.
                 var myState = (object[])savedState;
 
-                //Load Base Controls ViewState
+                // Load Base Controls ViewState
                 if (myState[0] != null)
                 {
                     base.LoadViewState(myState[0]);
                 }
 
-                //Load DesktopModuleId
+                // Load DesktopModuleId
                 if (myState[1] != null)
                 {
                     this.PortalDesktopModuleID = Convert.ToInt32(myState[1]);
                 }
 
-                //Load DesktopModulePermissions
+                // Load DesktopModulePermissions
                 if (myState[2] != null)
                 {
                     this._DesktopModulePermissions = new DesktopModulePermissionCollection();
                     string state = Convert.ToString(myState[2]);
-                    if (!String.IsNullOrEmpty(state))
+                    if (!string.IsNullOrEmpty(state))
                     {
-                        //First Break the String into individual Keys
+                        // First Break the String into individual Keys
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
@@ -258,26 +239,28 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this._DesktopModulePermissions.Remove(permissionID, roleID, userID);
-            //Clear Permission List
+
+            // Clear Permission List
             this._PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Saves the ViewState
+        /// Saves the ViewState.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override object SaveViewState()
         {
             var allStates = new object[3];
 
-            //Save the Base Controls ViewState
+            // Save the Base Controls ViewState
             allStates[0] = base.SaveViewState();
 
-            //Save the DesktopModule Id
+            // Save the DesktopModule Id
             allStates[1] = this.PortalDesktopModuleID;
 
-            //Persist the DesktopModulePermisisons
+            // Persist the DesktopModulePermisisons
             var sb = new StringBuilder();
             if (this._DesktopModulePermissions != null)
             {
@@ -292,32 +275,32 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
-                    sb.Append(this.BuildKey(objDesktopModulePermission.AllowAccess,
-                                       objDesktopModulePermission.PermissionID,
-                                       objDesktopModulePermission.DesktopModulePermissionID,
-                                       objDesktopModulePermission.RoleID,
-                                       objDesktopModulePermission.RoleName,
-                                       objDesktopModulePermission.UserID,
-                                       objDesktopModulePermission.DisplayName));
+
+                    sb.Append(this.BuildKey(
+                        objDesktopModulePermission.AllowAccess,
+                        objDesktopModulePermission.PermissionID,
+                        objDesktopModulePermission.DesktopModulePermissionID,
+                        objDesktopModulePermission.RoleID,
+                        objDesktopModulePermission.RoleName,
+                        objDesktopModulePermission.UserID,
+                        objDesktopModulePermission.DisplayName));
                 }
             }
+
             allStates[2] = sb.ToString();
             return allStates;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// returns whether or not the derived grid supports Deny permissions
+        /// returns whether or not the derived grid supports Deny permissions.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public void ResetPermissions()
         {
@@ -328,7 +311,5 @@ namespace DotNetNuke.Security.Permissions.Controls
         public override void GenerateDataGrid()
         {
         }
-
-        #endregion
     }
 }

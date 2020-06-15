@@ -2,25 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Services.Connections
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+
     public class ConnectionsController : ServiceLocator<IConnectionsController, ConnectionsController>, IConnectionsController
     {
-        #region Overrides of ServiceLocator
-
         protected override Func<IConnectionsController> GetFactory()
         {
             return () => new ConnectionsController();
         }
-
-        #endregion
 
         public IList<IConnector> GetConnections(int portalId)
         {
@@ -30,6 +27,7 @@ namespace DotNetNuke.Services.Connections
             {
                 allConnectors.AddRange(con.GetConnectors(portalId));
             }
+
             return allConnectors;
         }
 
@@ -44,6 +42,5 @@ namespace DotNetNuke.Services.Connections
 
             return null;
         }
-
     }
 }

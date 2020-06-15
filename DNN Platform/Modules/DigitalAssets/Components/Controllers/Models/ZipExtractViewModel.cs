@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
 {
+    using System;
+    using System.Collections.Generic;
+
     public class ZipExtractViewModel
     {
         public bool Ok { get; internal set; }
@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models
 
         public ICollection<ExtractedItemViewModel> Items { get; internal set; }
 
-        public IList<string> InvalidFiles { get; set; } 
+        public IList<string> InvalidFiles { get; set; }
 
         public int TotalCount { get; set; }
     }

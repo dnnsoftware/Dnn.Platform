@@ -10,6 +10,6 @@ namespace DotNetNuke.Services.Installer
         UTF8,
         UTF16BigEndian,
         UTF16LittleEndian,
-        Unknown
+        Unknown,
     }
 }

@@ -1,31 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Tabs
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class Export : PortalModuleBase
     {
@@ -45,16 +39,17 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 {
                     this._tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
                 }
+
                 return this._tab;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Serializes the Tab
+        /// Serializes the Tab.
         /// </summary>
-        /// <param name="xmlTemplate">Reference to XmlDocument context</param>
-        /// <param name="nodeTabs">Node to add the serialized objects</param>
+        /// <param name="xmlTemplate">Reference to XmlDocument context.</param>
+        /// <param name="nodeTabs">Node to add the serialized objects.</param>
         /// -----------------------------------------------------------------------------
         private void SerializeTab(XmlDocument xmlTemplate, XmlNode nodeTabs)
         {
@@ -62,8 +57,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             var nodeTab = TabController.SerializeTab(xmlTab, this.Tab, this.chkContent.Checked);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
         }
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -83,7 +76,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
             try
             {
-                if (this.Page.IsPostBack) return;
+                if (this.Page.IsPostBack)
+                {
+                    return;
+                }
+
                 this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
                 var folderPath = "Templates/";
                 var templateFolder = FolderManager.Instance.GetFolder(this.UserInfo.PortalID, folderPath);
@@ -110,7 +107,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             return FolderPermissionController.Instance.CanAddFolder(folder);
         }
 
-        protected void OnExportClick(Object sender, EventArgs e)
+        protected void OnExportClick(object sender, EventArgs e)
         {
             try
             {
@@ -134,23 +131,22 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             nodePortal.Attributes.Append(XmlUtils.CreateAttribute(xmlTemplate, "version", "3.0"));
                         }
 
-                        //Add template description
+                        // Add template description
                         XmlElement node = xmlTemplate.CreateElement("description");
                         node.InnerXml = this.Server.HtmlEncode(this.txtDescription.Text);
                         nodePortal.AppendChild(node);
 
-                        //Serialize tabs
+                        // Serialize tabs
                         XmlNode nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
                         this.SerializeTab(xmlTemplate, nodeTabs);
 
-                        UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", this.LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
+                        UI.Skins.Skin.AddModuleMessage(this, string.Empty, string.Format(Localization.GetString("ExportedMessage", this.LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
 
-                        //add file to Files table
-						using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
-						{
-							Services.FileSystem.FileManager.Instance.AddFile(folder, this.txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
-						}
-
+                        // add file to Files table
+                        using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
+                        {
+                            Services.FileSystem.FileManager.Instance.AddFile(folder, this.txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");
+                        }
                     }
                 }
             }
@@ -158,10 +154,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
         }
-
-        #endregion
-
     }
 }

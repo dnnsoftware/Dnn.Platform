@@ -8,6 +8,6 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         Inherit = 0,
         Short = 1,
-        Long = 2
+        Long = 2,
     }
 }

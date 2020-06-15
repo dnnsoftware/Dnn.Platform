@@ -1,23 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-
-#endregion
-
 namespace DotNetNuke.Services.Search
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.Index
@@ -25,7 +21,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TabIndexer is an implementation of the abstract IndexingProvider
-    /// class
+    /// class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -40,8 +36,10 @@ namespace DotNetNuke.Services.Search
         /// Returns the number of SearchDocuments indexed with Tab MetaData for the given portal.
         /// </summary>
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public override int IndexSearchDocuments(int portalId,
+        public override int IndexSearchDocuments(
+            int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer)
         {
             Requires.NotNull("indexer", indexer);
@@ -52,7 +50,8 @@ namespace DotNetNuke.Services.Search
             var tabs = (
                 from t in TabController.Instance.GetTabsByPortal(portalId).AsList()
                 where t.LastModifiedOnDate > startDateLocal && (t.TabSettings["AllowIndex"] == null ||
-                                                                "true".Equals(t.TabSettings["AllowIndex"].ToString(),
+                                                                "true".Equals(
+                                                                    t.TabSettings["AllowIndex"].ToString(),
                                                                     StringComparison.CurrentCultureIgnoreCase))
                 select t).OrderBy(t => t.LastModifiedOnDate).ThenBy(t => t.TabID).ToArray();
 
@@ -96,12 +95,12 @@ namespace DotNetNuke.Services.Search
                 CultureCode = tab.CultureCode,
                 ModifiedTimeUtc = tab.LastModifiedOnDate.ToUniversalTime(),
                 Body = string.Empty,
-                Description = tab.Description
+                Description = tab.Description,
             };
 
             searchDoc.Keywords.Add("keywords", tab.KeyWords);
 
-            //Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
+            // Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
             searchDoc.Title = tab.TabName;
             searchDoc.Keywords.Add("title", tab.Title);
 
@@ -118,7 +117,8 @@ namespace DotNetNuke.Services.Search
             return searchDoc;
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer,
+        private int IndexCollectedDocs(
+            Action<IEnumerable<SearchDocument>> indexer,
             ICollection<SearchDocument> searchDocuments, int portalId, int scheduleId)
         {
             indexer.Invoke(searchDocuments);

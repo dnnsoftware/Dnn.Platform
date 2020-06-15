@@ -2,26 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Linq;
-using System.Web.UI;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.Skins;
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.Skins;
+
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {
-        #region Public Properties
-
         public int PortalId { get; set; }
 
         public string RootPath { get; set; }
@@ -32,27 +31,15 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         public string NoneSpecificText { get; set; }
 
-        #endregion
-
-        #region Private Properties
-
         private PortalInfo Portal
         {
             get { return this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId); }
         }
 
-        #endregion
-
-        #region Constructors
-
         public DnnSkinComboBox()
         {
             this.PortalId = Null.NullInteger;
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -86,7 +73,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
-            //do not select item during data binding, item will select later
+            // do not select item during data binding, item will select later
             var selectedValue = this.SelectedValue;
             this.SelectedValue = null;
 
@@ -94,10 +81,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
             this.SelectedValue = selectedValue;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void AttachEvents()
         {
@@ -109,7 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Attributes.Add("PortalPath", this.Portal != null ? this.Portal.HomeDirectory : string.Empty);
             this.Attributes.Add("HostPath", Globals.HostPath);
 
-            //OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
+            // OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
             var indexChangedMethod = @"function selectedIndexChangedMethod(sender, eventArgs){
     var value = eventArgs.get_item().get_value();
     value = value.replace('[L]', sender.get_attributes().getAttribute('PortalPath'));
@@ -118,27 +101,25 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 }";
             this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
 
-            //foreach (var item in Items)
-            //{
+            // foreach (var item in Items)
+            // {
             //    if (string.IsNullOrEmpty(item.Value))
             //    {
             //        continue;
             //    }
 
-            //    var tooltip = item.Value.Replace("[G]", Globals.HostPath);
+            // var tooltip = item.Value.Replace("[G]", Globals.HostPath);
             //    if (Portal != null)
             //    {
             //        tooltip = tooltip.Replace("[L]", Portal.HomeDirectory);
             //    }
 
-            //    item.ToolTip = tooltip;
+            // item.ToolTip = tooltip;
             //    if (item.Value.Equals(SelectedValue))
             //    {
             //        ToolTip = tooltip;
             //    }
-            //}
+            // }
         }
-
-        #endregion
     }
 }

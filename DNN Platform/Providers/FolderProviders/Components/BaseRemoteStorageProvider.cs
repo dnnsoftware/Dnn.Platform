@@ -2,61 +2,54 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web.Caching;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Security;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Providers.FolderProviders.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.FileSystem;
+
     public abstract class BaseRemoteStorageProvider : FolderProvider
     {
-        #region Private Members
-
         private readonly string _encryptionKey = Host.GUID;
         private readonly PortalSecurity _portalSecurity = PortalSecurity.Instance;
-        #endregion
-
-        #region Private Methods
 
         private IRemoteStorageItem GetStorageItemInternal(FolderMappingInfo folderMapping, string key)
         {
             var cacheKey = string.Format(this.ObjectCacheKey, folderMapping.FolderMappingID, key);
 
-            return CBO.GetCachedObject<IRemoteStorageItem>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<IRemoteStorageItem>(
+                new CacheItemArgs(
+                cacheKey,
                 this.ObjectCacheTimeout,
                 CacheItemPriority.Default,
                 folderMapping.FolderMappingID),
                 c =>
                 {
                     var list = this.GetObjectList(folderMapping, key);
-                    
-                    //return list.FirstOrDefault(i => i.Key == key);
+
+                    // return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 });
-            
         }
-        
-        #endregion
-
-        #region Protected Properties
 
         protected virtual string FileNotFoundMessage
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
-        
+
         protected virtual string ObjectCacheKey
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected virtual int ObjectCacheTimeout
@@ -66,15 +59,13 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected virtual string ListObjectsCacheKey
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected virtual int ListObjectsCacheTimeout
         {
             get { return 300; }
         }
-
-        #endregion
 
         public override bool SupportsMappedPaths
         {
@@ -91,8 +82,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             get { return true; }
         }
 
-        #region Protected Methods
-
         protected abstract void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
 
         protected abstract void DeleteFileInternal(FolderMappingInfo folderMapping, string uri);
@@ -101,9 +90,9 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected static bool GetBooleanSetting(FolderMappingInfo folderMapping, string settingName)
         {
-            return Boolean.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
+            return bool.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
         }
-        
+
         protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
         {
             int value;
@@ -111,6 +100,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 return value;
             }
+
             return defaultValue;
         }
 
@@ -127,7 +117,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             Requires.NotNull(nameof(folderMapping), folderMapping);
             Requires.NotNullOrEmpty(nameof(settingName), settingName);
-            
+
             return folderMapping.FolderMappingSettings[settingName]?.ToString();
         }
 
@@ -141,10 +131,9 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             return this.GetStorageItemInternal(folderMapping, key);
         }
-        #endregion
 
         /// <summary>
-        /// Adds a new folder
+        /// Adds a new folder.
         /// </summary>
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
         {
@@ -165,10 +154,11 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         public virtual void ClearCache(int folderMappingId)
         {
-            var cacheKey = String.Format(this.ListObjectsCacheKey, folderMappingId);
+            var cacheKey = string.Format(this.ListObjectsCacheKey, folderMappingId);
             DataCache.RemoveCache(cacheKey);
-            //Clear cached objects
-            DataCache.ClearCache(String.Format(this.ObjectCacheKey, folderMappingId, String.Empty));
+
+            // Clear cached objects
+            DataCache.ClearCache(string.Format(this.ObjectCacheKey, folderMappingId, string.Empty));
         }
 
         /// <summary>
@@ -181,7 +171,10 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             this.CopyFileInternal(folderMapping, folderPath + fileName, newFolderPath + fileName);
         }
@@ -215,6 +208,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Checks the existence of the specified file.
         /// </summary>
+        /// <returns></returns>
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -222,19 +216,20 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var item = this.GetStorageItem(folderMapping, folder.MappedPath + fileName);
-            return (item != null);
+            return item != null;
         }
 
         /// <summary>
         /// Checks the existence of the specified folder.
         /// </summary>
+        /// <returns></returns>
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            //the root folder should always exist.
-            if (folderPath == "")
+            // the root folder should always exist.
+            if (folderPath == string.Empty)
             {
                 return true;
             }
@@ -247,6 +242,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <remarks>
         /// Amazon doesn't support file attributes.
         /// </remarks>
+        /// <returns></returns>
         public override FileAttributes? GetFileAttributes(IFileInfo file)
         {
             return null;
@@ -255,6 +251,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets the list of file names contained in the specified folder.
         /// </summary>
+        /// <returns></returns>
         public override string[] GetFiles(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -263,24 +260,23 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var list = this.GetObjectList(folderMapping, folder.MappedPath);
             var mappedPath = folder.MappedPath;
 
-            //return (from i in list
+            // return (from i in list
             //        let f = i.Key
             //        let r = (!string.IsNullOrEmpty(mappedPath) ? f.Replace(mappedPath, "") : f)
             //        where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
             //        select Path.GetFileName(f)).ToArray();
-
             var pattern = "^" + mappedPath;
-            return  (from i in list
+            return (from i in list
                     let f = i.Key
-                     let r = (!string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f)
+                     let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
                     select Path.GetFileName(f)).ToArray();
-
         }
 
         /// <summary>
         /// Gets the file length.
         /// </summary>
+        /// <returns></returns>
         public override long GetFileSize(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -293,13 +289,14 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
-            return item.Size;
 
+            return item.Size;
         }
 
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public override Stream GetFileStream(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -314,6 +311,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public override Stream GetFileStream(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -327,6 +325,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets the time when the specified file was last modified.
         /// </summary>
+        /// <returns></returns>
         public override DateTime GetLastModificationTime(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -334,38 +333,40 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            var item = this.GetStorageItem(folderMapping, folder.MappedPath+file.FileName);
+            var item = this.GetStorageItem(folderMapping, folder.MappedPath + file.FileName);
             if (item == null)
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
-            return item.LastModified;            
+
+            return item.LastModified;
         }
 
         /// <summary>
         /// Gets the list of subfolders for the specified folder.
         /// </summary>
+        /// <returns></returns>
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
             var list = this.GetObjectList(folderMapping, folderPath);
-            
+
             var pattern = "^" + Regex.Escape(folderPath);
 
             return (from o in list
                 let f = o.Key
                 let r =
-                    (!string.IsNullOrEmpty(folderPath)
-                        ? Regex.Replace(f,  pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
-                        : f)
+                    !string.IsNullOrEmpty(folderPath)
+                        ? Regex.Replace(f,  pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
+                        : f
                 where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
                                    && f.Length > folderPath.Length
                                    && r.IndexOf("/", StringComparison.Ordinal) > -1
                            select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
-            //var mylist =  (from o in list
+            // var mylist =  (from o in list
             //        let f = o.Key
             //        let r = (!string.IsNullOrEmpty(folderPath) ? RegexUtils.GetCachedRegex(Regex.Escape(folderPath)).Replace(f, string.Empty, 1) : f)
             //        where f.StartsWith(folderPath)
@@ -373,8 +374,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             //            && r.IndexOf("/", StringComparison.Ordinal) > -1
             //        select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
-            //return mylist;
-
+            // return mylist;
         }
 
         /// <summary>
@@ -383,6 +383,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <remarks>
         /// For now, it returns false always until we find a better way to check if the file is synchronized.
         /// </remarks>
+        /// <returns></returns>
         public override bool IsInSync(IFileInfo file)
         {
             return Convert.ToInt32((file.LastModificationTime - this.GetLastModificationTime(file)).TotalSeconds) == 0;
@@ -446,6 +447,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <remarks>
         /// Amazon doesn't support file attributes.
         /// </remarks>
+        /// <returns></returns>
         public override bool SupportsFileAttributes()
         {
             return false;
@@ -491,16 +493,18 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
-            return (item.Size == file.Size) ? item.HashCode : String.Empty;
+
+            return (item.Size == file.Size) ? item.HashCode : string.Empty;
         }
 
         public override string GetHashCode(IFileInfo file, Stream fileContent)
         {
             if (this.FileExists(FolderManager.Instance.GetFolder(file.FolderId), file.FileName))
             {
-                return this.GetHashCode(file);                
+                return this.GetHashCode(file);
             }
-            return String.Empty;
+
+            return string.Empty;
         }
     }
 }

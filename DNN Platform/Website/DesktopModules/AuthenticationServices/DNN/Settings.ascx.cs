@@ -1,25 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Exceptions;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Authentication
 {
+    using System;
+
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Exceptions;
+
     public partial class Settings : AuthenticationSettingsBase
     {
         public override void UpdateSettings()
         {
             if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
             {
-                var config = (AuthenticationConfig) this.SettingsEditor.DataSource;
+                var config = (AuthenticationConfig)this.SettingsEditor.DataSource;
                 AuthenticationConfig.UpdateConfig(config);
             }
         }

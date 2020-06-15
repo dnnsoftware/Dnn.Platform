@@ -2,24 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-
 namespace Dnn.PersonaBar.UI.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+
     public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
         private IDictionary<string, IList<string>> _knownPages;
@@ -53,9 +54,9 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
                 Controller = "Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI",
                 ResourceKey = tab.LocalizedTabName,
                 ParentId = PersonaBarRepository.Instance.GetMenuItem("Manage").MenuId,
-                Order = tab.IsSuperTab ? 300 : 200, //show host menus after admin menus
+                Order = tab.IsSuperTab ? 300 : 200, // show host menus after admin menus
                 AllowHost = true,
-                Enabled = true
+                Enabled = true,
             };
 
             PersonaBarRepository.Instance.SaveMenuItem(menuItem);

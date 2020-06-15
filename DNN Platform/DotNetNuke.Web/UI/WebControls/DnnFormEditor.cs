@@ -1,26 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using ClientDependency.Core;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using ClientDependency.Core;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+
     [ParseChildren(true)]
     public class DnnFormEditor : WebControl, INamingContainer
     {
@@ -59,6 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._dataSource;
             }
+
             set
             {
                 if (this._dataSource != value)
@@ -84,52 +81,58 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (var item in this.GetAllItems())
                 {
                     item.CheckIsValid();
-                    if(!item.IsValid)
+                    if (!item.IsValid)
                     {
                         isValid = false;
                         break;
                     }
                 }
+
                 return isValid;
             }
         }
 
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormItemBase> Items { get; private set; }
 
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormSection> Sections { get; private set; }
 
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormTab> Tabs { get; private set; }
 
         private List<DnnFormItemBase> GetAllItems()
         {
             var items = new List<DnnFormItemBase>();
 
-            //iterate over pages
+            // iterate over pages
             foreach (DnnFormTab page in this.Tabs)
             {
                 foreach (DnnFormSection section in page.Sections)
                 {
                     items.AddRange(section.Items);
                 }
+
                 items.AddRange(page.Items);
             }
 
-            //iterate over section
+            // iterate over section
             foreach (DnnFormSection section in this.Sections)
             {
                 items.AddRange(section.Items);
             }
 
-            //Add base items
+            // Add base items
             items.AddRange(this.Items);
 
             return items;
         }
-
-        #region Private Methods
 
         [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
         internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
@@ -156,14 +159,15 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 foreach (DnnFormSection section in sections)
                 {
-                    var panel = new DnnFormPanel {CssClass = "dnnFormSectionHead"};
+                    var panel = new DnnFormPanel { CssClass = "dnnFormSectionHead" };
                     parentControl.Controls.Add(panel);
 
                     var resourceKey = section.ResourceKey;
-                    if (String.IsNullOrEmpty(resourceKey))
+                    if (string.IsNullOrEmpty(resourceKey))
                     {
                         resourceKey = section.ID;
                     }
+
                     panel.Text = Localization.GetString(resourceKey, this.LocalResourceFile);
                     panel.Expanded = section.Expanded;
 
@@ -176,24 +180,24 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (this.Tabs.Count > 0)
             {
-                var tabStrip = new DnnFormTabStrip {CssClass = "dnnAdminTabNav dnnClear"};
+                var tabStrip = new DnnFormTabStrip { CssClass = "dnnAdminTabNav dnnClear" };
                 this.Controls.Add(tabStrip);
                 tabStrip.Items.Clear();
 
                 foreach (DnnFormTab formTab in this.Tabs)
                 {
                     var resourceKey = formTab.ResourceKey;
-                    if (String.IsNullOrEmpty(resourceKey))
+                    if (string.IsNullOrEmpty(resourceKey))
                     {
                         resourceKey = formTab.ID;
                     }
 
-                    var tab = new Panel {CssClass = formTab.ID + " dnnClear", ID = "tab_" + formTab.ID};
+                    var tab = new Panel { CssClass = formTab.ID + " dnnClear", ID = "tab_" + formTab.ID };
                     this.Controls.Add(tab);
 
                     if (formTab.IncludeExpandAll)
                     {
-                        var expandAll = new Panel {CssClass = "dnnFormExpandContent"};
+                        var expandAll = new Panel { CssClass = "dnnFormExpandContent" };
                         string expandAllText = Localization.GetString("ExpandAll", Localization.SharedResourceFile);
                         expandAll.Controls.Add(new LiteralControl("<a href=\"\">" + expandAllText + "</a>"));
                         tab.Controls.Add(expandAll);
@@ -220,10 +224,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Control Hierarchy and Data Binding
-
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -245,10 +245,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             foreach (DnnFormItemBase item in items)
             {
-                if (String.IsNullOrEmpty(item.LocalResourceFile))
+                if (string.IsNullOrEmpty(item.LocalResourceFile))
                 {
                     item.LocalResourceFile = this.LocalResourceFile;
                 }
+
                 if (item.FormMode == DnnFormMode.Inherit)
                 {
                     item.FormMode = this.FormMode;
@@ -260,14 +261,15 @@ namespace DotNetNuke.Web.UI.WebControls
                     item.DataBindItem(useDataSource);
                 }
             }
+
             this._itemCount = this.GetAllItems().Count;
         }
 
         protected virtual void CreateControlHierarchy(bool useDataSource)
         {
-        	this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
+            this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
 
-        	this.SetUpTabs();
+            this.SetUpTabs();
 
             this.SetUpSections(this.Sections, this);
 
@@ -278,7 +280,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public override void DataBind()
         {
-            base.OnDataBinding(EventArgs.Empty);
+            this.OnDataBinding(EventArgs.Empty);
             this.Controls.Clear();
             this.ClearChildViewState();
             this.TrackViewState();
@@ -286,15 +288,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ChildControlsCreated = true;
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected override void LoadControlState(object state)
         {
             if (state != null)
             {
-                this._itemCount = (int) state;
+                this._itemCount = (int)state;
             }
         }
 
@@ -309,15 +307,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if(this.Tabs.Count > 0)
+            if (this.Tabs.Count > 0)
             {
                 const string scriptName = "FormEditorjQuery";
                 ClientScriptManager cs = this.Page.ClientScript;
 
-
                 if (!cs.IsClientScriptBlockRegistered(this.GetType(), scriptName))
                 {
-                    //Render Script
+                    // Render Script
                     var scriptBuilder = new StringBuilder();
                     scriptBuilder.Append("<script language=\"javascript\" type=\"text/javascript\">\r\n");
                     scriptBuilder.Append("\t(function ($, Sys) {\r\n");
@@ -330,6 +327,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             scriptBuilder.Append(formTab.ExpandAllScript);
                         }
                     }
+
                     scriptBuilder.Append("\t\t}\r\n");
                     scriptBuilder.Append("\t\t$(document).ready(function () {\r\n");
                     scriptBuilder.Append("\t\t\tsetupFormEditor();\r\n");
@@ -349,9 +347,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override object SaveControlState()
         {
-            return this._itemCount > 0 ? (object) this._itemCount : null;
+            return this._itemCount > 0 ? (object)this._itemCount : null;
         }
-
-        #endregion
     }
 }

@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-
-using DotNetNuke.ComponentModel;
-
 namespace DotNetNuke.Services.FileSystem.Internal
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.ComponentModel;
+
     public class FileWrapper : ComponentBase<IFile, FileWrapper>, IFile
     {
         public Stream Create(string path)

@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using DotNetNuke.Common.Utilities;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DigitalAssetsTests : IntegrationTestBase
     {
@@ -33,7 +34,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
             this.RenameFolder(connector, folderId, newFolderName);
 
             var getUrlApi = "API/DigitalAssets/ContentService/GetUrl";
-            var fileUrl = connector.PostJson(getUrlApi, new {fileId = fileId}, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
+            var fileUrl = connector.PostJson(getUrlApi, new { fileId = fileId }, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
 
             Assert.IsTrue(fileUrl.Contains(newFolderName));
         }
@@ -65,7 +66,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
                 FolderName = Guid.NewGuid().ToString(),
                 ParentFolderId = rootFolderId,
                 FolderMappingId = this.GetStandardFolderMappingId(),
-                MappedName = string.Empty
+                MappedName = string.Empty,
             };
 
             var response = connector.PostJson(apiUrl, postData, this.GetRequestHeaders());
@@ -78,7 +79,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
             var postData = new
             {
                 folderId = folderId,
-                newFolderName = newFolderName
+                newFolderName = newFolderName,
             };
 
             connector.PostJson(apiUrl, postData, this.GetRequestHeaders());

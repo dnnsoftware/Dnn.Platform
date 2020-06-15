@@ -2,29 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-using System;
-using System.Data;
-using System.Linq;
-
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
+    using System;
+    using System.Data;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
-    ///  Testing various aspects of SearchController
+    ///  Testing various aspects of SearchController.
     /// </summary>
     [TestFixture]
     public class SearchHelperTests
     {
-
-        #region constants
-
         private const int OtherSearchTypeId = 2;
         private const string TermDNN = "DNN";
         private const string TermDotNetNuke = "DotnetNuke";
@@ -35,18 +33,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string TermHop = "Hop";
         private const int PortalId0 = 0;
         private const string CultureEnUs = "en-US";
-
-        #endregion
-
-        #region Private Properties
-
         private Mock<DataProvider> _dataProvider;
         private Mock<CachingProvider> _cachingProvider;
         private SearchHelperImpl _searchHelper;
-
-        #endregion
-
-        #region Set Up
 
         [SetUp]
         public void SetUp()
@@ -59,14 +48,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             DataCache.ClearCache();
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void SetupDataProvider()
         {
-            //Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
+            // Standard DataProvider Path for Logging
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             this._dataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
 
@@ -83,7 +68,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             dataTable.PrimaryKey = new[] { pkId };
 
-            //Create some test data
+            // Create some test data
             var now = DateTime.Now;
             dataTable.Rows.Add(1, string.Join(",", new[] { TermDNN, TermDotNetNuke }), 1, now, 1, now, 0);
             dataTable.Rows.Add(2, string.Join(",", new[] { TermLaptop, TermNotebook }), 1, now, 1, now, 0);
@@ -98,7 +83,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             var cols = new string[]
                            {
-                            "SettingName","SettingValue","CreatedByUserID","CreatedOnDate","LastModifiedByUserID","LastModifiedOnDate","CultureCode"
+                            "SettingName", "SettingValue", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
                            };
 
             foreach (var col in cols)
@@ -125,7 +110,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
                                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
                                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode"
+                               "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
                            };
 
             foreach (var col in cols)
@@ -139,19 +124,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return table.CreateDataReader();
         }
 
-        #endregion
-
-        #region Synonyms Tests
-
         [Test]
         public void SearchHelper_GetSynonyms_Two_Terms_Returns_Correct_Results()
         {
-            //Arrange            
+            // Arrange
 
-            //Act
+            // Act
             var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermDNN).ToArray();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, synonyms.Count());
             Assert.AreEqual(TermDotNetNuke.ToLowerInvariant(), synonyms[0]);
         }
@@ -159,259 +140,254 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchHelper_GetSynonyms_Three_Terms_Returns_Correct_Results()
         {
-            //Arrange            
+            // Arrange
 
-            //Act
+            // Act
             var synonyms = this._searchHelper.GetSynonyms(PortalId0, CultureEnUs, TermHop).ToArray();
 
-            //Assert
+            // Assert
             Assert.AreEqual(2, synonyms.Count());
             Assert.AreEqual(TermJump.ToLowerInvariant(), synonyms[0]);
             Assert.AreEqual(TermLeap.ToLowerInvariant(), synonyms[1]);
         }
 
-        #endregion
-
-        #region Rephrasing Search Text Tests
-
         [Test]
         public void SearchHelper_Rephrase_NoWildCardButExact_1()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\"";
             const string expected = inPhrase;
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_NoWildCardButExact_2()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\" -\"(Lazy) dog\" jumps";
             const string expected = inPhrase;
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_NoWildCardNoExact()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "(brown) OR (fox AND dog) +jumbs";
             const string expected = inPhrase;
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, false);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_0()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "fox dog";
             const string expected = "(fox OR fox*) (dog OR dog*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_1()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "(lazy-dog)";
             const string expected = "(lazy-dog OR lazy-dog*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_2()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "fox (dog)";
             const string expected = "(fox OR fox*) (dog OR dog*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_3()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "(dog) fox";
             const string expected = "(dog OR dog*) (fox OR fox*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_4()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy) dog";
             const string expected = "(brown OR brown*) (fox OR fox*) (lazy OR lazy*) (dog OR dog*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_5()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "(brown fox) lazy dog";
             const string expected = "((brown OR brown*) (fox OR fox*)) (lazy OR lazy*) (dog OR dog*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_6()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy dog)";
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) (dog OR dog*))";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_7()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy AND dog)";
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) AND (dog OR dog*))";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardNoExact_8()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "brown fox (lazy and dog)";
             const string expected = "(brown OR brown*) (fox OR fox*) ((lazy OR lazy*) (and OR and*) (dog OR dog*))";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardWithExact_1()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\"";
             const string expected = inPhrase;
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardWithExact_2()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "\"brown fox\" dog";
             const string expected = "\"brown fox\" (dog OR dog*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardWithExact_3()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "The +\"brown fox\" -\"Lazy dog\" jumps";
             const string expected = "(The OR The*) +\"brown fox\" -\"Lazy dog\" (jumps OR jumps*)";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
         public void SearchHelper_Rephrase_WildCardWithTilde_4()
         {
-            //Arrange            
+            // Arrange
             const string inPhrase = "dog jump~2";
             const string expected = "(dog OR dog*) jump~2";
 
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
 
         [Test]
-        //Arrange
+
+        // Arrange
         [TestCase("Cäu", "(Cau OR Cau*)")]
         [TestCase("Cäutätörül", "(Cautatorul OR Cautatorul*)")]
         [TestCase("Ãbcdef", "(Abcdef OR Abcdef*)")]
         public void SearchHelper_Rephrase_AccentedCharsReplaced_Replaced(string inPhrase, string expected)
         {
-            //Act
+            // Act
             var analyzed = this._searchHelper.RephraseSearchText(inPhrase, true);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, analyzed);
         }
-
-        #endregion
     }
 }

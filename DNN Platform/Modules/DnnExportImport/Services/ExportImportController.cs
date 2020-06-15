@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Dto;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-
 namespace Dnn.ExportImport.Services
 {
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Controllers;
+    using Dnn.ExportImport.Components.Dto;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+
     [RequireHost]
     public class ExportImportController : DnnApiController
     {
@@ -38,6 +39,7 @@ namespace Dnn.ExportImport.Services
                 var jobId = controller.QueueOperation(this.PortalSettings.UserId, importDto);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { jobId });
             }
+
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
@@ -55,11 +57,11 @@ namespace Dnn.ExportImport.Services
         }
 
         /// <summary>
-        /// Get list of packages to import
+        /// Get list of packages to import.
         /// </summary>
-        /// <param name="keyword">Keyword to search the import package. This will look into the package name and description</param>
-        /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name</param>
-        /// <param name="pageIndex">Page index to get</param>
+        /// <param name="keyword">Keyword to search the import package. This will look into the package name and description.</param>
+        /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name.</param>
+        /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
         /// <returns></returns>
         [HttpGet]
@@ -105,12 +107,16 @@ namespace Dnn.ExportImport.Services
             }
 
             if (portal < 0)
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest,
+            {
+                return this.Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest,
                     Localization.GetString("InvalidPortal", Constants.SharedResources));
+            }
 
             var controller = new BaseController();
             var lastTime = controller.GetLastJobTime(portal, jobType);
-            return this.Request.CreateResponse(HttpStatusCode.OK,
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
                 new { lastTime = Util.GetDateTimeString(lastTime) });
         }
 
@@ -123,6 +129,7 @@ namespace Dnn.ExportImport.Services
                 var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
+
             var controller = new BaseController();
             var jobs = controller.GetAllJobs(portal, this.PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
             jobs?.ConvertToLocal(this.UserInfo);
@@ -137,7 +144,8 @@ namespace Dnn.ExportImport.Services
             job?.ConvertToLocal(this.UserInfo);
             return job != null
                 ? this.Request.CreateResponse(HttpStatusCode.OK, job)
-                : this.Request.CreateResponse(HttpStatusCode.BadRequest,
+                : this.Request.CreateResponse(
+                    HttpStatusCode.BadRequest,
                     new { message = Localization.GetString("JobNotExist", Constants.SharedResources) });
         }
     }

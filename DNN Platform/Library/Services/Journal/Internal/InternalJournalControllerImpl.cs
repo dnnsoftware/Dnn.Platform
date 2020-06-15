@@ -1,32 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security;
-
-#endregion
-
 namespace DotNetNuke.Services.Journal.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security;
+
     public class InternalJournalControllerImpl : IInternalJournalController
     {
         private readonly IJournalDataService _dataService;
-
-        #region Constructors
 
         public InternalJournalControllerImpl()
         {
             this._dataService = JournalDataService.Instance;
         }
-
-        #endregion
 
         public IList<JournalItem> GetJournalItemsByProfile(int portalId, int moduleId, int currentUserId, int profileId,
                                                            int rowIndex, int maxRows)
@@ -51,7 +42,7 @@ namespace DotNetNuke.Services.Journal.Internal
                 CBO.FillCollection<JournalItem>(this._dataService.Journal_ListForSummary(portalId, moduleId, currentUserId,
                                                                                     rowIndex, maxRows));
         }
-        
+
         public void DeleteFilters(int portalId, int moduleId)
         {
             this._dataService.Journal_TypeFilters_Delete(portalId, moduleId);

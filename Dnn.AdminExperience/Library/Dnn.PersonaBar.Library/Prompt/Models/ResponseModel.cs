@@ -9,12 +9,14 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         public bool IsError;
         public string Message;
         public string Data;
+
         public ResponseModel(bool err, string msg)
         {
             this.IsError = err;
             this.Message = msg;
-            this.Data = "";
+            this.Data = string.Empty;
         }
+
         public ResponseModel(bool err, string msg, string data)
         {
             this.IsError = err;

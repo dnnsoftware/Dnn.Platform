@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-using DotNetNuke.Tests.Utilities;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+    using DotNetNuke.Tests.Utilities;
+
     public class SubscriptionBuilder
     {
         private int subscriptionId;
@@ -31,7 +32,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
             this.tabId = Null.NullInteger;
             this.objectKey = "content";
             this.description = "my content description";
-            this.objectData = "";
+            this.objectData = string.Empty;
         }
 
         internal SubscriptionBuilder WithSubscriptionId(int subscriptionId)
@@ -69,7 +70,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
             this.description = description;
             return this;
         }
-        
+
         internal SubscriptionBuilder WithModuleId(int moduleId)
         {
             this.moduleId = moduleId;
@@ -80,7 +81,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         {
             this.tabId = tabId;
             return this;
-        } 
+        }
 
         internal Subscription Build()
         {
@@ -95,9 +96,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                            PortalId = this.portalId,
                            TabId = this.tabId,
                            UserId = this.userId,
-                           ObjectData = this.objectData
+                           ObjectData = this.objectData,
                        };
-
         }
     }
 }

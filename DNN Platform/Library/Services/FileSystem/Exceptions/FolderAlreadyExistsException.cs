@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Runtime.Serialization;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Runtime.Serialization;
+
     [Serializable]
     public class FolderAlreadyExistsException : Exception
     {

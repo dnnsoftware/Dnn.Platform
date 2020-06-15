@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System;
+
+    using DotNetNuke.Entities.Users;
+
     public class CheckRarelyUsedSuperuser : IAuditCheck
     {
         public string Id => "CheckRarelyUsedSuperuser";

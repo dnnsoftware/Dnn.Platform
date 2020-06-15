@@ -1,22 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.UI.Modules;
-
-#endregion
-
 namespace DotNetNuke.Web.Mvp
 {
+    using System;
+
+    using DotNetNuke.UI.Modules;
+
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public class SettingsViewBase : ModuleViewBase, ISettingsView, ISettingsControl
     {
-        #region ISettingsControl Members
-
         public void LoadSettings()
         {
             if (this.OnLoadSettings != null)
@@ -25,7 +18,6 @@ namespace DotNetNuke.Web.Mvp
             }
 
             this.OnSettingsLoaded();
-
         }
 
         public void UpdateSettings()
@@ -38,24 +30,19 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
-        #endregion
-
-        #region ISettingsView Members
-
         public event EventHandler OnLoadSettings;
+
         public event EventHandler OnSaveSettings;
 
-        #endregion
-
         /// <summary>
-        /// The OnSettingsLoaded method is called when the Settings have been Loaded 
+        /// The OnSettingsLoaded method is called when the Settings have been Loaded.
         /// </summary>
         protected virtual void OnSettingsLoaded()
         {
         }
 
         /// <summary>
-        /// OnSavingSettings method is called just before the Settings are saved
+        /// OnSavingSettings method is called just before the Settings are saved.
         /// </summary>
         protected virtual void OnSavingSettings()
         {

@@ -1,20 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.UI.WebControls;
+
     public class DnnFormEditControlItem : DnnFormItemBase
     {
         private EditControl control;
@@ -34,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.control.Value = this.Value;
                 this.control.OldValue = this.Value;
                 this.control.ValueChanged += this.ValueChanged;
-	            this.control.DataField = this.DataField;
+                this.control.DataField = this.DataField;
 
                 this.control.CssClass = "dnnFormInput";
 
@@ -44,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.control;
         }
 
-        void ValueChanged(object sender, PropertyEditorEventArgs e)
+        private void ValueChanged(object sender, PropertyEditorEventArgs e)
         {
             this.UpdateDataSource(this.Value, e.Value, this.DataField);
         }

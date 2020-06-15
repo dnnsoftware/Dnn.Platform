@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using DotNetNuke.Data;
-
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System;
+    using System.Web;
+
+    using DotNetNuke.Data;
+
     public class CheckModuleHeaderAndFooter : IAuditCheck
     {
         public string Id => "CheckModuleHeaderAndFooter";

@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Security.Services;
-using DotNetNuke.Entities.Portals;
-using Moq;
-using NUnit.Framework;
-
 namespace Dnn.PersonaBar.Security.Tests.Services
 {
+    using Dnn.PersonaBar.Security.Services;
+    using DotNetNuke.Entities.Portals;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SecurityControllerTests
     {
@@ -51,7 +51,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             sut.AddPortalAlias(SslUrl, PortalId);
 
             // assert
-            portalAliasControllerMock.Verify(c =>
+            portalAliasControllerMock.Verify(
+                c =>
                 c.AddPortalAlias(It.Is<PortalAliasInfo>(match =>
                     match.HTTPAlias == SomeAlias && match.PortalID == PortalId)), Times.Never);
         }
@@ -71,7 +72,8 @@ namespace Dnn.PersonaBar.Security.Tests.Services
             sut.AddPortalAlias(SslUrl, PortalId);
 
             // assert
-            portalAliasControllerMock.Verify(c =>
+            portalAliasControllerMock.Verify(
+                c =>
                 c.AddPortalAlias(It.Is<PortalAliasInfo>(match =>
                     match.HTTPAlias == SomeAlias && match.PortalID == PortalId)), Times.Once);
         }

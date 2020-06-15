@@ -1,21 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Services.Exceptions
 {
+    using System;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.Skins.Controls;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     public class ErrorContainer : Control
     {
         public ErrorContainer(string strError)
@@ -46,7 +43,7 @@ namespace DotNetNuke.Services.Exceptions
         private ModuleMessage FormatException(string strError)
         {
             ModuleMessage m;
-            m = UI.Skins.Skin.GetModuleMessageControl(Localization.Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
+            m = UI.Skins.Skin.GetModuleMessageControl(Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
             return m;
         }
 
@@ -59,8 +56,9 @@ namespace DotNetNuke.Services.Exceptions
             }
             else
             {
-                m = UI.Skins.Skin.GetModuleMessageControl(Localization.Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
+                m = UI.Skins.Skin.GetModuleMessageControl(Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
             }
+
             return m;
         }
     }

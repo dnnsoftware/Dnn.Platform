@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.WebPages;
-using DotNetNuke.Common;
-using DotNetNuke.Web.Razor.Helpers;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Web.Razor
 {
+    using System;
+    using System.Web.WebPages;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Web.Razor.Helpers;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public abstract class DotNetNukeWebPage : WebPageBase
     {
@@ -29,7 +30,7 @@ namespace DotNetNuke.Web.Razor
         {
             base.ConfigurePage(parentPage);
 
-            //Child pages need to get their context from the Parent
+            // Child pages need to get their context from the Parent
             this.Context = parentPage.Context;
         }
 
@@ -42,7 +43,8 @@ namespace DotNetNuke.Web.Razor
     }
 
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public abstract class DotNetNukeWebPage<TModel> :DotNetNukeWebPage where TModel : class
+    public abstract class DotNetNukeWebPage<TModel> : DotNetNukeWebPage
+        where TModel : class
     {
         private TModel _model;
 

@@ -1,26 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections;
-
-#endregion
-
 namespace DotNetNuke.Services.EventQueue
 {
+    using System.Collections;
+
     public class EventMessageCollection : CollectionBase
     {
         public virtual EventMessage this[int index]
         {
             get
             {
-                return (EventMessage) base.List[index];
+                return (EventMessage)this.List[index];
             }
+
             set
             {
-                base.List[index] = value;
+                this.List[index] = value;
             }
         }
 

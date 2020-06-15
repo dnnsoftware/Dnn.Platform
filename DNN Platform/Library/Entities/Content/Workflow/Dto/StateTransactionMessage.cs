@@ -5,22 +5,22 @@
 namespace DotNetNuke.Entities.Content.Workflow.Dto
 {
     /// <summary>
-    /// This class represents the message that will be notified on workflow state transaction
+    /// This class represents the message that will be notified on workflow state transaction.
     /// </summary>
     public class StateTransactionMessage
     {
         public StateTransactionMessage()
         {
-            this.Params = new string[]{};
+            this.Params = new string[] { };
         }
 
         /// <summary>
-        /// Params of the message
+        /// Gets or sets params of the message.
         /// </summary>
         public string[] Params { get; set; }
 
         /// <summary>
-        /// User comment
+        /// Gets or sets user comment.
         /// </summary>
         public string UserComment { get; set; }
     }

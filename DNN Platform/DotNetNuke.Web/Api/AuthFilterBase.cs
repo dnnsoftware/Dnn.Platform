@@ -2,23 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Common;
+
     public abstract class AuthFilterBase : IAuthorizationFilter
     {
         /// <summary>
-        /// Tests if the request passes the authorization requirements
+        /// Tests if the request passes the authorization requirements.
         /// </summary>
-        /// <param name="context">The auth filter context</param>
-        /// <returns>True when authorization is succesful</returns>
+        /// <param name="context">The auth filter context.</param>
+        /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
+        /// Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
         /// </summary>
         public abstract bool AllowMultiple { get; }
 
@@ -64,7 +65,7 @@ namespace DotNetNuke.Web.Api
                 tcs.SetResult(actionContext.Response);
                 return tcs.Task;
             }
-            
+
             return continuation();
         }
     }

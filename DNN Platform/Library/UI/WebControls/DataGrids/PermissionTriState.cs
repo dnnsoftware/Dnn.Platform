@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-
 namespace DotNetNuke.UI.WebControls.Internal
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+
     /// <summary>
     /// A TriState permission control built specifically for use in the PermissionGrid control
-    /// This control is not general in any way shape of form and should NOT be used outside 
-    /// of the PermissionGrid
+    /// This control is not general in any way shape of form and should NOT be used outside
+    /// of the PermissionGrid.
     /// </summary>
     public class PermissionTriState : HiddenField
     {
@@ -31,9 +31,9 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public PermissionTriState()
         {
-            //kind of ugly to lookup this data each time, but doesn't seem worth the effort to 
-            //maintain statics for the paths but require a control instance to initialize them
-            //and lazy load the text bits when the page instance (or localization) changes 
+            // kind of ugly to lookup this data each time, but doesn't seem worth the effort to
+            // maintain statics for the paths but require a control instance to initialize them
+            // and lazy load the text bits when the page instance (or localization) changes
             LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             LookupScriptValues(ctl, out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
 
             string script =
-                    String.Format(
+                    string.Format(
                         @"jQuery(document).ready(
                             function() {{
                                 var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
@@ -123,7 +123,8 @@ namespace DotNetNuke.UI.WebControls.Internal
             {
                 imagePath = this._lockImagePath;
                 cssClass += " lockedPerm";
-                //altText is set based on Value
+
+                // altText is set based on Value
             }
 
             if (!this.SupportsDenyMode)
@@ -141,7 +142,7 @@ namespace DotNetNuke.UI.WebControls.Internal
                 cssClass += " view";
             }
 
-            if (!String.IsNullOrEmpty(this.PermissionKey) && !this.IsView && !this.IsFullControl)
+            if (!string.IsNullOrEmpty(this.PermissionKey) && !this.IsView && !this.IsFullControl)
             {
                 cssClass += " " + this.PermissionKey.ToLowerInvariant();
             }
@@ -156,8 +157,8 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public bool IsView { get; set; }
 
-        //Locked is currently not used on a post-back and therefore the 
-        //value on postback is undefined at this time
+        // Locked is currently not used on a post-back and therefore the
+        // value on postback is undefined at this time
         public bool Locked { get; set; }
 
         public string PermissionKey { get; set; }

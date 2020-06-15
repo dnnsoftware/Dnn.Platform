@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Permissions;
-using Dnn.PersonaBar.Pages.Components.Security;
-using DotNetNuke.Application;
-using DotNetNuke.Entities.Portals;
-
 namespace Dnn.PersonaBar.Pages.MenuControllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Permissions;
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using DotNetNuke.Application;
+    using DotNetNuke.Entities.Portals;
+
     public class PagesMenuController : IMenuItemController
     {
         private readonly ISecurityService _securityService;

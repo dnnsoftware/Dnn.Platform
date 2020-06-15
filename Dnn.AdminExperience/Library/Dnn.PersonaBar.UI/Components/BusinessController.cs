@@ -2,29 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Library.Permissions;
-using Dnn.PersonaBar.Library.Repository;
-using Dnn.PersonaBar.UI.Components.Controllers;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Installers;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.UI.Components
 {
+    using System;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Library.Permissions;
+    using Dnn.PersonaBar.Library.Repository;
+    using Dnn.PersonaBar.UI.Components.Controllers;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Installers;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     public class BusinessController : IUpgradeable
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(BusinessController));
@@ -116,7 +117,7 @@ namespace Dnn.PersonaBar.UI.Components
                             PermissionID = editPermission.PermissionId,
                             RoleID = p.RoleID,
                             UserID = p.UserID,
-                            AllowAccess = p.AllowAccess
+                            AllowAccess = p.AllowAccess,
                         };
 
                         MenuPermissionController.SaveMenuPermissions(portalId, menuItem, menuPermissionInfo);
@@ -148,7 +149,7 @@ namespace Dnn.PersonaBar.UI.Components
                 "Dnn.PersonaBar.TaskScheduler",
                 "Dnn.PersonaBar.Themes",
                 "Dnn.PersonaBar.Users",
-                "Dnn.PersonaBar.Vocabularies"
+                "Dnn.PersonaBar.Vocabularies",
             };
 
             foreach (string assemblyName in assemblies)
@@ -156,7 +157,7 @@ namespace Dnn.PersonaBar.UI.Components
                 RemoveAssembly(assemblyName);
             }
         }
-        
+
         private static void RemoveAssembly(string assemblyName)
         {
             Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
@@ -178,6 +179,4 @@ namespace Dnn.PersonaBar.UI.Components
             }
         }
     }
-
-    
 }

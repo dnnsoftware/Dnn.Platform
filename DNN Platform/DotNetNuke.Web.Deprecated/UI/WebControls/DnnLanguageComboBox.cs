@@ -1,27 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
-using Telerik.Web.UI;
-
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using Telerik.Web.UI;
+
     public class DnnLanguageComboBox : WebControl
     {
         private readonly string _viewTypePersonalizationKey;
@@ -40,29 +33,20 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #region "Public Events"
-
         public event EventHandler ItemChanged;
+
         public event EventHandler ModeChanged;
-
-        #endregion
-
-        #region "Constructor"
 
         public DnnLanguageComboBox()
         {
             this.AutoPostBack = Null.NullBoolean;
             this.CausesValidation = Null.NullBoolean;
             this.ShowFlag = true;
-        	this.ShowModeButtons = true;
+            this.ShowModeButtons = true;
             this.HideLanguagesList = new Dictionary<string, Locale>();
             this.FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
             this._viewTypePersonalizationKey = "ViewType" + this.PortalId;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         private string DisplayMode
         {
@@ -73,6 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     displayMode = "NATIVE";
                 }
+
                 return displayMode;
             }
         }
@@ -89,6 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._languagesListType;
             }
+
             set
             {
                 this._languagesListType = value;
@@ -106,6 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     selectedValue = Null.NullString;
                 }
+
                 return selectedValue;
             }
         }
@@ -116,16 +103,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Determines whether the List Auto Posts Back
+        ///   Gets or sets a value indicating whether determines whether the List Auto Posts Back.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
         public bool CausesValidation { get; set; }
-
-        #endregion
-
-        #region "Private Methods"
 
         public void BindData(bool refresh)
         {
@@ -159,7 +142,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._englishCombo.DataSource = cultures.OrderBy(c => c.EnglishName);
             }
 
-
             this._nativeCombo.DataBind();
             this._englishCombo.DataBind();
 
@@ -169,10 +151,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._nativeCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
             }
         }
-
-        #endregion
-
-        #region "Protected Methods"
 
         protected override void OnInit(EventArgs e)
         {
@@ -221,7 +199,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-
         protected override void OnPreRender(EventArgs e)
         {
             if (this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase))
@@ -245,6 +222,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 item.ImageUrl = string.Format(this.FlagImageUrlFormatString, item.Value);
             }
+
             foreach (RadComboBoxItem item in this._nativeCombo.Items)
             {
                 item.ImageUrl = string.Format(this.FlagImageUrlFormatString, item.Value);
@@ -252,11 +230,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this._englishCombo.AutoPostBack = this.AutoPostBack;
             this._englishCombo.CausesValidation = this.CausesValidation;
-            this._englishCombo.Visible = (this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase));
+            this._englishCombo.Visible = this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase);
 
             this._nativeCombo.AutoPostBack = this.AutoPostBack;
             this._nativeCombo.CausesValidation = this.CausesValidation;
-            this._nativeCombo.Visible = (this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase));
+            this._nativeCombo.Visible = this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase);
 
             this._modeRadioButtonList.Visible = this.ShowModeButtons;
 
@@ -265,10 +243,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
             base.OnPreRender(e);
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public void SetLanguage(string code)
         {
@@ -289,15 +263,11 @@ namespace DotNetNuke.Web.UI.WebControls
             this.BindData(!this.Page.IsPostBack);
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         private void ModeChangedInternal(object sender, EventArgs e)
         {
             Personalization.SetProfile("LanguageDisplayMode", this._viewTypePersonalizationKey, this._modeRadioButtonList.SelectedValue);
 
-            //Resort
+            // Resort
             this.BindData(true);
 
             this.OnModeChanged(EventArgs.Empty);
@@ -307,7 +277,5 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this.OnItemChanged();
         }
-
-        #endregion
     }
 }

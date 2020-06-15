@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http.Filters;
-
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     public class DnnExceptionFilterAttribute : ExceptionFilterAttribute
     {
         public string MessageKey { get; set; }
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Api
                 var response = new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    ReasonPhrase = Localization.GetString(key, resourceFile)
+                    ReasonPhrase = Localization.GetString(key, resourceFile),
                 };
 
                 actionExecutedContext.Response = response;

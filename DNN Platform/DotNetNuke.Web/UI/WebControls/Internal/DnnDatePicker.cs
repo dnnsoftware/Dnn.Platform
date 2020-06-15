@@ -1,31 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     public class DnnDatePicker : TextBox
     {
         protected virtual string Format => "yyyy-MM-dd";
+
         protected virtual string ClientFormat => "YYYY-MM-DD";
 
-        public DateTime? SelectedDate {
+        public DateTime? SelectedDate
+        {
             get
             {
                 DateTime value;
@@ -36,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                 return null;
             }
+
             set
             {
                 this.Text = value?.ToString(this.Format) ?? string.Empty;
@@ -45,7 +44,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public DateTime MinDate { get; set; } = new DateTime(1900, 1, 1);
 
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
-
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -66,15 +64,15 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return new Dictionary<string, object>
             {
-                {"minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : ""},
-                {"maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : ""},
-                {"format", this.ClientFormat }
+                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
+                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture)}')$" : string.Empty },
+                { "format", this.ClientFormat },
             };
-        } 
+        }
 
         private void RegisterClientResources()
         {
-            var settings = Json.Serialize(this.GetSettings()).Replace("\"$", "").Replace("$\"", "");
+            var settings = Json.Serialize(this.GetSettings()).Replace("\"$", string.Empty).Replace("$\"", string.Empty);
             var script = $"$('#{this.ClientID}').pikaday({settings});";
 
             ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "DnnDatePicker" + this.ClientID, script, true);

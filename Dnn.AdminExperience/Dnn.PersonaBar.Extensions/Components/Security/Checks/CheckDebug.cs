@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web;
-
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System.Web;
+
     public class CheckDebug : IAuditCheck
     {
         public string Id => "CheckDebug";

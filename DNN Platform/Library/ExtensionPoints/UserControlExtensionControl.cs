@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Web.UI;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Web.UI;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:UserControlExtensionControl runat=server></{0}:UserControlExtensionControl>")]
     public class UserControlExtensionControl : DefaultExtensionControl
@@ -24,8 +24,8 @@ namespace DotNetNuke.ExtensionPoints
         {
             base.OnInit(e);
             var extensionPointManager = new ExtensionPointManager();
-            
-            if (!String.IsNullOrEmpty(this.Name))
+
+            if (!string.IsNullOrEmpty(this.Name))
             {
                 var extension = extensionPointManager.GetUserControlExtensionPointFirstByPriority(this.Module, this.Name);
                 this.LoadControl(extension);

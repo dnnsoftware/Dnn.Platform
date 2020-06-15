@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+
     public class DnnFormTextBoxItem : DnnFormItemBase
     {
         private TextBox _textBox;
@@ -32,6 +27,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("TextBoxCssClass", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("TextBoxCssClass", value, string.Empty);
@@ -40,10 +36,10 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public TextBoxMode TextMode { get; set; }
 
-		/// <summary>
-		/// do not output field's value after post back when text mode set to password mode.
-		/// </summary>
-	    public bool ClearContentInPasswordMode { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether do not output field's value after post back when text mode set to password mode.
+        /// </summary>
+        public bool ClearContentInPasswordMode { get; set; }
 
         private void TextChanged(object sender, EventArgs e)
         {
@@ -52,7 +48,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-
             this._textBox = new TextBox { ID = this.ID + "_TextBox" };
 
             this._textBox.Rows = this.Rows;
@@ -63,12 +58,13 @@ namespace DotNetNuke.Web.UI.WebControls
             this._textBox.TextChanged += this.TextChanged;
             this._textBox.Attributes.Add("aria-label", this.DataField);
 
-            //Load from ControlState
+            // Load from ControlState
             this._textBox.Text = Convert.ToString(this.Value);
             if (this.TextMode == TextBoxMode.Password)
             {
                 this._textBox.Attributes.Add("autocomplete", "off");
             }
+
             if (this.MaxLength > 0)
             {
                 this._textBox.MaxLength = this.MaxLength;
@@ -88,8 +84,5 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._textBox.Attributes.Add("value", Convert.ToString(this.Value));
             }
         }
-
     }
-
 }
-

@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
 #if INDIVIDUAL_LOCKS
 using System.Collections;
 #endif
 
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Hosting;
+
     internal interface IImageStore
     {
         void Add(string id, byte[] data);
@@ -38,7 +39,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
 #if INDIVIDUAL_LOCKS
         private Hashtable _fileLocks = new Hashtable();
-#else 
+#else
         private readonly object _fileLock = new object();
 #endif
 
@@ -48,16 +49,19 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _cachePath;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 _cachePath = value;
             }
         }
-        public static bool EnableAutoPurge { get; set; } //turn on/off purge feature
+
+        public static bool EnableAutoPurge { get; set; } // turn on/off purge feature
 
         public static TimeSpan PurgeInterval
         {
@@ -65,16 +69,19 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _purgeInterval;
             }
+
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
+
                 _purgeInterval = value;
             }
         }
@@ -87,8 +94,10 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     this._lastPurge = DateTime.Now.Subtract(PurgeInterval);
                 }
+
                 return this._lastPurge;
             }
+
             set
             {
                 this._lastPurge = value;
@@ -108,6 +117,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 Directory.CreateDirectory(CachePath);
             }
+
             this._lastPurge = DateTime.Now;
         }
 
@@ -125,6 +135,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                     }
                 }
+
                 return _diskImageStore;
             }
         }
@@ -184,6 +195,7 @@ namespace DotNetNuke.Services.GeneratedImage
 #endif
                 }
             }
+
             Thread.Sleep(0);
             foreach (var fileinfo in toTryDeleteAgain)
             {
@@ -241,6 +253,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 this.QueueAutoPurge();
             }
+
             string path = BuildFilePath(id);
             lock (this.GetFileLockObject(id))
             {
@@ -249,6 +262,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     response.TransmitFile(path);
                     return true;
                 }
+
                 return false;
             }
         }
@@ -268,7 +282,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
             }
         }
-        
+
         private object GetFileLockObject(string id)
         {
 #if INDIVIDUAL_LOCKS
@@ -307,7 +321,6 @@ namespace DotNetNuke.Services.GeneratedImage
             return CachePath + id + TempFileExtension;
         }
 
-        #region IImageStore Members
         void IImageStore.Add(string id, byte[] data)
         {
             this.Add(id, data);
@@ -317,6 +330,5 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             return this.TryTransmitIfContains(id, response);
         }
-        #endregion
     }
 }

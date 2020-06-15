@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Permissions;
-
 namespace DotNetNuke.Services.FileSystem.Internal
 {
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Permissions;
+
     public class UserSecurityController : ServiceLocator<IUserSecurityController, UserSecurityController>, IUserSecurityController
     {
         public bool IsHostAdminUser(int portalId)
@@ -23,8 +23,9 @@ namespace DotNetNuke.Services.FileSystem.Internal
             {
                 return false;
             }
+
             var user = UserController.Instance.GetUserById(portalId, userId);
-            return user.IsSuperUser || portalId > Null.NullInteger && user.IsInRole(PortalController.Instance.GetPortal(portalId).AdministratorRoleName);
+            return user.IsSuperUser || (portalId > Null.NullInteger && user.IsInRole(PortalController.Instance.GetPortal(portalId).AdministratorRoleName));
         }
 
         public bool HasFolderPermission(IFolderInfo folder, string permissionKey)

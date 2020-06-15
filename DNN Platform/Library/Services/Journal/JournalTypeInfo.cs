@@ -2,37 +2,56 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Common.Utilities;
+namespace DotNetNuke.Services.Journal
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
-namespace DotNetNuke.Services.Journal {
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
-    public class JournalTypeInfo : IHydratable {
+    public class JournalTypeInfo : IHydratable
+    {
         public int JournalTypeId { get; set; }
+
         public int PortalId { get; set; }
+
         public string JournalType { get; set; }
+
         public string icon { get; set; }
+
         public bool AppliesToProfile { get; set; }
+
         public bool AppliesToGroup { get; set; }
+
         public bool AppliesToStream { get; set; }
+
         public bool SupportsNotify { get; set; }
+
         public string Options { get; set; }
+
         public bool IsEnabled { get; set; }
+
         public bool EnableComments { get; set; }
-        public int KeyID {
-            get {
+
+        public int KeyID
+        {
+            get
+            {
                 return this.JournalTypeId;
             }
-            set {
+
+            set
+            {
                 this.JournalTypeId = value;
             }
         }
 
-        public void Fill(System.Data.IDataReader dr) {
+        public void Fill(System.Data.IDataReader dr)
+        {
             this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
             this.PortalId = Null.SetNullInteger(dr["PortalId"]);
             this.JournalType = Null.SetNullString(dr["JournalType"]);

@@ -1,48 +1,43 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Xml;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Modules.Internal;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Modules.Internal;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.OutputCache;
+
     public partial class ModuleController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -64,7 +59,7 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteModuleSettings(int moduleId)
         {
             dataProvider.DeleteModuleSettings(moduleId);
-            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString()};
+            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString() };
             log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString()));
             LogController.Instance.AddLog(log);
             this.UpdateTabModuleVersionsByModuleID(moduleId);
@@ -77,11 +72,12 @@ namespace DotNetNuke.Entities.Modules
         {
             dataProvider.DeleteTabModuleSettings(tabModuleId);
             UpdateTabModuleVersion(tabModuleId);
-            EventLogController.Instance.AddLog("TabModuleID",
-                               tabModuleId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
+            EventLogController.Instance.AddLog(
+                "TabModuleID",
+                tabModuleId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.TABMODULE_SETTING_DELETED);
             ClearTabModuleSettingsCache(tabModuleId, null);
         }
 
@@ -112,9 +108,10 @@ namespace DotNetNuke.Entities.Modules
             }
             finally
             {
-                //Ensure DataReader is closed
+                // Ensure DataReader is closed
                 CBO.CloseDataReader(dr, true);
             }
+
             return settings;
         }
 
@@ -161,6 +158,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return settings;
         }
     }

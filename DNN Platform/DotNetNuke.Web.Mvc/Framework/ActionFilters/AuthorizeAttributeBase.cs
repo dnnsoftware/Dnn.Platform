@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common;
+
     public abstract class AuthorizeAttributeBase : FilterAttribute, IAuthorizationFilter
     {
         protected virtual bool AuthorizeCore(HttpContextBase httpContext)
@@ -52,7 +53,8 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             const string failureMessage = "Authorization has been denied for this request.";
             var authFilterContext = new AuthFilterContext(filterContext, failureMessage);
             authFilterContext.HandleUnauthorizedRequest();
-            //filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
+
+            // filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
         }
 
         protected virtual HttpValidationStatus OnCacheAuthorization(HttpContextBase httpContext)
@@ -60,11 +62,11 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             Requires.NotNull("httpContext", httpContext);
 
             bool isAuthorized = this.AuthorizeCore(httpContext);
-            return (isAuthorized) ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
+            return isAuthorized ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
         }
 
         /// <summary>
-        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required
+        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.
         /// </summary>
         /// <param name="actionContext"></param>
         /// <returns></returns>

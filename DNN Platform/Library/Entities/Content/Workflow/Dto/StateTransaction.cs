@@ -10,22 +10,22 @@ namespace DotNetNuke.Entities.Content.Workflow.Dto
     public class StateTransaction
     {
         /// <summary>
-        /// The content item id that represent the element that is going to change workflow state
+        /// Gets or sets the content item id that represent the element that is going to change workflow state.
         /// </summary>
         public int ContentItemId { get; set; }
 
         /// <summary>
-        /// The current state of the element
+        /// Gets or sets the current state of the element.
         /// </summary>
         public int CurrentStateId { get; set; }
 
         /// <summary>
-        /// This property represents the user that performs the state transaction
+        /// Gets or sets this property represents the user that performs the state transaction.
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
-        /// This property represents the message attached to the state transaction
+        /// Gets or sets this property represents the message attached to the state transaction.
         /// </summary>
         public StateTransactionMessage Message { get; set; }
     }

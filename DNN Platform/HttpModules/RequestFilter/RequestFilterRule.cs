@@ -1,18 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Web;
-
-#endregion
-
 namespace DotNetNuke.HttpModules.RequestFilter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
     [Serializable]
     public class RequestFilterRule
     {
@@ -23,7 +18,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         private List<string> _Values = new List<string>();
 
         /// <summary>
-        /// Initializes a new instance of the RequestFilterRule class.
+        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
         /// </summary>
         /// <param name="serverVariable"></param>
         /// <param name="values"></param>
@@ -40,7 +35,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         }
 
         /// <summary>
-        /// Initializes a new instance of the RequestFilterRule class.
+        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
         /// </summary>
         public RequestFilterRule()
         {
@@ -52,6 +47,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._ServerVariable;
             }
+
             set
             {
                 this._ServerVariable = value;
@@ -64,6 +60,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Values;
             }
+
             set
             {
                 this._Values = value;
@@ -84,6 +81,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Action;
             }
+
             set
             {
                 this._Action = value;
@@ -96,6 +94,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Operator;
             }
+
             set
             {
                 this._Operator = value;
@@ -108,6 +107,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Location;
             }
+
             set
             {
                 this._Location = value;
@@ -117,9 +117,9 @@ namespace DotNetNuke.HttpModules.RequestFilter
         public void SetValues(string values, RequestFilterOperatorType op)
         {
             this._Values.Clear();
-            if ((op != RequestFilterOperatorType.Regex))
+            if (op != RequestFilterOperatorType.Regex)
             {
-                string[] vals = values.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                string[] vals = values.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string value in vals)
                 {
                     this._Values.Add(value.ToUpperInvariant());
@@ -142,6 +142,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 case RequestFilterOperatorType.Regex:
                     return Regex.IsMatch(ServerVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
+
             return false;
         }
 

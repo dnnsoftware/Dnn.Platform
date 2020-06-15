@@ -1,5 +1,10 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+using System;
 using System.Web;
+
 using DotNetNuke.Common.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -42,7 +47,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, 
+        /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -51,7 +56,7 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, 
+        /// Performs application-defined tasks associated with freeing,
         /// releasing, or resetting unmanaged resources.
         /// </summary>
         /// <param name="disposing">

@@ -2,38 +2,40 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Dto.Jobs;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Models;
-using Dnn.ExportImport.Components.Services;
-using Dnn.ExportImport.Dto;
-using Dnn.ExportImport.Dto.Assets;
-using Dnn.ExportImport.Dto.PageTemplates;
-using Dnn.ExportImport.Dto.Portal;
-using Dnn.ExportImport.Dto.ProfileProperties;
-using Dnn.ExportImport.Interfaces;
-using Dnn.ExportImport.Repository;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Scheduling;
-using Newtonsoft.Json;
-using PlatformDataProvider = DotNetNuke.Data.DataProvider;
-using DotNetNuke.Framework.Reflections;
-using Dnn.ExportImport.Dto.Users;
-using DotNetNuke.Instrumentation;
-
 namespace Dnn.ExportImport.Components.Engines
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Controllers;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Dto.Jobs;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Models;
+    using Dnn.ExportImport.Components.Services;
+    using Dnn.ExportImport.Dto;
+    using Dnn.ExportImport.Dto.Assets;
+    using Dnn.ExportImport.Dto.PageTemplates;
+    using Dnn.ExportImport.Dto.Portal;
+    using Dnn.ExportImport.Dto.ProfileProperties;
+    using Dnn.ExportImport.Dto.Users;
+    using Dnn.ExportImport.Interfaces;
+    using Dnn.ExportImport.Repository;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Scheduling;
+    using Newtonsoft.Json;
+
+    using PlatformDataProvider = DotNetNuke.Data.DataProvider;
+
     public class ExportImportEngine
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
@@ -69,17 +71,17 @@ namespace Dnn.ExportImport.Components.Engines
             var finfo = new FileInfo(dbName);
             dbName = finfo.FullName;
 
-
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
 
-            //Delete so we start a fresh export database; only if there is no previous checkpoint exists
+            // Delete so we start a fresh export database; only if there is no previous checkpoint exists
             if (checkpoints.Count == 0)
             {
                 if (finfo.Directory != null && finfo.Directory.Exists)
                 {
                     finfo.Directory.Delete(true);
                 }
-                //Clear all the files in finfo.Directory. Create if doesn't exists.
+
+                // Clear all the files in finfo.Directory. Create if doesn't exists.
                 finfo.Directory?.Create();
                 result.AddSummary("Starting Exporting Repository", finfo.Name);
             }
@@ -115,6 +117,7 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Failed;
                 return;
             }
+
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Preparing Check Points. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
             this.PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
@@ -162,24 +165,26 @@ namespace Dnn.ExportImport.Components.Engines
                                     JobId = exportJob.JobId,
                                     Category = service.Category,
                                     AssemblyName = serviceAssembly,
-                                    StartDate = DateUtils.GetDatabaseUtcTime()
+                                    StartDate = DateUtils.GetDatabaseUtcTime(),
                                 };
 
                                 // persist the record in db
                                 this.CheckpointCallback(service);
                             }
                             else if (service.CheckPoint.StartDate == Null.NullDate)
+                            {
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
+                            }
 
                             try
                             {
                                 service.ExportData(exportJob, exportDto);
-
                             }
                             finally
                             {
                                 this.AddLogsToDatabase(exportJob.JobId, result.CompleteLog);
                             }
+
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
                     }
@@ -189,33 +194,37 @@ namespace Dnn.ExportImport.Components.Engines
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
-                        //WARN: this is a case where there is a broken parent-children hierarchy
+                        // WARN: this is a case where there is a broken parent-children hierarchy
                         //      and/or there are BasePortableService implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0 && !this.TimeIsUp);
+                }
+                while (parentServices.Count > 0 && !this.TimeIsUp);
 
                 RemoveTokenFromCache(exportJob);
             }
 
             if (this.TimeIsUp)
             {
-                result.AddSummary($"Job time slot ({this._timeoutSeconds} sec) expired",
+                result.AddSummary(
+                    $"Job time slot ({this._timeoutSeconds} sec) expired",
                     "Job will resume in the next scheduler iteration");
             }
             else if (exportJob.JobStatus == JobStatus.InProgress)
             {
-                //Create Export Summary for manifest file.
+                // Create Export Summary for manifest file.
                 var summary = new ImportExportSummary();
                 using (var ctx = new ExportImportRepository(dbName))
                 {
                     BaseController.BuildJobSummary(exportJob.Directory, ctx, summary);
                 }
+
                 DoPacking(exportJob, dbName);
-                //Complete the job.
+
+                // Complete the job.
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
 
@@ -223,7 +232,7 @@ namespace Dnn.ExportImport.Components.Engines
                 var exportFileInfo = new ExportFileInfo
                 {
                     ExportPath = exportJob.Directory,
-                    ExportSize = Util.FormatSize(GetExportSize(Path.Combine(ExportFolder, exportJob.Directory)))
+                    ExportSize = Util.FormatSize(GetExportSize(Path.Combine(ExportFolder, exportJob.Directory))),
                 };
 
                 summary.ExportFileInfo = exportFileInfo;
@@ -341,10 +350,13 @@ namespace Dnn.ExportImport.Components.Engines
                                                      AssemblyName = serviceAssembly,
                                                      Category = service.Category,
                                                      Progress = 0,
-                                                     StartDate = DateUtils.GetDatabaseUtcTime()
+                                                     StartDate = DateUtils.GetDatabaseUtcTime(),
                                                  };
                             if (service.CheckPoint.StartDate == Null.NullDate)
+                            {
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
+                            }
+
                             this.CheckpointCallback(service);
 
                             try
@@ -355,6 +367,7 @@ namespace Dnn.ExportImport.Components.Engines
                             {
                                 this.AddLogsToDatabase(importJob.JobId, result.CompleteLog);
                             }
+
                             scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
                     }
@@ -364,19 +377,21 @@ namespace Dnn.ExportImport.Components.Engines
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
-                        //WARN: this is a case where there is a broken parent-children hierarchy
+                        // WARN: this is a case where there is a broken parent-children hierarchy
                         //      and/or there are BasePortableService implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0 && !this.TimeIsUp);
+                }
+                while (parentServices.Count > 0 && !this.TimeIsUp);
 
                 RemoveTokenFromCache(importJob);
                 if (this.TimeIsUp)
                 {
-                    result.AddSummary($"Job time slot ({this._timeoutSeconds} sec) expired",
+                    result.AddSummary(
+                        $"Job time slot ({this._timeoutSeconds} sec) expired",
                         "Job will resume in the next scheduler iteration");
                 }
                 else if (importJob.JobStatus == JobStatus.InProgress)
@@ -396,7 +411,11 @@ namespace Dnn.ExportImport.Components.Engines
             // there must be one parent implementor at least for this to work
             var nextLevelServices = new List<BasePortableService>();
             var firstIteration = true;
-            if (checkpoints.Any()) return;
+            if (checkpoints.Any())
+            {
+                return;
+            }
+
             do
             {
                 foreach (var service in parentServices.OrderBy(x => x.Priority))
@@ -417,14 +436,17 @@ namespace Dnn.ExportImport.Components.Engines
 
                         service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
 
-                        if (service.CheckPoint != null) continue;
+                        if (service.CheckPoint != null)
+                        {
+                            continue;
+                        }
 
                         service.CheckPoint = new ExportImportChekpoint
                         {
                             JobId = jobId,
                             AssemblyName = serviceAssembly,
                             Category = service.Category,
-                            Progress = 0
+                            Progress = 0,
                         };
 
                         // persist the record in db
@@ -435,7 +457,8 @@ namespace Dnn.ExportImport.Components.Engines
                 firstIteration = false;
                 parentServices = new List<BasePortableService>(nextLevelServices);
                 nextLevelServices.Clear();
-            } while (parentServices.Count > 0);
+            }
+            while (parentServices.Count > 0);
         }
 
         private static bool CheckCancelledCallBack(ExportImportJob job)
@@ -454,8 +477,8 @@ namespace Dnn.ExportImport.Components.Engines
         /// <summary>
         /// Callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
         /// </summary>
-        /// <param name="service">The <see cref="BasePortableService"/> implementation</param>
-        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise</returns>
+        /// <param name="service">The <see cref="BasePortableService"/> implementation.</param>
+        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise.</returns>
         private bool CheckpointCallback(BasePortableService service)
         {
             EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
@@ -474,7 +497,8 @@ namespace Dnn.ExportImport.Components.Engines
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
-        private static HashSet<string> GetAllCategoriesToInclude(ExportDto exportDto,
+        private static HashSet<string> GetAllCategoriesToInclude(
+            ExportDto exportDto,
             List<BasePortableService> implementors)
         {
             // add all child items
@@ -499,19 +523,29 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             if (exportDto.IncludeContent)
+            {
                 includedItems.Add(Constants.Category_Content);
+            }
 
             if (exportDto.IncludeFiles)
+            {
                 includedItems.Add(Constants.Category_Assets);
+            }
 
             if (exportDto.IncludeUsers)
+            {
                 includedItems.Add(Constants.Category_Users);
+            }
 
             if (exportDto.IncludeRoles)
+            {
                 includedItems.Add(Constants.Category_Roles);
+            }
 
             if (exportDto.IncludeVocabularies)
+            {
                 includedItems.Add(Constants.Category_Vocabularies);
+            }
 
             if (exportDto.IncludeTemplates)
             {
@@ -519,11 +553,15 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             if (exportDto.IncludeProperfileProperties)
+            {
                 includedItems.Add(Constants.Category_ProfileProps);
+            }
 
-            //This might be added always.
+            // This might be added always.
             if (exportDto.IncludeExtensions)
+            {
                 includedItems.Add(Constants.Category_Packages);
+            }
 
             var additionalItems = new List<string>();
             foreach (var includedItem in includedItems)
@@ -536,11 +574,14 @@ namespace Dnn.ExportImport.Components.Engines
                     additionalItems.Add(basePortableService.Category);
                 }
             }
+
             additionalItems.ForEach(i => includedItems.Add(i));
 
             // must be included always when there is at least one other object to process
             if (includedItems.Any())
+            {
                 includedItems.Add(Constants.Category_Portal);
+            }
 
             return includedItems;
         }
@@ -564,6 +605,7 @@ namespace Dnn.ExportImport.Components.Engines
             {
                 value = 12 * 60 * 60;
             }
+
             return value;
         }
 
@@ -588,7 +630,10 @@ namespace Dnn.ExportImport.Components.Engines
             var extractFolder = Path.Combine(ExportFolder, importJob.Directory);
             var dbName = Path.Combine(extractFolder, Constants.ExportDbName);
             if (File.Exists(dbName))
+            {
                 return;
+            }
+
             var zipDbName = Path.Combine(extractFolder, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, extractFolder, false);
         }
@@ -605,7 +650,11 @@ namespace Dnn.ExportImport.Components.Engines
             var isDirty = exportDto.IsDirty;
             exportDto.IsDirty = true;
             repository.UpdateSingleItem(exportDto);
-            if (!isDirty) return;
+            if (!isDirty)
+            {
+                return;
+            }
+
             var typeLocator = new TypeLocator();
             var types = typeLocator.GetAllMatchingTypes(
                 t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
@@ -622,12 +671,12 @@ namespace Dnn.ExportImport.Components.Engines
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
+                    Logger.ErrorFormat(
+                        "Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
                         type.Name,
                         e.Message);
                 }
             }
-
         }
 
         private static string[] NotAllowedCategoriesinRequestArray => new[]
@@ -649,26 +698,29 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static string[] CleanUpIgnoredClasses => new[]
         {
-            typeof (ExportFile).Name,
-            typeof (ExportFolder).Name,
-            typeof (ExportFolderMapping).Name,
-            typeof (ExportFolderPermission).Name,
-            typeof (ExportPageTemplate).Name,
-            typeof (ExportPortalSetting).Name,
-            typeof (ExportPortalLanguage).Name,
-            typeof (ExportProfileProperty).Name,
-            typeof (ExportUser).Name,
-            typeof (ExportAspnetUser).Name,
-            typeof (ExportAspnetMembership).Name,
-            typeof (ExportUserAuthentication).Name,
-            typeof (ExportUserPortal).Name,
-            typeof (ExportUserProfile).Name,
-            typeof (ExportUserRole).Name
+            typeof(ExportFile).Name,
+            typeof(ExportFolder).Name,
+            typeof(ExportFolderMapping).Name,
+            typeof(ExportFolderPermission).Name,
+            typeof(ExportPageTemplate).Name,
+            typeof(ExportPortalSetting).Name,
+            typeof(ExportPortalLanguage).Name,
+            typeof(ExportProfileProperty).Name,
+            typeof(ExportUser).Name,
+            typeof(ExportAspnetUser).Name,
+            typeof(ExportAspnetMembership).Name,
+            typeof(ExportUserAuthentication).Name,
+            typeof(ExportUserPortal).Name,
+            typeof(ExportUserProfile).Name,
+            typeof(ExportUserRole).Name,
         };
 
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
-            if (completeLog == null || completeLog.Count == 0) return;
+            if (completeLog == null || completeLog.Count == 0)
+            {
+                return;
+            }
 
             using (var table = new DataTable("ExportImportJobLogs"))
             {
@@ -697,16 +749,17 @@ namespace Dnn.ExportImport.Components.Engines
                     table.Rows.Clear();
                 }
             }
+
             completeLog.Clear();
         }
 
         private static readonly Tuple<string, Type>[] DatasetColumns =
         {
-            new Tuple<string,Type>("JobId", typeof(int)),
-            new Tuple<string,Type>("Name" , typeof(string)),
-            new Tuple<string,Type>("Value", typeof(string)),
-            new Tuple<string,Type>("Level", typeof(int)),
-            new Tuple<string,Type>("CreatedOnDate", typeof(DateTime)),
+            new Tuple<string, Type>("JobId", typeof(int)),
+            new Tuple<string, Type>("Name", typeof(string)),
+            new Tuple<string, Type>("Value", typeof(string)),
+            new Tuple<string, Type>("Level", typeof(int)),
+            new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
         };
     }
 }

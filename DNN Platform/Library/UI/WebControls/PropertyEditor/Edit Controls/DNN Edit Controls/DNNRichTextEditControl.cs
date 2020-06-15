@@ -1,25 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Modules.HTMLEditorProvider;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Modules.HTMLEditorProvider;
 
     /// <summary>
     /// The DNNRichTextEditControl control provides a standard UI component for editing
-    /// RichText
+    /// RichText.
     /// </summary>
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl
@@ -51,6 +46,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return this._defaultTextEditor.Text;
             }
+
             set
             {
                 if (this._richTextEditor != null)
@@ -69,15 +65,14 @@ namespace DotNetNuke.UI.WebControls
             if (this.EditMode == PropertyEditorMode.Edit)
             {
                 var pnlEditor = new Panel();
-                if(string.IsNullOrEmpty(this.CssClass))
+                if (string.IsNullOrEmpty(this.CssClass))
                 {
-                    pnlEditor.CssClass ="dnnLeft";
+                    pnlEditor.CssClass = "dnnLeft";
                 }
                 else
                 {
                     pnlEditor.CssClass = string.Format("{0} dnnLeft", this.CssClass);
                 }
-
 
                 this._richTextEditor = HtmlEditorProvider.Instance();
                 if (this._richTextEditor != null)
@@ -100,7 +95,7 @@ namespace DotNetNuke.UI.WebControls
                                              ID = this.ID + "edit",
                                              Width = this.ControlStyle.Width.IsEmpty ? new Unit(300) : this.ControlStyle.Width,
                                              Height = this.ControlStyle.Height.IsEmpty ? new Unit(250) : this.ControlStyle.Height,
-                                             TextMode = TextBoxMode.MultiLine
+                                             TextMode = TextBoxMode.MultiLine,
                                          };
                     this._defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }
@@ -108,8 +103,8 @@ namespace DotNetNuke.UI.WebControls
                 this.Controls.Clear();
                 pnlEditor.Controls.Add(this.TextEditControl);
                 this.Controls.Add(pnlEditor);
-                
             }
+
             base.CreateChildControls();
         }
 
@@ -123,6 +118,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
 
@@ -131,10 +127,10 @@ namespace DotNetNuke.UI.WebControls
             var strValue = this.RemoveBaseTags(Convert.ToString(this.Value));
             var strOldValue = this.RemoveBaseTags(Convert.ToString(this.OldValue));
             var args = new PropertyEditorEventArgs(this.Name) { Value = this.Page.Server.HtmlEncode(strValue), OldValue = this.Page.Server.HtmlEncode(strOldValue), StringValue = this.Page.Server.HtmlEncode(this.RemoveBaseTags(this.StringValue)) };
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
-        private string RemoveBaseTags(String strInput)
+        private string RemoveBaseTags(string strInput)
         {
             return Globals.BaseTagRegex.Replace(strInput, " ");
         }
@@ -152,6 +148,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.EditorText = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
             }
+
             if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
                 this.Page.RegisterRequiresPostBack(this);
@@ -171,6 +168,5 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(propValue);
             writer.RenderEndTag();
         }
-
     }
 }

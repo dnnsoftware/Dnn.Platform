@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Data;
-
 namespace DotNetNuke.Tests.Data.Fakes
 {
-    public class FakeRepository<T> : RepositoryBase<T> where T : class
+    using System.Collections.Generic;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Data;
+
+    public class FakeRepository<T> : RepositoryBase<T>
+        where T : class
     {
         public override void Delete(string sqlCondition, params object[] args)
         {

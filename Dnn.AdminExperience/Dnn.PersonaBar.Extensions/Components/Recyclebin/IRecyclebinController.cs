@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Text;
-using Dnn.PersonaBar.Recyclebin.Components.Dto;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
+    using System.Collections.Generic;
+    using System.Text;
+
+    using Dnn.PersonaBar.Recyclebin.Components.Dto;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+
     public interface IRecyclebinController
     {
         string LocalizeString(string key);

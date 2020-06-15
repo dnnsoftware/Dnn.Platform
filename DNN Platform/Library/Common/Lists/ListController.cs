@@ -1,34 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Threading;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
 namespace DotNetNuke.Common.Lists
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Linq;
+    using System.Threading;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     public class ListController
     {
-
         public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
-
-        #region Private Methods
 
         private void ClearListCache(int portalId)
         {
@@ -44,6 +37,7 @@ namespace DotNetNuke.Common.Lists
         private ListInfo FillListInfo(IDataReader dr, bool CheckForOpenDataReader)
         {
             ListInfo list = null;
+
             // read datareader
             bool canContinue = true;
             if (CheckForOpenDataReader)
@@ -54,6 +48,7 @@ namespace DotNetNuke.Common.Lists
                     canContinue = true;
                 }
             }
+
             if (canContinue)
             {
                 list = new ListInfo(Convert.ToString(dr["ListName"]));
@@ -66,10 +61,11 @@ namespace DotNetNuke.Common.Lists
                     list.ParentKey = Convert.ToString(dr["ParentKey"]);
                     list.Parent = Convert.ToString(dr["Parent"]);
                     list.ParentList = Convert.ToString(dr["ParentList"]);
-                    list.EnableSortOrder = (Convert.ToInt32(dr["MaxSortOrder"]) > 0);
+                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"]) > 0;
                     list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
                 }
             }
+
             return list;
         }
 
@@ -97,32 +93,34 @@ namespace DotNetNuke.Common.Lists
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return dic;
         }
 
         private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
         {
             string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(new CacheItemArgs(cacheKey,
-                                                                        DataCache.ListsCacheTimeOut,
-                                                                        DataCache.ListsCachePriority),
-                                                                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
+            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.ListsCacheTimeOut,
+                DataCache.ListsCachePriority),
+                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
         }
 
         private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
         {
-
             string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
-            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(new CacheItemArgs(cacheKey,
-                                                                        DataCache.ListsCacheTimeOut,
-                                                                        DataCache.ListsCachePriority),
-                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, String.Empty, portalId)));
+            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.ListsCacheTimeOut,
+                DataCache.ListsCachePriority),
+                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
 
-        #endregion
-
         /// <summary>
-        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be 
+        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be
         /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
         /// </summary>
         /// <param name="listEntry">The list entry.</param>
@@ -131,33 +129,36 @@ namespace DotNetNuke.Common.Lists
         {
             bool enableSortOrder = listEntry.SortOrder > 0;
             this.ClearListCache(listEntry.PortalID);
-            int entryId = DataProvider.Instance().AddListEntry(listEntry.ListName,
-                                                        listEntry.Value,
-                                                        listEntry.TextNonLocalized,
-                                                        listEntry.ParentID,
-                                                        listEntry.Level,
-                                                        enableSortOrder,
-                                                        listEntry.DefinitionID,
-                                                        listEntry.Description,
-                                                        listEntry.PortalID,
-                                                        listEntry.SystemList,
-                                                        UserController.Instance.GetCurrentUserInfo().UserID);
+            int entryId = DataProvider.Instance().AddListEntry(
+                listEntry.ListName,
+                listEntry.Value,
+                listEntry.TextNonLocalized,
+                listEntry.ParentID,
+                listEntry.Level,
+                enableSortOrder,
+                listEntry.DefinitionID,
+                listEntry.Description,
+                listEntry.PortalID,
+                listEntry.SystemList,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             if (entryId != Null.NullInteger)
             {
-                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_CREATED);
+                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_CREATED);
             }
+
             if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !this.NonLocalizedLists.Contains(listEntry.ListName))
             {
-				if (string.IsNullOrEmpty(listEntry.ParentKey))
-				{
-					LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
-				}
-				else
-				{
-					LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
-				}
+                if (string.IsNullOrEmpty(listEntry.ParentKey))
+                {
+                    LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                }
+                else
+                {
+                    LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                }
             }
+
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
         }
@@ -188,18 +189,20 @@ namespace DotNetNuke.Common.Lists
 
             var lists = new SortedList<string, ListInfo>();
             lists.Add(list.Key, list);
-            //add Children
+
+            // add Children
             if (includeChildren)
             {
                 foreach (KeyValuePair<string, ListInfo> listPair in this.GetListInfoDictionary(list.PortalID))
                 {
-                    if ((listPair.Value.ParentList.StartsWith(list.Key)))
+                    if (listPair.Value.ParentList.StartsWith(list.Key))
                     {
                         lists.Add(listPair.Value.Key.Replace(":", "."), listPair.Value);
                     }
                 }
             }
-            //Delete items in reverse order so deeper descendants are removed before their parents
+
+            // Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
                 this.DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);
@@ -254,7 +257,7 @@ namespace DotNetNuke.Common.Lists
 
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName)
         {
-            return this.GetListEntryInfoDictionary(listName, "", Null.NullInteger);
+            return this.GetListEntryInfoDictionary(listName, string.Empty, Null.NullInteger);
         }
 
         public Dictionary<string, ListEntryInfo> GetListEntryInfoDictionary(string listName, string parentKey)
@@ -277,7 +280,7 @@ namespace DotNetNuke.Common.Lists
 
         public ListInfo GetListInfo(string listName)
         {
-            return this.GetListInfo(listName, "");
+            return this.GetListInfo(listName, string.Empty);
         }
 
         public ListInfo GetListInfo(string listName, string parentKey)
@@ -293,6 +296,7 @@ namespace DotNetNuke.Common.Lists
             {
                 key = parentKey + ":";
             }
+
             key += listName;
             Dictionary<string, ListInfo> dicLists = this.GetListInfoDictionary(portalId);
             if (!dicLists.TryGetValue(key, out list))
@@ -307,17 +311,18 @@ namespace DotNetNuke.Common.Lists
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return list;
         }
 
         public ListInfoCollection GetListInfoCollection()
         {
-            return this.GetListInfoCollection("");
+            return this.GetListInfoCollection(string.Empty);
         }
 
         public ListInfoCollection GetListInfoCollection(string listName)
         {
-            return this.GetListInfoCollection(listName, "");
+            return this.GetListInfoCollection(listName, string.Empty);
         }
 
         public ListInfoCollection GetListInfoCollection(string listName, string parentKey)
@@ -337,12 +342,13 @@ namespace DotNetNuke.Common.Lists
                     lists.Add(list);
                 }
             }
+
             return (ListInfoCollection)lists;
         }
 
         /// <summary>
         /// Updates the list entry in the database using the values set on the listEntry. Note that if the current thread locale is not "en-US" then the
-        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value 
+        /// text value will be persisted to a resource file under App_GlobalResources using the list's name and the value as key. Also the supplied text value
         /// will *not* be written to the database in this case (i.e. we expect the text value in the database to be the en-US text value).
         /// </summary>
         /// <param name="listEntry">The list entry info item to update.</param>
@@ -361,10 +367,11 @@ namespace DotNetNuke.Common.Lists
                     ? listEntry.Value + ".Text"
                     : listEntry.ParentKey + "." + listEntry.Value + ".Text";
 
-                LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot, 
+                LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot,
                     Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
             }
-            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LISTENTRY_UPDATED);
+
+            EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_UPDATED);
             this.ClearListCache(listEntry.PortalID);
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
         }
@@ -377,19 +384,22 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
         {
-            return this.GetListEntryInfoCollection(listName, "", Null.NullInteger);
+            return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
         }
 
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
         {
             return this.GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
         }
 
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
         {
             var items = this.GetListEntryInfoItems(listName, parentKey, portalId);
@@ -399,6 +409,7 @@ namespace DotNetNuke.Common.Lists
             {
                 items.ToList().ForEach(x => collection.Add(x.Key, x));
             }
+
             return collection;
         }
     }

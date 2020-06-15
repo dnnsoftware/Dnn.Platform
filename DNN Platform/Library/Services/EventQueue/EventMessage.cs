@@ -1,33 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.IO;
-using System.Text;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Services.EventQueue
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+
     public enum MessagePriority
     {
         High,
         Medium,
-        Low
+        Low,
     }
 
     [Serializable]
     public class EventMessage
     {
-		#region "Private Members"
-		
         private NameValueCollection _attributes;
         private string _authorizedRoles = Null.NullString;
         private string _body = Null.NullString;
@@ -40,19 +33,11 @@ namespace DotNetNuke.Services.EventQueue
         private string _sender = Null.NullString;
         private DateTime _sentDate;
         private string _subscribers = Null.NullString;
-		
-		#endregion
-
-		#region "Constructors"
 
         public EventMessage()
         {
             this._attributes = new NameValueCollection();
         }
-		
-		#endregion
-
-		#region "Public Properties"
 
         public int EventMessageID
         {
@@ -60,6 +45,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._eventMessageID;
             }
+
             set
             {
                 this._eventMessageID = value;
@@ -79,6 +65,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._processorType;
                 }
             }
+
             set
             {
                 this._processorType = value;
@@ -98,6 +85,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._processorCommand;
                 }
             }
+
             set
             {
                 this._processorCommand = value;
@@ -117,6 +105,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._body;
                 }
             }
+
             set
             {
                 this._body = value;
@@ -136,6 +125,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._sender;
                 }
             }
+
             set
             {
                 this._sender = value;
@@ -155,6 +145,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._subscribers;
                 }
             }
+
             set
             {
                 this._subscribers = value;
@@ -174,6 +165,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._authorizedRoles;
                 }
             }
+
             set
             {
                 this._authorizedRoles = value;
@@ -186,6 +178,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._priority;
             }
+
             set
             {
                 this._priority = value;
@@ -205,6 +198,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._exceptionMessage;
                 }
             }
+
             set
             {
                 this._exceptionMessage = value;
@@ -217,6 +211,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._sentDate.ToLocalTime();
             }
+
             set
             {
                 this._sentDate = value.ToUniversalTime();
@@ -229,6 +224,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._expirationDate.ToLocalTime();
             }
+
             set
             {
                 this._expirationDate = value.ToUniversalTime();
@@ -241,15 +237,12 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._attributes;
             }
+
             set
             {
                 this._attributes = value;
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
 
         public void DeserializeAttributes(string configXml)
         {
@@ -261,12 +254,12 @@ namespace DotNetNuke.Services.EventQueue
             reader.ReadStartElement("Attributes");
             if (!reader.IsEmptyElement)
             {
-				//Loop throug the Attributes
+                // Loop throug the Attributes
                 do
                 {
                     reader.ReadStartElement("Attribute");
 
-                    //Load it from the Xml
+                    // Load it from the Xml
                     reader.ReadStartElement("Name");
                     attName = reader.ReadString();
                     reader.ReadEndElement();
@@ -280,10 +273,11 @@ namespace DotNetNuke.Services.EventQueue
                     {
                         reader.Read();
                     }
-					
-                    //Add attribute to the collection
+
+                    // Add attribute to the collection
                     this._attributes.Add(attName, attValue);
-                } while (reader.ReadToNextSibling("Attribute"));
+                }
+                while (reader.ReadToNextSibling("Attribute"));
             }
         }
 
@@ -303,10 +297,10 @@ namespace DotNetNuke.Services.EventQueue
                 {
                     writer.WriteStartElement("Attribute");
 
-                    //Write the Name element
+                    // Write the Name element
                     writer.WriteElementString("Name", key);
 
-                    //Write the Value element
+                    // Write the Value element
                     if (this.Attributes[key].IndexOfAny("<'>\"&".ToCharArray()) > -1)
                     {
                         writer.WriteStartElement("Value");
@@ -315,24 +309,22 @@ namespace DotNetNuke.Services.EventQueue
                     }
                     else
                     {
-                        //Write value
+                        // Write value
                         writer.WriteElementString("Value", this.Attributes[key]);
                     }
 
-                    //Close the Attribute node
+                    // Close the Attribute node
                     writer.WriteEndElement();
                 }
 
-                //Close the Attributes node
+                // Close the Attributes node
                 writer.WriteEndElement();
 
-                //Close Writer
+                // Close Writer
                 writer.Close();
 
                 return sb.ToString();
             }
         }
-		
-		#endregion
     }
 }

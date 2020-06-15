@@ -2,34 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextUserInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlTextUser object
+    ///   Defines an instance of an HtmlTextUser object.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class HtmlTextUserInfo
     {
-        #region Private Member
         // local property declarations
         private ModuleInfo _Module;
 
-        #endregion
-
-        #region Public Properties
         public int ItemID { get; set; }
 
         public int StateID { get; set; }
@@ -47,6 +42,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     _ModuleTitle = this.Module.ModuleTitle;
                 }
+
                 return _ModuleTitle;
             }
         }
@@ -59,16 +55,15 @@ namespace DotNetNuke.Modules.Html
                 {
                     this._Module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
                 }
+
                 return this._Module;
             }
         }
-
 
         public int TabID { get; set; }
 
         public int UserID { get; set; }
 
         public DateTime CreatedOnDate { get; set; }
-        #endregion
     }
 }

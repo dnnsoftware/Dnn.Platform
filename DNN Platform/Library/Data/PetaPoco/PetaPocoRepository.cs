@@ -1,27 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-
-using PetaPoco;
-
-#endregion
-
 namespace DotNetNuke.Data.PetaPoco
 {
-    public class PetaPocoRepository<T> : RepositoryBase<T> where T : class
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using global::PetaPoco;
+
+    public class PetaPocoRepository<T> : RepositoryBase<T>
+        where T : class
     {
         private readonly Database _database;
         private readonly IMapper _mapper;
-
-        #region Constructors
 
         public PetaPocoRepository(Database database, IMapper mapper)
         {
@@ -32,10 +25,6 @@ namespace DotNetNuke.Data.PetaPoco
 
             PetaPocoMapper.SetMapper<T>(mapper);
         }
-
-        #endregion
-
-        #region IRepository<T> Implementation
 
         public override void Delete(string sqlCondition, params object[] args)
         {
@@ -49,11 +38,12 @@ namespace DotNetNuke.Data.PetaPoco
 
         public override IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
         {
-            //Make sure that the sql Condition contains an ORDER BY Clause
-            if(!sqlCondition.ToUpperInvariant().Contains("ORDER BY"))
+            // Make sure that the sql Condition contains an ORDER BY Clause
+            if (!sqlCondition.ToUpperInvariant().Contains("ORDER BY"))
             {
-                sqlCondition = String.Format("{0} ORDER BY {1}", sqlCondition, this._mapper.GetTableInfo(typeof(T)).PrimaryKey);
+                sqlCondition = string.Format("{0} ORDER BY {1}", sqlCondition, this._mapper.GetTableInfo(typeof(T)).PrimaryKey);
             }
+
             Page<T> petaPocoPage = this._database.Page<T>(pageIndex + 1, pageSize, DataUtil.ReplaceTokens(sqlCondition), args);
 
             return new PagedList<T>(petaPocoPage.Items, (int)petaPocoPage.TotalItems, pageIndex, pageSize);
@@ -64,8 +54,6 @@ namespace DotNetNuke.Data.PetaPoco
             this._database.Update<T>(DataUtil.ReplaceTokens(sqlCondition), args);
         }
 
-        #endregion
-
         protected override void DeleteInternal(T item)
         {
             this._database.Delete(item);
@@ -73,12 +61,12 @@ namespace DotNetNuke.Data.PetaPoco
 
         protected override IEnumerable<T> GetInternal()
         {
-            return this._database.Fetch<T>(String.Empty);
+            return this._database.Fetch<T>(string.Empty);
         }
 
         protected override IPagedList<T> GetPageInternal(int pageIndex, int pageSize)
         {
-            return this.Find(pageIndex, pageSize, String.Empty);
+            return this.Find(pageIndex, pageSize, string.Empty);
         }
 
         protected override IEnumerable<T> GetByScopeInternal(object propertyValue)
@@ -108,7 +96,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         private string GetScopeSql()
         {
-            return String.Format("WHERE {0} = @0", DataUtil.GetColumnName(typeof (T), this.Scope));
+            return string.Format("WHERE {0} = @0", DataUtil.GetColumnName(typeof(T), this.Scope));
         }
     }
 }

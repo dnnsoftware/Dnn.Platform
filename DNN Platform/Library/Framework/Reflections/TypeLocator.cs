@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-using DotNetNuke.Framework.Internal.Reflection;
-
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.Framework.Reflections
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Framework.Internal.Reflection;
+
     public class TypeLocator : ITypeLocator, IAssemblyLocator
     {
         private IAssemblyLocator _assemblyLocator;
@@ -34,16 +33,16 @@ namespace DotNetNuke.Framework.Reflections
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    //some assemblies don't want to be reflected but they still 
-                    //expose types in the exception
+                    // some assemblies don't want to be reflected but they still
+                    // expose types in the exception
                     types = ex.Types ?? new Type[0];
                 }
 
                 foreach (var type in types)
                 {
-                    if(type != null)
+                    if (type != null)
                     {
-                        if(predicate(type))
+                        if (predicate(type))
                         {
                             yield return type;
                         }
@@ -86,7 +85,7 @@ namespace DotNetNuke.Framework.Reflections
                                                     "DotNetNuke.WebUtility",
                                                 };
 
-            //First eliminate by "class"
+            // First eliminate by "class"
             var assemblyName = assembly.FullName.ToLowerInvariant();
             bool canScan = !(assemblyName.StartsWith("clientdependency.core") || assemblyName.StartsWith("countrylistbox")
                 || assemblyName.StartsWith("icsharpcode") || assemblyName.StartsWith("fiftyone")
@@ -94,12 +93,11 @@ namespace DotNetNuke.Framework.Reflections
                 || assemblyName.StartsWith("newtonsoft") || assemblyName.StartsWith("petapoco")
                 || assemblyName.StartsWith("sharpziplib") || assemblyName.StartsWith("system")
                 || assemblyName.StartsWith("telerik") || assemblyName.StartsWith("webformsmvp")
-                || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart")
-                );
+                || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart"));
 
             if (canScan)
             {
-                //Next eliminate specific assemblies
+                // Next eliminate specific assemblies
                 if (ignoreAssemblies.Any(ignoreAssembly => assemblyName == ignoreAssembly.ToLowerInvariant()))
                 {
                     canScan = false;
@@ -111,13 +109,13 @@ namespace DotNetNuke.Framework.Reflections
 
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
-            //this method is not readily testable as the assemblies in the current app domain
-            //will vary depending on the test runner and test configuration
+            // this method is not readily testable as the assemblies in the current app domain
+            // will vary depending on the test runner and test configuration
             get
             {
-                return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                return from assembly in AppDomain.CurrentDomain.GetAssemblies()
                     where this.CanScan(assembly)
-                    select new AssemblyWrapper(assembly));
+                    select new AssemblyWrapper(assembly);
             }
         }
     }

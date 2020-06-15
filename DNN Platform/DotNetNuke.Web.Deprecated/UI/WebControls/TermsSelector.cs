@@ -1,29 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Script.Serialization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Telerik.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Script.Serialization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Telerik.Web.UI;
+
     public class TermsSelector : DnnComboBox, IClientAPICallbackEventHandler
     {
         public TermsSelector()
@@ -33,8 +29,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.EnableViewState = false;
         }
 
-        #region Public Properties
-
         public int PortalId { get; set; }
 
         public bool IncludeSystemVocabularies { get; set; }
@@ -42,10 +36,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool IncludeTags { get; set; }
 
         public List<Term> Terms { get; set; }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -93,7 +83,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
 
-                    //clear the append item by client side
+                    // clear the append item by client side
                     if (this.Items.Count > 1)
                     {
                         this.Items.Remove(1);
@@ -101,12 +91,12 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
 
-
             if (!this.Page.IsPostBack)
             {
                 this.Page.ClientScript.RegisterClientScriptResource(this.GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.js");
 
-                ClientResourceManager.RegisterStyleSheet(this.Page,
+                ClientResourceManager.RegisterStyleSheet(
+                    this.Page,
                     this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Web.UI.WebControls.Resources.TermsSelector.css"));
 
                 ClientAPI.RegisterClientVariable(this.Page, "TermsSelectorCallback",
@@ -120,29 +110,20 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
             if (this.Terms != null)
             {
-                this.Attributes.Add("SelectedTerms", String.Join(",", this.Terms.Select(t => t.TermId.ToString()).ToArray()));
+                this.Attributes.Add("SelectedTerms", string.Join(",", this.Terms.Select(t => t.TermId.ToString()).ToArray()));
             }
+
             this.Attributes.Add("IncludeSystemVocabularies", this.IncludeSystemVocabularies.ToString().ToLowerInvariant());
             this.Attributes.Add("IncludeTags", this.IncludeTags.ToString().ToLowerInvariant());
             this.Attributes.Add("PortalId", this.PortalId.ToString());
         }
 
-        #endregion
-
-        #region Private Template Class
-
         public class TreeViewTemplate : ITemplate
         {
-            #region Private Fields
-
             private RadComboBoxItem _container;
             private TermsSelector _termsSelector;
 
             private DnnTreeView _tree;
-
-            #endregion
-
-            #region ITemplate Members
 
             public void InstantiateIn(Control container)
             {
@@ -154,19 +135,12 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._tree.CheckBoxes = true;
                 this._tree.EnableViewState = false;
 
-                //bind client-side events
+                // bind client-side events
                 this._tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
 
                 this._container.Controls.Add(this._tree);
             }
-
-
-            #endregion
         }
-
-        #endregion
-
-        #region IClientAPICallbackEventHandler Implementation
 
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
@@ -179,10 +153,6 @@ namespace DotNetNuke.Web.UI.WebControls
             var serializer = new JavaScriptSerializer();
             return serializer.Serialize(terms);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private ArrayList GetTerms()
         {
@@ -212,22 +182,21 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             ITermController termRep = Util.GetTermController();
 
-            //Add a dummy parent term if simple vocabulary
+            // Add a dummy parent term if simple vocabulary
             if (v.Type == VocabularyType.Simple)
             {
                 terms.Add(new { termId = -v.VocabularyId, name = v.Name, parentTermId = Null.NullInteger });
             }
+
             foreach (Term t in termRep.GetTermsByVocabulary(v.VocabularyId))
             {
                 if (v.Type == VocabularyType.Simple)
                 {
                     t.ParentTermId = -v.VocabularyId;
                 }
+
                 terms.Add(new { termId = t.TermId, name = t.Name, parentTermId = t.ParentTermId });
             }
-
         }
-
-        #endregion
     }
 }

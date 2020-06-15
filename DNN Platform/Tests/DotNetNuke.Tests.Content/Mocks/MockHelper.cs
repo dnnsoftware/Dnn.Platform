@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Web.Validators;
-
-using Moq;
-using FileController = DotNetNuke.Entities.Content.AttachmentController;
-
 namespace DotNetNuke.Tests.Content.Mocks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Web.Validators;
+    using Moq;
+
+    using FileController = DotNetNuke.Entities.Content.AttachmentController;
+
     public static class MockHelper
     {
         internal static IQueryable<Vocabulary> TestVocabularies
@@ -114,6 +114,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             // Create columns, ID and Name.
             DataColumn idColumn = table.Columns.Add("ContentTypeID", typeof(int));
             table.Columns.Add("ContentType", typeof(string));
+
             // Set the ID column as the primary key column.
             table.PrimaryKey = new[] { idColumn };
 
@@ -128,6 +129,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             // Create columns, ID and Name.
             DataColumn idColumn = table.Columns.Add("ScopeTypeID", typeof(int));
             table.Columns.Add("ScopeType", typeof(string));
+
             // Set the ID column as the primary key column.
             table.PrimaryKey = new[] { idColumn };
 
@@ -179,15 +181,16 @@ namespace DotNetNuke.Tests.Content.Mocks
             return table;
         }
 
-        private static Mock<TMock> RegisterMockController<TMock>(Mock<TMock> mock) where TMock : class
+        private static Mock<TMock> RegisterMockController<TMock>(Mock<TMock> mock)
+            where TMock : class
         {
             if (ComponentFactory.Container == null)
             {
-                //Create a Container
+                // Create a Container
                 ComponentFactory.Container = new SimpleContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var getMock = ComponentFactory.GetComponent<Mock<TMock>>();
 
             if (getMock == null)
@@ -199,9 +202,9 @@ namespace DotNetNuke.Tests.Content.Mocks
                 ComponentFactory.RegisterComponentInstance<Mock<TMock>>(getMock);
                 ComponentFactory.RegisterComponentInstance<TMock>(getMock.Object);
             }
+
             return getMock;
         }
-
 
         internal static IDataReader CreateEmptyContentItemReader()
         {
@@ -238,20 +241,21 @@ namespace DotNetNuke.Tests.Content.Mocks
             var mockVocabularies = new Mock<IVocabularyController>();
             mockVocabularies.Setup(v => v.GetVocabularies()).Returns(TestVocabularies);
 
-            //Register Mock
+            // Register Mock
             return RegisterMockController(mockVocabularies);
         }
 
         internal static IDataReader CreateValidContentItemReader()
         {
             DataTable table = CreateContentItemTable();
-            AddContentItemToTable(table,
-                                  Constants.CONTENT_ValidContentItemId,
-                                  ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId),
-                                  ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId),
-                                  true,
-                                  Constants.USER_ValidId,
-                                  Null.NullString);
+            AddContentItemToTable(
+                table,
+                Constants.CONTENT_ValidContentItemId,
+                ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId),
+                ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId),
+                true,
+                Constants.USER_ValidId,
+                Null.NullString);
 
             return table.CreateDataReader();
         }
@@ -260,13 +264,14 @@ namespace DotNetNuke.Tests.Content.Mocks
         {
             DataTable table = CreateContentItemTable();
 
-            AddContentItemToTable(table,
-                                  contentItem.ContentItemId,
-                                  ContentTestHelper.GetContent(contentItem.ContentItemId),
-                                  ContentTestHelper.GetContentKey(contentItem.ContentItemId),
-                                  true,
-                                  Constants.USER_ValidId,
-                                  Null.NullString);
+            AddContentItemToTable(
+                table,
+                contentItem.ContentItemId,
+                ContentTestHelper.GetContent(contentItem.ContentItemId),
+                ContentTestHelper.GetContentKey(contentItem.ContentItemId),
+                true,
+                Constants.USER_ValidId,
+                Null.NullString);
 
             return table.CreateDataReader();
         }
@@ -328,7 +333,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             {
                 for (int i = 0; i < Constants.CONTENT_MetaDataCount; i++)
                 {
-                    table.Rows.Add(new object[] { String.Format("{0} {1}", Constants.CONTENT_ValidMetaDataName, i), Constants.CONTENT_ValidMetaDataValue });
+                    table.Rows.Add(new object[] { string.Format("{0} {1}", Constants.CONTENT_ValidMetaDataName, i), Constants.CONTENT_ValidMetaDataValue });
                 }
 
                 return table.CreateDataReader();
@@ -382,15 +387,15 @@ namespace DotNetNuke.Tests.Content.Mocks
         internal static IDataReader CreateValidTermReader()
         {
             DataTable table = CreateTermTable();
-            AddTermToTable(table,
-                           Constants.TERM_ValidTermId,
-                           Constants.TERM_ValidContent1,
-                           Constants.TERM_ValidVocabulary1,
-                           Constants.TERM_ValidName,
-                           Constants.TERM_ValidName,
-                           Constants.TERM_ValidWeight,
-                           Constants.TERM_ValidParentTermId);
-
+            AddTermToTable(
+                table,
+                Constants.TERM_ValidTermId,
+                Constants.TERM_ValidContent1,
+                Constants.TERM_ValidVocabulary1,
+                Constants.TERM_ValidName,
+                Constants.TERM_ValidName,
+                Constants.TERM_ValidWeight,
+                Constants.TERM_ValidParentTermId);
 
             return table.CreateDataReader();
         }

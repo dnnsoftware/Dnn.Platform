@@ -1,34 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Social.Messaging.Internal;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
@@ -54,7 +48,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public bool ShowAvatar { get; set; }
 
         /// <summary>
-        /// Set this to false in the skin to take advantage of the enhanced markup
+        /// Gets or sets a value indicating whether set this to false in the skin to take advantage of the enhanced markup.
         /// </summary>
         public bool LegacyMode { get; set; }
 
@@ -63,7 +57,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public string URL { get; set; }
 
         /// <summary>
-        /// set this to true to show in custom 404/500 page.
+        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
         /// </summary>
         public bool ShowInErrorPage { get; set; }
 
@@ -81,11 +75,15 @@ namespace DotNetNuke.UI.Skins.Controls
             try
             {
                 if (this.LegacyMode)
+                {
                     this.registerGroup.Visible = false;
+                }
                 else
+                {
                     this.registerLink.Visible = false;
+                }
 
-                if (!String.IsNullOrEmpty(this.CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.registerLink.CssClass = this.CssClass;
                     this.enhancedRegisterLink.CssClass = this.CssClass;
@@ -97,14 +95,15 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.notificationGroup.Visible = false;
                     this.avatarGroup.Visible = false;
 
-                    if (this.PortalSettings.UserRegistration != (int) Globals.PortalRegistrationType.NoRegistration)
+                    if (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
                     {
-                        if (!String.IsNullOrEmpty(this.Text))
+                        if (!string.IsNullOrEmpty(this.Text))
                         {
                             if (this.Text.IndexOf("src=") != -1)
                             {
                                 this.Text = this.Text.Replace("src=\"", "src=\"" + this.PortalSettings.ActiveTab.SkinPath);
                             }
+
                             this.registerLink.Text = this.Text;
                             this.enhancedRegisterLink.Text = this.Text;
                         }
@@ -115,10 +114,17 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.registerLink.ToolTip = this.registerLink.Text;
                             this.enhancedRegisterLink.ToolTip = this.registerLink.Text;
                         }
+
                         if (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0)
                         {
-                            if (this.LegacyMode) this.registerLink.Visible = true;
-                            else  this.enhancedRegisterLink.Visible = true;
+                            if (this.LegacyMode)
+                            {
+                                this.registerLink.Visible = true;
+                            }
+                            else
+                            {
+                                this.enhancedRegisterLink.Visible = true;
+                            }
                         }
                         else
                         {
@@ -126,7 +132,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.registerLink.Visible = false;
                         }
 
-                        this.registerLink.NavigateUrl = !String.IsNullOrEmpty(this.URL)
+                        this.registerLink.NavigateUrl = !string.IsNullOrEmpty(this.URL)
                                             ? this.URL
                                             : Globals.RegisterURL(HttpUtility.UrlEncode(this._navigationManager.NavigateURL()), Null.NullString);
                         this.enhancedRegisterLink.NavigateUrl = this.registerLink.NavigateUrl;
@@ -138,7 +144,6 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.registerLink.Attributes.Add("onclick", clickEvent);
                             this.enhancedRegisterLink.Attributes.Add("onclick", clickEvent);
                         }
-
                     }
                     else
                     {
@@ -167,8 +172,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.messageLink.Text = unreadMessages > 0 ? string.Format(Localization.GetString("Messages", Localization.GetResourceFile(this, MyFileName)), unreadMessages) : Localization.GetString("NoMessages", Localization.GetResourceFile(this, MyFileName));
                             this.notificationLink.Text = unreadAlerts > 0 ? string.Format(Localization.GetString("Notifications", Localization.GetResourceFile(this, MyFileName)), unreadAlerts) : Localization.GetString("NoNotifications", Localization.GetResourceFile(this, MyFileName));
 
-                            this.messageLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID));
-                            this.notificationLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), "", string.Format("userId={0}", userInfo.UserID),"view=notifications","action=notifications");
+                            this.messageLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID));
+                            this.notificationLink.NavigateUrl = this._navigationManager.NavigateURL(this.GetMessageTab(), string.Empty, string.Format("userId={0}", userInfo.UserID), "view=notifications", "action=notifications");
                             this.notificationLink.ToolTip = Localization.GetString("CheckNotifications", Localization.GetResourceFile(this, MyFileName));
                             this.messageLink.ToolTip = Localization.GetString("CheckMessages", Localization.GetResourceFile(this, MyFileName));
                             this.messageGroup.Visible = true;
@@ -215,13 +220,15 @@ namespace DotNetNuke.UI.Skins.Controls
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
+            {
                 return messageTabId;
+            }
 
-            //Find the Message Tab
+            // Find the Message Tab
             messageTabId = this.FindMessageTab();
 
-            //save in cache
-            //NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
+            // save in cache
+            // NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
             DataCache.SetCache(cacheKey, messageTabId, TimeSpan.FromMinutes(20));
 
             return messageTabId;
@@ -229,8 +236,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private int FindMessageTab()
         {
-            //On brand new install the new Message Center Module is on the child page of User Profile Page
-            //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
+            // On brand new install the new Message Center Module is on the child page of User Profile Page
+            // On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
             var profileTab = TabController.Instance.GetTab(this.PortalSettings.UserTabId, this.PortalSettings.PortalId, false);
             if (profileTab != null)
             {
@@ -248,7 +255,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
 
-            //default to User Profile Page
+            // default to User Profile Page
             return this.PortalSettings.UserTabId;
         }
     }

@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Globalization;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
     public class ModuleContextPropertyAccess : IPropertyAccess
     {
         private readonly ModuleInstanceContext _moduleContext;
@@ -45,6 +45,7 @@ namespace DotNetNuke.UI.Modules.Html5
                     {
                         return (string)this._moduleContext.Settings[propertyName];
                     }
+
                     break;
             }
 

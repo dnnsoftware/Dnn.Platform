@@ -13,6 +13,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         }
 
         public int X { get; private set; }
+
         public int Y { get; private set; }
     }
 }

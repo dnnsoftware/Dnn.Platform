@@ -1,56 +1,52 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.Admin.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Messaging.Data;
-using DotNetNuke.Services.UserRequest;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.UserControls;
-using DotNetNuke.UI.WebControls;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utils;
-using Microsoft.Extensions.DependencyInjection;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Authentication
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Globalization;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.Admin.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Messaging.Data;
+    using DotNetNuke.Services.UserRequest;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.UserControls;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>
-    /// The Signin UserModuleBase is used to provide a login for a registered user
+    /// The Signin UserModuleBase is used to provide a login for a registered user.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -59,7 +55,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
         private readonly INavigationManager _navigationManager;
 
-        private static readonly Regex UserLanguageRegex = new Regex("(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
+        private static readonly Regex UserLanguageRegex = new Regex(
+            "(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public Login()
@@ -67,19 +64,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Members
-
         private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
         private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
         private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
         private const string LOGIN_PATH = "/login";
 
-        #endregion
-
-        #region Protected Properties
-
         /// <summary>
-        /// Gets and sets the current AuthenticationType
+        /// Gets or sets and sets the current AuthenticationType.
         /// </summary>
         protected string AuthenticationType
         {
@@ -90,8 +81,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     authenticationType = Convert.ToString(this.ViewState["AuthenticationType"]);
                 }
+
                 return authenticationType;
             }
+
             set
             {
                 this.ViewState["AuthenticationType"] = value;
@@ -99,7 +92,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets a flag that determines whether the user should be automatically registered
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.
         /// </summary>
         protected bool AutoRegister
         {
@@ -110,8 +103,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     autoRegister = Convert.ToBoolean(this.ViewState["AutoRegister"]);
                 }
+
                 return autoRegister;
             }
+
             set
             {
                 this.ViewState["AutoRegister"] = value;
@@ -127,8 +122,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     profile = (NameValueCollection)this.ViewState["ProfileProperties"];
                 }
+
                 return profile;
             }
+
             set
             {
                 this.ViewState["ProfileProperties"] = value;
@@ -136,7 +133,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets the current Page No
+        /// Gets or sets and sets the current Page No.
         /// </summary>
         protected int PageNo
         {
@@ -147,8 +144,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     pageNo = Convert.ToInt32(this.ViewState["PageNo"]);
                 }
+
                 return pageNo;
             }
+
             set
             {
                 this.ViewState["PageNo"] = value;
@@ -156,44 +155,47 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets the Redirect URL (after successful login)
+        /// Gets the Redirect URL (after successful login).
         /// </summary>
         protected string RedirectURL
         {
             get
             {
-                var redirectURL = "";
+                var redirectURL = string.Empty;
 
                 var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
 
-                //first we need to check if there is a returnurl
+                // first we need to check if there is a returnurl
                 if (this.Request.QueryString["returnurl"] != null)
                 {
-                    //return to the url passed to signin
+                    // return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (this.Request.Cookies["returnurl"] != null)
                 {
-                    //return to the url passed to signin
+                    // return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(this.Request.Cookies["returnurl"].Value);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (this.Request.Params["appctx"] != null)
                 {
-                    //HACK return to the url passed to signin (LiveID)
+                    // HACK return to the url passed to signin (LiveID)
                     redirectURL = HttpUtility.UrlDecode(this.Request.Params["appctx"]);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
 
                 var alias = this.PortalAlias.HTTPAlias;
                 var comparison = StringComparison.InvariantCultureIgnoreCase;
+
                 // we need .TrimEnd('/') because a portlalias for a specific culture will not have a trailing /, while a returnurl will.
                 var isDefaultPage = redirectURL == "/"
                     || (alias.Contains("/") && redirectURL.TrimEnd('/').Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
@@ -203,8 +205,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     if (
                         this.NeedRedirectAfterLogin
                         && (isDefaultPage || this.IsRedirectingFromLoginUrl())
-                        && Convert.ToInt32(setting) != Null.NullInteger
-                        )
+                        && Convert.ToInt32(setting) != Null.NullInteger)
                     {
                         redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
@@ -212,23 +213,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         if (this.PortalSettings.LoginTabId != -1 && this.PortalSettings.HomeTabId != -1)
                         {
-                            //redirect to portal home page specified
+                            // redirect to portal home page specified
                             redirectURL = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
                         }
                         else
                         {
-                            //redirect to current page
+                            // redirect to current page
                             redirectURL = this._navigationManager.NavigateURL();
                         }
                     }
-
                 }
 
-
-                //replace language parameter in querystring, to make sure that user will see page in correct language
+                // replace language parameter in querystring, to make sure that user will see page in correct language
                 if (this.UserId != -1 && this.User != null)
                 {
-                    if (!String.IsNullOrEmpty(this.User.Profile.PreferredLocale)
+                    if (!string.IsNullOrEmpty(this.User.Profile.PreferredLocale)
                             && this.User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name
                             && this.LocaleEnabled(this.User.Profile.PreferredLocale))
                     {
@@ -236,12 +235,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                 }
 
-                //check for insecure account defaults
+                // check for insecure account defaults
                 var qsDelimiter = "?";
                 if (redirectURL.Contains("?"))
                 {
                     qsDelimiter = "&";
                 }
+
                 if (this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD)
                 {
                     redirectURL = redirectURL + qsDelimiter + "runningDefault=1";
@@ -250,6 +250,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     redirectURL = redirectURL + qsDelimiter + "runningDefault=2";
                 }
+
                 return redirectURL;
             }
         }
@@ -267,7 +268,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
 
         /// <summary>
-        /// Replaces the original language with user language
+        /// Replaces the original language with user language.
         /// </summary>
         /// <param name="Url"></param>
         /// <param name="originalLanguage"></param>
@@ -281,9 +282,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return returnValue;
         }
 
-
         /// <summary>
-        /// Gets and sets a flag that determines whether a permanent auth cookie should be created
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.
         /// </summary>
         protected bool RememberMe
         {
@@ -294,8 +294,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     rememberMe = Convert.ToBoolean(this.ViewState["RememberMe"]);
                 }
+
                 return rememberMe;
             }
+
             set
             {
                 this.ViewState["RememberMe"] = value;
@@ -303,7 +305,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets whether the Captcha control is used to validate the login
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
         /// </summary>
         protected bool UseCaptcha
         {
@@ -323,8 +325,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     loginStatus = (UserLoginStatus)this.ViewState["LoginStatus"];
                 }
+
                 return loginStatus;
             }
+
             set
             {
                 this.ViewState["LoginStatus"] = value;
@@ -332,19 +336,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets the current UserToken
+        /// Gets or sets and sets the current UserToken.
         /// </summary>
         protected string UserToken
         {
             get
             {
-                var userToken = "";
+                var userToken = string.Empty;
                 if (this.ViewState["UserToken"] != null)
                 {
                     userToken = Convert.ToString(this.ViewState["UserToken"]);
                 }
+
                 return userToken;
             }
+
             set
             {
                 this.ViewState["UserToken"] = value;
@@ -352,38 +358,37 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets the current UserName
+        /// Gets or sets and sets the current UserName.
         /// </summary>
         protected string UserName
         {
             get
             {
-                var userName = "";
+                var userName = string.Empty;
                 if (this.ViewState["UserName"] != null)
                 {
                     userName = Convert.ToString(this.ViewState["UserName"]);
                 }
+
                 return userName;
             }
+
             set
             {
                 this.ViewState["UserName"] = value;
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void AddLoginControlAttributes(AuthenticationLoginBase loginControl)
         {
-            //search selected authentication control for username and password fields
-            //and inject autocomplete=off so browsers do not remember sensitive details
+            // search selected authentication control for username and password fields
+            // and inject autocomplete=off so browsers do not remember sensitive details
             var username = loginControl.FindControl("txtUsername") as WebControl;
             if (username != null)
             {
                 username.Attributes.Add("AUTOCOMPLETE", "off");
             }
+
             var password = loginControl.FindControl("txtPassword") as WebControl;
             if (password != null)
             {
@@ -400,7 +405,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 try
                 {
-                    //Figure out if known Auth types are enabled (so we can improve perf and stop loading the control)
+                    // Figure out if known Auth types are enabled (so we can improve perf and stop loading the control)
                     bool enabled = true;
                     if (authSystem.AuthenticationType.Equals("Facebook") || authSystem.AuthenticationType.Equals("Google")
                         || authSystem.AuthenticationType.Equals("Live") || authSystem.AuthenticationType.Equals("Twitter"))
@@ -417,13 +422,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             defaultLoginControl = authLoginControl;
                         }
 
-                        //Check if AuthSystem is Enabled
+                        // Check if AuthSystem is Enabled
                         if (authLoginControl.Enabled)
                         {
                             var oAuthLoginControl = authLoginControl as OAuthLoginBase;
                             if (oAuthLoginControl != null)
                             {
-                                //Add Login Control to List
+                                // Add Login Control to List
                                 this._oAuthControls.Add(oAuthLoginControl);
                             }
                             else
@@ -434,7 +439,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 }
                                 else
                                 {
-                                    //Add Login Control to List
+                                    // Add Login Control to List
                                     this._loginControls.Add(authLoginControl);
                                 }
                             }
@@ -446,14 +451,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     Exceptions.LogException(ex);
                 }
             }
+
             int authCount = this._loginControls.Count + this._defaultauthLogin.Count;
             switch (authCount)
             {
                 case 0:
-                    //No enabled controls - inject default dnn control
+                    // No enabled controls - inject default dnn control
                     if (defaultLoginControl == null)
                     {
-                        //No controls enabled for portal, and default DNN control is not enabled by host, so load system default (DNN)
+                        // No controls enabled for portal, and default DNN control is not enabled by host, so load system default (DNN)
                         AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByType("DNN");
                         var authLoginControl = (AuthenticationLoginBase)this.LoadControl("~/" + authSystem.LoginControlSrc);
                         this.BindLoginControl(authLoginControl, authSystem);
@@ -461,26 +467,28 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                     else
                     {
-                        //if there are social authprovider only
+                        // if there are social authprovider only
                         if (this._oAuthControls.Count == 0)
                         {
-                            //Portal has no login controls enabled so load default DNN control
+                            // Portal has no login controls enabled so load default DNN control
                             this.DisplayLoginControl(defaultLoginControl, false, false);
                         }
                     }
+
                     break;
                 case 1:
-                    //We don't want the control to render with tabbed interface
-                    this.DisplayLoginControl(this._defaultauthLogin.Count == 1
+                    // We don't want the control to render with tabbed interface
+                    this.DisplayLoginControl(
+                        this._defaultauthLogin.Count == 1
                                             ? this._defaultauthLogin[0]
                                             : this._loginControls.Count == 1
                                                 ? this._loginControls[0]
                                                 : this._oAuthControls[0],
-                                        false,
-                                        false);
+                        false,
+                        false);
                     break;
                 default:
-                    //make sure defaultAuth provider control is diplayed first
+                    // make sure defaultAuth provider control is diplayed first
                     if (this._defaultauthLogin.Count > 0)
                     {
                         this.DisplayTabbedLoginControl(this._defaultauthLogin[0], this.tsLogin.Tabs);
@@ -493,6 +501,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                     break;
             }
+
             this.BindOAuthControls();
         }
 
@@ -506,8 +515,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private void BindLoginControl(AuthenticationLoginBase authLoginControl, AuthenticationInfo authSystem)
         {
-            //set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-            //this is necessary for the Localization in PageBase
+            // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+            // this is necessary for the Localization in PageBase
             authLoginControl.AuthenticationType = authSystem.AuthenticationType;
             authLoginControl.ID = Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc) + "_" + authSystem.AuthenticationType;
             authLoginControl.LocalResourceFile = authLoginControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
@@ -519,7 +528,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 authLoginControl.ViewStateMode = ViewStateMode.Enabled;
             }
 
-            //attempt to inject control attributes
+            // attempt to inject control attributes
             this.AddLoginControlAttributes(authLoginControl);
             authLoginControl.UserAuthenticated += this.UserAuthenticated;
         }
@@ -529,11 +538,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this.lblType.Text = this.AuthenticationType;
             this.lblToken.Text = this.UserToken;
 
-            //Verify that the current user has access to this page
+            // Verify that the current user has access to this page
             if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && this.Request.IsAuthenticated == false)
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
             }
+
             this.lblRegisterHelp.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
             switch (this.PortalSettings.UserRegistration)
             {
@@ -547,15 +557,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.lblRegisterHelp.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
                     break;
             }
+
             if (this.AutoRegister)
             {
                 this.InitialiseUser();
             }
+
             bool UserValid = true;
             if (string.IsNullOrEmpty(this.User.Username) || string.IsNullOrEmpty(this.User.Email) || string.IsNullOrEmpty(this.User.FirstName) || string.IsNullOrEmpty(this.User.LastName))
             {
                 UserValid = Null.NullBoolean;
             }
+
             if (this.AutoRegister && UserValid)
             {
                 this.ctlUser.Visible = false;
@@ -576,13 +589,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private void DisplayLoginControl(AuthenticationLoginBase authLoginControl, bool addHeader, bool addFooter)
         {
-            //Create a <div> to hold the control
+            // Create a <div> to hold the control
             var container = new HtmlGenericControl { TagName = "div", ID = authLoginControl.AuthenticationType, ViewStateMode = ViewStateMode.Disabled };
 
-            //Add Settings Control to Container
+            // Add Settings Control to Container
             container.Controls.Add(authLoginControl);
 
-            //Add a Section Header
+            // Add a Section Header
             SectionHeadControl sectionHeadControl;
             if (addHeader)
             {
@@ -593,21 +606,20 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 sectionHeadControl.Section = container.ID;
 
-                //Add Section Head Control to Container
+                // Add Section Head Control to Container
                 this.pnlLoginContainer.Controls.Add(sectionHeadControl);
             }
 
-            //Add Container to Controls
+            // Add Container to Controls
             this.pnlLoginContainer.Controls.Add(container);
 
-
-            //Add LineBreak
+            // Add LineBreak
             if (addFooter)
             {
                 this.pnlLoginContainer.Controls.Add(new LiteralControl("<br />"));
             }
 
-            //Display the container
+            // Display the container
             this.pnlLoginContainer.Visible = true;
         }
 
@@ -623,31 +635,32 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         private void InitialiseUser()
         {
-            //Load any Profile properties that may have been returned
+            // Load any Profile properties that may have been returned
             this.UpdateProfile(this.User, false);
 
-            //Set UserName to authentication Token            
+            // Set UserName to authentication Token
             this.User.Username = this.GenerateUserName();
 
-            //Set DisplayName to UserToken if null
+            // Set DisplayName to UserToken if null
             if (string.IsNullOrEmpty(this.User.DisplayName))
             {
-                this.User.DisplayName = this.UserToken.Replace("http://", "").TrimEnd('/');
+                this.User.DisplayName = this.UserToken.Replace("http://", string.Empty).TrimEnd('/');
             }
 
-            //Parse DisplayName into FirstName/LastName
+            // Parse DisplayName into FirstName/LastName
             if (this.User.DisplayName.IndexOf(' ') > 0)
             {
                 this.User.FirstName = this.User.DisplayName.Substring(0, this.User.DisplayName.IndexOf(' '));
                 this.User.LastName = this.User.DisplayName.Substring(this.User.DisplayName.IndexOf(' ') + 1);
             }
 
-            //Set FirstName to Authentication Type (if null)
+            // Set FirstName to Authentication Type (if null)
             if (string.IsNullOrEmpty(this.User.FirstName))
             {
                 this.User.FirstName = this.AuthenticationType;
             }
-            //Set FirstName to "User" (if null)
+
+            // Set FirstName to "User" (if null)
             if (string.IsNullOrEmpty(this.User.LastName))
             {
                 this.User.LastName = "User";
@@ -661,7 +674,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 return this.UserName;
             }
 
-            //Try Email prefix
+            // Try Email prefix
             var emailPrefix = string.Empty;
             if (!string.IsNullOrEmpty(this.User.Email))
             {
@@ -676,7 +689,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            //Try First Name
+            // Try First Name
             if (!string.IsNullOrEmpty(this.User.FirstName))
             {
                 var user = UserController.GetUserByName(this.PortalId, this.User.FirstName);
@@ -686,7 +699,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            //Try Last Name
+            // Try Last Name
             if (!string.IsNullOrEmpty(this.User.LastName))
             {
                 var user = UserController.GetUserByName(this.PortalId, this.User.LastName);
@@ -696,7 +709,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            //Try First Name + space + First letter last name            
+            // Try First Name + space + First letter last name
             if (!string.IsNullOrEmpty(this.User.LastName) && !string.IsNullOrEmpty(this.User.FirstName))
             {
                 var newUserName = this.User.FirstName + " " + this.User.LastName.Substring(0, 1);
@@ -707,7 +720,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            //Try First letter of First Name + lastname
+            // Try First letter of First Name + lastname
             if (!string.IsNullOrEmpty(this.User.LastName) && !string.IsNullOrEmpty(this.User.FirstName))
             {
                 var newUserName = this.User.FirstName.Substring(0, 1) + this.User.LastName;
@@ -718,7 +731,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            //Try Email Prefix + incremental numbers until unique name found
+            // Try Email Prefix + incremental numbers until unique name found
             if (!string.IsNullOrEmpty(emailPrefix))
             {
                 for (var i = 1; i < 10000; i++)
@@ -732,21 +745,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
             }
 
-            return this.UserToken.Replace("http://", "").TrimEnd('/');
+            return this.UserToken.Replace("http://", string.Empty).TrimEnd('/');
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ShowPanel controls what "panel" is to be displayed
+        /// ShowPanel controls what "panel" is to be displayed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void ShowPanel()
         {
-            bool showLogin = (this.PageNo == 0);
-            bool showRegister = (this.PageNo == 1);
-            bool showPassword = (this.PageNo == 2);
-            bool showProfile = (this.PageNo == 3);
-            bool showDataConsent = (this.PageNo == 4);
+            bool showLogin = this.PageNo == 0;
+            bool showRegister = this.PageNo == 1;
+            bool showPassword = this.PageNo == 2;
+            bool showProfile = this.PageNo == 3;
+            bool showDataConsent = this.PageNo == 4;
             this.pnlProfile.Visible = showProfile;
             this.pnlPassword.Visible = showPassword;
             this.pnlLogin.Visible = showLogin;
@@ -796,6 +809,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.FirstName = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         case "LastName":
                             if (objUser.LastName != this.ProfileProperties[key])
@@ -803,6 +817,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.LastName = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         case "Email":
                             if (objUser.Email != this.ProfileProperties[key])
@@ -810,6 +825,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.Email = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         case "DisplayName":
                             if (objUser.DisplayName != this.ProfileProperties[key])
@@ -817,18 +833,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.DisplayName = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         default:
                             objUser.Profile.SetProfileProperty(key, this.ProfileProperties[key]);
                             break;
                     }
                 }
+
                 if (update)
                 {
                     if (bUpdateUser)
                     {
                         UserController.UpdateUser(this.PortalId, objUser);
                     }
+
                     ProfileController.UpdateUserProfile(objUser);
                 }
             }
@@ -837,10 +856,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ValidateUser runs when the user has been authorized by the data store.  It validates for
-        /// things such as an expiring password, valid profile, or missing DNN User Association
+        /// things such as an expiring password, valid profile, or missing DNN User Association.
         /// </summary>
-        /// <param name="objUser">The logged in User</param>
-        /// <param name="ignoreExpiring">Ignore the situation where the password is expiring (but not yet expired)</param>
+        /// <param name="objUser">The logged in User.</param>
+        /// <param name="ignoreExpiring">Ignore the situation where the password is expiring (but not yet expired).</param>
         /// -----------------------------------------------------------------------------
         private void ValidateUser(UserInfo objUser, bool ignoreExpiring)
         {
@@ -855,13 +874,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 expiryDate = objUser.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry);
             }
+
             this.UserId = objUser.UserID;
 
-            //Check if the User has valid Password/Profile
+            // Check if the User has valid Password/Profile
             switch (validStatus)
             {
                 case UserValidStatus.VALID:
-                    //check if the user is an admin/host and validate their IP
+                    // check if the user is an admin/host and validate their IP
                     if (Host.EnableIPChecking)
                     {
                         bool isAdminUser = objUser.IsSuperUser || objUser.IsInRole(this.PortalSettings.AdministratorRoleName);
@@ -878,7 +898,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         }
                     }
 
-                    //Set the Page Culture(Language) based on the Users Preferred Locale
+                    // Set the Page Culture(Language) based on the Users Preferred Locale
                     if ((objUser.Profile != null) && (objUser.Profile.PreferredLocale != null) && this.LocaleEnabled(objUser.Profile.PreferredLocale))
                     {
                         Localization.SetLanguage(objUser.Profile.PreferredLocale);
@@ -888,15 +908,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         Localization.SetLanguage(this.PortalSettings.DefaultLanguage);
                     }
 
-                    //Set the Authentication Type used
+                    // Set the Authentication Type used
                     AuthenticationController.SetAuthenticationType(this.AuthenticationType);
 
-                    //Complete Login
+                    // Complete Login
                     var userRequestIpAddressController = UserRequestIPAddressController.Instance;
                     var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
                     UserController.UserLogin(this.PortalId, objUser, this.PortalSettings.PortalName, ipAddress, this.RememberMe);
 
-                    //check whether user request comes with IPv6 and log it to make sure admin is aware of that
+                    // check whether user request comes with IPv6 and log it to make sure admin is aware of that
                     if (string.IsNullOrWhiteSpace(ipAddress))
                     {
                         var ipAddressV6 = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request), IPAddressFamily.IPv6);
@@ -907,14 +927,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         }
                     }
 
-                    //redirect browser
+                    // redirect browser
                     var redirectUrl = this.RedirectURL;
 
-                    //Clear the cookie
-                    HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", "")
+                    // Clear the cookie
+                    HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", string.Empty)
                     {
                         Expires = DateTime.Now.AddDays(-1),
-                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                     });
 
                     this.Response.Redirect(redirectUrl, true);
@@ -938,17 +958,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         UserController.ResetPasswordToken(this.User);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
                     }
+
                     var redirTo = string.Format("{0}/default.aspx?ctl=PasswordReset&resetToken={1}&forced=true", portalAlias, objUser.PasswordResetToken);
                     this.Response.Redirect(redirTo);
                     break;
                 case UserValidStatus.UPDATEPROFILE:
-                    //Save UserID in ViewState so that can update profile later.
+                    // Save UserID in ViewState so that can update profile later.
                     this.UserId = objUser.UserID;
 
-                    //When the user need update its profile to complete login, we need clear the login status because if the logrin is from
-                    //3rd party login provider, it may call UserController.UserLogin because they doesn't check this situation.
+                    // When the user need update its profile to complete login, we need clear the login status because if the logrin is from
+                    // 3rd party login provider, it may call UserController.UserLogin because they doesn't check this situation.
                     PortalSecurity.Instance.SignOut();
-                    //Admin has forced profile update
+
+                    // Admin has forced profile update
                     this.AddModuleMessage("ProfileUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
                     this.PageNo = 3;
                     break;
@@ -964,10 +986,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         // Use the reset password token to identify the user during the redirect
                         UserController.ResetPasswordToken(objUser);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
-                        this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, "", string.Format("token={0}", objUser.PasswordResetToken)));
+                        this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, string.Empty, string.Format("token={0}", objUser.PasswordResetToken)));
                     }
+
                     break;
             }
+
             if (okToShowPanel)
             {
                 this.ShowPanel();
@@ -988,12 +1012,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
             return LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).ContainsKey(locale);
         }
 
-        #endregion
-
-        #region Event Handlers
-
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1006,19 +1026,19 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this.ctlUser.UserCreateCompleted += this.UserCreateCompleted;
             this.ctlDataConsent.DataConsentCompleted += this.DataConsentCompleted;
 
-            //Set the User Control Properties
+            // Set the User Control Properties
             this.ctlUser.ID = "User";
 
-            //Set the Password Control Properties
+            // Set the Password Control Properties
             this.ctlPassword.ID = "Password";
 
-            //Set the Profile Control Properties
+            // Set the Profile Control Properties
             this.ctlProfile.ID = "Profile";
 
-            //Set the Data Consent Control Properties
+            // Set the Data Consent Control Properties
             this.ctlDataConsent.ID = "DataConsent";
 
-            //Override the redirected page title if page has loaded with ctl=Login
+            // Override the redirected page title if page has loaded with ctl=Login
             if (this.Request.QueryString["ctl"] != null)
             {
                 if (this.Request.QueryString["ctl"].ToLowerInvariant() == "login")
@@ -1033,7 +1053,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1045,28 +1065,32 @@ namespace DotNetNuke.Modules.Admin.Authentication
             this.cmdCreateUser.Click += this.cmdCreateUser_Click;
             this.cmdProceed.Click += this.cmdProceed_Click;
 
-            //Verify if portal has a customized login page
+            // Verify if portal has a customized login page
             if (!Null.IsNull(this.PortalSettings.LoginTabId) && Globals.IsAdminControl())
             {
                 if (Globals.ValidateLoginTabID(this.PortalSettings.LoginTabId))
                 {
-                    //login page exists and trying to access this control directly with url param -> not allowed
+                    // login page exists and trying to access this control directly with url param -> not allowed
                     var parameters = new string[3];
                     if (!string.IsNullOrEmpty(this.Request.QueryString["returnUrl"]))
                     {
                         parameters[0] = "returnUrl=" + HttpUtility.UrlEncode(this.Request.QueryString["returnUrl"]);
                     }
+
                     if (!string.IsNullOrEmpty(this.Request.QueryString["username"]))
                     {
                         parameters[1] = "username=" + HttpUtility.UrlEncode(this.Request.QueryString["username"]);
                     }
+
                     if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]))
                     {
                         parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(this.Request.QueryString["verificationcode"]);
                     }
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, "", parameters));
+
+                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
                 }
             }
+
             if (this.Page.IsPostBack == false)
             {
                 try
@@ -1075,23 +1099,24 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 }
                 catch (Exception ex)
                 {
-                    //control not there
+                    // control not there
                     Logger.Error(ex);
                 }
             }
+
             if (!this.Request.IsAuthenticated || this.UserNeedsVerification())
             {
                 this.ShowPanel();
             }
-            else //user is already authenticated
+            else // user is already authenticated
             {
-                //if a Login Page has not been specified for the portal
+                // if a Login Page has not been specified for the portal
                 if (Globals.IsAdminControl())
                 {
-                    //redirect browser
+                    // redirect browser
                     this.Response.Redirect(this.RedirectURL, true);
                 }
-                else //make module container invisible if user is not a page admin
+                else // make module container invisible if user is not a page admin
                 {
                     var path = this.RedirectURL.Split('?')[0];
                     if (this.NeedRedirectAfterLogin && path != this._navigationManager.NavigateURL() && path != this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
@@ -1109,6 +1134,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                 }
             }
+
             this.divCaptcha.Visible = this.UseCaptcha;
 
             if (this.UseCaptcha)
@@ -1116,11 +1142,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", Localization.SharedResourceFile);
             }
-
         }
 
         /// <summary>
-        /// cmdAssociate_Click runs when the associate button is clicked
+        /// cmdAssociate_Click runs when the associate button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1131,22 +1156,24 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
                 var userRequestIpAddressController = UserRequestIPAddressController.Instance;
                 var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(this.Request));
-                UserInfo objUser = UserController.ValidateUser(this.PortalId,
-                                                               this.txtUsername.Text,
-                                                               this.txtPassword.Text,
-                                                               "DNN",
-                                                               "",
-                                                               this.PortalSettings.PortalName,
-                                                               ipAddress,
-                                                               ref loginStatus);
+                UserInfo objUser = UserController.ValidateUser(
+                    this.PortalId,
+                    this.txtUsername.Text,
+                    this.txtPassword.Text,
+                    "DNN",
+                    string.Empty,
+                    this.PortalSettings.PortalName,
+                    ipAddress,
+                    ref loginStatus);
                 if (loginStatus == UserLoginStatus.LOGIN_SUCCESS)
                 {
-                    //Assocate alternate Login with User and proceed with Login
+                    // Assocate alternate Login with User and proceed with Login
                     AuthenticationController.AddUserAuthentication(objUser.UserID, this.AuthenticationType, this.UserToken);
                     if (objUser != null)
                     {
                         this.UpdateProfile(objUser, true);
                     }
+
                     this.ValidateUser(objUser, true);
                 }
                 else
@@ -1157,7 +1184,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// cmdCreateUser runs when the register (as new user) button is clicked
+        /// cmdCreateUser runs when the register (as new user) button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1169,23 +1196,23 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 this.ctlUser.User = this.User;
 
-                //Call the Create User method of the User control so that it can create
-                //the user and raise the appropriate event(s)
+                // Call the Create User method of the User control so that it can create
+                // the user and raise the appropriate event(s)
                 this.ctlUser.CreateUser();
             }
             else
             {
                 if (this.ctlUser.IsValid)
                 {
-                    //Call the Create User method of the User control so that it can create
-                    //the user and raise the appropriate event(s)
+                    // Call the Create User method of the User control so that it can create
+                    // the user and raise the appropriate event(s)
                     this.ctlUser.CreateUser();
                 }
             }
         }
 
         /// <summary>
-        /// cmdProceed_Click runs when the Proceed Anyway button is clicked
+        /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1196,7 +1223,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// PasswordUpdated runs when the password is updated
+        /// PasswordUpdated runs when the password is updated.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1222,7 +1249,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// DataConsentCompleted runs after the user has gone through the data consent screen
+        /// DataConsentCompleted runs after the user has gone through the data consent screen.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1244,23 +1271,23 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// ProfileUpdated runs when the profile is updated
+        /// ProfileUpdated runs when the profile is updated.
         /// </summary>
         protected void ProfileUpdated(object sender, EventArgs e)
         {
-            //Authorize User
+            // Authorize User
             this.ValidateUser(this.ctlProfile.User, true);
         }
 
         /// <summary>
         /// UserAuthenticated runs when the user is authenticated by one of the child
-        /// Authentication controls
+        /// Authentication controls.
         /// </summary>
         protected void UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
         {
             this.LoginStatus = e.LoginStatus;
 
-            //Check the Login Status
+            // Check the Login Status
             switch (this.LoginStatus)
             {
                 case UserLoginStatus.LOGIN_USERNOTAPPROVED:
@@ -1269,13 +1296,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         case "UnverifiedUser":
                             if (e.User != null)
                             {
-                                //First update the profile (if any properties have been passed)
+                                // First update the profile (if any properties have been passed)
                                 this.AuthenticationType = e.AuthenticationType;
                                 this.ProfileProperties = e.Profile;
                                 this.RememberMe = e.RememberMe;
                                 this.UpdateProfile(e.User, true);
                                 this.ValidateUser(e.User, false);
                             }
+
                             break;
                         case "EnterCode":
                             this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -1288,6 +1316,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
                             break;
                     }
+
                     break;
                 case UserLoginStatus.LOGIN_USERLOCKEDOUT:
                     if (Host.AutoAccountUnlockDuration > 0)
@@ -1298,7 +1327,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         this.AddLocalizedModuleMessage(Localization.GetString("UserLockedOut_ContactAdmin", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError, true);
                     }
-                    //notify administrator about account lockout ( possible hack attempt )
+
+                    // notify administrator about account lockout ( possible hack attempt )
                     var Custom = new ArrayList { e.UserToken };
 
                     var message = new Message
@@ -1307,14 +1337,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         ToUserID = this.PortalSettings.AdministratorId,
                         Subject = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_SUBJECT", Localization.GlobalResourceFile, Custom),
                         Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, Custom),
-                        Status = MessageStatusType.Unread
+                        Status = MessageStatusType.Unread,
                     };
-                    //_messagingController.SaveMessage(_message);
 
+                    // _messagingController.SaveMessage(_message);
                     Mail.SendEmail(this.PortalSettings.Email, this.PortalSettings.Email, message.Subject, message.Body);
                     break;
                 case UserLoginStatus.LOGIN_FAILURE:
-                    //A Login Failure can mean one of two things:
+                    // A Login Failure can mean one of two things:
                     //  1 - User was authenticated by the Authentication System but is not "affiliated" with a DNN Account
                     //  2 - User was not authenticated
                     if (e.Authenticated)
@@ -1331,8 +1361,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                             this.ctlUser.User = this.User;
 
-                            //Call the Create User method of the User control so that it can create
-                            //the user and raise the appropriate event(s)
+                            // Call the Create User method of the User control so that it can create
+                            // the user and raise the appropriate event(s)
                             this.ctlUser.CreateUser();
                         }
                         else
@@ -1352,40 +1382,42 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
                         }
                     }
+
                     break;
                 default:
                     if (e.User != null)
                     {
-                        //First update the profile (if any properties have been passed)
+                        // First update the profile (if any properties have been passed)
                         this.AuthenticationType = e.AuthenticationType;
                         this.ProfileProperties = e.Profile;
                         this.RememberMe = e.RememberMe;
                         this.UpdateProfile(e.User, true);
-                        this.ValidateUser(e.User, (e.AuthenticationType != "DNN"));
+                        this.ValidateUser(e.User, e.AuthenticationType != "DNN");
                     }
+
                     break;
             }
         }
 
         /// <summary>
-        /// UserCreateCompleted runs when a new user has been Created
+        /// UserCreateCompleted runs when a new user has been Created.
         /// </summary>
         /// <remarks>
         /// </remarks>
         protected void UserCreateCompleted(object sender, UserUserControlBase.UserCreatedEventArgs e)
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             try
             {
                 if (e.CreateStatus == UserCreateStatus.Success)
                 {
-                    //Assocate alternate Login with User and proceed with Login
+                    // Assocate alternate Login with User and proceed with Login
                     AuthenticationController.AddUserAuthentication(e.NewUser.UserID, this.AuthenticationType, this.UserToken);
 
                     strMessage = this.CompleteUserCreation(e.CreateStatus, e.NewUser, e.Notify, true);
-                    if ((string.IsNullOrEmpty(strMessage)))
+                    if (string.IsNullOrEmpty(strMessage))
                     {
-                        //First update the profile (if any properties have been passed)
+                        // First update the profile (if any properties have been passed)
                         this.UpdateProfile(e.NewUser, true);
 
                         this.ValidateUser(e.NewUser, true);
@@ -1396,7 +1428,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -1409,13 +1441,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 LogUserID = userId,
                 LogUserName = username,
                 LogPortalID = portalId,
-                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
             };
             log.AddProperty(propertyName, propertyValue);
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
     }
 }

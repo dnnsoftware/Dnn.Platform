@@ -10,6 +10,6 @@ namespace DotNetNuke.Services.FileSystem
         Container,
         Skin,
         Module,
-        LanguagePack
+        LanguagePack,
     }
 }

@@ -1,31 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ConfigInstaller installs Config changes
+    /// The ConfigInstaller installs Config changes.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class ConfigInstaller : ComponentInstallerBase
     {
-		#region "Private Members"
-
         private string _FileName = Null.NullString;
         private string _InstallConfig = Null.NullString;
         private XmlDocument _TargetConfig;
@@ -34,15 +27,11 @@ namespace DotNetNuke.Services.Installer.Installers
         private string _UninstallFileName = Null.NullString;
         private XmlMerge _xmlMerge;
 
-		#endregion
-
-		#region "Protected Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Install config changes
+        /// Gets the Install config changes.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string InstallConfig
         {
@@ -54,9 +43,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Target Config XmlDocument
+        /// Gets the Target Config XmlDocument.
         /// </summary>
-        /// <value>An XmlDocument</value>
+        /// <value>An XmlDocument.</value>
         /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig
         {
@@ -68,9 +57,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Target Config file to change
+        /// Gets the Target Config file to change.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public InstallFile TargetFile
         {
@@ -82,9 +71,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UnInstall config changes
+        /// Gets the UnInstall config changes.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string UnInstallConfig
         {
@@ -93,11 +82,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this._UnInstallConfig;
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -110,7 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (string.IsNullOrEmpty(this._FileName) && this._xmlMerge.ConfigUpdateChangedNodes)
                 {
-                    //Save the XmlDocument
+                    // Save the XmlDocument
                     Config.Save(this.TargetConfig, this.TargetFile.FullName);
                     this.Log.AddInfo(Util.CONFIG_Committed + " - " + this.TargetFile.Name);
                 }
@@ -131,7 +115,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the config component
+        /// The Install method installs the config component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -140,33 +124,33 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (string.IsNullOrEmpty(this._FileName))
                 {
-					//First backup the config file
+                    // First backup the config file
                     Util.BackupFile(this.TargetFile, this.PhysicalSitePath, this.Log);
 
-                    //Create an XmlDocument for the config file
+                    // Create an XmlDocument for the config file
                     this._TargetConfig = new XmlDocument { XmlResolver = null };
                     this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
 
-                    //Create XmlMerge instance from InstallConfig source
+                    // Create XmlMerge instance from InstallConfig source
                     this._xmlMerge = new XmlMerge(new StringReader(this.InstallConfig), this.Package.Version.ToString(), this.Package.Name);
 
-                    //Update the Config file - Note that this method does not save the file - we will save it in Commit
+                    // Update the Config file - Note that this method does not save the file - we will save it in Commit
                     this._xmlMerge.UpdateConfig(this.TargetConfig);
                     this.Completed = true;
                     this.Log.AddInfo(Util.CONFIG_Updated + " - " + this.TargetFile.Name);
                 }
                 else
                 {
-					//Process external file
+                    // Process external file
                     string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._FileName);
                     if (File.Exists(strConfigFile))
                     {
-						//Create XmlMerge instance from config file source
+                        // Create XmlMerge instance from config file source
                         using (var stream = File.OpenText(strConfigFile))
                         {
                             this._xmlMerge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " Install");
 
-                            //Process merge
+                            // Process merge
                             this._xmlMerge.UpdateConfigs(false);
                         }
 
@@ -195,18 +179,19 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 XPathNavigator nav = manifestNav.SelectSingleNode("config");
 
-                //Get the name of the target config file to update
+                // Get the name of the target config file to update
                 XPathNavigator nodeNav = nav.SelectSingleNode("configFile");
                 string targetFileName = nodeNav.Value;
                 if (!string.IsNullOrEmpty(targetFileName))
                 {
-                    this._TargetFile = new InstallFile(targetFileName, "", this.Package.InstallerInfo);
+                    this._TargetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
                 }
-                //Get the Install config changes
+
+                // Get the Install config changes
                 nodeNav = nav.SelectSingleNode("install");
                 this._InstallConfig = nodeNav.InnerXml;
 
-                //Get the UnInstall config changes
+                // Get the UnInstall config changes
                 nodeNav = nav.SelectSingleNode("uninstall");
                 this._UnInstallConfig = nodeNav.InnerXml;
             }
@@ -214,19 +199,19 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the file component in the event 
-        /// that one of the other components fails
+        /// The Rollback method undoes the installation of the file component in the event
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//Do nothing as the changes are all in memory
+            // Do nothing as the changes are all in memory
             this.Log.AddInfo(Util.CONFIG_RolledBack + " - " + this.TargetFile.Name);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the config component
+        /// The UnInstall method uninstalls the config component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
@@ -235,36 +220,34 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (!string.IsNullOrEmpty(this.UnInstallConfig))
                 {
-                    //Create an XmlDocument for the config file
+                    // Create an XmlDocument for the config file
                     this._TargetConfig = new XmlDocument { XmlResolver = null };
                     this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
 
-                    //Create XmlMerge instance from UnInstallConfig source
+                    // Create XmlMerge instance from UnInstallConfig source
                     var merge = new XmlMerge(new StringReader(this.UnInstallConfig), this.Package.Version.ToString(), this.Package.Name);
 
-                    //Update the Config file - Note that this method does save the file
+                    // Update the Config file - Note that this method does save the file
                     merge.UpdateConfig(this.TargetConfig, this.TargetFile.FullName);
                 }
             }
             else
             {
-				//Process external file
+                // Process external file
                 string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._UninstallFileName);
                 if (File.Exists(strConfigFile))
                 {
-					//Create XmlMerge instance from config file source
+                    // Create XmlMerge instance from config file source
                     StreamReader stream = File.OpenText(strConfigFile);
                     var merge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " UnInstall");
 
-                    //Process merge
+                    // Process merge
                     merge.UpdateConfigs();
 
-                    //Close stream
+                    // Close stream
                     stream.Close();
                 }
             }
         }
-		
-		#endregion
     }
 }

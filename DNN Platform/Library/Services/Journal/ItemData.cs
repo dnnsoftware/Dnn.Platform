@@ -2,35 +2,50 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
-using DotNetNuke.Services.Tokens;
-namespace DotNetNuke.Services.Journal {
-    
-        public class ItemData : IPropertyAccess {
+namespace DotNetNuke.Services.Journal
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Xml;
+
+    using DotNetNuke.Services.Tokens;
+
+        public class ItemData : IPropertyAccess
+        {
             public string Url { get; set; }
+
             public string Title { get; set; }
+
             public string Description { get; set; }
+
             public string ImageUrl { get; set; }
-            public CacheLevel Cacheability {
-                get {
+
+            public CacheLevel Cacheability
+            {
+                get
+                {
                     return CacheLevel.fullyCacheable;
                 }
             }
 
-            public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound) {
+            public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+            {
                 string OutputFormat = string.Empty;
-                if (format == string.Empty) {
+                if (format == string.Empty)
+                {
                     OutputFormat = "g";
-                } else {
+                }
+                else
+                {
                     OutputFormat = format;
                 }
+
                 propertyName = propertyName.ToLowerInvariant();
-                switch (propertyName) {
+                switch (propertyName)
+                {
                     case "url":
                         return PropertyAccess.FormatString(this.Url, format);
                     case "title":
@@ -39,18 +54,10 @@ namespace DotNetNuke.Services.Journal {
                         return PropertyAccess.FormatString(this.Description, format);
                     case "imageurl":
                         return PropertyAccess.FormatString(this.ImageUrl, format);
-
-
                 }
 
                 propertyNotFound = true;
                 return string.Empty;
-
             }
         }
-
-
-
-   
 }
-

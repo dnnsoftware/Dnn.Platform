@@ -2,44 +2,51 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Modules.Groups.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:GroupListControl runat=server></{0}:GroupListControl>")]
 
     public class GroupListControl : WebControl
     {
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String ItemTemplate { get; set; }
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public string ItemTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String HeaderTemplate { get; set; }
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public string HeaderTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String FooterTemplate { get; set; }
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public string FooterTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String RowHeaderTemplate { get; set; }
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public string RowHeaderTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String RowFooterTemplate { get; set; }
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        public string RowFooterTemplate { get; set; }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get
@@ -83,7 +90,6 @@ namespace DotNetNuke.Modules.Groups.Controls
         {
             base.OnInit(e);
             this.currentUser = UserController.Instance.GetCurrentUserInfo();
-
         }
 
         private static bool TestPredicateGroup(IEnumerable<Func<RoleInfo, bool>> predicates, RoleInfo ri)
@@ -101,18 +107,22 @@ namespace DotNetNuke.Modules.Groups.Controls
         {
             var whereCls = new List<Func<RoleInfo, bool>>
             {
-                grp => grp.SecurityMode != SecurityMode.SecurityRole && grp.Status == RoleStatus.Approved
+                grp => grp.SecurityMode != SecurityMode.SecurityRole && grp.Status == RoleStatus.Approved,
             };
 
             if (this.RoleGroupId >= -1)
-	        {
-		        whereCls.Add(grp => grp.RoleGroupID == this.RoleGroupId);
-	        }
+            {
+                whereCls.Add(grp => grp.RoleGroupID == this.RoleGroupId);
+            }
 
             if (this.DisplayCurrentUserGroups)
+            {
                 whereCls.Add(grp => this.currentUser.IsInRole(grp.RoleName));
+            }
             else
+            {
                 whereCls.Add(grp => grp.IsPublic || this.currentUser.IsInRole(grp.RoleName) || this.currentUser.IsInRole(this.PortalSettings.AdministratorRoleName));
+            }
 
             if (!string.IsNullOrEmpty(this.SearchFilter))
             {
@@ -122,15 +132,17 @@ namespace DotNetNuke.Modules.Groups.Controls
             var roles = RoleController.Instance.GetRoles(this.PortalSettings.PortalId, grp => TestPredicateGroup(whereCls, grp));
 
             if (this.SortDirection.ToLowerInvariant() == "asc")
+            {
                 roles = roles.OrderBy(info => GetOrderByProperty(info, this.SortField)).ToList();
+            }
             else
+            {
                 roles = roles.OrderByDescending(info => GetOrderByProperty(info, this.SortField)).ToList();
+            }
 
             decimal pages = (decimal)roles.Count / (decimal)this.PageSize;
 
-
             output.Write(this.HeaderTemplate);
-
 
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:posts}", Localization.GetString("posts", Constants.SharedResourcesPath));
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:members}", Localization.GetString("members", Constants.SharedResourcesPath));
@@ -141,10 +153,11 @@ namespace DotNetNuke.Modules.Groups.Controls
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:Pending}", Localization.GetString("Pending", Constants.SharedResourcesPath));
             this.ItemTemplate = this.ItemTemplate.Replace("{resx:LeaveGroup}", Localization.GetString("LeaveGroup", Constants.SharedResourcesPath));
             this.ItemTemplate = this.ItemTemplate.Replace("[GroupViewTabId]", this.GroupViewTabId.ToString());
-            
-            if (roles.Count == 0)
-                output.Write(String.Format("<div class=\"dnnFormMessage dnnFormInfo\"><span>{0}</span></div>", Localization.GetString("NoGroupsFound", Constants.SharedResourcesPath)));
 
+            if (roles.Count == 0)
+            {
+                output.Write(string.Format("<div class=\"dnnFormMessage dnnFormInfo\"><span>{0}</span></div>", Localization.GetString("NoGroupsFound", Constants.SharedResourcesPath)));
+            }
 
             if (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["page"]))
             {
@@ -153,23 +166,28 @@ namespace DotNetNuke.Modules.Groups.Controls
             }
 
             int rowItem = 0;
-            int recordStart = (this.CurrentIndex * this.PageSize);
+            int recordStart = this.CurrentIndex * this.PageSize;
 
             if (this.CurrentIndex == 0)
+            {
                 recordStart = 0;
-
+            }
 
             for (int x = recordStart; x < (recordStart + this.PageSize); x++)
             {
                 if (x > roles.Count - 1)
+                {
                     break;
+                }
 
                 var role = roles[x];
 
                 string rowTemplate = this.ItemTemplate;
 
                 if (rowItem == 0)
+                {
                     output.Write(this.RowHeaderTemplate);
+                }
 
                 var groupParser = new GroupViewParser(this.PortalSettings, role, this.currentUser, rowTemplate, this.GroupViewTabId);
                 output.Write(groupParser.ParseView());
@@ -184,16 +202,18 @@ namespace DotNetNuke.Modules.Groups.Controls
             }
 
             if (rowItem > 0)
+            {
                 output.Write(this.RowFooterTemplate);
-
+            }
 
             output.Write(this.FooterTemplate);
 
             int TotalPages = Convert.ToInt32(System.Math.Ceiling(pages));
 
-
             if (TotalPages == 0)
+            {
                 TotalPages = 1;
+            }
 
             string sUrlFormat = "<a href=\"{0}\" class=\"{1}\">{2}</a>";
             string[] currParams = new string[] { };
@@ -224,21 +244,17 @@ namespace DotNetNuke.Modules.Groups.Controls
                     string cssClass = "pagerItem";
 
                     if (x - 1 == this.CurrentIndex)
+                    {
                         cssClass = "pagerItemSelected";
-
+                    }
 
                     sb.AppendFormat(sUrlFormat, sUrl, cssClass, x.ToString());
                 }
-
             }
 
             output.Write("<div class=\"dnnClear groupPager\">");
             output.Write(sb.ToString());
             output.Write("</div>");
-
         }
-
-
     }
-
 }

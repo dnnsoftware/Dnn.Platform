@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Services.Mail;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class NewUserNotificationServiceController : DnnApiController
-    {        
+    {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Authorize(NotificationDTO postData)
@@ -31,7 +32,7 @@ namespace DotNetNuke.Web.InternalServices
             user.Membership.Approved = true;
             UserController.UpdateUser(this.PortalSettings.PortalId, user);
 
-            //Update User Roles if needed
+            // Update User Roles if needed
             if (!user.IsSuperUser && user.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
             {
                 UserController.ApproveUser(user);
@@ -76,7 +77,7 @@ namespace DotNetNuke.Web.InternalServices
             var message = Mail.SendMail(this.UserInfo, MessageType.UserRegistrationVerified, this.PortalSettings);
             if (string.IsNullOrEmpty(message))
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile) });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = Localization.GetSafeJSString("VerificationMailSendSuccessful", Localization.SharedResourceFile) });
             }
             else
             {
@@ -94,7 +95,7 @@ namespace DotNetNuke.Web.InternalServices
                 return null;
             }
 
-            return UserController.GetUserById(this.PortalSettings.PortalId, userId);            
+            return UserController.GetUserById(this.PortalSettings.PortalId, userId);
         }
     }
 }

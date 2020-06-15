@@ -8,7 +8,8 @@ namespace DotNetNuke.Entities.Urls
     {
         NoTabs = -1,
         ThisTab = 0,
-        //AnotherTab = 1, 
-        //AllTabs = 2
+
+        // AnotherTab = 1,
+        // AllTabs = 2
     }
 }

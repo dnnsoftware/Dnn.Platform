@@ -1,22 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Text;
-using System.Text.RegularExpressions;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <returns></returns>
@@ -29,9 +25,10 @@ namespace DotNetNuke.UI.Skins.Controls
         private int _rootLevel = 0;
         private bool _showRoot = false;
         private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
-        private string _homeUrl = "";
+        private string _homeUrl = string.Empty;
         private string _homeTabName = "Root";
         private readonly INavigationManager _navigationManager;
+
         public BreadCrumb()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -55,6 +52,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public string RootLevel
         {
             get { return this._rootLevel.ToString(); }
+
             set
             {
                 this._rootLevel = int.Parse(value);
@@ -73,7 +71,7 @@ namespace DotNetNuke.UI.Skins.Controls
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
 
-		public int ProfileUserId
+        public int ProfileUserId
         {
             get
             {
@@ -100,7 +98,7 @@ namespace DotNetNuke.UI.Skins.Controls
             // Position in breadcrumb list
             var position = 1;
 
-            //resolve image path in separator content
+            // resolve image path in separator content
             this.ResolveSeparatorPaths();
 
             // If we have enabled hiding when there are no breadcrumbs, simply return
@@ -141,7 +139,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 this._breadcrumb.Append(this._separator);
             }
 
-            //process bread crumbs
+            // process bread crumbs
             for (var i = this._rootLevel; i < this.PortalSettings.ActiveTab.BreadCrumbs.Count; ++i)
             {
                 // Only add separators if we're past the root level
@@ -164,16 +162,14 @@ namespace DotNetNuke.UI.Skins.Controls
                 // Get the absolute URL of the tab
                 var tabUrl = tab.FullUrl;
 
-                //
                 if (this.ProfileUserId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "UserId=" + this.ProfileUserId);
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId);
                 }
 
-                //
                 if (this.GroupId > -1)
                 {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, "", "GroupId=" + this.GroupId);
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId);
                 }
 
                 // Begin breadcrumb
@@ -193,7 +189,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 this._breadcrumb.Append("</span>");
             }
 
-            this._breadcrumb.Append("</span>"); //End of BreadcrumbList
+            this._breadcrumb.Append("</span>"); // End of BreadcrumbList
 
             this.lblBreadCrumb.Text = this._breadcrumb.ToString();
         }
@@ -234,16 +230,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (changed)
                     {
-                        var newMatch = string.Format("{0}={1}{2}{3}",
-                                                        match.Groups[1].Value,
-                                                        match.Groups[2].Value,
-                                                        url,
-                                                        match.Groups[4].Value);
+                        var newMatch = string.Format(
+                            "{0}={1}{2}{3}",
+                            match.Groups[1].Value,
+                            match.Groups[2].Value,
+                            url,
+                            match.Groups[4].Value);
 
                         this._separator = this._separator.Replace(match.Value, newMatch);
                     }
                 }
-
             }
         }
     }

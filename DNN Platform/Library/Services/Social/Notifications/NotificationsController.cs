@@ -2,56 +2,48 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Services.Social.Notifications.Data;
-using DotNetNuke.Services.Cache;
-
 namespace DotNetNuke.Services.Social.Notifications
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications.Data;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Provides the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
     /// </summary>
-    public class NotificationsController 
-                        : ServiceLocator<INotificationsController, NotificationsController>
-                        , INotificationsController
+    public class NotificationsController
+                        : ServiceLocator<INotificationsController, NotificationsController>,
+                        INotificationsController
     {
         protected override Func<INotificationsController> GetFactory()
         {
             return () => new NotificationsController();
         }
 
-        #region Constants
-
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
-	    private const string ToastsCacheKey = "GetToasts_{0}";
-
-        #endregion
-
-        #region Private Variables
-
+        private const string ToastsCacheKey = "GetToasts_{0}";
         private readonly IDataService _dataService;
         private readonly Messaging.Data.IDataService _messagingDataService;
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
-        /// Default constructor
+        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
+        /// Default constructor.
         /// </summary>
         public NotificationsController()
             : this(DataService.Instance, Messaging.Data.DataService.Instance)
@@ -59,10 +51,11 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// Constructor from specifict data service
+        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
+        /// Constructor from specifict data service.
         /// </summary>
-        /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see></param>
-        /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging</param>
+        /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>
+        /// <param name="messagingDataService">Class with methods to do CRUD in database for the entities of types <see cref="Message"></see>, <see cref="MessageRecipient"></see> and <see cref="MessageAttachment"></see> and to interact with the stored procedures regarding messaging.</param>
         public NotificationsController(IDataService dataService, Messaging.Data.IDataService messagingDataService)
         {
             Requires.NotNull("dataService", dataService);
@@ -71,10 +64,6 @@ namespace DotNetNuke.Services.Social.Notifications
             this._dataService = dataService;
             this._messagingDataService = messagingDataService;
         }
-
-        #endregion
-
-        #region Public API
 
         public void SetNotificationTypeActions(IList<NotificationTypeAction> actions, int notificationTypeId)
         {
@@ -97,19 +86,23 @@ namespace DotNetNuke.Services.Social.Notifications
 
             foreach (var action in actions)
             {
-                action.NotificationTypeActionId = this._dataService.AddNotificationTypeAction(notificationTypeId,
-                                                                                         action.NameResourceKey,
-                                                                                         action.DescriptionResourceKey,
-                                                                                         action.ConfirmResourceKey,
-                                                                                         action.APICall,
-                                                                                         this.GetCurrentUserId());
+                action.NotificationTypeActionId = this._dataService.AddNotificationTypeAction(
+                    notificationTypeId,
+                    action.NameResourceKey,
+                    action.DescriptionResourceKey,
+                    action.ConfirmResourceKey,
+                    action.APICall,
+                    this.GetCurrentUserId());
                 action.NotificationTypeId = notificationTypeId;
             }
         }
 
         public virtual int CountNotifications(int userId, int portalId)
         {
-            if (userId <= 0) return 0;
+            if (userId <= 0)
+            {
+                return 0;
+            }
 
             var cacheKey = string.Format(DataCache.UserNotificationsCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
@@ -142,17 +135,17 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (string.IsNullOrEmpty(notification.Subject) && string.IsNullOrEmpty(notification.Body))
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgSubjectOrBodyRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgSubjectOrBodyRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (roles == null && users == null)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgRolesOrUsersRequiredError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgRolesOrUsersRequiredError", Localization.ExceptionsResourceFile));
             }
 
             if (!string.IsNullOrEmpty(notification.Subject) && notification.Subject.Length > ConstMaxSubject)
             {
-                throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgSubjectTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxSubject, notification.Subject.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgSubjectTooBigError", Localization.ExceptionsResourceFile), ConstMaxSubject, notification.Subject.Length));
             }
 
             var sbTo = new StringBuilder();
@@ -166,28 +159,31 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (users != null)
             {
-                foreach (var user in users.Where(user => !string.IsNullOrEmpty(user.DisplayName))) sbTo.Append(user.DisplayName + ",");
+                foreach (var user in users.Where(user => !string.IsNullOrEmpty(user.DisplayName)))
+                {
+                    sbTo.Append(user.DisplayName + ",");
+                }
             }
 
             if (sbTo.Length == 0)
             {
-                throw new ArgumentException(Localization.Localization.GetString("MsgEmptyToListFoundError", Localization.Localization.ExceptionsResourceFile));
+                throw new ArgumentException(Localization.GetString("MsgEmptyToListFoundError", Localization.ExceptionsResourceFile));
             }
 
             if (sbTo.Length > ConstMaxTo)
             {
-                throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgToListTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
+                throw new ArgumentException(string.Format(Localization.GetString("MsgToListTooBigError", Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
             }
 
             notification.To = sbTo.ToString().Trim(',');
-            if (notification.ExpirationDate != new DateTime())
+            if (notification.ExpirationDate != default(DateTime))
             {
                 notification.ExpirationDate = this.GetExpirationDate(notification.NotificationTypeID);
             }
 
             notification.NotificationID = this._dataService.SendNotification(notification, pid);
 
-            //send message to Roles
+            // send message to Roles
             if (roles != null)
             {
                 var roleIds = string.Empty;
@@ -202,7 +198,7 @@ namespace DotNetNuke.Services.Social.Notifications
                     UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            //send message to each User - this should be called after CreateMessageRecipientsForRole.
+            // send message to each User - this should be called after CreateMessageRecipientsForRole.
             if (users == null)
             {
                 users = new List<UserInfo>();
@@ -215,7 +211,7 @@ namespace DotNetNuke.Services.Social.Notifications
                                             MessageID = notification.NotificationID,
                                             UserID = user.UserID,
                                             Read = false,
-                                            RecipientID = Null.NullInteger
+                                            RecipientID = Null.NullInteger,
                                         };
 
             foreach (var recipient in recipients)
@@ -225,7 +221,7 @@ namespace DotNetNuke.Services.Social.Notifications
                     UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            //if sendToast is true, then mark all recipients' as ready for toast.
+            // if sendToast is true, then mark all recipients' as ready for toast.
             if (notification.SendToast)
             {
                 foreach (var messageRecipient in InternalMessagingController.Instance.GetMessageRecipients(notification.NotificationID))
@@ -245,12 +241,13 @@ namespace DotNetNuke.Services.Social.Notifications
                 notificationType.DesktopModuleId = Null.NullInteger;
             }
 
-            notificationType.NotificationTypeId = this._dataService.CreateNotificationType(notificationType.Name,
-                                                                                      notificationType.Description,
-                                                                                      (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
-                                                                                      notificationType.DesktopModuleId,
-                                                                                      this.GetCurrentUserId(), 
-                                                                                      notificationType.IsTask);
+            notificationType.NotificationTypeId = this._dataService.CreateNotificationType(
+                notificationType.Name,
+                notificationType.Description,
+                (int)notificationType.TimeToLive.TotalMinutes == 0 ? Null.NullInteger : (int)notificationType.TimeToLive.TotalMinutes,
+                notificationType.DesktopModuleId,
+                this.GetCurrentUserId(),
+                notificationType.IsTask);
         }
 
         public virtual void DeleteNotification(int notificationId)
@@ -260,6 +257,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 DataCache.RemoveCache(string.Format(ToastsCacheKey, recipient.UserID));
             }
+
             this._dataService.DeleteNotification(notificationId);
         }
 
@@ -327,6 +325,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 pid = PortalController.GetEffectivePortalId(portalId);
             }
+
             return userId <= 0
                 ? new List<Notification>(0)
                 : CBO.FillCollection<Notification>(this._dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
@@ -369,19 +368,15 @@ namespace DotNetNuke.Services.Social.Notifications
             return CBO.FillCollection<NotificationTypeAction>(this._dataService.GetNotificationTypeActions(notificationTypeId));
         }
 
-        #endregion
+        public bool IsToastPending(int notificationId)
+        {
+            return this._dataService.IsToastPending(notificationId);
+        }
 
-		#region Toast APIS
-
-		public bool IsToastPending(int notificationId)
-		{
-			return this._dataService.IsToastPending(notificationId);
-		}
-
-		public void MarkReadyForToast(Notification notification, UserInfo userInfo)
-		{
-			this.MarkReadyForToast(notification, userInfo.UserID);
-		}
+        public void MarkReadyForToast(Notification notification, UserInfo userInfo)
+        {
+            this.MarkReadyForToast(notification, userInfo.UserID);
+        }
 
         public void MarkReadyForToast(Notification notification, int userId)
         {
@@ -389,10 +384,10 @@ namespace DotNetNuke.Services.Social.Notifications
             this._dataService.MarkReadyForToast(notification.NotificationID, userId);
         }
 
-		public void MarkToastSent(int notificationId, int userId)
-		{
-			this._dataService.MarkToastSent(notificationId, userId);
-		}
+        public void MarkToastSent(int notificationId, int userId)
+        {
+            this._dataService.MarkToastSent(notificationId, userId);
+        }
 
         public IList<Notification> GetToasts(UserInfo userInfo)
         {
@@ -406,18 +401,14 @@ namespace DotNetNuke.Services.Social.Notifications
                 {
                     this._dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
                 }
-                //Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
-                //This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
+
+                // Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
+                // This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
                 DataCache.SetCache(cacheKey, new List<Notification>());
             }
 
             return toasts;
         }
-
-
-        #endregion
-
-        #region Internal Methods
 
         internal virtual UserInfo GetAdminUser()
         {
@@ -486,7 +477,5 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             DataCache.ClearCache("NotificationTypes:");
         }
-
-        #endregion
     }
 }

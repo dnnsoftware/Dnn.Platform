@@ -1,18 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public class DnnFormRadioButtonListItem : DnnFormListItemBase
     {
         private RadioButtonList _radioButtonList;
@@ -42,12 +37,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     this._radioButtonList.DataBind();
                 }
-                if (String.IsNullOrEmpty(selectedValue))
+
+                if (string.IsNullOrEmpty(selectedValue))
                 {
                     selectedValue = this.DefaultValue;
                 }
 
-                //Reset SelectedValue
+                // Reset SelectedValue
                 if (this._radioButtonList.Items.FindByValue(selectedValue) != null)
                 {
                     this._radioButtonList.Items.FindByValue(selectedValue).Selected = true;
@@ -62,7 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            this._radioButtonList = new RadioButtonList  { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow};
+            this._radioButtonList = new RadioButtonList { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
 
             container.Controls.Add(this._radioButtonList);
 

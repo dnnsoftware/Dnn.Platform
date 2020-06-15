@@ -1,26 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Services.Installer.Log;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Packages
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Security.Cryptography;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Services.Installer.Log;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageInfo class represents a single Installer Package
+    /// The PackageInfo class represents a single Installer Package.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -32,17 +27,20 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInfo"/> class.
         /// This Constructor creates a new InstallPackage instance as defined by the
-        /// Parameters
+        /// Parameters.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public PackageInfo(InstallerInfo info) : this()
+        public PackageInfo(InstallerInfo info)
+            : this()
         {
             this.AttachInstallerInfo(info);
         }
 
         /// <summary>
-        /// This Constructor creates a new InstallPackage instance
+        /// Initializes a new instance of the <see cref="PackageInfo"/> class.
+        /// This Constructor creates a new InstallPackage instance.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public PackageInfo()
@@ -56,45 +54,45 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// <summary>Gets the direct dependencies of this package.</summary>
         [XmlIgnore]
-        public IList<PackageDependencyInfo> Dependencies 
-        { 
+        public IList<PackageDependencyInfo> Dependencies
+        {
             get
             {
-                return this._dependencies ?? (this._dependencies = (this.PackageID == -1) 
-                                        ? new List<PackageDependencyInfo>() 
+                return this._dependencies ?? (this._dependencies = (this.PackageID == -1)
+                                        ? new List<PackageDependencyInfo>()
                                         : PackageController.Instance.GetPackageDependencies(p => p.PackageId == this.PackageID));
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Email for this package
+        /// Gets or sets the Email for this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Email { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Description of this package
+        /// Gets or sets the Description of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the FileName of this package
+        /// Gets or sets the FileName of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string FileName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package
+        /// Gets a Dictionary of Files that are included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public Dictionary<string, InstallFile> Files
@@ -107,50 +105,50 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name (path) of the folder where the package is installed
+        /// Gets or sets the name (path) of the folder where the package is installed.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string FolderName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the FriendlyName of this package
+        /// Gets or sets and Sets the FriendlyName of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the url for the icon for the package
+        /// Gets or sets the url for the icon for the package.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Installed Version of the Package
+        /// Gets or sets and sets the Installed Version of the Package.
         /// </summary>
-        /// <value>A System.Version</value>
+        /// <value>A System.Version.</value>
         /// -----------------------------------------------------------------------------
         public Version InstalledVersion { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated InstallerInfo
+        /// Gets the associated InstallerInfo.
         /// </summary>
-        /// <value>An InstallerInfo object</value>
+        /// <value>An InstallerInfo object.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the InstallMode
+        /// Gets the InstallMode.
         /// </summary>
-        /// <value>An InstallMode value</value>
+        /// <value>An InstallMode value.</value>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
@@ -162,34 +160,34 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets whether this package is a "system" Package
+        /// Gets or sets a value indicating whether gets and Sets whether this package is a "system" Package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public bool IsSystemPackage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is Valid
+        /// Gets a value indicating whether gets whether the Package is Valid.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public bool IsValid { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the License of this package
+        /// Gets or sets and Sets the License of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string License { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Logger
+        /// Gets the Logger.
         /// </summary>
-        /// <value>An Logger object</value>
+        /// <value>An Logger object.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public Logger Log
@@ -202,89 +200,89 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Manifest of this package
+        /// Gets or sets the Manifest of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Manifest { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Name of this package
+        /// Gets or sets the Name of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Name { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Organisation for this package
+        /// Gets or sets the Organisation for this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Organization { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Owner of this package
+        /// Gets or sets the Owner of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Owner { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ID of this package
+        /// Gets or sets the ID of this package.
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Type of this package
+        /// Gets or sets the Type of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string PackageType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ID of this portal
+        /// Gets or sets the ID of this portal.
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int PortalID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the ReleaseNotes of this package
+        /// Gets or sets and Sets the ReleaseNotes of this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ReleaseNotes { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Url for this package
+        /// Gets or sets the Url for this package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Url { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of this package
+        /// Gets or sets the Version of this package.
         /// </summary>
-        /// <value>A System.Version</value>
+        /// <value>A System.Version.</value>
         /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The AttachInstallerInfo method attachs an InstallerInfo instance to the Package
+        /// The AttachInstallerInfo method attachs an InstallerInfo instance to the Package.
         /// </summary>
-        /// <param name="installer">The InstallerInfo instance to attach</param>
+        /// <param name="installer">The InstallerInfo instance to attach.</param>
         /// -----------------------------------------------------------------------------
         public void AttachInstallerInfo(InstallerInfo installer)
         {
@@ -319,7 +317,7 @@ namespace DotNetNuke.Services.Installer.Packages
                        ReleaseNotes = this.ReleaseNotes,
                        Url = this.Url,
                        Version = this.Version,
-                       InstalledVersion = this.InstalledVersion
+                       InstalledVersion = this.InstalledVersion,
                    };
         }
     }

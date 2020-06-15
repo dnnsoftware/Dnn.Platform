@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Web.Mvc;
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 {
+    using System;
+    using System.IO;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common;
+
     public class DnnViewResult : ViewResult, IDnnViewResult
     {
         public void ExecuteResult(ControllerContext context, TextWriter writer)
@@ -16,7 +17,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             Requires.NotNull("context", context);
             Requires.NotNull("writer", writer);
 
-            if (String.IsNullOrEmpty(this.ViewName))
+            if (string.IsNullOrEmpty(this.ViewName))
             {
                 this.ViewName = context.RouteData.GetRequiredString("action");
             }

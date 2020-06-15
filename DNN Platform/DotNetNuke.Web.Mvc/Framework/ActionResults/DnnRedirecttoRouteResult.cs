@@ -2,19 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using System.Web.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Helpers;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Helpers;
+    using Microsoft.Extensions.DependencyInjection;
+
     internal class DnnRedirecttoRouteResult : RedirectToRouteResult
     {
         protected INavigationManager NavigationManager { get; }
+
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent)
             : base(routeName, routeValues, permanent)
         {
@@ -48,7 +50,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             }
             else
             {
-                //TODO - match other actions
+                // TODO - match other actions
                 url = this.NavigationManager.NavigateURL();
             }
 
@@ -60,8 +62,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             {
                 context.HttpContext.Response.Redirect(url, true);
             }
-
-
         }
     }
 }

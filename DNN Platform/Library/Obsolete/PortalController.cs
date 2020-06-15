@@ -2,37 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Xml;
-
-using DotNetNuke.Entities.Tabs;
-//using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
-
-#endregion
+// using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     /// <summary>
-	/// PoralController provides business layer of poatal.
-	/// </summary>
-	/// <remarks>
-	/// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites, 
-	/// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
-	/// </remarks>
+    /// PoralController provides business layer of poatal.
+    /// </summary>
+    /// <remarks>
+    /// DotNetNuke supports the concept of virtualised sites in a single install. This means that multiple sites,
+    /// each potentially with multiple unique URL's, can exist in one instance of DotNetNuke i.e. one set of files and one database.
+    /// </remarks>
     public partial class PortalController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -47,9 +42,9 @@ namespace DotNetNuke.Entities.Portals
                 LastName = lastName,
                 Username = username,
                 DisplayName = firstName + " " + lastName,
-                Membership = {Password = password},
+                Membership = { Password = password },
                 Email = email,
-                IsSuperUser = false
+                IsSuperUser = false,
             };
             adminUser.Membership.Approved = true;
             adminUser.Profile.FirstName = firstName;
@@ -89,7 +84,6 @@ namespace DotNetNuke.Entities.Portals
             return GetCurrentPortalSettingsInternal();
         }
 
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 7.4.0. Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v10.0.0.")]
         public static Dictionary<string, string> GetPortalSettingsDictionary(int portalId)
@@ -124,5 +118,5 @@ namespace DotNetNuke.Entities.Portals
         {
             this.UpdatePortalInternal(portal, clearCache);
         }
- 	}
+    }
 }

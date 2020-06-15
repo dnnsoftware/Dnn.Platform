@@ -2,39 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem.Internal;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     public class FolderMappingController : ComponentBase<IFolderMappingController, FolderMappingController>, IFolderMappingController
     {
-        #region Constructor
-
         internal FolderMappingController()
         {
         }
 
-        #endregion
-
-        #region Private Variables
-
         private static readonly DataProvider dataProvider = DataProvider.Instance();
         private const string CacheKeyPrefix = "GetFolderMappingSettings";
-
-        #endregion
-
-        #region Public Methods
 
         public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {
@@ -46,10 +36,11 @@ namespace DotNetNuke.Services.FileSystem
 
         public int AddFolderMapping(FolderMappingInfo objFolderMapping)
         {
-            objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(objFolderMapping.PortalID,
-                                                                             objFolderMapping.MappingName,
-                                                                             objFolderMapping.FolderProviderType,
-                                                                             UserController.Instance.GetCurrentUserInfo().UserID);
+            objFolderMapping.FolderMappingID = dataProvider.AddFolderMapping(
+                objFolderMapping.PortalID,
+                objFolderMapping.MappingName,
+                objFolderMapping.FolderProviderType,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             UpdateFolderMappingSettings(objFolderMapping);
 
@@ -111,10 +102,11 @@ namespace DotNetNuke.Services.FileSystem
 
         public void UpdateFolderMapping(FolderMappingInfo objFolderMapping)
         {
-            dataProvider.UpdateFolderMapping(objFolderMapping.FolderMappingID,
-                                             objFolderMapping.MappingName,
-                                             objFolderMapping.Priority,
-                                             UserController.Instance.GetCurrentUserInfo().UserID);
+            dataProvider.UpdateFolderMapping(
+                objFolderMapping.FolderMappingID,
+                objFolderMapping.MappingName,
+                objFolderMapping.Priority,
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             ClearFolderMappingCache(objFolderMapping.PortalID);
             UpdateFolderMappingSettings(objFolderMapping);
@@ -137,11 +129,13 @@ namespace DotNetNuke.Services.FileSystem
 
         public List<FolderMappingInfo> GetFolderMappings(int portalId)
         {
-            var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
-            return CBO.GetCachedObject<List<FolderMappingInfo>>(new CacheItemArgs(cacheKey,
-                                                                    DataCache.FolderMappingCacheTimeOut,
-                                                                    DataCache.FolderMappingCachePriority),
-                                                                (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
+            var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
+            return CBO.GetCachedObject<List<FolderMappingInfo>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.FolderMappingCacheTimeOut,
+                DataCache.FolderMappingCachePriority),
+                (c) => CBO.FillCollection<FolderMappingInfo>(dataProvider.GetFolderMappings(portalId)));
         }
 
         public void AddDefaultFolderTypes(int portalID)
@@ -180,15 +174,13 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     CBO.CloseDataReader(dr, true);
                 }
+
                 var intCacheTimeout = 20 * Convert.ToInt32(Host.PerformanceSetting);
                 DataCache.SetCache(strCacheKey, objSettings, TimeSpan.FromMinutes(intCacheTimeout));
             }
+
             return objSettings;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static void UpdateFolderMappingSettings(FolderMappingInfo objFolderMapping)
         {
@@ -228,7 +220,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static void ClearFolderMappingCache(int portalId)
         {
-            var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
+            var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
         }
 
@@ -236,7 +228,5 @@ namespace DotNetNuke.Services.FileSystem
         {
             DataCache.RemoveCache(CacheKeyPrefix + folderMappingID);
         }
-
-        #endregion
     }
 }

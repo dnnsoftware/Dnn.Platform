@@ -2,31 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem.EventArgs;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+
     public class FileVersionController : ComponentBase<IFileVersionController, FileVersionController>, IFileVersionController
     {
-
-        #region database methods
         public string AddFileVersion(IFileInfo file, int userId, bool published, bool removeOldestVersions, Stream content = null)
         {
             Requires.NotNull("file", file);
-            
+
             byte[] fileContent = null;
 
             if (content != null)
@@ -45,28 +43,29 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             var newVersion = DataProvider.Instance()
-                                             .AddFileVersion(file.FileId,
-                                                             file.UniqueId,
-                                                             file.VersionGuid,
-                                                             file.FileName,
-                                                             file.Extension,
-                                                             file.Size,
-                                                             file.Width,
-                                                             file.Height,
-                                                             file.ContentType,
-                                                             file.Folder,
-                                                             file.FolderId,
-                                                             userId,
-                                                             file.SHA1Hash,
-                                                             file.LastModificationTime,
-                                                             file.Title,
-                                                             file.EnablePublishPeriod,
-                                                             file.StartDate,
-                                                             file.EndDate,
-                                                             file.ContentItemID,
-                                                             published,
-                                                             fileContent);
-            
+                                             .AddFileVersion(
+                                                 file.FileId,
+                                                 file.UniqueId,
+                                                 file.VersionGuid,
+                                                 file.FileName,
+                                                 file.Extension,
+                                                 file.Size,
+                                                 file.Width,
+                                                 file.Height,
+                                                 file.ContentType,
+                                                 file.Folder,
+                                                 file.FolderId,
+                                                 userId,
+                                                 file.SHA1Hash,
+                                                 file.LastModificationTime,
+                                                 file.Title,
+                                                 file.EnablePublishPeriod,
+                                                 file.StartDate,
+                                                 file.EndDate,
+                                                 file.ContentItemID,
+                                                 published,
+                                                 fileContent);
+
             DataCache.RemoveCache("GetFileById" + file.FileId);
 
             if (removeOldestVersions)
@@ -82,23 +81,27 @@ namespace DotNetNuke.Services.FileSystem
 
             return GetVersionedFilename(file, newVersion);
         }
-       
+
         public void SetPublishedVersion(IFileInfo file, int newPublishedVersion)
         {
             DataProvider.Instance().SetPublishedVersion(file.FileId, newPublishedVersion);
             DataCache.RemoveCache("GetFileById" + file.FileId);
 
-            // Rename the original file to the versioned name            
+            // Rename the original file to the versioned name
             // Rename the new versioned name to the original file name
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return;
+            if (folderMapping == null)
+            {
+                return;
+            }
+
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
-            folderProvider.RenameFile(file, GetVersionedFilename(file, file.PublishedVersion));            
+            folderProvider.RenameFile(file, GetVersionedFilename(file, file.PublishedVersion));
             folderProvider.RenameFile(
-                    new FileInfo { FileName = GetVersionedFilename(file, newPublishedVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID }, 
+                    new FileInfo { FileName = GetVersionedFilename(file, newPublishedVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID },
                     file.FileName);
-            
+
             // Notify File Changed
             this.OnFileChanged(file, UserController.Instance.GetCurrentUserInfo().UserID);
         }
@@ -110,7 +113,10 @@ namespace DotNetNuke.Services.FileSystem
             int newVersion;
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return Null.NullInteger;
+            if (folderMapping == null)
+            {
+                return Null.NullInteger;
+            }
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
@@ -120,10 +126,10 @@ namespace DotNetNuke.Services.FileSystem
                 newVersion = DataProvider.Instance().DeleteFileVersion(file.FileId, version);
 
                 folderProvider.RenameFile(
-                    new FileInfo { FileId = file.FileId, FileName = GetVersionedFilename(file, newVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID }, 
+                    new FileInfo { FileId = file.FileId, FileName = GetVersionedFilename(file, newVersion), Folder = file.Folder, FolderId = file.FolderId, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID },
                     file.FileName);
 
-                //Update the Last Modification Time
+                // Update the Last Modification Time
                 var providerLastModificationTime = folderProvider.GetLastModificationTime(file);
                 if (file.LastModificationTime != providerLastModificationTime)
                 {
@@ -135,8 +141,8 @@ namespace DotNetNuke.Services.FileSystem
             }
             else
             {
-                newVersion = DataProvider.Instance().DeleteFileVersion(file.FileId, version);             
-                folderProvider.DeleteFile(new FileInfo { FileName = GetVersionedFilename(file, version), Folder = file.Folder, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID, FolderId = file.FolderId });                
+                newVersion = DataProvider.Instance().DeleteFileVersion(file.FileId, version);
+                folderProvider.DeleteFile(new FileInfo { FileName = GetVersionedFilename(file, version), Folder = file.Folder, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID, FolderId = file.FolderId });
             }
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
@@ -155,7 +161,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return;
+            if (folderMapping == null)
+            {
+                return;
+            }
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
@@ -209,7 +218,11 @@ namespace DotNetNuke.Services.FileSystem
         public Stream GetVersionContent(IFileInfo file, int version)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return null;
+            if (folderMapping == null)
+            {
+                return null;
+            }
+
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             return this.GetVersionContent(folderProvider, folder, file, version);
@@ -218,7 +231,10 @@ namespace DotNetNuke.Services.FileSystem
         public void RollbackFileVersion(IFileInfo file, int version, int userId)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return;
+            if (folderMapping == null)
+            {
+                return;
+            }
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -239,17 +255,13 @@ namespace DotNetNuke.Services.FileSystem
 
             this.RemoveOldestsVersions(file);
         }
-        
-        #endregion
-
-        #region helper methods
 
         private void OnFileChanged(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileChanged(new FileChangedEventArgs
                                                         {
                                                             FileInfo = fileInfo,
-                                                            UserId = userId
+                                                            UserId = userId,
                                                         });
         }
 
@@ -262,7 +274,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             var portalId = FolderManager.Instance.GetFolder(file.FolderId).PortalID;
             var versions = this.GetFileVersions(file);
-            var maxVersions = this.MaxFileVersions(portalId) - 1; // The published version is not in the FileVersions collection            
+            var maxVersions = this.MaxFileVersions(portalId) - 1; // The published version is not in the FileVersions collection
             if (versions.Count() > maxVersions)
             {
                 foreach (var v in versions.OrderBy(v => v.Version).Take(versions.Count() - maxVersions))
@@ -274,7 +286,7 @@ namespace DotNetNuke.Services.FileSystem
 
         internal static string GetVersionedFilename(IFileInfo file, int version)
         {
-            return string.Format("{0}_{1}.v.resources", file.FileId, version);            
+            return string.Format("{0}_{1}.v.resources", file.FileId, version);
         }
 
         private static void RenameFile(IFileInfo file, string newFileName)
@@ -288,7 +300,5 @@ namespace DotNetNuke.Services.FileSystem
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
         }
-
-        #endregion
     }
 }

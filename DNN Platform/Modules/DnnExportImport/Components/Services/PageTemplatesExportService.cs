@@ -2,23 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Common.Utilities;
-using System.Linq;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Common;
-using Dnn.ExportImport.Components.Common;
-using System;
-using System.IO;
-using Dnn.ExportImport.Dto.PageTemplates;
-using DotNetNuke.Collections;
-using DotNetNuke.Entities.Portals;
-using Newtonsoft.Json;
-using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.PageTemplates;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.FileSystem;
+    using Newtonsoft.Json;
+
+    using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
+
     public class PageTemplatesExportService : AssetsExportService
     {
         private readonly string _templatesFolder =
@@ -32,12 +34,18 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckCancelled(exportJob)) return;
-            //Skip the export if all the folders have been processed already.
-            if (this.CheckPoint.Stage >= 1)
+            if (this.CheckCancelled(exportJob))
+            {
                 return;
+            }
 
-            //Create Zip File to hold files
+            // Skip the export if all the folders have been processed already.
+            if (this.CheckPoint.Stage >= 1)
+            {
+                return;
+            }
+
+            // Create Zip File to hold files
             var skip = this.GetCurrentSkip();
             var currentIndex = skip;
             var totalTemplatesExported = 0;
@@ -60,9 +68,12 @@ namespace Dnn.ExportImport.Components.Services
                             .ToList();
                     var totalTemplates = templates.Count;
 
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
 
                     foreach (var template in templates)
                     {
@@ -79,9 +90,14 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.ProcessedItems++;
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalTemplates;
                         currentIndex++;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
+
+                        // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                        {
+                            return;
+                        }
                     }
+
                     this.CheckPoint.Stage++;
                     currentIndex = 0;
                     this.CheckPoint.Completed = true;
@@ -98,17 +114,26 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
-            //Skip the export if all the templates have been processed already.
-            if (this.CheckPoint.Stage >= 2 || this.CheckPoint.Completed)
+            if (this.CheckCancelled(importJob))
+            {
                 return;
+            }
+
+            // Skip the export if all the templates have been processed already.
+            if (this.CheckPoint.Stage >= 2 || this.CheckPoint.Completed)
+            {
+                return;
+            }
 
             var portalId = importJob.PortalId;
             var templatesFile = string.Format(this._templatesFolder, importJob.Directory.TrimEnd('\\').TrimEnd('/'));
             var totalTemplates = this.GetImportTotal();
 
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
 
             if (this.CheckPoint.Stage == 0)
             {
@@ -132,9 +157,13 @@ namespace Dnn.ExportImport.Components.Services
                     this.CheckPoint.Progress = 90;
                     this.CheckPoint.TotalItems = totalTemplates;
                     this.CheckPoint.ProcessedItems = totalTemplates;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
                 }
             }
+
             if (this.CheckPoint.Stage == 1)
             {
                 Func<ExportPageTemplate, object> predicate = x => x.Folder;
@@ -166,6 +195,7 @@ namespace Dnn.ExportImport.Components.Services
                 dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
+
             return 0;
         }
     }

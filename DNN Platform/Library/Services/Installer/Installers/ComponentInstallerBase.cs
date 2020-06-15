@@ -1,25 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Xml.XPath;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.EventQueue;
-using DotNetNuke.Services.Installer.Log;
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.EventQueue;
+    using DotNetNuke.Services.Installer.Log;
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ComponentInstallerBase is a base class for all Component Installers
+    /// The ComponentInstallerBase is a base class for all Component Installers.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -33,9 +29,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public virtual string AllowableFiles
         {
@@ -47,17 +43,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Completed flag
+        /// Gets or sets a value indicating whether gets the Completed flag.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool Completed { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the InstallMode
+        /// Gets the InstallMode.
         /// </summary>
-        /// <value>An InstallMode value</value>
+        /// <value>An InstallMode value.</value>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
@@ -69,9 +65,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Logger
+        /// Gets the Logger.
         /// </summary>
-        /// <value>An Logger object</value>
+        /// <value>An Logger object.</value>
         /// -----------------------------------------------------------------------------
         public Logger Log
         {
@@ -83,17 +79,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Package
+        /// Gets or sets the associated Package.
         /// </summary>
-        /// <value>An PackageInfo object</value>
+        /// <value>An PackageInfo object.</value>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package
+        /// Gets a Dictionary of Files that are included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> PackageFiles
         {
@@ -105,9 +101,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke")
+        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string PhysicalSitePath
         {
@@ -129,9 +125,9 @@ namespace DotNetNuke.Services.Installer.Installers
                                         Priority = MessagePriority.High,
                                         ExpirationDate = DateTime.Now.AddYears(-1),
                                         SentDate = DateTime.Now,
-                                        Body = "",
+                                        Body = string.Empty,
                                         ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing)
+                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing),
                                     };
                 foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
                 {
@@ -139,10 +135,10 @@ namespace DotNetNuke.Services.Installer.Installers
                     var attribValue = attributeNav.Value;
                     if (attribName == "upgradeVersionsList")
                     {
-                        if (!String.IsNullOrEmpty(attribValue))
+                        if (!string.IsNullOrEmpty(attribValue))
                         {
                             string[] upgradeVersions = attribValue.Split(',');
-                            attribValue = "";
+                            attribValue = string.Empty;
                             foreach (string version in upgradeVersions)
                             {
                                 switch (version.ToLowerInvariant())
@@ -152,12 +148,14 @@ namespace DotNetNuke.Services.Installer.Installers
                                         {
                                             attribValue += version + ",";
                                         }
+
                                         break;
                                     case "upgrade":
                                         if (this.Package.InstalledVersion > new Version(0, 0, 0))
                                         {
                                             attribValue += version + ",";
                                         }
+
                                         break;
                                     default:
                                         Version upgradeVersion = null;
@@ -170,7 +168,7 @@ namespace DotNetNuke.Services.Installer.Installers
                                             this.Log.AddWarning(string.Format(Util.MODULE_InvalidVersion, version));
                                         }
 
-                                        if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) //To allow when fresh installing or installresources
+                                        if (upgradeVersion != null && (Globals.Status == Globals.UpgradeStatus.Install)) // To allow when fresh installing or installresources
                                         {
                                             attribValue += version + ",";
                                         }
@@ -178,16 +176,19 @@ namespace DotNetNuke.Services.Installer.Installers
                                         {
                                             attribValue += version + ",";
                                         }
+
                                         break;
                                 }
-
                             }
+
                             attribValue = attribValue.TrimEnd(',');
                         }
                     }
+
                     eventMessage.Attributes.Add(attribName, attribValue);
                 }
             }
+
             return eventMessage;
         }
 
@@ -195,9 +196,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Installer supports Manifest only installs
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public virtual bool SupportsManifestOnlyInstall
         {
@@ -209,17 +210,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Type of the component
+        /// Gets or sets and sets the Type of the component.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Type { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of the Component
+        /// Gets or sets the Version of the Component.
         /// </summary>
-        /// <value>A System.Version</value>
+        /// <value>A System.Version.</value>
         /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 

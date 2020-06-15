@@ -8,6 +8,6 @@ namespace DotNetNuke.Entities.Urls
     {
         AlwaysUse,
         PageOnly,
-        Never
+        Never,
     }
 }

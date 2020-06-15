@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnFormTabStrip : ListControl 
-    {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
+    public class DnnFormTabStrip : ListControl
+    {
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
@@ -19,7 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
             foreach (ListItem item in this.Items)
             {
                 writer.RenderBeginTag(HtmlTextWriterTag.Li);
-                
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, item.Value);
                 writer.RenderBeginTag(HtmlTextWriterTag.A);
                 writer.Write(item.Text);

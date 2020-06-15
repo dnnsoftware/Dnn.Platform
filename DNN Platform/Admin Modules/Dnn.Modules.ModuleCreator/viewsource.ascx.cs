@@ -1,52 +1,46 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Security;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
 namespace Dnn.Module.ModuleCreator
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class ViewSource : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ViewSource()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-
-        #region Private Members
 
         protected int ModuleControlId
         {
             get
             {
                 var moduleControlId = Null.NullInteger;
-                if ((this.Request.QueryString["ctlid"] != null))
+                if (this.Request.QueryString["ctlid"] != null)
                 {
-                    moduleControlId = Int32.Parse(this.Request.QueryString["ctlid"]);
+                    moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
                 }
+
                 return moduleControlId;
             }
         }
@@ -58,10 +52,6 @@ namespace Dnn.Module.ModuleCreator
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void BindFiles(string controlSrc)
         {
@@ -77,7 +67,7 @@ namespace Dnn.Module.ModuleCreator
 
             if (Directory.Exists(modulePath))
             {
-                //iterate through files in desktopmodules folder
+                // iterate through files in desktopmodules folder
                 fileList = Directory.GetFiles(modulePath, "*", SearchOption.AllDirectories);
                 foreach (string filePath in fileList)
                 {
@@ -90,6 +80,7 @@ namespace Dnn.Module.ModuleCreator
                             {
                                 this.cboFile.Items.Add(new ListItem(filePath.Substring(modulePath.Length), resxPath));
                             }
+
                             break;
                         case ".vb":
                         case ".cs":
@@ -113,8 +104,7 @@ namespace Dnn.Module.ModuleCreator
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("FolderNameInvalid", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
             }
 
-
-            //iterate through files in app_code folder
+            // iterate through files in app_code folder
             modulePath = Globals.ApplicationMapPath + "\\App_Code\\" + objDesktopModule.FolderName.Replace("/", "\\") + "\\";
             if (Directory.Exists(modulePath))
             {
@@ -138,7 +128,6 @@ namespace Dnn.Module.ModuleCreator
             {
                 this.cboFile.Items.FindByValue(Globals.ApplicationMapPath + "\\" + controlSrc.Replace("/", "\\")).Selected = true;
             }
-
         }
 
         private void LoadFile()
@@ -180,6 +169,7 @@ namespace Dnn.Module.ModuleCreator
                     mimeType = "text/html";
                     break;
             }
+
             DotNetNuke.UI.Utilities.ClientAPI.RegisterClientVariable(this.Page, "mimeType", mimeType, true);
         }
 
@@ -202,26 +192,28 @@ namespace Dnn.Module.ModuleCreator
         private void LoadLanguages()
         {
             this.optLanguage.Items.Clear();
-			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates";
+            var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates";
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
                 this.optLanguage.Items.Add(new ListItem(Path.GetFileName(folderPath)));
             }
 
-            var language = "";
+            var language = string.Empty;
             foreach (ListItem objFile in this.cboFile.Items)
             {
                 if (objFile.Text.EndsWith(".vb"))
                 {
                     language = "VB";
                 }
+
                 if (objFile.Text.EndsWith(".cs"))
                 {
                     language = "C#";
                 }
             }
-            if (language == "")
+
+            if (language == string.Empty)
             {
                 this.optLanguage.SelectedIndex = 0;
             }
@@ -234,18 +226,19 @@ namespace Dnn.Module.ModuleCreator
         private void LoadModuleTemplates()
         {
             this.cboTemplate.Items.Clear();
-			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue;
+            var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue;
             string[] folderList = Directory.GetDirectories(moduleTemplatePath);
             foreach (string folderPath in folderList)
             {
                 this.cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
             }
-            this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", ""));
+
+            this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
         }
 
         private void LoadReadMe()
         {
-			var templatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedItem.Value;
+            var templatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedItem.Value;
             if (File.Exists(templatePath + "\\readme.txt"))
             {
                 var readMe = Null.NullString;
@@ -254,14 +247,15 @@ namespace Dnn.Module.ModuleCreator
                     readMe = tr.ReadToEnd();
                     tr.Close();
                 }
+
                 this.lblDescription.Text = readMe.Replace("\n", "<br/>");
             }
             else
             {
-                this.lblDescription.Text = "";
+                this.lblDescription.Text = string.Empty;
             }
 
-            //Determine if Control Name is required
+            // Determine if Control Name is required
             var controlNameRequired = false;
             var controlName = "<Not Required>";
             string[] fileList = Directory.GetFiles(templatePath);
@@ -280,6 +274,7 @@ namespace Dnn.Module.ModuleCreator
                     }
                 }
             }
+
             this.txtControl.Text = controlName;
             this.txtControl.Enabled = controlNameRequired;
             if (this.txtControl.Enabled)
@@ -299,48 +294,47 @@ namespace Dnn.Module.ModuleCreator
             var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, this.PortalId);
-            var objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID ==objDesktopModule.PackageID);
+            var objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == objDesktopModule.PackageID);
 
-			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedValue + "\\";
-
+            var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedValue + "\\";
 
             EventLogController.Instance.AddLog("Processing Template Folder", moduleTemplatePath, this.PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
 
             var controlName = Null.NullString;
             var fileName = Null.NullString;
             var modulePath = Null.NullString;
             var sourceCode = Null.NullString;
 
-            //iterate through files in template folder
+            // iterate through files in template folder
             string[] fileList = Directory.GetFiles(moduleTemplatePath);
             foreach (string filePath in fileList)
             {
                 modulePath = this.Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
 
-                //open file
+                // open file
                 using (TextReader tr = new StreamReader(filePath))
                 {
                     sourceCode = tr.ReadToEnd();
                     tr.Close();
                 }
 
-                //replace tokens
-                var owner = objPackage.Owner.Replace(" ", "");
+                // replace tokens
+                var owner = objPackage.Owner.Replace(" ", string.Empty);
                 if (string.IsNullOrEmpty(owner))
                 {
                     owner = "DNN";
                 }
+
                 sourceCode = sourceCode.Replace("_OWNER_", owner);
-                sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
+                sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", string.Empty));
                 sourceCode = sourceCode.Replace("_CONTROL_", this.GetControl());
                 sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
-                //get filename
+                // get filename
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", this.GetControl());
-                fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", ""));
-                fileName = fileName.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", ""));
+                fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", string.Empty));
+                fileName = fileName.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", string.Empty));
                 fileName = fileName.Replace("_CONTROL_", this.GetControl());
 
                 switch (Path.GetExtension(filePath).ToLowerInvariant())
@@ -362,28 +356,30 @@ namespace Dnn.Module.ModuleCreator
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
+
                         break;
                     case ".cs":
                         if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
+
                         break;
                     case ".js":
                         modulePath = modulePath + "\\js\\";
                         break;
                 }
 
-                //check if folder exists
+                // check if folder exists
                 if (!Directory.Exists(modulePath))
                 {
                     Directory.CreateDirectory(modulePath);
                 }
 
-                //check if file already exists
+                // check if file already exists
                 if (!File.Exists(modulePath + fileName))
                 {
-                    //create file
+                    // create file
                     using (TextWriter tw = new StreamWriter(modulePath + fileName))
                     {
                         tw.WriteLine(sourceCode);
@@ -391,11 +387,10 @@ namespace Dnn.Module.ModuleCreator
                     }
 
                     EventLogController.Instance.AddLog("Created File", modulePath + fileName, this.PortalSettings, -1, EventLogController.EventLogType.HOST_ALERT);
-
                 }
             }
 
-            //Create module control
+            // Create module control
             if (controlName != Null.NullString)
             {
                 try
@@ -407,8 +402,8 @@ namespace Dnn.Module.ModuleCreator
                     objModuleControl.ControlSrc = "DesktopModules/" + objDesktopModule.FolderName + "/" + controlName;
                     objModuleControl.ControlTitle = this.txtControl.Text;
                     objModuleControl.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), this.cboType.SelectedItem.Value);
-                    objModuleControl.HelpURL = "";
-                    objModuleControl.IconFile = "";
+                    objModuleControl.HelpURL = string.Empty;
+                    objModuleControl.IconFile = string.Empty;
                     objModuleControl.ViewOrder = 0;
                     objModuleControl.SupportsPartialRendering = true;
                     objModuleControl.SupportsPopUps = true;
@@ -417,7 +412,7 @@ namespace Dnn.Module.ModuleCreator
                 }
                 catch
                 {
-                    //Suppress error
+                    // Suppress error
                 }
             }
 
@@ -428,13 +423,8 @@ namespace Dnn.Module.ModuleCreator
 
         private string GetControl()
         {
-            return this.txtControl.Text.Replace(" ", "");
+            return this.txtControl.Text.Replace(" ", string.Empty);
         }
-
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -467,7 +457,7 @@ namespace Dnn.Module.ModuleCreator
                 }
                 else
                 {
-                    this.ViewState["UrlReferrer"] = "";
+                    this.ViewState["UrlReferrer"] = string.Empty;
                 }
 
                 this.LoadLanguages();
@@ -476,9 +466,9 @@ namespace Dnn.Module.ModuleCreator
                 {
                     this.cboTemplate.Items.FindByText("Module - User Control").Selected = true;
                 }
+
                 this.LoadReadMe();
             }
-
         }
 
         protected void OnFileIndexChanged(object sender, EventArgs e)
@@ -521,7 +511,7 @@ namespace Dnn.Module.ModuleCreator
 
         private void OnCreateClick(object sender, EventArgs e)
         {
-            if (this.cboTemplate.SelectedIndex > 0 && this.txtControl.Text != "")
+            if (this.cboTemplate.SelectedIndex > 0 && this.txtControl.Text != string.Empty)
             {
                 var controlSrc = this.CreateModuleControl();
                 this.BindFiles(controlSrc);
@@ -532,8 +522,5 @@ namespace Dnn.Module.ModuleCreator
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("AddControlError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
             }
         }
-
-        #endregion
-
     }
 }

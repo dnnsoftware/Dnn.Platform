@@ -2,31 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Common;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.FileSystem;
-using System.IO;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class Create : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Create()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -40,7 +42,6 @@ namespace DotNetNuke.Modules.Groups
             this.btnCancel.Click += this.Cancel_Click;
         }
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -50,6 +51,7 @@ namespace DotNetNuke.Modules.Groups
         {
             this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
         }
+
         private void Create_Click(object sender, EventArgs e)
         {
             var ps = Security.PortalSecurity.Instance;
@@ -64,21 +66,20 @@ namespace DotNetNuke.Modules.Groups
                 return;
             }
 
-
             var modRoles = new List<RoleInfo>();
-			var modUsers = new List<UserInfo>();
+            var modUsers = new List<UserInfo>();
             foreach (ModulePermissionInfo modulePermissionInfo in ModulePermissionController.GetModulePermissions(this.ModuleId, this.TabId))
             {
                 if (modulePermissionInfo.PermissionKey == "MODGROUP" && modulePermissionInfo.AllowAccess)
                 {
-	                if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
-	                {
+                    if (modulePermissionInfo.RoleID > int.Parse(Globals.glbRoleNothing))
+                    {
                         modRoles.Add(RoleController.Instance.GetRoleById(this.PortalId, modulePermissionInfo.RoleID));
-	                }
-					else if (modulePermissionInfo.UserID > Null.NullInteger)
-					{
-						modUsers.Add(UserController.GetUserById(this.PortalId, modulePermissionInfo.UserID));
-					}
+                    }
+                    else if (modulePermissionInfo.UserID > Null.NullInteger)
+                    {
+                        modUsers.Add(UserController.GetUserById(this.PortalId, modulePermissionInfo.UserID));
+                    }
                 }
             }
 
@@ -89,7 +90,7 @@ namespace DotNetNuke.Modules.Groups
                 Description = this.txtDescription.Text,
                 SecurityMode = SecurityMode.SocialGroup,
                 Status = RoleStatus.Approved,
-                IsPublic = this.rdAccessTypePublic.Checked
+                IsPublic = this.rdAccessTypePublic.Checked,
             };
             var userRoleStatus = RoleStatus.Pending;
             if (this.GroupModerationEnabled)
@@ -109,29 +110,31 @@ namespace DotNetNuke.Modules.Groups
                 userRoleStatus = RoleStatus.Approved;
             }
 
-	        var roleGroupId = this.DefaultRoleGroupId;
-	        if (roleGroupId < Null.NullInteger)
-	        {
-		        roleGroupId = Null.NullInteger;
-	        }
-			roleInfo.RoleGroupID = roleGroupId;
+            var roleGroupId = this.DefaultRoleGroupId;
+            if (roleGroupId < Null.NullInteger)
+            {
+                roleGroupId = Null.NullInteger;
+            }
+
+            roleInfo.RoleGroupID = roleGroupId;
 
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(this.PortalId, roleInfo.RoleID);
 
-	        var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString()});
-			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
-			{
-				const int startIndex = 8; // length of https://
-				groupUrl = groupUrl.Substring(groupUrl.IndexOf("/", startIndex, StringComparison.InvariantCultureIgnoreCase));
-			}
-			roleInfo.Settings.Add("URL", groupUrl);
+            var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, string.Empty, new string[] { "groupid=" + roleInfo.RoleID.ToString() });
+            if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
+            {
+                const int startIndex = 8; // length of https://
+                groupUrl = groupUrl.Substring(groupUrl.IndexOf("/", startIndex, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            roleInfo.Settings.Add("URL", groupUrl);
 
             roleInfo.Settings.Add("GroupCreatorName", this.UserInfo.DisplayName);
             roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
 
             RoleController.Instance.UpdateRoleSettings(roleInfo, true);
-	    if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
+            if (this.inpFile.PostedFile != null && this.inpFile.PostedFile.ContentLength > 0)
             {
                 IFileManager _fileManager = FileManager.Instance;
                 IFolderManager _folderManager = FolderManager.Instance;
@@ -142,6 +145,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                 }
+
                 if (groupFolder != null)
                 {
                     var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
@@ -153,19 +157,18 @@ namespace DotNetNuke.Modules.Groups
 
             var notifications = new Notifications();
 
-
             RoleController.Instance.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
             if (roleInfo.Status == RoleStatus.Pending)
             {
-                //Send notification to Group Moderators to approve/reject group.
+                // Send notification to Group Moderators to approve/reject group.
                 notifications.AddGroupNotification(Constants.GroupPendingNotification, this.GroupViewTabId, this.ModuleId, roleInfo, this.UserInfo, modRoles, modUsers);
             }
             else
             {
-                //Send notification to Group Moderators informing of new group.
+                // Send notification to Group Moderators informing of new group.
                 notifications.AddGroupNotification(Constants.GroupCreatedNotification, this.GroupViewTabId, this.ModuleId, roleInfo, this.UserInfo, modRoles, modUsers);
 
-                //Add entry to journal.
+                // Add entry to journal.
                 GroupUtilities.CreateJournalEntry(roleInfo, this.UserInfo);
             }
 

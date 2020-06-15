@@ -1,38 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.EditExtension
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The EditExtension control is used to edit a Extension
+    /// The EditExtension control is used to edit a Extension.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -52,7 +46,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                return (this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
+                return this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
             }
         }
 
@@ -70,7 +64,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        protected string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected PackageInfo Package
         {
@@ -95,6 +89,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                         }
                     }
                 }
+
                 return this._control as IPackageEditor;
             }
         }
@@ -104,10 +99,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             get
             {
                 var packageID = Null.NullInteger;
-                if ((this.Request.QueryString["PackageID"] != null))
+                if (this.Request.QueryString["PackageID"] != null)
                 {
-                    packageID = Int32.Parse(this.Request.QueryString["PackageID"]);
+                    packageID = int.Parse(this.Request.QueryString["PackageID"]);
                 }
+
                 return packageID;
             }
         }
@@ -121,6 +117,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     viewMode = PropertyEditorMode.Edit;
                 }
+
                 return viewMode;
             }
         }
@@ -153,7 +150,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.cmdUpdate.Visible = this.IsSuperTab;
             if (this.Package != null)
             {
-                
                 if (this.PackageEditor == null || this.PackageID == Null.NullInteger)
                 {
                     this.extensionSection.Visible = false;
@@ -167,14 +163,15 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     {
                         moduleControl.ModuleContext.Configuration = this.ModuleContext.Configuration;
                     }
+
                     this.PackageEditor.PackageID = this.PackageID;
                     this.PackageEditor.Initialize();
 
                     this.Package.IconFile = Util.ParsePackageIconFileName(this.Package);
                 }
-                
+
                 switch (this.Package.PackageType)
-                {                                        
+                {
                     case "Auth_System":
                     case "Container":
                     case "Module":
@@ -187,28 +184,29 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                         this.Package.IconFile = "Not Available";
                         break;
                 }
-                
+
                 if (this.Mode != "All")
                 {
                     this.packageType.Visible = false;
                 }
-                //Determine if Package is ready for packaging
+
+                // Determine if Package is ready for packaging
                 PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
                 this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
 
-                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && (PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings));
+                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings);
                 this.ctlAudit.Entity = this.Package;
 
                 this.packageForm.DataSource = this.Package;
                 this.packageFormReadOnly.DataSource = this.Package;
-                if(!this.Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
                     this.packageForm.DataBind();
                     this.packageFormReadOnly.DataBind();
                 }
+
                 this.packageForm.Visible = this.IsSuperTab;
                 this.packageFormReadOnly.Visible = !this.IsSuperTab;
-
             }
         }
 
@@ -220,14 +218,16 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 if (package != null)
                 {
                     var pkgIconFile = Util.ParsePackageIconFileName(package);
-                    package.IconFile = (pkgIconFile.Trim().Length > 0)? Util.ParsePackageIconFile(package) : null;
+                    package.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(package) : null;
                     PackageController.Instance.SaveExtensionPackage(package);
                 }
+
                 if (displayMessage)
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PackageUpdated", this.LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
             }
+
             if (this.PackageEditor != null)
             {
                 this.PackageEditor.UpdatePackage();
@@ -237,7 +237,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-			JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         /// -----------------------------------------------------------------------------
@@ -327,6 +327,5 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
-
     }
 }

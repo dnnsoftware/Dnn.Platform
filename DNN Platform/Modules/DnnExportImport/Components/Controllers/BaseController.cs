@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Dto.Jobs;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Log.EventLog;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Interfaces;
-using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
-
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Dto.Jobs;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Interfaces;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using Newtonsoft.Json;
+
     public class BaseController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
@@ -43,7 +44,8 @@ namespace Dnn.ExportImport.Components.Controllers
             var objSecurity = PortalSecurity.Instance;
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             var userInfo = UserController.Instance.GetUser(portalId, userId);
-            var username = objSecurity.InputFilter(userInfo.Username,
+            var username = objSecurity.InputFilter(
+                userInfo.Username,
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
 
             var log = new LogInfo
@@ -64,7 +66,9 @@ namespace Dnn.ExportImport.Components.Controllers
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             if (job == null || (job.PortalId != portalId && portalId != -1))
+            {
                 return false;
+            }
 
             controller.SetJobCancelled(job);
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
@@ -76,9 +80,12 @@ namespace Dnn.ExportImport.Components.Controllers
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             if (job == null || (job.PortalId != portalId && portalId != -1))
+            {
                 return false;
+            }
 
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
+
             // if the job is running; then it will create few exceptions in the log file
             controller.RemoveJob(job);
             DeleteJobData(job);
@@ -86,13 +93,24 @@ namespace Dnn.ExportImport.Components.Controllers
         }
 
         /// <summary>
-        /// Retrieves one page of paginated proceessed jobs
+        /// Retrieves one page of paginated proceessed jobs.
         /// </summary>
+        /// <returns></returns>
         public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
-            if (pageIndex < 0) pageIndex = 0;
-            if (pageSize < 1) pageSize = 1;
-            else if (pageSize > 100) pageSize = 100;
+            if (pageIndex < 0)
+            {
+                pageIndex = 0;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 1;
+            }
+            else if (pageSize > 100)
+            {
+                pageSize = 100;
+            }
 
             var count = EntitiesController.Instance.GetAllJobsCount(portalId, jobType, keywords);
             var jobs = count <= 0
@@ -107,7 +125,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 PortalId = portalId,
                 PortalName = portal.PortalName,
                 TotalJobs = count,
-                Jobs = jobs?.Select(ToJobItem)
+                Jobs = jobs?.Select(ToJobItem),
             };
         }
 
@@ -116,7 +134,9 @@ namespace Dnn.ExportImport.Components.Controllers
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             if (portalId != -1 && job?.PortalId != portalId)
+            {
                 return null;
+            }
 
             var jobItem = ToJobItem(job);
             jobItem.Summary = BuildJobSummary(jobId);
@@ -155,11 +175,15 @@ namespace Dnn.ExportImport.Components.Controllers
                 ExportMode = exportDto.ExportMode,
                 ExportFileInfo = job.JobType == JobType.Export
                     ? GetExportFileInfo(Path.Combine(ExportFolder, job.Directory, Constants.ExportManifestName))
-                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo
+                    : JsonConvert.DeserializeObject<ImportDto>(job.JobObject).ExportFileInfo,
             };
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
-            if (!checkpoints.Any()) return importExportSummary;
+            if (!checkpoints.Any())
+            {
+                return importExportSummary;
+            }
+
             var implementors = Util.GetPortableImplementors();
 
             summaryItems.AddRange(checkpoints.Select(checkpoint => new SummaryItem
@@ -169,7 +193,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 ProgressPercentage = Convert.ToInt32(checkpoint.Progress),
                 Category = checkpoint.Category,
                 Order = implementors.FirstOrDefault(x => x.Category == checkpoint.Category)?.Priority ?? 0,
-                Completed = checkpoint.Completed
+                Completed = checkpoint.Completed,
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
@@ -188,7 +212,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 {
                     TotalItems = implementor.GetImportTotal(),
                     Category = implementor.Category,
-                    Order = implementor.Priority
+                    Order = implementor.Priority,
                 });
             }
 
@@ -236,13 +260,17 @@ namespace Dnn.ExportImport.Components.Controllers
                 Description = job.Description,
                 CreatedOn = job.CreatedOnDate,
                 CompletedOn = job.CompletedOnDate,
-                ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null
+                ExportFile = job.CompletedOnDate.HasValue ? job.Directory : null,
             };
         }
 
         private static void DeleteJobData(ExportImportJob job)
         {
-            if (job.JobType != JobType.Export) return;
+            if (job.JobType != JobType.Export)
+            {
+                return;
+            }
+
             var jobFolder = Path.Combine(ExportFolder, job.Directory);
             try
             {

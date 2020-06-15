@@ -1,49 +1,38 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.UI.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.WebControls
-    /// Class	 : ActionLink
+    /// Class    : ActionLink
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionLink provides a button for a single action.
     /// </summary>
     /// <remarks>
-    /// ActionBase inherits from HyperLink
+    /// ActionBase inherits from HyperLink.
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
     {
-        #region Private Members
-
         public ActionLink()
         {
             this.RequireEditMode = false;
             this.Security = "Edit";
-            this.ControlKey = "";
-            this.Title = "";
+            this.ControlKey = string.Empty;
+            this.Title = string.Empty;
         }
-
-        #endregion
-
-        #region Public Properties
 
         public string Title { get; set; }
 
@@ -59,10 +48,6 @@ namespace DotNetNuke.UI.WebControls
 
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
-
-        #region Private Methods
-
         private bool IsVisible(SecurityAccessLevel security)
         {
             bool isVisible = false;
@@ -77,28 +62,23 @@ namespace DotNetNuke.UI.WebControls
             return isVisible;
         }
 
-        #endregion
-
-        #region Protected Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateChildControls builds the control tree
+        /// CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-            //Call base class method to ensure Control Tree is built
+            // Call base class method to ensure Control Tree is built
             base.CreateChildControls();
 
-            //Set Causes Validation and Enables ViewState to false
+            // Set Causes Validation and Enables ViewState to false
             this.EnableViewState = false;
         }
 
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs when just before the Render phase of the Page Lifecycle
+        /// OnPreRender runs when just before the Render phase of the Page Lifecycle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -108,11 +88,11 @@ namespace DotNetNuke.UI.WebControls
             if (this.Visible && this.IsVisible((SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), this.Security)))
             {
                 this.Text = this.Title;
-                this.NavigateUrl = this.ControlKey != "" 
-                                ? this.ModuleControl.ModuleContext.EditUrl(this.KeyName, this.KeyValue, this.ControlKey) 
+                this.NavigateUrl = this.ControlKey != string.Empty
+                                ? this.ModuleControl.ModuleContext.EditUrl(this.KeyName, this.KeyValue, this.ControlKey)
                                 : this.ModuleControl.ModuleContext.EditUrl(this.Title);
 
-                if (this.CssClass == "")
+                if (this.CssClass == string.Empty)
                 {
                     this.CssClass = "dnnPrimaryAction";
                 }
@@ -122,7 +102,5 @@ namespace DotNetNuke.UI.WebControls
                 this.Visible = false;
             }
         }
-
-        #endregion
     }
 }

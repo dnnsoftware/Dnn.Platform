@@ -1,16 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Threading;
-
-#endregion
-
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Threading;
+
     internal class ReaderWriterSlimLock : ISharedCollectionLock
     {
         private bool _disposed;
@@ -21,16 +16,12 @@ namespace DotNetNuke.Collections.Internal
             this._lock = @lock;
         }
 
-        #region ISharedCollectionLock Members
-
         public void Dispose()
         {
             this.Dispose(true);
 
             GC.SuppressFinalize(this);
         }
-
-        #endregion
 
         private void EnsureNotDisposed()
         {
@@ -46,10 +37,10 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    //free managed resources here
+                    // free managed resources here
                 }
 
-                //free unmanaged resrources here
+                // free unmanaged resrources here
                 if (this._lock.IsReadLockHeld)
                 {
                     this._lock.ExitReadLock();

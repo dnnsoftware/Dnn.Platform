@@ -1,23 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
     /// This class exists solely to maintain compatibility between the original VB version
     /// which supported ScopeType.ScopeType and the c# version which doesn't allow members with
-    /// the same naem as their parent type
+    /// the same naem as their parent type.
     /// </summary>
     [Serializable]
     public abstract class ScopeTypeMemberNameFixer
@@ -25,14 +20,15 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public string ScopeType { get; set; }
     }
 
-	/// <summary>
-	/// Class of ScopeType.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    /// <summary>
+    /// Class of ScopeType.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     [Serializable]
     public class ScopeType : ScopeTypeMemberNameFixer, IHydratable
     {
-	    public ScopeType() : this(Null.NullString)
+        public ScopeType()
+            : this(Null.NullString)
         {
         }
 
@@ -44,7 +40,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public int ScopeTypeId { get; set; }
 
-	    public void Fill(IDataReader dr)
+        public void Fill(IDataReader dr)
         {
             this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
             this.ScopeType = Null.SetNullString(dr["ScopeType"]);
@@ -56,6 +52,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this.ScopeTypeId;
             }
+
             set
             {
                 this.ScopeTypeId = value;

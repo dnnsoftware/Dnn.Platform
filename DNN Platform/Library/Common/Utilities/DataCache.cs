@@ -1,35 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Web.Caching;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.OutputCache;
-
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Web.Caching;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.OutputCache;
+
     public enum CoreCacheType
     {
         Host = 1,
         Portal = 2,
-        Tab = 3
+        Tab = 3,
     }
 
     /// -----------------------------------------------------------------------------
@@ -38,20 +33,21 @@ namespace DotNetNuke.Common.Utilities
     /// Class:      DataCache
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The DataCache class is a facade class for the CachingProvider Instance's
+    /// The DataCache class is a facade class for the CachingProvider Instance's.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class DataCache
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DataCache));
-        //Host keys
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
+
+        // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
         public const string UnSecureHostSettingsCacheKey = "UnsecureHostSettings";
         public const string HostSettingsCacheKey = "HostSettings";
         public const CacheItemPriority HostSettingsCachePriority = CacheItemPriority.NotRemovable;
         public const int HostSettingsCacheTimeOut = 20;
 
-        //Portal keys
+        // Portal keys
         public const string PortalAliasCacheKey = "PortalAlias";
         public const CacheItemPriority PortalAliasCachePriority = CacheItemPriority.NotRemovable;
         public const int PortalAliasCacheTimeOut = 200;
@@ -68,9 +64,9 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PortalCachePriority = CacheItemPriority.High;
         public const int PortalCacheTimeOut = 20;
 
-		public const string AllPortalsCacheKey = "AllPortals";
-		public const CacheItemPriority AllPortalsCachePriority = CacheItemPriority.High;
-		public const int AllPortalsCacheTimeOut = 20;
+        public const string AllPortalsCacheKey = "AllPortals";
+        public const CacheItemPriority AllPortalsCachePriority = CacheItemPriority.High;
+        public const int AllPortalsCacheTimeOut = 20;
 
         public const string PortalUserCountCacheKey = "PortalUserCount{0}";
         public const CacheItemPriority PortalUserCountCachePriority = CacheItemPriority.High;
@@ -80,7 +76,7 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PortalGroupsCachePriority = CacheItemPriority.High;
         public const int PortalGroupsCacheTimeOut = 20;
 
-        //Tab cache keys
+        // Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
         public const string TabSettingsCacheKey = "TabSettings{0}";
         public const CacheItemPriority TabCachePriority = CacheItemPriority.High;
@@ -106,7 +102,7 @@ namespace DotNetNuke.Common.Utilities
         public const string TabVersionDetailsCacheKey = "Tab_TabVersionDetails{0}";
         public const CacheItemPriority TabVersionDetailsCachePriority = CacheItemPriority.High;
         public const int TabVersionDetailsCacheTimeOut = 20;
-        
+
         public const string AuthenticationServicesCacheKey = "AuthenticationServices";
         public const CacheItemPriority AuthenticationServicesCachePriority = CacheItemPriority.NotRemovable;
         public const int AuthenticationServicesCacheTimeOut = 20;
@@ -234,13 +230,13 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority BannersCachePriority = CacheItemPriority.Normal;
         public const int BannersCacheTimeOut = 20;
 
-		public const string RedirectionsCacheKey = "Redirections:{0}";
-		public const CacheItemPriority RedirectionsCachePriority = CacheItemPriority.Default;
-		public const int RedirectionsCacheTimeOut = 20;
+        public const string RedirectionsCacheKey = "Redirections:{0}";
+        public const CacheItemPriority RedirectionsCachePriority = CacheItemPriority.Default;
+        public const int RedirectionsCacheTimeOut = 20;
 
-		public const string PreviewProfilesCacheKey = "PreviewProfiles:{0}";
-		public const CacheItemPriority PreviewProfilesCachePriority = CacheItemPriority.Default;
-		public const int PreviewProfilesCacheTimeOut = 20;
+        public const string PreviewProfilesCacheKey = "PreviewProfiles:{0}";
+        public const CacheItemPriority PreviewProfilesCachePriority = CacheItemPriority.Default;
+        public const int PreviewProfilesCacheTimeOut = 20;
 
         public const string RelationshipTypesCacheKey = "RelationshipTypes";
         public const CacheItemPriority RelationshipTypesCachePriority = CacheItemPriority.Default;
@@ -275,10 +271,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority SubscriptionTypesCachePriority = CacheItemPriority.Default;
         public const int SubscriptionTypesTimeOut = 20;
 
-		public const string PackagesCacheKey = "Packages_{0}";
+        public const string PackagesCacheKey = "Packages_{0}";
         public const string PackageDependenciesCacheKey = "Packages_Dependencies";
         public const CacheItemPriority PackagesCachePriority = CacheItemPriority.Default;
-		public const int PackagesCacheTimeout = 20;
+        public const int PackagesCacheTimeout = 20;
 
         public const string ContentTypesCacheKey = "ContentTypes";
         public const CacheItemPriority ContentTypesCachePriority = CacheItemPriority.AboveNormal;
@@ -292,9 +288,9 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PackageTypesCachePriority = CacheItemPriority.AboveNormal;
         public const int PackageTypesCacheTimeout = 20;
 
-	    public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
-	    public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
-	    public const int JavaScriptLibrariesCacheTimeout = 20;
+        public const string JavaScriptLibrariesCacheKey = "JavaScriptLibraries";
+        public const CacheItemPriority JavaScriptLibrariesCachePriority = CacheItemPriority.AboveNormal;
+        public const int JavaScriptLibrariesCacheTimeout = 20;
 
         public const string CaptchaCacheKey = "Captcha_{0}";
         public const CacheItemPriority CaptchaCachePriority = CacheItemPriority.NotRemovable;
@@ -305,7 +301,7 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority WorkflowsCachePriority = CacheItemPriority.Low;
         public const int WorkflowsCacheTimeout = 2;
 
-        private static string _CachePersistenceEnabled = "";
+        private static string _CachePersistenceEnabled = string.Empty;
 
         public const string ScopeTypesCacheKey = "ScopeTypes";
         public const string VocabularyCacheKey = "Vocabularies";
@@ -322,11 +318,12 @@ namespace DotNetNuke.Common.Utilities
         {
             get
             {
-                if (String.IsNullOrEmpty(_CachePersistenceEnabled))
+                if (string.IsNullOrEmpty(_CachePersistenceEnabled))
                 {
                     _CachePersistenceEnabled = Config.GetSetting("EnableCachePersistence") ?? "false";
                 }
-                return Boolean.Parse(_CachePersistenceEnabled);
+
+                return bool.Parse(_CachePersistenceEnabled);
             }
         }
 
@@ -342,7 +339,7 @@ namespace DotNetNuke.Common.Utilities
 
         internal static void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
         {
-            //if the item was removed from the cache, log the key and reason to the event log
+            // if the item was removed from the cache, log the key and reason to the event log
             try
             {
                 if (Globals.Status == Globals.UpgradeStatus.None)
@@ -363,13 +360,14 @@ namespace DotNetNuke.Common.Utilities
                             log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
                             break;
                     }
+
                     log.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
                     LogController.Instance.AddLog(log);
                 }
             }
             catch (Exception exc)
             {
-                //Swallow exception            
+                // Swallow exception
                 Logger.Error(exc);
             }
         }
@@ -382,8 +380,8 @@ namespace DotNetNuke.Common.Utilities
                 dictionaryCache.Clear();
             }
 
-            //log the cache clear event
-            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString()};
+            // log the cache clear event
+            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString() };
             log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
             LogController.Instance.AddLog(log);
         }
@@ -406,7 +404,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else
             {
-                CachingProvider.Instance().Clear("Host", "");
+                CachingProvider.Instance().Clear("Host", string.Empty);
             }
         }
 
@@ -427,8 +425,8 @@ namespace DotNetNuke.Common.Utilities
                 }
 
                 var portalId = portals[TabId];
-                RemoveCache(String.Format(SharedModulesByPortalCacheKey, portalId));
-                RemoveCache(String.Format(SharedModulesWithPortalCacheKey, portalId));
+                RemoveCache(string.Format(SharedModulesByPortalCacheKey, portalId));
+                RemoveCache(string.Format(SharedModulesWithPortalCacheKey, portalId));
             }
         }
 
@@ -449,7 +447,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearDefinitionsCache(int PortalId)
         {
-            RemoveCache(String.Format(ProfileDefinitionsCacheKey, PortalId));
+            RemoveCache(string.Format(ProfileDefinitionsCacheKey, PortalId));
         }
 
         public static void ClearDesktopModulePermissionsCache()
@@ -459,29 +457,30 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearFolderPermissionsCache(int PortalId)
         {
-            PermissionProvider.ResetCacheDependency(PortalId,
-                () => RemoveCache(String.Format(FolderPermissionCacheKey, PortalId)));
+            PermissionProvider.ResetCacheDependency(
+                PortalId,
+                () => RemoveCache(string.Format(FolderPermissionCacheKey, PortalId)));
         }
 
         public static void ClearListsCache(int PortalId)
         {
-            RemoveCache(String.Format(ListsCacheKey, PortalId));
+            RemoveCache(string.Format(ListsCacheKey, PortalId));
         }
 
         public static void ClearModulePermissionsCache(int TabId)
         {
-            RemoveCache(String.Format(ModulePermissionCacheKey, TabId));
+            RemoveCache(string.Format(ModulePermissionCacheKey, TabId));
         }
 
         public static void ClearTabPermissionsCache(int PortalId)
         {
-            RemoveCache(String.Format(TabPermissionCacheKey, PortalId));
+            RemoveCache(string.Format(TabPermissionCacheKey, PortalId));
         }
 
         public static void ClearUserCache(int PortalId, string username)
         {
-            RemoveCache(String.Format(UserCacheKey, PortalId, username));
-            RemoveCache(String.Format(UserProfileCacheKey, PortalId, username));
+            RemoveCache(string.Format(UserCacheKey, PortalId, username));
+            RemoveCache(string.Format(UserProfileCacheKey, PortalId, username));
         }
 
         public static void ClearPortalUserCountCache(int portalID)
@@ -491,13 +490,13 @@ namespace DotNetNuke.Common.Utilities
 
         public static void ClearUserPersonalizationCache(int portalId, int userId)
         {
-            RemoveCache(String.Format(UserPersonalizationCacheKey, portalId, userId));
+            RemoveCache(string.Format(UserPersonalizationCacheKey, portalId, userId));
         }
 
-		public static void ClearPackagesCache(int portalId)
-		{
-			RemoveCache(String.Format(PackagesCacheKey, portalId));
-		}
+        public static void ClearPackagesCache(int portalId)
+        {
+            RemoveCache(string.Format(PackagesCacheKey, portalId));
+        }
 
         private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
@@ -506,7 +505,7 @@ namespace DotNetNuke.Common.Utilities
             // if item is not cached
             if (objObject == null)
             {
-                //Get Unique Lock for cacheKey
+                // Get Unique Lock for cacheKey
                 object @lock = GetUniqueLockObject(cacheItemArgs.CacheKey);
 
                 // prevent other threads from entering this block while we regenerate the cache
@@ -516,7 +515,6 @@ namespace DotNetNuke.Common.Utilities
                     objObject = GetCache(cacheItemArgs.CacheKey);
 
                     // if object was still not retrieved
-
                     if (objObject == null)
                     {
                         // get object from data source using delegate
@@ -537,26 +535,26 @@ namespace DotNetNuke.Common.Utilities
                         if (objObject != null && timeOut > 0)
                         {
                             // save the object in the cache
-                            SetCache(cacheItemArgs.CacheKey,
-                                     objObject,
-                                     cacheItemArgs.CacheDependency,
-                                     Cache.NoAbsoluteExpiration,
-                                     TimeSpan.FromMinutes(timeOut),
-                                     cacheItemArgs.CachePriority,
-                                     cacheItemArgs.CacheCallback);
+                            SetCache(
+                                cacheItemArgs.CacheKey,
+                                objObject,
+                                cacheItemArgs.CacheDependency,
+                                Cache.NoAbsoluteExpiration,
+                                TimeSpan.FromMinutes(timeOut),
+                                cacheItemArgs.CachePriority,
+                                cacheItemArgs.CacheCallback);
 
                             // check if the item was actually saved in the cache
-
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )
-                                var log = new LogInfo{ LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
+                                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
                                 log.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
                                 LogController.Instance.AddLog(log);
                             }
                         }
 
-                        //This thread won so remove unique Lock from collection
+                        // This thread won so remove unique Lock from collection
                         RemoveUniqueLockObject(cacheItemArgs.CacheKey);
                     }
                 }
@@ -611,8 +609,8 @@ namespace DotNetNuke.Common.Utilities
 
         internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
         {
-            object objObject = storeInDictionary 
-                                   ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired) 
+            object objObject = storeInDictionary
+                                   ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired)
                                    : GetCachedDataFromRuntimeCache(cacheItemArgs, cacheItemExpired);
 
             // return the object
@@ -620,6 +618,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return default(TObject);
             }
+
             return (TObject)objObject;
         }
 
@@ -632,7 +631,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 try
                 {
-                    //Try to get lock Object (for key) from Dictionary
+                    // Try to get lock Object (for key) from Dictionary
                     if (lockDictionary.ContainsKey(key))
                     {
                         @lock = lockDictionary[key];
@@ -643,19 +642,21 @@ namespace DotNetNuke.Common.Utilities
                     dictionaryLock.ExitReadLock();
                 }
             }
+
             if (@lock == null)
             {
                 if (dictionaryLock.TryEnterWriteLock(_5seconds))
                 {
                     try
                     {
-                        //Double check dictionary
+                        // Double check dictionary
                         if (!lockDictionary.ContainsKey(key))
                         {
-                            //Create new lock
+                            // Create new lock
                             lockDictionary[key] = new object();
                         }
-                        //Retrieve lock
+
+                        // Retrieve lock
                         @lock = lockDictionary[key];
                     }
                     finally
@@ -664,18 +665,23 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+
             return @lock;
         }
 
         private static void RemoveUniqueLockObject(string key)
         {
-            if (!dictionaryLock.TryEnterWriteLock(_5seconds)) return;
+            if (!dictionaryLock.TryEnterWriteLock(_5seconds))
+            {
+                return;
+            }
+
             try
             {
-                //check dictionary
+                // check dictionary
                 if (lockDictionary.ContainsKey(key))
                 {
-                    //Remove lock
+                    // Remove lock
                     lockDictionary.Remove(key);
                 }
             }
@@ -692,6 +698,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return default(TObject);
             }
+
             return (TObject)objObject;
         }
 
@@ -743,13 +750,14 @@ namespace DotNetNuke.Common.Utilities
         {
             if (objObject != null)
             {
-                //if no OnRemoveCallback value is specified, use the default method
+                // if no OnRemoveCallback value is specified, use the default method
                 if (OnRemoveCallback == null)
                 {
                     OnRemoveCallback = ItemRemovedCallback;
                 }
+
                 CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
-        }       
+        }
     }
 }

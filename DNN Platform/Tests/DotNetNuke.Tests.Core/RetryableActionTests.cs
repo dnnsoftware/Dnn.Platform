@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities.Internal;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities.Internal;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RetryableActionTests
     {
@@ -83,7 +82,7 @@ namespace DotNetNuke.Tests.Core
         }
     }
 
-    class SleepMonitor
+    internal class SleepMonitor
     {
         private readonly List<int> _periods = new List<int>();
 
@@ -101,12 +100,15 @@ namespace DotNetNuke.Tests.Core
         }
     }
 
-    class ActionMonitor
+    internal class ActionMonitor
     {
         private int _failuresRemaining;
         private readonly List<DateTime> _callTimes = new List<DateTime>();
 
-        public ActionMonitor() : this(0) {}
+        public ActionMonitor()
+            : this(0)
+        {
+        }
 
         public ActionMonitor(int failureCount)
         {
@@ -128,13 +130,13 @@ namespace DotNetNuke.Tests.Core
             this._callTimes.Add(DateTime.Now);
             this.TimesCalled++;
 
-            if(this._failuresRemaining != 0)
+            if (this._failuresRemaining != 0)
             {
                 if (this._failuresRemaining > 0)
                 {
                     this._failuresRemaining--;
                 }
-                
+
                 throw new Exception("it failed");
             }
         }

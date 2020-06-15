@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Collections.Internal;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Collections
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Collections.Internal;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ExclusiveLockStrategyTests : LockStrategyTests
     {
@@ -21,11 +20,11 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected override IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
         {
-            var l = (List<Action<ILockStrategy>>) base.GetObjectDisposedExceptionMethods();
+            var l = (List<Action<ILockStrategy>>)base.GetObjectDisposedExceptionMethods();
 
             l.Add((ILockStrategy strategy) =>
                       {
-                          ExclusiveLockStrategy els = (ExclusiveLockStrategy) strategy;
+                          ExclusiveLockStrategy els = (ExclusiveLockStrategy)strategy;
                           els.Exit();
                       });
 

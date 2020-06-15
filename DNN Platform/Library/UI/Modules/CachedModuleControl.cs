@@ -1,26 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.Modules
 {
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : CachedModuleControl
+    /// Class    : CachedModuleControl
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// CachedModuleControl represents a cached "ModuleControl".  It inherits from
-    /// Literal and implements the IModuleControl interface
+    /// Literal and implements the IModuleControl interface.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class CachedModuleControl : Literal, IModuleControl
@@ -30,22 +25,21 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new CachedModuleControl
+        /// Initializes a new instance of the <see cref="CachedModuleControl"/> class.
+        /// Constructs a new CachedModuleControl.
         /// </summary>
-        /// <param name="cachedContent">The cached Content for this control</param>
+        /// <param name="cachedContent">The cached Content for this control.</param>
         /// -----------------------------------------------------------------------------
         public CachedModuleControl(string cachedContent)
         {
             this.Text = cachedContent;
         }
 
-        #region IModuleControl Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the underlying base control for this ModuleControl
+        /// Gets the underlying base control for this ModuleControl.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public Control Control
         {
@@ -57,9 +51,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path for this control (used primarily for UserControls)
+        /// Gets the Path for this control (used primarily for UserControls).
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ControlPath
         {
@@ -71,9 +65,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Name for this control
+        /// Gets the Name for this control.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ControlName
         {
@@ -85,9 +79,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the local resource file for this control
+        /// Gets or sets and sets the local resource file for this control.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
@@ -103,8 +97,10 @@ namespace DotNetNuke.UI.Modules
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;
@@ -113,9 +109,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Module Context for this control
+        /// Gets the Module Context for this control.
         /// </summary>
-        /// <returns>A ModuleInstanceContext</returns>
+        /// <returns>A ModuleInstanceContext.</returns>
         /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
@@ -125,10 +121,9 @@ namespace DotNetNuke.UI.Modules
                 {
                     this._moduleContext = new ModuleInstanceContext(this);
                 }
+
                 return this._moduleContext;
             }
         }
-
-        #endregion
     }
 }

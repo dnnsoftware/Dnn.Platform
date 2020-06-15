@@ -1,34 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.WebControls;
-using DotNetNuke.Modules.Html.Components;
-using DotNetNuke.Abstractions;
-
-
-#endregion
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Modules.Html.Components;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The HtmlModule Class provides the UI for displaying the Html
+    ///   The HtmlModule Class provides the UI for displaying the Html.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -39,20 +33,15 @@ namespace DotNetNuke.Modules.Html
         private int WorkflowID;
 
         private readonly INavigationManager _navigationManager;
+
         public HtmlModule()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region "Private Methods"
-
-        #endregion
-
-        #region "Event Handlers"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Page_Init runs when the control is initialized
+        ///   Page_Init runs when the control is initialized.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -66,7 +55,7 @@ namespace DotNetNuke.Modules.Html
             {
                 this.WorkflowID = new HtmlTextController().GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
-                //Add an Action Event Handler to the Skin
+                // Add an Action Event Handler to the Skin
                 this.AddActionHandler(this.ModuleAction_Click);
             }
             catch (Exception exc)
@@ -77,7 +66,7 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Page_Load runs when the control is loaded
+        ///   Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -101,13 +90,13 @@ namespace DotNetNuke.Modules.Html
 
                 // get content
                 HtmlTextInfo htmlTextInfo = null;
-                string contentString = "";
+                string contentString = string.Empty;
 
                 htmlTextInfo = objHTML.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.WorkflowID);
 
-                if ((htmlTextInfo != null))
+                if (htmlTextInfo != null)
                 {
-                    //don't decode yet (this is done in FormatHtmlText)
+                    // don't decode yet (this is done in FormatHtmlText)
                     contentString = htmlTextInfo.Content;
                 }
                 else
@@ -152,7 +141,7 @@ namespace DotNetNuke.Modules.Html
                 // add content to module
                 this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.Page)));
 
-                //set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
+                // set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
                 if (!this.Settings.UseDecorate)
                 {
                     this.lblContent.CssClass = string.Format("{0} normalCheckBox", this.lblContent.CssClass);
@@ -178,7 +167,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   lblContent_UpdateLabel allows for inline editing of content
+        ///   lblContent_UpdateLabel allows for inline editing of content.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -188,7 +177,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             try
             {
                 // verify security
-                if ((!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text)))
+                if (!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text))
                 {
                     throw new SecurityException();
                 }
@@ -226,7 +215,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   ModuleAction_Click handles all ModuleAction events raised from the action menu
+        ///   ModuleAction_Click handles all ModuleAction events raised from the action menu.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -265,13 +254,9 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             }
         }
 
-        #endregion
-
-        #region "Optional Interfaces"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   ModuleActions is an interface property that returns the module actions collection for the module
+        ///   Gets moduleActions is an interface property that returns the module actions collection for the module.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -282,16 +267,17 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             {
                 // add the Edit Text action
                 var Actions = new ModuleActionCollection();
-                Actions.Add(this.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            "",
-                            "",
-                            this.EditUrl(),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
+                Actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    string.Empty,
+                    this.EditUrl(),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
 
                 // get the content
                 var objHTML = new HtmlTextController();
@@ -299,7 +285,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 this.WorkflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
-                if ((objContent != null))
+                if (objContent != null)
                 {
                     // if content is in the first state
                     if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.WorkflowID))
@@ -308,16 +294,17 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                         if (objWorkflow.GetWorkflowStates(this.WorkflowID).Count > 1)
                         {
                             // add publish action
-                            Actions.Add(this.GetNextActionID(),
-                                        Localization.GetString("PublishContent.Action", this.LocalResourceFile),
-                                        ModuleActionType.AddContent,
-                                        "publish",
-                                        "grant.gif",
-                                        "",
-                                        true,
-                                        SecurityAccessLevel.Edit,
-                                        true,
-                                        false);
+                            Actions.Add(
+                                this.GetNextActionID(),
+                                Localization.GetString("PublishContent.Action", this.LocalResourceFile),
+                                ModuleActionType.AddContent,
+                                "publish",
+                                "grant.gif",
+                                string.Empty,
+                                true,
+                                SecurityAccessLevel.Edit,
+                                true,
+                                false);
                         }
                     }
                     else
@@ -329,47 +316,48 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                             if (WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(objContent.StateID), "REVIEW"))
                             {
                                 // add approve and reject actions
-                                Actions.Add(this.GetNextActionID(),
-                                            Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
-                                            ModuleActionType.AddContent,
-                                            "",
-                                            "grant.gif",
-                                            this.EditUrl("action", "approve", "Review"),
-                                            false,
-                                            SecurityAccessLevel.Edit,
-                                            true,
-                                            false);
-                                Actions.Add(this.GetNextActionID(),
-                                            Localization.GetString("RejectContent.Action", this.LocalResourceFile),
-                                            ModuleActionType.AddContent,
-                                            "",
-                                            "deny.gif",
-                                            this.EditUrl("action", "reject", "Review"),
-                                            false,
-                                            SecurityAccessLevel.Edit,
-                                            true,
-                                            false);
+                                Actions.Add(
+                                    this.GetNextActionID(),
+                                    Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
+                                    ModuleActionType.AddContent,
+                                    string.Empty,
+                                    "grant.gif",
+                                    this.EditUrl("action", "approve", "Review"),
+                                    false,
+                                    SecurityAccessLevel.Edit,
+                                    true,
+                                    false);
+                                Actions.Add(
+                                    this.GetNextActionID(),
+                                    Localization.GetString("RejectContent.Action", this.LocalResourceFile),
+                                    ModuleActionType.AddContent,
+                                    string.Empty,
+                                    "deny.gif",
+                                    this.EditUrl("action", "reject", "Review"),
+                                    false,
+                                    SecurityAccessLevel.Edit,
+                                    true,
+                                    false);
                             }
                         }
                     }
                 }
 
                 // add mywork to action menu
-                Actions.Add(this.GetNextActionID(),
-                            Localization.GetString("MyWork.Action", this.LocalResourceFile),
-                            "MyWork.Action",
-                            "",
-                            "view.gif",
-                            this.EditUrl("MyWork"),
-                            false,
-                            SecurityAccessLevel.Edit,
-                            true,
-                            false);
+                Actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString("MyWork.Action", this.LocalResourceFile),
+                    "MyWork.Action",
+                    string.Empty,
+                    "view.gif",
+                    this.EditUrl("MyWork"),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
 
                 return Actions;
             }
         }
-
-        #endregion
     }
 }

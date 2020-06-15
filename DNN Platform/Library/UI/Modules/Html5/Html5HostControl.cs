@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Cache;
-
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public class Html5HostControl : ModuleControlBase, IActionable
     {
         private readonly string _html5File;
@@ -32,16 +33,16 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnInit(e);
 
-            if (!(string.IsNullOrEmpty(this._html5File)))
+            if (! string.IsNullOrEmpty(this._html5File))
             {
-                //Check if css file exists
+                // Check if css file exists
                 var cssFile = Path.ChangeExtension(this._html5File, ".css");
                 if (this.FileExists(cssFile))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, cssFile, FileOrder.Css.DefaultPriority);
                 }
 
-                //Check if js file exists
+                // Check if js file exists
                 var jsFile = Path.ChangeExtension(this._html5File, ".js");
                 if (this.FileExists(jsFile))
                 {
@@ -55,7 +56,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 this._fileContent = tokenReplace.ReplaceEnvironmentTokens(this._fileContent);
             }
 
-            //Register for Services Framework
+            // Register for Services Framework
             ServicesFramework.Instance.RequestAjaxScriptSupport();
         }
 
@@ -66,7 +67,7 @@ namespace DotNetNuke.UI.Modules.Html5
             var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.SpaModulesHtmlFileTimeOut,
                 DataCache.SpaModulesHtmlFileCachePriority)
             {
-                CacheDependency = new DNNCacheDependency(absoluteFilePath)
+                CacheDependency = new DNNCacheDependency(absoluteFilePath),
             };
             return CBO.GetCachedObject<string>(cacheItemArgs, c => GetFileContentInternal(absoluteFilePath));
         }
@@ -74,9 +75,11 @@ namespace DotNetNuke.UI.Modules.Html5
         private bool FileExists(string filepath)
         {
             var cacheKey = string.Format(DataCache.SpaModulesFileExistsCacheKey, filepath);
-            return CBO.GetCachedObject<bool>(new CacheItemArgs(cacheKey,
+            return CBO.GetCachedObject<bool>(
+                new CacheItemArgs(
+                cacheKey,
                 DataCache.SpaModulesHtmlFileTimeOut,
-                DataCache.SpaModulesHtmlFileCachePriority), 
+                DataCache.SpaModulesHtmlFileCachePriority),
                 c => File.Exists(this.Page.Server.MapPath(filepath)));
         }
 
@@ -92,7 +95,7 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnPreRender(e);
 
-            if (!(string.IsNullOrEmpty(this._html5File)))
+            if (! string.IsNullOrEmpty(this._html5File))
             {
                 this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(this._fileContent)));
             }

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Data;
-
 namespace Dnn.PersonaBar.Library.Data
 {
+    using System.Data;
+
     public interface IDataService
     {
         int SavePersonaBarMenu(string identifier, string moduleName, string folderName, string controller, string resourceKey, string path,
@@ -15,7 +15,6 @@ namespace Dnn.PersonaBar.Library.Data
 
         void DeletePersonaBarMenuByIdentifier(string identifier);
 
-
         int SavePersonaBarExtension(string identifier, int menuId, string folderName, string controller, string container, string path,
             int order, bool enabled, int currentUserId);
 
@@ -23,11 +22,9 @@ namespace Dnn.PersonaBar.Library.Data
 
         IDataReader GetPersonaBarExtensions();
 
-
         int SavePersonaBarMenuDefaultPermissions(int menuId, string roleNames);
 
         string GetPersonaBarMenuDefaultPermissions(int menuId);
-
 
         int SavePersonaBarMenuPermission(int portalId, int menuId, int permissionId,
             int roleId, int userId, bool allowAccees, int currentUserId);

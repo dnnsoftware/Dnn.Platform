@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections;
-using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Users.Components;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using System.Net;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Users.Components;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UserValidatorUnitTests
     {
         private Mock<IPortalController> _portalControllerMock;
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
         private Mock<IContentVerifier> _contentVerifierMock;
-
 
         private UserValidator _userValidator;
 
@@ -34,8 +34,7 @@ namespace Dnn.PersonaBar.Users.Tests
             this._userValidator = new UserValidator(
                         this._portalControllerMock.Object,
                         this._userControllerWrapperMock.Object,
-                        this._contentVerifierMock.Object
-                    );
+                        this._contentVerifierMock.Object);
         }
 
         [Test]
@@ -67,7 +66,6 @@ namespace Dnn.PersonaBar.Users.Tests
             // Assert
             Assert.IsNull(result);
         }
-
 
         [Test]
         public void ValidateUser_IfUserNotAllowedInSiteGroup_ThenErrorResponse()
@@ -122,11 +120,11 @@ namespace Dnn.PersonaBar.Users.Tests
 
             this._userControllerWrapperMock
                 .Setup(
-                    u => u.GetUser(It.IsAny<int>(),
-                    It.IsAny<PortalSettings>(),
-                    It.IsAny<UserInfo>(),
-                    out response)
-                )
+                    u => u.GetUser(
+                        It.IsAny<int>(),
+                        It.IsAny<PortalSettings>(),
+                        It.IsAny<UserInfo>(),
+                        out response))
                 .Returns(userInfo);
         }
 

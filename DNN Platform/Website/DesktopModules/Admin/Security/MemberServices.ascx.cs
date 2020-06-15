@@ -1,58 +1,43 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Security
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MemberServices UserModuleBase is used to manage a User's services
+    /// The MemberServices UserModuleBase is used to manage a User's services.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class MemberServices : UserModuleBase
     {
-        #region Delegates
-
         public delegate void SubscriptionUpdatedEventHandler(object sender, SubscriptionUpdatedEventArgs e);
 
-        #endregion
-
-		#region "Events"
-
-       public event SubscriptionUpdatedEventHandler SubscriptionUpdated;
-
-		#endregion
-
-		#region "Private Methods"
+        public event SubscriptionUpdatedEventHandler SubscriptionUpdated;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatPrice formats the Fee amount and filters out null-values
+        /// FormatPrice formats the Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="price">The price to format</param>
-        ///	<returns>The correctly formatted price</returns>
+        ///     <param name="price">The price to format.</param>
+        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
         private string FormatPrice(float price)
         {
@@ -65,13 +50,14 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                    formatPrice = "";
+                    formatPrice = string.Empty;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatPrice;
         }
 
@@ -83,7 +69,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
 
-                //Raise SubscriptionUpdated Event
+                // Raise SubscriptionUpdated Event
                 this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
             }
             else
@@ -101,13 +87,13 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void UseTrial(int roleID)
         {
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
 
             if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
                 RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
 
-                //Raise SubscriptionUpdated Event
+                // Raise SubscriptionUpdated Event
                 this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
             }
             else
@@ -116,18 +102,14 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-		#endregion
-
-		#region "Protected Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatExpiryDate formats the expiry date and filters out null-values
+        /// FormatExpiryDate formats the expiry date and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="expiryDate">The date to format</param>
-        ///	<returns>The correctly formatted date</returns>
+        ///     <param name="expiryDate">The date to format.</param>
+        ///     <returns>The correctly formatted date.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatExpiryDate(DateTime expiryDate)
         {
@@ -146,23 +128,24 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatExpiryDate;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatPrice formats the Fee amount and filters out null-values
+        /// FormatPrice formats the Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="price">The price to format</param>
+        ///     <param name="price">The price to format.</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        ///	<returns>The correctly formatted price</returns>
+        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatPrice(float price, int period, string frequency)
         {
@@ -183,23 +166,24 @@ namespace DotNetNuke.Modules.Admin.Security
                         break;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatPrice;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatTrial formats the Trial Fee amount and filters out null-values
+        /// FormatTrial formats the Trial Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="price">The price to format</param>
+        ///     <param name="price">The price to format.</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        ///	<returns>The correctly formatted price</returns>
+        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatTrial(float price, int period, string frequency)
         {
@@ -216,27 +200,29 @@ namespace DotNetNuke.Modules.Admin.Security
                         formatTrial = this.FormatPrice(price);
                         break;
                     default:
-                        formatTrial = string.Format(Localization.GetString("TrialFee", this.LocalResourceFile),
-                                                     this.FormatPrice(price),
-                                                     period,
-                                                     Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
+                        formatTrial = string.Format(
+                            Localization.GetString("TrialFee", this.LocalResourceFile),
+                            this.FormatPrice(price),
+                            period,
+                            Localization.GetString("Frequency_" + frequency, this.LocalResourceFile));
                         break;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatTrial;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatURL correctly formats a URL
+        /// FormatURL correctly formats a URL.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<returns>The correctly formatted url</returns>
+        ///     <returns>The correctly formatted url.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatURL()
         {
@@ -248,24 +234,26 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     serverPath += "/";
                 }
+
                 formatURL = serverPath + "Register.aspx?tabid=" + this.TabId;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatURL;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ServiceText gets the Service Text (Cancel or Subscribe)
+        /// ServiceText gets the Service Text (Cancel or Subscribe).
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="subscribed">The service state</param>
-        ///	<param name="expiryDate">The service expiry date.</param>
-        ///	<returns>The correctly formatted text</returns>
+        ///     <param name="subscribed">The service state.</param>
+        ///     <param name="expiryDate">The service expiry date.</param>
+        ///     <returns>The correctly formatted text.</returns>
         /// -----------------------------------------------------------------------------
         protected string ServiceText(bool subscribed, DateTime expiryDate)
         {
@@ -288,17 +276,18 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return serviceText;
         }
 
         protected bool ShowSubscribe(int roleID)
         {
             bool showSubscribe = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
             if (objRole.IsPublic)
             {
                 PortalInfo objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
@@ -311,36 +300,34 @@ namespace DotNetNuke.Modules.Admin.Security
                     showSubscribe = true;
                 }
             }
+
             return showSubscribe;
         }
 
         protected bool ShowTrial(int roleID)
         {
             bool showTrial = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
             if (string.IsNullOrEmpty(objRole.TrialFrequency) || objRole.TrialFrequency == "N" || (objRole.IsPublic && objRole.ServiceFee == 0.0))
             {
                 showTrial = Null.NullBoolean;
             }
             else if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
-				//Use Trial?
+                // Use Trial?
                 UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(this.PortalId, this.UserInfo.UserID, roleID);
                 if ((objUserRole == null) || (!objUserRole.IsTrialUsed))
                 {
                     showTrial = true;
                 }
             }
+
             return showTrial;
         }
 
-		#endregion
-
-		#region "Public Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
@@ -351,18 +338,14 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.grdServices.DataSource = RoleController.Instance.GetUserRoles(this.UserInfo, false);
                 this.grdServices.DataBind();
 
-                //if no service available then hide options
-                this.ServicesRow.Visible = (this.grdServices.Items.Count > 0);
+                // if no service available then hide options
+                this.ServicesRow.Visible = this.grdServices.Items.Count > 0;
             }
         }
 
-		#endregion
-
-		#region "Event Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the SubscriptionUpdated Event
+        /// Raises the SubscriptionUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
@@ -371,19 +354,16 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
+
             if (this.SubscriptionUpdated != null)
             {
                 this.SubscriptionUpdated(this, e);
             }
         }
 
-		#endregion
-
-		#region "Event Handlers"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -394,12 +374,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
             this.cmdRSVP.Click += this.cmdRSVP_Click;
             this.grdServices.ItemCommand += this.grdServices_ItemCommand;
-            this.lblRSVP.Text = "";
+            this.lblRSVP.Text = string.Empty;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdRSVP_Click runs when the Subscribe to RSVP Code Roles Button is clicked
+        /// cmdRSVP_Click runs when the Subscribe to RSVP Code Roles Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -410,12 +390,13 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
-            //Get the RSVP code
+
+            // Get the RSVP code
             string code = this.txtRSVPCode.Text;
             bool rsvpCodeExists = false;
-            if (!String.IsNullOrEmpty(code))
+            if (!string.IsNullOrEmpty(code))
             {
-                //Parse the roles
+                // Parse the roles
                 foreach (RoleInfo objRole in RoleController.Instance.GetRoles(this.PortalSettings.PortalId))
                 {
                     if (objRole.RSVPCode == code)
@@ -423,21 +404,24 @@ namespace DotNetNuke.Modules.Admin.Security
                         RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, objRole.RoleID, RoleStatus.Approved, false, false);
                         rsvpCodeExists = true;
 
-                        //Raise SubscriptionUpdated Event
+                        // Raise SubscriptionUpdated Event
                         this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
                     }
                 }
+
                 if (rsvpCodeExists)
                 {
                     this.lblRSVP.Text = Localization.GetString("RSVPSuccess", this.LocalResourceFile);
-                    //Reset RSVP Code field
-                    this.txtRSVPCode.Text = "";
+
+                    // Reset RSVP Code field
+                    this.txtRSVPCode.Text = string.Empty;
                 }
                 else
                 {
                     this.lblRSVP.Text = Localization.GetString("RSVPFailure", this.LocalResourceFile);
                 }
             }
+
             this.DataBind();
         }
 
@@ -447,41 +431,38 @@ namespace DotNetNuke.Modules.Admin.Security
             int roleID = Convert.ToInt32(e.CommandArgument);
             if (commandName == Localization.GetString("Subscribe", this.LocalResourceFile) || commandName == Localization.GetString("Renew", this.LocalResourceFile))
             {
-				//Subscribe
+                // Subscribe
                 this.Subscribe(roleID, false);
             }
             else if (commandName == Localization.GetString("Unsubscribe", this.LocalResourceFile))
             {
-				//Unsubscribe
+                // Unsubscribe
                 this.Subscribe(roleID, true);
             }
             else if (commandName == "UseTrial")
             {
-				//Use Trial
+                // Use Trial
                 this.UseTrial(roleID);
             }
-			
-			//Rebind Grid
+
+            // Rebind Grid
             this.DataBind();
         }
-		
-		#endregion
-
-        #region Nested type: SubscriptionUpdatedEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The SubscriptionUpdatedEventArgs class provides a customised EventArgs class for
-        /// the SubscriptionUpdated Event
+        /// the SubscriptionUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class SubscriptionUpdatedEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new SubscriptionUpdatedEventArgs
+            /// Initializes a new instance of the <see cref="SubscriptionUpdatedEventArgs"/> class.
+            /// Constructs a new SubscriptionUpdatedEventArgs.
             /// </summary>
-            /// <param name="cancel">Whether this is a subscription cancellation</param>
+            /// <param name="cancel">Whether this is a subscription cancellation.</param>
             /// <param name="roleName">The role name of subscription role.</param>
             /// -----------------------------------------------------------------------------
             public SubscriptionUpdatedEventArgs(bool cancel, string roleName)
@@ -492,19 +473,17 @@ namespace DotNetNuke.Modules.Admin.Security
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets whether this was a cancelation
+            /// Gets or sets a value indicating whether gets and sets whether this was a cancelation.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public bool Cancel { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the RoleName that was (un)subscribed to
+            /// Gets or sets and sets the RoleName that was (un)subscribed to.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string RoleName { get; set; }
         }
-
-        #endregion
     }
 }

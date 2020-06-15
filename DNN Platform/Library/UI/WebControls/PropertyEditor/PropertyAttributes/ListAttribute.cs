@@ -1,15 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class ListAttribute : Attribute
     {
@@ -19,10 +14,10 @@ namespace DotNetNuke.UI.WebControls
         private readonly ListBoundField _ValueField;
 
         /// <summary>
-        /// Initializes a new instance of the ListAttribute class.
+        /// Initializes a new instance of the <see cref="ListAttribute"/> class.
         /// </summary>
-        /// <param name="listName">The name of the List to use for this property</param>
-        /// <param name="parentKey">The key of the parent for this List</param>
+        /// <param name="listName">The name of the List to use for this property.</param>
+        /// <param name="parentKey">The key of the parent for this List.</param>
         /// <param name="textField">Text Field.</param>
         /// <param name="valueField">Value Field.</param>
         public ListAttribute(string listName, string parentKey, ListBoundField valueField, ListBoundField textField)

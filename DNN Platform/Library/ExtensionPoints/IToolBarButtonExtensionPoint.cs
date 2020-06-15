@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.UI.Modules;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using DotNetNuke.UI.Modules;
+
     public interface IToolBarButtonExtensionPoint : IExtensionPoint
     {
         string ButtonId { get; }

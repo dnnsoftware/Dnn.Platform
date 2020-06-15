@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-using DotNetNuke.Services.Installer;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Services
 {
+    using System.Diagnostics;
+    using System.IO;
+    using System.Threading.Tasks;
+
+    using DotNetNuke.Services.Installer;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UtilTest
     {
@@ -34,13 +35,11 @@ namespace DotNetNuke.Tests.Core.Services
 
             var task = Task.Run(() =>
             {
-                
                 Debug.WriteLine("fileStream locked");
                 Task.Delay(lockFileFor).Wait();
 
                 fileStream.Dispose();
                 Debug.WriteLine("fileStream unlocked");
-
             });
 
             Debug.WriteLine("Rewrite process attempts started");

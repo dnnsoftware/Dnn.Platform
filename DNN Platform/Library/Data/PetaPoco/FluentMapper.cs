@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Web.Caching;
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Web.Caching;
+    using global::PetaPoco;
+
     [CLSCompliant(false)]
     public class FluentMapper<TModel> : IMapper
     {
@@ -17,11 +17,11 @@ namespace DotNetNuke.Data.PetaPoco
 
         public FluentMapper(string tablePrefix)
         {
-            this.CacheKey = String.Empty;
+            this.CacheKey = string.Empty;
             this.CachePriority = CacheItemPriority.Default;
             this.CacheTimeOut = 0;
             this.Mappings = new Dictionary<string, FluentColumnMap>();
-            this.Scope = String.Empty;
+            this.Scope = string.Empty;
             this.TableInfo = new TableInfo();
             this._tablePrefix = tablePrefix;
         }
@@ -47,7 +47,10 @@ namespace DotNetNuke.Data.PetaPoco
         {
             var fluentMap = default(FluentColumnMap);
             if (this.Mappings.TryGetValue(pocoProperty.Name, out fluentMap))
+            {
                 return fluentMap.ColumnInfo;
+            }
+
             return null;
         }
 
@@ -56,7 +59,10 @@ namespace DotNetNuke.Data.PetaPoco
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
             if (this.Mappings.TryGetValue(targetProperty.Name, out fluentMap))
+            {
                 return fluentMap.FromDbConverter;
+            }
+
             return null;
         }
 
@@ -65,7 +71,10 @@ namespace DotNetNuke.Data.PetaPoco
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
             if (this.Mappings.TryGetValue(sourceProperty.Name, out fluentMap))
+            {
                 return fluentMap.ToDbConverter;
+            }
+
             return null;
         }
 

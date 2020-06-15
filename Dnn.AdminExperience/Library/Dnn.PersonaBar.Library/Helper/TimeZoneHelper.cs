@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using Dnn.PersonaBar.Library.Dto;
-
 namespace Dnn.PersonaBar.Library.Helper
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.Dto;
+
     public class TimeZoneHelper
     {
         public static TimeZoneDto GetPreferredTimeZone(TimeZoneInfo userTimeZone)
@@ -16,7 +17,7 @@ namespace Dnn.PersonaBar.Library.Helper
                 Id = userTimeZone.Id,
                 DisplayName = userTimeZone.DisplayName,
                 BaseUtcOffset = FormatOffset(userTimeZone.BaseUtcOffset),
-                CurrentUtcOffset = FormatOffset(userTimeZone.GetUtcOffset(DateTime.UtcNow))
+                CurrentUtcOffset = FormatOffset(userTimeZone.GetUtcOffset(DateTime.UtcNow)),
             };
         }
 

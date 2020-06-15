@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Web.UI;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
+    using System.Collections;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Tokens;
+
     public class Html5ModuleTokenReplace : HtmlTokenReplace
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Html5ModuleTokenReplace));
@@ -34,7 +35,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
             // DNN-7750
             var bizClass = moduleContext.Configuration.DesktopModule.BusinessControllerClass;
-            
+
             var businessController = this.GetBusinessController(bizClass);
             if (businessController != null)
             {
@@ -69,7 +70,7 @@ namespace DotNetNuke.UI.Modules.Html5
             {
                 Logger.Error(exc);
             }
-           
+
             return null;
         }
     }

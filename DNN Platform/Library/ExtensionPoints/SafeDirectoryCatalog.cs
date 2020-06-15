@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
     public class SafeDirectoryCatalog : ComposablePartCatalog
     {
         private readonly AggregateCatalog _catalog;
@@ -25,11 +25,14 @@ namespace DotNetNuke.ExtensionPoints
             {
                 try
                 {
-	                var asmCat = new AssemblyCatalog(file);
+                    var asmCat = new AssemblyCatalog(file);
 
-	                //Force MEF to load the plugin and figure out if there are any exports
-	                // good assemblies will not throw the RTLE exception and can be added to the catalog
-	                if (asmCat.Parts.ToList().Count > 0) this._catalog.Catalogs.Add(asmCat);
+                    // Force MEF to load the plugin and figure out if there are any exports
+                    // good assemblies will not throw the RTLE exception and can be added to the catalog
+                    if (asmCat.Parts.ToList().Count > 0)
+                    {
+                        this._catalog.Catalogs.Add(asmCat);
+                    }
                 }
                 catch (ReflectionTypeLoadException)
                 {
@@ -37,9 +40,8 @@ namespace DotNetNuke.ExtensionPoints
                 catch (BadImageFormatException)
                 {
                 }
-                catch (FileLoadException) //ignore when the assembly load failed.
+                catch (FileLoadException) // ignore when the assembly load failed.
                 {
-
                 }
             }
         }

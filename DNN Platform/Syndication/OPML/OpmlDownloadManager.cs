@@ -1,28 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds
+    ///   Helper class that provides memory and disk caching of the downloaded feeds.
     /// </summary>
     internal class OpmlDownloadManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (OpmlDownloadManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
         private const string OPML_Dir = "/OPML/";
         private static readonly OpmlDownloadManager _theManager = new OpmlDownloadManager();
 
@@ -82,7 +77,7 @@ namespace DotNetNuke.Services.Syndication
 
             if (opmlFeed != null)
             {
-                return (opmlFeed);
+                return opmlFeed;
             }
 
             // May fail under partial trust
@@ -101,17 +96,17 @@ namespace DotNetNuke.Services.Syndication
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
 
-            return (opmlFeed);
+            return opmlFeed;
         }
 
         private Opml TryLoadFromDisk(Uri uri)
         {
             if (this._directoryOnDisk == null)
             {
-                return (null); // no place to cache
+                return null; // no place to cache
             }
 
             // look for all files matching the prefix
@@ -162,10 +157,10 @@ namespace DotNetNuke.Services.Syndication
                     {
                         File.Delete(opmlFilename);
                     }
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
 
                     // try next file
                     continue;
@@ -205,7 +200,6 @@ namespace DotNetNuke.Services.Syndication
                 // can't save to disk - not a problem
             }
         }
-
 
         private static string PrepareTempDir()
         {

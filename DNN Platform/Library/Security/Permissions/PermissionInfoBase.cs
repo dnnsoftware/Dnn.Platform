@@ -1,27 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : PermissionInfoBase
+    /// Class    : PermissionInfoBase
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// PermissionInfoBase provides a base class for PermissionInfo classes
+    /// PermissionInfoBase provides a base class for PermissionInfo classes.
     /// </summary>
     /// <remarks>All Permission calsses have  a common set of properties
     ///   - AllowAccess
@@ -30,25 +25,19 @@ namespace DotNetNuke.Security.Permissions
     ///   - UserID
     ///   - Username
     ///   - DisplayName
-    /// 
-    /// and these are implemented in this base class
+    ///
+    /// and these are implemented in this base class.
     /// </remarks>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public abstract class PermissionInfoBase : PermissionInfo
     {
-		#region "Private Members"
-
         private bool _AllowAccess;
         private string _DisplayName;
         private int _RoleID;
         private string _RoleName;
         private int _UserID;
         private string _Username;
-		
-		#endregion
-		
-		#region "Constructors"
 
         public PermissionInfoBase()
         {
@@ -59,16 +48,12 @@ namespace DotNetNuke.Security.Permissions
             this._Username = Null.NullString;
             this._DisplayName = Null.NullString;
         }
-		
-		#endregion
-
-		#region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets  aflag that indicates whether the user or role has permission
+        /// Gets or sets a value indicating whether gets and sets  aflag that indicates whether the user or role has permission.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("allowaccess")]
         public bool AllowAccess
@@ -77,6 +62,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._AllowAccess;
             }
+
             set
             {
                 this._AllowAccess = value;
@@ -85,9 +71,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User's DisplayName
+        /// Gets or sets and sets the User's DisplayName.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("displayname")]
         public string DisplayName
@@ -96,6 +82,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._DisplayName;
             }
+
             set
             {
                 this._DisplayName = value;
@@ -104,9 +91,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role ID
+        /// Gets or sets and sets the Role ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("roleid")]
         public int RoleID
@@ -115,6 +102,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._RoleID;
             }
+
             set
             {
                 this._RoleID = value;
@@ -123,9 +111,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role Name
+        /// Gets or sets and sets the Role Name.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("rolename")]
         public string RoleName
@@ -134,6 +122,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._RoleName;
             }
+
             set
             {
                 this._RoleName = value;
@@ -142,9 +131,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User ID
+        /// Gets or sets and sets the User ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("userid")]
         public int UserID
@@ -153,6 +142,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._UserID;
             }
+
             set
             {
                 this._UserID = value;
@@ -161,9 +151,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User Name
+        /// Gets or sets and sets the User Name.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("username")]
         public string Username
@@ -172,25 +162,22 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._Username;
             }
+
             set
             {
                 this._Username = value;
             }
         }
-		
-		#endregion
-		
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FillInternal fills the PermissionInfoBase from a Data Reader
+        /// FillInternal fills the PermissionInfoBase from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
 
             this.UserID = Null.SetNullInteger(dr["UserID"]);
@@ -204,11 +191,10 @@ namespace DotNetNuke.Security.Permissions
             else
             {
                 this.RoleID = int.Parse(Globals.glbRoleNothing);
-                this.RoleName = "";
+                this.RoleName = string.Empty;
             }
+
             this.AllowAccess = Null.SetNullBoolean(dr["AllowAccess"]);
         }
-		
-		#endregion
     }
 }

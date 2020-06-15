@@ -5,7 +5,7 @@
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
     /// <summary>
-    /// This enum represents the possible list of WorkflowLogType
+    /// This enum represents the possible list of WorkflowLogType.
     /// </summary>
     public enum WorkflowLogType
     {
@@ -17,6 +17,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         WorkflowApproved = 5,
         WorkflowDiscarded = 6,
         CommentProvided = 10,
-        WorkflowError = 500
+        WorkflowError = 500,
     }
 }

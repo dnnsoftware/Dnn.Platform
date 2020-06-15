@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
 namespace DotNetNuke.Web.Mvp
 {
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public class ModuleSettingsPresenterBase<TView> : ModulePresenterBase<TView> where TView : class, ISettingsView
-    {
-        #region Constructors
+    using System;
+    using System.Collections.Generic;
 
-        public ModuleSettingsPresenterBase(TView view) : base(view)
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
+    public class ModuleSettingsPresenterBase<TView> : ModulePresenterBase<TView>
+        where TView : class, ISettingsView
+    {
+        public ModuleSettingsPresenterBase(TView view)
+            : base(view)
         {
             view.OnLoadSettings += this.OnLoadSettingsInternal;
             view.OnSaveSettings += this.OnSaveSettingsInternal;
@@ -21,13 +21,9 @@ namespace DotNetNuke.Web.Mvp
             this.TabModuleSettings = new Dictionary<string, string>();
         }
 
-        #endregion
-
         public Dictionary<string, string> ModuleSettings { get; set; }
 
         public Dictionary<string, string> TabModuleSettings { get; set; }
-
-        #region Event Handlers
 
         private void OnLoadSettingsInternal(object sender, EventArgs e)
         {
@@ -38,10 +34,6 @@ namespace DotNetNuke.Web.Mvp
         {
             this.SaveSettings();
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void LoadFromContext()
         {
@@ -65,8 +57,5 @@ namespace DotNetNuke.Web.Mvp
         protected virtual void SaveSettings()
         {
         }
-
-        #endregion
-
     }
 }

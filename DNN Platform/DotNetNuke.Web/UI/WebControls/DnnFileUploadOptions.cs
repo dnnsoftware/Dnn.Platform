@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
 
     [DataContract]
     public class DnnFileUploadResources
@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var portalSettings = PortalSettings.Current;
-                var parameters = new List<object>(){this.Extensions};
+                var parameters = new List<object>() { this.Extensions };
                 if (portalSettings != null)
                 {
                     parameters.Add(portalSettings.PortalId);
@@ -192,7 +192,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ReplaceButtonText = Utilities.GetLocalizedString("FileUpload.ReplaceButton.Text"),
                 UnzipFilePromptTitle = Utilities.GetLocalizedString("FileUpload.UnzipFilePromptTitle.Text"),
                 UnzipFileFailedPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileFailedPromptBody.Text"),
-                UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text")
+                UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text"),
             };
         }
     }

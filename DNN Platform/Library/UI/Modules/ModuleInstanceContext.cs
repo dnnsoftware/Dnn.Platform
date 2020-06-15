@@ -1,41 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Linq;
-using System.Web;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Utilities;
-
-using Globals = DotNetNuke.Common.Globals;
-using System.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.UI.Modules
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI;
+
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Utilities;
+
+    using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>
-    /// Provides context data for a particular instance of a module
+    /// Provides context data for a particular instance of a module.
     /// </summary>
     public class ModuleInstanceContext
     {
-        #region Private Members
-
         private readonly IModuleControl _moduleControl;
         private ModuleActionCollection _actions;
         private ModuleAction _moduleSpecificActions;
@@ -46,10 +38,6 @@ namespace DotNetNuke.UI.Modules
         private int _nextActionId = -1;
         private Hashtable _settings;
 
-        #endregion
-
-        #region Constructors
-
         public ModuleInstanceContext()
         {
         }
@@ -59,13 +47,9 @@ namespace DotNetNuke.UI.Modules
             this._moduleControl = moduleControl;
         }
 
-        #endregion
-
-        #region Public Properties
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Actions for this module context
+        /// Gets or sets and sets the Actions for this module context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModuleActionCollection Actions
@@ -76,8 +60,10 @@ namespace DotNetNuke.UI.Modules
                 {
                     this.LoadActions(HttpContext.Current.Request);
                 }
+
                 return this._actions;
             }
+
             set
             {
                 this._actions = value;
@@ -86,7 +72,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Configuration (ModuleInfo) for this context
+        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModuleInfo Configuration
@@ -95,6 +81,7 @@ namespace DotNetNuke.UI.Modules
             {
                 return this._configuration;
             }
+
             set
             {
                 this._configuration = value;
@@ -103,8 +90,8 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The EditMode property is used to determine whether the user is in the
-        /// Administrator role
+        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
+        /// Administrator role.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool EditMode
@@ -117,22 +104,22 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the HelpUrl for this context
+        /// Gets or sets and sets the HelpUrl for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the module is Editable (in Admin mode)
+        /// Gets a value indicating whether gets whether the module is Editable (in Admin mode).
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsEditable
         {
             get
             {
-                //Perform tri-state switch check to avoid having to perform a security
-                //role lookup on every property access (instead caching the result)
+                // Perform tri-state switch check to avoid having to perform a security
+                // role lookup on every property access (instead caching the result)
                 if (!this._isEditable.HasValue)
                 {
                     bool blnPreview = (this.PortalSettings.UserMode == PortalSettings.Mode.View) || this.PortalSettings.IsLocked;
@@ -140,11 +127,13 @@ namespace DotNetNuke.UI.Modules
                     {
                         blnPreview = false;
                     }
+
                     bool blnHasModuleEditPermissions = false;
                     if (this._configuration != null)
                     {
                         blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "CONTENT", this.Configuration);
                     }
+
                     if (blnPreview == false && blnHasModuleEditPermissions)
                     {
                         this._isEditable = true;
@@ -154,6 +143,7 @@ namespace DotNetNuke.UI.Modules
                         this._isEditable = false;
                     }
                 }
+
                 return this._isEditable.Value;
             }
         }
@@ -168,7 +158,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the module ID for this context
+        /// Gets or sets and sets the module ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int ModuleId
@@ -182,6 +172,7 @@ namespace DotNetNuke.UI.Modules
 
                 return Null.NullInteger;
             }
+
             set
             {
                 if (this._configuration != null)
@@ -217,7 +208,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the settings for this context
+        /// Gets the settings for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Hashtable Settings
@@ -228,20 +219,21 @@ namespace DotNetNuke.UI.Modules
                 {
                     this._settings = new ModuleController().GetModuleSettings(this.ModuleId, this.TabId);
 
-                    //add the TabModuleSettings to the ModuleSettings
+                    // add the TabModuleSettings to the ModuleSettings
                     Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(this.TabModuleId, this.TabId);
                     foreach (string strKey in tabModuleSettings.Keys)
                     {
                         this._settings[strKey] = tabModuleSettings[strKey];
                     }
                 }
+
                 return this._settings;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the tab ID for this context
+        /// Gets the tab ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabId
@@ -259,7 +251,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the tabnmodule ID for this context
+        /// Gets or sets the tabnmodule ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabModuleId
@@ -273,6 +265,7 @@ namespace DotNetNuke.UI.Modules
 
                 return Null.NullInteger;
             }
+
             set
             {
                 if (this._configuration != null)
@@ -282,13 +275,9 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddHelpActions Adds the Help actions to the Action Menu
+        /// AddHelpActions Adds the Help actions to the Action Menu.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -319,13 +308,13 @@ namespace DotNetNuke.UI.Modules
                                  {
                                      Title = Localization.GetString(ModuleActionType.ModuleHelp, Localization.GlobalResourceFile),
                                      CommandName = ModuleActionType.ModuleHelp,
-                                     CommandArgument = "",
+                                     CommandArgument = string.Empty,
                                      Icon = "action_help.gif",
                                      Url = url,
                                      Secure = SecurityAccessLevel.Edit,
                                      Visible = true,
                                      NewWindow = showInNewWindow,
-                                     UseActionEvent = true
+                                     UseActionEvent = true,
                                  };
             this._moduleGenericActions.Actions.Add(helpAction);
         }
@@ -336,19 +325,20 @@ namespace DotNetNuke.UI.Modules
                              {
                                  Title = Localization.GetString(ModuleActionType.PrintModule, Localization.GlobalResourceFile),
                                  CommandName = ModuleActionType.PrintModule,
-                                 CommandArgument = "",
+                                 CommandArgument = string.Empty,
                                  Icon = "action_print.gif",
-                                 Url = this.NavigateUrl(this.TabId,
-                                                 "",
-                                                 false,
-                                                 "mid=" + this.ModuleId,
-                                                 "SkinSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootSkin + "/" + Globals.glbHostSkinFolder + "/" + "No Skin"),
-                                                 "ContainerSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootContainer + "/" + Globals.glbHostSkinFolder + "/" + "No Container"),
-                                                 "dnnprintmode=true"),
+                                 Url = this.NavigateUrl(
+                                     this.TabId,
+                                     string.Empty,
+                                     false,
+                                     "mid=" + this.ModuleId,
+                                     "SkinSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootSkin + "/" + Globals.glbHostSkinFolder + "/" + "No Skin"),
+                                     "ContainerSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootContainer + "/" + Globals.glbHostSkinFolder + "/" + "No Container"),
+                                     "dnnprintmode=true"),
                                  Secure = SecurityAccessLevel.Anonymous,
                                  UseActionEvent = true,
                                  Visible = true,
-                                 NewWindow = true
+                                 NewWindow = true,
                              };
             this._moduleGenericActions.Actions.Add(action);
         }
@@ -359,112 +349,117 @@ namespace DotNetNuke.UI.Modules
                              {
                                  Title = Localization.GetString(ModuleActionType.SyndicateModule, Localization.GlobalResourceFile),
                                  CommandName = ModuleActionType.SyndicateModule,
-                                 CommandArgument = "",
+                                 CommandArgument = string.Empty,
                                  Icon = "action_rss.gif",
-                                 Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "", "RSS.aspx", false, "moduleid=" + this.ModuleId),
+                                 Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, "RSS.aspx", false, "moduleid=" + this.ModuleId),
                                  Secure = SecurityAccessLevel.Anonymous,
                                  UseActionEvent = true,
                                  Visible = true,
-                                 NewWindow = true
+                                 NewWindow = true,
                              };
             this._moduleGenericActions.Actions.Add(action);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddMenuMoveActions Adds the Move actions to the Action Menu
+        /// AddMenuMoveActions Adds the Move actions to the Action Menu.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private void AddMenuMoveActions()
         {
-            //module movement
+            // module movement
             this._moduleMoveActions = new ModuleAction(this.GetNextActionID(), Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false);
 
-            //move module up/down
+            // move module up/down
             if (this.Configuration != null)
             {
                 if ((this.Configuration.ModuleOrder != 0) && (this.Configuration.PaneModuleIndex > 0))
                 {
-                    this._moduleMoveActions.Actions.Add(this.GetNextActionID(),
-                                               Localization.GetString(ModuleActionType.MoveTop, Localization.GlobalResourceFile),
-                                               ModuleActionType.MoveTop,
-                                               this.Configuration.PaneName,
-                                               "action_top.gif",
-                                               "",
-                                               false,
-                                               SecurityAccessLevel.View,
-                                               true,
-                                               false);
-                    this._moduleMoveActions.Actions.Add(this.GetNextActionID(),
-                                               Localization.GetString(ModuleActionType.MoveUp, Localization.GlobalResourceFile),
-                                               ModuleActionType.MoveUp,
-                                               this.Configuration.PaneName,
-                                               "action_up.gif",
-                                               "",
-                                               false,
-                                               SecurityAccessLevel.View,
-                                               true,
-                                               false);
+                    this._moduleMoveActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.MoveTop, Localization.GlobalResourceFile),
+                        ModuleActionType.MoveTop,
+                        this.Configuration.PaneName,
+                        "action_top.gif",
+                        string.Empty,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
+                    this._moduleMoveActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.MoveUp, Localization.GlobalResourceFile),
+                        ModuleActionType.MoveUp,
+                        this.Configuration.PaneName,
+                        "action_up.gif",
+                        string.Empty,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
                 }
+
                 if ((this.Configuration.ModuleOrder != 0) && (this.Configuration.PaneModuleIndex < (this.Configuration.PaneModuleCount - 1)))
                 {
-                    this._moduleMoveActions.Actions.Add(this.GetNextActionID(),
-                                               Localization.GetString(ModuleActionType.MoveDown, Localization.GlobalResourceFile),
-                                               ModuleActionType.MoveDown,
-                                               this.Configuration.PaneName,
-                                               "action_down.gif",
-                                               "",
-                                               false,
-                                               SecurityAccessLevel.View,
-                                               true,
-                                               false);
-                    this._moduleMoveActions.Actions.Add(this.GetNextActionID(),
-                                               Localization.GetString(ModuleActionType.MoveBottom, Localization.GlobalResourceFile),
-                                               ModuleActionType.MoveBottom,
-                                               this.Configuration.PaneName,
-                                               "action_bottom.gif",
-                                               "",
-                                               false,
-                                               SecurityAccessLevel.View,
-                                               true,
-                                               false);
+                    this._moduleMoveActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.MoveDown, Localization.GlobalResourceFile),
+                        ModuleActionType.MoveDown,
+                        this.Configuration.PaneName,
+                        "action_down.gif",
+                        string.Empty,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
+                    this._moduleMoveActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.MoveBottom, Localization.GlobalResourceFile),
+                        ModuleActionType.MoveBottom,
+                        this.Configuration.PaneName,
+                        "action_bottom.gif",
+                        string.Empty,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
                 }
             }
 
-            //move module to pane
+            // move module to pane
             foreach (object obj in this.PortalSettings.ActiveTab.Panes)
             {
                 var pane = obj as string;
                 if (!string.IsNullOrEmpty(pane) && this.Configuration != null && !this.Configuration.PaneName.Equals(pane, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this._moduleMoveActions.Actions.Add(this.GetNextActionID(),
-                                               Localization.GetString(ModuleActionType.MovePane, Localization.GlobalResourceFile) + " " + pane,
-                                               ModuleActionType.MovePane,
-                                               pane,
-                                               "action_move.gif",
-                                               "",
-                                               false,
-                                               SecurityAccessLevel.View,
-                                               true,
-                                               false);
+                    this._moduleMoveActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.MovePane, Localization.GlobalResourceFile) + " " + pane,
+                        ModuleActionType.MovePane,
+                        pane,
+                        "action_move.gif",
+                        string.Empty,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
                 }
             }
-
         }
 
         private static string FilterUrl(HttpRequest request)
         {
-            return request.RawUrl.Replace("\"", "");
+            return request.RawUrl.Replace("\"", string.Empty);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetActionsCount gets the current number of actions
+        /// GetActionsCount gets the current number of actions.
         /// </summary>
         /// <param name="actions">The actions collection to count.</param>
-        /// <param name="count">The current count</param>
+        /// <param name="count">The current count.</param>
         /// -----------------------------------------------------------------------------
         private static int GetActionsCount(int count, ModuleActionCollection actions)
         {
@@ -474,16 +469,17 @@ namespace DotNetNuke.UI.Modules
                 {
                     count += action.Actions.Count;
 
-                    //Recursively call to see if this collection has any child actions that would affect the count
+                    // Recursively call to see if this collection has any child actions that would affect the count
                     count = GetActionsCount(count, action.Actions);
                 }
             }
+
             return count;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadActions loads the Actions collections
+        /// LoadActions loads the Actions collections.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -499,7 +495,7 @@ namespace DotNetNuke.UI.Modules
             this._moduleGenericActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
             int maxActionId = Null.NullInteger;
 
-            //check if module Implements Entities.Modules.IActionable interface
+            // check if module Implements Entities.Modules.IActionable interface
             var actionable = this._moduleControl as IActionable;
             if (actionable != null)
             {
@@ -511,14 +507,16 @@ namespace DotNetNuke.UI.Modules
                 {
                     if (ModulePermissionController.HasModuleAccess(action.Secure, "CONTENT", this.Configuration))
                     {
-                        if (String.IsNullOrEmpty(action.Icon))
+                        if (string.IsNullOrEmpty(action.Icon))
                         {
                             action.Icon = "edit.gif";
                         }
+
                         if (action.ID > maxActionId)
                         {
                             maxActionId = action.ID;
                         }
+
                         this._moduleSpecificActions.Actions.Add(action);
 
                         if (!UIUtilities.IsLegacyUI(this.ModuleId, action.ControlKey, this.PortalId) && action.Url.Contains("ctl"))
@@ -527,37 +525,40 @@ namespace DotNetNuke.UI.Modules
                         }
                     }
                 }
+
                 if (this._moduleSpecificActions.Actions.Count > 0)
                 {
                     this._actions.Add(this._moduleSpecificActions);
                 }
             }
 
-            //Make sure the Next Action Id counter is correct
+            // Make sure the Next Action Id counter is correct
             int actionCount = GetActionsCount(this._actions.Count, this._actions);
             if (this._nextActionId < maxActionId)
             {
                 this._nextActionId = maxActionId;
             }
+
             if (this._nextActionId < actionCount)
             {
                 this._nextActionId = actionCount;
             }
 
-            //Custom injection of Module Settings when shared as ViewOnly
+            // Custom injection of Module Settings when shared as ViewOnly
             if (this.Configuration != null && (this.Configuration.IsShared && this.Configuration.IsShareableViewOnly)
                     && TabPermissionController.CanAddContentToPage())
             {
-                this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                             Localization.GetString("ModulePermissions.Action", Localization.GlobalResourceFile),
-                             "ModulePermissions",
-                             "",
-                             "action_settings.gif",
-                             this.NavigateUrl(this.TabId, "ModulePermissions", false, "ModuleId=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
-                             false,
-                             SecurityAccessLevel.ViewPermissions,
-                             true,
-                             false);
+                this._moduleGenericActions.Actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString("ModulePermissions.Action", Localization.GlobalResourceFile),
+                    "ModulePermissions",
+                    string.Empty,
+                    "action_settings.gif",
+                    this.NavigateUrl(this.TabId, "ModulePermissions", false, "ModuleId=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
+                    false,
+                    SecurityAccessLevel.ViewPermissions,
+                    true,
+                    false);
             }
             else
             {
@@ -565,98 +566,102 @@ namespace DotNetNuke.UI.Modules
                 {
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
                     {
-                        this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                                                          Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
-                                                          ModuleActionType.ModuleSettings,
-                                                          "",
-                                                          "action_settings.gif",
-                                                          this.NavigateUrl(this.TabId, "Module", false, "ModuleId=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
-                                                          false,
-                                                          SecurityAccessLevel.Edit,
-                                                          true,
-                                                          false);
+                        this._moduleGenericActions.Actions.Add(
+                            this.GetNextActionID(),
+                            Localization.GetString(ModuleActionType.ModuleSettings, Localization.GlobalResourceFile),
+                            ModuleActionType.ModuleSettings,
+                            string.Empty,
+                            "action_settings.gif",
+                            this.NavigateUrl(this.TabId, "Module", false, "ModuleId=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
+                            false,
+                            SecurityAccessLevel.Edit,
+                            true,
+                            false);
                     }
                 }
             }
 
             if (!string.IsNullOrEmpty(this.Configuration.DesktopModule.BusinessControllerClass))
             {
-                //check if module implements IPortable interface, and user has Admin permissions
+                // check if module implements IPortable interface, and user has Admin permissions
                 if (this.Configuration.DesktopModule.IsPortable)
                 {
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "EXPORT", this.Configuration))
                     {
-                        this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                                     Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
-                                     ModuleActionType.ExportModule,
-                                     "",
-                                     "action_export.gif",
-                                     this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
+                        this._moduleGenericActions.Actions.Add(
+                            this.GetNextActionID(),
+                            Localization.GetString(ModuleActionType.ExportModule, Localization.GlobalResourceFile),
+                            ModuleActionType.ExportModule,
+                            string.Empty,
+                            "action_export.gif",
+                            this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ExportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
 
-                                     "",
-                                     false,
-                                     SecurityAccessLevel.View,
-                                     true,
-                                     false);
+                            string.Empty,
+                            false,
+                            SecurityAccessLevel.View,
+                            true,
+                            false);
                     }
+
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "IMPORT", this.Configuration))
                     {
-                        this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                                     Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
-                                     ModuleActionType.ImportModule,
-                                     "",
-                                     "action_import.gif",
-                                     this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
-                                     "",
-                                     false,
-                                     SecurityAccessLevel.View,
-                                     true,
-                                     false);
+                        this._moduleGenericActions.Actions.Add(
+                            this.GetNextActionID(),
+                            Localization.GetString(ModuleActionType.ImportModule, Localization.GlobalResourceFile),
+                            ModuleActionType.ImportModule,
+                            string.Empty,
+                            "action_import.gif",
+                            this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, "ImportModule", false, "moduleid=" + this.ModuleId, "ReturnURL=" + FilterUrl(request)),
+                            string.Empty,
+                            false,
+                            SecurityAccessLevel.View,
+                            true,
+                            false);
                     }
                 }
+
                 if (this.Configuration.DesktopModule.IsSearchable && this.Configuration.DisplaySyndicate)
                 {
                     this.AddSyndicateAction();
                 }
             }
 
-            //help module actions available to content editors and administrators
+            // help module actions available to content editors and administrators
             const string permisisonList = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
-            if (ModulePermissionController.HasModulePermission(this.Configuration.ModulePermissions, permisisonList) 
+            if (ModulePermissionController.HasModulePermission(this.Configuration.ModulePermissions, permisisonList)
                     && request.QueryString["ctl"] != "Help"
                     && !Globals.IsAdminControl())
             {
                 this.AddHelpActions();
             }
 
-            //Add Print Action
+            // Add Print Action
             if (this.Configuration.DisplayPrint)
             {
-                //print module action available to everyone
+                // print module action available to everyone
                 this.AddPrintAction();
             }
 
             if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Host, "MANAGE", this.Configuration) && !Globals.IsAdminControl())
             {
-                this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                             Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),
-                             ModuleActionType.ViewSource,
-                             "",
-                             "action_source.gif",
-                             this.NavigateUrl(this.TabId, "ViewSource", false, "ModuleId=" + this.ModuleId, "ctlid=" + this.Configuration.ModuleControlId, "ReturnURL=" + FilterUrl(request)),
-                             false,
-                             SecurityAccessLevel.Host,
-                             true,
-                             false);
+                this._moduleGenericActions.Actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString(ModuleActionType.ViewSource, Localization.GlobalResourceFile),
+                    ModuleActionType.ViewSource,
+                    string.Empty,
+                    "action_source.gif",
+                    this.NavigateUrl(this.TabId, "ViewSource", false, "ModuleId=" + this.ModuleId, "ctlid=" + this.Configuration.ModuleControlId, "ReturnURL=" + FilterUrl(request)),
+                    false,
+                    SecurityAccessLevel.Host,
+                    true,
+                    false);
             }
-
-
 
             if (!Globals.IsAdminControl() && ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE,MANAGE", this.Configuration))
             {
                 if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE", this.Configuration))
                 {
-                    //Check if this is the owner instance of a shared module.
+                    // Check if this is the owner instance of a shared module.
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
                     if (!this.Configuration.IsShared)
                     {
@@ -667,35 +672,38 @@ namespace DotNetNuke.UI.Modules
                         }
                     }
 
-                    this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                                 Localization.GetString(ModuleActionType.DeleteModule, Localization.GlobalResourceFile),
-                                 ModuleActionType.DeleteModule,
-                                 this.Configuration.ModuleID.ToString(),
-                                 "action_delete.gif",
-                                 "",
-                                 confirmText,
-                                 false,
-                                 SecurityAccessLevel.View,
-                                 true,
-                                 false);
-                }
-                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
-                {
-                    this._moduleGenericActions.Actions.Add(this.GetNextActionID(),
-                                 Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
-                                 ModuleActionType.ClearCache,
-                                 this.Configuration.ModuleID.ToString(),
-                                 "action_refresh.gif",
-                                 "",
-                                 false,
-                                 SecurityAccessLevel.View,
-                                 true,
-                                 false);
+                    this._moduleGenericActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.DeleteModule, Localization.GlobalResourceFile),
+                        ModuleActionType.DeleteModule,
+                        this.Configuration.ModuleID.ToString(),
+                        "action_delete.gif",
+                        string.Empty,
+                        confirmText,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
                 }
 
                 if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
                 {
-                    //module movement
+                    this._moduleGenericActions.Actions.Add(
+                        this.GetNextActionID(),
+                        Localization.GetString(ModuleActionType.ClearCache, Localization.GlobalResourceFile),
+                        ModuleActionType.ClearCache,
+                        this.Configuration.ModuleID.ToString(),
+                        "action_refresh.gif",
+                        string.Empty,
+                        false,
+                        SecurityAccessLevel.View,
+                        true,
+                        false);
+                }
+
+                if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
+                {
+                    // module movement
                     this.AddMenuMoveActions();
                 }
             }
@@ -731,18 +739,14 @@ namespace DotNetNuke.UI.Modules
                    || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
         }
 
-        #endregion
-
-        #region Public Methods
-
         public string EditUrl()
         {
-            return this.EditUrl("", "", "Edit");
+            return this.EditUrl(string.Empty, string.Empty, "Edit");
         }
 
         public string EditUrl(string controlKey)
         {
-            return this.EditUrl("", "", controlKey);
+            return this.EditUrl(string.Empty, string.Empty, controlKey);
         }
 
         public string EditUrl(string keyName, string keyValue)
@@ -763,6 +767,7 @@ namespace DotNetNuke.UI.Modules
             {
                 key = "Edit";
             }
+
             string moduleIdParam = string.Empty;
             if (this.Configuration != null)
             {
@@ -802,11 +807,12 @@ namespace DotNetNuke.UI.Modules
             // Making URLs call popups
             if (this.PortalSettings != null && this.PortalSettings.EnablePopUps)
             {
-                if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && (url.Contains("ctl")))
+                if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && url.Contains("ctl"))
                 {
                     url = UrlUtils.PopUpUrl(url, null, this.PortalSettings, false, pageRedirect);
                 }
             }
+
             return url;
         }
 
@@ -815,7 +821,5 @@ namespace DotNetNuke.UI.Modules
             this._nextActionId += 1;
             return this._nextActionId;
         }
-
-        #endregion
     }
 }

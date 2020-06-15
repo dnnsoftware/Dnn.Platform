@@ -1,47 +1,42 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using System.Web;
-using System.Xml.XPath;
-
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Localization.Internal;
-using DotNetNuke.Application;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.Services.Upgrade.InternalController.Steps;
-using DotNetNuke.Services.Upgrade.Internals.Steps;
-using DotNetNuke.Services.UserRequest;
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
 namespace DotNetNuke.Services.Install
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Localization.Internal;
+    using DotNetNuke.Services.Upgrade.InternalController.Steps;
+    using DotNetNuke.Services.Upgrade.Internals.Steps;
+    using DotNetNuke.Services.UserRequest;
+
+    using Globals = DotNetNuke.Common.Globals;
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The InstallWizard class provides the Installation Wizard for DotNetNuke
+    /// The InstallWizard class provides the Installation Wizard for DotNetNuke.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class UpgradeWizard : PageBase
     {
-        #region Private Members
-        
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
         protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
@@ -51,10 +46,6 @@ namespace DotNetNuke.Services.Install
         private static IInstallationStep _currentStep;
         private static bool _upgradeRunning;
         private static int _upgradeProgress;
-
-        #endregion
-
-        #region Protected Members
 
         protected Version ApplicationVersion
         {
@@ -77,10 +68,6 @@ namespace DotNetNuke.Services.Install
             get { return File.Exists(Path.Combine(Globals.ApplicationMapPath, "Licenses\\Dnn_Corp_License.pdf")); }
         }
 
-        #endregion
-
-        #region Private Properties
-
         private static string StatusFile
         {
             get
@@ -90,10 +77,6 @@ namespace DotNetNuke.Services.Install
         }
 
         private static bool IsAuthenticated { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private void LocalizePage()
         {
@@ -112,7 +95,7 @@ namespace DotNetNuke.Services.Install
             else
             {
                 this.versionLabel.Text = string.Format(this.LocalizeString("Version"), Globals.FormatVersion(this.ApplicationVersion));
-                this.currentVersionLabel.Text = string.Format(this.LocalizeString("CurrentVersion"), Globals.FormatVersion(this.CurrentVersion));  
+                this.currentVersionLabel.Text = string.Format(this.LocalizeString("CurrentVersion"), Globals.FormatVersion(this.CurrentVersion));
             }
         }
 
@@ -133,8 +116,9 @@ namespace DotNetNuke.Services.Install
                     {
                         if (nav.NodeType != XPathNodeType.Comment)
                         {
-                            _supportedLanguages.SetValue(nav.GetAttribute("key", ""), i);
+                            _supportedLanguages.SetValue(nav.GetAttribute("key", string.Empty), i);
                         }
+
                         i++;
                     }
                 }
@@ -147,7 +131,7 @@ namespace DotNetNuke.Services.Install
             else
             {
                 _supportedLanguages = new string[1];
-                _supportedLanguages.SetValue("en-US",0);
+                _supportedLanguages.SetValue("en-US", 0);
             }
         }
 
@@ -175,33 +159,42 @@ namespace DotNetNuke.Services.Install
 
         private static string LocalizeStringStatic(string key)
         {
-            return Localization.Localization.GetString(key, LocalResourceFile, _culture);
+            return Localization.GetString(key, LocalResourceFile, _culture);
         }
-        
+
         private static void LaunchUpgrade()
         {
-            //Get current Script time-out
+            // Get current Script time-out
             var scriptTimeOut = HttpContext.Current.Server.ScriptTimeout;
 
-            //Set Script timeout to MAX value
+            // Set Script timeout to MAX value
             HttpContext.Current.Server.ScriptTimeout = int.MaxValue;
 
-            if (_culture != null) Thread.CurrentThread.CurrentUICulture = new CultureInfo(_culture);
+            if (_culture != null)
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(_culture);
+            }
 
-            //bail out early if upgrade is in progress
+            // bail out early if upgrade is in progress
             if (_upgradeRunning)
+            {
                 return;
+            }
 
             var percentForEachStep = 100 / _steps.Count;
             var useGenericPercent = false;
             var totalPercent = _steps.Sum(step => step.Value);
-            if (totalPercent != 100) useGenericPercent = true;
+            if (totalPercent != 100)
+            {
+                useGenericPercent = true;
+            }
 
             _upgradeRunning = true;
             _upgradeProgress = 0;
 
-            //Output the current time for the user
-            CurrentStepActivity(string.Concat(Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
+            // Output the current time for the user
+            CurrentStepActivity(string.Concat(
+                Localization.GetString("UpgradeStarted", LocalResourceFile),
                 ":", DateTime.Now.ToString()));
 
             foreach (var step in _steps)
@@ -215,10 +208,11 @@ namespace DotNetNuke.Services.Install
                 }
                 catch (Exception ex)
                 {
-                    CurrentStepActivity(Localization.Localization.GetString("ErrorInStep", LocalResourceFile) + ": " + ex.Message);
+                    CurrentStepActivity(Localization.GetString("ErrorInStep", LocalResourceFile) + ": " + ex.Message);
                     _upgradeRunning = false;
                     return;
                 }
+
                 switch (_currentStep.Status)
                 {
                     case StepStatus.AppRestart:
@@ -228,29 +222,35 @@ namespace DotNetNuke.Services.Install
                     default:
                         if (_currentStep.Status != StepStatus.Done)
                         {
-                            CurrentStepActivity(string.Format(Localization.Localization.GetString("ErrorInStep", LocalResourceFile)
-                                                                                                  , _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
+                            CurrentStepActivity(string.Format(
+                                Localization.GetString("ErrorInStep", LocalResourceFile),
+                                _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
                             _upgradeRunning = false;
                             return;
                         }
+
                         break;
                 }
+
                 if (useGenericPercent)
+                {
                     _upgradeProgress += percentForEachStep;
+                }
                 else
+                {
                     _upgradeProgress += step.Value;
+                }
             }
 
             _currentStep = null;
             _upgradeProgress = 100;
-            CurrentStepActivity(Localization.Localization.GetString("UpgradeDone", LocalResourceFile));
+            CurrentStepActivity(Localization.GetString("UpgradeDone", LocalResourceFile));
 
-            //indicate we are done
+            // indicate we are done
             _upgradeRunning = false;
 
-            //restore Script timeout
+            // restore Script timeout
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
-
         }
 
         private static void CurrentStepActivity(string status)
@@ -260,13 +260,17 @@ namespace DotNetNuke.Services.Install
             {
                 progress = percentage,
                 details = status,
-                check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? "" : " Errors " + upgradeDatabase.Errors.Count),
-                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? "" : " Errors " + upgradeExtensions.Errors.Count)
+                check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? string.Empty : " Errors " + upgradeDatabase.Errors.Count),
+                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? string.Empty : " Errors " + upgradeExtensions.Errors.Count),
             };
 
             try
             {
-                if (!File.Exists(StatusFile)) File.CreateText(StatusFile);
+                if (!File.Exists(StatusFile))
+                {
+                    File.CreateText(StatusFile);
+                }
+
                 using (var sw = new StreamWriter(StatusFile, true))
                 {
                     sw.WriteLine(obj.ToJson());
@@ -275,23 +279,23 @@ namespace DotNetNuke.Services.Install
             }
             catch (Exception)
             {
-                //TODO - do something                
+                // TODO - do something
             }
         }
 
-		private void CompleteUpgrade()
+        private void CompleteUpgrade()
         {
-            //Delete the status file.
+            // Delete the status file.
             try
             {
                 File.Delete(StatusFile);
             }
             catch (Exception)
             {
-                //Do nothing
+                // Do nothing
             }
 
-            //remove installwizard files added back by upgrade package
+            // remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
             Config.Touch();
@@ -312,32 +316,28 @@ namespace DotNetNuke.Services.Install
                     sslDomain = sslDomain.Substring(sslDomain.IndexOf("://") + 3);
                 }
 
-                var sslUrl = string.Format("https://{0}{1}",
+                var sslUrl = string.Format(
+                    "https://{0}{1}",
                     sslDomain, this.Request.RawUrl);
 
                 this.Response.Redirect(sslUrl, true);
             }
         }
 
-        #endregion
-
-        #region Protected Methods
         protected string LocalizeString(string key)
         {
-            return Localization.Localization.GetString(key, LocalResourceFile, _culture);
+            return Localization.GetString(key, LocalResourceFile, _culture);
         }
-        
+
         protected override void OnError(EventArgs e)
         {
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
         }
-        #endregion
 
-        #region Event Handlers
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the Page is initialised
+        /// Page_Init runs when the Page is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -357,7 +357,7 @@ namespace DotNetNuke.Services.Install
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the Page loads
+        /// Page_Load runs when the Page loads.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -374,37 +374,38 @@ namespace DotNetNuke.Services.Install
             this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
             this.LocalizePage();
 
-			if (this.Request.RawUrl.EndsWith("?complete"))
-			{
-				this.CompleteUpgrade();
-			}
-            
-            //Create Status Files
+            if (this.Request.RawUrl.EndsWith("?complete"))
+            {
+                this.CompleteUpgrade();
+            }
+
+            // Create Status Files
             if (!this.Page.IsPostBack)
             {
-                //Reset the accept terms flag
+                // Reset the accept terms flag
                 HostController.Instance.Update("AcceptDnnTerms", "N");
-                if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
+                if (!File.Exists(StatusFile))
+                {
+                    File.CreateText(StatusFile).Close();
+                }
+
                 Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
             }
         }
-        #endregion
-        
-        #region Web Methods
 
-        //steps shown in UI
-        static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
-        static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
-        static IInstallationStep iisVerification = new IISVerificationStep();
+        // steps shown in UI
+        private static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
+        private static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
+        private static IInstallationStep iisVerification = new IISVerificationStep();
 
-        //Ordered List of Steps (and weight in percentage) to be executed
+        // Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
             {
-            //{new AddFcnModeStep(), 1},
-                {iisVerification, 1 },
-                {upgradeDatabase, 49}, 
-                {upgradeExtensions, 49}, 
-                {new InstallVersionStep(), 1}
+            // {new AddFcnModeStep(), 1},
+                { iisVerification, 1 },
+                { upgradeDatabase, 49 },
+                { upgradeExtensions, 49 },
+                { new InstallVersionStep(), 1 },
             };
 
         static UpgradeWizard()
@@ -412,7 +413,7 @@ namespace DotNetNuke.Services.Install
             IsAuthenticated = false;
         }
 
-        [System.Web.Services.WebMethod()]
+        [System.Web.Services.WebMethod]
         public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)
         {
             string errorMsg;
@@ -429,7 +430,7 @@ namespace DotNetNuke.Services.Install
             UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
             var userRequestIpAddressController = UserRequestIPAddressController.Instance;
             var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
-            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", "", "", ipAddress, ref loginStatus);
+            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
 
             if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
             {
@@ -450,7 +451,7 @@ namespace DotNetNuke.Services.Install
             return result;
         }
 
-        [System.Web.Services.WebMethod()]
+        [System.Web.Services.WebMethod]
         public static void RunUpgrade(Dictionary<string, string> accountInfo)
         {
             string errorMsg;
@@ -460,18 +461,22 @@ namespace DotNetNuke.Services.Install
             {
                 _upgradeRunning = false;
                 LaunchUpgrade();
+
                 // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
                 HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
 
-                //DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+                // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
                 HostController.Instance.Update("InstallerFilesRemoved", "False", true);
             }
         }
 
-        [System.Web.Services.WebMethod()]
+        [System.Web.Services.WebMethod]
         public static object GetInstallationLog(int startRow)
         {
-            if (IsAuthenticated == false) return string.Empty;
+            if (IsAuthenticated == false)
+            {
+                return string.Empty;
+            }
 
             var data = string.Empty;
             string logFile = "InstallerLog" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".resources";
@@ -495,19 +500,18 @@ namespace DotNetNuke.Services.Install
 
                     data = sb.ToString();
                 }
+
                 if (errorLogged == false)
                 {
-                    Localization.Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                    Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
                 }
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
 
             return data;
         }
-
-        #endregion
     }
 }

@@ -1,33 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class ScheduleItem : BaseEntityInfo, IHydratable
     {
-        #region Private Members
-
-        private static readonly DateTime MinNextTime = DateTime.Now; 
+        private static readonly DateTime MinNextTime = DateTime.Now;
         private DateTime? _NextStart;
         private Hashtable _ScheduleItemSettings;
-
-        #endregion
-
-        #region Constructors
 
         public ScheduleItem()
         {
@@ -48,10 +37,6 @@ namespace DotNetNuke.Services.Scheduling
             this.ScheduleStartDate = Null.NullDate;
         }
 
-        #endregion
-
-        #region Persisted Properties
-
         public string AttachToEvent { get; set; }
 
         public bool CatchUpEnabled { get; set; }
@@ -70,8 +55,10 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     this._NextStart = MinNextTime;
                 }
+
                 return this._NextStart.Value > MinNextTime ? this._NextStart.Value : MinNextTime;
             }
+
             set
             {
                 this._NextStart = value;
@@ -102,16 +89,13 @@ namespace DotNetNuke.Services.Scheduling
 
         public int ThreadID { get; set; }
 
-        #endregion
-
-        #region IHydratable Members
-
         public int KeyID
         {
             get
             {
                 return this.ScheduleID;
             }
+
             set
             {
                 this.ScheduleID = value;
@@ -122,8 +106,6 @@ namespace DotNetNuke.Services.Scheduling
         {
             this.FillInternal(dr);
         }
-
-        #endregion
 
         public bool HasObjectDependencies(string strObjectDependencies)
         {
@@ -144,10 +126,9 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return true;
             }
+
             return false;
         }
-
-        #region "Public Methods"
 
         public void AddSetting(string Key, string Value)
         {
@@ -160,13 +141,14 @@ namespace DotNetNuke.Services.Scheduling
             {
                 this.GetSettings();
             }
+
             if (this._ScheduleItemSettings != null && this._ScheduleItemSettings.ContainsKey(Key))
             {
                 return Convert.ToString(this._ScheduleItemSettings[Key]);
             }
             else
             {
-                return "";
+                return string.Empty;
             }
         }
 
@@ -199,15 +181,15 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     this.NextStart = Null.SetNullDateTime(dr["NextStart"]);
                 }
+
                 if (schema.Select("ColumnName = 'ScheduleStartDate'").Length > 0)
                 {
                     this.ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
                 }
             }
-            //Fill BaseEntityInfo
+
+            // Fill BaseEntityInfo
             base.FillInternal(dr);
         }
-
-        #endregion
     }
 }

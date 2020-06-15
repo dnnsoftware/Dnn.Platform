@@ -1,23 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
-
-#endregion
-
 namespace DotNetNuke.Modules.RazorHost
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
@@ -59,7 +54,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -90,7 +85,7 @@ namespace DotNetNuke.Modules.RazorHost
                     this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

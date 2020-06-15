@@ -2,30 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using Dnn.EditBar.Library;
-using Dnn.EditBar.Library.Items;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.UI;
-using Newtonsoft.Json.Linq;
-
 namespace Dnn.EditBar.UI.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+
+    using Dnn.EditBar.Library;
+    using Dnn.EditBar.Library.Items;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.UI;
+    using Newtonsoft.Json.Linq;
+
     public class EditBarController : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));
@@ -37,14 +38,11 @@ namespace Dnn.EditBar.UI.Controllers
             return () => new EditBarController();
         }
 
-        #region Public Methods
-
         public IDictionary<string, object> GetConfigurations(int portalId)
         {
             var settings = new Dictionary<string, object>();
             var portalSettings = PortalSettings.Current;
             var user = portalSettings.UserInfo;
-
 
             settings.Add("applicationPath", Globals.ApplicationPath);
             settings.Add("buildNumber", Host.CrmVersion.ToString(CultureInfo.InvariantCulture));
@@ -82,10 +80,6 @@ namespace Dnn.EditBar.UI.Controllers
                     .ToList();
         }
 
-        #endregion
-
-        #region Private Methods
-
         private static IEnumerable<BaseMenuItem> GetMenuItemInstances()
         {
             var types = GetAllMenuItemTypes();
@@ -99,8 +93,9 @@ namespace Dnn.EditBar.UI.Controllers
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat("Unable to create {0} while getting all edit bar menu items. {1}",
-                                       type.FullName, e.Message);
+                    Logger.ErrorFormat(
+                        "Unable to create {0} while getting all edit bar menu items. {1}",
+                        type.FullName, e.Message);
                     menuItem = null;
                 }
 
@@ -120,7 +115,5 @@ namespace Dnn.EditBar.UI.Controllers
                      !t.IsAbstract &&
                      typeof(BaseMenuItem).IsAssignableFrom(t));
         }
-
-        #endregion
     }
 }

@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Social.Subscriptions;
-using DotNetNuke.Services.Social.Subscriptions.Data;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Subscriptions;
+    using DotNetNuke.Services.Social.Subscriptions.Data;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SubscriptionTypeControllerTests
     {
@@ -24,7 +25,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private Mock<CachingProvider> mockCacheProvider;
 
         private const string SubscriptionTypesCacheKey = "DNN_" + DataCache.SubscriptionTypesCacheKey;
-        
+
         [SetUp]
         public void SetUp()
         {
@@ -33,12 +34,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.mockCacheProvider = MockComponentProvider.CreateDataCacheProvider();
 
             DataService.SetTestableInstance(this.mockDataService.Object);
-            
+
             // Setup SUT
             this.subscriptionTypeController = new SubscriptionTypeController();
         }
 
-        #region GetSubscriptionTypes method tests
         [Test]
         public void GetSubscriptionTypes_ShouldCallDataService_WhenNoError()
         {
@@ -53,36 +53,32 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(ds => ds.GetSubscriptionTypes())
                 .Returns(SubscriptionTypeDataReaderMockHelper.CreateEmptySubscriptionTypeReader())
                 .Verifiable();
-            
-            //Act
+
+            // Act
             this.subscriptionTypeController.GetSubscriptionTypes();
 
-            //Assert
+            // Assert
             this.mockDataService.Verify(ds => ds.GetSubscriptionTypes(), Times.Once());
         }
 
         [Test]
         public void GetSubscriptionTypes_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.GetSubscriptionTypes(null));
         }
-        #endregion
 
-        #region GetSubscriptionType method tests
         [Test]
         public void GetSubscriptionType_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.GetSubscriptionType(null));
         }
-        #endregion
 
-        #region AddSubscriptionType method tests
         [Test]
         public void AddSubscriptionType_ShouldThrowArgumentNullException_WhenSubscriptionTypeIsNull()
         {
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.AddSubscriptionType(null));
         }
 
@@ -95,15 +91,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this.mockDataService
                 .Setup(ds => ds.AddSubscriptionType(
-                    subscriptionType.SubscriptionName, 
-                    subscriptionType.FriendlyName, 
+                    subscriptionType.SubscriptionName,
+                    subscriptionType.FriendlyName,
                     subscriptionType.DesktopModuleId))
                 .Returns(expectedSubscriptionTypeId);
 
-            //Act
+            // Act
             this.subscriptionTypeController.AddSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expectedSubscriptionTypeId, subscriptionType.SubscriptionTypeId);
         }
 
@@ -116,15 +112,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var subscriptionType = new SubscriptionTypeBuilder().Build();
 
-            //Act
+            // Act
             this.subscriptionTypeController.AddSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             this.mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());
         }
-        #endregion
 
-        #region DeleteSubscriptionType method tests
         [Test]
         public void DeleteSubscriptionType_ShouldThrowArgumentOutOfRangeException_WhenSubscriptionTypeIdIsNegative()
         {
@@ -147,17 +141,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void DeleteSubscriptionType_ShouldCallDataService_WhenNoError()
         {
-            // Arrange 
+            // Arrange
             var subscriptionType = new SubscriptionTypeBuilder().Build();
 
             this.mockDataService
                 .Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId))
                 .Verifiable();
-            
-            //Act
+
+            // Act
             this.subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             this.mockDataService.Verify(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId), Times.Once());
         }
 
@@ -169,14 +163,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this.mockDataService.Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId));
             this.mockCacheProvider.Setup(cp => cp.Remove(SubscriptionTypesCacheKey)).Verifiable();
-            
-            //Act
+
+            // Act
             this.subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             this.mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());
         }
-        #endregion
 
         [TearDown]
         public void TearDown()

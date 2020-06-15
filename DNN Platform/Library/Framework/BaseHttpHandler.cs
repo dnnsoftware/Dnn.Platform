@@ -1,25 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Web;
-
-#endregion
-
 namespace DotNetNuke.Framework
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Web;
+
     public abstract class BaseHttpHandler : IHttpHandler
     {
         private HttpContext _context;
 
         /// <summary>
-        ///   Returns the <see cref = "HttpContext" /> object for the incoming HTTP request.
+        ///   Gets the <see cref = "HttpContext" /> object for the incoming HTTP request.
         /// </summary>
         public HttpContext Context
         {
@@ -30,7 +25,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///   Returns the <see cref = "HttpRequest" /> object for the incoming HTTP request.
+        ///   Gets the <see cref = "HttpRequest" /> object for the incoming HTTP request.
         /// </summary>
         public HttpRequest Request
         {
@@ -41,7 +36,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///   Gets the <see cref = "HttpResponse" /> object associated with the Page object. This object 
+        ///   Gets the <see cref = "HttpResponse" /> object associated with the Page object. This object
         ///   allows you to send HTTP response data to a client and contains information about that response.
         /// </summary>
         public HttpResponse Response
@@ -88,8 +83,8 @@ namespace DotNetNuke.Framework
         ///   has the necessary permissions.
         /// </summary>
         /// <remarks>
-        ///   By default all authenticated users have permssions.  
-        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>
+        ///   By default all authenticated users have permssions.
+        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>.
         /// </remarks>
         /// <value>
         ///   <c>true</c> if the user has the appropriate permissions
@@ -106,7 +101,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         ///   Gets the content MIME type for the response object.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The content MIME type for the response object.</placeholder>
+        /// </value>
         public virtual string ContentMimeType
         {
             get
@@ -118,7 +115,9 @@ namespace DotNetNuke.Framework
         /// <summary>
         ///   Gets the content encoding for the response object.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The content encoding for the response object.</placeholder>
+        /// </value>
         public virtual Encoding ContentEncoding
         {
             get
@@ -126,8 +125,6 @@ namespace DotNetNuke.Framework
                 return Encoding.UTF8;
             }
         }
-
-        #region IHttpHandler Members
 
         /// <summary>
         ///   Processs the incoming HTTP request.
@@ -165,14 +162,12 @@ namespace DotNetNuke.Framework
             }
         }
 
-        #endregion
-
         /// <summary>
         ///   Handles the request.  This is where you put your
         ///   business logic.
         /// </summary>
         /// <remarks>
-        ///   <p>This method should result in a call to one 
+        ///   <p>This method should result in a call to one
         ///     (or more) of the following methods:</p>
         ///   <p><code>context.Response.BinaryWrite();</code></p>
         ///   <p><code>context.Response.Write();</code></p>
@@ -184,8 +179,8 @@ namespace DotNetNuke.Framework
         ///   </p>
         ///   <p>etc...</p>
         ///   <p>
-        ///     If you want a download box to show up with a 
-        ///     pre-populated filename, add this call here 
+        ///     If you want a download box to show up with a
+        ///     pre-populated filename, add this call here
         ///     (supplying a real filename).
         ///   </p>
         ///   <p>
@@ -201,7 +196,7 @@ namespace DotNetNuke.Framework
         ///   valid, otherwise false.
         /// </summary>
         /// <returns><c>true</c> if the parameters are valid,
-        ///   otherwise <c>false</c></returns>
+        ///   otherwise <c>false</c>.</returns>
         public abstract bool ValidateParameters();
 
         /// <summary>

@@ -71,7 +71,6 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-#region File Watcher Functions
 
         private static void InitializeFileWatcher()
         {
@@ -257,7 +256,6 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-#endregion
     }
 }
 #endif

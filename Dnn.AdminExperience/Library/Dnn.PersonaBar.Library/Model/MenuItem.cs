@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using Dnn.PersonaBar.Library.Repository;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.Library.Model
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Library.Repository;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+
     [DataContract]
     [Serializable]
     public class MenuItem : IHydratable
@@ -97,6 +98,7 @@ namespace Dnn.PersonaBar.Library.Model
                     {
                         resourcesPath = System.IO.Path.Combine(Constants.PersonaBarRelativePath, "App_LocalResources", "PersonaBar.resx");
                     }
+
                     displayName = Localization.GetString(this.ResourceKey, resourcesPath);
                 }
                 else if (string.IsNullOrEmpty(displayName))
@@ -138,6 +140,9 @@ namespace Dnn.PersonaBar.Library.Model
             this.Order = Null.SetNullInteger(dr["Order"]);
         }
 
-        public int KeyID { get { return this.MenuId; } set { this.MenuId = value; } }
+        public int KeyID
+        {
+            get { return this.MenuId; } set { this.MenuId = value; }
+        }
     }
 }

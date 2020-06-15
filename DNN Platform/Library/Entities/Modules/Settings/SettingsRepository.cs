@@ -2,32 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Web.Caching;
-using DotNetNuke.Common;
-using DotNetNuke.Collections;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Entities.Modules.Settings
 {
-    public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
-    {
-        #region Properties
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
 
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+
+    public abstract class SettingsRepository<T> : ISettingsRepository<T>
+        where T : class, new()
+    {
         private IList<ParameterMapping> Mapping { get; }
 
         private readonly IModuleController _moduleController;
-
-        #endregion
 
         protected SettingsRepository()
         {
@@ -40,7 +38,6 @@ namespace DotNetNuke.Entities.Modules.Settings
             return CBO.GetCachedObject<T>(new CacheItemArgs(this.CacheKey(moduleContext.TabModuleID), 20, CacheItemPriority.AboveNormal, moduleContext), this.Load, false);
         }
 
-        #region Serialization
         public void SaveSettings(ModuleInfo moduleContext, T settings)
         {
             Requires.NotNull("settings", settings);
@@ -101,9 +98,6 @@ namespace DotNetNuke.Entities.Modules.Settings
             return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
         }
 
-        #endregion
-
-        #region Mappings
         protected IList<ParameterMapping> LoadMapping()
         {
             var cacheKey = this.MappingCacheKey;
@@ -111,7 +105,8 @@ namespace DotNetNuke.Entities.Modules.Settings
             if (mapping == null)
             {
                 mapping = this.CreateMapping();
-                // HARDCODED: 2 hour expiration. 
+
+                // HARDCODED: 2 hour expiration.
                 // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
                 CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
             }
@@ -120,6 +115,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         }
 
         public const string CachePrefix = "ModuleSettingsPersister_";
+
         protected virtual string MappingCacheKey
         {
             get
@@ -143,9 +139,7 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             return mapping;
         }
-        #endregion
 
-        #region Deserialization
         private T Load(CacheItemArgs args)
         {
             var ctlModule = (ModuleInfo)args.ParamList[0];
@@ -278,7 +272,8 @@ namespace DotNetNuke.Entities.Modules.Settings
             catch (Exception exception)
             {
                 // TODO: Localize exception
-                throw new InvalidCastException(string.Format(CultureInfo.CurrentUICulture, "Could not cast {0} to property {1} of type {2}",
+                throw new InvalidCastException(
+                    string.Format(CultureInfo.CurrentUICulture, "Could not cast {0} to property {1} of type {2}",
                                                              propertyValue,
                                                              property.Name,
                                                              property.PropertyType), exception);
@@ -302,6 +297,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             {
                 return bool.TrueString;
             }
+
             if (propertyValue.Equals("0"))
             {
                 return bool.FalseString;
@@ -309,8 +305,6 @@ namespace DotNetNuke.Entities.Modules.Settings
 
             return propertyValue;
         }
-
-        #endregion
 
         private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
         {

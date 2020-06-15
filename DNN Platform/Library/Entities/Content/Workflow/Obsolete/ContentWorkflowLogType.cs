@@ -2,15 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+
 // ReSharper enable CheckNamespace
 {
+    using System;
+
     /// <summary>
-    /// This enum represents the possible list of WorkflowLogType
+    /// This enum represents the possible list of WorkflowLogType.
     /// </summary>
-    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]   
+    [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
     public enum ContentWorkflowLogType
     {
         WorkflowStarted = 0,
@@ -21,6 +23,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         WorkflowApproved = 5,
         WorkflowDiscarded = 6,
         CommentProvided = 10,
-        WorkflowError = 500
+        WorkflowError = 500,
     }
 }

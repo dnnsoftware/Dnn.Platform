@@ -2,24 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net;
-using System.Web.Http;
-using System.Net.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+
     public class UserFileController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (UserFileController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
         private readonly IFolderManager _folderManager = FolderManager.Instance;
 
         [DnnAuthorize]
@@ -28,7 +29,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             return this.GetItems(null);
         }
-        
+
         [DnnAuthorize]
         [HttpGet]
         public HttpResponseMessage GetItems(string fileExtensions)
@@ -49,7 +50,7 @@ namespace DotNetNuke.Web.InternalServices
                     children = this.GetChildren(userFolder, extensions),
                     folder = true,
                     id = userFolder.FolderID,
-                    name = Localization.GetString("UserFolderTitle.Text", Localization.SharedResourceFile)
+                    name = Localization.GetString("UserFolderTitle.Text", Localization.SharedResourceFile),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new List<Item> { folderStructure });
@@ -76,7 +77,7 @@ namespace DotNetNuke.Web.InternalServices
                     name = currentFolder.DisplayName ?? currentFolder.FolderName,
                     folder = true,
                     parentId = folder.FolderID,
-                    children = this.GetChildren(currentFolder, extensions)
+                    children = this.GetChildren(currentFolder, extensions),
                 });
             }
 
@@ -96,7 +97,7 @@ namespace DotNetNuke.Web.InternalServices
                         thumb_url = this.GetThumbUrl(file),
                         type = GetTypeName(file),
                         size = GetFileSize(file.Size),
-                        modified = GetModifiedTime(file.LastModificationTime)
+                        modified = GetModifiedTime(file.LastModificationTime),
                     });
                 }
             }
@@ -110,7 +111,6 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         // ReSharper restore LoopCanBeConvertedToQuery
-
         private string GetThumbUrl(IFileInfo file)
         {
             if (IsImageFile(file.RelativePath))
@@ -123,6 +123,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 fileIcon = IconController.IconURL("File", "32x32");
             }
+
             return fileIcon;
         }
 
@@ -130,8 +131,8 @@ namespace DotNetNuke.Web.InternalServices
         {
             return file.ContentType == null
                        ? string.Empty
-                       : (file.ContentType.StartsWith("image/") 
-                            ? file.ContentType.Replace("image/", string.Empty) 
+                       : (file.ContentType.StartsWith("image/")
+                            ? file.ContentType.Replace("image/", string.Empty)
                             : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
         }
 
@@ -148,24 +149,34 @@ namespace DotNetNuke.Web.InternalServices
             var biggerThanAMegabyte = size > 1024;
             if (biggerThanAMegabyte)
             {
-                size = (size / 1024);
+                size = size / 1024;
             }
+
             return size.ToString(CultureInfo.InvariantCulture) + (biggerThanAMegabyte ? "Mb" : "k");
         }
 
-        class Item
+        private class Item
         {
             // ReSharper disable InconsistentNaming
             // ReSharper disable UnusedAutoPropertyAccessor.Local
             public int id { get; set; }
+
             public string name { get; set; }
+
             public bool folder { get; set; }
+
             public int parentId { get; set; }
+
             public string thumb_url { get; set; }
+
             public string type { get; set; }
+
             public string size { get; set; }
+
             public string modified { get; set; }
+
             public List<Item> children { get; set; }
+
             // ReSharper restore UnusedAutoPropertyAccessor.Local
             // ReSharper restore InconsistentNaming
         }

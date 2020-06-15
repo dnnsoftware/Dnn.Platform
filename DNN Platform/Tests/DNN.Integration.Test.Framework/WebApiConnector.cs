@@ -2,36 +2,36 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Cache;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Xml;
-using System.Xml.Linq;
-using DotNetNuke.Common.Utilities;
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
-
 namespace DNN.Integration.Test.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Cache;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Linq;
+
+    using DNN.Integration.Test.Framework.Controllers;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+
     internal class WebApiConnector : IWebApiConnector, IDisposable
     {
-        
         private static readonly Dictionary<string, CachedWebPage> CachedPages = new Dictionary<string, CachedWebPage>();
 
         public static WebApiConnector GetWebConnector(string siteUrl, string userName)
         {
             return new WebApiConnector(siteUrl)
             {
-                UserName = (userName ?? string.Empty).Replace("'", string.Empty)
+                UserName = (userName ?? string.Empty).Replace("'", string.Empty),
             };
         }
 
@@ -51,24 +51,24 @@ namespace DNN.Integration.Test.Framework
 
         private const string LoginPath = "/Login";
         private const string LogoffPath = "/Home/ctl/Logoff";
-        //private const string LogoffPath = "/Home/ctl/Logoff.aspx";
-        //private const string LogoffPath = "/Logoff.aspx");
-        //private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
 
-        const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
-        const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
+        // private const string LogoffPath = "/Home/ctl/Logoff.aspx";
+        // private const string LogoffPath = "/Logoff.aspx");
+        // private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
+        private const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
+        private const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
 
         private int _userId;
 
         public bool AvoidCaching { get; set; }
 
-        void ResetUserId()
+        private void ResetUserId()
         {
             this._userId = -1;
         }
 
         /// <summary>
-        /// The userID will be available only if the user is logged in.
+        /// Gets the userID will be available only if the user is logged in.
         /// After obtaining it for the first time, it will be cached until logout.
         /// </summary>
         public int UserId
@@ -85,6 +85,7 @@ namespace DNN.Integration.Test.Framework
         }
 
         public string UserName { get; private set; }
+
         public bool IsLoggedIn { get; private set; }
 
         public const string RqVerifTokenName = "__RequestVerificationToken";
@@ -95,6 +96,7 @@ namespace DNN.Integration.Test.Framework
         private string _currentTabId;
 
         public TimeSpan Timeout { get; set; }
+
         public Uri Domain { get; }
 
         private WebApiConnector(string siteUrl)
@@ -118,7 +120,8 @@ namespace DNN.Integration.Test.Framework
             if (!this.IsLoggedIn)
             {
                 Console.WriteLine(@"User not logged in yet");
-                throw new WebApiException(new HttpRequestException("User not logged in yet."),
+                throw new WebApiException(
+                    new HttpRequestException("User not logged in yet."),
                     new HttpResponseMessage(HttpStatusCode.Unauthorized));
             }
         }
@@ -144,7 +147,7 @@ namespace DNN.Integration.Test.Framework
                 try
                 {
                     var requestUriString = CombineUrlPath(this.Domain, LogoffPath);
-                    var httpWebRequest1 = (HttpWebRequest) WebRequest.Create(requestUriString);
+                    var httpWebRequest1 = (HttpWebRequest)WebRequest.Create(requestUriString);
                     httpWebRequest1.Method = "GET";
                     httpWebRequest1.KeepAlive = false;
                     httpWebRequest1.CookieContainer = this._sessionCookiesContainer;
@@ -168,14 +171,19 @@ namespace DNN.Integration.Test.Framework
                         this._inputFieldVerificationToken = cachedPage.VerificationToken;
                     }
                     else
+                    {
                         this._inputFieldVerificationToken = null;
+                    }
                 }
             }
         }
 
         public bool Login(string password)
         {
-            if (this.IsLoggedIn) return true;
+            if (this.IsLoggedIn)
+            {
+                return true;
+            }
 
             // This method uses multi-part parameters in the post body
             // the response is similar to this:
@@ -184,15 +192,15 @@ namespace DNN.Integration.Test.Framework
             const string fieldsPrefix = "dnn$ctr$Login$Login_DNN";
             var postData = new Dictionary<string, object>
                 {
-                    {fieldsPrefix + "$txtUsername", this.UserName},
-                    {fieldsPrefix + "$txtPassword", password},
-                    {"__EVENTTARGET", fieldsPrefix + "$cmdLogin"}, // most important field; button action
-                    {"__EVENTARGUMENT", ""}
+                    { fieldsPrefix + "$txtUsername", this.UserName },
+                    { fieldsPrefix + "$txtPassword", password },
+                    { "__EVENTTARGET", fieldsPrefix + "$cmdLogin" }, // most important field; button action
+                    { "__EVENTARGUMENT", string.Empty },
                 };
 
             var excludedInputPrefixes = new List<string>();
 
-            //CombineUrlPath(_domain, LoginPath);
+            // CombineUrlPath(_domain, LoginPath);
             using (var httpResponse2 = this.PostUserForm(LoginPath, postData, excludedInputPrefixes, false))
             {
                 if (httpResponse2 != null && httpResponse2.StatusCode < HttpStatusCode.BadRequest) // < 400
@@ -223,13 +231,17 @@ namespace DNN.Integration.Test.Framework
                 using (var rs = httpResponse.GetResponseStream())
                 {
                     if (rs != null && httpResponse.StatusCode == HttpStatusCode.OK)
+                    {
                         using (var sr = new StreamReader(rs, Encoding.UTF8))
                         {
                             var data = sr.ReadToEnd();
                             var token = GetVerificationToken(data);
                             if (!string.IsNullOrEmpty(token))
+                            {
                                 this._inputFieldVerificationToken = token;
+                            }
                         }
+                    }
                 }
             }
         }
@@ -257,6 +269,7 @@ namespace DNN.Integration.Test.Framework
                             this._cookieVerificationToken.HttpOnly = true;
                         }
                     }
+
                     break;
                 }
             }
@@ -292,12 +305,10 @@ namespace DNN.Integration.Test.Framework
             return string.Empty;
         }
 
-        #region file uploading
-
         public HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1)
         {
             this.EnsureLoggedIn();
-            
+
             var folder = "Users";
             if (userId > Null.NullInteger)
             {
@@ -326,7 +337,6 @@ namespace DNN.Integration.Test.Framework
         {
             using (var client = this.CreateHttpClient("/", true))
             {
-               
                 var headers = client.DefaultRequestHeaders;
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
@@ -353,7 +363,7 @@ namespace DNN.Integration.Test.Framework
                 {
                     new KeyValuePair<string, string>("\"folder\"", portalFolder),
                     new KeyValuePair<string, string>("\"filter\"", FileFilters),
-                    new KeyValuePair<string, string>("\"overwrite\"", "true")
+                    new KeyValuePair<string, string>("\"overwrite\"", "true"),
                 };
 
                 foreach (var keyValuePair in values)
@@ -366,7 +376,7 @@ namespace DNN.Integration.Test.Framework
                 fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {
                     FileName = fi.Name,
-                    Name = "\"postfile\""
+                    Name = "\"postfile\"",
                 };
 
                 content.Add(fileContent);
@@ -384,7 +394,7 @@ namespace DNN.Integration.Test.Framework
         {
             using (var clientHandler = new HttpClientHandler
             {
-                AllowAutoRedirect = false
+                AllowAutoRedirect = false,
             })
             using (var client = new HttpClient(clientHandler))
             {
@@ -409,14 +419,14 @@ namespace DNN.Integration.Test.Framework
                 {
                     Console.WriteLine(@"Cannot find '{0}' in the page input fields (B)", RqVerifTokenName);
                 }
-                
+
                 var content = new MultipartFormDataContent();
                 var fi = new FileInfo(fileName);
                 var fileContent = new ByteArrayContent(File.ReadAllBytes(fileName));
                 fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
                 {
                     Name = "\"files[]\"",
-                    FileName = "\"" + fi.Name + "\""
+                    FileName = "\"" + fi.Name + "\"",
                 };
                 fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
 
@@ -430,16 +440,14 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
-        #endregion
-
-
-        #region API requests / uploading content
-
-        public HttpResponseMessage PostJson(string relativeUrl,
+        public HttpResponseMessage PostJson(
+            string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
-            if(!ignoreLoggedIn)
+            if (!ignoreLoggedIn)
+            {
                 this.EnsureLoggedIn();
+            }
 
             using (var client = this.CreateHttpClient("/", true))
             {
@@ -471,11 +479,14 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
-        public HttpResponseMessage PutJson(string relativeUrl,
+        public HttpResponseMessage PutJson(
+            string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if (!ignoreLoggedIn)
+            {
                 this.EnsureLoggedIn();
+            }
 
             using (var client = this.CreateHttpClient("/", true))
             {
@@ -519,7 +530,7 @@ namespace DNN.Integration.Test.Framework
             var client = new HttpClient(clientHandler)
             {
                 BaseAddress = this.Domain,
-                Timeout = this.Timeout
+                Timeout = this.Timeout,
             };
 
             if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
@@ -588,18 +599,17 @@ namespace DNN.Integration.Test.Framework
             return cachedPage != null ? cachedPage.InputFields : new string[0];
         }
 
-        #endregion
-
-        #region Multipart Form Data Post
-
-        private static readonly Regex HtmlFormInuts = new Regex(@"<input .*?/>",
+        private static readonly Regex HtmlFormInuts = new Regex(
+            @"<input .*?/>",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         public HttpWebResponse PostUserForm(string relativeUrl, IDictionary<string, object> formFields,
             List<string> excludedInputPrefixes, bool checkUserLoggedIn = true, bool followRedirect = false)
         {
             if (checkUserLoggedIn)
+            {
                 this.EnsureLoggedIn();
+            }
 
             var clientHandler = new HttpClientHandler
             {
@@ -611,7 +621,7 @@ namespace DNN.Integration.Test.Framework
             using (var client = new HttpClient(clientHandler)
             {
                 BaseAddress = this.Domain,
-                Timeout = this.Timeout
+                Timeout = this.Timeout,
             })
             {
                 inputFields = this.GetPageInputFields(client, relativeUrl);
@@ -620,11 +630,12 @@ namespace DNN.Integration.Test.Framework
             var firstField = formFields.First().Key;
             if (!inputFields.Any(f => f.Contains(firstField)))
             {
-                // the form doesn't have the proper input fields 
+                // the form doesn't have the proper input fields
                 Console.WriteLine(
                     @"Either User '{0}' has no rights to post to this page {1} or " +
                     @"this page does not contain correct form ", this.UserName, relativeUrl);
-                //return null;
+
+                // return null;
             }
 
             foreach (var field in inputFields)
@@ -637,7 +648,7 @@ namespace DNN.Integration.Test.Framework
                     // but should work with XHTML file input fields; e.g.:
                     //      <input type="file" name="postfile" multiple="multiple" />
                     var text = field.Contains(" multiple") && !field.Contains(" multiple=")
-                        ? field.Replace(" multiple", "")
+                        ? field.Replace(" multiple", string.Empty)
                         : field;
 
                     xe = XElement.Parse(text);
@@ -651,9 +662,9 @@ namespace DNN.Integration.Test.Framework
                                 ? new XAttribute[0]
                                 : xe.Attributes().ToArray();
 
-                var inputType = attrs.FirstOrDefault(a => "type" == a.Name);
-                var inputName = attrs.FirstOrDefault(a => "name" == a.Name);
-                var inputValue = attrs.FirstOrDefault(a => "value" == a.Name);
+                var inputType = attrs.FirstOrDefault(a => a.Name == "type");
+                var inputName = attrs.FirstOrDefault(a => a.Name == "name");
+                var inputValue = attrs.FirstOrDefault(a => a.Name == "value");
 
                 if (inputType != null && inputName != null)
                 {
@@ -663,20 +674,28 @@ namespace DNN.Integration.Test.Framework
                             {
                                 if (!postParameters.ContainsKey(inputName.Value))
                                 {
-                                    var value = inputValue == null ? "" : inputValue.Value;
-                                    if (formFields.ContainsKey(inputName.Value)) 
+                                    var value = inputValue == null ? string.Empty : inputValue.Value;
+                                    if (formFields.ContainsKey(inputName.Value))
+                                    {
                                         value = formFields[inputName.Value].ToString();
+                                    }
+
                                     postParameters.Add(inputName.Value, value);
                                 }
                             }
+
                             break;
                         case "text":
                         case "checkbox":
                         case "radio":
                             if (formFields.ContainsKey(inputName.Value) &&
                                 !postParameters.ContainsKey(inputName.Value))
+                            {
                                 postParameters.Add(inputName.Value, formFields[inputName.Value]);
+                            }
+
                             break;
+
                             // other types as "submit", etc. are ignored/discarded
                     }
                 }
@@ -685,13 +704,15 @@ namespace DNN.Integration.Test.Framework
             foreach (var field in formFields)
             {
                 if (!postParameters.ContainsKey(field.Key))
+                {
                     postParameters.Add(field.Key, field.Value);
+                }
             }
 
             if (excludedInputPrefixes != null)
             {
                 var keys = postParameters.Keys.ToArray();
-                
+
                 var filteredKeys = from prefix in excludedInputPrefixes
                                    from key in keys
                                    where key.StartsWith(prefix)
@@ -714,7 +735,6 @@ namespace DNN.Integration.Test.Framework
 
         // ==============================================================================
         // Adapted from http://www.briangrinstead.com/blog/multipart-form-post-in-c#
-
         private static readonly Encoding Encoding = Encoding.UTF8;
 
         public HttpWebResponse MultipartFormDataPost(string relativeUrl, IDictionary<string, object> postParameters, IDictionary<string, string> headers = null, bool followRedirect = false)
@@ -755,7 +775,7 @@ namespace DNN.Integration.Test.Framework
                     request.Headers.Add(h.Key, h.Value);
                 }
             }
-       
+
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
             request.KeepAlive = true;
             request.ReadWriteTimeout = 90;
@@ -765,7 +785,7 @@ namespace DNN.Integration.Test.Framework
             // You could add authentication here as well if needed:
             // request.PreAuthenticate = true;
             // request.AuthenticationLevel = System.Net.Security.AuthenticationLevel.MutualAuthRequested;
-            // request.Headers.Add("Authorization", "Basic " + 
+            // request.Headers.Add("Authorization", "Basic " +
             //     Convert.ToBase64String(System.Text.Encoding.Default.GetBytes("username" + ":" + "password")));
 
             // Send the form data to the request.
@@ -786,7 +806,9 @@ namespace DNN.Integration.Test.Framework
                 // Thanks to feedback from commenters, add a CRLF to allow multiple parameters to be added.
                 // Skip it on the first parameter, add it to subsequent parameters.
                 if (needsClrf)
+                {
                     formDataStream.Write(Encoding.GetBytes("\r\n"), 0, Encoding.GetByteCount("\r\n"));
+                }
 
                 needsClrf = true;
 
@@ -796,7 +818,8 @@ namespace DNN.Integration.Test.Framework
                     var fileToUpload = value;
 
                     // Add just the first part of this param, since we will write the file data directly to the Stream
-                    var header = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
+                    var header = string.Format(
+                        "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"; filename=\"{2}\"\r\nContent-Type: {3}\r\n\r\n",
                         boundary,
                         param.Key,
                         fileToUpload.FileName ?? param.Key,
@@ -809,7 +832,8 @@ namespace DNN.Integration.Test.Framework
                 }
                 else
                 {
-                    var postData = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
+                    var postData = string.Format(
+                        "--{0}\r\nContent-Disposition: form-data; name=\"{1}\"\r\n\r\n{2}",
                         boundary,
                         param.Key,
                         param.Value);
@@ -827,7 +851,8 @@ namespace DNN.Integration.Test.Framework
             var len = formDataStream.Read(formData, 0, formData.Length);
             if (len != formDataStream.Length)
             {
-                Console.WriteLine(@"ERROR: not all form data was read from the stream. " +
+                Console.WriteLine(
+                    @"ERROR: not all form data was read from the stream. " +
                     @"Requested to read {0} bytes, but was read {1} bytes", formDataStream.Length, len);
             }
 
@@ -835,22 +860,28 @@ namespace DNN.Integration.Test.Framework
             return formData;
         }
 
-        #endregion
-    
         private static string CombineUrlPath(Uri domain, string path)
         {
-            if (path.StartsWith("http")) 
+            if (path.StartsWith("http"))
+            {
                 return path;
+            }
 
             var url = domain.AbsoluteUri;
             if (!url.EndsWith("/"))
+            {
                 url += "/";
+            }
 
             if (string.IsNullOrEmpty(path))
+            {
                 path = string.Empty;
+            }
 
             if (path.StartsWith("/"))
+            {
                 return url + path.Substring(1);
+            }
 
             return new Uri(url + path).AbsoluteUri;
         }
@@ -861,7 +892,7 @@ namespace DNN.Integration.Test.Framework
                              where p.GetValue(query, null) != null
                              select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(query, null).ToString());
 
-            return String.Join("&", properties.ToArray());
+            return string.Join("&", properties.ToArray());
         }
 
         public HttpResponseMessage GetContent(

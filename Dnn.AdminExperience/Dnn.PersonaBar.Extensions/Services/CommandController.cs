@@ -2,28 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Web.Api;
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Components;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using Dnn.PersonaBar.Prompt.Components.Repositories;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Entities.Portals;
-
 namespace Dnn.PersonaBar.Prompt.Services
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Prompt.Common;
+    using Dnn.PersonaBar.Prompt.Components;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using Dnn.PersonaBar.Prompt.Components.Repositories;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(MenuName = "Dnn.Prompt")]
     [RequireHost]
     public class CommandController : ControllerBase, IServiceRouteMapper

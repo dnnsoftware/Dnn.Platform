@@ -1,37 +1,32 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Modules.RazorHost
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
         private readonly INavigationManager _navigationManager;
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
@@ -58,17 +53,18 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string m_RazorScriptFile = Null.NullString;
                 var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-                if (! (string.IsNullOrEmpty(scriptFileSetting)))
+                if (! string.IsNullOrEmpty(scriptFileSetting))
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
+
                 return m_RazorScriptFile;
             }
         }
 
         private void Create()
         {
-            //Create new Folder
+            // Create new Folder
             string folderMapPath = this.Server.MapPath(string.Format("~/DesktopModules/RazorModules/{0}", this.txtFolder.Text));
             if (Directory.Exists(folderMapPath))
             {
@@ -77,11 +73,11 @@ namespace DotNetNuke.Modules.RazorHost
             }
             else
             {
-                //Create folder
+                // Create folder
                 Directory.CreateDirectory(folderMapPath);
             }
 
-            //Create new Module Control
+            // Create new Module Control
             string moduleControlMapPath = folderMapPath + "/" + this.ModuleControl;
             try
             {
@@ -98,7 +94,7 @@ namespace DotNetNuke.Modules.RazorHost
                 return;
             }
 
-            //Copy Script to new Folder
+            // Copy Script to new Folder
             string scriptSourceFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue));
             string scriptTargetFile = folderMapPath + "/" + this.scriptList.SelectedValue;
             try
@@ -112,40 +108,39 @@ namespace DotNetNuke.Modules.RazorHost
                 return;
             }
 
-            //Create new Manifest in target folder
-			string manifestMapPath = folderMapPath + "/" + this.ModuleControl.Replace(".ascx", ".dnn");
-			try
-			{
-				using (var manifestWriter = new StreamWriter(manifestMapPath))
-				{
-					string manifestTemplate = Localization.GetString("ManifestText.Text", this.LocalResourceFile);
-					string manifest = string.Format(manifestTemplate, this.txtName.Text, this.txtDescription.Text, this.txtFolder.Text, this.ModuleControl, this.scriptList.SelectedValue);
-					manifestWriter.Write(manifest);
-					manifestWriter.Flush();
-				}
-			}
-			catch (Exception ex)
-			{
-				Exceptions.LogException(ex);
-				UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ManifestCreationError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-				return;
-			}
+            // Create new Manifest in target folder
+            string manifestMapPath = folderMapPath + "/" + this.ModuleControl.Replace(".ascx", ".dnn");
+            try
+            {
+                using (var manifestWriter = new StreamWriter(manifestMapPath))
+                {
+                    string manifestTemplate = Localization.GetString("ManifestText.Text", this.LocalResourceFile);
+                    string manifest = string.Format(manifestTemplate, this.txtName.Text, this.txtDescription.Text, this.txtFolder.Text, this.ModuleControl, this.scriptList.SelectedValue);
+                    manifestWriter.Write(manifest);
+                    manifestWriter.Flush();
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ManifestCreationError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                return;
+            }
 
-            //Register Module
+            // Register Module
             ModuleDefinitionInfo moduleDefinition = this.ImportManifest(manifestMapPath);
 
-			//remove the manifest file
-	        try
-	        {
-				FileWrapper.Instance.Delete(manifestMapPath);
-	        }
-	        catch (Exception ex)
-	        {
-				Logger.Error(ex);
-	        }
+            // remove the manifest file
+            try
+            {
+                FileWrapper.Instance.Delete(manifestMapPath);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
-
-            //Optionally goto new Page
+            // Optionally goto new Page
             if (this.chkAddPage.Checked)
             {
                 string tabName = "Test " + this.txtName.Text + " Page";
@@ -154,7 +149,7 @@ namespace DotNetNuke.Modules.RazorHost
 
                 if (tabID == Null.NullInteger)
                 {
-                    //Create a new page
+                    // Create a new page
                     var newTab = new TabInfo();
                     newTab.TabName = "Test " + this.txtName.Text + " Page";
                     newTab.ParentId = Null.NullInteger;
@@ -184,7 +179,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
             else
             {
-                //Redirect to main extensions page
+                // Redirect to main extensions page
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
@@ -198,10 +193,10 @@ namespace DotNetNuke.Modules.RazorHost
 
                 if (_Installer.IsValid)
                 {
-                    //Reset Log
+                    // Reset Log
                     _Installer.InstallerInfo.Log.Logs.Clear();
 
-                    //Install
+                    // Install
                     _Installer.Install();
 
                     if (_Installer.IsValid)
@@ -244,12 +239,13 @@ namespace DotNetNuke.Modules.RazorHost
 
             foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
             {
-                string scriptPath = script.Replace(basePath, "");
+                string scriptPath = script.Replace(basePath, string.Empty);
                 var item = new ListItem(scriptPath, scriptPath);
-                if (! (string.IsNullOrEmpty(scriptFileSetting)) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
+                if (! string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
                 {
                     item.Selected = true;
                 }
+
                 this.scriptList.Items.Add(item);
             }
         }
@@ -277,12 +273,12 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnLoad(e);
 
-            if (! this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+            if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
             }
 
-            if (! this.Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
                 this.LoadScripts();
                 this.DisplayFile();
@@ -295,7 +291,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -305,7 +301,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                if (! this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+                if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
                     this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
                 }
@@ -315,7 +311,7 @@ namespace DotNetNuke.Modules.RazorHost
                     this.Create();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

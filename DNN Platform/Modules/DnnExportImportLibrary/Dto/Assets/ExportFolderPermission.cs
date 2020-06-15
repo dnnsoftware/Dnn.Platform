@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.ExportImport.Dto.Assets
 {
-    public class ExportFolderPermission:BasicExportImportDto
+    using System;
+
+    public class ExportFolderPermission : BasicExportImportDto
     {
         public int FolderPermissionId { get; set; }
 
@@ -38,13 +38,14 @@ namespace Dnn.ExportImport.Dto.Assets
 
         public int? CreatedByUserId { get; set; }
 
-        public string CreatedByUserName { get; set; } //This could be used to find "CreatedByUserId"
+        public string CreatedByUserName { get; set; } // This could be used to find "CreatedByUserId"
+
         public DateTime? CreatedOnDate { get; set; }
 
         public int? LastModifiedByUserId { get; set; }
 
-        public string LastModifiedByUserName { get; set; } //This could be used to find "LastModifiedByUserId"
-        public DateTime? LastModifiedOnDate { get; set; }
+        public string LastModifiedByUserName { get; set; } // This could be used to find "LastModifiedByUserId"
 
+        public DateTime? LastModifiedOnDate { get; set; }
     }
 }

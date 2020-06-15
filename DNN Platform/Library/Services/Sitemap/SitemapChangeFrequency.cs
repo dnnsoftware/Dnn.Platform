@@ -12,6 +12,6 @@ namespace DotNetNuke.Services.Sitemap
         Weekly,
         Monthly,
         Yearly,
-        Never
+        Never,
     }
 }

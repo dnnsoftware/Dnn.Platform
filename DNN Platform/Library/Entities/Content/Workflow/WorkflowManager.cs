@@ -2,27 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class WorkflowManager : ServiceLocator<IWorkflowManager, WorkflowManager>, IWorkflowManager
     {
-        #region Members
         private readonly DataProvider _dataProvider;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IWorkflowStateRepository _workflowStateRepository;
         private readonly ISystemWorkflowManager _systemWorkflowManager;
-        #endregion
 
-        #region Constructor
         public WorkflowManager()
         {
             this._dataProvider = DataProvider.Instance();
@@ -30,9 +28,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository = WorkflowStateRepository.Instance;
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
-        #endregion
-
-        #region Public Methods
 
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
@@ -67,6 +62,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 return null;
             }
+
             var state = WorkflowStateRepository.Instance.GetWorkflowStateByID(contentItem.StateID);
             return state == null ? null : this.GetWorkflow(state.WorkflowID);
         }
@@ -92,7 +88,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             workflow.States = new List<WorkflowState>
                               {
                                   firstDefaultState,
-                                  lastDefaultState
+                                  lastDefaultState,
                               };
         }
 
@@ -110,13 +106,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return this._dataProvider.GetContentWorkflowUsageCount(workflowId);
         }
-        #endregion
 
-        #region Service Locator
         protected override System.Func<IWorkflowManager> GetFactory()
         {
             return () => new WorkflowManager();
         }
-        #endregion
     }
 }

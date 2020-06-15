@@ -2,41 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Pages.Components;
-using Dnn.PersonaBar.Pages.Components.Dto;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using Dnn.PersonaBar.Themes.Components;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.OutputCache;
-using DotNetNuke.Web.Api;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.DTO.Tabs;
-using Dnn.PersonaBar.Pages.Components.Security;
-using Dnn.PersonaBar.Themes.Components.DTO;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Notifications;
-using Localization = Dnn.PersonaBar.Pages.Components.Localization;
-using DotNetNuke.Abstractions;
-
 namespace Dnn.PersonaBar.Pages.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Pages.Components;
+    using Dnn.PersonaBar.Pages.Components.Dto;
+    using Dnn.PersonaBar.Pages.Components.Exceptions;
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using Dnn.PersonaBar.Themes.Components;
+    using Dnn.PersonaBar.Themes.Components.DTO;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.OutputCache;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
+    using Localization = Dnn.PersonaBar.Pages.Components.Localization;
+
     [MenuPermission(MenuName = "Dnn.Pages")]
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController

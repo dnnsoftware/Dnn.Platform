@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+
     [Serializable]
     public class FolderPermissionCollection : CollectionBase
     {
@@ -46,8 +41,9 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (FolderPermissionInfo) this.List[index];
+                return (FolderPermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;
@@ -77,6 +73,7 @@ namespace DotNetNuke.Security.Permissions
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
                     id = this.Add(value);
@@ -145,9 +142,9 @@ namespace DotNetNuke.Security.Permissions
                     break;
                 }
             }
+
             return result;
         }
-
 
         public bool CompareTo(FolderPermissionCollection objFolderPermissionCollection)
         {
@@ -155,6 +152,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             this.InnerList.Sort(new CompareFolderPermissions());
             objFolderPermissionCollection.InnerList.Sort(new CompareFolderPermissions());
             for (int i = 0; i <= this.Count - 1; i++)
@@ -164,6 +162,7 @@ namespace DotNetNuke.Security.Permissions
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -174,6 +173,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 list.Add(permission);
             }
+
             return list;
         }
 

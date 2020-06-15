@@ -2,26 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Configuration;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using System.Web;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using Newtonsoft.Json;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Tests.Jwt
 {
+    using System;
+    using System.Configuration;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+
     [TestFixture]
     public class JwtAuthTest : IntegrationTestBase
     {
-        #region private data
-
         private readonly string _hostName;
         private readonly string _hostPass;
         private readonly HttpClient _httpClient;
@@ -58,17 +57,15 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                {
                     DatabaseHelper.ExecuteNonQuery("TRUNCATE TABLE {objectQualifier}JsonWebTokens");
+                }
             }
             catch (Exception)
             {
                 // ignored
             }
         }
-
-        #endregion
-
-        #region tests
 
         [Test]
         public void InvalidUserLoginShouldFail()
@@ -349,7 +346,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatingSuccessWhenUsingExistingMoniker()
         {
-            //Arrange
+            // Arrange
             const string query1 =
                  @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
@@ -366,7 +363,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             this.SetAuthHeaderToken(token.AccessToken);
             this.SetMonikerHeader("myjournal");
-            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
+            var postItem = new { ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1 };
             var result = this._httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
@@ -377,7 +374,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatingFailureWhenUsingNonExistingMoniker()
         {
-            //Arrange
+            // Arrange
             const string query1 =
                  @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
@@ -393,7 +390,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             this.SetAuthHeaderToken(token.AccessToken);
             this.SetMonikerHeader("myjournal");
-            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
+            var postItem = new { ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1 };
             var result = this._httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
@@ -409,10 +406,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             Assert.Fail();
         }
          */
-
-        #endregion
-
-        #region helpers
 
         private LoginResultData GetAuthorizationTokenFor(string uname, string upass)
         {
@@ -463,13 +456,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             // fix Base64 string padding
             var mod = b64Str.Length % 4;
-            if (mod != 0) b64Str += new string('=', 4 - mod);
+            if (mod != 0)
+            {
+                b64Str += new string('=', 4 - mod);
+            }
+
             return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
-
-        #endregion
-
-        #region supporting classes
 
         [JsonObject]
         public class LoginResultData
@@ -486,7 +479,5 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             [JsonProperty("renewalToken")]
             public string RenewalToken { get; set; }
         }
-
-        #endregion
     }
 }

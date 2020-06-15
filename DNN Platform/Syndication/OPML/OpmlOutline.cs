@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Xml;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+
     /// <summary>
-    ///   Class for managing an OPML feed outline
+    ///   Class for managing an OPML feed outline.
     /// </summary>
     public class OpmlOutline
     {
@@ -36,6 +31,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._description;
             }
+
             set
             {
                 this._description = value;
@@ -48,6 +44,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._title;
             }
+
             set
             {
                 this._title = value;
@@ -60,6 +57,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._type;
             }
+
             set
             {
                 this._type = value;
@@ -72,6 +70,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._text;
             }
+
             set
             {
                 this._text = value;
@@ -90,6 +89,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._created;
             }
+
             set
             {
                 this._created = value;
@@ -106,6 +106,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._category;
             }
+
             set
             {
                 this._category = value;
@@ -118,6 +119,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._language;
             }
+
             set
             {
                 this._language = value;
@@ -132,7 +134,6 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-
         public OpmlOutlines Outlines { get; set; }
 
         public XmlElement ToXml
@@ -142,32 +143,32 @@ namespace DotNetNuke.Services.Syndication
                 var opmlDoc = new XmlDocument { XmlResolver = null };
                 XmlElement outlineNode = opmlDoc.CreateElement("outline");
 
-                if (!String.IsNullOrEmpty(this.Title))
+                if (!string.IsNullOrEmpty(this.Title))
                 {
                     outlineNode.SetAttribute("title", this.Title);
                 }
 
-                if (!String.IsNullOrEmpty(this.Description))
+                if (!string.IsNullOrEmpty(this.Description))
                 {
                     outlineNode.SetAttribute("description", this.Description);
                 }
 
-                if (!String.IsNullOrEmpty(this.Text))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     outlineNode.SetAttribute("text", this.Text);
                 }
 
-                if (!String.IsNullOrEmpty(this.Type))
+                if (!string.IsNullOrEmpty(this.Type))
                 {
                     outlineNode.SetAttribute("type", this.Type);
                 }
 
-                if (!String.IsNullOrEmpty(this.Language))
+                if (!string.IsNullOrEmpty(this.Language))
                 {
                     outlineNode.SetAttribute("language", this.Language);
                 }
 
-                if (!String.IsNullOrEmpty(this.Category))
+                if (!string.IsNullOrEmpty(this.Category))
                 {
                     outlineNode.SetAttribute("category", this.Category);
                 }
@@ -192,8 +193,8 @@ namespace DotNetNuke.Services.Syndication
                     outlineNode.SetAttribute("url", this.Url.ToString());
                 }
 
-                outlineNode.SetAttribute("isComment", (this.IsComment ? "true" : "false"));
-                outlineNode.SetAttribute("isBreakpoint", (this.IsBreakpoint ? "true" : "false"));
+                outlineNode.SetAttribute("isComment", this.IsComment ? "true" : "false");
+                outlineNode.SetAttribute("isBreakpoint", this.IsBreakpoint ? "true" : "false");
 
                 foreach (OpmlOutline childOutline in this.Outlines)
                 {

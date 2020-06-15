@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections;
+
     public static class DictionaryExtensions
     {
         public static T GetValue<T>(this IDictionary bag, object key, T defaultValue)

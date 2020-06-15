@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
-using Dnn.PersonaBar.Pages.Components.Dto;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.UI;
-
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Pages.Components.Dto;
+    using Dnn.PersonaBar.Pages.Components.Exceptions;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.UI;
+
     public class TemplateController : ServiceLocator<ITemplateController, TemplateController>, ITemplateController
     {
         private const string TemplatesFolderPath = "Templates/";

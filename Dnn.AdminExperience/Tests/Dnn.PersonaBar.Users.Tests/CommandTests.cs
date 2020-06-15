@@ -2,24 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Linq;
-using NUnit.Framework;
-using Dnn.PersonaBar.Library.Prompt;
-using DotNetNuke.Entities.Portals;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
-    public abstract class CommandTests<T> where T : ConsoleCommandBase
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using NUnit.Framework;
+
+    public abstract class CommandTests<T>
+        where T : ConsoleCommandBase
     {
         protected abstract string CommandName { get; }
+
         protected abstract T CreateCommand();
-        protected abstract void ChildSetup();        
+
+        protected abstract void ChildSetup();
 
         protected int testPortalId { get; set; }
+
         protected PortalSettings portalSettings { get; set; }
-        protected ConsoleErrorResultModel errorResultModel { get; set; }        
+
+        protected ConsoleErrorResultModel errorResultModel { get; set; }
 
         [SetUp]
         protected void Setup()
@@ -46,7 +52,7 @@ namespace Dnn.PersonaBar.Users.Tests
         protected ConsoleResultModel RunCommand(params string[] args)
         {
             var command = this.CreateCommand();
-            command.Initialize((new[] { this.CommandName }.Concat(args)).ToArray(), this.portalSettings, null, -1);
+            command.Initialize(new[] { this.CommandName }.Concat(args).ToArray(), this.portalSettings, null, -1);
             return command.Run();
         }
     }

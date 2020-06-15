@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class DnnDropDownListOptions
     {
-
         [DataMember(Name = "selectedItemCss")]
         public string SelectedItemCss;
 
@@ -46,10 +45,9 @@ namespace DotNetNuke.Web.UI.WebControls
         public DnnDropDownListOptions()
         {
             this.SelectedItemCss = "selected-item";
-            this.SelectItemDefaultText = "";
+            this.SelectItemDefaultText = string.Empty;
             this.Services = new ItemListServicesOptions();
             this.ItemList = new ItemListOptions();
         }
-
     }
 }

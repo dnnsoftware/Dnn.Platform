@@ -2,38 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel;
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Log.EventLog;
+
     public partial class PortalAliasController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.DeletePortalAlias. Scheduled removal in v10.0.0.")]
         public void DeletePortalAlias(int portalAliasId)
         {
-
             DataProvider.Instance().DeletePortalAlias(portalAliasId);
 
-            EventLogController.Instance.AddLog("PortalAliasID",
-                               portalAliasId.ToString(),
-                               PortalController.Instance.GetCurrentPortalSettings(),
-                               UserController.Instance.GetCurrentUserInfo().UserID,
-                               EventLogController.EventLogType.PORTALALIAS_DELETED);
+            EventLogController.Instance.AddLog(
+                "PortalAliasID",
+                portalAliasId.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PORTALALIAS_DELETED);
 
             DataCache.RemoveCache(DataCache.PortalAliasCacheKey);
         }

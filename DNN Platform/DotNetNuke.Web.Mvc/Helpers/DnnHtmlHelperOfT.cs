@@ -2,21 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Web.Mvc;
-using System.Web.Routing;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     public class DnnHtmlHelper<TModel> : DnnHtmlHelper
     {
-        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
 
         public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer, RouteCollection routeCollection)
             : base(new HtmlHelper<TModel>(viewContext, viewDataContainer, routeCollection))
- 
         {
         }
 

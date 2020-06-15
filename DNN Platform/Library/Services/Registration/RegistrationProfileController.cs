@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Framework;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Profile;
-using System.Linq;
-
 namespace DotNetNuke.Services.Registration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Framework;
+
     public class RegistrationProfileController : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
     {
         public IEnumerable<string> Search(int portalId, string searchTerm)
@@ -35,11 +36,11 @@ namespace DotNetNuke.Services.Registration
             this.AddProperty(results, "PasswordQuestion", searchTerm);
             this.AddProperty(results, "PasswordAnswer", searchTerm);
 
-            return results;            
+            return results;
         }
 
         private void AddProperty(List<string> results, string field, string searchTerm)
-        {         
+        {
             if (field.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant().Trim()))
             {
                 results.Add(field);

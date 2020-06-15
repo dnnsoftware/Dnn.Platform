@@ -2,32 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Controllers;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Controllers;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Localization;
+    using NUnit.Framework;
+
     public class FriendsTests : IntegrationTestBase
     {
-
         private const int PortalId = 0;
         private const string FirstLanguage = "en-US";
         private const string SecondLanguage = "fr-FR";
@@ -40,16 +40,15 @@ namespace DotNetNuke.Tests.Integration.Tests
             ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
             ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
             {
-                {"name", "SqlDataProvider"},
-                {"type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
-                {"connectionStringName", "SiteSqlServer"},
-                {"objectQualifier", ConfigurationManager.AppSettings["objectQualifier"]},
-                {"databaseOwner", "dbo."}
+                { "name", "SqlDataProvider" },
+                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
+                { "connectionStringName", "SiteSqlServer" },
+                { "objectQualifier", ConfigurationManager.AppSettings["objectQualifier"] },
+                { "databaseOwner", "dbo." },
             });
             ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));
-
         }
 
         [Test]
@@ -68,12 +67,12 @@ namespace DotNetNuke.Tests.Integration.Tests
             var connector = WebApiTestHelper.LoginUser(userName1);
             connector.PostJson("API/MemberDirectory/MemberDirectory/AddFriend", new
             {
-                friendId = userId2
+                friendId = userId2,
             }, this.GetRequestHeaders());
 
             var notificationTitle = this.GetNotificationTitle(userId1);
 
-            //the notification should use french language: testuser8836 veut être amis avec vous
+            // the notification should use french language: testuser8836 veut être amis avec vous
             Assert.AreEqual($"{userName1} veut être amis", notificationTitle);
         }
 
@@ -92,7 +91,6 @@ namespace DotNetNuke.Tests.Integration.Tests
         {
             if (!this.LanguageEnabled(PortalId, SecondLanguage))
             {
-
             }
         }
 
@@ -102,11 +100,11 @@ namespace DotNetNuke.Tests.Integration.Tests
             if (!portalLanguages.ContainsKey(secondLanguage))
             {
                 var connector = WebApiTestHelper.LoginHost();
-                connector.PostJson($"API/PersonaBar/Extensions/ParseLanguagePackage?cultureCode={secondLanguage}", new {});
+                connector.PostJson($"API/PersonaBar/Extensions/ParseLanguagePackage?cultureCode={secondLanguage}", new { });
                 connector.PostJson($"API/PersonaBar/Extensions/InstallAvailablePackage", new
                 {
                     PackageType = "CoreLanguagePack",
-                    FileName = "installlanguage.resources"
+                    FileName = "installlanguage.resources",
                 });
 
                 var language = CBO.FillDictionary<string, Locale>("CultureCode", DataProvider.Instance().GetLanguages())[secondLanguage];
@@ -117,9 +115,10 @@ namespace DotNetNuke.Tests.Integration.Tests
                     Code = language.Code,
                     Enabled = true,
                     IsDefault = false,
-                    Roles = "Administrators"
+                    Roles = "Administrators",
                 });
             }
+
             return false;
         }
 

@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Framework;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public class DnnHtmlHelper
     {
-        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHtmlHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
@@ -42,7 +43,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public MvcHtmlString AntiForgeryToken()
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            return new MvcHtmlString(String.Empty);
+            return new MvcHtmlString(string.Empty);
         }
 
         internal HtmlHelper HtmlHelper { get; set; }
@@ -88,6 +89,5 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public void EnableUnobtrusiveJavaScript() => this.HtmlHelper.EnableUnobtrusiveJavaScript();
 
         public void EnableUnobtrusiveJavaScript(bool enabled) => this.HtmlHelper.EnableUnobtrusiveJavaScript(enabled);
-
     }
 }

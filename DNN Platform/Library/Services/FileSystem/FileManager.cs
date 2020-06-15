@@ -2,42 +2,45 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem.EventArgs;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Log.EventLog;
-using ICSharpCode.SharpZipLib.Zip;
-using System.Drawing.Imaging;
-using System.Text;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem.EventArgs;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Log.EventLog;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
     /// Exposes methods to manage files.
     /// </summary>
@@ -45,22 +48,12 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
-        #region Properties
-
         public virtual IDictionary<string, string> ContentTypes
         {
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
-        #endregion
-
-        #region Constants
-
         private const int BufferSize = 4096;
-
-        #endregion
-
-        #region Private Methods
 
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
@@ -81,7 +74,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
@@ -95,18 +88,17 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
-        #region On File Events
         private void OnFileDeleted(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileDeleted(new FileDeletedEventArgs
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                IsCascadeDeleting = false
+                IsCascadeDeleting = false,
             });
         }
 
@@ -116,7 +108,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                OldFileName = oldFileName
+                OldFileName = oldFileName,
             });
         }
 
@@ -126,7 +118,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                OldFilePath = oldFilePath
+                OldFilePath = oldFilePath,
             });
         }
 
@@ -135,7 +127,7 @@ namespace DotNetNuke.Services.FileSystem
             EventManager.Instance.OnFileOverwritten(new FileChangedEventArgs
             {
                 FileInfo = fileInfo,
-                UserId = userId
+                UserId = userId,
             });
         }
 
@@ -144,7 +136,7 @@ namespace DotNetNuke.Services.FileSystem
             EventManager.Instance.OnFileMetadataChanged(new FileChangedEventArgs
             {
                 FileInfo = fileInfo,
-                UserId = userId
+                UserId = userId,
             });
         }
 
@@ -154,10 +146,9 @@ namespace DotNetNuke.Services.FileSystem
             {
                 FileInfo = fileInfo,
                 UserId = userId,
-                FolderInfo = folderInfo
+                FolderInfo = folderInfo,
             });
         }
-        #endregion
 
         /// <summary>
         /// Rotate/Flip the image as per the metadata and reset the metadata.
@@ -169,13 +160,22 @@ namespace DotNetNuke.Services.FileSystem
             {
                 using (var image = this.GetImageFromStream(content))
                 {
-                    if (!image.PropertyIdList.Any(x => x == 274)) return;
+                    if (!image.PropertyIdList.Any(x => x == 274))
+                    {
+                        return;
+                    }
 
-                    var orientation = image.GetPropertyItem(274); //Find rotation/flip meta property
-                    if (orientation == null) return;
+                    var orientation = image.GetPropertyItem(274); // Find rotation/flip meta property
+                    if (orientation == null)
+                    {
+                        return;
+                    }
 
                     var flip = OrientationToFlipType(orientation.Value[0].ToString());
-                    if (flip == RotateFlipType.RotateNoneFlipNone) return;//No rotation or flip required
+                    if (flip == RotateFlipType.RotateNoneFlipNone)
+                    {
+                        return; // No rotation or flip required
+                    }
 
                     image.RotateFlip(flip);
                     var newOrientation = new byte[2];
@@ -191,29 +191,59 @@ namespace DotNetNuke.Services.FileSystem
                 Logger.Error(ex);
             }
         }
+
         private static ImageFormat GetImageFormat(Image img)
         {
             if (img.RawFormat.Equals(ImageFormat.Jpeg))
+            {
                 return ImageFormat.Jpeg;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Bmp))
+            {
                 return ImageFormat.Bmp;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Png))
+            {
                 return ImageFormat.Png;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Emf))
+            {
                 return ImageFormat.Emf;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Exif))
+            {
                 return ImageFormat.Exif;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Gif))
+            {
                 return ImageFormat.Gif;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Icon))
+            {
                 return ImageFormat.Icon;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
+            {
                 return ImageFormat.Jpeg;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Tiff))
+            {
                 return ImageFormat.Tiff;
+            }
             else
+            {
                 return ImageFormat.Wmf;
+            }
         }
+
         private static Stream ToStream(Image image, ImageFormat formaw)
         {
             var stream = new MemoryStream();
@@ -259,6 +289,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         return Host.AllowedExtensionWhitelist;
                     }
+
                     if (!user.IsAdmin)
                     {
                         var settings = PortalSettings.Current;
@@ -268,13 +299,10 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                 }
+
                 return Host.AllowedExtensionWhitelist;
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds a file to the specified folder.
@@ -285,7 +313,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
         {
-
             return this.AddFile(folder, fileName, fileContent, true, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
         }
 
@@ -331,7 +358,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
         /// <param name="contentType">The content type of the file.</param>
-        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <param name="createdByUserID">ID of the user that creates the file.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder, fileName or fileContent are null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.InvalidFileExtensionException">Thrown when the extension of the specified file is not allowed.</exception>
@@ -351,9 +378,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="fileContent">The content of the file.</param>
         /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
-        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
+        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored.</param>
         /// <param name="contentType">The content type of the file.</param>
-        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <param name="createdByUserID">ID of the user that creates the file.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder, fileName or fileContent are null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.InvalidFileExtensionException">Thrown when the extension of the specified file is not allowed.</exception>
@@ -367,7 +394,7 @@ namespace DotNetNuke.Services.FileSystem
 
             this.CheckFileAddingRestrictions(folder, fileName, checkPermissions, ignoreWhiteList);
 
-            //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
+            // DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!this.IsAllowedExtension(fileName) && ignoreWhiteList)
             {
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
@@ -395,7 +422,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 PortalId = folder.PortalID,
                 FileName = fileName,
-                Extension = (!String.IsNullOrEmpty(extension)) ? extension.Replace(".", "") : String.Empty,
+                Extension = (!string.IsNullOrEmpty(extension)) ? extension.Replace(".", string.Empty) : string.Empty,
                 Width = Null.NullInteger,
                 Height = Null.NullInteger,
                 ContentType = contentType,
@@ -407,7 +434,7 @@ namespace DotNetNuke.Services.FileSystem
                 EnablePublishPeriod = false,
                 ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
                 Title = oldFile != null ? oldFile.Title : Null.NullString,
-                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : String.Empty
+                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : string.Empty,
             };
 
             try
@@ -443,18 +470,21 @@ namespace DotNetNuke.Services.FileSystem
                             }
                             else
                             {
-                                //File Events for updating will be not fired. Only events for adding nust be fired
+                                // File Events for updating will be not fired. Only events for adding nust be fired
                                 this.UpdateFile(file, true, false);
                             }
+
                             contentFileName = this.ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
                         else
                         {
                             contentFileName = this.UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
-                            //This case will be to overwrite an existing file or initial file workflow
+
+                            // This case will be to overwrite an existing file or initial file workflow
                             this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
+
                     // Versioning
                     else
                     {
@@ -471,8 +501,8 @@ namespace DotNetNuke.Services.FileSystem
 
                 try
                 {
-                    //add file into database first if folder provider is default providers
-                    //add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+                    // add file into database first if folder provider is default providers
+                    // add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
                     if (isDatabaseProvider)
                     {
                         if (folderWorkflow == null || !fileExists)
@@ -526,14 +556,15 @@ namespace DotNetNuke.Services.FileSystem
                     }
 
                     throw new FolderProviderException(
-                        Localization.Localization.GetExceptionMessage("AddFileUnderlyingSystemError",
-                                                                      "The underlying system threw an exception. The file has not been added."),
-                                                                      ex);
+                        Localization.GetExceptionMessage(
+                            "AddFileUnderlyingSystemError",
+                            "The underlying system threw an exception. The file has not been added."),
+                        ex);
                 }
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
                 this.ClearFolderCache(folder.PortalID);
-                var addedFile = this.GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
+                var addedFile = this.GetFile(file.FileId, true); // The file could be pending to be approved, but it should be returned
 
                 this.NotifyFileAddingEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
 
@@ -553,7 +584,8 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (checkPermissions && !FolderPermissionController.Instance.CanAddFolder(folder))
             {
-                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("AddFilePermissionsNotMet",
+                throw new PermissionsNotMetException(Localization.GetExceptionMessage(
+                    "AddFilePermissionsNotMet",
                     "Permissions are not met. The file has not been added."));
             }
 
@@ -561,7 +593,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFileExtensionException(
                     string.Format(
-                        Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed",
+                        Localization.GetExceptionMessage(
+                            "AddFileExtensionNotAllowed",
                             "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(fileName)));
             }
 
@@ -569,7 +602,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 throw new InvalidFilenameException(
                     string.Format(
-                        Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed",
+                        Localization.GetExceptionMessage(
+                            "AddFilenameNotAllowed",
                             "The file name '{0}' is not allowed. The file has not been added."), fileName));
             }
         }
@@ -640,22 +674,24 @@ namespace DotNetNuke.Services.FileSystem
             if (!PortalController.Instance.HasSpaceAvailable(folder.PortalID, fileContent.Length))
             {
                 throw new NoSpaceAvailableException(
-                    Localization.Localization.GetExceptionMessage("AddFileNoSpaceAvailable",
-                                                                  "The portal has no space available to store the specified file. The file has not been added."));
+                    Localization.GetExceptionMessage(
+                        "AddFileNoSpaceAvailable",
+                        "The portal has no space available to store the specified file. The file has not been added."));
             }
 
-            //Publish Period
+            // Publish Period
             if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserId))
             {
                 throw new FileLockedException(
-                                Localization.Localization.GetExceptionMessage("FileLockedOutOfPublishPeriodError",
-                                                                                "File locked. The file cannot be updated because it is out of Publish Period"));
+                                Localization.GetExceptionMessage(
+                                    "FileLockedOutOfPublishPeriodError",
+                                    "File locked. The file cannot be updated because it is out of Publish Period"));
             }
 
             if (!FileSecurityController.Instance.Validate(fileName, fileContent))
             {
                 var defaultMessage = "The content of '{0}' is not valid. The file has not been added.";
-                var errorMessage = Localization.Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
+                var errorMessage = Localization.GetExceptionMessage("AddFileInvalidContent", defaultMessage);
                 throw new InvalidFileContentException(string.Format(errorMessage, fileName));
             }
         }
@@ -668,14 +704,15 @@ namespace DotNetNuke.Services.FileSystem
             }
             else
             {
-                //File Events for updating will not be fired. Only events for adding nust be fired
+                // File Events for updating will not be fired. Only events for adding nust be fired
                 this.UpdateFile(file, true, false);
             }
+
             if (folderWorkflow != null && this.StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
-                if (!fileExists) //if file exists it could have been published. So We don't have to update the field
+                if (!fileExists) // if file exists it could have been published. So We don't have to update the field
                 {
-                    //Maybe here we can set HasBeenPublished as 0
+                    // Maybe here we can set HasBeenPublished as 0
                     DataProvider.Instance().SetFileHasBeenPublished(file.FileId, false);
                 }
             }
@@ -683,26 +720,27 @@ namespace DotNetNuke.Services.FileSystem
 
         private void AddFile(IFileInfo file, int createdByUserID)
         {
-            file.FileId = DataProvider.Instance().AddFile(file.PortalId,
-                                                    file.UniqueId,
-                                                    file.VersionGuid,
-                                                    file.FileName,
-                                                    file.Extension,
-                                                    file.Size,
-                                                    file.Width,
-                                                    file.Height,
-                                                    file.ContentType,
-                                                    file.Folder,
-                                                    file.FolderId,
-                                                    createdByUserID,
-                                                    file.SHA1Hash,
-                                                    file.LastModificationTime,
-                                                    file.Title,
-                                                    file.Description,
-                                                    file.StartDate,
-                                                    file.EndDate,
-                                                    file.EnablePublishPeriod,
-                                                    file.ContentItemID);
+            file.FileId = DataProvider.Instance().AddFile(
+                file.PortalId,
+                file.UniqueId,
+                file.VersionGuid,
+                file.FileName,
+                file.Extension,
+                file.Size,
+                file.Width,
+                file.Height,
+                file.ContentType,
+                file.Folder,
+                file.FolderId,
+                createdByUserID,
+                file.SHA1Hash,
+                file.LastModificationTime,
+                file.Title,
+                file.Description,
+                file.StartDate,
+                file.EndDate,
+                file.EnablePublishPeriod,
+                file.ContentItemID);
         }
 
         private string ProcessVersioning(IFolderInfo folder, IFileInfo oldFile, IFileInfo file, int createdByUserID)
@@ -711,6 +749,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return FileVersionController.Instance.AddFileVersion(oldFile, createdByUserID);
             }
+
             return file.FileName;
         }
 
@@ -723,7 +762,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the copied file.</returns>
         public virtual IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
@@ -731,19 +769,18 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
                 {
-                    throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
+                    throw new PermissionsNotMetException(Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
                 }
 
                 if (!PortalController.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
                 {
-                    throw new NoSpaceAvailableException(Localization.Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
+                    throw new NoSpaceAvailableException(Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
                 }
 
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
                 try
                 {
-
-                    //check for existing file
+                    // check for existing file
                     var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                     if (existingFile != null)
                     {
@@ -756,7 +793,7 @@ namespace DotNetNuke.Services.FileSystem
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    throw new FolderProviderException(Localization.Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
+                    throw new FolderProviderException(Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
                 }
 
                 // copy Content Item
@@ -794,7 +831,7 @@ namespace DotNetNuke.Services.FileSystem
 
             using (var fileContent = this.GetFileContent(file))
             {
-                //check for existing file
+                // check for existing file
                 var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                 if (existingFile != null)
                 {
@@ -816,6 +853,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             FileDeletionController.Instance.DeleteFile(file);
             this.ClearFolderCache(file.PortalId);
+
             // Notify File Delete Event
             this.OnFileDeleted(file, this.GetCurrentUserID());
         }
@@ -827,7 +865,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when files is null.</exception>
         public virtual void DeleteFiles(IEnumerable<IFileInfo> files)
         {
-
             Requires.NotNull("files", files);
 
             foreach (var file in files)
@@ -855,14 +892,13 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder where to check the existence of the file.</param>
         /// <param name="fileName">The file name to check the existence of.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>A bool value indicating whether the file exists or not in the specified folder.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
         /// <exception cref="System.ArgumentException">Thrown when fileName is null or empty.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public virtual bool FileExists(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles)
         {
-
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("fileName", fileName);
 
@@ -878,7 +914,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
 
             return existsFile;
@@ -891,7 +927,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The Content Type for the specified extension.</returns>
         public virtual string GetContentType(string extension)
         {
-
             return FileContentTypeManager.Instance.GetContentType(extension);
         }
 
@@ -909,7 +944,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the file metadata for the specified file.
         /// </summary>
         /// <param name="fileID">The file identifier.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int fileID, bool retrieveUnpublishedFiles)
         {
@@ -929,6 +964,7 @@ namespace DotNetNuke.Services.FileSystem
                     DataCache.SetCache(strCacheKey, file, TimeSpan.FromMinutes(intCacheTimeout));
                 }
             }
+
             return (IFileInfo)file;
         }
 
@@ -948,11 +984,10 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder where the file is stored.</param>
         /// <param name="fileName">The name of the file.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles)
         {
-
             Requires.NotNullOrEmpty("fileName", fileName);
             Requires.NotNull("folder", folder);
 
@@ -962,7 +997,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the file metadata for the specified file.
         /// </summary>
-        /// <param name="portalId">The portal ID or Null.NullInteger for the Host</param>
+        /// <param name="portalId">The portal ID or Null.NullInteger for the Host.</param>
         /// <param name="relativePath">Relative path to the file.</param>
         /// <remarks>Host and portal settings commonly return a relative path to a file.  This method uses that relative path to fetch file metadata.</remarks>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
@@ -974,17 +1009,16 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the file metadata for the specified file.
         /// </summary>
-        /// <param name="portalId">The portal ID or Null.NullInteger for the Host</param>
+        /// <param name="portalId">The portal ID or Null.NullInteger for the Host.</param>
         /// <param name="relativePath">Relative path to the file.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <remarks>Host and portal settings commonly return a relative path to a file.  This method uses that relative path to fetch file metadata.</remarks>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles)
         {
-
             Requires.NotNullOrEmpty("relativePath", relativePath);
 
-            var folderPath = "";
+            var folderPath = string.Empty;
             var seperatorIndex = relativePath.LastIndexOf('/');
 
             if (seperatorIndex > 0)
@@ -1027,7 +1061,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     Logger.Error(ex);
 
-                    throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception"), ex);
+                    throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception"), ex);
                 }
             }
 
@@ -1041,10 +1075,12 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>A seekable Stream.</returns>
         public virtual Stream GetSeekableStream(Stream stream)
         {
-
             Requires.NotNull("stream", stream);
 
-            if (stream.CanSeek) return stream;
+            if (stream.CanSeek)
+            {
+                return stream;
+            }
 
             var folderPath = this.GetHostMapPath();
             string filePath;
@@ -1052,7 +1088,8 @@ namespace DotNetNuke.Services.FileSystem
             do
             {
                 filePath = Path.Combine(folderPath, Path.GetRandomFileName()) + ".resx";
-            } while (File.Exists(filePath));
+            }
+            while (File.Exists(filePath));
 
             var fileStream = this.GetAutoDeleteFileStream(filePath);
 
@@ -1078,7 +1115,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         public string GetUrl(IFileInfo file)
         {
-
             Requires.NotNull("file", file);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1091,18 +1127,18 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
         /// <summary>
-        /// Gets a flag that dertermines if the file is an Image
+        /// Gets a flag that dertermines if the file is an Image.
         /// </summary>
         /// <param name="file">The file to test.</param>
         /// <returns>The flag as a boolean value.</returns>
         public virtual bool IsImageFile(IFileInfo file)
         {
-            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", "") + ",") > -1;
+            return (Globals.glbImageFileTypes + ",").IndexOf(file.Extension.ToLowerInvariant().Replace(".", string.Empty) + ",") > -1;
         }
 
         /// <summary>
@@ -1121,19 +1157,19 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
-            //check whether the file is already in the dest folder.
+            // check whether the file is already in the dest folder.
             if (file.FolderId == destinationFolder.FolderID)
             {
                 return file;
             }
 
-            var lockReason = "";
+            var lockReason = string.Empty;
             if (FileLockingController.Instance.IsFileLocked(file, out lockReason))
             {
-                throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
+                throw new FileLockedException(Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
 
-            //check for existing file
+            // check for existing file
             var existingFile = this.GetFile(destinationFolder, file.FileName, true);
             if (existingFile != null)
             {
@@ -1148,12 +1184,12 @@ namespace DotNetNuke.Services.FileSystem
 
             if (destinationFolderMapping.FolderMappingID == sourceFolderMapping.FolderMappingID && destinationFolderProvider.SupportsMoveFile)
             {
-                //Implement Move
+                // Implement Move
                 destinationFolderProvider.MoveFile(file, destinationFolder);
             }
             else
             {
-                //Implement Copy/Delete
+                // Implement Copy/Delete
                 using (var fileContent = this.GetFileContent(file))
                 {
                     if (destinationFolderMapping.MappingName == "Database")
@@ -1165,6 +1201,7 @@ namespace DotNetNuke.Services.FileSystem
                         this.AddFileToFolderProvider(fileContent, file.FileName, destinationFolder, destinationFolderProvider);
                     }
                 }
+
                 this.DeleteFileFromFolderProvider(file, sourceFolderProvider);
             }
 
@@ -1192,34 +1229,36 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Renames the specified file.
         /// </summary>
-        /// <param name="file">The file to rename</param>
+        /// <param name="file">The file to rename.</param>
         /// <param name="newFileName">The new filename to assign to the file.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when file is null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FileAlreadyExistsException">Thrown when the folder already contains a file with the same name.</exception>
         /// <returns>An <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the renamed file.</returns>
         public virtual IFileInfo RenameFile(IFileInfo file, string newFileName)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNullOrEmpty("newFileName", newFileName);
 
-            if (file.FileName == newFileName) return file;
+            if (file.FileName == newFileName)
+            {
+                return file;
+            }
 
             if (!this.IsAllowedExtension(newFileName))
             {
-                throw new InvalidFileExtensionException(string.Format(Localization.Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
+                throw new InvalidFileExtensionException(string.Format(Localization.GetExceptionMessage("AddFileExtensionNotAllowed", "The extension '{0}' is not allowed. The file has not been added."), Path.GetExtension(newFileName)));
             }
 
             if (!this.IsValidFilename(newFileName))
             {
-                throw new InvalidFilenameException(string.Format(Localization.Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
+                throw new InvalidFilenameException(string.Format(Localization.GetExceptionMessage("AddFilenameNotAllowed", "The file name '{0}' is not allowed. The file has not been added."), newFileName));
             }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (this.FileExists(folder, newFileName))
             {
-                throw new FileAlreadyExistsException(Localization.Localization.GetExceptionMessage("RenameFileAlreadyExists", "This folder already contains a file with the same name. The file has not been renamed."));
+                throw new FileAlreadyExistsException(Localization.GetExceptionMessage("RenameFileAlreadyExists", "This folder already contains a file with the same name. The file has not been renamed."));
             }
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1232,15 +1271,16 @@ namespace DotNetNuke.Services.FileSystem
             {
                 Logger.Error(ex);
 
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
             }
 
             var oldfileName = file.FileName;
             file.FileName = newFileName;
             if (Path.HasExtension(newFileName))
             {
-                file.Extension = Path.GetExtension(newFileName).Replace(".", "");
+                file.Extension = Path.GetExtension(newFileName).Replace(".", string.Empty);
             }
+
             var renamedFile = this.UpdateFile(file);
 
             // Notify File Renamed event
@@ -1256,7 +1296,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="fileAttributes">The file attributes to add.</param>
         public void SetAttributes(IFileInfo file, FileAttributes fileAttributes)
         {
-
             Requires.NotNull("file", file);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
@@ -1268,7 +1307,7 @@ namespace DotNetNuke.Services.FileSystem
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                throw new FolderProviderException(Localization.Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
+                throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
 
@@ -1276,12 +1315,10 @@ namespace DotNetNuke.Services.FileSystem
         /// Extracts the files and folders contained in the specified zip file to the folder where the file belongs.
         /// </summary>
         /// <param name="file">The file to unzip.</param>
-        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file)
         {
-
             Requires.NotNull("file", file);
 
             var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -1294,7 +1331,6 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">The file to unzip.</param>
         /// <param name="destinationFolder">The folder to unzip to.</param>
-        /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
         public virtual void UnzipFile(IFileInfo file, IFolderInfo destinationFolder)
@@ -1311,16 +1347,14 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>Total files count in the zip file.</returns>
         /// <exception cref="System.ArgumentException">Thrown when file is not a zip compressed file.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown when file or destination folder are null.</exception>
-
         public virtual int UnzipFile(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
             if (file.Extension != "zip")
             {
-                throw new ArgumentException(Localization.Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
+                throw new ArgumentException(Localization.GetExceptionMessage("InvalidZipFile", "The file specified is not a zip compressed file."));
             }
 
             return this.ExtractFiles(file, destinationFolder, invalidFiles);
@@ -1412,7 +1446,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="System.ArgumentNullException">Thrown when file or stream are null.</exception>
         public virtual void WriteFile(IFileInfo file, Stream stream)
         {
-
             Requires.NotNull("file", file);
             Requires.NotNull("stream", stream);
 
@@ -1438,14 +1471,13 @@ namespace DotNetNuke.Services.FileSystem
         /// <exception cref="DotNetNuke.Services.FileSystem.PermissionsNotMetException">Thrown when permissions are not met.</exception>
         public virtual void WriteFileToResponse(IFileInfo file, ContentDisposition contentDisposition)
         {
-
             Requires.NotNull("file", file);
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
             if (!FolderPermissionController.Instance.CanViewFolder(folder))
             {
-                throw new PermissionsNotMetException(Localization.Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
+                throw new PermissionsNotMetException(Localization.GetExceptionMessage("WriteFileToResponsePermissionsNotMet", "Permissions are not met. The file cannot be downloaded."));
             }
 
             if (this.IsFileAutoSyncEnabled())
@@ -1456,14 +1488,12 @@ namespace DotNetNuke.Services.FileSystem
             this.WriteFileToHttpContext(file, contentDisposition);
         }
 
-        #endregion
-
-        #region Internal Methods
-
-        #region ContentType Methods
         internal virtual int CopyContentItem(int contentItemId)
         {
-            if (contentItemId == Null.NullInteger) return Null.NullInteger;
+            if (contentItemId == Null.NullInteger)
+            {
+                return Null.NullInteger;
+            }
 
             var newContentItem = this.CreateFileContentItem();
 
@@ -1499,15 +1529,14 @@ namespace DotNetNuke.Services.FileSystem
             return objContent;
         }
 
-        #endregion
-
-        #region File Versions
-
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void MoveVersions(IFileInfo file, IFolderInfo destinationFolder, FolderProvider sourceFolderProvider, FolderProvider destinationFolderProvider)
         {
             var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
-            if (!versions.Any()) return;
+            if (!versions.Any())
+            {
+                return;
+            }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
@@ -1517,7 +1546,10 @@ namespace DotNetNuke.Services.FileSystem
                 using (var fileContent = sourceFolderProvider.GetFileStream(folder, version.FileName))
                 {
                     // This scenario is when the file is in the Database Folder Provider
-                    if (fileContent == null) continue;
+                    if (fileContent == null)
+                    {
+                        continue;
+                    }
 
                     this.AddFileToFolderProvider(fileContent, version.FileName, destinationFolder, destinationFolderProvider);
                 }
@@ -1527,16 +1559,12 @@ namespace DotNetNuke.Services.FileSystem
                     FileName = version.FileName,
                     Folder = file.Folder,
                     FolderMappingID = file.FolderMappingID,
-                    PortalId = folder.PortalID
+                    PortalId = folder.PortalID,
                 };
 
                 this.DeleteFileFromFolderProvider(fileVersion, sourceFolderProvider);
             }
         }
-
-        #endregion
-
-        #region Workflow Methods
 
         private bool CanUpdateWhenApproving(IFolderInfo folder, ContentItem item, int createdByUserID)
         {
@@ -1545,6 +1573,7 @@ namespace DotNetNuke.Services.FileSystem
                 ////We assume User can add content to folder
                 return true;
             }
+
             return WorkflowSecurity.Instance.HasStateReviewerPermission(folder.PortalID, createdByUserID, item.StateID);
         }
 
@@ -1555,8 +1584,10 @@ namespace DotNetNuke.Services.FileSystem
                 WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
                 return true;
             }
+
             return false;
         }
+
         private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, IFileInfo oldFile, Stream content)
         {
             var contentController = new ContentController();
@@ -1564,33 +1595,35 @@ namespace DotNetNuke.Services.FileSystem
 
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
 
-            //If the file does not exist, then the field would not has value. 
-            //Currently, first upload has not version file
+            // If the file does not exist, then the field would not has value.
+            // Currently, first upload has not version file
             if (oldFile == null || !oldFile.HasBeenPublished)
             {
                 return file.FileName;
             }
-            if (workflowCompleted) //We assume User can add content to folder
+
+            if (workflowCompleted) // We assume User can add content to folder
             {
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 
             if (this.CanUpdateWhenApproving(folder, contentController.GetContentItem(file.ContentItemID), createdByUserID))
             {
-                //Update the Unpublished version
+                // Update the Unpublished version
                 var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
                 if (versions.Any())
                 {
                     FileVersionController.Instance.DeleteFileVersion(file, versions.OrderByDescending(f => f.Version).FirstOrDefault().Version);
                 }
+
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 
             throw new FileLockedException(
-                Localization.Localization.GetExceptionMessage("FileLockedRunningWorkflowError",
-                                                                "File locked. The file cannot be updated because it has a running workflow"));
+                Localization.GetExceptionMessage(
+                    "FileLockedRunningWorkflowError",
+                    "File locked. The file cannot be updated because it has a running workflow"));
         }
-        #endregion
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void AutoSyncFile(IFileInfo file)
@@ -1618,6 +1651,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             var folderManager = FolderManager.Instance;
@@ -1628,6 +1662,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 invalidFiles = new List<string>();
             }
+
             var exactFilesCount = 0;
 
             try
@@ -1743,19 +1778,21 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual Stream GetAutoDeleteFileStream(string filePath)
         {
             return new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, BufferSize, FileOptions.DeleteOnClose);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual int GetCurrentUserID()
         {
             return UserController.Instance.GetCurrentUserInfo().UserID;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns>SHA1 hash of the file</returns>
+        /// <returns>SHA1 hash of the file.</returns>
         internal virtual string GetHash(Stream stream)
         {
             Requires.NotNull("stream", stream);
@@ -1773,54 +1810,60 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets the hash of a file
+        /// Gets the hash of a file.
         /// </summary>
         /// <param name="fileInfo">The file info.</param>
-        /// <returns>SHA1 hash of the file</returns>
+        /// <returns>SHA1 hash of the file.</returns>
         internal virtual string GetHash(IFileInfo fileInfo)
         {
             return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(fileInfo.FolderMappingID).FolderProviderType).GetHashCode(fileInfo);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual string GetHostMapPath()
         {
             return TestableGlobals.Instance.HostMapPath;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual Image GetImageFromStream(Stream stream)
         {
             return Image.FromStream(stream);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual Globals.PerformanceSettings GetPerformanceSetting()
         {
             return Host.PerformanceSetting;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual bool IsAllowedExtension(string fileName)
         {
             var extension = Path.GetExtension(fileName);
 
-            //regex matches a dot followed by 1 or more chars followed by a semi-colon
-            //regex is meant to block files like "foo.asp;.png" which can take advantage
-            //of a vulnerability in IIS6 which treasts such files as .asp, not .png
+            // regex matches a dot followed by 1 or more chars followed by a semi-colon
+            // regex is meant to block files like "foo.asp;.png" which can take advantage
+            // of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
                    && this.WhiteList.IsAllowedExtension(extension)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual bool IsValidFilename(string fileName)
         {
-            //regex ensures the file is a valid filename and doesn't include illegal characters
+            // regex ensures the file is a valid filename and doesn't include illegal characters
             return Globals.FileValidNameRegex.IsMatch(fileName);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual bool IsFileAutoSyncEnabled()
         {
             return Host.EnableFileAutoSync;
@@ -1850,8 +1893,12 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
-            if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
-            objResponse.ContentType = this.GetContentType(file.Extension.Replace(".", ""));
+            if (file.Size >= 0)
+            {
+                objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
+            }
+
+            objResponse.ContentType = this.GetContentType(file.Extension.Replace(".", string.Empty));
 
             try
             {
@@ -1907,49 +1954,48 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-
         /// <summary>
         /// Update file info to database.
         /// </summary>
         /// <param name="file">File info.</param>
-        /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>        
-        /// <returns>The file info</returns>
+        /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
+        /// <returns>The file info.</returns>
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
         {
-            //By default File Events will be fired
+            // By default File Events will be fired
             return this.UpdateFile(file, updateLazyload, true);
         }
-
 
         /// <summary>
         /// Update file info to database.
         /// </summary>
         /// <param name="file">File info.</param>
         /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
-        /// <param name="fireEvent">Whether to fire File events or not</param>
-        /// <returns>The file info</returns>
+        /// <param name="fireEvent">Whether to fire File events or not.</param>
+        /// <returns>The file info.</returns>
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload, bool fireEvent)
         {
             Requires.NotNull("file", file);
 
-            DataProvider.Instance().UpdateFile(file.FileId,
-                                               file.VersionGuid,
-                                               file.FileName,
-                                               file.Extension,
-                                               file.Size,
-                                               updateLazyload ? file.Width : Null.NullInteger,
-                                               updateLazyload ? file.Height : Null.NullInteger,
-                                               file.ContentType,
-                                               file.FolderId,
-                                               this.GetCurrentUserID(),
-                                               updateLazyload ? file.SHA1Hash : Null.NullString,
-                                               file.LastModificationTime,
-                                               file.Title,
-                                               file.Description,
-                                               file.StartDate,
-                                               file.EndDate,
-                                               file.EnablePublishPeriod,
-                                               file.ContentItemID);
+            DataProvider.Instance().UpdateFile(
+                file.FileId,
+                file.VersionGuid,
+                file.FileName,
+                file.Extension,
+                file.Size,
+                updateLazyload ? file.Width : Null.NullInteger,
+                updateLazyload ? file.Height : Null.NullInteger,
+                file.ContentType,
+                file.FolderId,
+                this.GetCurrentUserID(),
+                updateLazyload ? file.SHA1Hash : Null.NullString,
+                file.LastModificationTime,
+                file.Title,
+                file.Description,
+                file.StartDate,
+                file.EndDate,
+                file.EnablePublishPeriod,
+                file.ContentItemID);
 
             DataCache.RemoveCache("GetFileById" + file.FileId);
             this.ClearFolderCache(file.PortalId);
@@ -1959,6 +2005,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 this.OnFileMetadataChanged(updatedFile ?? this.GetFile(file.FileId, true), this.GetCurrentUserID());
             }
+
             return updatedFile;
         }
 
@@ -1970,39 +2017,38 @@ namespace DotNetNuke.Services.FileSystem
 
         private static bool ValidMetadata(IFileInfo file, out string exceptionMessage)
         {
-            exceptionMessage = "";
-            //TODO check dynamically all required fields from MetadataInfo
+            exceptionMessage = string.Empty;
 
-            //TODO check dynamically all max lengths from MetadataInfo
-            //TODO Use the MaxLength from MetadataInfo
+            // TODO check dynamically all required fields from MetadataInfo
+
+            // TODO check dynamically all max lengths from MetadataInfo
+            // TODO Use the MaxLength from MetadataInfo
             if (!string.IsNullOrEmpty(file.Title) && file.Title.Length > 256)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("MaxLengthExceeded", "The maximum length of the field {0} has been exceeded", DefaultMetadataNames.Title);
+                exceptionMessage = Localization.GetExceptionMessage("MaxLengthExceeded", "The maximum length of the field {0} has been exceeded", DefaultMetadataNames.Title);
                 return false;
             }
 
             if (file.StartDate == null || file.StartDate == Null.NullDate)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("StartDateRequired", "The Start Date is required");
+                exceptionMessage = Localization.GetExceptionMessage("StartDateRequired", "The Start Date is required");
                 return false;
             }
 
             var savedFile = FileManager.Instance.GetFile(file.FileId);
             if (file.StartDate < file.CreatedOnDate.Date && file.StartDate != savedFile.StartDate)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("StartDateMustNotBeInThePast", "The Start Date must not be in the past");
+                exceptionMessage = Localization.GetExceptionMessage("StartDateMustNotBeInThePast", "The Start Date must not be in the past");
                 return false;
             }
 
             if (file.EndDate != Null.NullDate && file.StartDate > file.EndDate)
             {
-                exceptionMessage = Localization.Localization.GetExceptionMessage("InvalidPublishPeriod", "The End Date must be after the Start Date");
+                exceptionMessage = Localization.GetExceptionMessage("InvalidPublishPeriod", "The End Date must be after the Start Date");
                 return false;
             }
 
             return true;
         }
-
-        #endregion
     }
 }

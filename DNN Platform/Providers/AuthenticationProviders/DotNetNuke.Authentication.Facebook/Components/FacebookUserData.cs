@@ -1,23 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Runtime.Serialization;
-
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
 namespace DotNetNuke.Authentication.Facebook.Components
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Services.Authentication.OAuth;
+
     [DataContract]
     public class FacebookUserData : UserData
     {
-        #region Overrides
-
         public override string FirstName
         {
             get { return this.FacebookFirstName; }
@@ -29,8 +22,6 @@ namespace DotNetNuke.Authentication.Facebook.Components
             get { return this.FacebookLastName; }
             set { }
         }
-
-        #endregion
 
         [DataMember(Name = "birthday")]
         public string Birthday { get; set; }

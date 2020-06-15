@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
-using System.Xml;
-using DotNetNuke.Application;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using Newtonsoft.Json;
-
 namespace Dnn.PersonaBar.Security.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Cryptography;
+    using System.Text.RegularExpressions;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using Newtonsoft.Json;
+
     public class Utility
     {
         private static readonly IList<Regex> ExcludedFilePathRegexList = new List<Regex>()

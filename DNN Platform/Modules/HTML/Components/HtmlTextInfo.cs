@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Entities;
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
+    using DotNetNuke.Entities;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      HtmlTextInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlText object
+    ///   Defines an instance of an HtmlText object.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -22,7 +23,7 @@ namespace DotNetNuke.Modules.Html
     {
         // local property declarations
         private bool _Approved = true;
-        private string _Comment = "";
+        private string _Comment = string.Empty;
         private bool _IsActive = true;
         private int _ItemID = -1;
 
@@ -35,6 +36,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._ItemID;
             }
+
             set
             {
                 this._ItemID = value;
@@ -67,6 +69,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._IsActive;
             }
+
             set
             {
                 this._IsActive = value;
@@ -79,6 +82,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._Comment;
             }
+
             set
             {
                 this._Comment = value;
@@ -91,6 +95,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._Approved;
             }
+
             set
             {
                 this._Approved = value;
@@ -99,6 +104,6 @@ namespace DotNetNuke.Modules.Html
 
         public string DisplayName { get; set; }
 
-		public string Summary { get; set; }
+        public string Summary { get; set; }
     }
 }

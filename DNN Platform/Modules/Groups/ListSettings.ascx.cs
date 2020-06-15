@@ -1,39 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.Localization;
-using System.Web.UI.WebControls;
-using DotNetNuke.Modules.Groups.Components;
-using DotNetNuke.Entities.Tabs;
-using System.Collections.Generic;
-using DotNetNuke.Entities.Modules.Definitions;
-
-
-#endregion
-
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Settings class manages Module Settings
+    /// The Settings class manages Module Settings.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class ListSettings : GroupsSettingsBase
     {
-        #region Base Method Implementations
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them
+        /// LoadSettings loads the settings from the Database and displays them.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void LoadSettings()
@@ -44,16 +36,19 @@ namespace DotNetNuke.Modules.Groups
                 {
                     this.BindGroups();
                     this.BindPages();
-                    
-                    if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting)) {
+
+                    if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting))
+                    {
                         this.drpRoleGroup.SelectedIndex = this.drpRoleGroup.Items.IndexOf(this.drpRoleGroup.Items.FindByValue(this.Settings[Constants.DefaultRoleGroupSetting].ToString()));
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupViewPage)) {
+                    if (this.Settings.ContainsKey(Constants.GroupViewPage))
+                    {
                         this.drpGroupViewPage.SelectedIndex = this.drpGroupViewPage.Items.IndexOf(this.drpGroupViewPage.Items.FindByValue(this.Settings[Constants.GroupViewPage].ToString()));
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupListTemplate)) {
+                    if (this.Settings.ContainsKey(Constants.GroupListTemplate))
+                    {
                         this.txtListTemplate.Text = this.Settings[Constants.GroupListTemplate].ToString();
                     }
 
@@ -62,12 +57,13 @@ namespace DotNetNuke.Modules.Groups
                         this.txtViewTemplate.Text = this.Settings[Constants.GroupViewTemplate].ToString();
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupModerationEnabled)) 
+                    if (this.Settings.ContainsKey(Constants.GroupModerationEnabled))
                     {
                         this.chkGroupModeration.Checked = Convert.ToBoolean(this.Settings[Constants.GroupModerationEnabled].ToString());
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupLoadView)) {
+                    if (this.Settings.ContainsKey(Constants.GroupLoadView))
+                    {
                         this.drpViewMode.SelectedIndex = this.drpViewMode.Items.IndexOf(this.drpViewMode.Items.FindByValue(this.Settings[Constants.GroupLoadView].ToString()));
                     }
 
@@ -97,7 +93,7 @@ namespace DotNetNuke.Modules.Groups
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -105,7 +101,7 @@ namespace DotNetNuke.Modules.Groups
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// UpdateSettings saves the modified settings to the Database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
@@ -124,42 +120,44 @@ namespace DotNetNuke.Modules.Groups
                 ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListSortDirection, this.radSortDirection.SelectedItem.Value);
                 ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupListUserGroupsOnly, this.chkUserGroups.Checked.ToString());
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        #endregion
-        private void BindGroups() {
+        private void BindGroups()
+        {
             var arrGroups = RoleController.GetRoleGroups(this.PortalId);
-			this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
+            this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("GlobalRoles"), "-1"));
 
-            foreach (RoleGroupInfo roleGroup in arrGroups) {
+            foreach (RoleGroupInfo roleGroup in arrGroups)
+            {
                 this.drpRoleGroup.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString()));
             }
         }
-        private void BindPages() {
-            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId)) 
+
+        private void BindPages()
+        {
+            foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId))
             {
                 if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)
                 {
                     TabInfo tabInfo = TabController.Instance.GetTab(moduleInfo.TabID, this.PortalId, false);
-                    if (tabInfo != null) 
+                    if (tabInfo != null)
                     {
-                        if (tabInfo.IsDeleted == false) 
+                        if (tabInfo.IsDeleted == false)
                         {
-                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions) 
+                            foreach (KeyValuePair<string, ModuleDefinitionInfo> def in moduleInfo.DesktopModule.ModuleDefinitions)
                             {
-                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key) 
+                                if (moduleInfo.ModuleDefinition.FriendlyName == def.Key)
                                 {
-                                    if (this.drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null) 
+                                    if (this.drpGroupViewPage.Items.FindByValue(tabInfo.TabID.ToString()) == null)
                                     {
                                         this.drpGroupViewPage.Items.Add(new ListItem(tabInfo.TabName + " - " + def.Key, tabInfo.TabID.ToString()));
                                     }
                                 }
-
                             }
                         }
                     }

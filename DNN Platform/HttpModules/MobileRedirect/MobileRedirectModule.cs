@@ -1,32 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.HttpModules.Services;
-using DotNetNuke.Services.Mobile;
-
-#endregion
-
 namespace DotNetNuke.HttpModules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.HttpModules.Services;
+    using DotNetNuke.Services.Mobile;
+
     public class MobileRedirectModule : IHttpModule
     {
         private IRedirectionController _redirectionController;
         private readonly IList<string> _specialPages = new List<string> { "/login.aspx", "/register.aspx", "/terms.aspx", "/privacy.aspx", "/login", "/register", "/terms", "/privacy" };
         private readonly Regex MvcServicePath = new Regex(@"DesktopModules/MVC/", RegexOptions.Compiled);
-        public string ModuleName => "MobileRedirectModule";
 
-        #region IHttpModule Members
+        public string ModuleName => "MobileRedirectModule";
 
         public void Init(HttpApplication application)
         {
@@ -38,18 +32,16 @@ namespace DotNetNuke.HttpModules
         {
         }
 
-        #endregion
-
         public void OnBeginRequest(object s, EventArgs e)
         {
             var app = (HttpApplication)s;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            
-            //First check if we are upgrading/installing
+
+            // First check if we are upgrading/installing
             var rawUrl = app.Request.RawUrl;
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
-                    || ServicesModule.ServiceApi.IsMatch(rawUrl) 
+                    || ServicesModule.ServiceApi.IsMatch(rawUrl)
                     || this.MvcServicePath.IsMatch(rawUrl)
                     || this.IsSpecialPage(rawUrl)
                     || (portalSettings != null && !IsRedirectAllowed(rawUrl, app, portalSettings)))
@@ -57,8 +49,8 @@ namespace DotNetNuke.HttpModules
                 return;
             }
 
-            //Check if redirection has been disabled for the session
-            //This method inspects cookie and query string. It can also setup / clear cookies.
+            // Check if redirection has been disabled for the session
+            // This method inspects cookie and query string. It can also setup / clear cookies.
             if (this._redirectionController != null &&
                 portalSettings?.ActiveTab != null &&
                 !string.IsNullOrEmpty(app.Request.UserAgent) &&
@@ -67,13 +59,14 @@ namespace DotNetNuke.HttpModules
                 var redirectUrl = this._redirectionController.GetRedirectUrl(app.Request.UserAgent);
                 if (!string.IsNullOrEmpty(redirectUrl))
                 {
-                    //append the query string from original url
+                    // append the query string from original url
                     var idx = rawUrl.IndexOf("?", StringComparison.Ordinal);
                     var queryString = idx >= 0 ? rawUrl.Substring(idx + 1) : string.Empty;
                     if (!string.IsNullOrEmpty(queryString))
                     {
                         redirectUrl = string.Concat(redirectUrl, redirectUrl.Contains("?") ? "&" : "?", queryString);
                     }
+
                     app.Response.Redirect(redirectUrl);
                 }
             }
@@ -107,6 +100,7 @@ namespace DotNetNuke.HttpModules
             {
                 tabPath = tabPath.Replace(alias.Substring(idx), string.Empty);
             }
+
             return this._specialPages.Contains(tabPath);
         }
     }

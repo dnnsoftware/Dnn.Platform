@@ -1,24 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Localization;
+
     public class DnnTextButton : LinkButton, ILocalizable
     {
         private bool _localize = true;
-
-        #region "Public Properties"
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -28,8 +22,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string) this.ViewState["ConfirmMessage"];
+                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string)this.ViewState["ConfirmMessage"];
             }
+
             set
             {
                 this.ViewState["ConfirmMessage"] = value;
@@ -44,8 +39,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["CssClass"] == null ? string.Empty : (string) this.ViewState["CssClass"];
+                return this.ViewState["CssClass"] == null ? string.Empty : (string)this.ViewState["CssClass"];
             }
+
             set
             {
                 this.ViewState["CssClass"] = value;
@@ -60,8 +56,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string) this.ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
+
             set
             {
                 this.ViewState["DisabledCssClass"] = value;
@@ -76,15 +73,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["Text"] == null ? string.Empty : (string) this.ViewState["Text"];
+                return this.ViewState["Text"] == null ? string.Empty : (string)this.ViewState["Text"];
             }
+
             set
             {
                 this.ViewState["Text"] = value;
             }
         }
-
-        #endregion
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -100,11 +96,10 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.CssClass = this.DisabledCssClass;
             }
+
             writer.AddAttribute("class", this.CssClass.Trim());
             base.Render(writer);
         }
-
-        #region "ILocalizable Implementation"
 
         public bool Localize
         {
@@ -112,6 +107,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._localize;
             }
+
             set
             {
                 this._localize = value;
@@ -122,30 +118,28 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((this.Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(this.ToolTip)))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
                     this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
                 }
 
-                if ((!string.IsNullOrEmpty(this.Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
 
-                    if ((string.IsNullOrEmpty(this.ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
                     }
 
-                    if ((string.IsNullOrEmpty(this.ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = this.Text;
                     }
                 }
             }
         }
-
-        #endregion
     }
 }

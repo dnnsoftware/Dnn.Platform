@@ -1,57 +1,48 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.Validators;
-
-using WebFormsMvp;
-
-#endregion
-
 namespace DotNetNuke.Web.Mvp
 {
-    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ModulePresenterBase<TView> : Presenter<TView> where TView : class, IModuleViewBase
-    {
-        #region Constructors
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI;
 
-        protected ModulePresenterBase(TView view) : base(view)
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.Validators;
+    using WebFormsMvp;
+
+    [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
+    public abstract class ModulePresenterBase<TView> : Presenter<TView>
+        where TView : class, IModuleViewBase
+    {
+        protected ModulePresenterBase(TView view)
+            : base(view)
         {
-            //Try and cast view to Control to get common control properties
+            // Try and cast view to Control to get common control properties
             var control = view as Control;
             if (control != null && control.Page != null)
             {
                 this.IsPostBack = control.Page.IsPostBack;
             }
 
-            //Try and cast view to IModuleControl to get the Context
+            // Try and cast view to IModuleControl to get the Context
             var moduleControl = view as IModuleControl;
             if (moduleControl != null)
             {
                 this.LocalResourceFile = moduleControl.LocalResourceFile;
                 this.ModuleContext = moduleControl.ModuleContext;
             }
+
             this.Validator = new Validator(new DataAnnotationsObjectValidator());
 
             view.Initialize += this.InitializeInternal;
             view.Load += this.LoadInternal;
         }
-
-        #endregion
-
-        #region Protected Properties
 
         protected internal virtual bool AllowAnonymousAccess
         {
@@ -68,10 +59,6 @@ namespace DotNetNuke.Web.Mvp
                 return true;
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public bool AutoDataBind { get; set; }
 
@@ -99,10 +86,6 @@ namespace DotNetNuke.Web.Mvp
 
         public Validator Validator { get; set; }
 
-        #endregion
-
-        #region Event Handlers
-
         private void InitializeInternal(object sender, EventArgs e)
         {
             this.LoadFromContext();
@@ -117,19 +100,15 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
-        #endregion
-
-        #region Protected Methods
-
         protected internal virtual bool CheckAuthPolicy()
         {
-            if ((this.UserId == Null.NullInteger && !this.AllowAnonymousAccess))
+            if (this.UserId == Null.NullInteger && !this.AllowAnonymousAccess)
             {
                 this.OnNoCurrentUser();
                 return false;
             }
 
-            if ((!this.IsUserAuthorized))
+            if (!this.IsUserAuthorized)
             {
                 this.OnUnauthorizedUser();
                 return false;
@@ -150,8 +129,9 @@ namespace DotNetNuke.Web.Mvp
                 this.Settings = new Dictionary<string, string>();
                 foreach (object key in this.ModuleContext.Settings.Keys)
                 {
-                    this.Settings[key.ToString()] = (string) this.ModuleContext.Settings[key];
+                    this.Settings[key.ToString()] = (string)this.ModuleContext.Settings[key];
                 }
+
                 this.TabId = this.ModuleContext.TabId;
                 this.UserId = this.ModuleContext.PortalSettings.UserInfo.UserID;
             }
@@ -168,6 +148,7 @@ namespace DotNetNuke.Web.Mvp
             {
                 localizedString = Null.NullString;
             }
+
             return localizedString;
         }
 
@@ -233,13 +214,10 @@ namespace DotNetNuke.Web.Mvp
                     messageHeader = this.LocalizeString(messageHeader);
                     message = this.LocalizeString(message);
                 }
+
                 this.View.ShowMessage(messageHeader, message, messageType);
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public virtual void RestoreState(StateBag stateBag)
         {
@@ -250,7 +228,5 @@ namespace DotNetNuke.Web.Mvp
         {
             AttributeBasedViewStateSerializer.Serialize(this, stateBag);
         }
-
-        #endregion
     }
 }

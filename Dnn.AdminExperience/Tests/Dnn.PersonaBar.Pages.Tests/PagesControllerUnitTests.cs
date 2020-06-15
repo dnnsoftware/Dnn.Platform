@@ -2,32 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using Dnn.PersonaBar.Pages.Components;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
-
 namespace Dnn.PersonaBar.Pages.Tests
 {
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Pages.Components;
+    using Dnn.PersonaBar.Pages.Components.Exceptions;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PagesControllerUnitTests
     {
-        Mock<ITabController> _tabControllerMock;
-        Mock<IModuleController> _moduleControllerMock;
-        Mock<IPageUrlsController> _pageUrlsControllerMock;
-        Mock<ITemplateController> _templateControllerMock;
-        Mock<IDefaultPortalThemeController> _defaultPortalThemeControllerMock;
-        Mock<ICloneModuleExecutionContext> _cloneModuleExecutionContextMock;
-        Mock<IUrlRewriterUtilsWrapper> _urlRewriterUtilsWrapperMock;
-        Mock<IFriendlyUrlWrapper> _friendlyUrlWrapperMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IModuleController> _moduleControllerMock;
+        private Mock<IPageUrlsController> _pageUrlsControllerMock;
+        private Mock<ITemplateController> _templateControllerMock;
+        private Mock<IDefaultPortalThemeController> _defaultPortalThemeControllerMock;
+        private Mock<ICloneModuleExecutionContext> _cloneModuleExecutionContextMock;
+        private Mock<IUrlRewriterUtilsWrapper> _urlRewriterUtilsWrapperMock;
+        private Mock<IFriendlyUrlWrapper> _friendlyUrlWrapperMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
         PagesControllerImpl _pagesController;
         Mock<IPortalController> _portalControllerMock;
 
@@ -57,7 +58,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             var tab = new TabInfo();
             var portalSettings = new PortalSettings();
             var friendlyOptions = new FriendlyUrlOptions();
-            
+
             this._urlRewriterUtilsWrapperMock.Setup(d => d.GetExtendOptionsForURLs(It.IsAny<int>())).Returns(friendlyOptions);
             this._friendlyUrlWrapperMock.Setup(d => d.CleanNameForUrl(It.IsAny<string>(), friendlyOptions, out modified)).Returns(expected);
             this._friendlyUrlWrapperMock.Setup(d => d.ValidateUrl(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<PortalSettings>(), out modified));
@@ -78,7 +79,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             this._urlRewriterUtilsWrapperMock.VerifyAll();
             this._friendlyUrlWrapperMock.Verify(d => d.CleanNameForUrl(expected, friendlyOptions, out modified), Times.Once());
         }
-                
+
         [Test]
         public void GetPageSettings_CallGetCurrentPortalSettings_WhenSettingParameterIsNull()
         {
@@ -98,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.InitializePageController();
 
             // Act
-            TestDelegate pageSettingsCall = () =>  this._pagesController.GetPageSettings(tabId, null);
+            TestDelegate pageSettingsCall = () => this._pagesController.GetPageSettings(tabId, null);
 
             // Assert
             Assert.Throws<PageNotFoundException>(pageSettingsCall);
@@ -118,8 +119,7 @@ namespace Dnn.PersonaBar.Pages.Tests
                 this._urlRewriterUtilsWrapperMock.Object,
                 this._friendlyUrlWrapperMock.Object,
                 this._contentVerifierMock.Object,
-                this._portalControllerMock.Object
-                );
+                this._portalControllerMock.Object);
         }
     }
 }

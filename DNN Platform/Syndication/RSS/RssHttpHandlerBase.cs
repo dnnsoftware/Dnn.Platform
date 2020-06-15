@@ -1,30 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web;
-using System.Xml;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Web;
+    using System.Xml;
+
     public delegate void InitEventHandler(object source, EventArgs e);
 
     public delegate void PreRenderEventHandler(object source, EventArgs e);
 
     /// <summary>
-    ///   Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it
+    ///   Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.
     /// </summary>
     /// <typeparam name = "RssChannelType"></typeparam>
     /// <typeparam name = "RssItemType"></typeparam>
     /// <typeparam name = "RssImageType"></typeparam>
-    public abstract class RssHttpHandlerBase<RssChannelType, RssItemType, RssImageType> : IHttpHandler where RssChannelType : RssChannelBase<RssItemType, RssImageType>, new()
-                                                                                                       where RssItemType : RssElementBase, new()
-                                                                                                       where RssImageType : RssElementBase, new()
+    public abstract class RssHttpHandlerBase<RssChannelType, RssItemType, RssImageType> : IHttpHandler
+        where RssChannelType : RssChannelBase<RssItemType, RssImageType>, new()
+        where RssItemType : RssElementBase, new()
+        where RssImageType : RssElementBase, new()
     {
         private RssChannelType _channel;
         private HttpContext _context;
@@ -44,8 +40,6 @@ namespace DotNetNuke.Services.Syndication
                 return this._context;
             }
         }
-
-        #region IHttpHandler Members
 
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
@@ -75,9 +69,8 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        #endregion
-
         public event InitEventHandler Init;
+
         public event PreRenderEventHandler PreRender;
 
         /// <summary>

@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Social.Subscriptions.Data;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-
 namespace DotNetNuke.Services.Social.Subscriptions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Social.Subscriptions.Data;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
     /// <summary>
     /// This controller is responsible to manage the subscription types.
     /// </summary>
@@ -30,7 +31,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return () => new SubscriptionTypeController();
         }
 
-        #region Implemented Methods
         public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -52,12 +52,14 @@ namespace DotNetNuke.Services.Social.Subscriptions
 
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()
         {
-            var cacheArgs = new CacheItemArgs(DataCache.SubscriptionTypesCacheKey,
-                                             DataCache.SubscriptionTypesTimeOut,
-                                             DataCache.SubscriptionTypesCachePriority);
+            var cacheArgs = new CacheItemArgs(
+                DataCache.SubscriptionTypesCacheKey,
+                DataCache.SubscriptionTypesTimeOut,
+                DataCache.SubscriptionTypesCachePriority);
 
-            return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(cacheArgs,
-                                                c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
+            return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(
+                cacheArgs,
+                c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
         }
 
         public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
@@ -75,7 +77,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.dataService.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId);
             CleanCache();
         }
-        #endregion
 
         private static void CleanCache()
         {

@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Common.Utilities
@@ -38,11 +33,12 @@ namespace DotNetNuke.Common.Utilities
         private string _PrimaryKey;
         private string _TableName;
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ObjectMappingInfo Object
+        /// Initializes a new instance of the <see cref="ObjectMappingInfo"/> class.
+        /// Constructs a new ObjectMappingInfo Object.
         /// </summary>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public ObjectMappingInfo()
         {
             this._Properties = new Dictionary<string, PropertyInfo>();
@@ -51,7 +47,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheKey gets the root value of the key used to identify the cached collection 
+        /// Gets cacheKey gets the root value of the key used to identify the cached collection
         /// in the ASP.NET Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -64,14 +60,15 @@ namespace DotNetNuke.Common.Utilities
                 {
                     _CacheKey += this.CacheByProperty + "_";
                 }
+
                 return _CacheKey;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheByProperty gets and sets the property that is used to cache collections
-        /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs 
+        /// Gets or sets cacheByProperty gets and sets the property that is used to cache collections
+        /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs
         /// are cached by the PortalId property.
         /// </summary>
         /// <remarks>If empty, a collection of all the instances of the object is cached.</remarks>
@@ -82,6 +79,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._CacheByProperty;
             }
+
             set
             {
                 this._CacheByProperty = value;
@@ -90,7 +88,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheTimeOutMultiplier gets and sets the multiplier used to determine how long
+        /// Gets or sets cacheTimeOutMultiplier gets and sets the multiplier used to determine how long
         /// the cached collection should be cached.  It is multiplied by the Performance
         /// Setting - which in turn can be modified by the Host Account.
         /// </summary>
@@ -102,6 +100,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._CacheTimeOutMultiplier;
             }
+
             set
             {
                 this._CacheTimeOutMultiplier = value;
@@ -110,7 +109,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ColumnNames gets a dictionary of Database Column Names for the Object
+        /// Gets columnNames gets a dictionary of Database Column Names for the Object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, string> ColumnNames
@@ -123,7 +122,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ObjectType gets and sets the type of the object
+        /// Gets or sets objectType gets and sets the type of the object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string ObjectType
@@ -132,6 +131,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._ObjectType;
             }
+
             set
             {
                 this._ObjectType = value;
@@ -140,8 +140,8 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// PrimaryKey gets and sets the property of the object that corresponds to the
-        /// primary key in the database
+        /// Gets or sets primaryKey gets and sets the property of the object that corresponds to the
+        /// primary key in the database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PrimaryKey
@@ -150,6 +150,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._PrimaryKey;
             }
+
             set
             {
                 this._PrimaryKey = value;
@@ -158,7 +159,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Properties gets a dictionary of Properties for the Object
+        /// Gets properties gets a dictionary of Properties for the Object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PropertyInfo> Properties
@@ -171,7 +172,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// TableName gets and sets the name of the database table that is used to
+        /// Gets or sets tableName gets and sets the name of the database table that is used to
         /// persist the object.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -181,6 +182,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._TableName;
             }
+
             set
             {
                 this._TableName = value;

@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Security.Roles
 {
+    using System;
+
     public enum RoleStatus
     {
         Pending = -1,
         Disabled = 0,
-        Approved = 1
+        Approved = 1,
     }
 }

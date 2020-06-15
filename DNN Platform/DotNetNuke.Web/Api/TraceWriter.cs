@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http.Tracing;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web.Http.Tracing;
+
+    using DotNetNuke.Instrumentation;
+
     internal sealed class TraceWriter : ITraceWriter
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TraceWriter));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
         private readonly bool _enabled;
 
         public TraceWriter(bool isTracingEnabled)
@@ -22,7 +23,7 @@ namespace DotNetNuke.Web.Api
 
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
-            if(!this._enabled || level == TraceLevel.Off)
+            if (!this._enabled || level == TraceLevel.Off)
             {
                 return;
             }
@@ -61,7 +62,7 @@ namespace DotNetNuke.Web.Api
 
             string output = message.ToString();
 
-            if (!String.IsNullOrEmpty(output))
+            if (!string.IsNullOrEmpty(output))
             {
                 switch (rec.Level)
                 {

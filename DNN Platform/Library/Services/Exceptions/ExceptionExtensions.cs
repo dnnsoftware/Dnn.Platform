@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Security.Cryptography;
-using System.Text;
-
 namespace DotNetNuke.Services.Exceptions
 {
+    using System;
+    using System.Security.Cryptography;
+    using System.Text;
+
     public static class ExceptionExtensions
     {
         public static string Hash(this Exception exc)
@@ -36,8 +36,15 @@ namespace DotNetNuke.Services.Exceptions
 
         private static void AddException(StringBuilder sb, Exception ex)
         {
-            if (!string.IsNullOrEmpty(ex.Message)) sb.AppendLine(ex.Message);
-            if (!string.IsNullOrEmpty(ex.StackTrace)) sb.AppendLine(ex.StackTrace);
+            if (!string.IsNullOrEmpty(ex.Message))
+            {
+                sb.AppendLine(ex.Message);
+            }
+
+            if (!string.IsNullOrEmpty(ex.StackTrace))
+            {
+                sb.AppendLine(ex.StackTrace);
+            }
         }
     }
 }

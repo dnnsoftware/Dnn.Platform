@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
+    using DotNetNuke.Services.FileSystem;
+
     public partial class FileFieldsControl : PortalModuleBase, IFieldsControl
     {
         public virtual void PrepareProperties()
@@ -60,19 +60,19 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             base.OnLoad(e);
             if (!this.Page.IsPostBack)
-            {                
+            {
                 this.PrepareProperties();
                 this.FileAttributesContainer.Visible = this.File.SupportsFileAttributes;
                 if (this.File.SupportsFileAttributes)
                 {
                     this.PrepareFileAttributes();
-                }                
+                }
             }
         }
 
         public void SetController(IDigitalAssetsController damController)
         {
-            this.Controller = damController;            
+            this.Controller = damController;
         }
 
         public void SetModuleConfiguration(ModuleInfo moduleConfiguration)
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             this.Item = itemViewModel;
         }
-        
+
         public virtual void SetPropertiesAvailability(bool availability)
         {
             this.FileNameInput.Enabled = availability;

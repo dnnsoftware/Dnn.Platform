@@ -1,29 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions.Portals;
-
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Personalization;
+    using DotNetNuke.Services.Tokens;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PortalSettings class encapsulates all of the settings for the Portal, 
+    /// The PortalSettings class encapsulates all of the settings for the Portal,
     /// as well as the configuration settings required to execute the current tab
     /// view within the portal.
     /// </summary>
@@ -31,49 +27,33 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
-        #region ControlPanelPermission enum
-
         public enum ControlPanelPermission
         {
             TabEditor,
-            ModuleEditor
+            ModuleEditor,
         }
-
-        #endregion
-
-        #region Mode enum
 
         public enum Mode
         {
             View,
             Edit,
-            Layout
+            Layout,
         }
-
-        #endregion
-
-        #region PortalAliasMapping enum
 
         public enum PortalAliasMapping
         {
             None,
             CanonicalUrl,
-            Redirect
+            Redirect,
         }
 
-        #endregion
-
-        #region Data Consent UserDeleteAction enum
         public enum UserDeleteAction
         {
             Off = 0,
             Manual = 1,
             DelayedHardDelete = 2,
-            HardDelete = 3
+            HardDelete = 3,
         }
-        #endregion
-
-        #region Constructors
 
         public PortalSettings()
         {
@@ -94,14 +74,15 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
         /// The PortalSettings Constructor encapsulates all of the logic
         /// necessary to obtain configuration settings necessary to render
         /// a Portal Tab view for a given request.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///	<param name="tabId">The current tab</param>
-        ///	<param name="portalAliasInfo">The current portal</param>
+        ///     <param name="tabId">The current tab.</param>
+        ///     <param name="portalAliasInfo">The current portal.</param>
         /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
@@ -129,7 +110,10 @@ namespace DotNetNuke.Entities.Portals
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
 
-            if (portal == null) return;
+            if (portal == null)
+            {
+                return;
+            }
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 
@@ -149,73 +133,69 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        #endregion
-
-        #region Auto-Properties
-
         public TabInfo ActiveTab { get; set; }
 
-		public int AdministratorId { get; set; }
+        public int AdministratorId { get; set; }
 
-		public int AdministratorRoleId { get; set; }
+        public int AdministratorRoleId { get; set; }
 
-		public string AdministratorRoleName { get; set; }
+        public string AdministratorRoleName { get; set; }
 
-		public int AdminTabId { get; set; }
+        public int AdminTabId { get; set; }
 
-		public string BackgroundFile { get; set; }
+        public string BackgroundFile { get; set; }
 
-		public int BannerAdvertising { get; set; }
+        public int BannerAdvertising { get; set; }
 
-		public string CultureCode { get; set; }
+        public string CultureCode { get; set; }
 
-		public string Currency { get; set; }
+        public string Currency { get; set; }
 
-		public string DefaultLanguage { get; set; }
+        public string DefaultLanguage { get; set; }
 
-		public string Description { get; set; }
+        public string Description { get; set; }
 
-		public string Email { get; set; }
+        public string Email { get; set; }
 
         public DateTime ExpiryDate { get; set; }
 
-		public string FooterText { get; set; }
+        public string FooterText { get; set; }
 
-		public Guid GUID { get; set; }
+        public Guid GUID { get; set; }
 
-		public string HomeDirectory { get; set; }
+        public string HomeDirectory { get; set; }
 
-		public string HomeSystemDirectory { get; set; }
+        public string HomeSystemDirectory { get; set; }
 
-		public int HomeTabId { get; set; }
+        public int HomeTabId { get; set; }
 
-		public float HostFee { get; set; }
+        public float HostFee { get; set; }
 
-		public int HostSpace { get; set; }
+        public int HostSpace { get; set; }
 
-		public string KeyWords { get; set; }
+        public string KeyWords { get; set; }
 
-		public int LoginTabId { get; set; }
+        public int LoginTabId { get; set; }
 
-		public string LogoFile { get; set; }
+        public string LogoFile { get; set; }
 
-		public int PageQuota { get; set; }
+        public int PageQuota { get; set; }
 
-		public int Pages { get; set; }
+        public int Pages { get; set; }
 
-		public int PortalId { get; set; }
+        public int PortalId { get; set; }
 
-		public PortalAliasInfo PortalAlias { get; set; }
+        public PortalAliasInfo PortalAlias { get; set; }
 
-		public PortalAliasInfo PrimaryAlias { get; set; }
+        public PortalAliasInfo PrimaryAlias { get; set; }
 
-		public string PortalName { get; set; }
+        public string PortalName { get; set; }
 
-		public int RegisteredRoleId { get; set; }
+        public int RegisteredRoleId { get; set; }
 
-		public string RegisteredRoleName { get; set; }
+        public string RegisteredRoleName { get; set; }
 
-		public int RegisterTabId { get; set; }
+        public int RegisterTabId { get; set; }
 
         public RegistrationSettings Registration { get; set; }
 
@@ -224,33 +204,29 @@ namespace DotNetNuke.Entities.Portals
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v10.0.0.")]
         public int SiteLogHistory { get; set; }
 
-		public int SplashTabId { get; set; }
+        public int SplashTabId { get; set; }
 
-		public int SuperTabId { get; set; }
+        public int SuperTabId { get; set; }
 
-		public int UserQuota { get; set; }
+        public int UserQuota { get; set; }
 
-		public int UserRegistration { get; set; }
+        public int UserRegistration { get; set; }
 
-		public int Users { get; set; }
+        public int Users { get; set; }
 
-		public int UserTabId { get; set; }
+        public int UserTabId { get; set; }
 
         public int TermsTabId { get; set; }
 
-		public int PrivacyTabId { get; set; }
-        
-        #endregion
-
-        #region Read-Only Properties
+        public int PrivacyTabId { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows users to select their own UI culture.
+        /// Gets a value indicating whether allows users to select their own UI culture.
         /// When set to false (default) framework will allways same culture for both
-        /// CurrentCulture (content) and CurrentUICulture (interface)
+        /// CurrentCulture (content) and CurrentUICulture (interface).
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool AllowUserUICulture { get; internal set; }
 
@@ -274,9 +250,9 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Default Module Id
+        /// Gets the Default Module Id.
         /// </summary>
-        /// <remarks>Defaults to Null.NullInteger</remarks>
+        /// <remarks>Defaults to Null.NullInteger.</remarks>
         /// -----------------------------------------------------------------------------
         public int DefaultModuleId { get; internal set; }
 
@@ -288,17 +264,17 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Default Tab Id
+        /// Gets the Default Tab Id.
         /// </summary>
-        /// <remarks>Defaults to Null.NullInteger</remarks>
+        /// <remarks>Defaults to Null.NullInteger.</remarks>
         /// -----------------------------------------------------------------------------
         public int DefaultTabId { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether Browser Language Detection is Enabled
+        /// Gets a value indicating whether gets whether Browser Language Detection is Enabled.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnableBrowserLanguage { get; internal set; }
 
@@ -306,53 +282,53 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to use the module effect in edit mode.
+        /// Gets a value indicating whether gets whether to use the module effect in edit mode.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
         public bool EnableModuleEffect { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to use the popup.
+        /// Gets a value indicating whether gets whether to use the popup.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnablePopUps { get; internal set; }
 
         /// <summary>
-        /// Website Administrator whether receive the notification email when new user register.
+        /// Gets a value indicating whether website Administrator whether receive the notification email when new user register.
         /// </summary>
         public bool EnableRegisterNotification { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Skin Widgets are enabled/supported
+        /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnableSkinWidgets { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether a cookie consent popup should be shown
+        /// Gets a value indicating whether gets whether a cookie consent popup should be shown.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool ShowCookieConsent { get; internal set; }
 
         /// <summary>
-        /// Link for the user to find out more about cookies. If not specified the link
-        /// shown will point to cookiesandyou.com
+        /// Gets link for the user to find out more about cookies. If not specified the link
+        /// shown will point to cookiesandyou.com.
         /// </summary>
         public string CookieMoreLink { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether enable url language.
+        /// Gets a value indicating whether gets whether enable url language.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
@@ -361,19 +337,19 @@ namespace DotNetNuke.Entities.Portals
         public int ErrorPage500 { get; internal set; }
 
         /// -----------------------------------------------------------------------------
-		/// <summary>
-		///   Gets whether folders which are hidden or whose name begins with underscore
-		///   are included in folder synchronization.
-		/// </summary>
-		/// <remarks>
-		///   Defaults to True
-		/// </remarks>
-		/// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets a value indicating whether gets whether folders which are hidden or whose name begins with underscore
+        ///   are included in folder synchronization.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to True.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public bool HideFoldersEnabled { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether hide the login link.
+        /// Gets a value indicating whether gets whether hide the login link.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
@@ -384,52 +360,52 @@ namespace DotNetNuke.Entities.Portals
         public string HomeSystemDirectoryMapPath { get; internal set; }
 
         /// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets whether the Inline Editor is enabled
-		/// </summary>
-		/// <remarks>Defaults to True</remarks>
-		/// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether the Inline Editor is enabled.
+        /// </summary>
+        /// <remarks>Defaults to True.</remarks>
+        /// -----------------------------------------------------------------------------
         public bool InlineEditorEnabled { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to inlcude Common Words in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to inlcude Numbers in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the filter used for inclusion of tag info
+        ///   Gets the filter used for inclusion of tag info.
         /// </summary>
         /// <remarks>
-        ///   Defaults to ""
+        ///   Defaults to "".
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public string SearchIncludedTagInfoFilter { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the maximum Search Word length to index
+        /// Gets the maximum Search Word length to index.
         /// </summary>
-        /// <remarks>Defaults to 3</remarks>
+        /// <remarks>Defaults to 3.</remarks>
         /// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the minum Search Word length to index
+        /// Gets the minum Search Word length to index.
         /// </summary>
-        /// <remarks>Defaults to 3</remarks>
+        /// <remarks>Defaults to 3.</remarks>
         /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength { get; internal set; }
 
@@ -445,10 +421,6 @@ namespace DotNetNuke.Entities.Portals
 
         public int SMTPMaxIdleTime { get; internal set; }
 
-        #endregion
-
-        #region Public Properties
-
         public CacheLevel Cacheability
         {
             get
@@ -462,7 +434,7 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
-                return String.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
             }
         }
 
@@ -482,7 +454,8 @@ namespace DotNetNuke.Entities.Portals
                 {
                     return alias.HTTPAlias;
                 }
-                return String.Empty;
+
+                return string.Empty;
             }
         }
 
@@ -496,7 +469,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the currently logged in user identifier.</summary>
         /// <value>The user identifier.</value>
-		public int UserId
+        public int UserId
         {
             get
             {
@@ -504,13 +477,14 @@ namespace DotNetNuke.Entities.Portals
                 {
                     return this.UserInfo.UserID;
                 }
+
                 return Null.NullInteger;
             }
         }
 
         /// <summary>Gets the currently logged in user.</summary>
         /// <value>The current user information.</value>
-		public UserInfo UserInfo
+        public UserInfo UserInfo
         {
             get
             {
@@ -544,12 +518,13 @@ namespace DotNetNuke.Entities.Portals
                 {
                     mode = Mode.View;
                 }
+
                 return mode;
             }
         }
 
         /// <summary>
-        /// Get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
+        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
         /// </summary>
         public bool IsLocked
         {
@@ -557,7 +532,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
+        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
         /// </summary>
         public bool IsThisPortalLocked
         {
@@ -576,18 +551,19 @@ namespace DotNetNuke.Entities.Portals
                 if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("PageHeadText", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
-                    pageHead = (setting == "false") ? "" : setting;
+                    pageHead = (setting == "false") ? string.Empty : setting;
                 }
+
                 return pageHead;
             }
         }
 
         /*
          * add <a name="[moduleid]"></a> on the top of the module
-         * 
+         *
          * Desactivate this remove the html5 compatibility warnings
          * (and make the output smaller)
-         * 
+         *
          */
         public bool InjectModuleHyperLink
         {
@@ -596,10 +572,11 @@ namespace DotNetNuke.Entities.Portals
                 return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", this.PortalId, true);
             }
         }
+
         /*
          * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
-         * 
-         
+         *
+
          */
         public string AddCompatibleHttpHeader
         {
@@ -610,14 +587,15 @@ namespace DotNetNuke.Entities.Portals
                 if (PortalController.Instance.GetPortalSettings(this.PortalId).TryGetValue("AddCompatibleHttpHeader", out setting))
                 {
                     // Hack to store empty string portalsetting with non empty default value
-                    CompatibleHttpHeader = (setting == "false") ? "" : setting;
+                    CompatibleHttpHeader = (setting == "false") ? string.Empty : setting;
                 }
+
                 return CompatibleHttpHeader;
             }
         }
 
         /// <summary>
-        /// If true then add a cachebuster parameter to generated file URI's.
+        /// Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.
         /// </summary>
         public bool AddCachebusterToResourceUris
         {
@@ -628,7 +606,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// If this is true, then regular users can't send message to specific user/group.
+        /// Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.
         /// </summary>
         public bool DisablePrivateMessage
         {
@@ -639,47 +617,44 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// If true then all users will be pushed through the data consent workflow
+        /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow.
         /// </summary>
         public bool DataConsentActive { get; internal set; }
 
         /// <summary>
-        /// Last time the terms and conditions have been changed. This will determine if the user needs to 
+        /// Gets last time the terms and conditions have been changed. This will determine if the user needs to
         /// reconsent or not. Legally once the terms have changed, users need to sign again. This value is set
         /// by the "reset consent" button on the UI.
         /// </summary>
         public DateTime DataConsentTermsLastChange { get; internal set; }
 
         /// <summary>
-        /// If set this is a tab id of a page where the user will be redirected to for consent. If not set then
+        /// Gets if set this is a tab id of a page where the user will be redirected to for consent. If not set then
         /// the platform's default logic is used.
         /// </summary>
         public int DataConsentConsentRedirect { get; internal set; }
 
         /// <summary>
-        /// Sets what should happen to the user account if a user has been deleted. This is important as
-        /// under certain circumstances you may be required by law to destroy the user's data within a 
+        /// Gets what should happen to the user account if a user has been deleted. This is important as
+        /// under certain circumstances you may be required by law to destroy the user's data within a
         /// certain timeframe after a user has requested deletion.
         /// </summary>
         public UserDeleteAction DataConsentUserDeleteAction { get; internal set; }
 
         /// <summary>
-        /// Sets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction
+        /// Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction.
         /// </summary>
         public int DataConsentDelay { get; internal set; }
 
         /// <summary>
-        /// Units for DataConsentDelay
+        /// Gets units for DataConsentDelay.
         /// </summary>
         public string DataConsentDelayMeasurement { get; internal set; }
 
         /// <summary>
-        /// Whitelist of file extensions for end users
+        /// Gets whitelist of file extensions for end users.
         /// </summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
-        #endregion
-
-        #region IPropertyAccess Members
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
@@ -688,12 +663,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 outputFormat = "g";
             }
+
             var lowerPropertyName = propertyName.ToLowerInvariant();
             if (accessLevel == Scope.NoSettings)
             {
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
             var result = string.Empty;
             var isPublic = true;
@@ -707,22 +684,23 @@ namespace DotNetNuke.Entities.Portals
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(this.PortalAlias.HTTPAlias, format);
                     break;
-                case "fullurl": //return portal alias with protocol - note this depends on HttpContext
+                case "fullurl": // return portal alias with protocol - note this depends on HttpContext
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(Globals.AddHTTP(this.PortalAlias.HTTPAlias), format);
                     break;
-                case "passwordreminderurl": //if regsiter page defined in portal settings, then get that page url, otherwise return home page. - note this depends on HttpContext
+                case "passwordreminderurl": // if regsiter page defined in portal settings, then get that page url, otherwise return home page. - note this depends on HttpContext
                     propertyNotFound = false;
                     var reminderUrl = Globals.AddHTTP(this.PortalAlias.HTTPAlias);
                     if (this.RegisterTabId > Null.NullInteger)
                     {
                         reminderUrl = Globals.RegisterURL(string.Empty, string.Empty);
                     }
+
                     result = PropertyAccess.FormatString(reminderUrl, format);
                     break;
                 case "portalid":
                     propertyNotFound = false;
-                    result = (this.PortalId.ToString(outputFormat, formatProvider));
+                    result = this.PortalId.ToString(outputFormat, formatProvider);
                     break;
                 case "portalname":
                     propertyNotFound = false;
@@ -749,17 +727,17 @@ namespace DotNetNuke.Entities.Portals
                 case "expirydate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ExpiryDate.ToString(outputFormat, formatProvider));
+                    result = this.ExpiryDate.ToString(outputFormat, formatProvider);
                     break;
                 case "userregistration":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.UserRegistration.ToString(outputFormat, formatProvider));
+                    result = this.UserRegistration.ToString(outputFormat, formatProvider);
                     break;
                 case "banneradvertising":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.BannerAdvertising.ToString(outputFormat, formatProvider));
+                    result = this.BannerAdvertising.ToString(outputFormat, formatProvider);
                     break;
                 case "currency":
                     propertyNotFound = false;
@@ -768,7 +746,7 @@ namespace DotNetNuke.Entities.Portals
                 case "administratorid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.AdministratorId.ToString(outputFormat, formatProvider));
+                    result = this.AdministratorId.ToString(outputFormat, formatProvider);
                     break;
                 case "email":
                     propertyNotFound = false;
@@ -777,27 +755,27 @@ namespace DotNetNuke.Entities.Portals
                 case "hostfee":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.HostFee.ToString(outputFormat, formatProvider));
+                    result = this.HostFee.ToString(outputFormat, formatProvider);
                     break;
                 case "hostspace":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.HostSpace.ToString(outputFormat, formatProvider));
+                    result = this.HostSpace.ToString(outputFormat, formatProvider);
                     break;
                 case "pagequota":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.PageQuota.ToString(outputFormat, formatProvider));
+                    result = this.PageQuota.ToString(outputFormat, formatProvider);
                     break;
                 case "userquota":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.UserQuota.ToString(outputFormat, formatProvider));
+                    result = this.UserQuota.ToString(outputFormat, formatProvider);
                     break;
                 case "administratorroleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.AdministratorRoleId.ToString(outputFormat, formatProvider));
+                    result = this.AdministratorRoleId.ToString(outputFormat, formatProvider);
                     break;
                 case "administratorrolename":
                     isPublic = false;
@@ -807,7 +785,7 @@ namespace DotNetNuke.Entities.Portals
                 case "registeredroleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.RegisteredRoleId.ToString(outputFormat, formatProvider));
+                    result = this.RegisteredRoleId.ToString(outputFormat, formatProvider);
                     break;
                 case "registeredrolename":
                     isPublic = false;
@@ -884,23 +862,19 @@ namespace DotNetNuke.Entities.Portals
                     result = PropertyAccess.Boolean2LocalizedYesNo(this.ControlPanelVisible, formatProvider);
                     break;
             }
+
             if (!isPublic && accessLevel != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
-
-        #endregion
-
-        #region Public Methods
 
         public PortalSettings Clone()
         {
             return (PortalSettings)this.MemberwiseClone();
         }
-
-        #endregion
     }
 }

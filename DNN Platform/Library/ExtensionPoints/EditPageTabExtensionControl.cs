@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Module")]
     [ToolboxData("<{0}:EditPageTabExtensionControl runat=server></{0}:EditPageTabExtensionControl>")]
     public class EditPageTabExtensionControl : DefaultExtensionControl
@@ -21,9 +21,10 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (String)this.ViewState["TabControlId"];
-                return (s ?? String.Empty);
+                var s = (string)this.ViewState["TabControlId"];
+                return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["TabControlId"] = value;
@@ -36,19 +37,20 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (String)this.ViewState["PanelControlId"];
-                return (s ?? String.Empty);
+                var s = (string)this.ViewState["PanelControlId"];
+                return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["PanelControlId"] = value;
             }
         }
-        
+
         protected override void OnInit(EventArgs e)
         {
             var extensionPointManager = new ExtensionPointManager();
-            
+
             var tabs = (HtmlGenericControl)this.Parent.FindControl(this.TabControlId);
             var panel = this.Parent.FindControl(this.PanelControlId);
 
@@ -134,7 +136,6 @@ namespace DotNetNuke.ExtensionPoints
                 }
             }
         }
-
     }
 
     public class PanelTabExtensionControl : WebControl
@@ -143,19 +144,19 @@ namespace DotNetNuke.ExtensionPoints
 
         public override void RenderBeginTag(HtmlTextWriter writer)
         {
-            writer.Write("");
+            writer.Write(string.Empty);
         }
 
         public override void RenderEndTag(HtmlTextWriter writer)
         {
-            writer.Write("");
-        } 
+            writer.Write(string.Empty);
+        }
 
         protected override void RenderContents(HtmlTextWriter op)
         {
             op.Write("<div class=\"ehccContent dnnClear\" id=\"" + this.PanelId + "\">");
             base.RenderContents(op);
             op.Write("</div>");
-        } 
+        }
     }
 }

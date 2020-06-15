@@ -1,21 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Authentication.Google.Components;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Authentication.Google
 {
+    using System;
+
+    using DotNetNuke.Authentication.Google.Components;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+
     public partial class Login : OAuthLoginBase
     {
         protected override string AuthSystemApplicationName
@@ -42,8 +37,8 @@ namespace DotNetNuke.Authentication.Google
 
             this.OAuthClient = new GoogleClient(this.PortalId, this.Mode);
 
-            this.loginItem.Visible = (this.Mode == AuthMode.Login);
-            this.registerItem.Visible = (this.Mode == AuthMode.Register);
+            this.loginItem.Visible = this.Mode == AuthMode.Login;
+            this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -52,7 +47,6 @@ namespace DotNetNuke.Authentication.Google
             if (result == AuthorisationResult.Denied)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-
             }
         }
     }
