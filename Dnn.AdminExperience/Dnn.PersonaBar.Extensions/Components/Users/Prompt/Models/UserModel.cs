@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
         public string Created { get; set; }
 
         // provide a default field order for use of callers
-        public new static string[] FieldOrder =
+        public static new string[] FieldOrder =
         {
             "UserId",
             "Username",
