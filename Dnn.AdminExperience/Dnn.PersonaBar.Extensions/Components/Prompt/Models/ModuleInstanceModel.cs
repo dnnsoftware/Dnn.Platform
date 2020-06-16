@@ -6,7 +6,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     /// <summary>
     /// Similar to ModuleInfoModel, however this one has information more specific to a module's 
-    /// implementation on a particular page (like the PaneName)
+    /// implementation on a particular page (like the PaneName).
     /// </summary>
     public class ModuleInstanceModel
     {

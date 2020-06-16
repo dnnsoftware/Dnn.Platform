@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Roles.Components
         }
 
         /// <summary>
-        /// Gets a paginated list of Roles matching given search criteria
+        /// Gets a paginated list of Roles matching given search criteria.
         /// </summary>
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
@@ -57,7 +57,7 @@ namespace Dnn.PersonaBar.Roles.Components
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
         /// <param name="rolesFilter"></param>
-        /// <returns>List of found Roles</returns>
+        /// <returns>List of found Roles.</returns>
         public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {
             var isAdmin = this.IsAdmin(portalSettings);

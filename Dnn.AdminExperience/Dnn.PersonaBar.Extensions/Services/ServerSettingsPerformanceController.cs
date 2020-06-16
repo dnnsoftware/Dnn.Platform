@@ -35,10 +35,10 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// GET: api/Servers/GetPerformanceSettings
         /// <summary>
-        /// Gets performance settings
+        /// Gets performance settings.
         /// </summary>
         /// <param></param>
-        /// <returns>performance settings</returns>
+        /// <returns>performance settings.</returns>
         [HttpGet]
         public HttpResponseMessage GetPerformanceSettings()
         {
@@ -104,7 +104,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// POST: api/Servers/IncrementPortalVersion
         /// <summary>
-        /// Increment portal resources management version
+        /// Increment portal resources management version.
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -129,7 +129,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// POST: api/Servers/IncrementHostVersion
         /// <summary>
-        /// Increment host resources management version
+        /// Increment host resources management version.
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// POST: api/Servers/UpdatePerformanceSettings
         /// <summary>
-        /// Updates performance settings
+        /// Updates performance settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

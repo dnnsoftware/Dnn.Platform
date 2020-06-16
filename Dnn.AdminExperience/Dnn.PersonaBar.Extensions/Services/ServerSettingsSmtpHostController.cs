@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// POST: api/Servers/SendTestEmail
         /// <summary>
-        /// Tests SMTP settings
+        /// Tests SMTP settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

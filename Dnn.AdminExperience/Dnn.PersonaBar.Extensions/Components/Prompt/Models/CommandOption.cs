@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     public class CommandOption
     {
         /// <summary>
-        /// Name of the flag
+        /// Name of the flag.
         /// </summary>
         public string Flag { get; set; }
 
@@ -23,17 +23,17 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string Type { get; set; }
 
         /// <summary>
-        /// Is flag required or not
+        /// Is flag required or not.
         /// </summary>
         public bool Required { get; set; }
 
         /// <summary>
-        /// Default value of the flag
+        /// Default value of the flag.
         /// </summary>
         public string DefaultValue { get; set; }
 
         /// <summary>
-        /// Description of flag
+        /// Description of flag.
         /// </summary>
         public string Description { get; set; }
     }

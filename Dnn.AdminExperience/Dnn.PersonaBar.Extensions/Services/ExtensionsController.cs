@@ -59,7 +59,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// <summary>
         /// Get installed package types.
         /// </summary>
-        /// <returns>List of package types</returns>
+        /// <returns>List of package types.</returns>
         [HttpGet]
         public HttpResponseMessage GetPackageTypes()
         {
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// <summary>
         /// Get installed packages list except language packs.
         /// </summary>
-        /// <returns>List of [Id,Name] pairs of all system packages</returns>
+        /// <returns>List of [Id,Name] pairs of all system packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetAllPackagesListExceptLangPacks()
         {
@@ -115,10 +115,10 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         /// GET: api/Extensions/GetInstalledPackages
         /// <summary>
-        /// Gets installed packages
+        /// Gets installed packages.
         /// </summary>
         /// <param name="packageType"></param>
-        /// <returns>List of installed packages</returns>
+        /// <returns>List of installed packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetInstalledPackages(string packageType)
         {
@@ -142,10 +142,10 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         /// GET: api/Extensions/GetAvailablePackages
         /// <summary>
-        /// Gets available packages
+        /// Gets available packages.
         /// </summary>
         /// <param name="packageType"></param>
-        /// <returns>List of available packages</returns>
+        /// <returns>List of available packages.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetAvailablePackages(string packageType)

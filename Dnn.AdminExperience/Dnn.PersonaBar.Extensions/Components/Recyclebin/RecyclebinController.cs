@@ -333,7 +333,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         }
 
         /// <summary>
-        /// Checks if the current user has enough rights to manage the provided user or not
+        /// Checks if the current user has enough rights to manage the provided user or not.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>

@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
     using DotNetNuke.Services.Scheduling;
 
     /// <summary>
-    /// Represents a DNN ScheduleItem
+    /// Represents a DNN ScheduleItem.
     /// </summary>
     public class TaskModel : TaskModelBase
     {

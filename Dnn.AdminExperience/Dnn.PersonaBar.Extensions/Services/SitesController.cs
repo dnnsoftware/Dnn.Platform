@@ -32,15 +32,15 @@ namespace Dnn.PersonaBar.Sites.Services
         private readonly Components.SitesController _controller = new Components.SitesController();
 
         /// <summary>
-        /// Gets list of portals
+        /// Gets list of portals.
         /// </summary>
         /// <param name="portalGroupId"></param>
         /// <param name="filter"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        /// <returns>List of portals</returns>
+        /// <returns>List of portals.</returns>
         /// <example>
-        /// GET /api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10
+        /// GET /api/personabar/sites/GetPortals?portalGroupId=-1&amp;filter=mysite&amp;pageIndex=0&amp;pageSize=10.
         /// </example>
         [HttpGet]
         public HttpResponseMessage GetPortals(int portalGroupId, string filter, int pageIndex, int pageSize)
@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// POST: api/Sites/CreatePortal
         /// <summary>
-        /// Adds a portal
+        /// Adds a portal.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// POST: api/Sites/DeletePortal
         /// <summary>
-        /// Deletes a portal
+        /// Deletes a portal.
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>
@@ -157,7 +157,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// POST: api/Sites/ExportPortalTemplate
         /// <summary>
-        /// Exports portal template
+        /// Exports portal template.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -195,10 +195,10 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// GET: api/Sites/GetPortalLocales
         /// <summary>
-        /// Gets list of portal locales
+        /// Gets list of portal locales.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <returns>List of portal locales</returns>
+        /// <returns>List of portal locales.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalLocales(int portalId)
         {
@@ -228,7 +228,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// POST: api/Sites/DeleteExpiredPortals
         /// <summary>
-        /// Deletes expired portals
+        /// Deletes expired portals.
         /// </summary>
         /// <param></param>
         /// <returns></returns>
@@ -250,10 +250,10 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// GET: api/Sites/GetPortalTemplates
         /// <summary>
-        /// Gets list of portal templates
+        /// Gets list of portal templates.
         /// </summary>
         /// <param></param>
-        /// <returns>List of portal templates</returns>
+        /// <returns>List of portal templates.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalTemplates()
         {
@@ -296,7 +296,7 @@ namespace Dnn.PersonaBar.Sites.Services
 
         /// GET: api/Sites/RequiresQuestionAndAnswer
         /// <summary>
-        /// Gets whether a Question/Answer is required for Password retrieval
+        /// Gets whether a Question/Answer is required for Password retrieval.
         /// </summary>
         /// <param></param>
         /// <returns></returns>

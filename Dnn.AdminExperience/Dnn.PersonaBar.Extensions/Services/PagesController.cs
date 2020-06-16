@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         /// GET: api/Pages/GetPageDetails
         /// <summary>
-        /// Get detail of a page
+        /// Get detail of a page.
         /// </summary>
         /// <param name="pageId"></param>
         /// <returns></returns>
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         /// GET: api/Pages/GetCustomUrls
         /// <summary>
-        /// Get custom Urls of a page
+        /// Get custom Urls of a page.
         /// </summary>
         /// <param name="pageId"></param>
         /// <returns></returns>
@@ -781,7 +781,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         // GET /api/personabar/pages/GetContentLocalizationEnabled
         /// <summary>
-        /// Gets ContentLocalizationEnabled 
+        /// Gets ContentLocalizationEnabled. 
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -804,7 +804,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         // GET /api/personabar/pages/GetCachedItemCount
         /// <summary>
-        /// Gets GetCachedItemCount 
+        /// Gets GetCachedItemCount. 
         /// </summary>
         /// <returns></returns>
         [HttpGet]

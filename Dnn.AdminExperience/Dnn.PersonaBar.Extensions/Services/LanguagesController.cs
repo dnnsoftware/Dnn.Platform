@@ -679,12 +679,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Loads resources from file
+        ///   Loads resources from file.
         /// </summary>
-        /// <param name = "portalId">Portal Id</param>
-        /// <param name = "mode">Active editor mode</param>
-        /// <param name = "type">Resource being loaded (edit or default)</param>
-        /// <param name="locale">The locale of the file being edited</param>
+        /// <param name = "portalId">Portal Id.</param>
+        /// <param name = "mode">Active editor mode.</param>
+        /// <param name = "type">Resource being loaded (edit or default).</param>
+        /// <param name="locale">The locale of the file being edited.</param>
         /// <returns></returns>
         /// <remarks>
         ///   Depending on the editor mode, resources will be overrided using default DNN schema.
@@ -696,7 +696,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         ///   - System: when editing system base resources on en-US needs to be loaded
         ///   - Host: base en-US, and base locale especific resource
         ///   - Portal: base en-US, host override for en-US, base locale especific resource, and host override
-        ///   for locale
+        ///   for locale.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private Hashtable LoadFile(int portalId, LanguageResourceMode mode, string type, string locale)
@@ -746,15 +746,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  Loads resources from file into the HastTable
+        ///  Loads resources from file into the HastTable.
         /// </summary>
-        /// <param name = "ht">Current resources HashTable</param>
-        /// <param name = "filepath">Resources file</param>
+        /// <param name = "ht">Current resources HashTable.</param>
+        /// <param name = "filepath">Resources file.</param>
         /// <remarks>
         ///   Returned hashtable uses resourcekey as key.
         ///   Value contains a Pair object where:
         ///   First=>value to be edited
-        ///   Second=>default value
+        ///   Second=>default value.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static void LoadResource(IDictionary ht, string filepath)
@@ -805,12 +805,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Returns the resource file name for a given resource and language
+        ///   Returns the resource file name for a given resource and language.
         /// </summary>
-        /// <param name="portalId">Portal Id</param>
+        /// <param name="portalId">Portal Id.</param>
         /// <param name="language">Language Name.</param>
-        /// <param name = "mode">Identifies the resource being searched (System, Host, Portal)</param>
-        /// <returns>Localized File Name</returns>
+        /// <param name = "mode">Identifies the resource being searched (System, Host, Portal).</param>
+        /// <returns>Localized File Name.</returns>
         /// -----------------------------------------------------------------------------
         private string ResourceFile(int portalId, string language, LanguageResourceMode mode)
         {
@@ -819,7 +819,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Updates all values from the datagrid
+        ///   Updates all values from the datagrid.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private string SaveResourceFileFile(int portalId, LanguageResourceMode mode, string locale, IEnumerable<LocalizationEntry> entries)
