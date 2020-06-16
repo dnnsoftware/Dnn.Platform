@@ -187,6 +187,27 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         public string CommandArgument { get; set; }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the string that is displayed in the Module Menu
+        /// that represents a given menu action.
+        /// </summary>
+        /// <value>The string value that is displayed to represent the module action.</value>
+        /// <remarks>The title property is displayed by the Actions control for each module
+        /// action.</remarks>
+        /// -----------------------------------------------------------------------------
+        public string Title { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the URL for the icon file that is displayed for the given
+        /// <see cref="T:DotNetNuke.ModuleAction" />.
+        /// </summary>
+        /// <value>The URL for the icon that is displayed with the module action.</value>
+        /// <remarks>The URL for the icon is a simple string and is not checked for formatting.</remarks>
+        /// -----------------------------------------------------------------------------
+        public string Icon { get; set; }
+
         internal string ControlKey
         {
             get
@@ -220,27 +241,6 @@ namespace DotNetNuke.Entities.Modules.Actions
                 return controlKey;
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the string that is displayed in the Module Menu
-        /// that represents a given menu action.
-        /// </summary>
-        /// <value>The string value that is displayed to represent the module action.</value>
-        /// <remarks>The title property is displayed by the Actions control for each module
-        /// action.</remarks>
-        /// -----------------------------------------------------------------------------
-        public string Title { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the URL for the icon file that is displayed for the given
-        /// <see cref="T:DotNetNuke.ModuleAction" />.
-        /// </summary>
-        /// <value>The URL for the icon that is displayed with the module action.</value>
-        /// <remarks>The URL for the icon is a simple string and is not checked for formatting.</remarks>
-        /// -----------------------------------------------------------------------------
-        public string Icon { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

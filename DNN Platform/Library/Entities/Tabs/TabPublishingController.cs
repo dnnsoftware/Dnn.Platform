@@ -72,6 +72,11 @@ namespace DotNetNuke.Entities.Tabs
             return (workflowID == 1) || (workflowID == -1);
         }
 
+        protected override Func<ITabPublishingController> GetFactory()
+        {
+            return () => new TabPublishingController();
+        }
+
         private void PublishTabInternal(TabInfo tab)
         {
             var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
@@ -132,11 +137,6 @@ namespace DotNetNuke.Entities.Tabs
                 AllowAccess = true,
             };
             return tabPermission;
-        }
-
-        protected override Func<ITabPublishingController> GetFactory()
-        {
-            return () => new TabPublishingController();
         }
     }
 }

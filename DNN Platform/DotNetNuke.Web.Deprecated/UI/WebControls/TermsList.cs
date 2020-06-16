@@ -86,6 +86,26 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public void BindTerms(List<Term> terms, bool isHeirarchical, bool dataBind)
+        {
+            this._IsHeirarchical = isHeirarchical;
+
+            this._ListBox.DataSource = terms;
+            this._TreeView.DataSource = terms;
+
+            if (dataBind)
+            {
+                this._ListBox.DataBind();
+                this._TreeView.DataBind();
+            }
+        }
+
+        public void ClearSelectedTerm()
+        {
+            this._ListBox.SelectedIndex = Null.NullInteger;
+            this._TreeView.UnselectAllNodes();
+        }
+
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -148,26 +168,6 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             // Raise the SelectedTermChanged Event
             this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
-        }
-
-        public void BindTerms(List<Term> terms, bool isHeirarchical, bool dataBind)
-        {
-            this._IsHeirarchical = isHeirarchical;
-
-            this._ListBox.DataSource = terms;
-            this._TreeView.DataSource = terms;
-
-            if (dataBind)
-            {
-                this._ListBox.DataBind();
-                this._TreeView.DataBind();
-            }
-        }
-
-        public void ClearSelectedTerm()
-        {
-            this._ListBox.SelectedIndex = Null.NullInteger;
-            this._TreeView.UnselectAllNodes();
         }
     }
 }

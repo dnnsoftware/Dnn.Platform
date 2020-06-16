@@ -33,6 +33,134 @@ namespace DotNetNuke.Services.Installer.Packages
     {
         private static readonly DataProvider provider = DataProvider.Instance();
 
+        public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
+        {
+            bool bCanDelete = true;
+
+            var dependencies = Instance.GetPackageDependencies(d => d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) && d.Version <= package.Version);
+            if (dependencies.Count > 0)
+            {
+                // There is at least one package dependent on this package.
+                foreach (var dependency in dependencies)
+                {
+                    var dep = dependency;
+
+                    // Check if there is an alternative package
+                    var packages = Instance.GetExtensionPackages(
+                        package.PortalID,
+                        p => p.Name.Equals(dep.PackageName, StringComparison.OrdinalIgnoreCase)
+                                                                        && p.Version >= dep.Version
+                                                                        && p.PackageID != package.PackageID);
+                    if (packages.Count == 0)
+                    {
+                        bCanDelete = false;
+                    }
+                }
+            }
+
+            if (bCanDelete)
+            {
+                switch (package.PackageType)
+                {
+                    case "Skin":
+                    case "Container":
+                        // Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
+                        string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
+                        SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
+                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+
+                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
+                        if (_SkinPackageInfo.PortalID != Null.NullInteger)
+                        {
+                            // To be compliant with all versions
+                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
+                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
+                        }
+
+                        break;
+                    case "Provider":
+                        // Check if the provider is the default provider
+                        XmlDocument configDoc = Config.Load();
+                        string providerName = package.Name;
+                        if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
+                        {
+                            providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
+                        }
+
+                        switch (providerName)
+                        {
+                            case "SchedulingProvider":
+                                providerName = "DNNScheduler";
+                                break;
+                            case "SearchIndexProvider":
+                                providerName = "ModuleIndexProvider";
+                                break;
+                            case "SearchProvider":
+                                providerName = "SearchDataStoreProvider";
+                                break;
+                        }
+
+                        XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*[@defaultProvider='" + providerName + "']");
+                        bCanDelete = providerNavigator == null;
+                        break;
+                }
+            }
+
+            return bCanDelete;
+        }
+
+        public static IDictionary<int, PackageInfo> GetModulePackagesInUse(int portalID, bool forHost)
+        {
+            return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
+        }
+
+        public void DeleteExtensionPackage(PackageInfo package)
+        {
+            switch (package.PackageType)
+            {
+                case "Auth_System":
+                    AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
+                    if (authSystem != null)
+                    {
+                        AuthenticationController.DeleteAuthentication(authSystem);
+                    }
+
+                    break;
+                case "CoreLanguagePack":
+                    LanguagePackInfo languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
+                    if (languagePack != null)
+                    {
+                        LanguagePackController.DeleteLanguagePack(languagePack);
+                    }
+
+                    break;
+                case "Module":
+                    var controller = new DesktopModuleController();
+                    DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
+                    if (desktopModule != null)
+                    {
+                        controller.DeleteDesktopModule(desktopModule);
+                    }
+
+                    break;
+                case "SkinObject":
+                    SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
+                    if (skinControl != null)
+                    {
+                        SkinControlController.DeleteSkinControl(skinControl);
+                    }
+
+                    break;
+            }
+
+            DeletePackageInternal(package);
+        }
+
+        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
+        {
+            return this.GetExtensionPackage(portalId, predicate, false);
+        }
+
         protected override Func<IPackageController> GetFactory()
         {
             return () => new PackageController();
@@ -153,53 +281,6 @@ namespace DotNetNuke.Services.Installer.Packages
             ClearDependenciesCache();
         }
 
-        public void DeleteExtensionPackage(PackageInfo package)
-        {
-            switch (package.PackageType)
-            {
-                case "Auth_System":
-                    AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-                    if (authSystem != null)
-                    {
-                        AuthenticationController.DeleteAuthentication(authSystem);
-                    }
-
-                    break;
-                case "CoreLanguagePack":
-                    LanguagePackInfo languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
-                    if (languagePack != null)
-                    {
-                        LanguagePackController.DeleteLanguagePack(languagePack);
-                    }
-
-                    break;
-                case "Module":
-                    var controller = new DesktopModuleController();
-                    DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
-                    if (desktopModule != null)
-                    {
-                        controller.DeleteDesktopModule(desktopModule);
-                    }
-
-                    break;
-                case "SkinObject":
-                    SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-                    if (skinControl != null)
-                    {
-                        SkinControlController.DeleteSkinControl(skinControl);
-                    }
-
-                    break;
-            }
-
-            DeletePackageInternal(package);
-        }
-
-        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
-        {
-            return this.GetExtensionPackage(portalId, predicate, false);
-        }
-
         public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
         {
             var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
@@ -260,87 +341,6 @@ namespace DotNetNuke.Services.Installer.Packages
         public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
         {
             return GetPackageDependencies().Where(predicate).ToList();
-        }
-
-        public static bool CanDeletePackage(PackageInfo package, PortalSettings portalSettings)
-        {
-            bool bCanDelete = true;
-
-            var dependencies = Instance.GetPackageDependencies(d => d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) && d.Version <= package.Version);
-            if (dependencies.Count > 0)
-            {
-                // There is at least one package dependent on this package.
-                foreach (var dependency in dependencies)
-                {
-                    var dep = dependency;
-
-                    // Check if there is an alternative package
-                    var packages = Instance.GetExtensionPackages(
-                        package.PortalID,
-                        p => p.Name.Equals(dep.PackageName, StringComparison.OrdinalIgnoreCase)
-                                                                        && p.Version >= dep.Version
-                                                                        && p.PackageID != package.PackageID);
-                    if (packages.Count == 0)
-                    {
-                        bCanDelete = false;
-                    }
-                }
-            }
-
-            if (bCanDelete)
-            {
-                switch (package.PackageType)
-                {
-                    case "Skin":
-                    case "Container":
-                        // Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
-                        string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
-                        SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                        string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
-
-                        bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
-                        if (_SkinPackageInfo.PortalID != Null.NullInteger)
-                        {
-                            // To be compliant with all versions
-                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
-                            bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
-                        }
-
-                        break;
-                    case "Provider":
-                        // Check if the provider is the default provider
-                        XmlDocument configDoc = Config.Load();
-                        string providerName = package.Name;
-                        if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
-                        {
-                            providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
-                        }
-
-                        switch (providerName)
-                        {
-                            case "SchedulingProvider":
-                                providerName = "DNNScheduler";
-                                break;
-                            case "SearchIndexProvider":
-                                providerName = "ModuleIndexProvider";
-                                break;
-                            case "SearchProvider":
-                                providerName = "SearchDataStoreProvider";
-                                break;
-                        }
-
-                        XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*[@defaultProvider='" + providerName + "']");
-                        bCanDelete = providerNavigator == null;
-                        break;
-                }
-            }
-
-            return bCanDelete;
-        }
-
-        public static IDictionary<int, PackageInfo> GetModulePackagesInUse(int portalID, bool forHost)
-        {
-            return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
         }
 
         public static void ParsePackage(string file, string installPath, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
@@ -502,6 +502,19 @@ namespace DotNetNuke.Services.Installer.Packages
             }
         }
 
+        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
+        public static int AddPackage(PackageInfo package, bool includeDetail)
+        {
+            Instance.SaveExtensionPackage(package);
+            return package.PackageID;
+        }
+
+        [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
+        public static void DeletePackage(PackageInfo package)
+        {
+            Instance.DeleteExtensionPackage(package);
+        }
+
         internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
         {
             string result = string.Empty;
@@ -521,19 +534,6 @@ namespace DotNetNuke.Services.Installer.Packages
             }
 
             return result;
-        }
-
-        [Obsolete("Deprecated in DNN 7.2, Replaced by SaveExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static int AddPackage(PackageInfo package, bool includeDetail)
-        {
-            Instance.SaveExtensionPackage(package);
-            return package.PackageID;
-        }
-
-        [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
-        public static void DeletePackage(PackageInfo package)
-        {
-            Instance.DeleteExtensionPackage(package);
         }
 
         [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]

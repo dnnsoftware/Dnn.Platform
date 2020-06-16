@@ -29,9 +29,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     /// </example>
     public class TermController : ITermController
     {
-        private readonly IDataService _DataService;
         private const CacheItemPriority _CachePriority = CacheItemPriority.Normal;
         private const int _CacheTimeOut = 20;
+        private readonly IDataService _DataService;
 
         public TermController()
             : this(Util.GetDataService())
@@ -41,12 +41,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public TermController(IDataService dataService)
         {
             this._DataService = dataService;
-        }
-
-        private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var vocabularyId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
 
         /// <summary>
@@ -95,6 +89,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("contentItem", contentItem);
 
             this._DataService.AddTermToContent(term, contentItem);
+        }
+
+        private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var vocabularyId = (int)cacheItemArgs.ParamList[0];
+            return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
 
         /// <summary>

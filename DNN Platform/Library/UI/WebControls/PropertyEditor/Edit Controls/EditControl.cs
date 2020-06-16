@@ -28,6 +28,12 @@ namespace DotNetNuke.UI.WebControls
     {
         private object[] _CustomAttributes;
 
+        public event PropertyChangedEventHandler ItemAdded;
+
+        public event PropertyChangedEventHandler ItemDeleted;
+
+        public event PropertyChangedEventHandler ValueChanged;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Custom Attributes for this Control.
@@ -134,14 +140,6 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         public string DataField { get; set; }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String.
-        /// </summary>
-        /// <value>A string representing the Value.</value>
-        /// -----------------------------------------------------------------------------
-        protected abstract string StringValue { get; set; }
-
         public UserInfo User { get; set; }
 
         public virtual string EditControlClientId
@@ -151,6 +149,14 @@ namespace DotNetNuke.UI.WebControls
                 return this.ClientID;
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets stringValue is the value of the control expressed as a String.
+        /// </summary>
+        /// <value>A string representing the Value.</value>
+        /// -----------------------------------------------------------------------------
+        protected abstract string StringValue { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -184,12 +190,6 @@ namespace DotNetNuke.UI.WebControls
         {
             this.OnDataChanged(EventArgs.Empty);
         }
-
-        public event PropertyChangedEventHandler ItemAdded;
-
-        public event PropertyChangedEventHandler ItemDeleted;
-
-        public event PropertyChangedEventHandler ValueChanged;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

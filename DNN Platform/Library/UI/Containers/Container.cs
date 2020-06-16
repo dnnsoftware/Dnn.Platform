@@ -45,31 +45,6 @@ namespace DotNetNuke.UI.Containers
         private ModuleInfo _moduleConfiguration;
         private ModuleHost _moduleHost;
 
-        /// <summary>
-        /// Gets the Content Pane Control (Id="ContentPane").
-        /// </summary>
-        /// <returns>An HtmlContainerControl.</returns>
-        protected HtmlContainerControl ContentPane
-        {
-            get
-            {
-                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Portal Settings for the current Portal.
-        /// </summary>
-        /// <returns>A PortalSettings object.</returns>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleControl object that this container is displaying.
@@ -99,6 +74,31 @@ namespace DotNetNuke.UI.Containers
             get
             {
                 return this._moduleConfiguration;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Content Pane Control (Id="ContentPane").
+        /// </summary>
+        /// <returns>An HtmlContainerControl.</returns>
+        protected HtmlContainerControl ContentPane
+        {
+            get
+            {
+                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Portal Settings for the current Portal.
+        /// </summary>
+        /// <returns>A PortalSettings object.</returns>
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -150,6 +150,33 @@ namespace DotNetNuke.UI.Containers
         public string ContainerSrc { get; set; }
 
         internal bool InjectActionMenu { get; set; }
+
+        public void SetModuleConfiguration(ModuleInfo configuration)
+        {
+            this._moduleConfiguration = configuration;
+            this.ProcessModule();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnInit runs when the Container is initialised.
+        /// </summary>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerInit);
+        }
+
+        /// <summary>
+        /// OnLoad runs when the Container is loaded.
+        /// </summary>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
+        }
 
         private void AddAdministratorOnlyHighlighting(string message)
         {
@@ -426,27 +453,6 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnInit runs when the Container is initialised.
-        /// </summary>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.InvokeContainerEvents(ContainerEventType.OnContainerInit);
-        }
-
-        /// <summary>
-        /// OnLoad runs when the Container is loaded.
-        /// </summary>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// OnLoad runs just before the Container is rendered.
         /// </summary>
         protected override void OnPreRender(EventArgs e)
@@ -478,12 +484,6 @@ namespace DotNetNuke.UI.Containers
                     listener.ContainerEvent.Invoke(this, new ContainerEventArgs(this));
                 }
             }
-        }
-
-        public void SetModuleConfiguration(ModuleInfo configuration)
-        {
-            this._moduleConfiguration = configuration;
-            this.ProcessModule();
         }
 
         /// -----------------------------------------------------------------------------

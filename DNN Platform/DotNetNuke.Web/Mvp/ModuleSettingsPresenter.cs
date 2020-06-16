@@ -25,16 +25,6 @@ namespace DotNetNuke.Web.Mvp
 
         public Dictionary<string, string> TabModuleSettings { get; set; }
 
-        private void OnLoadSettingsInternal(object sender, EventArgs e)
-        {
-            this.LoadSettings();
-        }
-
-        private void OnSaveSettingsInternal(object sender, EventArgs e)
-        {
-            this.SaveSettings();
-        }
-
         protected override void LoadFromContext()
         {
             base.LoadFromContext();
@@ -52,6 +42,16 @@ namespace DotNetNuke.Web.Mvp
 
         protected virtual void LoadSettings()
         {
+        }
+
+        private void OnLoadSettingsInternal(object sender, EventArgs e)
+        {
+            this.LoadSettings();
+        }
+
+        private void OnSaveSettingsInternal(object sender, EventArgs e)
+        {
+            this.SaveSettings();
         }
 
         protected virtual void SaveSettings()

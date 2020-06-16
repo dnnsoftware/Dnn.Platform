@@ -9,13 +9,13 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 
     public class RoleModel : RoleModelBase
     {
-        public string Description { get; set; }
-        public string CreatedDate { get; set; }
-        public int CreatedBy { get; set; }
-
         public RoleModel()
         {
         }
+
+        public string Description { get; set; }
+        public string CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
         public RoleModel(RoleInfo role) : base(role)
         {
             this.ModifiedDate = role.LastModifiedOnDate.ToPromptLongDateString();

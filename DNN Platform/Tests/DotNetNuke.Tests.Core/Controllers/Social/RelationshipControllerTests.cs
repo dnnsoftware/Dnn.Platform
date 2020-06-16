@@ -1129,6 +1129,25 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockDataService.Verify(ds => ds.DeleteUserRelationship(Constants.SOCIAL_UserRelationshipIDUser10User11));
         }
 
+        private static PortalInfo CreatePortalInfo(int portalId, int portalGroupId)
+        {
+            var mockPortalInfo = new PortalInfo { PortalID = portalId, PortalGroupID = portalGroupId };
+            return mockPortalInfo;
+        }
+
+        private static PortalGroupInfo CreatePortalGroupInfo(int portalGroupId, int masterPortalId)
+        {
+            var mockPortalGroupInfo = new PortalGroupInfo
+            {
+                PortalGroupId = portalGroupId,
+                MasterPortalId = masterPortalId,
+                PortalGroupName = Constants.PORTALGROUP_ValidName,
+                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
+            };
+
+            return mockPortalGroupInfo;
+        }
+
         private Mock<IDataService> CreateMockDataServiceWithRelationshipTypes()
         {
             var mockDataService = new Mock<IDataService>();
@@ -1243,25 +1262,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtUserRelationshipPreferences.Columns.Add("LastModifiedByUserID", typeof(int));
             this.dtUserRelationshipPreferences.Columns.Add("LastModifiedOnDate", typeof(DateTime));
             this.dtUserRelationshipPreferences.PrimaryKey = new[] { pkPreferenceID };
-        }
-
-        private static PortalInfo CreatePortalInfo(int portalId, int portalGroupId)
-        {
-            var mockPortalInfo = new PortalInfo { PortalID = portalId, PortalGroupID = portalGroupId };
-            return mockPortalInfo;
-        }
-
-        private static PortalGroupInfo CreatePortalGroupInfo(int portalGroupId, int masterPortalId)
-        {
-            var mockPortalGroupInfo = new PortalGroupInfo
-            {
-                PortalGroupId = portalGroupId,
-                MasterPortalId = masterPortalId,
-                PortalGroupName = Constants.PORTALGROUP_ValidName,
-                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
-            };
-
-            return mockPortalGroupInfo;
         }
     }
 }

@@ -113,6 +113,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             PortalController.ClearInstance();
         }
 
+        [Test]
+        public void MessagingController_Constructor_Throws_On_Null_DataService()
+        {
+            // Arrange
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => new MessagingController(null));
+        }
+
+        [Test]
+        public void AttachmentsAllowed_Returns_True_When_MessagingAllowAttachments_Setting_Is_YES()
+        {
+            this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
+            var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
+            Assert.IsTrue(result);
+        }
+
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
@@ -188,23 +205,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._folderManager.Setup(f => f.GetFolder(It.IsAny<int>())).Returns(new FolderInfo());
             this._fileManager.Setup(f => f.GetFile(It.IsAny<int>())).Returns(new FileInfo());
             this._folderPermissionController.Setup(f => f.CanViewFolder(It.IsAny<IFolderInfo>())).Returns(true);
-        }
-
-        [Test]
-        public void MessagingController_Constructor_Throws_On_Null_DataService()
-        {
-            // Arrange
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new MessagingController(null));
-        }
-
-        [Test]
-        public void AttachmentsAllowed_Returns_True_When_MessagingAllowAttachments_Setting_Is_YES()
-        {
-            this._mockMessagingController.Setup(mc => mc.GetPortalSetting("MessagingAllowAttachments", Constants.CONTENT_ValidPortalId, "YES")).Returns("YES");
-            var result = this._mockInternalMessagingController.Object.AttachmentsAllowed(Constants.CONTENT_ValidPortalId);
-            Assert.IsTrue(result);
         }
 
         [Test]

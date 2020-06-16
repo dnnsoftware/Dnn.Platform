@@ -31,19 +31,19 @@ namespace DotNetNuke.Instrumentation
 
         private class Logger : LoggerWrapperImpl, ILog
         {
+            private const string ConfigFile = "DotNetNuke.log4net.config";
             private static Level _levelTrace;
             private static Level _levelDebug;
             private static Level _levelInfo;
             private static Level _levelWarn;
             private static Level _levelError;
             private static Level _levelFatal;
+            private static bool _configured;
 
             // add custom logging levels (below trace value of 20000)
             //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
             //            internal static Level LevelLogError = new Level(10002, "LogError");
             private readonly Type _stackBoundary = typeof(DnnLogger);
-            private const string ConfigFile = "DotNetNuke.log4net.config";
-            private static bool _configured;
             private static readonly object ConfigLock = new object();
 
             internal Logger(ILogger logger, Type type)
@@ -52,6 +52,21 @@ namespace DotNetNuke.Instrumentation
                 this._stackBoundary = type ?? typeof(Logger);
                 EnsureConfig();
                 ReloadLevels(logger.Repository);
+            }
+
+            public bool IsDebugEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelDebug); }
+            }
+
+            public bool IsInfoEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelInfo); }
+            }
+
+            public bool IsTraceEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelTrace); }
             }
 
             private static void EnsureConfig()
@@ -131,21 +146,6 @@ namespace DotNetNuke.Instrumentation
                 {
                     // do nothing but just make sure no exception here.
                 }
-            }
-
-            public bool IsDebugEnabled
-            {
-                get { return this.Logger.IsEnabledFor(_levelDebug); }
-            }
-
-            public bool IsInfoEnabled
-            {
-                get { return this.Logger.IsEnabledFor(_levelInfo); }
-            }
-
-            public bool IsTraceEnabled
-            {
-                get { return this.Logger.IsEnabledFor(_levelTrace); }
             }
 
             public bool IsWarnEnabled

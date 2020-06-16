@@ -28,6 +28,15 @@ namespace DotNetNuke.Services.Social.Notifications
         private string _displayDate;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Notification"/> class.
+        /// Default constructor.
+        /// </summary>
+        public Notification()
+        {
+            this.SendToast = true;
+        }
+
+        /// <summary>
         /// Gets or sets notificationID - The primary key.
         /// </summary>
         [XmlAttribute]
@@ -137,15 +146,6 @@ namespace DotNetNuke.Services.Social.Notifications
         /// </summary>
         [XmlAttribute]
         public bool SendToast { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Notification"/> class.
-        /// Default constructor.
-        /// </summary>
-        public Notification()
-        {
-            this.SendToast = true;
-        }
 
         /// <summary>
         /// Fill the object with data from database.

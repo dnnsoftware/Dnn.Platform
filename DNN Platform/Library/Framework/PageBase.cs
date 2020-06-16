@@ -38,11 +38,11 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
-        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
         private PageStatePersister _persister;
         private readonly NameValueCollection _htmlAttributes = new NameValueCollection();
@@ -59,6 +59,22 @@ namespace DotNetNuke.Framework
         protected PageBase()
         {
             this._localizedControls = new ArrayList();
+        }
+
+        public PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
+        public NameValueCollection HtmlAttributes
+        {
+            get
+            {
+                return this._htmlAttributes;
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -91,22 +107,6 @@ namespace DotNetNuke.Framework
                 }
 
                 return this._persister;
-            }
-        }
-
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-
-        public NameValueCollection HtmlAttributes
-        {
-            get
-            {
-                return this._htmlAttributes;
             }
         }
 
@@ -149,169 +149,27 @@ namespace DotNetNuke.Framework
         /// </summary>
         public bool HeaderIsWritten { get; internal set; }
 
-        private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
+        /// <summary>
+        /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have
+        /// a bad attribute on it which could cause some older browsers problems.</para>
+        /// </summary>
+        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
+        public static void RemoveKeyAttribute(ArrayList affectedControls)
         {
-            if (this.Request.QueryString["error"] != null)
+            if (affectedControls == null)
             {
-                url += string.Concat(url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&", "error=terminate");
-            }
-            else
-            {
-                url += string.Concat(
-                    url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&",
-                    "error=",
-                    exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message));
-                if (!Globals.IsAdminControl() && hideContent)
-                {
-                    url += "&content=0";
-                }
+                return;
             }
 
-            return url;
-        }
-
-        private bool IsViewStateFailure(Exception e)
-        {
-            return !this.User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
-        }
-
-        private void IterateControls(ControlCollection controls, ArrayList affectedControls, string resourceFileRoot)
-        {
-            foreach (Control c in controls)
+            int i;
+            for (i = 0; i <= affectedControls.Count - 1; i++)
             {
-                this.ProcessControl(c, affectedControls, true, resourceFileRoot);
-                this.LogDnnTrace("PageBase.IterateControls", "Info", $"ControlId: {c.ID}");
+                var ac = (AttributeCollection)affectedControls[i];
+                ac.Remove(Localization.KeyName);
+                ac.Remove(IconController.IconKeyName);
+                ac.Remove(IconController.IconSizeName);
+                ac.Remove(IconController.IconStyleName);
             }
-        }
-
-        private void LogDnnTrace(string origin, string action, string message)
-        {
-            var tabId = -1;
-            if (this.PortalSettings?.ActiveTab != null)
-            {
-                tabId = this.PortalSettings.ActiveTab.TabID;
-            }
-
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
-            }
-        }
-
-        protected virtual void RegisterAjaxScript()
-        {
-            if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
-            {
-                ServicesFrameworkInternal.Instance.RegisterAjaxScript(this.Page);
-            }
-        }
-
-        protected override void OnError(EventArgs e)
-        {
-            base.OnError(e);
-            Exception exc = this.Server.GetLastError();
-            Logger.Fatal("An error has occurred while loading page.", exc);
-
-            string strURL = Globals.ApplicationURL();
-            if (exc is HttpException && !this.IsViewStateFailure(exc))
-            {
-                try
-                {
-                    // if the exception's status code set to 404, we need display 404 page if defined or show no found info.
-                    var statusCode = (exc as HttpException).GetHttpCode();
-                    if (statusCode == 404)
-                    {
-                        UrlUtils.Handle404Exception(this.Response, this.PortalSettings);
-                    }
-
-                    if (this.PortalSettings?.ErrorPage500 != -1)
-                    {
-                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc,
-                            false);
-                        HttpContext.Current.Response.Redirect(url);
-                    }
-                    else
-                    {
-                        HttpContext.Current.Response.Clear();
-                        HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
-                    }
-                }
-                catch (Exception)
-                {
-                    HttpContext.Current.Response.Clear();
-                    var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
-                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error=" + errorMessage);
-                }
-            }
-
-            strURL = this.GetErrorUrl(strURL, exc);
-            Exceptions.ProcessPageLoadException(exc, strURL);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
-            if (!isInstallPage)
-            {
-                Localization.SetThreadCultures(this.PageCulture, this.PortalSettings);
-            }
-
-            if (ScriptManager.GetCurrent(this) == null)
-            {
-                AJAX.AddScriptManager(this, !isInstallPage);
-            }
-
-            var dnncoreFilePath = HttpContext.Current.IsDebuggingEnabled
-                   ? "~/js/Debug/dnncore.js"
-                   : "~/js/dnncore.js";
-
-            ClientResourceManager.RegisterScript(this, dnncoreFilePath);
-
-            base.OnInit(e);
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            // Because we have delayed registration of the jQuery script,
-            // Modules can override the standard behavior by including their own script on the page.
-            // The module must register the script with the "jQuery" key and should notify user
-            // of potential version conflicts with core jQuery support.
-            // if (jQuery.IsRequested)
-            // {
-            //    jQuery.RegisterJQuery(Page);
-            // }
-            // if (jQuery.IsUIRequested)
-            // {
-            //    jQuery.RegisterJQueryUI(Page);
-            // }
-            // if (jQuery.AreDnnPluginsRequested)
-            // {
-            //    jQuery.RegisterDnnJQueryPlugins(Page);
-            // }
-            // if (jQuery.IsHoverIntentRequested)
-            // {
-            //    jQuery.RegisterHoverIntent(Page);
-            // }
-            if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
-            {
-                ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(this.Page);
-            }
-
-            this.RegisterAjaxScript();
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");
-
-            this.IterateControls(this.Controls, this._localizedControls, this.LocalResourceFile);
-            RemoveKeyAttribute(this._localizedControls);
-            AJAX.RemoveScriptManager(this);
-            base.Render(writer);
-
-            this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");
         }
 
         /// <summary>
@@ -369,102 +227,6 @@ namespace DotNetNuke.Framework
             }
 
             return key;
-        }
-
-        private void LocalizeControl(Control control, string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return;
-            }
-
-            var validator = control as BaseValidator;
-            if (validator != null)
-            {
-                validator.ErrorMessage = value;
-                validator.Text = value;
-                return;
-            }
-
-            var label = control as Label;
-            if (label != null)
-            {
-                label.Text = value;
-                return;
-            }
-
-            var linkButton = control as LinkButton;
-            if (linkButton != null)
-            {
-                var imgMatches = LinkItemMatchRegex.Matches(value);
-                foreach (Match match in imgMatches)
-                {
-                    if (match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1)
-                    {
-                        continue;
-                    }
-
-                    var resolvedUrl = this.Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
-                    value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
-                }
-
-                linkButton.Text = value;
-                if (string.IsNullOrEmpty(linkButton.ToolTip))
-                {
-                    linkButton.ToolTip = value;
-                }
-
-                return;
-            }
-
-            var hyperLink = control as HyperLink;
-            if (hyperLink != null)
-            {
-                hyperLink.Text = value;
-                return;
-            }
-
-            var button = control as Button;
-            if (button != null)
-            {
-                button.Text = value;
-                return;
-            }
-
-            var htmlButton = control as HtmlButton;
-            if (htmlButton != null)
-            {
-                htmlButton.Attributes["Title"] = value;
-                return;
-            }
-
-            var htmlImage = control as HtmlImage;
-            if (htmlImage != null)
-            {
-                htmlImage.Alt = value;
-                return;
-            }
-
-            var checkBox = control as CheckBox;
-            if (checkBox != null)
-            {
-                checkBox.Text = value;
-                return;
-            }
-
-            var image = control as Image;
-            if (image != null)
-            {
-                image.AlternateText = value;
-                image.ToolTip = value;
-                return;
-            }
-
-            var textBox = control as TextBox;
-            if (textBox != null)
-            {
-                textBox.ToolTip = value;
-            }
         }
 
         /// <summary>
@@ -611,26 +373,264 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <summary>
-        /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have
-        /// a bad attribute on it which could cause some older browsers problems.</para>
-        /// </summary>
-        /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
-        public static void RemoveKeyAttribute(ArrayList affectedControls)
+        protected virtual void RegisterAjaxScript()
         {
-            if (affectedControls == null)
+            if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
+            {
+                ServicesFrameworkInternal.Instance.RegisterAjaxScript(this.Page);
+            }
+        }
+
+        protected override void OnError(EventArgs e)
+        {
+            base.OnError(e);
+            Exception exc = this.Server.GetLastError();
+            Logger.Fatal("An error has occurred while loading page.", exc);
+
+            string strURL = Globals.ApplicationURL();
+            if (exc is HttpException && !this.IsViewStateFailure(exc))
+            {
+                try
+                {
+                    // if the exception's status code set to 404, we need display 404 page if defined or show no found info.
+                    var statusCode = (exc as HttpException).GetHttpCode();
+                    if (statusCode == 404)
+                    {
+                        UrlUtils.Handle404Exception(this.Response, this.PortalSettings);
+                    }
+
+                    if (this.PortalSettings?.ErrorPage500 != -1)
+                    {
+                        var url = this.GetErrorUrl(string.Concat("~/Default.aspx?tabid=", this.PortalSettings.ErrorPage500), exc,
+                            false);
+                        HttpContext.Current.Response.Redirect(url);
+                    }
+                    else
+                    {
+                        HttpContext.Current.Response.Clear();
+                        HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+                    }
+                }
+                catch (Exception)
+                {
+                    HttpContext.Current.Response.Clear();
+                    var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
+                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error=" + errorMessage);
+                }
+            }
+
+            strURL = this.GetErrorUrl(strURL, exc);
+            Exceptions.ProcessPageLoadException(exc, strURL);
+        }
+
+        private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
+        {
+            if (this.Request.QueryString["error"] != null)
+            {
+                url += string.Concat(url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&", "error=terminate");
+            }
+            else
+            {
+                url += string.Concat(
+                    url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&",
+                    "error=",
+                    exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message));
+                if (!Globals.IsAdminControl() && hideContent)
+                {
+                    url += "&content=0";
+                }
+            }
+
+            return url;
+        }
+
+        private bool IsViewStateFailure(Exception e)
+        {
+            return !this.User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
+        }
+
+        private void IterateControls(ControlCollection controls, ArrayList affectedControls, string resourceFileRoot)
+        {
+            foreach (Control c in controls)
+            {
+                this.ProcessControl(c, affectedControls, true, resourceFileRoot);
+                this.LogDnnTrace("PageBase.IterateControls", "Info", $"ControlId: {c.ID}");
+            }
+        }
+
+        private void LogDnnTrace(string origin, string action, string message)
+        {
+            var tabId = -1;
+            if (this.PortalSettings?.ActiveTab != null)
+            {
+                tabId = this.PortalSettings.ActiveTab.TabID;
+            }
+
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
+            if (!isInstallPage)
+            {
+                Localization.SetThreadCultures(this.PageCulture, this.PortalSettings);
+            }
+
+            if (ScriptManager.GetCurrent(this) == null)
+            {
+                AJAX.AddScriptManager(this, !isInstallPage);
+            }
+
+            var dnncoreFilePath = HttpContext.Current.IsDebuggingEnabled
+                   ? "~/js/Debug/dnncore.js"
+                   : "~/js/dnncore.js";
+
+            ClientResourceManager.RegisterScript(this, dnncoreFilePath);
+
+            base.OnInit(e);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            // Because we have delayed registration of the jQuery script,
+            // Modules can override the standard behavior by including their own script on the page.
+            // The module must register the script with the "jQuery" key and should notify user
+            // of potential version conflicts with core jQuery support.
+            // if (jQuery.IsRequested)
+            // {
+            //    jQuery.RegisterJQuery(Page);
+            // }
+            // if (jQuery.IsUIRequested)
+            // {
+            //    jQuery.RegisterJQueryUI(Page);
+            // }
+            // if (jQuery.AreDnnPluginsRequested)
+            // {
+            //    jQuery.RegisterDnnJQueryPlugins(Page);
+            // }
+            // if (jQuery.IsHoverIntentRequested)
+            // {
+            //    jQuery.RegisterHoverIntent(Page);
+            // }
+            if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
+            {
+                ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(this.Page);
+            }
+
+            this.RegisterAjaxScript();
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");
+
+            this.IterateControls(this.Controls, this._localizedControls, this.LocalResourceFile);
+            RemoveKeyAttribute(this._localizedControls);
+            AJAX.RemoveScriptManager(this);
+            base.Render(writer);
+
+            this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");
+        }
+
+        private void LocalizeControl(Control control, string value)
+        {
+            if (string.IsNullOrEmpty(value))
             {
                 return;
             }
 
-            int i;
-            for (i = 0; i <= affectedControls.Count - 1; i++)
+            var validator = control as BaseValidator;
+            if (validator != null)
             {
-                var ac = (AttributeCollection)affectedControls[i];
-                ac.Remove(Localization.KeyName);
-                ac.Remove(IconController.IconKeyName);
-                ac.Remove(IconController.IconSizeName);
-                ac.Remove(IconController.IconStyleName);
+                validator.ErrorMessage = value;
+                validator.Text = value;
+                return;
+            }
+
+            var label = control as Label;
+            if (label != null)
+            {
+                label.Text = value;
+                return;
+            }
+
+            var linkButton = control as LinkButton;
+            if (linkButton != null)
+            {
+                var imgMatches = LinkItemMatchRegex.Matches(value);
+                foreach (Match match in imgMatches)
+                {
+                    if (match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1)
+                    {
+                        continue;
+                    }
+
+                    var resolvedUrl = this.Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
+                    value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
+                }
+
+                linkButton.Text = value;
+                if (string.IsNullOrEmpty(linkButton.ToolTip))
+                {
+                    linkButton.ToolTip = value;
+                }
+
+                return;
+            }
+
+            var hyperLink = control as HyperLink;
+            if (hyperLink != null)
+            {
+                hyperLink.Text = value;
+                return;
+            }
+
+            var button = control as Button;
+            if (button != null)
+            {
+                button.Text = value;
+                return;
+            }
+
+            var htmlButton = control as HtmlButton;
+            if (htmlButton != null)
+            {
+                htmlButton.Attributes["Title"] = value;
+                return;
+            }
+
+            var htmlImage = control as HtmlImage;
+            if (htmlImage != null)
+            {
+                htmlImage.Alt = value;
+                return;
+            }
+
+            var checkBox = control as CheckBox;
+            if (checkBox != null)
+            {
+                checkBox.Text = value;
+                return;
+            }
+
+            var image = control as Image;
+            if (image != null)
+            {
+                image.AlternateText = value;
+                image.ToolTip = value;
+                return;
+            }
+
+            var textBox = control as TextBox;
+            if (textBox != null)
+            {
+                textBox.ToolTip = value;
             }
         }
     }

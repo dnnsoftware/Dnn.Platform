@@ -12,16 +12,16 @@ namespace DotNetNuke.Entities.DataStructures
     [DataContract]
     public class NTree<T>
     {
-        public NTree()
-        {
-            this.Children = new List<NTree<T>>();
-        }
-
         [DataMember(Name = "data")]
         public T Data;
 
         [DataMember(Name = "children")]
         public List<NTree<T>> Children;
+
+        public NTree()
+        {
+            this.Children = new List<NTree<T>>();
+        }
 
         public bool HasChildren()
         {

@@ -9,13 +9,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 
     public class UserModelBase
     {
-        public int UserId { get; set; }
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string LastLogin { get; set; }
-        public bool IsDeleted { get; set; }
-        public bool IsAuthorized { get; set; }
-        public bool IsLockedOut { get; set; }
         // provide a default field order for use of callers
         public static string[] FieldOrder =
         {
@@ -27,6 +20,13 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             "IsAuthorized",
             "IsLockedOut"
         };
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string LastLogin { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsAuthorized { get; set; }
+        public bool IsLockedOut { get; set; }
 
         public UserModelBase()
         {

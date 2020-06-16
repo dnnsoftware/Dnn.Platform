@@ -22,10 +22,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
     public class AddRoles : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_AddRoles_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("roles", "Prompt_AddRoles_FlagRoles", "String", true)]
         private const string FlagRoles = "roles";
@@ -40,20 +40,36 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private IUsersController _usersController;
         private IRolesController _rolesController;
 
+        public AddRoles() : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
+        {
+        }
+
         private int UserId { get; set; }
         private string Roles { get; set; }
         private DateTime? StartDate { get; set; }
         private DateTime? EndDate { get; set; }
-
-        public AddRoles() : this(new UserValidator(), UsersController.Instance, RolesController.Instance)
-        {
-        }
 
         public AddRoles(IUserValidator userValidator, IUsersController userController, IRolesController rolesController)
         {
             this._userValidator = userValidator;
             this._usersController = userController;
             this._rolesController = rolesController;
+        }
+
+        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
+        {
+            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
+            this.Roles = this.GetFlagValue(FlagRoles, "Roles", string.Empty, true);
+            this.StartDate = this.GetFlagValue<DateTime?>(FlagStart, "Start Date", null);
+            this.EndDate = this.GetFlagValue<DateTime?>(FlagEnd, "End Date", null);
+            // validate end date is beyond the start date
+            if (this.StartDate.HasValue && this.EndDate.HasValue)
+            {
+                if (this.EndDate < this.StartDate)
+                {
+                    this.AddMessage(this.LocalizeString("Prompt_StartDateGreaterThanEnd") + " ");
+                }
+            }
         }
 
         private void checkRoles()
@@ -75,22 +91,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 if (notFoundCount > 0)
                 {
                     throw new Exception(string.Format(this.LocalizeString("Prompt_AddRoles_NotFound"), notFoundCount > 1 ? "s" : "", string.Join(",", roleFiltersSet)));
-                }
-            }
-        }
-
-        public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {
-            this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
-            this.Roles = this.GetFlagValue(FlagRoles, "Roles", string.Empty, true);
-            this.StartDate = this.GetFlagValue<DateTime?>(FlagStart, "Start Date", null);
-            this.EndDate = this.GetFlagValue<DateTime?>(FlagEnd, "End Date", null);
-            // validate end date is beyond the start date
-            if (this.StartDate.HasValue && this.EndDate.HasValue)
-            {
-                if (this.EndDate < this.StartDate)
-                {
-                    this.AddMessage(this.LocalizeString("Prompt_StartDateGreaterThanEnd") + " ");
                 }
             }
         }

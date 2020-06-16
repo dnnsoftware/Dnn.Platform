@@ -12,8 +12,6 @@ namespace DotNetNuke.Entities.Urls
 
     public abstract class FriendlyUrlProviderBase
     {
-        protected UrlFormatType UrlFormat { get; private set; }
-
         internal FriendlyUrlProviderBase(NameValueCollection attributes)
         {
             if (!string.IsNullOrEmpty(attributes["urlFormat"]))
@@ -36,6 +34,8 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
         }
+
+        protected UrlFormatType UrlFormat { get; private set; }
 
         internal abstract string FriendlyUrl(TabInfo tab, string path);
 

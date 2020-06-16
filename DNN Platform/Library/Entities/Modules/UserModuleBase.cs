@@ -50,6 +50,59 @@ namespace DotNetNuke.Entities.Modules
         private UserInfo _User;
 
         /// <summary>
+        /// Gets or sets and sets the User associated with this control.
+        /// </summary>
+        public UserInfo User
+        {
+            get
+            {
+                return this._User ?? (this._User = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
+            }
+
+            set
+            {
+                this._User = value;
+                if (this._User != null)
+                {
+                    this.UserId = this._User.UserID;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets and sets the UserId associated with this control.
+        /// </summary>
+        public new int UserId
+        {
+            get
+            {
+                int _UserId = Null.NullInteger;
+                if (this.ViewState["UserId"] == null)
+                {
+                    if (this.Request.QueryString["userid"] != null)
+                    {
+                        int userId;
+
+                        // Use Int32.MaxValue as invalid UserId
+                        _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
+                        this.ViewState["UserId"] = _UserId;
+                    }
+                }
+                else
+                {
+                    _UserId = Convert.ToInt32(this.ViewState["UserId"]);
+                }
+
+                return _UserId;
+            }
+
+            set
+            {
+                this.ViewState["UserId"] = value;
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether gets whether we are in Add User mode.
         /// </summary>
         protected virtual bool AddUser
@@ -189,59 +242,6 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets or sets and sets the User associated with this control.
-        /// </summary>
-        public UserInfo User
-        {
-            get
-            {
-                return this._User ?? (this._User = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
-            }
-
-            set
-            {
-                this._User = value;
-                if (this._User != null)
-                {
-                    this.UserId = this._User.UserID;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets and sets the UserId associated with this control.
-        /// </summary>
-        public new int UserId
-        {
-            get
-            {
-                int _UserId = Null.NullInteger;
-                if (this.ViewState["UserId"] == null)
-                {
-                    if (this.Request.QueryString["userid"] != null)
-                    {
-                        int userId;
-
-                        // Use Int32.MaxValue as invalid UserId
-                        _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
-                        this.ViewState["UserId"] = _UserId;
-                    }
-                }
-                else
-                {
-                    _UserId = Convert.ToInt32(this.ViewState["UserId"]);
-                }
-
-                return _UserId;
-            }
-
-            set
-            {
-                this.ViewState["UserId"] = value;
-            }
-        }
-
-        /// <summary>
         /// Gets a Setting for the Module.
         /// </summary>
         /// <remarks>
@@ -284,6 +284,31 @@ namespace DotNetNuke.Entities.Modules
                 setting = Convert.ToString(settingsEnumerator.Value);
                 UpdateSetting(portalId, key, setting);
             }
+        }
+
+        /// <summary>
+        /// AddLocalizedModuleMessage adds a localized module message.
+        /// </summary>
+        /// <param name="message">The localized message.</param>
+        /// <param name="type">The type of message.</param>
+        /// <param name="display">A flag that determines whether the message should be displayed.</param>
+        protected void AddLocalizedModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
+        {
+            if (display)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, message, type);
+            }
+        }
+
+        /// <summary>
+        /// AddModuleMessage adds a module message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="type">The type of message.</param>
+        /// <param name="display">A flag that determines whether the message should be displayed.</param>
+        protected void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
+        {
+            this.AddLocalizedModuleMessage(Localization.GetString(message, this.LocalResourceFile), type, display);
         }
 
         /// <summary>
@@ -399,31 +424,6 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return country;
-        }
-
-        /// <summary>
-        /// AddLocalizedModuleMessage adds a localized module message.
-        /// </summary>
-        /// <param name="message">The localized message.</param>
-        /// <param name="type">The type of message.</param>
-        /// <param name="display">A flag that determines whether the message should be displayed.</param>
-        protected void AddLocalizedModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
-        {
-            if (display)
-            {
-                UI.Skins.Skin.AddModuleMessage(this, message, type);
-            }
-        }
-
-        /// <summary>
-        /// AddModuleMessage adds a module message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="type">The type of message.</param>
-        /// <param name="display">A flag that determines whether the message should be displayed.</param>
-        protected void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
-        {
-            this.AddLocalizedModuleMessage(Localization.GetString(message, this.LocalResourceFile), type, display);
         }
 
         protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)

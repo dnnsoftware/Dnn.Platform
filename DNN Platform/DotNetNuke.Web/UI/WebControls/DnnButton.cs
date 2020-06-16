@@ -52,34 +52,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (!this.Enabled)
-            {
-                this.CssClass = this.DisabledCssClass;
-            }
-
-            if (!string.IsNullOrEmpty(this.ConfirmMessage))
-            {
-                string msg = this.ConfirmMessage;
-                if (this.Localize)
-                {
-                    msg = Utilities.GetLocalizedStringFromParent(this.ConfirmMessage, this);
-                }
-
-                // must be done before render
-                this.OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
-            }
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            base.Render(writer);
-        }
-
         public bool Localize
         {
             get
@@ -128,6 +100,34 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (!this.Enabled)
+            {
+                this.CssClass = this.DisabledCssClass;
+            }
+
+            if (!string.IsNullOrEmpty(this.ConfirmMessage))
+            {
+                string msg = this.ConfirmMessage;
+                if (this.Localize)
+                {
+                    msg = Utilities.GetLocalizedStringFromParent(this.ConfirmMessage, this);
+                }
+
+                // must be done before render
+                this.OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
+            }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
         }
     }
 }

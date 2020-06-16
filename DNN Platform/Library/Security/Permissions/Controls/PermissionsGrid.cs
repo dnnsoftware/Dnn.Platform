@@ -30,6 +30,8 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected const string PermissionTypeGrant = "True";
         protected const string PermissionTypeDeny = "False";
         protected const string PermissionTypeNull = "Null";
+        protected DataGrid rolePermissionsGrid;
+        protected DataGrid userPermissionsGrid;
         private ArrayList _permissions;
         private ArrayList _users;
         private DropDownList cboRoleGroups;
@@ -43,58 +45,15 @@ namespace DotNetNuke.Security.Permissions.Controls
         private TextBox txtUser;
         private HiddenField hiddenUserIds;
         private HiddenField roleField;
-        protected DataGrid rolePermissionsGrid;
-        protected DataGrid userPermissionsGrid;
+
+        private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser);
+
+        private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
 
         public PermissionsGrid()
         {
             this.dtUserPermissions = new DataTable();
             this.dtRolePermissions = new DataTable();
-        }
-
-        private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser);
-
-        private int UnAuthUsersRoleId
-        {
-            get { return this.unAuthUsersRoleId; }
-        }
-
-        private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
-
-        private int AllUsersRoleId
-        {
-            get
-            {
-                return this.allUsersRoleId;
-            }
-        }
-
-        protected virtual List<PermissionInfoBase> PermissionsList
-        {
-            get
-            {
-                return null;
-            }
-        }
-
-        protected virtual bool RefreshGrid
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel.
-        /// </summary>
-        /// <remarks>
-        /// No need to call this unless using the PermissionGrid inside an ajax control that omits scripts on postback
-        /// See DesktopModules/Admin/Tabs.ascx.cs for an example of usage.
-        /// </remarks>
-        public void RegisterScriptsForAjaxPanel()
-        {
-            PermissionTriState.RegisterScripts(this.Page, this);
         }
 
         public TableItemStyle AlternatingItemStyle
@@ -131,6 +90,47 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this.rolePermissionsGrid.CellSpacing = value;
                 this.userPermissionsGrid.CellSpacing = value;
             }
+        }
+
+        protected virtual List<PermissionInfoBase> PermissionsList
+        {
+            get
+            {
+                return null;
+            }
+        }
+
+        protected virtual bool RefreshGrid
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        private int UnAuthUsersRoleId
+        {
+            get { return this.unAuthUsersRoleId; }
+        }
+
+        private int AllUsersRoleId
+        {
+            get
+            {
+                return this.allUsersRoleId;
+            }
+        }
+
+        /// <summary>
+        /// Registers the scripts neccesary to make the tri-state controls work inside a RadAjaxPanel.
+        /// </summary>
+        /// <remarks>
+        /// No need to call this unless using the PermissionGrid inside an ajax control that omits scripts on postback
+        /// See DesktopModules/Admin/Tabs.ascx.cs for an example of usage.
+        /// </remarks>
+        public void RegisterScriptsForAjaxPanel()
+        {
+            PermissionTriState.RegisterScripts(this.Page, this);
         }
 
         public DataGridColumnCollection Columns
@@ -280,6 +280,19 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// Generate the Data Grid.
         /// </summary>
         public abstract void GenerateDataGrid();
+
+        protected virtual void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
+        {
+        }
+
+        /// <summary>
+        /// Updates a Permission.
+        /// </summary>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="user">The user to add.</param>
+        protected virtual void AddPermission(ArrayList permissions, UserInfo user)
+        {
+        }
 
         private void BindData()
         {
@@ -639,19 +652,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);
         }
 
-        protected virtual void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
-        {
-        }
-
-        /// <summary>
-        /// Updates a Permission.
-        /// </summary>
-        /// <param name="permissions">The permissions collection.</param>
-        /// <param name="user">The user to add.</param>
-        protected virtual void AddPermission(ArrayList permissions, UserInfo user)
-        {
-        }
-
         /// <summary>
         /// Updates a Permission.
         /// </summary>
@@ -781,6 +781,30 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.Controls.Add(this.pnlPermissions);
         }
 
+        /// <summary>
+        /// Gets the Enabled status of the permission.
+        /// </summary>
+        /// <param name="objPerm">The permission being loaded.</param>
+        /// <param name="role">The role.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <returns></returns>
+        protected virtual bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the Enabled status of the permission.
+        /// </summary>
+        /// <param name="objPerm">The permission being loaded.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="column">The column of the Grid.</param>
+        /// <returns></returns>
+        protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
+        {
+            return true;
+        }
+
         private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
@@ -842,30 +866,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             addRoleControls.Controls.Add(divSelectRole);
 
             this.pnlPermissions.Controls.Add(addRoleControls);
-        }
-
-        /// <summary>
-        /// Gets the Enabled status of the permission.
-        /// </summary>
-        /// <param name="objPerm">The permission being loaded.</param>
-        /// <param name="role">The role.</param>
-        /// <param name="column">The column of the Grid.</param>
-        /// <returns></returns>
-        protected virtual bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Gets the Enabled status of the permission.
-        /// </summary>
-        /// <param name="objPerm">The permission being loaded.</param>
-        /// <param name="user">The user.</param>
-        /// <param name="column">The column of the Grid.</param>
-        /// <returns></returns>
-        protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
-        {
-            return true;
         }
 
         /// <summary>

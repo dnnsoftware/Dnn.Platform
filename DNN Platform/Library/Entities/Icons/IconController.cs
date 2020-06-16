@@ -41,13 +41,15 @@ namespace DotNetNuke.Entities.Icons
     /// </remarks>
     public class IconController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
         public const string DefaultIconSize = "16X16";
         public const string DefaultLargeIconSize = "32X32";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
         public const string DefaultIconStyle = "Standard";
         public const string IconKeyName = "IconKey";
         public const string IconSizeName = "IconSize";
         public const string IconStyleName = "IconStyle";
+
+        private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
 
         /// <summary>
         /// Gets the Icon URL.
@@ -113,7 +115,22 @@ namespace DotNetNuke.Entities.Icons
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
-        private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
+        public static string[] GetIconSets()
+        {
+            string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, "icons");
+            var iconRootDir = new DirectoryInfo(iconPhysicalPath);
+            string result = string.Empty;
+            foreach (var iconDir in iconRootDir.EnumerateDirectories())
+            {
+                string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
+                if (File.Exists(testFile))
+                {
+                    result += iconDir.Name + ",";
+                }
+            }
+
+            return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+        }
 
         private static void CheckIconOnDisk(string path)
         {
@@ -137,23 +154,6 @@ namespace DotNetNuke.Entities.Icons
                     }
                 }
             }
-        }
-
-        public static string[] GetIconSets()
-        {
-            string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, "icons");
-            var iconRootDir = new DirectoryInfo(iconPhysicalPath);
-            string result = string.Empty;
-            foreach (var iconDir in iconRootDir.EnumerateDirectories())
-            {
-                string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
-                if (File.Exists(testFile))
-                {
-                    result += iconDir.Name + ",";
-                }
-            }
-
-            return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

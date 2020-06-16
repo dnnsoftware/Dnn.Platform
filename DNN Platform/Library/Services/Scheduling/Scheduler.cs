@@ -24,6 +24,11 @@ namespace DotNetNuke.Services.Scheduling
 
         internal static class CoreScheduler
         {
+            // If KeepRunning gets switched to false,
+            // the scheduler stops running.
+            public static bool KeepThreadAlive = true;
+            public static bool KeepRunning = true;
+
             // This is the heart of the scheduler mechanism.
             // This class manages running new events according
             // to the schedule.
@@ -63,11 +68,6 @@ namespace DotNetNuke.Services.Scheduling
             private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
             private static ScheduleStatus _status = ScheduleStatus.STOPPED;
 
-            // If KeepRunning gets switched to false,
-            // the scheduler stops running.
-            public static bool KeepThreadAlive = true;
-            public static bool KeepRunning = true;
-
             static CoreScheduler()
             {
                 var lockStrategy = new ReaderWriterLockStrategy(LockRecursionPolicy.SupportsRecursion);
@@ -75,6 +75,8 @@ namespace DotNetNuke.Services.Scheduling
                 ScheduleQueue = new SharedList<ScheduleItem>(lockStrategy);
                 ScheduleInProgress = new SharedList<ScheduleHistoryItem>(lockStrategy);
             }
+
+            private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
 
             /// <summary>
             /// Gets tracks how many threads we have free to work with at any given time.
@@ -84,6 +86,85 @@ namespace DotNetNuke.Services.Scheduling
                 get
                 {
                     return _maxThreadCount - _activeThreadCount;
+                }
+            }
+
+            public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
+            {
+                try
+                {
+                    int scheduleHistoryID = SchedulingController.AddScheduleHistory(scheduleHistoryItem);
+                    scheduleHistoryItem.ScheduleHistoryID = scheduleHistoryID;
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.Exceptions.ProcessSchedulerException(exc);
+                }
+
+                return scheduleHistoryItem;
+            }
+
+            /// <summary>
+            /// Adds an item to the collection of schedule items in queue.
+            /// </summary>
+            /// <param name="scheduleHistoryItem"></param>
+            /// <remarks>Thread Safe.</remarks>
+            public static void AddToScheduleQueue(ScheduleHistoryItem scheduleHistoryItem)
+            {
+                if (!ScheduleQueueContains(scheduleHistoryItem))
+                {
+                    try
+                    {
+                        // objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
+                        using (ScheduleQueue.GetWriteLock(LockTimeout))
+                        {
+                            // Do a second check just in case
+                            if (!ScheduleQueueContains(scheduleHistoryItem) &&
+                                !IsInProgress(scheduleHistoryItem))
+                            {
+                                // It is safe for this thread to read or write
+                                // from the shared resource.
+                                ScheduleQueue.Add(scheduleHistoryItem);
+                            }
+                        }
+                    }
+                    catch (ApplicationException ex)
+                    {
+                        // The writer lock request timed out.
+                        Interlocked.Increment(ref _writerTimeouts);
+                        Exceptions.Exceptions.LogException(ex);
+                    }
+                }
+            }
+
+            internal static bool IsInQueue(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleQueue.GetReadLock(LockTimeout))
+                    {
+                        return ScheduleQueue.Any(si => si.ScheduleID == scheduleItem.ScheduleID);
+                    }
+                }
+                catch (ApplicationException)
+                {
+                    // The reader lock request timed out.
+                    Interlocked.Increment(ref _readerTimeouts);
+                    return false;
+                }
+            }
+
+            internal static ServerInfo GetServer(string executingServer)
+            {
+                try
+                {
+                    return ServerController.GetServers().FirstOrDefault(
+                        s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled);
+                }
+                catch (Exception)
+                {
+                    // catches edge-case where schedule runs before webserver registration
+                    return null;
                 }
             }
 
@@ -229,87 +310,6 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            internal static bool IsInQueue(ScheduleItem scheduleItem)
-            {
-                try
-                {
-                    using (ScheduleQueue.GetReadLock(LockTimeout))
-                    {
-                        return ScheduleQueue.Any(si => si.ScheduleID == scheduleItem.ScheduleID);
-                    }
-                }
-                catch (ApplicationException)
-                {
-                    // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
-                    return false;
-                }
-            }
-
-            internal static ServerInfo GetServer(string executingServer)
-            {
-                try
-                {
-                    return ServerController.GetServers().FirstOrDefault(
-                        s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled);
-                }
-                catch (Exception)
-                {
-                    // catches edge-case where schedule runs before webserver registration
-                    return null;
-                }
-            }
-
-            public static ScheduleHistoryItem AddScheduleHistory(ScheduleHistoryItem scheduleHistoryItem)
-            {
-                try
-                {
-                    int scheduleHistoryID = SchedulingController.AddScheduleHistory(scheduleHistoryItem);
-                    scheduleHistoryItem.ScheduleHistoryID = scheduleHistoryID;
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.Exceptions.ProcessSchedulerException(exc);
-                }
-
-                return scheduleHistoryItem;
-            }
-
-            /// <summary>
-            /// Adds an item to the collection of schedule items in queue.
-            /// </summary>
-            /// <param name="scheduleHistoryItem"></param>
-            /// <remarks>Thread Safe.</remarks>
-            public static void AddToScheduleQueue(ScheduleHistoryItem scheduleHistoryItem)
-            {
-                if (!ScheduleQueueContains(scheduleHistoryItem))
-                {
-                    try
-                    {
-                        // objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
-                        using (ScheduleQueue.GetWriteLock(LockTimeout))
-                        {
-                            // Do a second check just in case
-                            if (!ScheduleQueueContains(scheduleHistoryItem) &&
-                                !IsInProgress(scheduleHistoryItem))
-                            {
-                                // It is safe for this thread to read or write
-                                // from the shared resource.
-                                ScheduleQueue.Add(scheduleHistoryItem);
-                            }
-                        }
-                    }
-                    catch (ApplicationException ex)
-                    {
-                        // The writer lock request timed out.
-                        Interlocked.Increment(ref _writerTimeouts);
-                        Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-            }
-
-            private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
-
             public static void FireEvents()
             {
                 // This method uses a thread pool to
@@ -383,6 +383,16 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
+            public static int GetActiveThreadCount()
+            {
+                return _activeThreadCount;
+            }
+
+            public static int GetFreeThreadCount()
+            {
+                return FreeThreads;
+            }
+
             private static void LogWhyTaskNotRun(ScheduleItem scheduleItem)
             {
                 if (_debug)
@@ -446,16 +456,6 @@ namespace DotNetNuke.Services.Scheduling
                     log.LogTypeKey = "DEBUG";
                     LogController.Instance.AddLog(log);
                 }
-            }
-
-            public static int GetActiveThreadCount()
-            {
-                return _activeThreadCount;
-            }
-
-            public static int GetFreeThreadCount()
-            {
-                return FreeThreads;
             }
 
             public static int GetMaxThreadCount()
@@ -756,13 +756,6 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            private static string ServerGroupServers(ServerInfo thisServer)
-            {
-                // Get the servers
-                var servers = ServerController.GetEnabledServers().Where(s => s.ServerGroup == thisServer.ServerGroup);
-                return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
-            }
-
             public static void PurgeScheduleHistory()
             {
                 SchedulingController.PurgeScheduleHistory();
@@ -771,6 +764,13 @@ namespace DotNetNuke.Services.Scheduling
             public static void ReloadSchedule()
             {
                 _forceReloadSchedule = true;
+            }
+
+            private static string ServerGroupServers(ServerInfo thisServer)
+            {
+                // Get the servers
+                var servers = ServerController.GetEnabledServers().Where(s => s.ServerGroup == thisServer.ServerGroup);
+                return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
             }
 
             /// <summary>
@@ -1347,30 +1347,6 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            internal static void InitializeThreadPool(bool boolDebug, int maxThreads)
-            {
-                _debug = boolDebug;
-                lock (typeof(CoreScheduler))
-                {
-                    if (!_threadPoolInitialized)
-                    {
-                        _threadPoolInitialized = true;
-                        if (maxThreads == -1)
-                        {
-                            maxThreads = 1;
-                        }
-
-                        _numberOfProcessGroups = maxThreads;
-                        _maxThreadCount = maxThreads;
-                        for (int i = 0; i < _numberOfProcessGroups; i++)
-                        {
-                            Array.Resize(ref _processGroup, i + 1);
-                            _processGroup[i] = new ProcessGroup();
-                        }
-                    }
-                }
-            }
-
             // DNN-5001
             public static void StopScheduleInProgress(ScheduleItem scheduleItem, ScheduleHistoryItem runningscheduleHistoryItem)
             {
@@ -1496,6 +1472,30 @@ namespace DotNetNuke.Services.Scheduling
                 catch (Exception exc)
                 {
                     Exceptions.Exceptions.ProcessSchedulerException(exc);
+                }
+            }
+
+            internal static void InitializeThreadPool(bool boolDebug, int maxThreads)
+            {
+                _debug = boolDebug;
+                lock (typeof(CoreScheduler))
+                {
+                    if (!_threadPoolInitialized)
+                    {
+                        _threadPoolInitialized = true;
+                        if (maxThreads == -1)
+                        {
+                            maxThreads = 1;
+                        }
+
+                        _numberOfProcessGroups = maxThreads;
+                        _maxThreadCount = maxThreads;
+                        for (int i = 0; i < _numberOfProcessGroups; i++)
+                        {
+                            Array.Resize(ref _processGroup, i + 1);
+                            _processGroup[i] = new ProcessGroup();
+                        }
+                    }
                 }
             }
         }

@@ -45,14 +45,14 @@ namespace DotNetNuke.Modules.Admin.Modules
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
         private readonly INavigationManager _navigationManager;
 
+        private int _moduleId = -1;
+        private Control _control;
+        private ModuleInfo _module;
+
         public ModuleSettingsPage()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private int _moduleId = -1;
-        private Control _control;
-        private ModuleInfo _module;
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
 
@@ -79,6 +79,63 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
+        }
+
+        protected string GetInstalledOnLink(object dataItem)
+        {
+            var returnValue = new StringBuilder();
+            var tab = dataItem as TabInfo;
+            if (tab != null)
+            {
+                var index = 0;
+                TabController.Instance.PopulateBreadCrumbs(ref tab);
+                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
+                                        .OrderByDescending(a => a.IsPrimary)
+                                        .FirstOrDefault();
+                var portalSettings = new PortalSettings(tab.PortalID)
+                {
+                    PortalAlias = defaultAlias,
+                };
+
+                var tabUrl = this._navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
+
+                foreach (TabInfo t in tab.BreadCrumbs)
+                {
+                    if (index > 0)
+                    {
+                        returnValue.Append(" > ");
+                    }
+
+                    if (tab.BreadCrumbs.Count - 1 == index)
+                    {
+                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", tabUrl, t.LocalizedTabName);
+                    }
+                    else
+                    {
+                        returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                    }
+
+                    index = index + 1;
+                }
+            }
+
+            return returnValue.ToString();
+        }
+
+        protected string GetInstalledOnSite(object dataItem)
+        {
+            string returnValue = string.Empty;
+            var tab = dataItem as TabInfo;
+            if (tab != null)
+            {
+                var portal = PortalController.Instance.GetPortal(tab.PortalID);
+                if (portal != null)
+                {
+                    returnValue = portal.PortalName;
+                }
+            }
+
+            return returnValue;
         }
 
         private void BindData()
@@ -244,63 +301,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             return value == null
                 ? defaultValue
                 : bool.Parse(value.ToString());
-        }
-
-        protected string GetInstalledOnLink(object dataItem)
-        {
-            var returnValue = new StringBuilder();
-            var tab = dataItem as TabInfo;
-            if (tab != null)
-            {
-                var index = 0;
-                TabController.Instance.PopulateBreadCrumbs(ref tab);
-                var defaultAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID)
-                                        .OrderByDescending(a => a.IsPrimary)
-                                        .FirstOrDefault();
-                var portalSettings = new PortalSettings(tab.PortalID)
-                {
-                    PortalAlias = defaultAlias,
-                };
-
-                var tabUrl = this._navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
-
-                foreach (TabInfo t in tab.BreadCrumbs)
-                {
-                    if (index > 0)
-                    {
-                        returnValue.Append(" > ");
-                    }
-
-                    if (tab.BreadCrumbs.Count - 1 == index)
-                    {
-                        returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", tabUrl, t.LocalizedTabName);
-                    }
-                    else
-                    {
-                        returnValue.AppendFormat("{0}", t.LocalizedTabName);
-                    }
-
-                    index = index + 1;
-                }
-            }
-
-            return returnValue.ToString();
-        }
-
-        protected string GetInstalledOnSite(object dataItem)
-        {
-            string returnValue = string.Empty;
-            var tab = dataItem as TabInfo;
-            if (tab != null)
-            {
-                var portal = PortalController.Instance.GetPortal(tab.PortalID);
-                if (portal != null)
-                {
-                    returnValue = portal.PortalName;
-                }
-            }
-
-            return returnValue;
         }
 
         protected bool IsSharedViewOnly()

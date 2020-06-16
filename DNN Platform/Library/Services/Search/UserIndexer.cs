@@ -140,13 +140,6 @@ namespace DotNetNuke.Services.Search
             return totalIndexed;
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
-            return total;
-        }
-
         private static int FindModifiedUsers(int portalId, DateTime startDateLocal,
             IDictionary<string, SearchDocument> searchDocuments, IList<ProfilePropertyDefinition> profileDefinitions, out IList<int> indexedUsers,
             ref int startUserId)
@@ -309,6 +302,13 @@ namespace DotNetNuke.Services.Search
                 searchDoc.Keywords.Add("createdondate", userSearch.CreatedOnDate.ToString(Constants.DateTimeFormat));
                 searchDocuments.Add(searchDoc.UniqueKey, searchDoc);
             }
+        }
+
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
+            return total;
         }
 
         private static UserSearch GetUserSearch(IDataRecord reader)

@@ -15,16 +15,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>,
                         IJavaScriptLibraryController
     {
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
-        }
-
-        protected override Func<IJavaScriptLibraryController> GetFactory()
-        {
-            return () => new JavaScriptLibraryController();
-        }
-
         /// <summary>Delete the library reference from the database.</summary>
         /// <param name="library">Library to be deleted.</param>
         public void DeleteLibrary(JavaScriptLibrary library)
@@ -42,6 +32,16 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public JavaScriptLibrary GetLibrary(Func<JavaScriptLibrary, bool> predicate)
         {
             return this.GetLibraries(predicate).OrderByDescending(l => l.Version).FirstOrDefault();
+        }
+
+        protected override Func<IJavaScriptLibraryController> GetFactory()
+        {
+            return () => new JavaScriptLibraryController();
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(DataCache.JavaScriptLibrariesCacheKey);
         }
 
         /// <summary>Gets all of the <see cref="JavaScriptLibrary"/> instances matching the given <paramref name="predicate"/>.</summary>

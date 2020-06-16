@@ -31,6 +31,35 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Loads the Post Back Data and determines whether the value has change.
+        /// </summary>
+        /// <remarks>
+        ///   In this case because the <see cref = "_fileControl" /> is a contained control, we do not need
+        ///   to process the PostBackData (it has been handled by the File Control).  We just use
+        ///   this method as the Framework calls it for us.
+        /// </remarks>
+        /// <param name = "postDataKey">A key to the PostBack Data to load.</param>
+        /// <param name = "postCollection">A name value collection of postback data.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            bool dataChanged = false;
+            string presentValue = this.StringValue;
+
+            // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
+            string postedValue = this._fileControl.FileID.ToString();
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
+
+            return dataChanged;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Creates the control contained within this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -91,35 +120,6 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Loads the Post Back Data and determines whether the value has change.
-        /// </summary>
-        /// <remarks>
-        ///   In this case because the <see cref = "_fileControl" /> is a contained control, we do not need
-        ///   to process the PostBackData (it has been handled by the File Control).  We just use
-        ///   this method as the Framework calls it for us.
-        /// </remarks>
-        /// <param name = "postDataKey">A key to the PostBack Data to load.</param>
-        /// <param name = "postCollection">A name value collection of postback data.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            bool dataChanged = false;
-            string presentValue = this.StringValue;
-
-            // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
-            string postedValue = this._fileControl.FileID.ToString();
-            if (!presentValue.Equals(postedValue))
-            {
-                this.Value = postedValue;
-                dataChanged = true;
-            }
-
-            return dataChanged;
         }
     }
 }

@@ -44,12 +44,9 @@ namespace DotNetNuke.UI.ControlPanels
 
     public partial class ControlBar : ControlPanelBase
     {
-        private readonly INavigationManager _navigationManager;
+        protected DnnFileUpload FileUploader;
 
-        public ControlBar()
-        {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
+        private readonly INavigationManager _navigationManager;
 
         private readonly IList<string> _adminCommonTabs = new List<string>
         {
@@ -72,7 +69,28 @@ namespace DotNetNuke.UI.ControlPanels
                                                                             "Software and Documentation",
         };
 
-        protected DnnFileUpload FileUploader;
+        private List<string> _adminBookmarkItems;
+
+        public ControlBar()
+        {
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        private List<string> _hostBookmarkItems;
+
+        private List<TabInfo> _adminTabs;
+        private List<TabInfo> _adminBaseTabs;
+        private List<TabInfo> _adminAdvancedTabs;
+
+        public override bool IsDockable { get; set; }
+
+        public override bool IncludeInControlHierarchy
+        {
+            get
+            {
+                return base.IncludeInControlHierarchy && (this.IsPageAdmin() || this.IsModuleAdmin());
+            }
+        }
 
         protected string CurrentUICulture { get; set; }
 
@@ -102,13 +120,45 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        public override bool IsDockable { get; set; }
-
-        public override bool IncludeInControlHierarchy
+        protected List<string> AdminBookmarkItems
         {
             get
             {
-                return base.IncludeInControlHierarchy && (this.IsPageAdmin() || this.IsModuleAdmin());
+                if (this._adminBookmarkItems == null)
+                {
+                    var bookmarkItems = Personalization.GetProfile("ControlBar", "admin" + this.PortalSettings.PortalId);
+
+                    this._adminBookmarkItems = bookmarkItems != null
+                                                ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                                                : new List<string>();
+                }
+
+                return this._adminBookmarkItems;
+            }
+        }
+
+        protected List<string> HostBookmarkItems
+        {
+            get
+            {
+                if (this._hostBookmarkItems == null)
+                {
+                    var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + this.PortalSettings.PortalId);
+
+                    this._hostBookmarkItems = bookmarkItems != null
+                                            ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
+                                            : new List<string>();
+                }
+
+                return this._hostBookmarkItems;
+            }
+        }
+
+        private new string LocalResourceFile
+        {
+            get
+            {
+                return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType?.Name);
             }
         }
 
@@ -197,29 +247,6 @@ namespace DotNetNuke.UI.ControlPanels
             return string.Empty;
         }
 
-        private void LoadCustomMenuItems()
-        {
-            foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
-            {
-                var liElement = new HtmlGenericControl("li");
-                liElement.Attributes.Add("id", menuItem.ID + "_tab");
-
-                var control = this.Page.LoadControl(menuItem.Source);
-                control.ID = menuItem.ID;
-
-                liElement.Controls.Add(control);
-
-                this.CustomMenuItems.Controls.Add(liElement);
-            }
-        }
-
-        private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
-        {
-            return string.Format(
-                "<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
-                upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, this.ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
-        }
-
         protected string PreviewPopup()
         {
             var previewUrl = string.Format(
@@ -279,6 +306,29 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             return resultPanes;
+        }
+
+        private void LoadCustomMenuItems()
+        {
+            foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
+            {
+                var liElement = new HtmlGenericControl("li");
+                liElement.Attributes.Add("id", menuItem.ID + "_tab");
+
+                var control = this.Page.LoadControl(menuItem.Source);
+                control.ID = menuItem.ID;
+
+                liElement.Controls.Add(control);
+
+                this.CustomMenuItems.Controls.Add(liElement);
+            }
+        }
+
+        private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
+        {
+            return string.Format(
+                "<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
+                upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, this.ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
         protected string GetString(string key)
@@ -807,12 +857,23 @@ namespace DotNetNuke.UI.ControlPanels
             return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
         }
 
-        private new string LocalResourceFile
+        private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()
         {
-            get
+            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
+
+            var result = (from @group in groups
+                          select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                              into portals
+                          where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                          select portals.ToArray()).FirstOrDefault();
+
+            // Are we in a group of one?
+            if (result == null || result.Length == 0)
             {
-                return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType?.Name);
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
             }
+
+            return result;
         }
 
         private void LoadCategoryList()
@@ -856,25 +917,6 @@ namespace DotNetNuke.UI.ControlPanels
             this.VisibilityLst.DataTextField = "value";
             this.VisibilityLst.DataSource = items;
             this.VisibilityLst.DataBind();
-        }
-
-        private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()
-        {
-            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-
-            var result = (from @group in groups
-                          select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                              into portals
-                          where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                          select portals.ToArray()).FirstOrDefault();
-
-            // Are we in a group of one?
-            if (result == null || result.Length == 0)
-            {
-                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
-            }
-
-            return result;
         }
 
         private void AutoSetUserMode()
@@ -966,48 +1008,6 @@ namespace DotNetNuke.UI.ControlPanels
                 }
             }
         }
-
-        private List<string> _adminBookmarkItems;
-
-        protected List<string> AdminBookmarkItems
-        {
-            get
-            {
-                if (this._adminBookmarkItems == null)
-                {
-                    var bookmarkItems = Personalization.GetProfile("ControlBar", "admin" + this.PortalSettings.PortalId);
-
-                    this._adminBookmarkItems = bookmarkItems != null
-                                                ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
-                                                : new List<string>();
-                }
-
-                return this._adminBookmarkItems;
-            }
-        }
-
-        private List<string> _hostBookmarkItems;
-
-        protected List<string> HostBookmarkItems
-        {
-            get
-            {
-                if (this._hostBookmarkItems == null)
-                {
-                    var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + this.PortalSettings.PortalId);
-
-                    this._hostBookmarkItems = bookmarkItems != null
-                                            ? bookmarkItems.ToString().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
-                                            : new List<string>();
-                }
-
-                return this._hostBookmarkItems;
-            }
-        }
-
-        private List<TabInfo> _adminTabs;
-        private List<TabInfo> _adminBaseTabs;
-        private List<TabInfo> _adminAdvancedTabs;
         private List<TabInfo> _hostTabs;
         private List<TabInfo> _hostBaseTabs;
         private List<TabInfo> _hostAdvancedTabs;
@@ -1062,6 +1062,23 @@ namespace DotNetNuke.UI.ControlPanels
 
                 return this._hostAdvancedTabs;
             }
+        }
+
+        protected bool IsBeaconEnabled
+        {
+            get
+            {
+                var user = UserController.Instance.GetCurrentUserInfo();
+                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
+            }
+        }
+
+        protected string GetBeaconUrl()
+        {
+            var beaconService = BeaconService.Instance;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var path = this.PortalSettings.ActiveTab.TabPath;
+            return beaconService.GetBeaconUrl(user, path);
         }
 
         private void GetHostTabs()
@@ -1125,23 +1142,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             return isHost ? this._hostCommonTabs.Contains(tab.TabName) : this._adminCommonTabs.Contains(tab.TabName);
-        }
-
-        protected string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var path = this.PortalSettings.ActiveTab.TabPath;
-            return beaconService.GetBeaconUrl(user, path);
-        }
-
-        protected bool IsBeaconEnabled
-        {
-            get
-            {
-                var user = UserController.Instance.GetCurrentUserInfo();
-                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
-            }
         }
     }
 }

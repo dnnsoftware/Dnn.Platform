@@ -242,6 +242,11 @@ namespace DotNetNuke.Entities.Content.Workflow
             return this._dataProvider.GetContentWorkflowStateUsageCount(stateId);
         }
 
+        protected override Func<IWorkflowStateManager> GetFactory()
+        {
+            return () => new WorkflowStateManager();
+        }
+
         private int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
         {
             int i = 0;
@@ -280,11 +285,6 @@ namespace DotNetNuke.Entities.Content.Workflow
                     this.MoveWorkflowStateDown(state.StateID);
                 }
             }
-        }
-
-        protected override Func<IWorkflowStateManager> GetFactory()
-        {
-            return () => new WorkflowStateManager();
         }
     }
 }

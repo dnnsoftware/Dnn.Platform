@@ -133,33 +133,6 @@ namespace DotNetNuke.Services.Search
             return totalIndexed;
         }
 
-        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
-        {
-            foreach (var searchItem in searchItems)
-            {
-                searchItem.ModuleDefId = module.ModuleDefID;
-                searchItem.ModuleId = module.ModuleID;
-                if (string.IsNullOrEmpty(searchItem.CultureCode))
-                {
-                    searchItem.CultureCode = module.CultureCode;
-                }
-
-                if (Null.IsNull(searchItem.ModifiedTimeUtc))
-                {
-                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
-                }
-            }
-        }
-
-        private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Count;
-            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
-            return total;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Returns a collection of SearchDocuments containing module metadata (title, header, footer...) of Searchable Modules.
@@ -246,6 +219,33 @@ namespace DotNetNuke.Services.Search
             };
 
             return searchDoc;
+        }
+
+        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
+        {
+            foreach (var searchItem in searchItems)
+            {
+                searchItem.ModuleDefId = module.ModuleDefID;
+                searchItem.ModuleId = module.ModuleID;
+                if (string.IsNullOrEmpty(searchItem.CultureCode))
+                {
+                    searchItem.CultureCode = module.CultureCode;
+                }
+
+                if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                {
+                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                }
+            }
+        }
+
+        private int IndexCollectedDocs(
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Count;
+            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
+            return total;
         }
 #pragma warning restore 0618
 

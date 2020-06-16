@@ -127,6 +127,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
+        private static void UnassignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
+        {
+            foreach (var portal in portals)
+            {
+                DesktopModuleController.RemoveDesktopModuleFromPortal(portal.Id, desktopModule.DesktopModuleID, true);
+            }
+        }
+
         private PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)
         {
             var permissions = new PermissionsDto(true);
@@ -252,14 +260,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 }
             }
             DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
-        }
-
-        private static void UnassignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
-        {
-            foreach (var portal in portals)
-            {
-                DesktopModuleController.RemoveDesktopModuleFromPortal(portal.Id, desktopModule.DesktopModuleID, true);
-            }
         }
 
         private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)

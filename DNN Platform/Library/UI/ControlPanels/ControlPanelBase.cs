@@ -34,6 +34,46 @@ namespace DotNetNuke.UI.ControlPanels
     {
         private string _localResourceFile;
 
+        protected enum ViewPermissionType
+        {
+            View = 0,
+            Edit = 1,
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Local ResourceFile for the Control Panel.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public string LocalResourceFile
+        {
+            get
+            {
+                string fileRoot;
+                if (string.IsNullOrEmpty(this._localResourceFile))
+                {
+                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
+                }
+                else
+                {
+                    fileRoot = this._localResourceFile;
+                }
+
+                return fileRoot;
+            }
+
+            set
+            {
+                this._localResourceFile = value;
+            }
+        }
+
+        public virtual bool IncludeInControlHierarchy
+        {
+            get { return true; }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the ControlPanel is Visible.
@@ -75,54 +115,10 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Local ResourceFile for the Control Panel.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public string LocalResourceFile
-        {
-            get
-            {
-                string fileRoot;
-                if (string.IsNullOrEmpty(this._localResourceFile))
-                {
-                    fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
-                }
-                else
-                {
-                    fileRoot = this._localResourceFile;
-                }
-
-                return fileRoot;
-            }
-
-            set
-            {
-                this._localResourceFile = value;
-            }
-        }
-
-        public virtual bool IncludeInControlHierarchy
-        {
-            get { return true; }
-        }
-
         public virtual bool IsDockable
         {
             get { return false; }
             set { }
-        }
-
-        protected bool IsModuleAdmin()
-        {
-            return IsModuleAdminInternal();
-        }
-
-        protected bool IsPageAdmin()
-        {
-            return IsPageAdminInternal();
         }
 
         internal static bool IsModuleAdminInternal()
@@ -156,33 +152,14 @@ namespace DotNetNuke.UI.ControlPanels
             return _IsPageAdmin;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a Module Permission.
-        /// </summary>
-        /// <param name="objModule">Module Info.</param>
-        /// <param name="permission">The permission to add.</param>
-        /// <param name="roleId">The Id of the role to add the permission for.</param>
-        /// <param name="userId">Operator.</param>
-        /// <param name="allowAccess">Whether allow to access the module.</param>
-        /// -----------------------------------------------------------------------------
-        private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        protected bool IsModuleAdmin()
         {
-            var objModulePermission = new ModulePermissionInfo();
-            objModulePermission.ModuleID = objModule.ModuleID;
-            objModulePermission.PermissionID = permission.PermissionID;
-            objModulePermission.RoleID = roleId;
-            objModulePermission.UserID = userId;
-            objModulePermission.PermissionKey = permission.PermissionKey;
-            objModulePermission.AllowAccess = allowAccess;
+            return IsModuleAdminInternal();
+        }
 
-            // add the permission to the collection
-            if (!objModule.ModulePermissions.Contains(objModulePermission))
-            {
-                objModule.ModulePermissions.Add(objModulePermission);
-            }
-
-            return objModulePermission;
+        protected bool IsPageAdmin()
+        {
+            return IsPageAdminInternal();
         }
 
         /// -----------------------------------------------------------------------------
@@ -381,6 +358,35 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Adds a Module Permission.
+        /// </summary>
+        /// <param name="objModule">Module Info.</param>
+        /// <param name="permission">The permission to add.</param>
+        /// <param name="roleId">The Id of the role to add the permission for.</param>
+        /// <param name="userId">Operator.</param>
+        /// <param name="allowAccess">Whether allow to access the module.</param>
+        /// -----------------------------------------------------------------------------
+        private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        {
+            var objModulePermission = new ModulePermissionInfo();
+            objModulePermission.ModuleID = objModule.ModuleID;
+            objModulePermission.PermissionID = permission.PermissionID;
+            objModulePermission.RoleID = roleId;
+            objModulePermission.UserID = userId;
+            objModulePermission.PermissionKey = permission.PermissionKey;
+            objModulePermission.AllowAccess = allowAccess;
+
+            // add the permission to the collection
+            if (!objModule.ModulePermissions.Contains(objModulePermission))
+            {
+                objModule.ModulePermissions.Add(objModulePermission);
+            }
+
+            return objModulePermission;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Builds a URL.
         /// </summary>
         /// <param name="FriendlyName">The friendly name of the Module.</param>
@@ -451,12 +457,6 @@ namespace DotNetNuke.UI.ControlPanels
                 this.Page.Items[typeof(ControlPanelBase)] = this;
                 base.OnInit(e);
             }
-        }
-
-        protected enum ViewPermissionType
-        {
-            View = 0,
-            Edit = 1,
         }
     }
 }

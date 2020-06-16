@@ -54,6 +54,42 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cboFile.SelectedIndexChanged += this.OnFileIndexChanged;
+            this.cmdUpdate.Click += this.OnUpdateClick;
+
+            if (this.Page.IsPostBack == false)
+            {
+                this.cmdCancel.NavigateUrl = this.ReturnURL;
+
+                var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
+                if (objModuleControl != null)
+                {
+                    this.BindFiles(objModuleControl.ControlSrc);
+                }
+
+                if (this.Request.UrlReferrer != null)
+                {
+                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
+                }
+                else
+                {
+                    this.ViewState["UrlReferrer"] = string.Empty;
+                }
+            }
+
+            this.cmdUpdate.Visible = this.CanEditSource;
+            this.txtSource.Enabled = this.CanEditSource;
+        }
+
+        protected void OnFileIndexChanged(object sender, EventArgs e)
+        {
+            this.DisplayFile();
+        }
+
         private void BindFiles(string controlSrc)
         {
             this.cboFile.Items.Clear();
@@ -131,42 +167,6 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.lblSourceFile.Visible = displaySource;
                 this.trSource.Visible = displaySource;
             }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cboFile.SelectedIndexChanged += this.OnFileIndexChanged;
-            this.cmdUpdate.Click += this.OnUpdateClick;
-
-            if (this.Page.IsPostBack == false)
-            {
-                this.cmdCancel.NavigateUrl = this.ReturnURL;
-
-                var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
-                if (objModuleControl != null)
-                {
-                    this.BindFiles(objModuleControl.ControlSrc);
-                }
-
-                if (this.Request.UrlReferrer != null)
-                {
-                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
-                }
-                else
-                {
-                    this.ViewState["UrlReferrer"] = string.Empty;
-                }
-            }
-
-            this.cmdUpdate.Visible = this.CanEditSource;
-            this.txtSource.Enabled = this.CanEditSource;
-        }
-
-        protected void OnFileIndexChanged(object sender, EventArgs e)
-        {
-            this.DisplayFile();
         }
 
         private void OnUpdateClick(object sender, EventArgs e)

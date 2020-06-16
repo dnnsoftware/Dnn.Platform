@@ -17,8 +17,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     [ConsoleCommand("list-pages", Constants.PagesCategory, "Prompt_ListPages_Description")]
     public class ListPages : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
-
         [FlagParameter("parentid", "Prompt_ListPages_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
@@ -45,6 +43,8 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
+
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int? ParentId { get; set; } = -1;
         private bool? Deleted { get; set; }

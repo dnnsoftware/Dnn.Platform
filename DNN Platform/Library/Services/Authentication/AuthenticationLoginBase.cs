@@ -18,14 +18,16 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLoginBase : UserModuleBase
     {
-        public delegate void UserAuthenticatedEventHandler(object sender, UserAuthenticatedEventArgs e);
-
         protected AuthenticationLoginBase()
         {
             this.RedirectURL = Null.NullString;
             this.AuthenticationType = Null.NullString;
             this.Mode = AuthMode.Login;
         }
+
+        public delegate void UserAuthenticatedEventHandler(object sender, UserAuthenticatedEventArgs e);
+
+        public event UserAuthenticatedEventHandler UserAuthenticated;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -83,7 +85,11 @@ namespace DotNetNuke.Services.Authentication
             get { return false; }
         }
 
-        public event UserAuthenticatedEventHandler UserAuthenticated;
+        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
+        public static string GetIPAddress()
+        {
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
+        }
 
         protected virtual void OnUserAuthenticated(UserAuthenticatedEventArgs ea)
         {
@@ -91,12 +97,6 @@ namespace DotNetNuke.Services.Authentication
             {
                 this.UserAuthenticated(null, ea);
             }
-        }
-
-        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
-        public static string GetIPAddress()
-        {
-            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
         }
     }
 }

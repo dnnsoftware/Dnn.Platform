@@ -11,6 +11,8 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnGridColumn : GridColumn
     {
+        private string _HeaderText;
+
         public string LocalResourceFile
         {
             get
@@ -18,16 +20,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent);
             }
         }
-
-        public override GridColumn Clone()
-        {
-            var dnnGridColumn = new DnnGridColumn();
-            dnnGridColumn.CopyBaseProperties(this);
-            dnnGridColumn.setHeaderText = this.HeaderText;
-            return dnnGridColumn;
-        }
-
-        private string _HeaderText;
 
         public override string HeaderText
         {
@@ -54,6 +46,14 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 base.HeaderText = value;
             }
+        }
+
+        public override GridColumn Clone()
+        {
+            var dnnGridColumn = new DnnGridColumn();
+            dnnGridColumn.CopyBaseProperties(this);
+            dnnGridColumn.setHeaderText = this.HeaderText;
+            return dnnGridColumn;
         }
     }
 }

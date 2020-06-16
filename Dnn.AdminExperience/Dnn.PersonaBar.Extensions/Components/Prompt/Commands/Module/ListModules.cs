@@ -18,10 +18,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("list-modules", Constants.ModulesCategory, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("name", "Prompt_ListModules_FlagModuleName", "String")]
         private const string FlagModuleName = "name";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("title", "Prompt_ListModules_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";

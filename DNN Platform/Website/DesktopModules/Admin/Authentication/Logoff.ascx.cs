@@ -21,31 +21,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Logoff : UserModuleBase
     {
-        private void Redirect()
-        {
-            // Redirect browser back to portal
-            this.Response.Redirect(AuthenticationController.GetLogoffRedirectURL(this.PortalSettings, this.Request), true);
-        }
-
-        private void DoLogoff()
-        {
-            try
-            {
-                // Remove user from cache
-                if (this.User != null)
-                {
-                    DataCache.ClearUserCache(this.PortalSettings.PortalId, this.Context.User.Identity.Name);
-                }
-
-                var objPortalSecurity = PortalSecurity.Instance;
-                objPortalSecurity.SignOut();
-            }
-            catch (Exception exc)   // Page failed to load
-            {
-                Exceptions.ProcessPageLoadException(exc);
-            }
-        }
-
         /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
@@ -97,6 +72,31 @@ namespace DotNetNuke.Modules.Admin.Authentication
         protected void UserLogOff(object sender, EventArgs e)
         {
             this.DoLogoff();
+        }
+
+        private void Redirect()
+        {
+            // Redirect browser back to portal
+            this.Response.Redirect(AuthenticationController.GetLogoffRedirectURL(this.PortalSettings, this.Request), true);
+        }
+
+        private void DoLogoff()
+        {
+            try
+            {
+                // Remove user from cache
+                if (this.User != null)
+                {
+                    DataCache.ClearUserCache(this.PortalSettings.PortalId, this.Context.User.Identity.Name);
+                }
+
+                var objPortalSecurity = PortalSecurity.Instance;
+                objPortalSecurity.SignOut();
+            }
+            catch (Exception exc)   // Page failed to load
+            {
+                Exceptions.ProcessPageLoadException(exc);
+            }
         }
 
         protected void UserRedirect(object sender, EventArgs e)

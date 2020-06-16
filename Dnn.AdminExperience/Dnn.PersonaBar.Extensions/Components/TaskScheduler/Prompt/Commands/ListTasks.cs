@@ -17,10 +17,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     [ConsoleCommand("list-tasks", Constants.SchedulerCategory, "Prompt_ListTasks_Description")]
     public class ListTasks : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("enabled", "Prompt_ListTasks_FlagEnabled", "Boolean")]
         private const string FlagEnabled = "enabled";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("name", "Prompt_ListTasks_FlagName", "String")]
         private const string FlagName = "name";

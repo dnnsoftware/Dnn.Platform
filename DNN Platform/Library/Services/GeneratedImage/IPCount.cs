@@ -25,6 +25,13 @@ namespace DotNetNuke.Services.GeneratedImage
         private static TimeSpan _purgeInterval;
         private static readonly object FileLock = new object();
 
+        static IPCount()
+        {
+            PurgeInterval = new TimeSpan(0, 10, 0);
+            MaxCount = 500;
+            CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
+        }
+
         public static string CachePath
         {
             get { return _cachePath; }
@@ -92,13 +99,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 File.WriteAllText(CachePath + "_lastpurge", string.Empty);
             }
-        }
-
-        static IPCount()
-        {
-            PurgeInterval = new TimeSpan(0, 10, 0);
-            MaxCount = 500;
-            CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
         public static bool CheckIp(string ipAddress)
@@ -173,13 +173,6 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        private static string BuildFilePath(string ipAddress)
-        {
-            // it takes only the IP address without PORT for the file name
-            var fileName = ipAddress.Split(':')[0];
-            return CachePath + fileName + TempFileExtension;
-        }
-
         /// <summary>
         /// method to get Client ip address.
         /// </summary>
@@ -188,6 +181,13 @@ namespace DotNetNuke.Services.GeneratedImage
         public static string GetVisitorIPAddress(HttpContextBase context)
         {
             return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
+        }
+
+        private static string BuildFilePath(string ipAddress)
+        {
+            // it takes only the IP address without PORT for the file name
+            var fileName = ipAddress.Split(':')[0];
+            return CachePath + fileName + TempFileExtension;
         }
     }
 }

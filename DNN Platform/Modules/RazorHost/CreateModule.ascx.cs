@@ -62,6 +62,33 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdCreate.Click += this.cmdCreate_Click;
+            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
+        }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+            {
+                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+            }
+
+            if (!this.Page.IsPostBack)
+            {
+                this.LoadScripts();
+                this.DisplayFile();
+            }
+        }
+
         private void Create()
         {
             // Create new Folder
@@ -256,33 +283,6 @@ namespace DotNetNuke.Modules.RazorHost
 
             this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
             this.lblModuleControl.Text = string.Format(Localization.GetString("SourceControl", this.LocalResourceFile), this.ModuleControl);
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdCreate.Click += this.cmdCreate_Click;
-            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
-            {
-                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
-            }
-
-            if (!this.Page.IsPostBack)
-            {
-                this.LoadScripts();
-                this.DisplayFile();
-            }
         }
 
         private void cmdCancel_Click(object sender, EventArgs e)

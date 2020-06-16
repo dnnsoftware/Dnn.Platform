@@ -22,6 +22,10 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     /// </summary>
     public class PersonaBarMenuInstaller : ComponentInstallerBase
     {
+        private readonly IList<MenuItem> _menuItems = new List<MenuItem>();
+        private readonly IList<PersonaBarExtension> _extensions = new List<PersonaBarExtension>();
+        private readonly IList<PermissionDefinition> _permissionDefinitions = new List<PermissionDefinition>();
+
         private struct PermissionDefinition
         {
             public string Identifier { get; set; }
@@ -30,10 +34,6 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
             public string Name { get; set; }
         }
-
-        private readonly IList<MenuItem> _menuItems = new List<MenuItem>();
-        private readonly IList<PersonaBarExtension> _extensions = new List<PersonaBarExtension>();
-        private readonly IList<PermissionDefinition> _permissionDefinitions = new List<PermissionDefinition>();
         private readonly IDictionary<string, string> _extensionMenus = new Dictionary<string, string>();
         private readonly IDictionary<string, string> _menuRoles = new Dictionary<string, string>();
         private readonly IDictionary<string, string> _parentMaps = new Dictionary<string, string>();

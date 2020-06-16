@@ -23,12 +23,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("add-module", Constants.ModulesCategory, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        [FlagParameter("name", "Prompt_AddModule_FlagModuleName", "String", true)]
+        private const string FlagModuleName = "name";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
-        [FlagParameter("name", "Prompt_AddModule_FlagModuleName", "String", true)]
-        private const string FlagModuleName = "name";
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_AddModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";

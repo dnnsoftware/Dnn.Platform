@@ -40,6 +40,10 @@ namespace DotNetNuke.Web.Mvc
             context.BeginRequest += InitDnn;
         }
 
+        public void Dispose()
+        {
+        }
+
         private static void InitDnn(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
@@ -47,10 +51,6 @@ namespace DotNetNuke.Web.Mvc
             {
                 Initialize.Init(app);
             }
-        }
-
-        public void Dispose()
-        {
         }
 
         /// <summary>

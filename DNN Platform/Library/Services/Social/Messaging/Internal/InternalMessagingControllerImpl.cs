@@ -384,6 +384,31 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return this._dataService.GetMessageAttachmentsByMessage(messageId);
         }
 
+        public void ConvertLegacyMessages(int pageIndex, int pageSize)
+        {
+            this._dataService.ConvertLegacyMessages(pageIndex, pageSize);
+        }
+
+        public int CountLegacyMessages()
+        {
+            var totalRecords = 0;
+            var dr = this._dataService.CountLegacyMessages();
+
+            try
+            {
+                while (dr.Read())
+                {
+                    totalRecords = Convert.ToInt32(dr["TotalRecords"]);
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return totalRecords;
+        }
+
         internal virtual DateTime GetDateTimeNow()
         {
             return DateTime.UtcNow;
@@ -418,31 +443,6 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         {
             var ps = PortalSecurity.Instance;
             return ps.InputFilter(input, PortalSecurity.FilterFlag.NoProfanity);
-        }
-
-        public void ConvertLegacyMessages(int pageIndex, int pageSize)
-        {
-            this._dataService.ConvertLegacyMessages(pageIndex, pageSize);
-        }
-
-        public int CountLegacyMessages()
-        {
-            var totalRecords = 0;
-            var dr = this._dataService.CountLegacyMessages();
-
-            try
-            {
-                while (dr.Read())
-                {
-                    totalRecords = Convert.ToInt32(dr["TotalRecords"]);
-                }
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return totalRecords;
         }
 
         public IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)

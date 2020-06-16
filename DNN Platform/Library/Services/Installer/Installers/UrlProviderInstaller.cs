@@ -31,24 +31,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        private void DeleteProvider()
-        {
-            try
-            {
-                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
-                if (tempUrlProvider != null)
-                {
-                    ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
-
-                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
@@ -89,6 +71,24 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 this.Completed = true;
                 this.Log.AddInfo(string.Format(Util.URLPROVIDER_Registered, this._extensionUrlProvider.ProviderName));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
+        }
+
+        private void DeleteProvider()
+        {
+            try
+            {
+                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
+                if (tempUrlProvider != null)
+                {
+                    ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
+
+                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
+                }
             }
             catch (Exception ex)
             {

@@ -25,18 +25,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string _originalValue;
 
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
-        public event EventHandler ItemChanged;
-
-        public event EventHandler ModeChanged;
-
         public DnnLanguageComboBox()
         {
             this.AutoPostBack = Null.NullBoolean;
@@ -46,6 +34,22 @@ namespace DotNetNuke.Web.UI.WebControls
             this.HideLanguagesList = new Dictionary<string, Locale>();
             this.FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
             this._viewTypePersonalizationKey = "ViewType" + this.PortalId;
+        }
+
+        public event EventHandler ItemChanged;
+
+        public event EventHandler ModeChanged;
+
+        public string FlagImageUrlFormatString { get; set; }
+
+        public Dictionary<string, Locale> HideLanguagesList { get; set; }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
         }
 
         private string DisplayMode
@@ -61,10 +65,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return displayMode;
             }
         }
-
-        public string FlagImageUrlFormatString { get; set; }
-
-        public Dictionary<string, Locale> HideLanguagesList { get; set; }
 
         public bool IncludeNoneSpecified { get; set; }
 
@@ -150,6 +150,25 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._englishCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
                 this._nativeCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
             }
+        }
+
+        public void SetLanguage(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                this._nativeCombo.SelectedIndex = this._nativeCombo.FindItemIndexByValue("None");
+                this._englishCombo.SelectedIndex = this._englishCombo.FindItemIndexByValue("None");
+            }
+            else
+            {
+                this._nativeCombo.SelectedIndex = this._nativeCombo.FindItemIndexByValue(code);
+                this._englishCombo.SelectedIndex = this._englishCombo.FindItemIndexByValue(code);
+            }
+        }
+
+        public override void DataBind()
+        {
+            this.BindData(!this.Page.IsPostBack);
         }
 
         protected override void OnInit(EventArgs e)
@@ -242,25 +261,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this._nativeCombo.Width = this.Width;
 
             base.OnPreRender(e);
-        }
-
-        public void SetLanguage(string code)
-        {
-            if (string.IsNullOrEmpty(code))
-            {
-                this._nativeCombo.SelectedIndex = this._nativeCombo.FindItemIndexByValue("None");
-                this._englishCombo.SelectedIndex = this._englishCombo.FindItemIndexByValue("None");
-            }
-            else
-            {
-                this._nativeCombo.SelectedIndex = this._nativeCombo.FindItemIndexByValue(code);
-                this._englishCombo.SelectedIndex = this._englishCombo.FindItemIndexByValue(code);
-            }
-        }
-
-        public override void DataBind()
-        {
-            this.BindData(!this.Page.IsPostBack);
         }
 
         private void ModeChangedInternal(object sender, EventArgs e)

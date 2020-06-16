@@ -20,10 +20,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
     public class SetUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
         [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
@@ -43,6 +43,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private readonly IUsersController _usersController;
         private readonly IUserControllerWrapper _userControllerWrapper;
 
+        public SetUser() : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
+        {
+        }
+
         private int? UserId { get; set; }
         private string Email { get; set; }
         private string Username { get; set; }
@@ -51,10 +55,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private string LastName { get; set; }
         private bool? Approved { get; set; }
         private string Password { get; set; }
-
-        public SetUser() : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
-        {
-        }
 
         public SetUser(IUserValidator userValidator, IUsersController usersController, IUserControllerWrapper userControllerWrapper)
         {

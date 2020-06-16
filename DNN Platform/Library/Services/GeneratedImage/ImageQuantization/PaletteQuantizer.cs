@@ -16,6 +16,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class PaletteQuantizer : Quantizer
     {
         /// <summary>
+        /// List of all colors in the palette.
+        /// </summary>
+        protected Color[] _colors;
+
+        /// <summary>
+        /// Lookup table for colors.
+        /// </summary>
+        private readonly Hashtable _colorMap;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PaletteQuantizer"/> class.
         /// Construct the palette quantizer.
         /// </summary>
@@ -119,15 +129,5 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
             return palette;
         }
-
-        /// <summary>
-        /// Lookup table for colors.
-        /// </summary>
-        private readonly Hashtable _colorMap;
-
-        /// <summary>
-        /// List of all colors in the palette.
-        /// </summary>
-        protected Color[] _colors;
     }
 }

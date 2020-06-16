@@ -68,53 +68,6 @@ namespace DotNetNuke.HttpModules.Membership
         }
 
         /// <summary>
-        /// Initializes the specified application.
-        /// </summary>
-        /// <param name="application">The application.</param>
-        public void Init(HttpApplication application)
-        {
-            application.AuthenticateRequest += this.OnAuthenticateRequest;
-            application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
-        }
-
-        /// <summary>
-        /// Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.
-        /// </summary>
-        public void Dispose()
-        {
-        }
-
-        private void OnAuthenticateRequest(object sender, EventArgs e)
-        {
-            var application = (HttpApplication)sender;
-            AuthenticateRequest(new HttpContextWrapper(application.Context), false);
-        }
-
-        // DNN-6973: if the authentication cookie set by cookie slide in membership,
-        // then use SignIn method instead if current portal is in portal group.
-        private void OnPreSendRequestHeaders(object sender, EventArgs e)
-        {
-            var application = (HttpApplication)sender;
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
-                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
-            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
-            {
-                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
-                if (isInPortalGroup)
-                {
-                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
-                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
-                    {
-                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Called when unverified user skin initialize.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -233,6 +186,53 @@ namespace DotNetNuke.HttpModules.Membership
             if (context.Items["UserInfo"] == null)
             {
                 context.Items.Add("UserInfo", new UserInfo());
+            }
+        }
+
+        /// <summary>
+        /// Initializes the specified application.
+        /// </summary>
+        /// <param name="application">The application.</param>
+        public void Init(HttpApplication application)
+        {
+            application.AuthenticateRequest += this.OnAuthenticateRequest;
+            application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
+        }
+
+        /// <summary>
+        /// Disposes of the resources (other than memory) used by the module that implements <see cref="T:System.Web.IHttpModule" />.
+        /// </summary>
+        public void Dispose()
+        {
+        }
+
+        private void OnAuthenticateRequest(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+            AuthenticateRequest(new HttpContextWrapper(application.Context), false);
+        }
+
+        // DNN-6973: if the authentication cookie set by cookie slide in membership,
+        // then use SignIn method instead if current portal is in portal group.
+        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var application = (HttpApplication)sender;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
+                                    && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
+            if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
+            {
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalSettings.PortalId);
+                if (isInPortalGroup)
+                {
+                    var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
+                    if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value) && string.IsNullOrEmpty(authCookie.Domain))
+                    {
+                        application.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                        PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
+                    }
+                }
             }
         }
 

@@ -14,19 +14,17 @@ namespace DotNetNuke.Services.GeneratedImage
     {
         private readonly DataBindingCollection _dataBindings = new DataBindingCollection();
 
+        public event EventHandler DataBinding;
+
         public string Name { get; set; }
 
         public string Value { get; set; }
 
-        public event EventHandler DataBinding;
+        public Control BindingContainer { get; internal set; }
 
-        internal void DataBind()
-        {
-            if (this.DataBinding != null)
-            {
-                this.DataBinding(this, EventArgs.Empty);
-            }
-        }
+        DataBindingCollection IDataBindingsAccessor.DataBindings => this._dataBindings;
+
+        bool IDataBindingsAccessor.HasDataBindings => this._dataBindings.Count != 0;
 
         public override string ToString()
         {
@@ -38,10 +36,12 @@ namespace DotNetNuke.Services.GeneratedImage
             return string.Format(CultureInfo.InvariantCulture, "{0} = {1}", this.Name, this.Value);
         }
 
-        public Control BindingContainer { get; internal set; }
-
-        DataBindingCollection IDataBindingsAccessor.DataBindings => this._dataBindings;
-
-        bool IDataBindingsAccessor.HasDataBindings => this._dataBindings.Count != 0;
+        internal void DataBind()
+        {
+            if (this.DataBinding != null)
+            {
+                this.DataBinding(this, EventArgs.Empty);
+            }
+        }
     }
 }

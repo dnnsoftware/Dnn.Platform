@@ -15,10 +15,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("purge-user", Constants.RecylcleBinCategory, "Prompt_PurgeUser_Description")]
     public class PurgeUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_PurgeUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int UserId { get; set; }
 

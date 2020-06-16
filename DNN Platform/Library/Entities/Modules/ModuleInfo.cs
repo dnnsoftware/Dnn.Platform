@@ -517,6 +517,34 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public override int KeyID
+        {
+            get
+            {
+                return this.ModuleID;
+            }
+
+            set
+            {
+                this.ModuleID = value;
+            }
+        }
+
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Fills a ModuleInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -609,26 +637,6 @@ namespace DotNetNuke.Entities.Modules
             catch (Exception exc)
             {
                 Logger.Error(exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public override int KeyID
-        {
-            get
-            {
-                return this.ModuleID;
-            }
-
-            set
-            {
-                this.ModuleID = value;
             }
         }
 
@@ -943,14 +951,6 @@ namespace DotNetNuke.Entities.Modules
             }
 
             return result;
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
         }
 
         public ModuleInfo Clone()

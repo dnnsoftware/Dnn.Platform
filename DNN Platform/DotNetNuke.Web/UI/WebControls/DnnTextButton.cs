@@ -82,25 +82,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            if (!this.Enabled && !string.IsNullOrEmpty(this.DisabledCssClass))
-            {
-                this.CssClass = this.DisabledCssClass;
-            }
-
-            writer.AddAttribute("class", this.CssClass.Trim());
-            base.Render(writer);
-        }
-
         public bool Localize
         {
             get
@@ -140,6 +121,25 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            if (!this.Enabled && !string.IsNullOrEmpty(this.DisabledCssClass))
+            {
+                this.CssClass = this.DisabledCssClass;
+            }
+
+            writer.AddAttribute("class", this.CssClass.Trim());
+            base.Render(writer);
         }
     }
 }

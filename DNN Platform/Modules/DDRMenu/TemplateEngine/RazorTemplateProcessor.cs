@@ -50,27 +50,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
         }
 
-        private StringWriter RenderTemplate(string virtualPath, dynamic model)
-        {
-            var page = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
-            var httpContext = new HttpContextWrapper(HttpContext.Current);
-            var pageContext = new WebPageContext(httpContext, page, model);
-
-            var writer = new StringWriter();
-
-            if (page is WebPage)
-            {
-                page.ExecutePageHierarchy(pageContext, writer);
-            }
-            else
-            {
-                var razorEngine = new RazorEngine(virtualPath, null, null);
-                razorEngine.Render<dynamic>(writer, model);
-            }
-
-            return writer;
-        }
-
         protected static string ConvertToJson(List<ClientOption> options)
         {
             var result = new StringBuilder();
@@ -107,6 +86,27 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             result.Append("}");
             return result.ToString();
+        }
+
+        private StringWriter RenderTemplate(string virtualPath, dynamic model)
+        {
+            var page = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
+            var httpContext = new HttpContextWrapper(HttpContext.Current);
+            var pageContext = new WebPageContext(httpContext, page, model);
+
+            var writer = new StringWriter();
+
+            if (page is WebPage)
+            {
+                page.ExecutePageHierarchy(pageContext, writer);
+            }
+            else
+            {
+                var razorEngine = new RazorEngine(virtualPath, null, null);
+                razorEngine.Render<dynamic>(writer, model);
+            }
+
+            return writer;
         }
     }
 }

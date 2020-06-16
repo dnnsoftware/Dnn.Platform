@@ -17,6 +17,8 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class DDRMenuNavigationProvider : NavigationProvider
     {
+        private DDRMenuControl menuControl;
+
         public override Alignment ControlAlignment { get; set; }
 
         public override bool IndicateChildren { get; set; }
@@ -170,8 +172,6 @@ namespace DotNetNuke.Web.DDRMenu
         public override string WorkImage { get; set; }
 
         public override List<CustomAttribute> CustomAttributes { get; set; }
-
-        private DDRMenuControl menuControl;
 
         public override Control NavigationControl
         {

@@ -30,9 +30,22 @@ namespace Dnn.PersonaBar.Users.Components
 
     internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
     {
-        protected override Func<IRegisterController> GetFactory()
+        public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
         {
-            return () => new RegisterController();
+            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
+            var notification = new Notification
+            {
+                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+                IncludeDismissAction = newUser.Membership.Approved,
+                SenderUserID = portalSettings.AdministratorId,
+                Subject = GetNotificationSubject(locale, newUser, portalSettings),
+                Body = GetNotificationBody(locale, newUser, portalSettings),
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
+            };
+
+            notification.Body = Utilities.FixDoublEntityEncoding(notification.Body);
+            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
         }
 
         //NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
@@ -252,30 +265,17 @@ namespace Dnn.PersonaBar.Users.Components
             return UserBasicDto.FromUserInfo(newUser);
         }
 
+        protected override Func<IRegisterController> GetFactory()
+        {
+            return () => new RegisterController();
+        }
+
         private static void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
         {
             var roleController = new RoleController();
             var adminrole = roleController.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
             var roles = new List<RoleInfo> { adminrole };
             SendNewUserNotifications(newUser, portalSettings, roles);
-        }
-
-        public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
-        {
-            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
-            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
-            var notification = new Notification
-            {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
-                IncludeDismissAction = newUser.Membership.Approved,
-                SenderUserID = portalSettings.AdministratorId,
-                Subject = GetNotificationSubject(locale, newUser, portalSettings),
-                Body = GetNotificationBody(locale, newUser, portalSettings),
-                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
-            };
-
-            notification.Body = Utilities.FixDoublEntityEncoding(notification.Body);
-            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
         }
 
         private static string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)

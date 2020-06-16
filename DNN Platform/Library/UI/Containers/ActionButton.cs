@@ -170,16 +170,6 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Action_Click responds to an Action Event in the contained actionButtonList.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void Action_Click(object sender, ActionEventArgs e)
-        {
-            this.ProcessAction(e.Action.ID.ToString());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         ///   CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -191,6 +181,16 @@ namespace DotNetNuke.UI.Containers
             this._ButtonList.Action += this.Action_Click;
 
             this.Controls.Add(this._ButtonList);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Action_Click responds to an Action Event in the contained actionButtonList.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void Action_Click(object sender, ActionEventArgs e)
+        {
+            this.ProcessAction(e.Action.ID.ToString());
         }
     }
 }

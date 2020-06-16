@@ -35,6 +35,100 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles => "*";
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Commit method finalises the Install and commits any pending changes.
+        /// </summary>
+        /// <remarks>In the case of Clenup this is not neccessary.</remarks>
+        /// -----------------------------------------------------------------------------
+        public override void Commit()
+        {
+            // Do nothing
+            base.Commit();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Install method cleansup the files.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Install()
+        {
+            try
+            {
+                bool bSuccess = true;
+                if (string.IsNullOrEmpty(this._fileName) && string.IsNullOrEmpty(this._glob)) // No attribute: use the xml files definition.
+                {
+                    foreach (InstallFile file in this.Files)
+                    {
+                        bSuccess = this.CleanupFile(file);
+                        if (!bSuccess)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else if (!string.IsNullOrEmpty(this._fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
+                {
+                    bSuccess = this.ProcessCleanupFile();
+                }
+                else if (!string.IsNullOrEmpty(this._glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
+                {
+                    bSuccess = this.ProcessGlob();
+                }
+
+                this.Completed = bSuccess;
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The CleanupFile method cleansup a single file.
+        /// </summary>
+        /// <param name="insFile">The InstallFile to clean up.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        protected bool CleanupFile(InstallFile insFile)
+        {
+            try
+            {
+                // Backup File
+                if (File.Exists(this.PhysicalBasePath + insFile.FullName))
+                {
+                    Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
+                }
+
+                // Delete file
+                Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+
+                return false;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ProcessFile method determines what to do with parsed "file" node.
+        /// </summary>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void ProcessFile(InstallFile file, XPathNavigator nav)
+        {
+            if (file != null)
+            {
+                this.Files.Add(file);
+            }
+        }
+
         private bool ProcessCleanupFile()
         {
             this.Log.AddInfo(string.Format(Util.CLEANUP_Processing, this.Version.ToString(3)));
@@ -84,50 +178,6 @@ namespace DotNetNuke.Services.Installer.Installers
             return true;
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CleanupFile method cleansup a single file.
-        /// </summary>
-        /// <param name="insFile">The InstallFile to clean up.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        protected bool CleanupFile(InstallFile insFile)
-        {
-            try
-            {
-                // Backup File
-                if (File.Exists(this.PhysicalBasePath + insFile.FullName))
-                {
-                    Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
-                }
-
-                // Delete file
-                Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
-                return true;
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-
-                return false;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node.
-        /// </summary>
-        /// <param name="file">The file represented by the node.</param>
-        /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void ProcessFile(InstallFile file, XPathNavigator nav)
-        {
-            if (file != null)
-            {
-                this.Files.Add(file);
-            }
-        }
-
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {
             return base.ReadManifestItem(nav, false);
@@ -144,56 +194,6 @@ namespace DotNetNuke.Services.Installer.Installers
             if (File.Exists(installFile.BackupFileName))
             {
                 Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
-        /// <remarks>In the case of Clenup this is not neccessary.</remarks>
-        /// -----------------------------------------------------------------------------
-        public override void Commit()
-        {
-            // Do nothing
-            base.Commit();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method cleansup the files.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Install()
-        {
-            try
-            {
-                bool bSuccess = true;
-                if (string.IsNullOrEmpty(this._fileName) && string.IsNullOrEmpty(this._glob)) // No attribute: use the xml files definition.
-                {
-                    foreach (InstallFile file in this.Files)
-                    {
-                        bSuccess = this.CleanupFile(file);
-                        if (!bSuccess)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else if (!string.IsNullOrEmpty(this._fileName)) // Cleanup file provided: clean each file in the cleanup text file line one by one.
-                {
-                    bSuccess = this.ProcessCleanupFile();
-                }
-                else if (!string.IsNullOrEmpty(this._glob)) // A globbing pattern was provided, use it to find the files and delete what matches.
-                {
-                    bSuccess = this.ProcessGlob();
-                }
-
-                this.Completed = bSuccess;
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 

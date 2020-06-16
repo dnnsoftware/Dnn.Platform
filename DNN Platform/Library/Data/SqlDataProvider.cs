@@ -19,9 +19,9 @@ namespace DotNetNuke.Data
 
     public sealed class SqlDataProvider : DataProvider
     {
+        private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
         private static DatabaseConnectionProvider _dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
-        private const string ScriptDelimiter = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
 
         public override bool IsConnectionValid
         {
@@ -37,6 +37,16 @@ namespace DotNetNuke.Data
             {
                 return ComponentFactory.GetComponentSettings<SqlDataProvider>() as Dictionary<string, string>;
             }
+        }
+
+        public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
+        {
+            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
+        }
+
+        public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
+        {
+            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         private static bool CanConnect(string connectionString, string owner, string qualifier)
@@ -233,16 +243,6 @@ namespace DotNetNuke.Data
             }
 
             return exceptions;
-        }
-
-        public override void ExecuteNonQuery(string procedureName, params object[] commandParameters)
-        {
-            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, 0, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
-        }
-
-        public override void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters)
-        {
-            _dbConnectionProvider.ExecuteNonQuery(this.ConnectionString, CommandType.StoredProcedure, timeoutSec, this.DatabaseOwner + this.ObjectQualifier + procedureName, commandParameters);
         }
 
         public override void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable)

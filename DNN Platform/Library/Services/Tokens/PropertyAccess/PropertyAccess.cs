@@ -33,16 +33,6 @@ namespace DotNetNuke.Services.Tokens
             }
         }
 
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
-        {
-            if (this.obj == null)
-            {
-                return string.Empty;
-            }
-
-            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
-        }
-
         public CacheLevel Cacheability
         {
             get
@@ -85,6 +75,16 @@ namespace DotNetNuke.Services.Tokens
             {
                 return string.Empty;
             }
+        }
+
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        {
+            if (this.obj == null)
+            {
+                return string.Empty;
+            }
+
+            return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
         }
 
         /// <summary>

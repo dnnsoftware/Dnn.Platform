@@ -55,22 +55,6 @@ namespace DotNetNuke.Tests.Urls
             TabController.Instance.AddTab(tab);
         }
 
-        private void ExecuteScriptFile(string fileName)
-        {
-            var sql = TestUtil.ReadStream(fileName);
-
-            if (!string.IsNullOrEmpty(sql))
-            {
-                DataProvider.Instance().ExecuteScript(sql);
-            }
-        }
-
-        private string GetTestFolder()
-        {
-            var testName = TestContext.CurrentContext.Test.Name;
-            return testName.Substring(0, testName.IndexOf("_", StringComparison.Ordinal));
-        }
-
         protected void GetDefaultAlias()
         {
             foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId))
@@ -86,6 +70,22 @@ namespace DotNetNuke.Tests.Urls
         protected void SetDefaultAlias(Dictionary<string, string> testFields)
         {
             this.SetDefaultAlias(testFields["Alias"]);
+        }
+
+        private void ExecuteScriptFile(string fileName)
+        {
+            var sql = TestUtil.ReadStream(fileName);
+
+            if (!string.IsNullOrEmpty(sql))
+            {
+                DataProvider.Instance().ExecuteScript(sql);
+            }
+        }
+
+        private string GetTestFolder()
+        {
+            var testName = TestContext.CurrentContext.Test.Name;
+            return testName.Substring(0, testName.IndexOf("_", StringComparison.Ordinal));
         }
 
         protected void SetDefaultAlias(string defaultAlias)

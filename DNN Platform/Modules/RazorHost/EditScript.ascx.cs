@@ -44,6 +44,30 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdSave.Click += this.cmdSave_Click;
+            this.cmdSaveClose.Click += this.cmdSaveClose_Click;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
+        }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            if (!this.Page.IsPostBack)
+            {
+                this.LoadScripts();
+                this.DisplayFile();
+            }
+        }
+
         private void LoadScripts()
         {
             string basePath = this.Server.MapPath(this.razorScriptFolder);
@@ -95,30 +119,6 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 // Update setting
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
-            }
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdSave.Click += this.cmdSave_Click;
-            this.cmdSaveClose.Click += this.cmdSaveClose_Click;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.scriptList.SelectedIndexChanged += this.scriptList_SelectedIndexChanged;
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            if (!this.Page.IsPostBack)
-            {
-                this.LoadScripts();
-                this.DisplayFile();
             }
         }
 

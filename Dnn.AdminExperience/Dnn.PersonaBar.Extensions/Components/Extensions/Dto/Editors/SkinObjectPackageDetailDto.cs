@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
     using DotNetNuke.Services.Installer.Packages;
@@ -10,6 +9,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class SkinObjectPackageDetailDto : PackageInfoDto
     {
+        public SkinObjectPackageDetailDto()
+        {
+        }
+
+        public SkinObjectPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        {
+        }
+
         [JsonProperty("controlKey")]
         public string ControlKey { get; set; }
 
@@ -18,15 +25,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         [JsonProperty("supportsPartialRendering")]
         public bool SupportsPartialRendering { get; set; }
-
-        public SkinObjectPackageDetailDto()
-        {
-
-        }
-
-        public SkinObjectPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
-        {
-
-        }
     }
 }

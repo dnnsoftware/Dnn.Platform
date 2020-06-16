@@ -9,6 +9,8 @@ namespace DotNetNuke.Common.Utilities
 
     public static class StringExtensions
     {
+        private static readonly Encoding Iso8859Encoding = Encoding.GetEncoding("iso-8859-8");
+
         public static string TrimToLength(this string source, int maxLength)
         {
             return source == null || source.Length <= maxLength
@@ -64,7 +66,5 @@ namespace DotNetNuke.Common.Utilities
 
             return Regex.Replace(source, Regex.Escape(oldValue), newValue, RegexOptions.IgnoreCase);
         }
-
-        private static readonly Encoding Iso8859Encoding = Encoding.GetEncoding("iso-8859-8");
     }
 }

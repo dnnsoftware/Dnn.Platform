@@ -50,6 +50,12 @@ namespace DotNetNuke.Entities.Tabs
             this._localizedTabs = new Dictionary<string, List<TabInfo>>();
         }
 
+        public TabCollection(IEnumerable<TabInfo> tabs)
+            : this()
+        {
+            this.AddRange(tabs);
+        }
+
         public override void OnDeserialization(object sender)
         {
             base.OnDeserialization(sender);
@@ -61,10 +67,32 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        public TabCollection(IEnumerable<TabInfo> tabs)
-            : this()
+        public void Add(TabInfo tab)
         {
-            this.AddRange(tabs);
+            // Call base class to add to base Dictionary
+            this.Add(tab.TabID, tab);
+
+            // Update all child collections
+            this.AddInternal(tab);
+        }
+
+        public void AddRange(IEnumerable<TabInfo> tabs)
+        {
+            foreach (TabInfo tab in tabs)
+            {
+                this.Add(tab);
+            }
+        }
+
+        private static bool IsLocalizationEnabled()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
+        }
+
+        private static bool IsLocalizationEnabled(int portalId)
+        {
+            return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
         }
 
         private void AddInternal(TabInfo tab)
@@ -179,34 +207,6 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return descendantTabs;
-        }
-
-        private static bool IsLocalizationEnabled()
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return (portalSettings != null) ? portalSettings.ContentLocalizationEnabled : Null.NullBoolean;
-        }
-
-        private static bool IsLocalizationEnabled(int portalId)
-        {
-            return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
-        }
-
-        public void Add(TabInfo tab)
-        {
-            // Call base class to add to base Dictionary
-            this.Add(tab.TabID, tab);
-
-            // Update all child collections
-            this.AddInternal(tab);
-        }
-
-        public void AddRange(IEnumerable<TabInfo> tabs)
-        {
-            foreach (TabInfo tab in tabs)
-            {
-                this.Add(tab);
-            }
         }
 
         public List<TabInfo> AsList()

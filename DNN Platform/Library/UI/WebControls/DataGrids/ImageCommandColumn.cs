@@ -123,6 +123,26 @@ namespace DotNetNuke.UI.WebControls
         public string VisibleField { get; set; }
 
         /// <summary>
+        /// Initialises the Column.
+        /// </summary>
+        public override void Initialize()
+        {
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+
+            if (HttpContext.Current == null)
+            {
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
+            }
+
+            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+        }
+
+        /// <summary>
         /// Creates a ImageCommandColumnTemplate.
         /// </summary>
         /// <returns>A ImageCommandColumnTemplate.</returns>
@@ -154,26 +174,6 @@ namespace DotNetNuke.UI.WebControls
             template.DesignMode = isDesignMode;
 
             return template;
-        }
-
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
-        public override void Initialize()
-        {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-
-            if (HttpContext.Current == null)
-            {
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
-            }
-
-            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
     }
 }

@@ -147,6 +147,11 @@ namespace DotNetNuke.Web.Api.Internal
             Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
         }
 
+        internal static bool IsValidServiceRouteMapper(Type t)
+        {
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IServiceRouteMapper).IsAssignableFrom(t);
+        }
+
         private static void RegisterAuthenticationHandlers()
         {
             // authentication message handlers from web.config file
@@ -272,11 +277,6 @@ namespace DotNetNuke.Web.Api.Internal
         private IEnumerable<Type> GetAllServiceRouteMapperTypes()
         {
             return this.TypeLocator.GetAllMatchingTypes(IsValidServiceRouteMapper);
-        }
-
-        internal static bool IsValidServiceRouteMapper(Type t)
-        {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IServiceRouteMapper).IsAssignableFrom(t);
         }
 
         private Route MapHttpRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)

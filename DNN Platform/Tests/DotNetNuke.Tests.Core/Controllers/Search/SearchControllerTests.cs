@@ -33,6 +33,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class SearchControllerTests
     {
+        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
+        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
+        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
+
         public enum SearchTypeIds
         {
             ModuleSearchTypeId = 1,
@@ -42,10 +46,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             OtherSearchTypeId,
             UnknownSearchTypeId,
         }
-
-        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
-        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
-        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
         private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
         private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
         private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
@@ -120,8 +120,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int CustomBoost = 80;
 
         private const string SearchIndexFolder = @"App_Data\SearchTests";
-        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private const int DefaultSearchRetryTimes = 5;
+        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private Mock<IHostController> _mockHostController;
         private Mock<CachingProvider> _mockCachingProvider;
         private Mock<DataProvider> _mockDataProvider;
@@ -168,6 +168,86 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
             this._luceneController = null;
+        }
+
+        [Test]
+        public void SearchController_Search_Throws_On_Null_Query()
+        {
+            // Arrange
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => this._searchController.SiteSearch(null));
+        }
+
+        [Test]
+        public void SearchController_Search_Throws_On_Empty_TypeId_Collection()
+        {
+            // Arrange
+
+            // Act, Assert
+            Assert.Throws<ArgumentException>(() => this._searchController.SiteSearch(new SearchQuery { KeyWords = "word" }));
+        }
+
+        /// <summary>
+        /// Executes function proc on a separate thread respecting the given timeout value.
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="proc">The function to execute.</param>
+        /// <param name="timeout">The timeout duration.</param>
+        /// <returns>R.</returns>
+        /// <remarks>From: http://stackoverflow.com/questions/9460661/implementing-regex-timeout-in-net-4.</remarks>
+        private static R ExecuteWithTimeout<R>(Func<R> proc, TimeSpan timeout)
+        {
+            var r = default(R); // init default return value
+            Exception ex = null; // records inter-thread exception
+
+            // define a thread to wrap 'proc'
+            var t = new Thread(() =>
+            {
+                try
+                {
+                    r = proc();
+                }
+                catch (Exception e)
+                {
+                    // this can get set to ThreadAbortException
+                    ex = e;
+
+                    Console.WriteLine("Exception hit");
+                }
+            });
+
+            t.Start(); // start running 'proc' thread wrapper
+
+            // from docs: "The Start method does not return until the new thread has started running."
+            if (t.Join(timeout) == false)
+            {
+                t.Abort(); // die evil thread!
+
+                // Abort raises the ThreadAbortException
+                int i = 0;
+                while ((t.Join(1) == false) && (i < 20))
+                {
+                    // 20 ms wait possible here
+                    i++;
+                }
+
+                if (i >= 20)
+                {
+                    // we didn't abort, might want to log this or take some other action
+                    // this can happen if you are doing something indefinitely hinky in a
+                    // finally block (cause the finally be will executed before the Abort
+                    // completes.
+                    Console.WriteLine("Abort didn't work as expected");
+                }
+            }
+
+            if (ex != null)
+            {
+                throw ex; // oops
+            }
+
+            return r; // ah!
         }
 
         private void CreateNewLuceneControllerInstance(bool reCreate = false)
@@ -656,86 +736,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return text.Replace("...", string.Empty).Trim();
         }
 
-        /// <summary>
-        /// Executes function proc on a separate thread respecting the given timeout value.
-        /// </summary>
-        /// <typeparam name="R"></typeparam>
-        /// <param name="proc">The function to execute.</param>
-        /// <param name="timeout">The timeout duration.</param>
-        /// <returns>R.</returns>
-        /// <remarks>From: http://stackoverflow.com/questions/9460661/implementing-regex-timeout-in-net-4.</remarks>
-        private static R ExecuteWithTimeout<R>(Func<R> proc, TimeSpan timeout)
-        {
-            var r = default(R); // init default return value
-            Exception ex = null; // records inter-thread exception
-
-            // define a thread to wrap 'proc'
-            var t = new Thread(() =>
-            {
-                try
-                {
-                    r = proc();
-                }
-                catch (Exception e)
-                {
-                    // this can get set to ThreadAbortException
-                    ex = e;
-
-                    Console.WriteLine("Exception hit");
-                }
-            });
-
-            t.Start(); // start running 'proc' thread wrapper
-
-            // from docs: "The Start method does not return until the new thread has started running."
-            if (t.Join(timeout) == false)
-            {
-                t.Abort(); // die evil thread!
-
-                // Abort raises the ThreadAbortException
-                int i = 0;
-                while ((t.Join(1) == false) && (i < 20))
-                {
-                    // 20 ms wait possible here
-                    i++;
-                }
-
-                if (i >= 20)
-                {
-                    // we didn't abort, might want to log this or take some other action
-                    // this can happen if you are doing something indefinitely hinky in a
-                    // finally block (cause the finally be will executed before the Abort
-                    // completes.
-                    Console.WriteLine("Abort didn't work as expected");
-                }
-            }
-
-            if (ex != null)
-            {
-                throw ex; // oops
-            }
-
-            return r; // ah!
-        }
-
-        [Test]
-        public void SearchController_Search_Throws_On_Null_Query()
-        {
-            // Arrange
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => this._searchController.SiteSearch(null));
-        }
-
-        [Test]
-        public void SearchController_Search_Throws_On_Empty_TypeId_Collection()
-        {
-            // Arrange
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() => this._searchController.SiteSearch(new SearchQuery { KeyWords = "word" }));
-        }
-
         [Test]
         public void SearchController_AddSearchDcoumet_Regex_Does_Not_Sleep_On_Bad_Text_During_Alt_Text_Parsing()
         {
@@ -934,30 +934,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(0, result.Results.Count);
         }
 
-        /// <summary>
-        /// Sets up some data for testing security trimming.
-        /// In the tests below, the users will have access to the follwoing documents
-        /// { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29, ..., etc. }
-        /// The tests check that pagination qith various page sizes returns the proper groupings.
-        /// </summary>
-        private void SetupSecurityTrimmingDocs(int totalDocs, int searchType = DocumentSearchTypeId)
-        {
-            var docModifyTime = DateTime.UtcNow - TimeSpan.FromSeconds(totalDocs);
-            for (var i = 0; i < totalDocs; i++)
-            {
-                this._internalSearchController.AddSearchDocument(new SearchDocument
-                {
-                    AuthorUserId = i,
-                    Title = "Fox and Dog",
-                    Body = Line1,
-                    Tags = new[] { Tag0, Tag1 },
-                    SearchTypeId = searchType,
-                    UniqueKey = Guid.NewGuid().ToString(),
-                    ModifiedTimeUtc = docModifyTime.AddSeconds(i),
-                });
-            }
-        }
-
         [Test]
         public void SearchController_SecurityTrimmedTest_ReturnsExpectedResultsForPage1A()
         {
@@ -1008,6 +984,30 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(maxDocs - 18, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17 }, ids);
+        }
+
+        /// <summary>
+        /// Sets up some data for testing security trimming.
+        /// In the tests below, the users will have access to the follwoing documents
+        /// { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29, ..., etc. }
+        /// The tests check that pagination qith various page sizes returns the proper groupings.
+        /// </summary>
+        private void SetupSecurityTrimmingDocs(int totalDocs, int searchType = DocumentSearchTypeId)
+        {
+            var docModifyTime = DateTime.UtcNow - TimeSpan.FromSeconds(totalDocs);
+            for (var i = 0; i < totalDocs; i++)
+            {
+                this._internalSearchController.AddSearchDocument(new SearchDocument
+                {
+                    AuthorUserId = i,
+                    Title = "Fox and Dog",
+                    Body = Line1,
+                    Tags = new[] { Tag0, Tag1 },
+                    SearchTypeId = searchType,
+                    UniqueKey = Guid.NewGuid().ToString(),
+                    ModifiedTimeUtc = docModifyTime.AddSeconds(i),
+                });
+            }
         }
 
         [Test]
@@ -2473,38 +2473,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(doc1.UniqueKey, result.Results[0].UniqueKey);
         }
 
-        private void AddFoldersAndFiles()
-        {
-            var allFiles = new Dictionary<string, string>
-                               {
-                                { "Awesome-Cycles-Logo.png", "Images/" },
-                                { "Banner1.jpg", "Images/" },
-                                { "Banner2.jpg", "Images/" },
-                                { "bike-powered.png", "Images/DNN/" },
-                                { "Spacer.gif", "Images/DNN/" },
-                                { "monday.png", "My<Images/" },
-                                { "tuesday.jpg", "My<Images/" },
-                                { "wednesday.jpg", "My<Images/" },
-                                { "thursday.png", "My<Images/My<DNN/" },
-                                { "friday.gif", "My<Images/My<DNN/" },
-                               };
-
-            foreach (var file in allFiles)
-            {
-                var doc = new SearchDocument
-                {
-                    Title = file.Key,
-                    UniqueKey = Guid.NewGuid().ToString(),
-                    SearchTypeId = OtherSearchTypeId,
-                    ModifiedTimeUtc = DateTime.UtcNow,
-                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } },
-                };
-                this._internalSearchController.AddSearchDocument(doc);
-            }
-
-            this._internalSearchController.Commit();
-        }
-
         [Test]
         public void SearchController_Scope_By_FolderName()
         {
@@ -2540,6 +2508,38 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(5, result1.TotalHits);
             Assert.AreEqual(5, result2.TotalHits);
             Assert.AreEqual(2, result3.TotalHits);
+        }
+
+        private void AddFoldersAndFiles()
+        {
+            var allFiles = new Dictionary<string, string>
+                               {
+                                { "Awesome-Cycles-Logo.png", "Images/" },
+                                { "Banner1.jpg", "Images/" },
+                                { "Banner2.jpg", "Images/" },
+                                { "bike-powered.png", "Images/DNN/" },
+                                { "Spacer.gif", "Images/DNN/" },
+                                { "monday.png", "My<Images/" },
+                                { "tuesday.jpg", "My<Images/" },
+                                { "wednesday.jpg", "My<Images/" },
+                                { "thursday.png", "My<Images/My<DNN/" },
+                                { "friday.gif", "My<Images/My<DNN/" },
+                               };
+
+            foreach (var file in allFiles)
+            {
+                var doc = new SearchDocument
+                {
+                    Title = file.Key,
+                    UniqueKey = Guid.NewGuid().ToString(),
+                    SearchTypeId = OtherSearchTypeId,
+                    ModifiedTimeUtc = DateTime.UtcNow,
+                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } },
+                };
+                this._internalSearchController.AddSearchDocument(doc);
+            }
+
+            this._internalSearchController.Commit();
         }
 
         [Test]

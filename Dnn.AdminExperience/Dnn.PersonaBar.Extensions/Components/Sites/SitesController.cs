@@ -1,10 +1,8 @@
-﻿
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Sites.Components
 {
-    // Licensed to the .NET Foundation under one or more agreements.
-    // The .NET Foundation licenses this file to you under the MIT license.
-    // See the LICENSE file in the project root for more information
-
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -47,9 +45,11 @@ namespace Dnn.PersonaBar.Sites.Components
 
     public class SitesController
     {
+        internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
         private readonly TabsController _tabsController = new TabsController();
-        internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
+
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
         private CultureDropDownTypes DisplayType { get; set; }
 
@@ -74,8 +74,6 @@ namespace Dnn.PersonaBar.Sites.Components
 #endif
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
-
-        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
         public IList<HttpAliasDto> FormatPortalAliases(int portalId)
         {
@@ -276,54 +274,6 @@ namespace Dnn.PersonaBar.Sites.Components
 
             success = true;
             return string.Format(Localization.GetString("ExportedMessage", this.LocalResourcesFile), filename);
-        }
-
-        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
-            IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
-        {
-            if (tabsCollection == null)
-            {
-                var tab = this._tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
-                tabsCollection = tab.ChildTabs;
-                tab.ChildTabs = null;
-                tab.HasChildren = false;
-                tabsCollection.Add(tab);
-            }
-            var selectedTabs = userSelection as List<TabDto> ?? userSelection.ToList();
-            foreach (var tab in tabsCollection)
-            {
-                if (selectedTabs.Exists(x => x.TabId == tab.TabId))
-                {
-                    var existingTab = selectedTabs.First(x => x.TabId == tab.TabId);
-                    tab.CheckedState = existingTab.CheckedState;
-                    if (string.IsNullOrEmpty(Convert.ToString(existingTab.Name)))
-                    {
-                        selectedTabs.Remove(existingTab);
-                        selectedTabs.Add(tab);
-                    }
-                }
-                else
-                {
-                    selectedTabs.Add(tab);
-                }
-
-                if (tab.HasChildren)
-                {
-                    var checkedState = NodeCheckedState.UnChecked;
-                    if (tab.CheckedState == NodeCheckedState.Checked)
-                    {
-                        checkedState = NodeCheckedState.Checked;
-                    }
-
-                    var descendants = this._tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
-                        isMultiLanguage).ToList();
-                    descendants.ForEach(x => { x.CheckedState = checkedState; });
-
-                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
-                        descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
-                }
-            }
-            return selectedTabs;
         }
 
         public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
@@ -572,6 +522,54 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             return intPortalId;
+        }
+
+        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
+            IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
+        {
+            if (tabsCollection == null)
+            {
+                var tab = this._tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
+                tabsCollection = tab.ChildTabs;
+                tab.ChildTabs = null;
+                tab.HasChildren = false;
+                tabsCollection.Add(tab);
+            }
+            var selectedTabs = userSelection as List<TabDto> ?? userSelection.ToList();
+            foreach (var tab in tabsCollection)
+            {
+                if (selectedTabs.Exists(x => x.TabId == tab.TabId))
+                {
+                    var existingTab = selectedTabs.First(x => x.TabId == tab.TabId);
+                    tab.CheckedState = existingTab.CheckedState;
+                    if (string.IsNullOrEmpty(Convert.ToString(existingTab.Name)))
+                    {
+                        selectedTabs.Remove(existingTab);
+                        selectedTabs.Add(tab);
+                    }
+                }
+                else
+                {
+                    selectedTabs.Add(tab);
+                }
+
+                if (tab.HasChildren)
+                {
+                    var checkedState = NodeCheckedState.UnChecked;
+                    if (tab.CheckedState == NodeCheckedState.Checked)
+                    {
+                        checkedState = NodeCheckedState.Checked;
+                    }
+
+                    var descendants = this._tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
+                        isMultiLanguage).ToList();
+                    descendants.ForEach(x => { x.CheckedState = checkedState; });
+
+                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
+                        descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
+                }
+            }
+            return selectedTabs;
         }
 
         private TabCollection GetExportableTabs(TabCollection tabs)

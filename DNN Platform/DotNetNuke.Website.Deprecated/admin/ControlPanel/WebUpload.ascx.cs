@@ -43,14 +43,14 @@ namespace DotNetNuke.Modules.Admin.FileManager
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
         private readonly INavigationManager _navigationManager;
 
+        private string _DestinationFolder;
+        private UploadType _FileType;
+        private string _FileTypeName;
+
         public WebUpload()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private string _DestinationFolder;
-        private UploadType _FileType;
-        private string _FileTypeName;
         private string _RootFolder;
         private string _UploadRoles;
 
@@ -159,6 +159,34 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// This routine determines the Return Url.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public string ReturnURL()
+        {
+            int TabID = this.PortalSettings.HomeTabId;
+
+            if (this.Request.Params["rtab"] != null)
+            {
+                TabID = int.Parse(this.Request.Params["rtab"]);
+            }
+
+            return this._navigationManager.NavigateURL(TabID);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            // Customise the Control Title
+            this.ModuleConfiguration.ModuleTitle = Localization.GetString("UploadType" + this.FileType, this.LocalResourceFile);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// This routine checks the Access Security.
         /// </summary>
         /// <remarks>
@@ -198,34 +226,6 @@ namespace DotNetNuke.Modules.Admin.FileManager
                     this.ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
                 }
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This routine determines the Return Url.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public string ReturnURL()
-        {
-            int TabID = this.PortalSettings.HomeTabId;
-
-            if (this.Request.Params["rtab"] != null)
-            {
-                TabID = int.Parse(this.Request.Params["rtab"]);
-            }
-
-            return this._navigationManager.NavigateURL(TabID);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            // Customise the Control Title
-            this.ModuleConfiguration.ModuleTitle = Localization.GetString("UploadType" + this.FileType, this.LocalResourceFile);
         }
 
         /// -----------------------------------------------------------------------------

@@ -44,6 +44,12 @@ namespace DotNetNuke.Web.UI.WebControls
             get { return this._typedValue != null; }
         }
 
+        public override void RenderControl(HtmlTextWriter writer)
+        {
+            this.EnsureValue();
+            base.RenderControl(writer);
+        }
+
         protected override object SaveViewState()
         {
             this.EnsureValue();
@@ -67,6 +73,12 @@ namespace DotNetNuke.Web.UI.WebControls
             return controlsStateChanged;
         }
 
+        protected override void TrackViewState()
+        {
+            this.EnsureValue();
+            base.TrackViewState();
+        }
+
         private void SetTypedValue()
         {
             this._typedValue = string.IsNullOrEmpty(this.Value) ? null : Json.Deserialize<T>(this.Value);
@@ -84,18 +96,6 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this.Value = this._typedValue == null ? string.Empty : Json.Serialize(this._typedValue);
             this._isValueSerialized = true;
-        }
-
-        protected override void TrackViewState()
-        {
-            this.EnsureValue();
-            base.TrackViewState();
-        }
-
-        public override void RenderControl(HtmlTextWriter writer)
-        {
-            this.EnsureValue();
-            base.RenderControl(writer);
         }
     }
 }

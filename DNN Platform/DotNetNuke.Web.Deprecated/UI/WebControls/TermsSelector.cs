@@ -37,6 +37,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public List<Term> Terms { get; set; }
 
+        public string RaiseClientAPICallbackEvent(string eventArgument)
+        {
+            var parameters = eventArgument.Split('-');
+            this.PortalId = Convert.ToInt32(parameters[1]);
+            this.IncludeTags = Convert.ToBoolean(parameters[2]);
+            this.IncludeSystemVocabularies = Convert.ToBoolean(parameters[3]);
+            var terms = this.GetTerms();
+            terms.Insert(0, new { clientId = parameters[0] });
+            var serializer = new JavaScriptSerializer();
+            return serializer.Serialize(terms);
+        }
+
         protected override void OnInit(EventArgs e)
         {
             this.ItemTemplate = new TreeViewTemplate();
@@ -118,42 +130,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Attributes.Add("PortalId", this.PortalId.ToString());
         }
 
-        public class TreeViewTemplate : ITemplate
-        {
-            private RadComboBoxItem _container;
-            private TermsSelector _termsSelector;
-
-            private DnnTreeView _tree;
-
-            public void InstantiateIn(Control container)
-            {
-                this._container = (RadComboBoxItem)container;
-                this._termsSelector = (TermsSelector)container.Parent;
-
-                this._tree = new DnnTreeView();
-                this._tree.ID = string.Format("{0}_TreeView", this._termsSelector.ID);
-                this._tree.CheckBoxes = true;
-                this._tree.EnableViewState = false;
-
-                // bind client-side events
-                this._tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
-
-                this._container.Controls.Add(this._tree);
-            }
-        }
-
-        public string RaiseClientAPICallbackEvent(string eventArgument)
-        {
-            var parameters = eventArgument.Split('-');
-            this.PortalId = Convert.ToInt32(parameters[1]);
-            this.IncludeTags = Convert.ToBoolean(parameters[2]);
-            this.IncludeSystemVocabularies = Convert.ToBoolean(parameters[3]);
-            var terms = this.GetTerms();
-            terms.Insert(0, new { clientId = parameters[0] });
-            var serializer = new JavaScriptSerializer();
-            return serializer.Serialize(terms);
-        }
-
         private ArrayList GetTerms()
         {
             var vocabRep = Util.GetVocabularyController();
@@ -196,6 +172,30 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 terms.Add(new { termId = t.TermId, name = t.Name, parentTermId = t.ParentTermId });
+            }
+        }
+
+        public class TreeViewTemplate : ITemplate
+        {
+            private RadComboBoxItem _container;
+            private TermsSelector _termsSelector;
+
+            private DnnTreeView _tree;
+
+            public void InstantiateIn(Control container)
+            {
+                this._container = (RadComboBoxItem)container;
+                this._termsSelector = (TermsSelector)container.Parent;
+
+                this._tree = new DnnTreeView();
+                this._tree.ID = string.Format("{0}_TreeView", this._termsSelector.ID);
+                this._tree.CheckBoxes = true;
+                this._tree.EnableViewState = false;
+
+                // bind client-side events
+                this._tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
+
+                this._container.Controls.Add(this._tree);
             }
         }
     }

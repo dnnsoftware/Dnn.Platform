@@ -27,57 +27,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     /// </summary>
     public class ClientResourceManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceManager));
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
         internal const string DefaultJsProvider = "DnnBodyProvider";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceManager));
 
         private static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
         private static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
-
-        private static bool FileExists(Page page, string filePath)
-        {
-            // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
-            filePath = RemoveQueryString(filePath);
-            var cacheKey = filePath.ToLowerInvariant();
-
-            // cache css file paths
-            if (!_fileExistsCache.ContainsKey(cacheKey))
-            {
-                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
-                _lockFileExistsCache.EnterWriteLock();
-                try
-                {
-                    _fileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
-                }
-                finally
-                {
-                    _lockFileExistsCache.ExitWriteLock();
-                }
-            }
-
-            // return if file exists from cache
-            _lockFileExistsCache.EnterReadLock();
-            try
-            {
-                return _fileExistsCache[cacheKey];
-            }
-            finally
-            {
-                _lockFileExistsCache.ExitReadLock();
-            }
-        }
-
-        private static bool IsAbsoluteUrl(string url)
-        {
-            Uri result;
-            return Uri.TryCreate(url, UriKind.Absolute, out result);
-        }
-
-        private static string RemoveQueryString(string filePath)
-        {
-            var queryStringPosition = filePath.IndexOf("?", StringComparison.Ordinal);
-            return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
-        }
 
         /// <summary>
         /// Adds the neccessary configuration to website root web.config to use the Client Depenedecny componenet.
@@ -208,6 +163,51 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             }
 
             return installed;
+        }
+
+        private static bool FileExists(Page page, string filePath)
+        {
+            // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
+            filePath = RemoveQueryString(filePath);
+            var cacheKey = filePath.ToLowerInvariant();
+
+            // cache css file paths
+            if (!_fileExistsCache.ContainsKey(cacheKey))
+            {
+                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                _lockFileExistsCache.EnterWriteLock();
+                try
+                {
+                    _fileExistsCache[cacheKey] = IsAbsoluteUrl(filePath) || File.Exists(page.Server.MapPath(filePath));
+                }
+                finally
+                {
+                    _lockFileExistsCache.ExitWriteLock();
+                }
+            }
+
+            // return if file exists from cache
+            _lockFileExistsCache.EnterReadLock();
+            try
+            {
+                return _fileExistsCache[cacheKey];
+            }
+            finally
+            {
+                _lockFileExistsCache.ExitReadLock();
+            }
+        }
+
+        private static bool IsAbsoluteUrl(string url)
+        {
+            Uri result;
+            return Uri.TryCreate(url, UriKind.Absolute, out result);
+        }
+
+        private static string RemoveQueryString(string filePath)
+        {
+            var queryStringPosition = filePath.IndexOf("?", StringComparison.Ordinal);
+            return queryStringPosition != -1 ? filePath.Substring(0, queryStringPosition) : filePath;
         }
 
         public static void RegisterAdminStylesheet(Page page, string filePath)

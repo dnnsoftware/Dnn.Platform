@@ -19,37 +19,6 @@ namespace DotNetNuke.Services.Installer.Packages
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
 
-        protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
-
-        protected virtual string EditorID
-        {
-            get
-            {
-                return Null.NullString;
-            }
-        }
-
-        protected bool IsSuperTab
-        {
-            get
-            {
-                return this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
-            }
-        }
-
-        protected PackageInfo Package
-        {
-            get
-            {
-                if (this._Package == null)
-                {
-                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
-                }
-
-                return this._Package;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Package ID.
@@ -85,6 +54,37 @@ namespace DotNetNuke.Services.Installer.Packages
             set
             {
                 this._IsWizard = value;
+            }
+        }
+
+        protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
+
+        protected virtual string EditorID
+        {
+            get
+            {
+                return Null.NullString;
+            }
+        }
+
+        protected bool IsSuperTab
+        {
+            get
+            {
+                return this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
+            }
+        }
+
+        protected PackageInfo Package
+        {
+            get
+            {
+                if (this._Package == null)
+                {
+                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
+                }
+
+                return this._Package;
             }
         }
 

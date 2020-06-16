@@ -32,9 +32,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class LuceneControllerTests
     {
-        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private const string SearchIndexFolder = @"App_Data\LuceneTests";
         private const string WriteLockFile = "write.lock";
+        private readonly double _readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private const string Line1 = "the quick brown fox jumps over the lazy dog";
         private const string Line2 = "the quick gold fox jumped over the lazy black dog";
         private const string Line3 = "the quick fox jumps over the black dog";
@@ -48,6 +48,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const string InvalidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseInvalidAnalyzer";
         private const string ValidCustomAnalyzer = "Lucene.Net.Analysis.Cn.ChineseAnalyzer, Lucene.Net.Contrib.Analyzers";
         private const int DefaultSearchRetryTimes = 5;
+
+        // Arrange
+        private const int TotalTestDocs2Create = 5;
+        private const string ContentFieldName = "content";
 
         private Mock<IHostController> _mockHostController;
         private LuceneControllerImpl _luceneController;
@@ -88,6 +92,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Dispose();
             this.DeleteIndexFolder();
             SearchHelper.ClearInstance();
+        }
+
+        [Test]
+        public void LuceneController_SearchFolderIsAsExpected()
+        {
+            var inf1 = new DirectoryInfo(SearchIndexFolder);
+            var inf2 = new DirectoryInfo(this._luceneController.IndexFolder);
+            Assert.AreEqual(inf1.FullName, inf2.FullName);
+        }
+
+        [Test]
+        public void LuceneController_Add_Throws_On_Null_Document()
+        {
+            // Arrange
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => this._luceneController.Add(null));
         }
 
         private void CreateNewLuceneControllerInstance()
@@ -152,23 +173,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             }
 
             this._luceneController.Commit();
-        }
-
-        [Test]
-        public void LuceneController_SearchFolderIsAsExpected()
-        {
-            var inf1 = new DirectoryInfo(SearchIndexFolder);
-            var inf2 = new DirectoryInfo(this._luceneController.IndexFolder);
-            Assert.AreEqual(inf1.FullName, inf2.FullName);
-        }
-
-        [Test]
-        public void LuceneController_Add_Throws_On_Null_Document()
-        {
-            // Arrange
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => this._luceneController.Add(null));
         }
 
         public void LuceneController_Add_Throws_On_Null_Query()
@@ -694,9 +698,26 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.Throws<SearchException>(() => secondController.Add(doc1));
         }
 
-        // Arrange
-        private const int TotalTestDocs2Create = 5;
-        private const string ContentFieldName = "content";
+        [Test]
+        public void LuceneController_DocumentMaxAndCountAreCorrect()
+        {
+            this.AddTestDocs();
+
+            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.SearchbleDocsCount());
+        }
+
+        [Test]
+        public void LuceneController_TestDeleteBeforeOptimize()
+        {
+            // Arrange
+            this.AddTestDocs();
+            var delCount = this.DeleteTestDocs();
+
+            Assert.IsTrue(this._luceneController.HasDeletions());
+            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
+            Assert.AreEqual(TotalTestDocs2Create - delCount, this._luceneController.SearchbleDocsCount());
+        }
 
         private int AddTestDocs()
         {
@@ -728,27 +749,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             this._luceneController.Commit();
             return delCount;
-        }
-
-        [Test]
-        public void LuceneController_DocumentMaxAndCountAreCorrect()
-        {
-            this.AddTestDocs();
-
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.SearchbleDocsCount());
-        }
-
-        [Test]
-        public void LuceneController_TestDeleteBeforeOptimize()
-        {
-            // Arrange
-            this.AddTestDocs();
-            var delCount = this.DeleteTestDocs();
-
-            Assert.IsTrue(this._luceneController.HasDeletions());
-            Assert.AreEqual(TotalTestDocs2Create, this._luceneController.MaxDocsCount());
-            Assert.AreEqual(TotalTestDocs2Create - delCount, this._luceneController.SearchbleDocsCount());
         }
 
         [Test]

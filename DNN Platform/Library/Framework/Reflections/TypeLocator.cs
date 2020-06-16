@@ -16,6 +16,18 @@ namespace DotNetNuke.Framework.Reflections
     {
         private IAssemblyLocator _assemblyLocator;
 
+        IEnumerable<IAssembly> IAssemblyLocator.Assemblies
+        {
+            // this method is not readily testable as the assemblies in the current app domain
+            // will vary depending on the test runner and test configuration
+            get
+            {
+                return from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                       where this.CanScan(assembly)
+                       select new AssemblyWrapper(assembly);
+            }
+        }
+
         internal IAssemblyLocator AssemblyLocator
         {
             get { return this._assemblyLocator ?? (this._assemblyLocator = this); }
@@ -105,18 +117,6 @@ namespace DotNetNuke.Framework.Reflections
             }
 
             return canScan;
-        }
-
-        IEnumerable<IAssembly> IAssemblyLocator.Assemblies
-        {
-            // this method is not readily testable as the assemblies in the current app domain
-            // will vary depending on the test runner and test configuration
-            get
-            {
-                return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                       where this.CanScan(assembly)
-                       select new AssemblyWrapper(assembly);
-            }
         }
     }
 }

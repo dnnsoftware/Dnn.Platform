@@ -27,14 +27,12 @@ namespace Dnn.PersonaBar.Library.Containers
 
     public class PersonaBarContainer : IPersonaBarContainer
     {
-        protected INavigationManager NavigationManager { get; }
+        private static IPersonaBarContainer _instance;
 
         public PersonaBarContainer(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
-
-        private static IPersonaBarContainer _instance;
 
         public static IPersonaBarContainer Instance
         {
@@ -49,6 +47,12 @@ namespace Dnn.PersonaBar.Library.Containers
             }
         }
 
+        public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
+
+        protected INavigationManager NavigationManager { get; }
+
+        public virtual bool Visible => true;
+
         public static void SetInstance(IPersonaBarContainer instance, bool overwrite = false)
         {
             if (_instance == null || overwrite)
@@ -61,10 +65,6 @@ namespace Dnn.PersonaBar.Library.Containers
         {
             _instance = null;
         }
-
-        public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
-
-        public virtual bool Visible => true;
 
         public virtual void Initialize(UserControl personaBarControl)
         {
@@ -79,6 +79,13 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual void FilterMenu(PersonaBarMenu menu)
         {
+        }
+
+        private static string GetBeaconUrl()
+        {
+            var beaconService = BeaconService.Instance;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
         }
 
         private IDictionary<string, object> GetConfigration(PortalSettings portalSettings)
@@ -124,13 +131,6 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("customModules", customModules);
 
             return settings;
-        }
-
-        private static string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return beaconService.GetBeaconEndpoint() + beaconService.GetBeaconQuery(user);
         }
     }
 }

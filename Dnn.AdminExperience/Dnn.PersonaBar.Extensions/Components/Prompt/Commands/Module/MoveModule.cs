@@ -19,10 +19,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("move-module", Constants.ModulesCategory, "Prompt_MoveModule_Description")]
     public class MoveModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_MoveModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_MoveModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";

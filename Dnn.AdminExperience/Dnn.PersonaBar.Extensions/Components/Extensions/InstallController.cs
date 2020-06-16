@@ -26,11 +26,6 @@ namespace Dnn.PersonaBar.Extensions.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
 
-        protected override Func<IInstallController> GetFactory()
-        {
-            return () => new InstallController();
-        }
-
         public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
             var parseResult = new ParseResultDto();
@@ -92,6 +87,11 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             return parseResult;
+        }
+
+        protected override Func<IInstallController> GetFactory()
+        {
+            return () => new InstallController();
         }
 
         public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)

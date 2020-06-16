@@ -27,6 +27,12 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private const string ContextKeyTabOutputCacheProvider = "OutputCache:TabOutputCacheProvider";
         private HttpApplication _app;
 
+        private enum IncludeExcludeType
+        {
+            IncludeByDefault,
+            ExcludeByDefault,
+        }
+
         public void Init(HttpApplication httpApp)
         {
             this._app = httpApp;
@@ -246,12 +252,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     responseFilter.StopFiltering(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]), false);
                 }
             }
-        }
-
-        private enum IncludeExcludeType
-        {
-            IncludeByDefault,
-            ExcludeByDefault,
         }
     }
 }

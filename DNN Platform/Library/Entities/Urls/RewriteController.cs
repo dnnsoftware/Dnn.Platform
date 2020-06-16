@@ -45,6 +45,115 @@ namespace DotNetNuke.Entities.Urls
             @"(?:\&|\?)(?:(?<key>.[^\=\&]*)\=(?<val>.[^\=\&]*))",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        internal static string CheckLanguageMatch(ref string url, UrlAction result)
+        {
+            // ok now scan for the language modifier
+            Match langMatch = LangMatchRegex.Match(url);
+
+            // searches for a string like language/en-US/ in the url
+            string langParms = string.Empty;
+            if (langMatch.Success)
+            {
+                // OK there is a language modifier in the path
+                // we want to shift this so it is back on the end where it belongs
+                langParms = langMatch.Value.TrimEnd('/'); // in the format of /language/en-US only
+
+                // it doesn't matter if you get /home.aspx/language/en-US in the url field because the .aspx gets
+                // removed when matching with the tab dictionary
+                url = url.Replace(langParms, string.Empty) + langParms;
+                result.CultureCode = langMatch.Groups["code"].Value; // get the culture code in the requested url
+
+                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
+                if (primaryAliases.Count > 0)
+                {
+                    string aliasCulture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
+                    if (aliasCulture != null)
+                    {
+                        // want to do a 301 check because this potentially has a duplicate of portal alias and culture code in the url, which
+                        // is not the best combination
+                        if (result.Action == ActionType.Continue)
+                        {
+                            result.Action = ActionType.CheckFor301;
+                        }
+                    }
+                }
+            }
+
+            return langParms;
+        }
+
+        /// <summary>
+        /// appends a language/culture code value if it is not already present in the rewrite path.
+        /// </summary>
+        /// <param name="rewritePath"></param>
+        /// <param name="cultureCode"></param>
+        /// <returns></returns>
+        internal static bool AddLanguageCodeToRewritePath(ref string rewritePath, string cultureCode)
+        {
+            bool changed = false;
+
+            // 758 : check for any language identifier in the Url before adding a new one, not just the same one
+            if (!string.IsNullOrEmpty(cultureCode) && !rewritePath.ToLowerInvariant().Contains("language="))
+            {
+                changed = true;
+                if (rewritePath.Contains("?"))
+                {
+                    rewritePath += "&language=" + cultureCode;
+                }
+                else
+                {
+                    rewritePath += "?language=" + cultureCode;
+                }
+            }
+
+            return changed;
+        }
+
+        /// <summary>
+        /// appends a skin value to the rewrite path, as long as there is no existing skin in the path.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="rewritePath">The current rewrite path.</param>
+        /// <param name="skin">The selected skin.</param>
+        /// <param name="tabId"></param>
+        /// <param name="message"></param>
+        /// <remarks>852 : Add skin src to rewrite path for specific aliases.</remarks>
+        /// <returns></returns>
+        internal static bool AddSkinToRewritePath(int tabId, int portalId, ref string rewritePath, string skin, out string message)
+        {
+            bool changed = false;
+            message = null;
+            TabInfo tab = null;
+            if (tabId > 0 && portalId > -1)
+            {
+                tab = TabController.Instance.GetTab(tabId, portalId, false);
+            }
+
+            // don't overwrite specific skin at tab level for rewritten Urls
+            if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))
+            {
+                if (!string.IsNullOrEmpty(skin) && skin != "default" && !rewritePath.ToLowerInvariant().Contains("skinsrc="))
+                {
+                    message = "Added SkinSrc : " + skin;
+                    changed = true;
+                    rewritePath += rewritePath.Contains("?") ? "&SkinSrc=" + skin.Replace(".ascx", string.Empty) : "?SkinSrc=" + skin.Replace(".ascx", string.Empty);
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(tab.SkinSrc))
+                {
+                    message = "Tab " + tab.TabID.ToString() + " has skin specified : " + tab.SkinSrc;
+                    if (skin != tab.SkinSrc)
+                    {
+                        message += " - " + skin + " not applied due to tab specific skin";
+                    }
+                }
+            }
+
+            return changed;
+        }
+
         private static string AddQueryStringToRewritePath(string rewritePath, string queryString)
         {
             // now add back querystring if they existed
@@ -476,43 +585,6 @@ namespace DotNetNuke.Entities.Urls
             return found;
         }
 
-        internal static string CheckLanguageMatch(ref string url, UrlAction result)
-        {
-            // ok now scan for the language modifier
-            Match langMatch = LangMatchRegex.Match(url);
-
-            // searches for a string like language/en-US/ in the url
-            string langParms = string.Empty;
-            if (langMatch.Success)
-            {
-                // OK there is a language modifier in the path
-                // we want to shift this so it is back on the end where it belongs
-                langParms = langMatch.Value.TrimEnd('/'); // in the format of /language/en-US only
-
-                // it doesn't matter if you get /home.aspx/language/en-US in the url field because the .aspx gets
-                // removed when matching with the tab dictionary
-                url = url.Replace(langParms, string.Empty) + langParms;
-                result.CultureCode = langMatch.Groups["code"].Value; // get the culture code in the requested url
-
-                var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(result.PortalId).ToList();
-                if (primaryAliases.Count > 0)
-                {
-                    string aliasCulture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
-                    if (aliasCulture != null)
-                    {
-                        // want to do a 301 check because this potentially has a duplicate of portal alias and culture code in the url, which
-                        // is not the best combination
-                        if (result.Action == ActionType.Continue)
-                        {
-                            result.Action = ActionType.CheckFor301;
-                        }
-                    }
-                }
-            }
-
-            return langParms;
-        }
-
         private static string ReplaceDefaultPage(string newUrl, string requestUrl, IEnumerable<string> list)
         {
             string url = newUrl; // fall back case: we don't change anything
@@ -601,78 +673,6 @@ namespace DotNetNuke.Entities.Urls
 
             // remove the application path
             result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
-        }
-
-        /// <summary>
-        /// appends a language/culture code value if it is not already present in the rewrite path.
-        /// </summary>
-        /// <param name="rewritePath"></param>
-        /// <param name="cultureCode"></param>
-        /// <returns></returns>
-        internal static bool AddLanguageCodeToRewritePath(ref string rewritePath, string cultureCode)
-        {
-            bool changed = false;
-
-            // 758 : check for any language identifier in the Url before adding a new one, not just the same one
-            if (!string.IsNullOrEmpty(cultureCode) && !rewritePath.ToLowerInvariant().Contains("language="))
-            {
-                changed = true;
-                if (rewritePath.Contains("?"))
-                {
-                    rewritePath += "&language=" + cultureCode;
-                }
-                else
-                {
-                    rewritePath += "?language=" + cultureCode;
-                }
-            }
-
-            return changed;
-        }
-
-        /// <summary>
-        /// appends a skin value to the rewrite path, as long as there is no existing skin in the path.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="rewritePath">The current rewrite path.</param>
-        /// <param name="skin">The selected skin.</param>
-        /// <param name="tabId"></param>
-        /// <param name="message"></param>
-        /// <remarks>852 : Add skin src to rewrite path for specific aliases.</remarks>
-        /// <returns></returns>
-        internal static bool AddSkinToRewritePath(int tabId, int portalId, ref string rewritePath, string skin, out string message)
-        {
-            bool changed = false;
-            message = null;
-            TabInfo tab = null;
-            if (tabId > 0 && portalId > -1)
-            {
-                tab = TabController.Instance.GetTab(tabId, portalId, false);
-            }
-
-            // don't overwrite specific skin at tab level for rewritten Urls
-            if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))
-            {
-                if (!string.IsNullOrEmpty(skin) && skin != "default" && !rewritePath.ToLowerInvariant().Contains("skinsrc="))
-                {
-                    message = "Added SkinSrc : " + skin;
-                    changed = true;
-                    rewritePath += rewritePath.Contains("?") ? "&SkinSrc=" + skin.Replace(".ascx", string.Empty) : "?SkinSrc=" + skin.Replace(".ascx", string.Empty);
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(tab.SkinSrc))
-                {
-                    message = "Tab " + tab.TabID.ToString() + " has skin specified : " + tab.SkinSrc;
-                    if (skin != tab.SkinSrc)
-                    {
-                        message += " - " + skin + " not applied due to tab specific skin";
-                    }
-                }
-            }
-
-            return changed;
         }
 
         /// <summary>

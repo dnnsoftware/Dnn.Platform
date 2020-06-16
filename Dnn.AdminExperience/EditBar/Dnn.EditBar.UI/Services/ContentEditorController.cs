@@ -28,9 +28,9 @@ namespace Dnn.EditBar.UI.Services
     [DnnPageEditor]
     public class ContentEditorController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
-
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
 
         private string LocalResourcesFile
         {

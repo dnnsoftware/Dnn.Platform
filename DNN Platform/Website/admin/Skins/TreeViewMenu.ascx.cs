@@ -45,6 +45,14 @@ namespace DotNetNuke.UI.Skins.Controls
         private int _treeIndentWidth = 10;
         private string _width = "100%";
 
+        private enum eImageType
+        {
+            FolderClosed = 0,
+            FolderOpen = 1,
+            Page = 2,
+            GotoParent = 3,
+        }
+
         public string BodyCssClass
         {
             get
@@ -307,6 +315,103 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Page_Load server event handler on this user control is used
+        /// to populate the tree with the Pages.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            try
+            {
+                if (this.Page.IsPostBack == false)
+                {
+                    this.BuildTree(null, false);
+
+                    // Main Table Properties
+                    if (!string.IsNullOrEmpty(this.Width))
+                    {
+                        this.tblMain.Width = this.Width;
+                    }
+
+                    if (!string.IsNullOrEmpty(this.CssClass))
+                    {
+                        this.tblMain.Attributes.Add("class", this.CssClass);
+                    }
+
+                    // Header Properties
+                    if (!string.IsNullOrEmpty(this.HeaderCssClass))
+                    {
+                        this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
+                    }
+
+                    if (!string.IsNullOrEmpty(this.HeaderTextCssClass))
+                    {
+                        this.lblHeader.CssClass = this.HeaderTextCssClass;
+                    }
+
+                    // Header Text (if set)
+                    if (!string.IsNullOrEmpty(this.HeaderText))
+                    {
+                        this.lblHeader.Text = this.HeaderText;
+                    }
+
+                    // ResourceKey overrides if found
+                    if (!string.IsNullOrEmpty(this.ResourceKey))
+                    {
+                        string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
+                        if (!string.IsNullOrEmpty(strHeader))
+                        {
+                            this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
+                        }
+                    }
+
+                    // If still not set get default key
+                    if (string.IsNullOrEmpty(this.lblHeader.Text))
+                    {
+                        string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
+                        if (!string.IsNullOrEmpty(strHeader))
+                        {
+                            this.lblHeader.Text = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
+                        }
+                        else
+                        {
+                            this.lblHeader.Text = "Site Navigation";
+                        }
+                    }
+
+                    this.tblHeader.Visible = this.IncludeHeader;
+
+                    // Main Panel Properties
+                    if (!string.IsNullOrEmpty(this.BodyCssClass))
+                    {
+                        this.cellBody.Attributes.Add("class", this.BodyCssClass);
+                    }
+
+                    this.cellBody.NoWrap = this.NoWrap;
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.InitializeTree();
+            this.InitializeNavControl(this.cellBody, "DNNTreeNavigationProvider");
+            this.Control.NodeClick += this.DNNTree_NodeClick;
+            this.Control.PopulateOnDemand += this.DNNTree_PopulateOnDemand;
+            base.OnInit(e);
+            this.InitializeComponent();
+        }
+
         private void InitializeComponent()
         {
         }
@@ -474,93 +579,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Page_Load server event handler on this user control is used
-        /// to populate the tree with the Pages.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            try
-            {
-                if (this.Page.IsPostBack == false)
-                {
-                    this.BuildTree(null, false);
-
-                    // Main Table Properties
-                    if (!string.IsNullOrEmpty(this.Width))
-                    {
-                        this.tblMain.Width = this.Width;
-                    }
-
-                    if (!string.IsNullOrEmpty(this.CssClass))
-                    {
-                        this.tblMain.Attributes.Add("class", this.CssClass);
-                    }
-
-                    // Header Properties
-                    if (!string.IsNullOrEmpty(this.HeaderCssClass))
-                    {
-                        this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
-                    }
-
-                    if (!string.IsNullOrEmpty(this.HeaderTextCssClass))
-                    {
-                        this.lblHeader.CssClass = this.HeaderTextCssClass;
-                    }
-
-                    // Header Text (if set)
-                    if (!string.IsNullOrEmpty(this.HeaderText))
-                    {
-                        this.lblHeader.Text = this.HeaderText;
-                    }
-
-                    // ResourceKey overrides if found
-                    if (!string.IsNullOrEmpty(this.ResourceKey))
-                    {
-                        string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
-                        if (!string.IsNullOrEmpty(strHeader))
-                        {
-                            this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
-                        }
-                    }
-
-                    // If still not set get default key
-                    if (string.IsNullOrEmpty(this.lblHeader.Text))
-                    {
-                        string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
-                        if (!string.IsNullOrEmpty(strHeader))
-                        {
-                            this.lblHeader.Text = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
-                        }
-                        else
-                        {
-                            this.lblHeader.Text = "Site Navigation";
-                        }
-                    }
-
-                    this.tblHeader.Visible = this.IncludeHeader;
-
-                    // Main Panel Properties
-                    if (!string.IsNullOrEmpty(this.BodyCssClass))
-                    {
-                        this.cellBody.Attributes.Add("class", this.BodyCssClass);
-                    }
-
-                    this.cellBody.NoWrap = this.NoWrap;
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The DNNTree_NodeClick server event handler on this user control runs when a
         /// Node (Page) in the TreeView is clicked.
         /// </summary>
@@ -586,24 +604,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
 
             this.BuildTree(args.Node, true);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            this.InitializeTree();
-            this.InitializeNavControl(this.cellBody, "DNNTreeNavigationProvider");
-            this.Control.NodeClick += this.DNNTree_NodeClick;
-            this.Control.PopulateOnDemand += this.DNNTree_PopulateOnDemand;
-            base.OnInit(e);
-            this.InitializeComponent();
-        }
-
-        private enum eImageType
-        {
-            FolderClosed = 0,
-            FolderOpen = 1,
-            Page = 2,
-            GotoParent = 3,
         }
     }
 }

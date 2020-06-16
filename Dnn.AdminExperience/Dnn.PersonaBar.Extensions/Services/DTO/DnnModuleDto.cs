@@ -49,28 +49,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         public bool Exist => this.TabModuleId > 0;
 
-        public void SetModuleInfoHelp()
-        {
-            var returnValue = "";
-            var moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
-            if (moduleInfo != null)
-            {
-                if (moduleInfo.IsDeleted)
-                {
-                    returnValue = this.LocalizeString("ModuleDeleted.Text");
-                }
-                else
-                {
-                    returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
-                        ? string.Format(this.LocalizeString("ModuleInfo.Text"),
-                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
-                        : this.LocalizeString("ModuleInfoForNonAdmins.Text");
-                }
-            }
-
-            this.ModuleInfoHelp = returnValue;
-        }
-
         public string TranslatedTooltip
         {
             get
@@ -96,6 +74,28 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 }
                 return string.Format(this.LocalizeString("NotTranslated.Text"), pageName);
             }
+        }
+
+        public void SetModuleInfoHelp()
+        {
+            var returnValue = "";
+            var moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
+            if (moduleInfo != null)
+            {
+                if (moduleInfo.IsDeleted)
+                {
+                    returnValue = this.LocalizeString("ModuleDeleted.Text");
+                }
+                else
+                {
+                    returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
+                        ? string.Format(this.LocalizeString("ModuleInfo.Text"),
+                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
+                        : this.LocalizeString("ModuleInfoForNonAdmins.Text");
+                }
+            }
+
+            this.ModuleInfoHelp = returnValue;
         }
 
         public string LocalizedTooltip

@@ -12,6 +12,8 @@ namespace DotNetNuke.Collections.Internal
         private readonly List<T> _list = new List<T>();
         private ILockStrategy _lockStrategy;
 
+        private bool _isDisposed;
+
         public SharedList()
             : this(LockingStrategy.ReaderWriter)
         {
@@ -27,11 +29,53 @@ namespace DotNetNuke.Collections.Internal
         {
         }
 
+        ~SharedList()
+        {
+            this.Dispose(false);
+        }
+
+        public int Count
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._list.Count;
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return ((ICollection<T>)this._list).IsReadOnly;
+            }
+        }
+
         internal IList<T> BackingList
         {
             get
             {
                 return this._list;
+            }
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._list[index];
+            }
+
+            set
+            {
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this._list[index] = value;
             }
         }
 
@@ -63,26 +107,6 @@ namespace DotNetNuke.Collections.Internal
             this._list.CopyTo(array, arrayIndex);
         }
 
-        public int Count
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._list.Count;
-            }
-        }
-
-        public bool IsReadOnly
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return ((ICollection<T>)this._list).IsReadOnly;
-            }
-        }
-
         public bool Remove(T item)
         {
             this.EnsureNotDisposed();
@@ -111,23 +135,6 @@ namespace DotNetNuke.Collections.Internal
             this._list.Insert(index, item);
         }
 
-        public T this[int index]
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._list[index];
-            }
-
-            set
-            {
-                this.EnsureNotDisposed();
-                this.EnsureWriteAccess();
-                this._list[index] = value;
-            }
-        }
-
         public void RemoveAt(int index)
         {
             this.EnsureNotDisposed();
@@ -139,8 +146,6 @@ namespace DotNetNuke.Collections.Internal
         {
             return this.GetEnumerator1();
         }
-
-        private bool _isDisposed;
 
         public void Dispose()
         {
@@ -155,6 +160,17 @@ namespace DotNetNuke.Collections.Internal
             {
                 throw new ObjectDisposedException("SharedList");
             }
+        }
+
+        public ISharedCollectionLock GetReadLock()
+        {
+            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
+        {
+            this.EnsureNotDisposed();
+            return this._lockStrategy.GetReadLock(timeOut);
         }
 
         // IDisposable
@@ -172,22 +188,6 @@ namespace DotNetNuke.Collections.Internal
             }
 
             this._isDisposed = true;
-        }
-
-        ~SharedList()
-        {
-            this.Dispose(false);
-        }
-
-        public ISharedCollectionLock GetReadLock()
-        {
-            return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetReadLock(TimeSpan timeOut)
-        {
-            this.EnsureNotDisposed();
-            return this._lockStrategy.GetReadLock(timeOut);
         }
 
         public ISharedCollectionLock GetReadLock(int millisecondTimeout)
@@ -211,6 +211,11 @@ namespace DotNetNuke.Collections.Internal
             return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
+        public IEnumerator GetEnumerator1()
+        {
+            return this.GetEnumerator();
+        }
+
         private void EnsureReadAccess()
         {
             if (!this._lockStrategy.ThreadCanRead)
@@ -225,11 +230,6 @@ namespace DotNetNuke.Collections.Internal
             {
                 throw new WriteLockRequiredException();
             }
-        }
-
-        public IEnumerator GetEnumerator1()
-        {
-            return this.GetEnumerator();
         }
     }
 }

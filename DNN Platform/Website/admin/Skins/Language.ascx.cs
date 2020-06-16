@@ -248,67 +248,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        private string parseTemplate(string template, string locale)
-        {
-            string strReturnValue = template;
-            try
-            {
-                if (!string.IsNullOrEmpty(locale))
-                {
-                    // for non data items use locale
-                    this.LocalTokenReplace.Language = locale;
-                }
-                else
-                {
-                    // for non data items use page culture
-                    this.LocalTokenReplace.Language = this.CurrentCulture;
-                }
-
-                // perform token replacements
-                strReturnValue = this.LocalTokenReplace.ReplaceEnvironmentTokens(strReturnValue);
-            }
-            catch (Exception ex)
-            {
-                Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
-            }
-
-            return strReturnValue;
-        }
-
-        private void handleCommonTemplates()
-        {
-            if (string.IsNullOrEmpty(this.CommonHeaderTemplate))
-            {
-                this.litCommonHeaderTemplate.Visible = false;
-            }
-            else
-            {
-                this.litCommonHeaderTemplate.Text = this.parseTemplate(this.CommonHeaderTemplate, this.CurrentCulture);
-            }
-
-            if (string.IsNullOrEmpty(this.CommonFooterTemplate))
-            {
-                this.litCommonFooterTemplate.Visible = false;
-            }
-            else
-            {
-                this.litCommonFooterTemplate.Text = this.parseTemplate(this.CommonFooterTemplate, this.CurrentCulture);
-            }
-        }
-
-        private bool LocaleIsAvailable(Locale locale)
-        {
-            var tab = this.PortalSettings.ActiveTab;
-            if (tab.DefaultLanguageTab != null)
-            {
-                tab = tab.DefaultLanguageTab;
-            }
-
-            var localizedTab = TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale);
-
-            return localizedTab != null && !localizedTab.IsDeleted && TabPermissionController.CanViewPage(localizedTab);
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -391,16 +330,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        private void selectCulture_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Redirect to same page to update all controls for newly selected culture
-            this.LocalTokenReplace.Language = this.selectCulture.SelectedItem.Value;
-
-            // DNN-6170 ensure skin value is culture specific in case of  static localization
-            DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, this.PortalSettings.PortalId, Null.NullString));
-            this.Response.Redirect(this.LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));
-        }
-
         /// <summary>
         /// Binds data to repeater. a template is used to render the items.
         /// </summary>
@@ -473,6 +402,77 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
             }
+        }
+
+        private string parseTemplate(string template, string locale)
+        {
+            string strReturnValue = template;
+            try
+            {
+                if (!string.IsNullOrEmpty(locale))
+                {
+                    // for non data items use locale
+                    this.LocalTokenReplace.Language = locale;
+                }
+                else
+                {
+                    // for non data items use page culture
+                    this.LocalTokenReplace.Language = this.CurrentCulture;
+                }
+
+                // perform token replacements
+                strReturnValue = this.LocalTokenReplace.ReplaceEnvironmentTokens(strReturnValue);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
+            }
+
+            return strReturnValue;
+        }
+
+        private void handleCommonTemplates()
+        {
+            if (string.IsNullOrEmpty(this.CommonHeaderTemplate))
+            {
+                this.litCommonHeaderTemplate.Visible = false;
+            }
+            else
+            {
+                this.litCommonHeaderTemplate.Text = this.parseTemplate(this.CommonHeaderTemplate, this.CurrentCulture);
+            }
+
+            if (string.IsNullOrEmpty(this.CommonFooterTemplate))
+            {
+                this.litCommonFooterTemplate.Visible = false;
+            }
+            else
+            {
+                this.litCommonFooterTemplate.Text = this.parseTemplate(this.CommonFooterTemplate, this.CurrentCulture);
+            }
+        }
+
+        private bool LocaleIsAvailable(Locale locale)
+        {
+            var tab = this.PortalSettings.ActiveTab;
+            if (tab.DefaultLanguageTab != null)
+            {
+                tab = tab.DefaultLanguageTab;
+            }
+
+            var localizedTab = TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale);
+
+            return localizedTab != null && !localizedTab.IsDeleted && TabPermissionController.CanViewPage(localizedTab);
+        }
+
+        private void selectCulture_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Redirect to same page to update all controls for newly selected culture
+            this.LocalTokenReplace.Language = this.selectCulture.SelectedItem.Value;
+
+            // DNN-6170 ensure skin value is culture specific in case of  static localization
+            DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, this.PortalSettings.PortalId, Null.NullString));
+            this.Response.Redirect(this.LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));
         }
     }
 }

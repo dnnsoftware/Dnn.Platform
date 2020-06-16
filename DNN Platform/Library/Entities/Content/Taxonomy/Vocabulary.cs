@@ -208,6 +208,19 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        public virtual int KeyID
+        {
+            get
+            {
+                return this.VocabularyId;
+            }
+
+            set
+            {
+                this.VocabularyId = value;
+            }
+        }
+
         public virtual void Fill(IDataReader dr)
         {
             this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
@@ -230,19 +243,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             // Fill base class properties
             this.FillInternal(dr);
-        }
-
-        public virtual int KeyID
-        {
-            get
-            {
-                return this.VocabularyId;
-            }
-
-            set
-            {
-                this.VocabularyId = value;
-            }
         }
     }
 }

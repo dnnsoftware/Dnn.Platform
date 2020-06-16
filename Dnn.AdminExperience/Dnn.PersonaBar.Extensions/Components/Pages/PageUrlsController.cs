@@ -30,6 +30,18 @@ namespace Dnn.PersonaBar.Pages.Components
             Status,
         }
 
+        protected IEnumerable<KeyValuePair<int, string>> StatusCodes
+        {
+            get
+            {
+                return new[]
+                {
+                    new KeyValuePair<int, string>(200, "Active (200)"),
+                    new KeyValuePair<int, string>(301, "Redirect (301)")
+                };
+            }
+        }
+
         public IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId)
         {
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
@@ -293,6 +305,11 @@ namespace Dnn.PersonaBar.Pages.Components
             };
         }
 
+        protected override Func<IPageUrlsController> GetFactory()
+        {
+            return () => new PageUrlsController();
+        }
+
         private IEnumerable<Url> GetSortedUrls(TabInfo tab, int portalId, Lazy<Dictionary<string, Locale>> locales, int sortColumn, bool sortOrder, bool isSystem)
         {
             var friendlyUrlSettings = new FriendlyUrlSettings(tab.PortalID);
@@ -465,18 +482,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 UserName = userName
             });
         }
-
-        protected IEnumerable<KeyValuePair<int, string>> StatusCodes
-        {
-            get
-            {
-                return new[]
-                {
-                    new KeyValuePair<int, string>(200, "Active (200)"),
-                    new KeyValuePair<int, string>(301, "Redirect (301)")
-                };
-            }
-        }
         private string GetCleanPath(string path, FriendlyUrlSettings friendlyUrlSettings)
         {
             if (string.IsNullOrEmpty(path))
@@ -495,11 +500,6 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 return String.Compare(pair1.Value, pair2.Value, StringComparison.OrdinalIgnoreCase);
             }
-        }
-
-        protected override Func<IPageUrlsController> GetFactory()
-        {
-            return () => new PageUrlsController();
         }
     }
 }

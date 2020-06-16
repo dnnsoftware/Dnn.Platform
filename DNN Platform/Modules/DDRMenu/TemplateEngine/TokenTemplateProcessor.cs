@@ -18,14 +18,14 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     public class TokenTemplateProcessor : ITemplateProcessor
     {
-        private XslCompiledTransform xsl;
         private static readonly Dictionary<string, string> aliases = new Dictionary<string, string>
                                                                      { { "page", "node" }, { "name", "text" } };
-
         private static readonly Regex TemplatesRegex =
                 new Regex(
                     @"(\[(?<directive>(\*|\*\>|\/\*|\>|\/\>|\?|\?!|\/\?|\=))(?<nodename>[A-Z]*)(-(?<modename>[0-9A-Z]*))?\])",
                     RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private XslCompiledTransform xsl;
 
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {

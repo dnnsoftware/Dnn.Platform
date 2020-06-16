@@ -16,12 +16,12 @@ namespace DotNetNuke.Tests.Integration.Tests.DotNetNukeWeb
     [TestFixture]
     public class DotNetNukeWebTests : IntegrationTestBase
     {
+        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
+
         private readonly HttpClient _httpClient;
 
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
-
-        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
 
         public DotNetNukeWebTests()
         {

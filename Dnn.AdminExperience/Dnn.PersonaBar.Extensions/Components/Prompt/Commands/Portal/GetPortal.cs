@@ -16,10 +16,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     [ConsoleCommand("get-portal", Constants.PortalCategory, "Prompt_GetPortal_Description")]
     public class GetPortal : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         int PortalIdFlagValue { get; set; }
 

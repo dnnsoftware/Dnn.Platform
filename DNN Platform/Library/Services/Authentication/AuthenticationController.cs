@@ -32,11 +32,6 @@ namespace DotNetNuke.Services.Authentication
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
         private static readonly DataProvider provider = DataProvider.Instance();
 
-        private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddAuthentication adds a new Authentication System to the Data Store.
@@ -91,6 +86,11 @@ namespace DotNetNuke.Services.Authentication
 
                 return userAuth.UserAuthenticationID;
             }
+        }
+
+        private static object GetAuthenticationServicesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillCollection<AuthenticationInfo>(provider.GetAuthenticationServices());
         }
 
         /// <summary>

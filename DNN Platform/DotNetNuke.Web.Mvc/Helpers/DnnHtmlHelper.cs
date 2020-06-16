@@ -40,17 +40,17 @@ namespace DotNetNuke.Web.Mvc.Helpers
             this.ModuleContext = controller.ModuleContext;
         }
 
+        public ModuleInstanceContext ModuleContext { get; set; }
+
+        public RouteCollection RouteCollection => this.HtmlHelper.RouteCollection;
+
+        internal HtmlHelper HtmlHelper { get; set; }
+
         public MvcHtmlString AntiForgeryToken()
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             return new MvcHtmlString(string.Empty);
         }
-
-        internal HtmlHelper HtmlHelper { get; set; }
-
-        public ModuleInstanceContext ModuleContext { get; set; }
-
-        public RouteCollection RouteCollection => this.HtmlHelper.RouteCollection;
 
         public dynamic ViewBag => this.HtmlHelper.ViewBag;
 

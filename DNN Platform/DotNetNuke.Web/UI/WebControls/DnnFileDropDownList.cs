@@ -20,32 +20,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnFileDropDownList runat='server'></{0}:DnnFileDropDownList>")]
     public class DnnFileDropDownList : DnnDropDownList
     {
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectFileDefaultText", Localization.SharedResourceFile);
-            this.Services.GetTreeMethod = "ItemListService/GetFiles";
-            this.Services.SearchTreeMethod = "ItemListService/SearchFiles";
-            this.Services.SortTreeMethod = "ItemListService/SortFiles";
-            this.Services.ServiceRoot = "InternalServices";
-            this.Options.ItemList.DisableUnspecifiedOrder = true;
-
-            this.FolderId = Null.NullInteger;
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            this.AddCssClass("file");
-
-            if (this.IncludeNoneSpecificItem)
-            {
-                this.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
-            }
-
-            base.OnPreRender(e);
-        }
-
         /// <summary>
         /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
         /// </summary>
@@ -82,6 +56,32 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get { return this.Services.Parameters.ContainsKey("filter") ? this.Services.Parameters["filter"] : string.Empty; }
             set { this.Services.Parameters["filter"] = value; }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectFileDefaultText", Localization.SharedResourceFile);
+            this.Services.GetTreeMethod = "ItemListService/GetFiles";
+            this.Services.SearchTreeMethod = "ItemListService/SearchFiles";
+            this.Services.SortTreeMethod = "ItemListService/SortFiles";
+            this.Services.ServiceRoot = "InternalServices";
+            this.Options.ItemList.DisableUnspecifiedOrder = true;
+
+            this.FolderId = Null.NullInteger;
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            this.AddCssClass("file");
+
+            if (this.IncludeNoneSpecificItem)
+            {
+                this.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, Null.NullInteger.ToString(CultureInfo.InvariantCulture));
+            }
+
+            base.OnPreRender(e);
         }
 
         public bool IncludeNoneSpecificItem { get; set; }

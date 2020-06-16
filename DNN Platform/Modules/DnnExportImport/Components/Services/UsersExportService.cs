@@ -23,6 +23,45 @@ namespace Dnn.ExportImport.Components.Services
     /// </summary>
     public class UsersExportService : BasePortableService
     {
+        private static readonly Tuple<string, Type>[] UsersDatasetColumns =
+        {
+            new Tuple<string, Type>("PortalId", typeof(int)),
+            new Tuple<string, Type>("Username", typeof(string)),
+            new Tuple<string, Type>("FirstName", typeof(string)),
+            new Tuple<string, Type>("LastName", typeof(string)),
+            new Tuple<string, Type>("AffiliateId", typeof(int)),
+            new Tuple<string, Type>("IsSuperUser", typeof(bool)),
+            new Tuple<string, Type>("Email", typeof(string)),
+            new Tuple<string, Type>("DisplayName", typeof(string)),
+            new Tuple<string, Type>("UpdatePassword", typeof(bool)),
+            new Tuple<string, Type>("Authorised", typeof(bool)),
+            new Tuple<string, Type>("CreatedByUserID", typeof(int)),
+            new Tuple<string, Type>("VanityUrl", typeof(string)),
+            new Tuple<string, Type>("RefreshRoles", typeof(bool)),
+            new Tuple<string, Type>("LastIPAddress", typeof(string)),
+            new Tuple<string, Type>("PasswordResetToken", typeof(Guid)),
+            new Tuple<string, Type>("PasswordResetExpiration", typeof(DateTime)),
+            new Tuple<string, Type>("IsDeleted", typeof(bool)),
+            new Tuple<string, Type>("LastModifiedByUserID", typeof(int)),
+            new Tuple<string, Type>("ApplicationId", typeof(Guid)),
+            new Tuple<string, Type>("AspUserId", typeof(Guid)),
+            new Tuple<string, Type>("MobileAlias", typeof(string)),
+            new Tuple<string, Type>("IsAnonymous", typeof(bool)),
+            new Tuple<string, Type>("Password", typeof(string)),
+            new Tuple<string, Type>("PasswordFormat", typeof(int)),
+            new Tuple<string, Type>("PasswordSalt", typeof(string)),
+            new Tuple<string, Type>("MobilePIN", typeof(string)),
+            new Tuple<string, Type>("PasswordQuestion", typeof(string)),
+            new Tuple<string, Type>("PasswordAnswer", typeof(string)),
+            new Tuple<string, Type>("IsApproved", typeof(bool)),
+            new Tuple<string, Type>("IsLockedOut", typeof(bool)),
+            new Tuple<string, Type>("FailedPasswordAttemptCount", typeof(int)),
+            new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof(int)),
+            new Tuple<string, Type>("Comment", typeof(string)),
+            new Tuple<string, Type>("AuthenticationType", typeof(string)),
+            new Tuple<string, Type>("AuthenticationToken", typeof(string)),
+        };
+
         public override string Category => Constants.Category_Users;
 
         public override string ParentCategory => null;
@@ -463,44 +502,5 @@ namespace Dnn.ExportImport.Components.Services
                     "SELECT TOP 1 ApplicationId FROM aspnet_Applications");
             }
         }
-
-        private static readonly Tuple<string, Type>[] UsersDatasetColumns =
-        {
-            new Tuple<string, Type>("PortalId", typeof(int)),
-            new Tuple<string, Type>("Username", typeof(string)),
-            new Tuple<string, Type>("FirstName", typeof(string)),
-            new Tuple<string, Type>("LastName", typeof(string)),
-            new Tuple<string, Type>("AffiliateId", typeof(int)),
-            new Tuple<string, Type>("IsSuperUser", typeof(bool)),
-            new Tuple<string, Type>("Email", typeof(string)),
-            new Tuple<string, Type>("DisplayName", typeof(string)),
-            new Tuple<string, Type>("UpdatePassword", typeof(bool)),
-            new Tuple<string, Type>("Authorised", typeof(bool)),
-            new Tuple<string, Type>("CreatedByUserID", typeof(int)),
-            new Tuple<string, Type>("VanityUrl", typeof(string)),
-            new Tuple<string, Type>("RefreshRoles", typeof(bool)),
-            new Tuple<string, Type>("LastIPAddress", typeof(string)),
-            new Tuple<string, Type>("PasswordResetToken", typeof(Guid)),
-            new Tuple<string, Type>("PasswordResetExpiration", typeof(DateTime)),
-            new Tuple<string, Type>("IsDeleted", typeof(bool)),
-            new Tuple<string, Type>("LastModifiedByUserID", typeof(int)),
-            new Tuple<string, Type>("ApplicationId", typeof(Guid)),
-            new Tuple<string, Type>("AspUserId", typeof(Guid)),
-            new Tuple<string, Type>("MobileAlias", typeof(string)),
-            new Tuple<string, Type>("IsAnonymous", typeof(bool)),
-            new Tuple<string, Type>("Password", typeof(string)),
-            new Tuple<string, Type>("PasswordFormat", typeof(int)),
-            new Tuple<string, Type>("PasswordSalt", typeof(string)),
-            new Tuple<string, Type>("MobilePIN", typeof(string)),
-            new Tuple<string, Type>("PasswordQuestion", typeof(string)),
-            new Tuple<string, Type>("PasswordAnswer", typeof(string)),
-            new Tuple<string, Type>("IsApproved", typeof(bool)),
-            new Tuple<string, Type>("IsLockedOut", typeof(bool)),
-            new Tuple<string, Type>("FailedPasswordAttemptCount", typeof(int)),
-            new Tuple<string, Type>("FailedPasswordAnswerAttemptCount", typeof(int)),
-            new Tuple<string, Type>("Comment", typeof(string)),
-            new Tuple<string, Type>("AuthenticationType", typeof(string)),
-            new Tuple<string, Type>("AuthenticationToken", typeof(string)),
-        };
     }
 }

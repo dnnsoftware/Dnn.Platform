@@ -16,32 +16,16 @@ namespace DotNetNuke.Web.Api
     public abstract class AuthFilterBase : IAuthorizationFilter
     {
         /// <summary>
+        /// Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
+        /// </summary>
+        public abstract bool AllowMultiple { get; }
+
+        /// <summary>
         /// Tests if the request passes the authorization requirements.
         /// </summary>
         /// <param name="context">The auth filter context.</param>
         /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
-
-        /// <summary>
-        /// Co-ordinates check of authorization and handles Auth failure.  Should rarely be overridden.
-        /// </summary>
-        /// <param name="actionContext"></param>
-        protected virtual void OnAuthorization(HttpActionContext actionContext)
-        {
-            Requires.NotNull("actionContext", actionContext);
-
-            const string failureMessage = "Authorization has been denied for this request.";
-            var authFilterContext = new AuthFilterContext(actionContext, failureMessage);
-            if (!this.IsAuthorized(authFilterContext))
-            {
-                authFilterContext.HandleUnauthorizedRequest();
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
-        /// </summary>
-        public abstract bool AllowMultiple { get; }
 
         Task<HttpResponseMessage> IAuthorizationFilter.ExecuteAuthorizationFilterAsync(HttpActionContext actionContext, CancellationToken cancellationToken, Func<Task<HttpResponseMessage>> continuation)
         {
@@ -67,6 +51,22 @@ namespace DotNetNuke.Web.Api
             }
 
             return continuation();
+        }
+
+        /// <summary>
+        /// Co-ordinates check of authorization and handles Auth failure.  Should rarely be overridden.
+        /// </summary>
+        /// <param name="actionContext"></param>
+        protected virtual void OnAuthorization(HttpActionContext actionContext)
+        {
+            Requires.NotNull("actionContext", actionContext);
+
+            const string failureMessage = "Authorization has been denied for this request.";
+            var authFilterContext = new AuthFilterContext(actionContext, failureMessage);
+            if (!this.IsAuthorized(authFilterContext))
+            {
+                authFilterContext.HandleUnauthorizedRequest();
+            }
         }
     }
 }

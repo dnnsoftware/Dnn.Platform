@@ -21,6 +21,14 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         private readonly int _portalId;
         private readonly string _ipAddress;
 
+        public DigestAuthentication(DigestAuthenticationRequest request, int portalId, string ipAddress)
+        {
+            this._request = request;
+            this._portalId = portalId;
+            this._ipAddress = ipAddress ?? string.Empty;
+            this.AuthenticateRequest();
+        }
+
         public DigestAuthenticationRequest Request
         {
             get { return this._request; }
@@ -31,19 +39,52 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         public bool IsNonceStale { get; private set; }
 
+        public IPrincipal User { get; private set; }
+
         public string CalculateHashedDigest()
         {
             return CreateMd5HashBinHex(this.GenerateUnhashedDigest());
         }
 
-        public IPrincipal User { get; private set; }
-
-        public DigestAuthentication(DigestAuthenticationRequest request, int portalId, string ipAddress)
+        private static string CreateMd5HashBinHex(string val)
         {
-            this._request = request;
-            this._portalId = portalId;
-            this._ipAddress = ipAddress ?? string.Empty;
-            this.AuthenticateRequest();
+            // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
+            // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
+            byte[] bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
+            string ha1 = string.Empty;
+            for (int i = 0; i <= 15; i++)
+            {
+                ha1 += string.Format("{0:x02}", bha1[i]);
+            }
+
+            return ha1;
+        }
+
+        // the nonce is created in DotNetNuke.Web.Api.DigestAuthMessageHandler
+        private static bool IsNonceValid(string nonce)
+        {
+            DateTime expireTime;
+
+            int numPadChars = nonce.Length % 4;
+            if (numPadChars > 0)
+            {
+                numPadChars = 4 - numPadChars;
+            }
+
+            string newNonce = nonce.PadRight(nonce.Length + numPadChars, '=');
+
+            try
+            {
+                byte[] decodedBytes = Convert.FromBase64String(newNonce);
+                string expireStr = Encoding.Default.GetString(decodedBytes);
+                expireTime = DateTime.Parse(expireStr);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
+            return DateTime.Now <= expireTime;
         }
 
         private void AuthenticateRequest()
@@ -105,47 +146,6 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
             // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return unhashedDigest;
-        }
-
-        private static string CreateMd5HashBinHex(string val)
-        {
-            // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
-            // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
-            byte[] bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
-            string ha1 = string.Empty;
-            for (int i = 0; i <= 15; i++)
-            {
-                ha1 += string.Format("{0:x02}", bha1[i]);
-            }
-
-            return ha1;
-        }
-
-        // the nonce is created in DotNetNuke.Web.Api.DigestAuthMessageHandler
-        private static bool IsNonceValid(string nonce)
-        {
-            DateTime expireTime;
-
-            int numPadChars = nonce.Length % 4;
-            if (numPadChars > 0)
-            {
-                numPadChars = 4 - numPadChars;
-            }
-
-            string newNonce = nonce.PadRight(nonce.Length + numPadChars, '=');
-
-            try
-            {
-                byte[] decodedBytes = Convert.FromBase64String(newNonce);
-                string expireStr = Encoding.Default.GetString(decodedBytes);
-                expireTime = DateTime.Parse(expireStr);
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-
-            return DateTime.Now <= expireTime;
         }
     }
 }

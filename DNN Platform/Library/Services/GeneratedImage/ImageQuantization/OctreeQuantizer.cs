@@ -15,6 +15,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class OctreeQuantizer : Quantizer
     {
         /// <summary>
+        /// Stores the tree.
+        /// </summary>
+        private Octree _octree;
+
+        /// <summary>
+        /// Maximum allowed color depth.
+        /// </summary>
+        private int _maxColors;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="OctreeQuantizer"/> class.
         /// Construct the octree quantizer.
         /// </summary>
@@ -97,20 +107,25 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Stores the tree.
-        /// </summary>
-        private Octree _octree;
-
-        /// <summary>
-        /// Maximum allowed color depth.
-        /// </summary>
-        private int _maxColors;
-
-        /// <summary>
         /// Class which does the actual quantization.
         /// </summary>
         private class Octree
         {
+            /// <summary>
+            /// Mask used when getting the appropriate pixels for a given node.
+            /// </summary>
+            private static readonly int[] mask = new int[8] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+
+            /// <summary>
+            /// The root of the octree.
+            /// </summary>
+            private OctreeNode _root;
+
+            /// <summary>
+            /// Number of leaves in the tree.
+            /// </summary>
+            private int _leafCount;
+
             /// <summary>
             /// Initializes a new instance of the <see cref="Octree"/> class.
             /// Construct the octree.
@@ -124,6 +139,23 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 this._root = new OctreeNode(0, this._maxColorBits, this);
                 this._previousColor = 0;
                 this._previousNode = null;
+            }
+
+            /// <summary>
+            /// Gets or sets get/Set the number of leaves in the tree.
+            /// </summary>
+            public int Leaves
+            {
+                get { return this._leafCount; }
+                set { this._leafCount = value; }
+            }
+
+            /// <summary>
+            /// Gets return the array of reducible nodes.
+            /// </summary>
+            protected OctreeNode[] ReducibleNodes
+            {
+                get { return this._reducibleNodes; }
             }
 
             /// <summary>
@@ -181,32 +213,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
 
             /// <summary>
-            /// Gets or sets get/Set the number of leaves in the tree.
-            /// </summary>
-            public int Leaves
-            {
-                get { return this._leafCount; }
-                set { this._leafCount = value; }
-            }
-
-            /// <summary>
-            /// Gets return the array of reducible nodes.
-            /// </summary>
-            protected OctreeNode[] ReducibleNodes
-            {
-                get { return this._reducibleNodes; }
-            }
-
-            /// <summary>
-            /// Keep track of the previous node that was quantized.
-            /// </summary>
-            /// <param name="node">The node last quantized.</param>
-            protected void TrackPrevious(OctreeNode node)
-            {
-                this._previousNode = node;
-            }
-
-            /// <summary>
             /// Convert the nodes in the octree to a palette with a maximum of colorCount colors.
             /// </summary>
             /// <param name="colorCount">The maximum number of colors.</param>
@@ -238,19 +244,13 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
 
             /// <summary>
-            /// Mask used when getting the appropriate pixels for a given node.
+            /// Keep track of the previous node that was quantized.
             /// </summary>
-            private static readonly int[] mask = new int[8] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-
-            /// <summary>
-            /// The root of the octree.
-            /// </summary>
-            private OctreeNode _root;
-
-            /// <summary>
-            /// Number of leaves in the tree.
-            /// </summary>
-            private int _leafCount;
+            /// <param name="node">The node last quantized.</param>
+            protected void TrackPrevious(OctreeNode node)
+            {
+                this._previousNode = node;
+            }
 
             /// <summary>
             /// Array of reducible nodes.
@@ -277,6 +277,21 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// </summary>
             protected class OctreeNode
             {
+                /// <summary>
+                /// Flag indicating that this is a leaf node.
+                /// </summary>
+                private bool _leaf;
+
+                /// <summary>
+                /// Number of pixels in this node.
+                /// </summary>
+                private int _pixelCount;
+
+                /// <summary>
+                /// Red component.
+                /// </summary>
+                private int _red;
+
                 /// <summary>
                 /// Initializes a new instance of the <see cref="OctreeNode"/> class.
                 /// Construct the node.
@@ -306,6 +321,23 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         octree.ReducibleNodes[level] = this;
                         this._children = new OctreeNode[8];
                     }
+                }
+
+                /// <summary>
+                /// Gets or sets get/Set the next reducible node.
+                /// </summary>
+                public OctreeNode NextReducible
+                {
+                    get { return this._nextReducible; }
+                    set { this._nextReducible = value; }
+                }
+
+                /// <summary>
+                /// Gets return the child nodes.
+                /// </summary>
+                public OctreeNode[] Children
+                {
+                    get { return this._children; }
                 }
 
                 /// <summary>
@@ -345,23 +377,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         // Add the color to the child node
                         child.AddColor(pixel, colorBits, level + 1, octree);
                     }
-                }
-
-                /// <summary>
-                /// Gets or sets get/Set the next reducible node.
-                /// </summary>
-                public OctreeNode NextReducible
-                {
-                    get { return this._nextReducible; }
-                    set { this._nextReducible = value; }
-                }
-
-                /// <summary>
-                /// Gets return the child nodes.
-                /// </summary>
-                public OctreeNode[] Children
-                {
-                    get { return this._children; }
                 }
 
                 /// <summary>
@@ -459,21 +474,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     this._green += pixel.Green;
                     this._blue += pixel.Blue;
                 }
-
-                /// <summary>
-                /// Flag indicating that this is a leaf node.
-                /// </summary>
-                private bool _leaf;
-
-                /// <summary>
-                /// Number of pixels in this node.
-                /// </summary>
-                private int _pixelCount;
-
-                /// <summary>
-                /// Red component.
-                /// </summary>
-                private int _red;
 
                 /// <summary>
                 /// Green Component.

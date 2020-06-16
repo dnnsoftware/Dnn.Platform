@@ -27,9 +27,9 @@ namespace DotNetNuke.Tests.Urls
     public class UrlRewriteTests : UrlTestBase
     {
         private const string _defaultPage = Globals.glbDefaultPage;
-        private int _tabId;
         private const string _testPage = "Test Page";
         private const string _aboutUsPageName = "About Us";
+        private int _tabId;
         private string _redirectMode;
         private Locale _customLocale;
         private string _securePageName;
@@ -40,57 +40,6 @@ namespace DotNetNuke.Tests.Urls
         public UrlRewriteTests()
             : base(0)
         {
-        }
-
-        private void CreateSimulatedRequest(Uri url)
-        {
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
-            simulator.SimulateRequest(url);
-
-            var browserCaps = new HttpBrowserCapabilities { Capabilities = new Hashtable() };
-            HttpContext.Current.Request.Browser = browserCaps;
-        }
-
-        private void ProcessRequest(FriendlyUrlSettings settings, UrlTestHelper testHelper)
-        {
-            var provider = new AdvancedUrlRewriter();
-
-            provider.ProcessTestRequestWithContext(
-                HttpContext.Current,
-                HttpContext.Current.Request.Url,
-                true,
-                testHelper.Result,
-                settings);
-            testHelper.Response = HttpContext.Current.Response;
-        }
-
-        private string ReplaceTokens(Dictionary<string, string> testFields, string url, string tabId)
-        {
-            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
-            var httpAlias = testFields.GetValue("Alias", string.Empty);
-            var tabName = testFields["Page Name"];
-            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
-            var homeTabId = testFields.GetValue("HomeTabId", string.Empty);
-
-            var userName = testFields.GetValue("UserName", string.Empty);
-            string userId = string.Empty;
-            if (!string.IsNullOrEmpty(userName))
-            {
-                var user = UserController.GetUserByName(this.PortalId, userName);
-                if (user != null)
-                {
-                    userId = user.UserID.ToString();
-                }
-            }
-
-            return url.Replace("{alias}", httpAlias)
-                            .Replace("{usealias}", defaultAlias)
-                            .Replace("{tabName}", tabName)
-                            .Replace("{tabId}", tabId)
-                            .Replace("{portalId}", this.PortalId.ToString())
-                            .Replace("{vanityUrl}", vanityUrl)
-                            .Replace("{userId}", userId)
-                            .Replace("{defaultPage}", _defaultPage);
         }
 
         [SetUp]
@@ -154,6 +103,57 @@ namespace DotNetNuke.Tests.Urls
             }
         }
 
+        private void CreateSimulatedRequest(Uri url)
+        {
+            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", this.WebsitePhysicalAppPath);
+            simulator.SimulateRequest(url);
+
+            var browserCaps = new HttpBrowserCapabilities { Capabilities = new Hashtable() };
+            HttpContext.Current.Request.Browser = browserCaps;
+        }
+
+        private void ProcessRequest(FriendlyUrlSettings settings, UrlTestHelper testHelper)
+        {
+            var provider = new AdvancedUrlRewriter();
+
+            provider.ProcessTestRequestWithContext(
+                HttpContext.Current,
+                HttpContext.Current.Request.Url,
+                true,
+                testHelper.Result,
+                settings);
+            testHelper.Response = HttpContext.Current.Response;
+        }
+
+        private string ReplaceTokens(Dictionary<string, string> testFields, string url, string tabId)
+        {
+            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
+            var httpAlias = testFields.GetValue("Alias", string.Empty);
+            var tabName = testFields["Page Name"];
+            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
+            var homeTabId = testFields.GetValue("HomeTabId", string.Empty);
+
+            var userName = testFields.GetValue("UserName", string.Empty);
+            string userId = string.Empty;
+            if (!string.IsNullOrEmpty(userName))
+            {
+                var user = UserController.GetUserByName(this.PortalId, userName);
+                if (user != null)
+                {
+                    userId = user.UserID.ToString();
+                }
+            }
+
+            return url.Replace("{alias}", httpAlias)
+                            .Replace("{usealias}", defaultAlias)
+                            .Replace("{tabName}", tabName)
+                            .Replace("{tabId}", tabId)
+                            .Replace("{portalId}", this.PortalId.ToString())
+                            .Replace("{vanityUrl}", vanityUrl)
+                            .Replace("{userId}", userId)
+                            .Replace("{defaultPage}", _defaultPage);
+        }
+
         [TestFixtureSetUp]
         public override void TestFixtureSetUp()
         {
@@ -210,6 +210,60 @@ namespace DotNetNuke.Tests.Urls
 
                                 TestUtil.DeleteUser(this.PortalId, fields[0]);
                             });
+        }
+
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_BasicTestCases")]
+        public void AdvancedUrlRewriter_BasicTest(Dictionary<string, string> testFields)
+        {
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
+
+            this.ExecuteTest(settings, testFields, true);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_DeletedTabHandlingTestCases")]
+        public void AdvancedUrlRewriter_DeletedTabHandling(Dictionary<string, string> testFields)
+        {
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
+
+            var tab = TabController.Instance.GetTabByName(_testPage, this.PortalId);
+            if (Convert.ToBoolean(testFields["HardDeleted"]))
+            {
+                this.DeleteTab(_testPage);
+                CacheController.FlushPageIndexFromCache();
+            }
+            else
+            {
+                tab.IsDeleted = Convert.ToBoolean(testFields["SoftDeleted"]);
+                tab.DisableLink = Convert.ToBoolean(testFields["Disabled"]);
+                if (Convert.ToBoolean(testFields["Expired"]))
+                {
+                    tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
+                }
+
+                this.UpdateTab(tab);
+                CacheController.FlushPageIndexFromCache();
+            }
+
+            string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
+
+            if (!string.IsNullOrEmpty(deletedTabHandling))
+            {
+                switch (deletedTabHandling)
+                {
+                    case "Do404Error":
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
+                        break;
+                    default:
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
+                        break;
+                }
+            }
+
+            this.SetDefaultAlias(testFields);
+
+            this.ExecuteTest(settings, testFields, true);
         }
 
         private void DeleteTab(string tabName)
@@ -310,60 +364,6 @@ namespace DotNetNuke.Tests.Urls
             var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
             tab.SkinSrc = newSkin;
             TabController.Instance.UpdateTab(tab);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_BasicTestCases")]
-        public void AdvancedUrlRewriter_BasicTest(Dictionary<string, string> testFields)
-        {
-            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
-
-            this.ExecuteTest(settings, testFields, true);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_DeletedTabHandlingTestCases")]
-        public void AdvancedUrlRewriter_DeletedTabHandling(Dictionary<string, string> testFields)
-        {
-            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
-
-            var tab = TabController.Instance.GetTabByName(_testPage, this.PortalId);
-            if (Convert.ToBoolean(testFields["HardDeleted"]))
-            {
-                this.DeleteTab(_testPage);
-                CacheController.FlushPageIndexFromCache();
-            }
-            else
-            {
-                tab.IsDeleted = Convert.ToBoolean(testFields["SoftDeleted"]);
-                tab.DisableLink = Convert.ToBoolean(testFields["Disabled"]);
-                if (Convert.ToBoolean(testFields["Expired"]))
-                {
-                    tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
-                }
-
-                this.UpdateTab(tab);
-                CacheController.FlushPageIndexFromCache();
-            }
-
-            string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
-
-            if (!string.IsNullOrEmpty(deletedTabHandling))
-            {
-                switch (deletedTabHandling)
-                {
-                    case "Do404Error":
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
-                        break;
-                    default:
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
-                        break;
-                }
-            }
-
-            this.SetDefaultAlias(testFields);
-
-            this.ExecuteTest(settings, testFields, true);
         }
 
         [Test]

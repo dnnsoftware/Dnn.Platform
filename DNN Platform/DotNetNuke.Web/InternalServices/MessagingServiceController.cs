@@ -43,15 +43,6 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        public class CreateDTO
-        {
-            public string Subject;
-            public string Body;
-            public string RoleIds;
-            public string UserIds;
-            public string FileIds;
-        }
-
         [ValidateAntiForgeryToken]
         [HttpPost]
         public HttpResponseMessage Create(CreateDTO postData)
@@ -130,6 +121,15 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        public class CreateDTO
+        {
+            public string Subject;
+            public string Body;
+            public string RoleIds;
+            public string UserIds;
+            public string FileIds;
         }
 
         /// <summary>

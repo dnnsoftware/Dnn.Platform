@@ -40,11 +40,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FilterViewSettings.js", FileOrder.Js.DefaultPriority);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// LoadSettings loads the settings from the Database and displays them.
@@ -103,6 +98,11 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FilterViewSettings.js", FileOrder.Js.DefaultPriority);
         }
 
         protected void ValidateFolderIsSelected(object source, ServerValidateEventArgs args)

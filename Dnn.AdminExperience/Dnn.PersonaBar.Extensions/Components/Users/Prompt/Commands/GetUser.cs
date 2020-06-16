@@ -17,23 +17,23 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
     public class GetUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
-        private IUserValidator _userValidator;
-        private IUserControllerWrapper _userControllerWrapper;
-
         [FlagParameter("id", "Prompt_GetUser_FlagId", "Integer")]
         private const string FlagId = "id";
+
+        private IUserValidator _userValidator;
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        private IUserControllerWrapper _userControllerWrapper;
         [FlagParameter("email", "Prompt_GetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
         [FlagParameter("username", "Prompt_GetUser_FlagUsername", "String")]
         private const string FlagUsername = "username";
 
+        private const int UserIdZero = 0;
+
         private int? UserId { get; set; }
         private string Email { get; set; }
         private string Username { get; set; }
-
-        private const int UserIdZero = 0;
 
         public GetUser() : this(new UserValidator(), new UserControllerWrapper())
         {

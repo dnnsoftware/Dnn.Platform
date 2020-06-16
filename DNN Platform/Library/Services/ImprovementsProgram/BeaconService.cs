@@ -24,11 +24,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
     {
         private static readonly bool IsAlphaMode = DotNetNukeContext.Current?.Application?.Status == ReleaseMode.Alpha;
 
-        protected override Func<IBeaconService> GetFactory()
-        {
-            return () => new BeaconService();
-        }
-
         private string _beaconEndpoint;
 
         public string GetBeaconEndpoint()
@@ -66,6 +61,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
             }
 
             return enabled;
+        }
+
+        protected override Func<IBeaconService> GetFactory()
+        {
+            return () => new BeaconService();
         }
 
         public bool IsBeaconEnabledForPersonaBar()
@@ -150,15 +150,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
             return this.GetBeaconEndpoint() + this.GetBeaconQuery(user, filePath);
         }
 
-        private string GetHash(string data)
-        {
-            using (var sha256 = CryptographyUtils.CreateSHA256())
-            {
-                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
-                return Convert.ToBase64String(hash);
-            }
-        }
-
         private static RolesEnum GetUserRolesBitValues(UserInfo user)
         {
             var roles = RolesEnum.None;
@@ -191,6 +182,15 @@ namespace DotNetNuke.Services.ImprovementsProgram
             }
 
             return roles;
+        }
+
+        private string GetHash(string data)
+        {
+            using (var sha256 = CryptographyUtils.CreateSHA256())
+            {
+                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(data));
+                return Convert.ToBase64String(hash);
+            }
         }
     }
 }

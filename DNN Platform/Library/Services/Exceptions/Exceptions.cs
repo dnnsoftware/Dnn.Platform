@@ -102,6 +102,20 @@ namespace DotNetNuke.Services.Exceptions
             return objExceptionInfo;
         }
 
+        public static void ProcessHttpException()
+        {
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
+            var exc = new HttpException(404, notFoundErrorString);
+            ProcessHttpException(exc, HttpContext.Current.Request.RawUrl);
+        }
+
+        public static void ProcessHttpException(string URL)
+        {
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
+            var exc = new HttpException(404, notFoundErrorString);
+            ProcessHttpException(exc, URL);
+        }
+
         /// <summary>
         /// Threads the abort check if the exception is a ThreadAbortCheck.
         /// </summary>
@@ -120,20 +134,6 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        public static void ProcessHttpException()
-        {
-            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
-            var exc = new HttpException(404, notFoundErrorString);
-            ProcessHttpException(exc, HttpContext.Current.Request.RawUrl);
-        }
-
-        public static void ProcessHttpException(string URL)
-        {
-            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
-            var exc = new HttpException(404, notFoundErrorString);
-            ProcessHttpException(exc, URL);
-        }
-
         public static void ProcessHttpException(HttpException exc)
         {
             ProcessHttpException(exc, HttpContext.Current.Request.RawUrl);
@@ -144,6 +144,27 @@ namespace DotNetNuke.Services.Exceptions
             var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
             var exc = new HttpException(404, notFoundErrorString);
             ProcessHttpException(exc, request.RawUrl);
+        }
+
+        /// <summary>
+        /// Processes the module load exception.
+        /// </summary>
+        /// <param name="objPortalModuleBase">The portal module base.</param>
+        /// <param name="exc">The exc.</param>
+        public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc)
+        {
+            ProcessModuleLoadException((Control)objPortalModuleBase, exc);
+        }
+
+        /// <summary>
+        /// Processes the module load exception.
+        /// </summary>
+        /// <param name="objPortalModuleBase">The portal module base.</param>
+        /// <param name="exc">The exc.</param>
+        /// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
+        public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
+        {
+            ProcessModuleLoadException((Control)objPortalModuleBase, exc, DisplayErrorMessage);
         }
 
         private static void ProcessHttpException(HttpException exc, string URL)
@@ -166,27 +187,6 @@ namespace DotNetNuke.Services.Exceptions
             LogController.Instance.AddLog(log);
 
             throw exc;
-        }
-
-        /// <summary>
-        /// Processes the module load exception.
-        /// </summary>
-        /// <param name="objPortalModuleBase">The portal module base.</param>
-        /// <param name="exc">The exc.</param>
-        public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc)
-        {
-            ProcessModuleLoadException((Control)objPortalModuleBase, exc);
-        }
-
-        /// <summary>
-        /// Processes the module load exception.
-        /// </summary>
-        /// <param name="objPortalModuleBase">The portal module base.</param>
-        /// <param name="exc">The exc.</param>
-        /// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
-        public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
-        {
-            ProcessModuleLoadException((Control)objPortalModuleBase, exc, DisplayErrorMessage);
         }
 
         /// <summary>

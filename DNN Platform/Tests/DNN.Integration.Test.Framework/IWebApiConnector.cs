@@ -27,6 +27,8 @@ namespace DNN.Integration.Test.Framework
 
         string UserAgentValue { get; set; }
 
+        bool AvoidCaching { get; set; }
+
         void Logout();
 
         bool Login(string password);
@@ -53,7 +55,5 @@ namespace DNN.Integration.Test.Framework
         HttpResponseMessage GetContent(
             string relativeUrl,
             Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true);
-
-        bool AvoidCaching { get; set; }
     }
 }

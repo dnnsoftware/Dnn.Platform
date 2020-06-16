@@ -98,6 +98,25 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public int KeyID
+        {
+            get
+            {
+                return this.ModuleControlID;
+            }
+
+            set
+            {
+                this.ModuleControlID = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Fills a ModuleControlInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -116,25 +135,6 @@ namespace DotNetNuke.Entities.Modules
 
             // Call the base classes fill method to populate base class proeprties
             this.FillInternal(dr);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        public int KeyID
-        {
-            get
-            {
-                return this.ModuleControlID;
-            }
-
-            set
-            {
-                this.ModuleControlID = value;
-            }
         }
 
         /// -----------------------------------------------------------------------------

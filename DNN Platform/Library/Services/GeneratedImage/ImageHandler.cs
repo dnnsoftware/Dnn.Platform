@@ -16,7 +16,20 @@ namespace DotNetNuke.Services.GeneratedImage
     /// </summary>
     public abstract class ImageHandler : IHttpHandler
     {
-        private ImageHandlerInternal Implementation { get; set; }
+        internal ImageHandler(IImageStore imageStore, DateTime now)
+            : this(new ImageHandlerInternal(imageStore, now))
+        {
+        }
+
+        protected ImageHandler()
+            : this(new ImageHandlerInternal())
+        {
+        }
+
+        private ImageHandler(ImageHandlerInternal implementation)
+        {
+            this.Implementation = implementation;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether enables server-side caching of the result.
@@ -35,6 +48,8 @@ namespace DotNetNuke.Services.GeneratedImage
             get { return this.Implementation.EnableClientCache; }
             set { this.Implementation.EnableClientCache = value; }
         }
+
+        private ImageHandlerInternal Implementation { get; set; }
 
         /// <summary>
         /// Gets or sets the client-side cache expiration time.
@@ -112,29 +127,14 @@ namespace DotNetNuke.Services.GeneratedImage
             set { this.Implementation.IpCountPurgeInterval = value; }
         }
 
+        public virtual bool IsReusable => false;
+
         /// <summary>
         /// Gets a list of image transforms that will be applied successively to the image.
         /// </summary>
         protected List<ImageTransform> ImageTransforms => this.Implementation.ImageTransforms;
 
-        protected ImageHandler()
-            : this(new ImageHandlerInternal())
-        {
-        }
-
-        private ImageHandler(ImageHandlerInternal implementation)
-        {
-            this.Implementation = implementation;
-        }
-
-        internal ImageHandler(IImageStore imageStore, DateTime now)
-            : this(new ImageHandlerInternal(imageStore, now))
-        {
-        }
-
         public abstract ImageInfo GenerateImage(NameValueCollection parameters);
-
-        public virtual bool IsReusable => false;
 
         public void ProcessRequest(HttpContext context)
         {

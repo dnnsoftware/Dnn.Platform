@@ -1,10 +1,8 @@
-﻿
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Roles.Components
 {
-    // Licensed to the .NET Foundation under one or more agreements.
-    // The .NET Foundation licenses this file to you under the MIT license.
-    // See the LICENSE file in the project root for more information
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,11 +18,6 @@ namespace Dnn.PersonaBar.Roles.Components
 
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
     {
-        protected override Func<IRolesController> GetFactory()
-        {
-            return () => new RolesController();
-        }
-
         /// <summary>
         /// Gets a paginated list of Roles matching given search criteria.
         /// </summary>
@@ -50,6 +43,11 @@ namespace Dnn.PersonaBar.Roles.Components
             var roleInfos = roles as IList<RoleInfo> ?? roles.ToList();
             total = roleInfos.Count;
             return roleInfos.Skip(startIndex).Take(pageSize);
+        }
+
+        protected override Func<IRolesController> GetFactory()
+        {
+            return () => new RolesController();
         }
 
         /// <summary>

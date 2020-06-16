@@ -22,6 +22,9 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     public class TemplateDefinition
     {
+        public List<ClientOption> ClientOptions = new List<ClientOption>();
+        public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
+
         internal string Folder;
         internal string TemplatePath;
         internal string TemplateVirtualPath;
@@ -35,13 +38,21 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         internal readonly List<TemplateArgument> DefaultTemplateArguments = new List<TemplateArgument>();
         internal ITemplateProcessor Processor;
 
-        public List<ClientOption> ClientOptions = new List<ClientOption>();
-        public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
-
         private static readonly Regex RegexLinks =
             new Regex(
                 "( (href|src)=['\"]?)(?!http:|ftp:|mailto:|file:|javascript:|/)([^'\">]+['\">])",
                 RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        public TemplateDefinition Clone()
+        {
+            return (TemplateDefinition)this.MemberwiseClone();
+        }
+
+        public void Reset()
+        {
+            this.ClientOptions = new List<ClientOption>(this.DefaultClientOptions);
+            this.TemplateArguments = new List<TemplateArgument>(this.DefaultTemplateArguments);
+        }
 
         internal static TemplateDefinition FromName(string templateName, string manifestName)
         {
@@ -283,17 +294,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
 
             return string.Join(" && ", objectsToCheck.ToArray());
-        }
-
-        public TemplateDefinition Clone()
-        {
-            return (TemplateDefinition)this.MemberwiseClone();
-        }
-
-        public void Reset()
-        {
-            this.ClientOptions = new List<ClientOption>(this.DefaultClientOptions);
-            this.TemplateArguments = new List<TemplateArgument>(this.DefaultTemplateArguments);
         }
 
         public void AddClientOptions(List<ClientOption> options, bool replace)

@@ -19,10 +19,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("copy-module", Constants.ModulesCategory, "Prompt_CopyModule_Description")]
     public class CopyModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_CopyModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_CopyModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";

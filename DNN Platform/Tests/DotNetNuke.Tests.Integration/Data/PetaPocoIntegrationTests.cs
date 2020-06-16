@@ -20,6 +20,8 @@ namespace DotNetNuke.Tests.Data
     [TestFixture]
     public class PetaPocoIntegrationTests
     {
+        private const string ConnectionStringName = "PetaPoco";
+
         private Dictionary<Type, IMapper> _mappers;
 
         // ReSharper disable InconsistentNaming
@@ -58,8 +60,6 @@ namespace DotNetNuke.Tests.Data
         {
             DataUtil.DeleteDatabase(Constants.PETAPOCO_DatabaseName);
         }
-
-        private const string ConnectionStringName = "PetaPoco";
 
         [Test]
         public void PetaPoco_Add_Inserts_Item()

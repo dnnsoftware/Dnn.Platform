@@ -53,6 +53,56 @@ namespace Dnn.Module.ModuleCreator
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+            this.cboFile.SelectedIndexChanged += this.OnFileIndexChanged;
+            this.optLanguage.SelectedIndexChanged += this.OnLanguageSelectedIndexChanged;
+            this.cboTemplate.SelectedIndexChanged += this.cboTemplate_SelectedIndexChanged;
+            this.cmdUpdate.Click += this.OnUpdateClick;
+            this.cmdPackage.Click += this.OnPackageClick;
+            this.cmdConfigure.Click += this.OnConfigureClick;
+            this.cmdCreate.Click += this.OnCreateClick;
+
+            if (this.Page.IsPostBack == false)
+            {
+                this.cmdCancel1.NavigateUrl = this.ReturnURL;
+                this.cmdCancel2.NavigateUrl = this.ReturnURL;
+
+                var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
+                if (objModuleControl != null)
+                {
+                    this.BindFiles(objModuleControl.ControlSrc);
+                    this.LoadFile();
+                }
+
+                if (this.Request.UrlReferrer != null)
+                {
+                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
+                }
+                else
+                {
+                    this.ViewState["UrlReferrer"] = string.Empty;
+                }
+
+                this.LoadLanguages();
+                this.LoadModuleTemplates();
+                if (this.cboTemplate.Items.FindByText("Module - User Control") != null)
+                {
+                    this.cboTemplate.Items.FindByText("Module - User Control").Selected = true;
+                }
+
+                this.LoadReadMe();
+            }
+        }
+
+        protected void OnFileIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadFile();
+        }
+
         private void BindFiles(string controlSrc)
         {
             string[] fileList;
@@ -424,56 +474,6 @@ namespace Dnn.Module.ModuleCreator
         private string GetControl()
         {
             return this.txtControl.Text.Replace(" ", string.Empty);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            this.cboFile.SelectedIndexChanged += this.OnFileIndexChanged;
-            this.optLanguage.SelectedIndexChanged += this.OnLanguageSelectedIndexChanged;
-            this.cboTemplate.SelectedIndexChanged += this.cboTemplate_SelectedIndexChanged;
-            this.cmdUpdate.Click += this.OnUpdateClick;
-            this.cmdPackage.Click += this.OnPackageClick;
-            this.cmdConfigure.Click += this.OnConfigureClick;
-            this.cmdCreate.Click += this.OnCreateClick;
-
-            if (this.Page.IsPostBack == false)
-            {
-                this.cmdCancel1.NavigateUrl = this.ReturnURL;
-                this.cmdCancel2.NavigateUrl = this.ReturnURL;
-
-                var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
-                if (objModuleControl != null)
-                {
-                    this.BindFiles(objModuleControl.ControlSrc);
-                    this.LoadFile();
-                }
-
-                if (this.Request.UrlReferrer != null)
-                {
-                    this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
-                }
-                else
-                {
-                    this.ViewState["UrlReferrer"] = string.Empty;
-                }
-
-                this.LoadLanguages();
-                this.LoadModuleTemplates();
-                if (this.cboTemplate.Items.FindByText("Module - User Control") != null)
-                {
-                    this.cboTemplate.Items.FindByText("Module - User Control").Selected = true;
-                }
-
-                this.LoadReadMe();
-            }
-        }
-
-        protected void OnFileIndexChanged(object sender, EventArgs e)
-        {
-            this.LoadFile();
         }
 
         protected void OnLanguageSelectedIndexChanged(object sender, EventArgs e)

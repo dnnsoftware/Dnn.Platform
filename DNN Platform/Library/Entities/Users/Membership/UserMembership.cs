@@ -60,13 +60,6 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        internal bool Approving { get; private set; }
-
-        internal void ConfirmApproved()
-        {
-            this.Approving = false;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the User's Creation Date.
@@ -88,6 +81,13 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public bool IsOnLine { get; set; }
+
+        internal bool Approving { get; private set; }
+
+        internal void ConfirmApproved()
+        {
+            this.Approving = false;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -22,11 +22,11 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     [ConsoleCommand("set-role", Constants.RolesCategory, "Prompt_SetRole_Description")]
     public class SetRole : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
         [FlagParameter("id", "Prompt_SetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("public", "Prompt_SetRole_FlagIsPublic", "Boolean")]
         private const string FlagIsPublic = "public";
         [FlagParameter("autoassign", "Prompt_SetRole_FlagAutoAssign", "Boolean")]

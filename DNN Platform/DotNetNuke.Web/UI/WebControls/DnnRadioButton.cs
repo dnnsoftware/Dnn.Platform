@@ -18,18 +18,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CssClass = "SubHead dnnLabel";
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            base.Render(writer);
-        }
-
         public bool Localize
         {
             get
@@ -64,6 +52,18 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
         }
     }
 }

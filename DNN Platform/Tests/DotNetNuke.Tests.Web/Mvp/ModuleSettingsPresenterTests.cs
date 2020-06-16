@@ -24,14 +24,6 @@ namespace DotNetNuke.Tests.Web.Mvp
         private const string _tabModuleSettingName = "tabModuleKey{0}";
         private const string _tabModuleSettingValue = "value{0}";
 
-        public class TestSettingsPresenter : ModuleSettingsPresenter<ISettingsView<SettingsModel>, SettingsModel>
-        {
-            public TestSettingsPresenter(ISettingsView<SettingsModel> view)
-                : base(view)
-            {
-            }
-        }
-
         [Test]
         public void ModuleSettingsPresenter_Load_Initialises_Both_Dictionaries_On_PostBack()
         {
@@ -92,6 +84,14 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.TabModuleSettings);
             Assert.AreEqual(_tabModuleSettingCount, view.Object.Model.TabModuleSettings.Count);
+        }
+
+        public class TestSettingsPresenter : ModuleSettingsPresenter<ISettingsView<SettingsModel>, SettingsModel>
+        {
+            public TestSettingsPresenter(ISettingsView<SettingsModel> view)
+                : base(view)
+            {
+            }
         }
 
         [Test]

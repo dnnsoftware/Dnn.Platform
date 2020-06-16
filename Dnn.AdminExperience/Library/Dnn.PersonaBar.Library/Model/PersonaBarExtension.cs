@@ -42,6 +42,12 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public bool Enabled { get; set; }
 
+        public int KeyID
+        {
+            get { return this.ExtensionId; }
+            set { this.ExtensionId = value; }
+        }
+
         public void Fill(IDataReader dr)
         {
             this.ExtensionId = Convert.ToInt32(dr["ExtensionId"]);
@@ -53,12 +59,6 @@ namespace Dnn.PersonaBar.Library.Model
             this.Path = dr["Path"].ToString();
             this.Order = Null.SetNullInteger(dr["Order"]);
             this.Enabled = Convert.ToBoolean(dr["Enabled"]);
-        }
-
-        public int KeyID
-        {
-            get { return this.ExtensionId; }
-            set { this.ExtensionId = value; }
         }
     }
 }

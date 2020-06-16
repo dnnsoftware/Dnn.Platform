@@ -47,6 +47,12 @@ namespace DotNetNuke.Data.PetaPoco
 
         public string TablePrefix { get; private set; }
 
+        public bool EnableAutoSelect
+        {
+            get { return this._database.EnableAutoSelect; }
+            set { this._database.EnableAutoSelect = value; }
+        }
+
         public void BeginTransaction()
         {
             this._database.BeginTransaction();
@@ -55,12 +61,6 @@ namespace DotNetNuke.Data.PetaPoco
         public void Commit()
         {
             this._database.CompleteTransaction();
-        }
-
-        public bool EnableAutoSelect
-        {
-            get { return this._database.EnableAutoSelect; }
-            set { this._database.EnableAutoSelect = value; }
         }
 
         public void Execute(CommandType type, string sql, params object[] args)

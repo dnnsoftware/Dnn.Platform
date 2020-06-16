@@ -14,13 +14,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnFormToggleButtonItem : DnnFormItemBase
     {
-        public enum CheckBoxMode
-        {
-            TrueFalse = 0,
-            YN = 1,
-            YesNo = 2,
-        }
-
         // private DnnRadButton _checkBox;
         private CheckBox _checkBox;
 
@@ -29,26 +22,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Mode = CheckBoxMode.TrueFalse;
         }
 
-        public CheckBoxMode Mode { get; set; }
-
-        private void CheckedChanged(object sender, EventArgs e)
+        public enum CheckBoxMode
         {
-            string newValue;
-            switch (this.Mode)
-            {
-                case CheckBoxMode.YN:
-                    newValue = this._checkBox.Checked ? "Y" : "N";
-                    break;
-                case CheckBoxMode.YesNo:
-                    newValue = this._checkBox.Checked ? "Yes" : "No";
-                    break;
-                default:
-                    newValue = this._checkBox.Checked ? "true" : "false";
-                    break;
-            }
-
-            this.UpdateDataSource(this.Value, newValue, this.DataField);
+            TrueFalse = 0,
+            YN = 1,
+            YesNo = 2,
         }
+
+        public CheckBoxMode Mode { get; set; }
 
         protected override WebControl CreateControlInternal(Control container)
         {
@@ -87,6 +68,25 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             base.OnInit(e);
 
             this.FormMode = DnnFormMode.Short;
+        }
+
+        private void CheckedChanged(object sender, EventArgs e)
+        {
+            string newValue;
+            switch (this.Mode)
+            {
+                case CheckBoxMode.YN:
+                    newValue = this._checkBox.Checked ? "Y" : "N";
+                    break;
+                case CheckBoxMode.YesNo:
+                    newValue = this._checkBox.Checked ? "Yes" : "No";
+                    break;
+                default:
+                    newValue = this._checkBox.Checked ? "true" : "false";
+                    break;
+            }
+
+            this.UpdateDataSource(this.Value, newValue, this.DataField);
         }
     }
 }

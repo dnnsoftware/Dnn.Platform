@@ -30,8 +30,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
     public class TaskSchedulerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
-        private Components.TaskSchedulerController _controller = new Components.TaskSchedulerController();
         private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
+        private Components.TaskSchedulerController _controller = new Components.TaskSchedulerController();
 
         /// GET: api/TaskScheduler/GetServers
         /// <summary>
@@ -559,19 +559,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
         }
 
-        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
-        {
-            if (retryTimeLapse == 0) return true;
-
-            var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
-            var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
-            if (retry > frequency)
-            {
-                return false;
-            }
-            return true;
-        }
-
         private static DateTime CalculateTime(int lapse, string measurement)
         {
             var nextTime = new DateTime();
@@ -600,6 +587,19 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     break;
             }
             return nextTime;
+        }
+
+        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
+        {
+            if (retryTimeLapse == 0) return true;
+
+            var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
+            var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
+            if (retry > frequency)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static void Halt()

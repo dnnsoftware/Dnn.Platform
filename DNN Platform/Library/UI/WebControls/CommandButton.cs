@@ -28,6 +28,10 @@ namespace DotNetNuke.UI.WebControls
         private LinkButton link;
         private LiteralControl separator;
 
+        public event EventHandler Click;
+
+        public event CommandEventHandler Command;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Separator between Buttons.
@@ -346,9 +350,11 @@ namespace DotNetNuke.UI.WebControls
 
         public string LocalResourceFile { get; set; }
 
-        public event EventHandler Click;
-
-        public event CommandEventHandler Command;
+        public void RegisterForPostback()
+        {
+            AJAX.RegisterPostBackControl(this.link);
+            AJAX.RegisterPostBackControl(this.icon);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -449,10 +455,18 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public void RegisterForPostback()
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RaiseImageClick runs when the Image button is clicked.
+        /// </summary>
+        /// <remarks>It raises a Command Event.
+        /// </remarks>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An ImageClickEventArgs object.</param>
+        /// -----------------------------------------------------------------------------
+        protected void RaiseImageClick(object sender, ImageClickEventArgs e)
         {
-            AJAX.RegisterPostBackControl(this.link);
-            AJAX.RegisterPostBackControl(this.icon);
+            this.OnButtonClick(new EventArgs());
         }
 
         /// -----------------------------------------------------------------------------
@@ -481,20 +495,6 @@ namespace DotNetNuke.UI.WebControls
         private void RaiseCommand(object sender, CommandEventArgs e)
         {
             this.OnCommand(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// RaiseImageClick runs when the Image button is clicked.
-        /// </summary>
-        /// <remarks>It raises a Command Event.
-        /// </remarks>
-        /// <param name="sender"> The object that triggers the event.</param>
-        /// <param name="e">An ImageClickEventArgs object.</param>
-        /// -----------------------------------------------------------------------------
-        protected void RaiseImageClick(object sender, ImageClickEventArgs e)
-        {
-            this.OnButtonClick(new EventArgs());
         }
     }
 }

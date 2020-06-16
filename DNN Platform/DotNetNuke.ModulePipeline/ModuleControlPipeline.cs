@@ -21,29 +21,6 @@ namespace DotNetNuke.ModulePipeline
     /// The Module Pipeline that determines which Module pattern
     /// to invoke based on the input module type.
     /// </summary>
-
-/* Unmerged change from project 'DotNetNuke.ModulePipeline (net472)'
-Before:
-    public class ModuleControlPipeline
-
-        // MULTI-TARGETTING PIPELINE
-        // -------------------------
-        // This file multi-targets .NET Framework and .NET Standard,
-        // which is needed as DNN migrates to .NET Core. The 'NET472'
-        // pre-processor directives are to fully support Legacy DNN.
-        // As the Pipeline is upgraded to be more complaint with
-        // .NET Standard 2.0 use the apprioprate pre-processor directives.
-After:
-    public class ModuleControlPipeline
-
-        // MULTI-TARGETTING PIPELINE
-        // -------------------------
-        // This file multi-targets .NET Framework and .NET Standard,
-        // which is needed as DNN migrates to .NET Core. The 'NET472'
-        // pre-processor directives are to fully support Legacy DNN.
-        // As the Pipeline is upgraded to be more complaint with
-        // .NET Standard 2.0 use the apprioprate pre-processor directives.
-*/
     public class ModuleControlPipeline
 
     // MULTI-TARGETTING PIPELINE
@@ -52,7 +29,7 @@ After:
     // which is needed as DNN migrates to .NET Core. The 'NET472'
     // pre-processor directives are to fully support Legacy DNN.
     // As the Pipeline is upgraded to be more complaint with
-    // .NET Standard 2.0 use the apprioprate pre-processor directives.
+    // .NET Standard 2.0 use the appropriate pre-processor directives.
 #if NET472
         : IModuleControlPipeline
 #endif
@@ -78,14 +55,6 @@ After:
         }
 
 #if NET472
-        private IModuleControlFactory GetModuleControlFactory(string controlSrc)
-        {
-            string extension = Path.GetExtension(controlSrc);
-            this._controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
-
-            return factory ?? this._controlFactories["default"];
-        }
-
         /// <inheritdoc />
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
@@ -217,6 +186,14 @@ After:
         {
             IModuleControlFactory factory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
             return factory.CreateModuleControl(moduleConfiguration);
+        }
+
+        private IModuleControlFactory GetModuleControlFactory(string controlSrc)
+        {
+            string extension = Path.GetExtension(controlSrc);
+            this._controlFactories.TryGetValue(extension, out IModuleControlFactory factory);
+
+            return factory ?? this._controlFactories["default"];
         }
 #endif
     }

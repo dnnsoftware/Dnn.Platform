@@ -18,10 +18,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("delete-module", Constants.ModulesCategory, "Prompt_DeleteModule_Description")]
     public class DeleteModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_DeleteModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_DeleteModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";

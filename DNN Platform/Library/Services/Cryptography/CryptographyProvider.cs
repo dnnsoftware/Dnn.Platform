@@ -8,6 +8,11 @@ namespace DotNetNuke.Services.Cryptography
 
     public abstract class CryptographyProvider : ICryptographyProvider
     {
+        public static CryptographyProvider Instance()
+        {
+            return ComponentFactory.GetComponent<CryptographyProvider>();
+        }
+
         /// <summary>
         ///     simple method that uses basic encryption to safely encode parameters.
         /// </summary>
@@ -39,10 +44,5 @@ namespace DotNetNuke.Services.Cryptography
         /// <param name="passphrase">the key to perform the decryption.</param>
         /// <returns>decrypted string.</returns>
         public abstract string DecryptString(string message, string passphrase);
-
-        public static CryptographyProvider Instance()
-        {
-            return ComponentFactory.GetComponent<CryptographyProvider>();
-        }
     }
 }

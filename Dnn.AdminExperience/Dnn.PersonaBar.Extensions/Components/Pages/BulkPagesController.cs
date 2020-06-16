@@ -26,8 +26,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class BulkPagesController : ServiceLocator<IBulkPagesController, BulkPagesController>, IBulkPagesController
     {
-        private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
         private const string DefaultPageTemplate = "Default.page.template";
+        private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
 
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
@@ -106,6 +106,11 @@ namespace Dnn.PersonaBar.Pages.Components
             return response;
         }
 
+        protected override Func<IBulkPagesController> GetFactory()
+        {
+            return () => new BulkPagesController();
+        }
+
         private static BulkPageResponseItem ToBulkPageResponseItem(TabInfo tab, string error)
         {
             return new BulkPageResponseItem
@@ -115,6 +120,25 @@ namespace Dnn.PersonaBar.Pages.Components
                 Status = (error == null && tab.TabID > 0) ? 0 : 1,
                 PageName = tab.TabName
             };
+        }
+
+        private static int GetParentTabId(List<TabInfo> lstTabs, int currentIndex, int parentLevel)
+        {
+            var oParent = lstTabs[0];
+
+            for (var i = 0; i < lstTabs.Count; i++)
+            {
+                if (i == currentIndex)
+                {
+                    return oParent.TabID;
+                }
+                if (lstTabs[i].Level == parentLevel)
+                {
+                    oParent = lstTabs[i];
+                }
+            }
+
+            return Null.NullInteger;
         }
 
         private int CreateTabFromParent(PortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
@@ -240,25 +264,6 @@ namespace Dnn.PersonaBar.Pages.Components
             return tab.TabID;
         }
 
-        private static int GetParentTabId(List<TabInfo> lstTabs, int currentIndex, int parentLevel)
-        {
-            var oParent = lstTabs[0];
-
-            for (var i = 0; i < lstTabs.Count; i++)
-            {
-                if (i == currentIndex)
-                {
-                    return oParent.TabID;
-                }
-                if (lstTabs[i].Level == parentLevel)
-                {
-                    oParent = lstTabs[i];
-                }
-            }
-
-            return Null.NullInteger;
-        }
-
         private void ApplyDefaultTabTemplate(TabInfo tab)
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -315,11 +320,6 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return valid;
-        }
-
-        protected override Func<IBulkPagesController> GetFactory()
-        {
-            return () => new BulkPagesController();
         }
     }
 }

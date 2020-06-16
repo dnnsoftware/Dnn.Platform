@@ -17,8 +17,8 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     internal class OpmlDownloadManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
         private const string OPML_Dir = "/OPML/";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
         private static readonly OpmlDownloadManager _theManager = new OpmlDownloadManager();
 
         private readonly Dictionary<string, Opml> _cache;
@@ -68,6 +68,41 @@ namespace DotNetNuke.Services.Syndication
             }
 
             return opmlFeed;
+        }
+
+        private static string PrepareTempDir()
+        {
+            string tempDir = null;
+
+            try
+            {
+                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + OPML_Dir);
+
+                if (!Directory.Exists(d))
+                {
+                    Directory.CreateDirectory(d);
+                }
+
+                tempDir = d;
+            }
+            catch
+            {
+                // don't cache on disk if can't do it
+            }
+
+            return tempDir;
+        }
+
+        private static string GetTempFileNamePrefixFromUrl(Uri uri)
+        {
+            try
+            {
+                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
+            }
+            catch
+            {
+                return "opml";
+            }
         }
 
         private Opml DownloadOpmlFeed(Uri uri)
@@ -198,41 +233,6 @@ namespace DotNetNuke.Services.Syndication
             catch
             {
                 // can't save to disk - not a problem
-            }
-        }
-
-        private static string PrepareTempDir()
-        {
-            string tempDir = null;
-
-            try
-            {
-                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + OPML_Dir);
-
-                if (!Directory.Exists(d))
-                {
-                    Directory.CreateDirectory(d);
-                }
-
-                tempDir = d;
-            }
-            catch
-            {
-                // don't cache on disk if can't do it
-            }
-
-            return tempDir;
-        }
-
-        private static string GetTempFileNamePrefixFromUrl(Uri uri)
-        {
-            try
-            {
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
-            }
-            catch
-            {
-                return "opml";
             }
         }
     }

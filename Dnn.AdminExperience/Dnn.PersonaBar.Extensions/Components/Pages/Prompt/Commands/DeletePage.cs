@@ -17,22 +17,25 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     [ConsoleCommand("delete-page", Constants.PagesCategory, "Prompt_DeletePage_Description")]
     public class DeletePage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
-
         [FlagParameter("name", "Prompt_DeletePage_FlagName", "String")]
         private const string FlagName = "name";
+
         [FlagParameter("id", "Prompt_DeletePage_FlagId", "Integer")]
         private const string FlagId = "id";
+
         [FlagParameter("parentid", "Prompt_DeletePage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
+        public override string LocalResourceFile => Constants.LocalResourceFile;
+
         private int PageId { get; set; } = -1;
+
         private string PageName { get; set; }
+
         private int ParentId { get; set; } = -1;
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
             this.PageName = this.GetFlagValue(FlagName, "Page Name", string.Empty);
             this.ParentId = this.GetFlagValue(FlagParentId, "Parent Id", -1);

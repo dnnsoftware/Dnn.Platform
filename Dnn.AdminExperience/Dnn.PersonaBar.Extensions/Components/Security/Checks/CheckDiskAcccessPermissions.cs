@@ -15,6 +15,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckDiskAcccessPermissions : IAuditCheck
     {
+        private const char Yes = 'Y';
+
         public string Id => "CheckDiskAccess";
 
         public bool LazyLoad => false;
@@ -171,12 +173,12 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
             return permissions;
         }
-
-        private const char Yes = 'Y';
         private const char No = 'N';
 
         private class Permissions
         {
+            private char _create;
+
             public Permissions(char initial)
             {
                 this._create = this._write = this._read = this._delete = initial;
@@ -186,8 +188,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 get { return this.Create == Yes || this.Write == Yes || this.Read == Yes || this.Delete == Yes; }
             }
-
-            private char _create;
             private char _write;
             private char _read;
             private char _delete;

@@ -8,6 +8,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
     public class PortalModelBase
     {
+        public PortalModelBase()
+        {
+        }
+
         public int PortalId { get; set; }
         public string PortalName { get; set; }
         public string RegistrationMode { get; set; }
@@ -15,10 +19,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int PageCount { get; set; }
         public int UserCount { get; set; }
         public string Language { get; set; }
-
-        public PortalModelBase()
-        {
-        }
 
         public PortalModelBase(DotNetNuke.Entities.Portals.PortalInfo portal)
         {

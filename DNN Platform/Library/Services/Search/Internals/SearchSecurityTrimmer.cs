@@ -42,21 +42,6 @@ namespace DotNetNuke.Services.Search.Internals
             get { return false; }
         }
 
-        public override void SetNextReader(IndexReader reader, int docBase)
-        {
-            this._docBase = docBase;
-        }
-
-        public override void SetScorer(Scorer scorer)
-        {
-            this._scorer = scorer;
-        }
-
-        public override void Collect(int doc)
-        {
-            this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.Score()));
-        }
-
         public int TotalHits
         {
             get
@@ -81,6 +66,21 @@ namespace DotNetNuke.Services.Search.Internals
 
                 return this._scoreDocs;
             }
+        }
+
+        public override void SetNextReader(IndexReader reader, int docBase)
+        {
+            this._docBase = docBase;
+        }
+
+        public override void SetScorer(Scorer scorer)
+        {
+            this._scorer = scorer;
+        }
+
+        public override void Collect(int doc)
+        {
+            this._hitDocs.Add(new ScoreDoc(doc + this._docBase, this._scorer.Score()));
         }
 
         private string GetStringFromField(Document doc, SortField sortField)

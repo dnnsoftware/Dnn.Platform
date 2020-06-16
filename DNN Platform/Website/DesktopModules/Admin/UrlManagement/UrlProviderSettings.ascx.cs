@@ -15,17 +15,17 @@ namespace DotNetNuke.Modules.UrlManagement
 
     public partial class ProviderSettings : ModuleUserControlBase
     {
+        private readonly INavigationManager _navigationManager;
+
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
-
-        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
-
-        private readonly INavigationManager _navigationManager;
 
         public ProviderSettings()
         {
             this._navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
+
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected override void OnInit(EventArgs e)
         {

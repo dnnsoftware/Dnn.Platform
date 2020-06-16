@@ -19,6 +19,16 @@ namespace DotNetNuke.Web.Api
     {
         private List<int> _prefixCounts;
 
+        // TODO: this method need remove after drop use old api format.
+        [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
+        public static string GetOldRouteUrl(string moduleFolderName, string url, int count)
+        {
+            Requires.NotNegative("count", count);
+            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
+
+            return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
+        }
+
         public string GetRouteName(string moduleFolderName, string routeName, int count)
         {
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
@@ -41,23 +51,6 @@ namespace DotNetNuke.Web.Api
             }
 
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
-        }
-
-        private string GeneratePrefixString(int count)
-        {
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-
-            string prefix = string.Empty;
-
-            for (int i = count - 1; i >= 0; i--)
-            {
-                prefix = "{prefix" + i + "}/" + prefix;
-            }
-
-            return prefix;
         }
 
         public HttpRouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
@@ -87,14 +80,21 @@ namespace DotNetNuke.Web.Api
             return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
         }
 
-        // TODO: this method need remove after drop use old api format.
-        [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
-        public static string GetOldRouteUrl(string moduleFolderName, string url, int count)
+        private string GeneratePrefixString(int count)
         {
-            Requires.NotNegative("count", count);
-            Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
+            if (count == 0)
+            {
+                return string.Empty;
+            }
 
-            return string.Format("{0}DesktopModules/{1}/API/{2}", new PortalAliasRouteManager().GeneratePrefixString(count), moduleFolderName, url);
+            string prefix = string.Empty;
+
+            for (int i = count - 1; i >= 0; i--)
+            {
+                prefix = "{prefix" + i + "}/" + prefix;
+            }
+
+            return prefix;
         }
 
         public void ClearCachedData()
@@ -141,18 +141,6 @@ namespace DotNetNuke.Web.Api
             return alias.Count(c => c == '/');
         }
 
-        private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
-        {
-            string appPath = TestableGlobals.Instance.ApplicationPath;
-
-            if (string.IsNullOrEmpty(appPath))
-            {
-                return aliases;
-            }
-
-            return StripApplicationPathIterable(aliases, appPath);
-        }
-
         private static IEnumerable<string> StripApplicationPathIterable(IEnumerable<string> aliases, string appPath)
         {
             foreach (string alias in aliases)
@@ -168,6 +156,18 @@ namespace DotNetNuke.Web.Api
                     yield return alias;
                 }
             }
+        }
+
+        private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
+        {
+            string appPath = TestableGlobals.Instance.ApplicationPath;
+
+            if (string.IsNullOrEmpty(appPath))
+            {
+                return aliases;
+            }
+
+            return StripApplicationPathIterable(aliases, appPath);
         }
     }
 }

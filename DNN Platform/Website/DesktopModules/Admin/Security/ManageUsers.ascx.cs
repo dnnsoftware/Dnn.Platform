@@ -44,6 +44,82 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the current Page No.
+        /// </summary>
+        public int PageNo
+        {
+            get
+            {
+                int _PageNo = 0;
+                if (this.ViewState["PageNo"] != null && !this.IsPostBack)
+                {
+                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
+                }
+
+                return _PageNo;
+            }
+
+            set
+            {
+                this.ViewState["PageNo"] = value;
+            }
+        }
+
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                var Actions = new ModuleActionCollection();
+                if (!this.IsProfile)
+                {
+                    if (!this.AddUser && !this.IsEdit)
+                    {
+                        Actions.Add(
+                            this.GetNextActionID(),
+                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                            ModuleActionType.AddContent,
+                            string.Empty,
+                            "add.gif",
+                            this.EditUrl(),
+                            false,
+                            SecurityAccessLevel.Admin,
+                            true,
+                            false);
+                        if (ProfileProviderConfig.CanEditProviderProperties)
+                        {
+                            Actions.Add(
+                                this.GetNextActionID(),
+                                Localization.GetString("ManageProfile.Action", this.LocalResourceFile),
+                                ModuleActionType.AddContent,
+                                string.Empty,
+                                "icon_profile_16px.gif",
+                                this.EditUrl("ManageProfile"),
+                                false,
+                                SecurityAccessLevel.Admin,
+                                true,
+                                false);
+                        }
+
+                        Actions.Add(
+                            this.GetNextActionID(),
+                            Localization.GetString("Cancel.Action", this.LocalResourceFile),
+                            ModuleActionType.AddContent,
+                            string.Empty,
+                            "lt.gif",
+                            this.ReturnUrl,
+                            false,
+                            SecurityAccessLevel.Admin,
+                            true,
+                            false);
+                    }
+                }
+
+                return Actions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets a value indicating whether gets whether to display the Manage Services tab.
         /// </summary>
         protected bool DisplayServices
@@ -159,77 +235,107 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the current Page No.
+        /// Page_Init runs when the control is initialised.
         /// </summary>
-        public int PageNo
+        /// <remarks>
+        /// </remarks>
+        protected override void OnInit(EventArgs e)
         {
-            get
+            base.OnInit(e);
+
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+
+            this.ctlUser.UserCreateCompleted += this.UserCreateCompleted;
+            this.ctlUser.UserDeleted += this.UserDeleted;
+            this.ctlUser.UserRemoved += this.UserRemoved;
+            this.ctlUser.UserRestored += this.UserRestored;
+            this.ctlUser.UserUpdateCompleted += this.UserUpdateCompleted;
+            this.ctlUser.UserUpdateError += this.UserUpdateError;
+
+            this.ctlProfile.ProfileUpdateCompleted += this.ProfileUpdateCompleted;
+            this.ctlPassword.PasswordUpdated += this.PasswordUpdated;
+            this.ctlPassword.PasswordQuestionAnswerUpdated += this.PasswordQuestionAnswerUpdated;
+            this.ctlMembership.MembershipAuthorized += this.MembershipAuthorized;
+            this.ctlMembership.MembershipPasswordUpdateChanged += this.MembershipPasswordUpdateChanged;
+            this.ctlMembership.MembershipUnAuthorized += this.MembershipUnAuthorized;
+            this.ctlMembership.MembershipUnLocked += this.MembershipUnLocked;
+            this.ctlMembership.MembershipDemoteFromSuperuser += this.MembershipDemoteFromSuperuser;
+            this.ctlMembership.MembershipPromoteToSuperuser += this.MembershipPromoteToSuperuser;
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
+            // Set the Membership Control Properties
+            this.ctlMembership.ID = "Membership";
+            this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlMembership.UserId = this.UserId;
+
+            // Set the User Control Properties
+            this.ctlUser.ID = "User";
+            this.ctlUser.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlUser.UserId = this.UserId;
+
+            // Set the Roles Control Properties
+            this.ctlRoles.ID = "SecurityRoles";
+            this.ctlRoles.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlRoles.ParentModule = this;
+
+            // Set the Password Control Properties
+            this.ctlPassword.ID = "Password";
+            this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlPassword.UserId = this.UserId;
+
+            // Set the Profile Control Properties
+            this.ctlProfile.ID = "Profile";
+            this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlProfile.UserId = this.UserId;
+
+            // Customise the Control Title
+            if (this.AddUser)
             {
-                int _PageNo = 0;
-                if (this.ViewState["PageNo"] != null && !this.IsPostBack)
+                if (!this.Request.IsAuthenticated)
                 {
-                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
+                    // Register
+                    this.ModuleConfiguration.ModuleTitle = Localization.GetString("Register.Title", this.LocalResourceFile);
+                }
+                else
+                {
+                    // Add User
+                    this.ModuleConfiguration.ModuleTitle = Localization.GetString("AddUser.Title", this.LocalResourceFile);
                 }
 
-                return _PageNo;
-            }
-
-            set
-            {
-                this.ViewState["PageNo"] = value;
+                this.userContainer.CssClass += " register";
             }
         }
 
-        public ModuleActionCollection ModuleActions
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
         {
-            get
+            base.OnLoad(e);
+
+            try
             {
-                var Actions = new ModuleActionCollection();
-                if (!this.IsProfile)
+                // Add an Action Event Handler to the Skin
+                this.AddActionHandler(this.ModuleAction_Click);
+
+                // Bind the User information to the controls
+                this.BindData();
+
+                this.loginLink.NavigateUrl = Globals.LoginURL(this.RedirectURL, this.Request.QueryString["override"] != null);
+
+                if (this.PortalSettings.EnablePopUps)
                 {
-                    if (!this.AddUser && !this.IsEdit)
-                    {
-                        Actions.Add(
-                            this.GetNextActionID(),
-                            Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            "add.gif",
-                            this.EditUrl(),
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
-                        if (ProfileProviderConfig.CanEditProviderProperties)
-                        {
-                            Actions.Add(
-                                this.GetNextActionID(),
-                                Localization.GetString("ManageProfile.Action", this.LocalResourceFile),
-                                ModuleActionType.AddContent,
-                                string.Empty,
-                                "icon_profile_16px.gif",
-                                this.EditUrl("ManageProfile"),
-                                false,
-                                SecurityAccessLevel.Admin,
-                                true,
-                                false);
-                        }
-
-                        Actions.Add(
-                            this.GetNextActionID(),
-                            Localization.GetString("Cancel.Action", this.LocalResourceFile),
-                            ModuleActionType.AddContent,
-                            string.Empty,
-                            "lt.gif",
-                            this.ReturnUrl,
-                            false,
-                            SecurityAccessLevel.Admin,
-                            true,
-                            false);
-                    }
+                    this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
                 }
-
-                return Actions;
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -465,120 +571,9 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-
-            this.ctlUser.UserCreateCompleted += this.UserCreateCompleted;
-            this.ctlUser.UserDeleted += this.UserDeleted;
-            this.ctlUser.UserRemoved += this.UserRemoved;
-            this.ctlUser.UserRestored += this.UserRestored;
-            this.ctlUser.UserUpdateCompleted += this.UserUpdateCompleted;
-            this.ctlUser.UserUpdateError += this.UserUpdateError;
-
-            this.ctlProfile.ProfileUpdateCompleted += this.ProfileUpdateCompleted;
-            this.ctlPassword.PasswordUpdated += this.PasswordUpdated;
-            this.ctlPassword.PasswordQuestionAnswerUpdated += this.PasswordQuestionAnswerUpdated;
-            this.ctlMembership.MembershipAuthorized += this.MembershipAuthorized;
-            this.ctlMembership.MembershipPasswordUpdateChanged += this.MembershipPasswordUpdateChanged;
-            this.ctlMembership.MembershipUnAuthorized += this.MembershipUnAuthorized;
-            this.ctlMembership.MembershipUnLocked += this.MembershipUnLocked;
-            this.ctlMembership.MembershipDemoteFromSuperuser += this.MembershipDemoteFromSuperuser;
-            this.ctlMembership.MembershipPromoteToSuperuser += this.MembershipPromoteToSuperuser;
-
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-            // Set the Membership Control Properties
-            this.ctlMembership.ID = "Membership";
-            this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlMembership.UserId = this.UserId;
-
-            // Set the User Control Properties
-            this.ctlUser.ID = "User";
-            this.ctlUser.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlUser.UserId = this.UserId;
-
-            // Set the Roles Control Properties
-            this.ctlRoles.ID = "SecurityRoles";
-            this.ctlRoles.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlRoles.ParentModule = this;
-
-            // Set the Password Control Properties
-            this.ctlPassword.ID = "Password";
-            this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlPassword.UserId = this.UserId;
-
-            // Set the Profile Control Properties
-            this.ctlProfile.ID = "Profile";
-            this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlProfile.UserId = this.UserId;
-
-            // Customise the Control Title
-            if (this.AddUser)
-            {
-                if (!this.Request.IsAuthenticated)
-                {
-                    // Register
-                    this.ModuleConfiguration.ModuleTitle = Localization.GetString("Register.Title", this.LocalResourceFile);
-                }
-                else
-                {
-                    // Add User
-                    this.ModuleConfiguration.ModuleTitle = Localization.GetString("AddUser.Title", this.LocalResourceFile);
-                }
-
-                this.userContainer.CssClass += " register";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            try
-            {
-                // Add an Action Event Handler to the Skin
-                this.AddActionHandler(this.ModuleAction_Click);
-
-                // Bind the User information to the controls
-                this.BindData();
-
-                this.loginLink.NavigateUrl = Globals.LoginURL(this.RedirectURL, this.Request.QueryString["override"] != null);
-
-                if (this.PortalSettings.EnablePopUps)
-                {
-                    this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
-                }
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
         protected void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this._navigationManager.NavigateURL(), true);
-        }
-
-        private bool HasManageUsersModulePermission()
-        {
-            return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "MANAGEUSER");
         }
 
         /// -----------------------------------------------------------------------------
@@ -605,6 +600,36 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.ctlUser.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
+        {
+            if (this.IsAdmin == false)
+            {
+                return;
+            }
+
+            try
+            {
+                this.AddModuleMessage("UserPasswordUpdateChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+
+                this.BindMembership();
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        private bool HasManageUsersModulePermission()
+        {
+            return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "MANAGEUSER");
         }
 
         /// -----------------------------------------------------------------------------
@@ -659,31 +684,6 @@ namespace DotNetNuke.Modules.Admin.Users
                     UserInfo user = this.User;
                     this.User.Membership.Password = UserController.GetPassword(ref user, string.Empty);
                 }
-
-                this.BindMembership();
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// MembershipPasswordUpdateChanged runs when the Admin has forced the User to update their password.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected void MembershipPasswordUpdateChanged(object sender, EventArgs e)
-        {
-            if (this.IsAdmin == false)
-            {
-                return;
-            }
-
-            try
-            {
-                this.AddModuleMessage("UserPasswordUpdateChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
 
                 this.BindMembership();
             }

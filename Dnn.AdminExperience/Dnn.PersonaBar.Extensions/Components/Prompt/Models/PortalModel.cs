@@ -8,6 +8,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
     public class PortalModel : PortalModelBase
     {
+        public PortalModel()
+        {
+        }
+
         public int CdfVersion { get; set; }
         public string SiteTheme { get; set; }
         public string AdminTheme { get; set; }
@@ -17,10 +21,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string __PageCount => "list-pages";
 
         public string __UserCount => "list-users";
-
-        public PortalModel()
-        {
-        }
         public PortalModel(PortalInfo portal) : base(portal)
         {
             // get portal settings for specified portal

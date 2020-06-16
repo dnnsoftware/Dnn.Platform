@@ -23,26 +23,6 @@ namespace DotNetNuke.Web.InternalServices
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleServiceController));
 
-        public class MoveModuleDTO
-        {
-            public int ModuleId { get; set; }
-
-            public int ModuleOrder { get; set; }
-
-            public string Pane { get; set; }
-
-            public int TabId { get; set; }
-        }
-
-        public class DeleteModuleDto
-        {
-            public int ModuleId { get; set; }
-
-            public int TabId { get; set; }
-
-            public bool SoftDelete { get; set; }
-        }
-
         [HttpGet]
         [DnnAuthorize(StaticRoles = "Registered Users")]
         public HttpResponseMessage GetModuleShareable(int moduleId, int tabId, int portalId = -1)
@@ -122,6 +102,26 @@ namespace DotNetNuke.Web.InternalServices
             ModuleController.Instance.DeleteTabModule(deleteModuleDto.TabId, deleteModuleDto.ModuleId, deleteModuleDto.SoftDelete);
 
             return this.Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public class MoveModuleDTO
+        {
+            public int ModuleId { get; set; }
+
+            public int ModuleOrder { get; set; }
+
+            public string Pane { get; set; }
+
+            public int TabId { get; set; }
+        }
+
+        public class DeleteModuleDto
+        {
+            public int ModuleId { get; set; }
+
+            public int TabId { get; set; }
+
+            public bool SoftDelete { get; set; }
         }
 
         private int FixPortalId(int portalId)

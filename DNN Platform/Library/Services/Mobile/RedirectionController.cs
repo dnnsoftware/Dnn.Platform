@@ -32,6 +32,14 @@ namespace DotNetNuke.Services.Mobile
         private const string MobileSiteUrlCacheKey = "MobileSiteUrl_{0}_{1}";
         private const int UrlsCacheTimeout = 60;
 
+        private string AllRedirectionsCacheKey
+        {
+            get
+            {
+                return string.Format(DataCache.RedirectionsCacheKey, "All");
+            }
+        }
+
         /// <summary>
         /// Is Redirection Allowed for the session. Method analyzes the query string for special parameters to enable / disable redirects.
         /// Cookie is created to temporarily store those parameters so that they remain available till the interactions are active.
@@ -701,14 +709,6 @@ namespace DotNetNuke.Services.Mobile
             }
 
             return match;
-        }
-
-        private string AllRedirectionsCacheKey
-        {
-            get
-            {
-                return string.Format(DataCache.RedirectionsCacheKey, "All");
-            }
         }
     }
 }

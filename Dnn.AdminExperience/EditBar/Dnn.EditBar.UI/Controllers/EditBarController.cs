@@ -33,11 +33,6 @@ namespace Dnn.EditBar.UI.Controllers
 
         private static object _threadLocker = new object();
 
-        protected override Func<IEditBarController> GetFactory()
-        {
-            return () => new EditBarController();
-        }
-
         public IDictionary<string, object> GetConfigurations(int portalId)
         {
             var settings = new Dictionary<string, object>();
@@ -78,6 +73,11 @@ namespace Dnn.EditBar.UI.Controllers
                     .OrderBy(m => m.Parent)
                     .ThenBy(m => m.Order)
                     .ToList();
+        }
+
+        protected override Func<IEditBarController> GetFactory()
+        {
+            return () => new EditBarController();
         }
 
         private static IEnumerable<BaseMenuItem> GetMenuItemInstances()

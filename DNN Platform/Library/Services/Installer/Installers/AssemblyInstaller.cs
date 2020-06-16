@@ -28,6 +28,19 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "dll,pdb";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the name of the Collection Node ("assemblies").
         /// </summary>
         /// <value>A String.</value>
@@ -75,19 +88,6 @@ namespace DotNetNuke.Services.Installer.Installers
             get
             {
                 return this.PhysicalSitePath + "\\";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "dll,pdb";
             }
         }
 
@@ -172,6 +172,47 @@ namespace DotNetNuke.Services.Installer.Installers
             return bSuccess;
         }
 
+        /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
+        /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
+        /// <returns>An <see cref="AssemblyName"/> or <c>null</c>.</returns>
+        private static AssemblyName ReadAssemblyName(string assemblyFile)
+        {
+            try
+            {
+                return AssemblyName.GetAssemblyName(assemblyFile);
+            }
+            catch (BadImageFormatException)
+            {
+                // assemblyFile is not a valid assembly.
+                return null;
+            }
+            catch (ArgumentException)
+            {
+                // assemblyFile is invalid, such as an assembly with an invalid culture.
+                return null;
+            }
+            catch (SecurityException)
+            {
+                // The caller does not have path discovery permission.
+                return null;
+            }
+            catch (FileLoadException)
+            {
+                // An assembly or module was loaded twice with two different sets of evidence.
+                return null;
+            }
+        }
+
+        private static string ReadPublicKey(AssemblyName assemblyName)
+        {
+            if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
+            {
+                return null;
+            }
+
+            return PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
+        }
+
         /// <summary>Adds or updates the binding redirect for the assembly file, if the assembly file it strong-named.</summary>
         /// <param name="file">The assembly file.</param>
         private void AddOrUpdateBindingRedirect(InstallFile file)
@@ -215,47 +256,6 @@ namespace DotNetNuke.Services.Installer.Installers
             xmlMerge.UpdateConfigs();
 
             return true;
-        }
-
-        /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
-        /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
-        /// <returns>An <see cref="AssemblyName"/> or <c>null</c>.</returns>
-        private static AssemblyName ReadAssemblyName(string assemblyFile)
-        {
-            try
-            {
-                return AssemblyName.GetAssemblyName(assemblyFile);
-            }
-            catch (BadImageFormatException)
-            {
-                // assemblyFile is not a valid assembly.
-                return null;
-            }
-            catch (ArgumentException)
-            {
-                // assemblyFile is invalid, such as an assembly with an invalid culture.
-                return null;
-            }
-            catch (SecurityException)
-            {
-                // The caller does not have path discovery permission.
-                return null;
-            }
-            catch (FileLoadException)
-            {
-                // An assembly or module was loaded twice with two different sets of evidence.
-                return null;
-            }
-        }
-
-        private static string ReadPublicKey(AssemblyName assemblyName)
-        {
-            if (assemblyName == null || !assemblyName.Flags.HasFlag(AssemblyNameFlags.PublicKey))
-            {
-                return null;
-            }
-
-            return PublicKeyTokenRegex.Match(assemblyName.FullName).Groups[1].Value;
         }
 
         /// <summary>Gets the XML merge document to create the binding redirect.</summary>

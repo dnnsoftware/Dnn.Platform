@@ -20,32 +20,11 @@ namespace DotNetNuke.Security.Permissions.Controls
 
     public class FolderPermissionsGrid : PermissionsGrid
     {
-        private string _folderPath = string.Empty;
         protected FolderPermissionCollection FolderPermissions;
+        private string _folderPath = string.Empty;
         private List<PermissionInfoBase> _permissionsList;
         private bool _refreshGrid;
         private IList<PermissionInfo> _systemFolderPermissions;
-
-        protected override List<PermissionInfoBase> PermissionsList
-        {
-            get
-            {
-                if (this._permissionsList == null && this.FolderPermissions != null)
-                {
-                    this._permissionsList = this.FolderPermissions.ToList();
-                }
-
-                return this._permissionsList;
-            }
-        }
-
-        protected override bool RefreshGrid
-        {
-            get
-            {
-                return this._refreshGrid;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -84,6 +63,36 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        protected override List<PermissionInfoBase> PermissionsList
+        {
+            get
+            {
+                if (this._permissionsList == null && this.FolderPermissions != null)
+                {
+                    this._permissionsList = this.FolderPermissions.ToList();
+                }
+
+                return this._permissionsList;
+            }
+        }
+
+        protected override bool RefreshGrid
+        {
+            get
+            {
+                return this._refreshGrid;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Overrides the Base method to Generate the Data Grid.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void GenerateDataGrid()
+        {
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the TabPermissions from the Data Store.
@@ -92,6 +101,29 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected virtual void GetFolderPermissions()
         {
             this.FolderPermissions = new FolderPermissionCollection(FolderPermissionController.GetFolderPermissionsCollectionByFolder(this.PortalId, this.FolderPath));
+            this._permissionsList = null;
+        }
+
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+        }
+
+        protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
+        {
+            var objPermission = new FolderPermissionInfo(permission)
+            {
+                FolderPath = this.FolderPath,
+                RoleID = roleId,
+                RoleName = roleName,
+                AllowAccess = allowAccess,
+                UserID = userId,
+                DisplayName = displayName,
+            };
+            this.FolderPermissions.Add(objPermission, true);
+
+            // Clear Permission List
             this._permissionsList = null;
         }
 
@@ -136,29 +168,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                 }
             }
-        }
-
-        protected override void CreateChildControls()
-        {
-            base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
-        }
-
-        protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
-        {
-            var objPermission = new FolderPermissionInfo(permission)
-            {
-                FolderPath = this.FolderPath,
-                RoleID = roleId,
-                RoleName = roleName,
-                AllowAccess = allowAccess,
-                UserID = userId,
-                DisplayName = displayName,
-            };
-            this.FolderPermissions.Add(objPermission, true);
-
-            // Clear Permission List
-            this._permissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -268,21 +277,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             return permissionInfo.PermissionKey == "READ";
         }
 
-        private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)
-        {
-            return this.IsSystemFolderPermission(permissionInfo);
-        }
-
-        private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
-        {
-            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
-        }
-
-        private bool IsImplicitRole(int portalId, int roleId)
-        {
-            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the permissions from the Database.
@@ -338,6 +332,21 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                 }
             }
+        }
+
+        private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)
+        {
+            return this.IsSystemFolderPermission(permissionInfo);
+        }
+
+        private bool IsSystemFolderPermission(PermissionInfo permissionInfo)
+        {
+            return this._systemFolderPermissions.Any(pi => pi.PermissionID == permissionInfo.PermissionID);
+        }
+
+        private bool IsImplicitRole(int portalId, int roleId)
+        {
+            return FolderPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
 
         protected override void RemovePermission(int permissionID, int roleID, int userID)
@@ -404,15 +413,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return this.IsSystemFolderPermission(permissionInfo);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Overrides the Base method to Generate the Data Grid.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void GenerateDataGrid()
-        {
         }
     }
 }

@@ -209,14 +209,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._portalController.Verify(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length));
         }
 
-        private class UnSeekableStream : MemoryStream
-        {
-            public override bool CanSeek
-            {
-                get { return false; }
-            }
-        }
-
         [Test]
         [ExpectedException(typeof(InvalidFileExtensionException))]
         public void AddFile_Throws_When_Extension_Is_Invalid()
@@ -264,48 +256,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             }
         }
 
-        private void PrepareFileSecurityCheck()
+        private class UnSeekableStream : MemoryStream
         {
-            this._mockData.Setup(p => p.GetListEntriesByListName("FileSecurityChecker", string.Empty, Null.NullInteger)).Returns(() =>
+            public override bool CanSeek
             {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add("EntryID", typeof(int));
-                dataTable.Columns.Add("ListName", typeof(string));
-                dataTable.Columns.Add("Value", typeof(string));
-                dataTable.Columns.Add("Text", typeof(string));
-                dataTable.Columns.Add("Level", typeof(int));
-                dataTable.Columns.Add("SortOrder", typeof(int));
-                dataTable.Columns.Add("DefinitionID", typeof(int));
-                dataTable.Columns.Add("ParentID", typeof(int));
-                dataTable.Columns.Add("Description", typeof(string));
-                dataTable.Columns.Add("PortalID", typeof(int));
-                dataTable.Columns.Add("SystemList", typeof(bool));
-                dataTable.Columns.Add("ParentKey", typeof(string));
-                dataTable.Columns.Add("Parent", typeof(string));
-                dataTable.Columns.Add("ParentList", typeof(string));
-                dataTable.Columns.Add("MaxSortOrder", typeof(int));
-                dataTable.Columns.Add("EntryCount", typeof(int));
-                dataTable.Columns.Add("HasChildren", typeof(int));
-                dataTable.Columns.Add("CreatedByUserID", typeof(int));
-                dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
-                dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
-                dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-
-                dataTable.Rows.Add(1, "FileSecurityChecker", "svg",
-                    "DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke",
-                    0, 0, -1, -0, string.Empty, -1, 1, string.Empty, string.Empty, string.Empty, 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
-
-                return dataTable.CreateDataReader();
-            });
-            this._hostController.Setup(c => c.GetString("PerformanceSetting")).Returns("NoCaching");
-            this._globals.Setup(g => g.HostMapPath).Returns(AppDomain.CurrentDomain.BaseDirectory);
-
-            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
-
-            this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
-
-            this._folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
-            this._folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+                get { return false; }
+            }
         }
 
         [Test]
@@ -374,6 +330,50 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void CopyFile_Throws_On_Null_File()
         {
             this._fileManager.CopyFile(null, this._folderInfo.Object);
+        }
+
+        private void PrepareFileSecurityCheck()
+        {
+            this._mockData.Setup(p => p.GetListEntriesByListName("FileSecurityChecker", string.Empty, Null.NullInteger)).Returns(() =>
+            {
+                var dataTable = new DataTable();
+                dataTable.Columns.Add("EntryID", typeof(int));
+                dataTable.Columns.Add("ListName", typeof(string));
+                dataTable.Columns.Add("Value", typeof(string));
+                dataTable.Columns.Add("Text", typeof(string));
+                dataTable.Columns.Add("Level", typeof(int));
+                dataTable.Columns.Add("SortOrder", typeof(int));
+                dataTable.Columns.Add("DefinitionID", typeof(int));
+                dataTable.Columns.Add("ParentID", typeof(int));
+                dataTable.Columns.Add("Description", typeof(string));
+                dataTable.Columns.Add("PortalID", typeof(int));
+                dataTable.Columns.Add("SystemList", typeof(bool));
+                dataTable.Columns.Add("ParentKey", typeof(string));
+                dataTable.Columns.Add("Parent", typeof(string));
+                dataTable.Columns.Add("ParentList", typeof(string));
+                dataTable.Columns.Add("MaxSortOrder", typeof(int));
+                dataTable.Columns.Add("EntryCount", typeof(int));
+                dataTable.Columns.Add("HasChildren", typeof(int));
+                dataTable.Columns.Add("CreatedByUserID", typeof(int));
+                dataTable.Columns.Add("CreatedOnDate", typeof(DateTime));
+                dataTable.Columns.Add("LastModifiedByUserID", typeof(int));
+                dataTable.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+
+                dataTable.Rows.Add(1, "FileSecurityChecker", "svg",
+                    "DotNetNuke.Services.FileSystem.Internal.SecurityCheckers.SvgFileChecker, DotNetNuke",
+                    0, 0, -1, -0, string.Empty, -1, 1, string.Empty, string.Empty, string.Empty, 0, 1, 0, -1, DateTime.Now, -1, DateTime.Now);
+
+                return dataTable.CreateDataReader();
+            });
+            this._hostController.Setup(c => c.GetString("PerformanceSetting")).Returns("NoCaching");
+            this._globals.Setup(g => g.HostMapPath).Returns(AppDomain.CurrentDomain.BaseDirectory);
+
+            var folderMapping = new FolderMappingInfo { FolderProviderType = Constants.FOLDER_ValidFolderProviderType };
+
+            this._folderMappingController.Setup(fmc => fmc.GetFolderMapping(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidFolderMappingID)).Returns(folderMapping);
+
+            this._folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
+            this._folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
         }
 
         [Test]

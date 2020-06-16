@@ -32,19 +32,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.TabId = -1;
         }
 
-        protected override List<PermissionInfoBase> PermissionsList
-        {
-            get
-            {
-                if (this._PermissionsList == null && this._ModulePermissions != null)
-                {
-                    this._PermissionsList = this._ModulePermissions.ToList();
-                }
-
-                return this._PermissionsList;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and Sets whether the Module inherits the Page's(Tab's) permissions.
@@ -86,6 +73,19 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        protected override List<PermissionInfoBase> PermissionsList
+        {
+            get
+            {
+                if (this._PermissionsList == null && this._ModulePermissions != null)
+                {
+                    this._PermissionsList = this._ModulePermissions.ToList();
+                }
+
+                return this._PermissionsList;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and Sets the Id of the Tab associated with this module.
@@ -107,6 +107,46 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 // Return the ModulePermissions
                 return this._ModulePermissions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Overrides the Base method to Generate the Data Grid.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void GenerateDataGrid()
+        {
+        }
+
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Updates a Permission.
+        /// </summary>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="user">The user to add.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void AddPermission(ArrayList permissions, UserInfo user)
+        {
+            bool isMatch = this._ModulePermissions.Cast<ModulePermissionInfo>()
+                            .Any(objModulePermission => objModulePermission.UserID == user.UserID);
+
+            // user not found so add new
+            if (!isMatch)
+            {
+                foreach (PermissionInfo objPermission in permissions)
+                {
+                    if (objPermission.PermissionKey == "VIEW")
+                    {
+                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
+                    }
+                }
             }
         }
 
@@ -169,37 +209,6 @@ namespace DotNetNuke.Security.Permissions.Controls
                     if (actionImage != null)
                     {
                         actionImage.Visible = false;
-                    }
-                }
-            }
-        }
-
-        protected override void CreateChildControls()
-        {
-            base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Updates a Permission.
-        /// </summary>
-        /// <param name="permissions">The permissions collection.</param>
-        /// <param name="user">The user to add.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void AddPermission(ArrayList permissions, UserInfo user)
-        {
-            bool isMatch = this._ModulePermissions.Cast<ModulePermissionInfo>()
-                            .Any(objModulePermission => objModulePermission.UserID == user.UserID);
-
-            // user not found so add new
-            if (!isMatch)
-            {
-                foreach (PermissionInfo objPermission in permissions)
-                {
-                    if (objPermission.PermissionKey == "VIEW")
-                    {
-                        this.AddPermission(objPermission, int.Parse(Globals.glbRoleNothing), Null.NullString, user.UserID, user.DisplayName, true);
                     }
                 }
             }
@@ -539,15 +548,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Overrides the Base method to Generate the Data Grid.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void GenerateDataGrid()
-        {
         }
     }
 }

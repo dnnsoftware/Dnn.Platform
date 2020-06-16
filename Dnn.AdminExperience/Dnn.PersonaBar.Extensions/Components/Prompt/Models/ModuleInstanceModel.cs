@@ -10,6 +10,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
     /// </summary>
     public class ModuleInstanceModel
     {
+        public int TabId;
+
         // command link
         public string __ModuleId { get; set; }
         public int ModuleId { get; set; }
@@ -22,8 +24,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int ModuleDefId { get; set; }
         public int TabModuleId { get; set; }
         public bool IsDeleted { get; set; }
-
-        public int TabId;
         public static ModuleInstanceModel FromDnnModuleInfo(DotNetNuke.Entities.Modules.ModuleInfo dnnModule)
         {
             var mim = new ModuleInstanceModel

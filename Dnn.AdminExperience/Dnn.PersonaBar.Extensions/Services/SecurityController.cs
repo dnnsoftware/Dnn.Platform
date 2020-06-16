@@ -41,10 +41,10 @@ namespace Dnn.PersonaBar.Security.Services
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class SecurityController : PersonaBarApiController
     {
+        private const string BULLETIN_XMLNODE_PATH = "//channel/item";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
         private readonly Components.SecurityController _controller;
         private readonly IPortalAliasController _portalAliasController;
-        private const string BULLETIN_XMLNODE_PATH = "//channel/item";
 
         public SecurityController()
             : this(
@@ -475,38 +475,6 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        private int ValidateTabId(int tabId)
-        {
-            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-            return tab?.TabID ?? Null.NullInteger;
-        }
-
-        private string GetTabName(int tabId)
-        {
-            if (tabId == Null.NullInteger)
-            {
-                return "";
-            }
-            else
-            {
-                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabName : "";
-            }
-        }
-
-        private string GetTabPath(int tabId)
-        {
-            if (tabId == Null.NullInteger)
-            {
-                return "";
-            }
-            else
-            {
-                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabPath : "";
-            }
-        }
-
         /// POST: api/Security/UpdateRegistrationSettings
         /// <summary>
         /// Updates registration settings.
@@ -554,6 +522,38 @@ namespace Dnn.PersonaBar.Security.Services
             {
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private int ValidateTabId(int tabId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+            return tab?.TabID ?? Null.NullInteger;
+        }
+
+        private string GetTabName(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+                return tab != null ? tab.TabName : "";
+            }
+        }
+
+        private string GetTabPath(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+                return tab != null ? tab.TabPath : "";
             }
         }
 

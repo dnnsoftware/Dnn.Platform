@@ -12,14 +12,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
     /// </summary>
     public class TaskModel : TaskModelBase
     {
+        public TaskModel()
+        {
+        }
+
         public string TypeName { get; set; }
         public bool CatchUp { get; set; }
         public string Created { get; set; }
         public string StartDate { get; set; }
-
-        public TaskModel()
-        {
-        }
         public TaskModel(ScheduleItem item) : base(item)
         {
             this.NextStart = item.NextStart.ToPromptLongDateString();

@@ -6,14 +6,10 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 {
     public class PageModel : PageModelBase
     {
-        public string Container { get; set; }
-        public string Url { get; set; }
-        public string Keywords { get; set; }
-        public string Description { get; set; }
-
         public PageModel()
         {
         }
+
         public PageModel(DotNetNuke.Entities.Tabs.TabInfo tab) : base(tab)
         {
             this.Container = tab.ContainerSrc;
@@ -21,5 +17,9 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
             this.Keywords = tab.KeyWords;
             this.Description = tab.Description;
         }
+        public string Container { get; set; }
+        public string Url { get; set; }
+        public string Keywords { get; set; }
+        public string Description { get; set; }
     }
 }

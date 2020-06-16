@@ -37,14 +37,14 @@ namespace DotNetNuke.Modules.Admin.Security
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager _navigationManager;
 
+        private UserInfo _user;
+        private int _userCount = Null.NullInteger;
+        private string _ipAddress;
+
         public SendPassword()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private UserInfo _user;
-        private int _userCount = Null.NullInteger;
-        private string _ipAddress;
 
         /// <summary>
         /// Gets the Redirect URL (after successful sending of password).
@@ -129,23 +129,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        private void GetUser()
-        {
-            ArrayList arrUsers;
-            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
-            {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
-                if (arrUsers != null && arrUsers.Count == 1)
-                {
-                    this._user = (UserInfo)arrUsers[0];
-                }
-            }
-            else
-            {
-                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
-            }
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -205,6 +188,23 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", this.LocalResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
+            }
+        }
+
+        private void GetUser()
+        {
+            ArrayList arrUsers;
+            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
+            {
+                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
+                if (arrUsers != null && arrUsers.Count == 1)
+                {
+                    this._user = (UserInfo)arrUsers[0];
+                }
+            }
+            else
+            {
+                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
 

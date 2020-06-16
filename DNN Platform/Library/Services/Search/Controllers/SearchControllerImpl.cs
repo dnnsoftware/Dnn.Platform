@@ -46,6 +46,169 @@ namespace DotNetNuke.Services.Search.Controllers
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
 
+        private static void FillTagsValues(Document doc, SearchResult result)
+        {
+            foreach (var field in doc.GetFields())
+            {
+                if (field.StringValue == null)
+                {
+                    continue;
+                }
+
+                int intField;
+                switch (field.Name)
+                {
+                    case Constants.UniqueKeyTag:
+                        result.UniqueKey = field.StringValue;
+                        break;
+                    case Constants.TitleTag:
+                        var title = field.StringValue;
+                        result.Title = title;
+                        break;
+                    case Constants.BodyTag:
+                        result.Body = field.StringValue;
+                        break;
+                    case Constants.DescriptionTag:
+                        result.Description = field.StringValue;
+                        break;
+                    case Constants.Tag:
+                        result.Tags = result.Tags.Concat(new[] { field.StringValue });
+                        break;
+                    case Constants.PermissionsTag:
+                        result.Permissions = field.StringValue;
+                        break;
+                    case Constants.QueryStringTag:
+                        result.QueryString = field.StringValue;
+                        break;
+                    case Constants.UrlTag:
+                        result.Url = field.StringValue;
+                        break;
+                    case Constants.SearchTypeTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.SearchTypeId = intField;
+                        }
+
+                        break;
+                    case Constants.ModuleIdTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.ModuleId = intField;
+                        }
+
+                        break;
+                    case Constants.ModuleDefIdTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.ModuleDefId = intField;
+                        }
+
+                        break;
+                    case Constants.PortalIdTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.PortalId = intField;
+                        }
+
+                        break;
+                    case Constants.AuthorIdTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.AuthorUserId = intField;
+                        }
+
+                        break;
+                    case Constants.RoleIdTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.RoleId = intField;
+                        }
+
+                        break;
+                    case Constants.AuthorNameTag:
+                        result.AuthorName = field.StringValue;
+                        break;
+                    case Constants.TabIdTag:
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.TabId = intField;
+                        }
+
+                        break;
+                    case Constants.ModifiedTimeTag:
+                        DateTime modifiedTimeUtc;
+                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, null, DateTimeStyles.None, out modifiedTimeUtc);
+                        result.ModifiedTimeUtc = modifiedTimeUtc;
+                        break;
+                    default:
+                        if (field.Name.StartsWith(Constants.NumericKeyPrefixTag))
+                        {
+                            var key = field.Name.Substring(Constants.NumericKeyPrefixTag.Length);
+                            if (int.TryParse(field.StringValue, out intField))
+                            {
+                                if (!result.NumericKeys.ContainsKey(key))
+                                {
+                                    result.NumericKeys.Add(key, intField);
+                                }
+                            }
+                        }
+                        else if (field.Name.StartsWith(Constants.KeywordsPrefixTag))
+                        {
+                            var key = field.Name.Substring(Constants.KeywordsPrefixTag.Length);
+                            if (!result.Keywords.ContainsKey(key))
+                            {
+                                result.Keywords.Add(key, field.StringValue);
+                            }
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        private static string GetSnippet(SearchResult searchResult, LuceneResult luceneResult)
+        {
+            var sb = new StringBuilder();
+
+            if (!string.IsNullOrEmpty(luceneResult.TitleSnippet))
+            {
+                sb.Append(luceneResult.TitleSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.DescriptionSnippet))
+            {
+                sb.Append(luceneResult.DescriptionSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.TagSnippet))
+            {
+                sb.Append(luceneResult.TagSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.BodySnippet))
+            {
+                sb.Append(luceneResult.BodySnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.AuthorSnippet))
+            {
+                sb.Append(luceneResult.AuthorSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.ContentSnippet))
+            {
+                sb.Append(luceneResult.ContentSnippet + "...");
+            }
+
+            var snippet = sb.ToString();
+            if (string.IsNullOrEmpty(snippet))
+            {
+                snippet = searchResult.Title;
+            }
+
+            return snippet;
+        }
+
         private Tuple<int, IList<SearchResult>> GetResults(SearchQuery searchQuery)
         {
             Requires.NotNull("Query", searchQuery);
@@ -284,167 +447,20 @@ namespace DotNetNuke.Services.Search.Controllers
             return result;
         }
 
-        private static void FillTagsValues(Document doc, SearchResult result)
+        private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
         {
-            foreach (var field in doc.GetFields())
+            var result = new SearchResult { SearchContext = searchQuery.SearchContext };
+            var localeField = doc.GetField(Constants.LocaleTag);
+
+            if (localeField != null)
             {
-                if (field.StringValue == null)
-                {
-                    continue;
-                }
-
-                int intField;
-                switch (field.Name)
-                {
-                    case Constants.UniqueKeyTag:
-                        result.UniqueKey = field.StringValue;
-                        break;
-                    case Constants.TitleTag:
-                        var title = field.StringValue;
-                        result.Title = title;
-                        break;
-                    case Constants.BodyTag:
-                        result.Body = field.StringValue;
-                        break;
-                    case Constants.DescriptionTag:
-                        result.Description = field.StringValue;
-                        break;
-                    case Constants.Tag:
-                        result.Tags = result.Tags.Concat(new[] { field.StringValue });
-                        break;
-                    case Constants.PermissionsTag:
-                        result.Permissions = field.StringValue;
-                        break;
-                    case Constants.QueryStringTag:
-                        result.QueryString = field.StringValue;
-                        break;
-                    case Constants.UrlTag:
-                        result.Url = field.StringValue;
-                        break;
-                    case Constants.SearchTypeTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.SearchTypeId = intField;
-                        }
-
-                        break;
-                    case Constants.ModuleIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.ModuleId = intField;
-                        }
-
-                        break;
-                    case Constants.ModuleDefIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.ModuleDefId = intField;
-                        }
-
-                        break;
-                    case Constants.PortalIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.PortalId = intField;
-                        }
-
-                        break;
-                    case Constants.AuthorIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.AuthorUserId = intField;
-                        }
-
-                        break;
-                    case Constants.RoleIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.RoleId = intField;
-                        }
-
-                        break;
-                    case Constants.AuthorNameTag:
-                        result.AuthorName = field.StringValue;
-                        break;
-                    case Constants.TabIdTag:
-                        if (int.TryParse(field.StringValue, out intField))
-                        {
-                            result.TabId = intField;
-                        }
-
-                        break;
-                    case Constants.ModifiedTimeTag:
-                        DateTime modifiedTimeUtc;
-                        DateTime.TryParseExact(field.StringValue, Constants.DateTimeFormat, null, DateTimeStyles.None, out modifiedTimeUtc);
-                        result.ModifiedTimeUtc = modifiedTimeUtc;
-                        break;
-                    default:
-                        if (field.Name.StartsWith(Constants.NumericKeyPrefixTag))
-                        {
-                            var key = field.Name.Substring(Constants.NumericKeyPrefixTag.Length);
-                            if (int.TryParse(field.StringValue, out intField))
-                            {
-                                if (!result.NumericKeys.ContainsKey(key))
-                                {
-                                    result.NumericKeys.Add(key, intField);
-                                }
-                            }
-                        }
-                        else if (field.Name.StartsWith(Constants.KeywordsPrefixTag))
-                        {
-                            var key = field.Name.Substring(Constants.KeywordsPrefixTag.Length);
-                            if (!result.Keywords.ContainsKey(key))
-                            {
-                                result.Keywords.Add(key, field.StringValue);
-                            }
-                        }
-
-                        break;
-                }
-            }
-        }
-
-        private static string GetSnippet(SearchResult searchResult, LuceneResult luceneResult)
-        {
-            var sb = new StringBuilder();
-
-            if (!string.IsNullOrEmpty(luceneResult.TitleSnippet))
-            {
-                sb.Append(luceneResult.TitleSnippet + "...");
+                int id;
+                result.CultureCode = int.TryParse(localeField.StringValue, out id) && id >= 0
+                    ? LocaleController.Instance.GetLocale(id).Code : Null.NullString;
             }
 
-            if (!string.IsNullOrEmpty(luceneResult.DescriptionSnippet))
-            {
-                sb.Append(luceneResult.DescriptionSnippet + "...");
-            }
-
-            if (!string.IsNullOrEmpty(luceneResult.TagSnippet))
-            {
-                sb.Append(luceneResult.TagSnippet + "...");
-            }
-
-            if (!string.IsNullOrEmpty(luceneResult.BodySnippet))
-            {
-                sb.Append(luceneResult.BodySnippet + "...");
-            }
-
-            if (!string.IsNullOrEmpty(luceneResult.AuthorSnippet))
-            {
-                sb.Append(luceneResult.AuthorSnippet + "...");
-            }
-
-            if (!string.IsNullOrEmpty(luceneResult.ContentSnippet))
-            {
-                sb.Append(luceneResult.ContentSnippet + "...");
-            }
-
-            var snippet = sb.ToString();
-            if (string.IsNullOrEmpty(snippet))
-            {
-                snippet = searchResult.Title;
-            }
-
-            return snippet;
+            FillTagsValues(doc, result);
+            return result;
         }
 
         private Dictionary<int, BaseResultController> GetSearchResultControllers()
@@ -517,22 +533,6 @@ namespace DotNetNuke.Services.Search.Controllers
             var result = GetPartialSearchResult(document, searchQuery);
             var resultController = this.GetSearchResultControllers().SingleOrDefault(sc => sc.Key == result.SearchTypeId).Value;
             return resultController != null && resultController.HasViewPermission(result);
-        }
-
-        private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
-        {
-            var result = new SearchResult { SearchContext = searchQuery.SearchContext };
-            var localeField = doc.GetField(Constants.LocaleTag);
-
-            if (localeField != null)
-            {
-                int id;
-                result.CultureCode = int.TryParse(localeField.StringValue, out id) && id >= 0
-                    ? LocaleController.Instance.GetLocale(id).Code : Null.NullString;
-            }
-
-            FillTagsValues(doc, result);
-            return result;
         }
     }
 }

@@ -41,10 +41,10 @@ namespace DotNetNuke.Services.Cache
     /// </example>
     public abstract class CachingProvider
     {
+        private const string CachePrefix = "DNN_";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
 
         private static System.Web.Caching.Cache _cache;
-        private const string CachePrefix = "DNN_";
 
         /// <summary>
         /// Gets the default cache provider.
@@ -106,6 +106,21 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
+        /// Clears the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="data">The data.</param>
+        public virtual void Clear(string type, string data)
+        {
+            this.ClearCacheInternal(type, data, false);
+        }
+
+        public virtual IDictionaryEnumerator GetEnumerator()
+        {
+            return Cache.GetEnumerator();
+        }
+
+        /// <summary>
         /// Disable Cache Expirataion. This control won't affect core caching provider, its behavior determined by extended caching provider.
         /// This property designed for when process long time action, extended caching provider should not sync cache between web servers to improve performance.
         /// </summary>
@@ -126,6 +141,62 @@ namespace DotNetNuke.Services.Cache
             CacheExpirationDisable = false;
             DataCache.ClearHostCache(true);
             Logger.Warn("Enable cache expiration.");
+        }
+
+        /// <summary>
+        /// Clears the cache internal.
+        /// </summary>
+        /// <param name="cacheType">Type of the cache.</param>
+        /// <param name="data">The data.</param>
+        /// <param name="clearRuntime">if set to <c>true</c> clear runtime cache.</param>
+        protected void ClearCacheInternal(string cacheType, string data, bool clearRuntime)
+        {
+            switch (cacheType)
+            {
+                case "Prefix":
+                    this.ClearCacheInternal(data, clearRuntime);
+                    break;
+                case "Host":
+                    this.ClearHostCacheInternal(clearRuntime);
+                    break;
+                case "Folder":
+                    this.ClearFolderCacheInternal(int.Parse(data), clearRuntime);
+                    break;
+                case "Module":
+                    this.ClearModuleCacheInternal(int.Parse(data), clearRuntime);
+                    break;
+                case "ModulePermissionsByPortal":
+                    this.ClearModulePermissionsCachesByPortalInternal(int.Parse(data), clearRuntime);
+                    break;
+                case "Portal":
+                    this.ClearPortalCacheInternal(int.Parse(data), false, clearRuntime);
+                    break;
+                case "PortalCascade":
+                    this.ClearPortalCacheInternal(int.Parse(data), true, clearRuntime);
+                    break;
+                case "Tab":
+                    this.ClearTabCacheInternal(int.Parse(data), clearRuntime);
+                    break;
+                case "ServiceFrameworkRoutes":
+                    this.ReloadServicesFrameworkRoutes();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Removes the internal.
+        /// </summary>
+        /// <param name="cacheKey">The cache key.</param>
+        protected void RemoveInternal(string cacheKey)
+        {
+            // attempt remove from private dictionary
+            DataCache.RemoveFromPrivateDictionary(cacheKey);
+
+            // remove item from memory
+            if (Cache[cacheKey] != null)
+            {
+                Cache.Remove(cacheKey);
+            }
         }
 
         private void ClearCacheInternal(string prefix, bool clearRuntime)
@@ -343,83 +414,12 @@ namespace DotNetNuke.Services.Cache
             }
         }
 
-        /// <summary>
-        /// Clears the cache internal.
-        /// </summary>
-        /// <param name="cacheType">Type of the cache.</param>
-        /// <param name="data">The data.</param>
-        /// <param name="clearRuntime">if set to <c>true</c> clear runtime cache.</param>
-        protected void ClearCacheInternal(string cacheType, string data, bool clearRuntime)
-        {
-            switch (cacheType)
-            {
-                case "Prefix":
-                    this.ClearCacheInternal(data, clearRuntime);
-                    break;
-                case "Host":
-                    this.ClearHostCacheInternal(clearRuntime);
-                    break;
-                case "Folder":
-                    this.ClearFolderCacheInternal(int.Parse(data), clearRuntime);
-                    break;
-                case "Module":
-                    this.ClearModuleCacheInternal(int.Parse(data), clearRuntime);
-                    break;
-                case "ModulePermissionsByPortal":
-                    this.ClearModulePermissionsCachesByPortalInternal(int.Parse(data), clearRuntime);
-                    break;
-                case "Portal":
-                    this.ClearPortalCacheInternal(int.Parse(data), false, clearRuntime);
-                    break;
-                case "PortalCascade":
-                    this.ClearPortalCacheInternal(int.Parse(data), true, clearRuntime);
-                    break;
-                case "Tab":
-                    this.ClearTabCacheInternal(int.Parse(data), clearRuntime);
-                    break;
-                case "ServiceFrameworkRoutes":
-                    this.ReloadServicesFrameworkRoutes();
-                    break;
-            }
-        }
-
         private void ReloadServicesFrameworkRoutes()
         {
             // registration of routes when the servers is operating is done as part of the cache
             // because the web request cahcing provider is the only inter-server communication channel
             // that is reliable
             ServicesRoutingManager.RegisterServiceRoutes();
-        }
-
-        /// <summary>
-        /// Removes the internal.
-        /// </summary>
-        /// <param name="cacheKey">The cache key.</param>
-        protected void RemoveInternal(string cacheKey)
-        {
-            // attempt remove from private dictionary
-            DataCache.RemoveFromPrivateDictionary(cacheKey);
-
-            // remove item from memory
-            if (Cache[cacheKey] != null)
-            {
-                Cache.Remove(cacheKey);
-            }
-        }
-
-        /// <summary>
-        /// Clears the specified type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="data">The data.</param>
-        public virtual void Clear(string type, string data)
-        {
-            this.ClearCacheInternal(type, data, false);
-        }
-
-        public virtual IDictionaryEnumerator GetEnumerator()
-        {
-            return Cache.GetEnumerator();
         }
 
         /// <summary>

@@ -39,14 +39,14 @@ namespace Dnn.PersonaBar.Seo.Services
     public class SeoController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
-        private readonly Components.SeoController _controller = new Components.SeoController();
         private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Seo/App_LocalResources/Seo.resx");
-        protected INavigationManager NavigationManager { get; }
-
+        private readonly Components.SeoController _controller = new Components.SeoController();
         public SeoController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         /// GET: api/SEO/GetGeneralSettings
         /// <summary>
@@ -248,66 +248,6 @@ namespace Dnn.PersonaBar.Seo.Services
             }
         }
 
-        private void UpdateRegexSettingsInternal(UpdateRegexSettingsRequest request)
-        {
-            var settings = new Dictionary<string, string>()
-            {
-                        { FriendlyUrlSettings.IgnoreRegexSetting, request.IgnoreRegex },
-                        { FriendlyUrlSettings.DoNotRewriteRegExSetting, request.DoNotRewriteRegex },
-                        { FriendlyUrlSettings.SiteUrlsOnlyRegexSetting, request.UseSiteUrlsRegex },
-                        { FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, request.DoNotRedirectRegex },
-                        { FriendlyUrlSettings.DoNotRedirectHttpsUrlRegexSetting, request.DoNotRedirectSecureRegex },
-                        { FriendlyUrlSettings.PreventLowerCaseUrlRegexSetting, request.ForceLowerCaseRegex },
-                        { FriendlyUrlSettings.DoNotUseFriendlyUrlRegexSetting, request.NoFriendlyUrlRegex },
-                        { FriendlyUrlSettings.KeepInQueryStringRegexSetting, request.DoNotIncludeInPathRegex },
-                        { FriendlyUrlSettings.UrlsWithNoExtensionRegexSetting, request.ValidExtensionlessUrlsRegex },
-                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch }
-            };
-
-            settings.ToList().ForEach((value) =>
-            {
-                if (this.PortalId == Null.NullInteger)
-                {
-                    HostController.Instance.Update(value.Key, value.Value, false);
-                }
-                else
-                {
-                    PortalController.Instance.UpdatePortalSetting(this.PortalId, value.Key, value.Value, false, Null.NullString, false);
-                }
-            });
-        }
-
-        private void ClearCache()
-        {
-            if (this.PortalId == Null.NullInteger)
-            {
-                DataCache.ClearHostCache(false);
-            }
-            else
-            {
-                DataCache.ClearPortalCache(this.PortalId, false);
-            }
-            CacheController.FlushPageIndexFromCache();
-            CacheController.FlushFriendlyUrlSettingsFromCache();
-        }
-
-        private static bool ValidateRegex(string regexPattern)
-        {
-            try
-            {
-                if (Regex.IsMatch("", regexPattern))
-                {
-                }
-
-                return true;
-            }
-            catch
-            {
-                //ignore
-            }
-            return false;
-        }
-
         /// GET: api/SEO/GetSitemapSettings
         /// <summary>
         /// Gets sitemap settings.
@@ -366,6 +306,66 @@ namespace Dnn.PersonaBar.Seo.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private static bool ValidateRegex(string regexPattern)
+        {
+            try
+            {
+                if (Regex.IsMatch("", regexPattern))
+                {
+                }
+
+                return true;
+            }
+            catch
+            {
+                //ignore
+            }
+            return false;
+        }
+
+        private void UpdateRegexSettingsInternal(UpdateRegexSettingsRequest request)
+        {
+            var settings = new Dictionary<string, string>()
+            {
+                        { FriendlyUrlSettings.IgnoreRegexSetting, request.IgnoreRegex },
+                        { FriendlyUrlSettings.DoNotRewriteRegExSetting, request.DoNotRewriteRegex },
+                        { FriendlyUrlSettings.SiteUrlsOnlyRegexSetting, request.UseSiteUrlsRegex },
+                        { FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, request.DoNotRedirectRegex },
+                        { FriendlyUrlSettings.DoNotRedirectHttpsUrlRegexSetting, request.DoNotRedirectSecureRegex },
+                        { FriendlyUrlSettings.PreventLowerCaseUrlRegexSetting, request.ForceLowerCaseRegex },
+                        { FriendlyUrlSettings.DoNotUseFriendlyUrlRegexSetting, request.NoFriendlyUrlRegex },
+                        { FriendlyUrlSettings.KeepInQueryStringRegexSetting, request.DoNotIncludeInPathRegex },
+                        { FriendlyUrlSettings.UrlsWithNoExtensionRegexSetting, request.ValidExtensionlessUrlsRegex },
+                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch }
+            };
+
+            settings.ToList().ForEach((value) =>
+            {
+                if (this.PortalId == Null.NullInteger)
+                {
+                    HostController.Instance.Update(value.Key, value.Value, false);
+                }
+                else
+                {
+                    PortalController.Instance.UpdatePortalSetting(this.PortalId, value.Key, value.Value, false, Null.NullString, false);
+                }
+            });
+        }
+
+        private void ClearCache()
+        {
+            if (this.PortalId == Null.NullInteger)
+            {
+                DataCache.ClearHostCache(false);
+            }
+            else
+            {
+                DataCache.ClearPortalCache(this.PortalId, false);
+            }
+            CacheController.FlushPageIndexFromCache();
+            CacheController.FlushFriendlyUrlSettingsFromCache();
         }
 
         /// POST: api/SEO/CreateVerification
@@ -611,16 +611,6 @@ namespace Dnn.PersonaBar.Seo.Services
             }
         }
 
-        private IEnumerable<string> TestUrlInternal(int pageId, string queryString, string customPageName)
-        {
-            var provider = new DNNFriendlyUrlProvider();
-            var tab = TabController.Instance.GetTab(pageId, this.PortalId, false);
-            var pageName = string.IsNullOrEmpty(customPageName) ? Globals.glbDefaultPage : customPageName;
-            return PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).
-                Select(alias => provider.FriendlyUrl(
-                    tab, "~/Default.aspx?tabId=" + pageId + "&" + queryString, pageName, alias.HTTPAlias));
-        }
-
         /// GET: api/SEO/TestUrlRewrite
         /// <summary>
         /// Tests the rewritten URL.
@@ -646,6 +636,16 @@ namespace Dnn.PersonaBar.Seo.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
+        }
+
+        private IEnumerable<string> TestUrlInternal(int pageId, string queryString, string customPageName)
+        {
+            var provider = new DNNFriendlyUrlProvider();
+            var tab = TabController.Instance.GetTab(pageId, this.PortalId, false);
+            var pageName = string.IsNullOrEmpty(customPageName) ? Globals.glbDefaultPage : customPageName;
+            return PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalId).
+                Select(alias => provider.FriendlyUrl(
+                    tab, "~/Default.aspx?tabId=" + pageId + "&" + queryString, pageName, alias.HTTPAlias));
         }
 
         private UrlRewritingResult TestUrlRewritingInternal(string uriString)

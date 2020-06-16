@@ -21,6 +21,19 @@ namespace DotNetNuke.HttpModules.Services
             context.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
         }
 
+        public void Dispose()
+        {
+        }
+
+        private static void InitDnn(object sender, EventArgs e)
+        {
+            var app = sender as HttpApplication;
+            if (app != null && ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
+            {
+                Initialize.Init(app);
+            }
+        }
+
         private void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
             var app = sender as HttpApplication;
@@ -37,19 +50,6 @@ namespace DotNetNuke.HttpModules.Services
                 //    headers.Remove("Set-Cookie");
                 // }
             }
-        }
-
-        private static void InitDnn(object sender, EventArgs e)
-        {
-            var app = sender as HttpApplication;
-            if (app != null && ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
-            {
-                Initialize.Init(app);
-            }
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

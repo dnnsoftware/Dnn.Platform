@@ -15,6 +15,9 @@ namespace DotNetNuke.Services.Search
     /// <summary>A base class for search indexers.</summary>
     public abstract class IndexingProviderBase
     {
+        private const string TimePostfix = "UtcTime";
+        private const string DataPostfix = "Data";
+
         /// <summary>This method must save search documents in batches to minimize memory usage instead of returning all documents at once.</summary>
         /// <param name="portalId">ID of the portal for which to index items.</param>
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed.</param>
@@ -24,8 +27,17 @@ namespace DotNetNuke.Services.Search
             int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer);
 
-        private const string TimePostfix = "UtcTime";
-        private const string DataPostfix = "Data";
+        [Obsolete("Deprecated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.. Scheduled removal in v10.0.0.")]
+        public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
+        {
+            return Enumerable.Empty<SearchDocument>();
+        }
+
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
+        public virtual SearchItemInfoCollection GetSearchIndexItems(int portalId)
+        {
+            return new SearchItemInfoCollection();
+        }
 
         /// <summary>Retrieves the date/time of the last item to be indexed.</summary>
         /// <param name="portalId">The portal ID.</param>
@@ -65,18 +77,6 @@ namespace DotNetNuke.Services.Search
         protected void SetLastCheckpointData(int portalId, int scheduleId, string data)
         {
             SearchHelper.Instance.SetIndexerCheckpointData(scheduleId, this.ScheduleItemSettingKey(portalId, DataPostfix), data);
-        }
-
-        [Obsolete("Deprecated in DNN 7.4.2 Use 'IndexSearchDocuments' instead for lower memory footprint during search.. Scheduled removal in v10.0.0.")]
-        public virtual IEnumerable<SearchDocument> GetSearchDocuments(int portalId, DateTime startDateLocal)
-        {
-            return Enumerable.Empty<SearchDocument>();
-        }
-
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        public virtual SearchItemInfoCollection GetSearchIndexItems(int portalId)
-        {
-            return new SearchItemInfoCollection();
         }
 
         /// <summary>

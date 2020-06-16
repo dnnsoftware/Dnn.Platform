@@ -23,135 +23,9 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private const int WriterLockTimeout = 10000; // milliseconds
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
-
-        protected override Func<ILogController> GetFactory()
-        {
-            return () => new LogController();
-        }
-
-        private static void AddLogToFile(LogInfo logInfo)
-        {
-            try
-            {
-                var f = Globals.HostMapPath + "\\Logs\\LogFailures.xml.resources";
-                WriteLog(f, logInfo.Serialize());
-            }
-
-            // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception exc) // ReSharper restore EmptyGeneralCatchClause
-            {
-                Logger.Error(exc);
-            }
-        }
-
-        private static void RaiseError(string filePath, string header, string message)
-        {
-            Logger.ErrorFormat("filePath={0}, header={1}, message={2}", filePath, header, message);
-
-            if (HttpContext.Current != null)
-            {
-                HttpResponse response = HttpContext.Current.Response;
-                HtmlUtils.WriteHeader(response, header);
-                HtmlUtils.WriteError(response, filePath, message);
-                HtmlUtils.WriteFooter(response);
-                response.End();
-            }
-        }
-
-        private static void WriteToStreamWriter(FileStream fs, string message)
-        {
-            using (var sw = new StreamWriter(fs, Encoding.UTF8))
-            {
-                var fileLength = fs.Length;
-                if (fileLength > 0)
-                {
-                    fs.Position = fileLength - 9;
-                }
-                else
-                {
-                    message = "<logs>" + message;
-                }
-
-                sw.WriteLine(message + "</logs>");
-                sw.Flush();
-            }
-        }
-
-        private static void WriteLog(string filePath, string message)
-        {
-            FileStream fs = null;
-            if (!LockLog.TryEnterWriteLock(WriterLockTimeout))
-            {
-                return;
-            }
-
-            try
-            {
-                var intAttempts = 0;
-                while (fs == null && intAttempts < 100)
-                {
-                    intAttempts += 1;
-                    try
-                    {
-                        fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
-                    }
-                    catch (IOException exc)
-                    {
-                        Logger.Debug(exc);
-                        Thread.Sleep(1);
-                    }
-                }
-
-                if (fs == null)
-                {
-                    if (HttpContext.Current != null)
-                    {
-                        HttpContext.Current.Response.Write("An error has occurred writing to the exception log.");
-                        HttpContext.Current.Response.End();
-                    }
-                }
-                else
-                {
-                    WriteToStreamWriter(fs, message);
-                }
-            }
-            catch (UnauthorizedAccessException)
-            {
-                RaiseError(filePath, "Unauthorized Access Error", "The Windows User Account listed below must have Read/Write Privileges for the website path.");
-            }
-            catch (DirectoryNotFoundException exc)
-            {
-                RaiseError(filePath, "Directory Not Found Error", exc.Message);
-            }
-            catch (PathTooLongException exc)
-            {
-                RaiseError(filePath, "Path Too Long Error", exc.Message);
-            }
-            catch (IOException exc)
-            {
-                RaiseError(filePath, "IO Error", exc.Message);
-            }
-            catch (SqlException exc)
-            {
-                RaiseError(filePath, "SQL Exception", SqlUtils.TranslateSQLException(exc));
-            }
-            catch (Exception exc)
-            {
-                RaiseError(filePath, "Unhandled Error", exc.Message);
-            }
-            finally
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                }
-
-                LockLog.ExitWriteLock();
-            }
-        }
 
         public void AddLog(LogInfo logInfo)
         {
@@ -298,6 +172,132 @@ namespace DotNetNuke.Services.Log.EventLog
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
                 }
+            }
+        }
+
+        protected override Func<ILogController> GetFactory()
+        {
+            return () => new LogController();
+        }
+
+        private static void AddLogToFile(LogInfo logInfo)
+        {
+            try
+            {
+                var f = Globals.HostMapPath + "\\Logs\\LogFailures.xml.resources";
+                WriteLog(f, logInfo.Serialize());
+            }
+
+            // ReSharper disable EmptyGeneralCatchClause
+            catch (Exception exc) // ReSharper restore EmptyGeneralCatchClause
+            {
+                Logger.Error(exc);
+            }
+        }
+
+        private static void RaiseError(string filePath, string header, string message)
+        {
+            Logger.ErrorFormat("filePath={0}, header={1}, message={2}", filePath, header, message);
+
+            if (HttpContext.Current != null)
+            {
+                HttpResponse response = HttpContext.Current.Response;
+                HtmlUtils.WriteHeader(response, header);
+                HtmlUtils.WriteError(response, filePath, message);
+                HtmlUtils.WriteFooter(response);
+                response.End();
+            }
+        }
+
+        private static void WriteToStreamWriter(FileStream fs, string message)
+        {
+            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            {
+                var fileLength = fs.Length;
+                if (fileLength > 0)
+                {
+                    fs.Position = fileLength - 9;
+                }
+                else
+                {
+                    message = "<logs>" + message;
+                }
+
+                sw.WriteLine(message + "</logs>");
+                sw.Flush();
+            }
+        }
+
+        private static void WriteLog(string filePath, string message)
+        {
+            FileStream fs = null;
+            if (!LockLog.TryEnterWriteLock(WriterLockTimeout))
+            {
+                return;
+            }
+
+            try
+            {
+                var intAttempts = 0;
+                while (fs == null && intAttempts < 100)
+                {
+                    intAttempts += 1;
+                    try
+                    {
+                        fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+                    }
+                    catch (IOException exc)
+                    {
+                        Logger.Debug(exc);
+                        Thread.Sleep(1);
+                    }
+                }
+
+                if (fs == null)
+                {
+                    if (HttpContext.Current != null)
+                    {
+                        HttpContext.Current.Response.Write("An error has occurred writing to the exception log.");
+                        HttpContext.Current.Response.End();
+                    }
+                }
+                else
+                {
+                    WriteToStreamWriter(fs, message);
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                RaiseError(filePath, "Unauthorized Access Error", "The Windows User Account listed below must have Read/Write Privileges for the website path.");
+            }
+            catch (DirectoryNotFoundException exc)
+            {
+                RaiseError(filePath, "Directory Not Found Error", exc.Message);
+            }
+            catch (PathTooLongException exc)
+            {
+                RaiseError(filePath, "Path Too Long Error", exc.Message);
+            }
+            catch (IOException exc)
+            {
+                RaiseError(filePath, "IO Error", exc.Message);
+            }
+            catch (SqlException exc)
+            {
+                RaiseError(filePath, "SQL Exception", SqlUtils.TranslateSQLException(exc));
+            }
+            catch (Exception exc)
+            {
+                RaiseError(filePath, "Unhandled Error", exc.Message);
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                }
+
+                LockLog.ExitWriteLock();
             }
         }
 

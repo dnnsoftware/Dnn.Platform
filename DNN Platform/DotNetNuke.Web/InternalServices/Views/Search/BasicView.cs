@@ -13,6 +13,11 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     /// </summary>
     public class BasicView
     {
+        public BasicView()
+        {
+            this.Attributes = new Dictionary<string, string>();
+        }
+
         /// <summary>
         /// Gets or sets document's Title.
         /// </summary>
@@ -42,10 +47,5 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// Gets or sets custom Attributes of the document.
         /// </summary>
         public IDictionary<string, string> Attributes { get; set; }
-
-        public BasicView()
-        {
-            this.Attributes = new Dictionary<string, string>();
-        }
     }
 }

@@ -38,6 +38,21 @@ namespace DotNetNuke.UI
             None,
         }
 
+        public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled)
+        {
+            return CanShowTab(objTab, isAdminMode, showDisabled, false);
+        }
+
+        public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
+        {
+            // if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
+            return (tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
+                    (!tab.DisableLink || showDisabled) &&
+                    (((tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate) &&
+                      (tab.EndDate > DateTime.Now || tab.EndDate == Null.NullDate)) || isAdminMode) &&
+                    TabPermissionController.CanNavigateToPage(tab);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Recursive function to add module's actions to the DNNNodeCollection based off of passed in ModuleActions.
@@ -364,21 +379,6 @@ namespace DotNetNuke.UI
                     }
                 }
             }
-        }
-
-        public static bool CanShowTab(TabInfo objTab, bool isAdminMode, bool showDisabled)
-        {
-            return CanShowTab(objTab, isAdminMode, showDisabled, false);
-        }
-
-        public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
-        {
-            // if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
-            return (tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
-                    (!tab.DisableLink || showDisabled) &&
-                    (((tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate) &&
-                      (tab.EndDate > DateTime.Now || tab.EndDate == Null.NullDate)) || isAdminMode) &&
-                    TabPermissionController.CanNavigateToPage(tab);
         }
 
         /// -----------------------------------------------------------------------------

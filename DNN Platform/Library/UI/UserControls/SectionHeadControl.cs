@@ -23,13 +23,13 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public class SectionHeadControl : UserControl
     {
+        protected ImageButton imgIcon;
+        protected Label lblTitle;
         private bool _includeRule;
         private bool _isExpanded = true;
         private string _javaScript = "__dnn_SectionMaxMin";
         private string _maxImageUrl = "images/plus.gif";
         private string _minImageUrl = "images/minus.gif";
-        protected ImageButton imgIcon;
-        protected Label lblTitle;
         protected Panel pnlRule;
 
         /// -----------------------------------------------------------------------------

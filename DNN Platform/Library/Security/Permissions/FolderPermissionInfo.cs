@@ -108,21 +108,6 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a FolderPermissionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.FillInternal(dr);
-            this.FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
-            this.FolderID = Null.SetNullInteger(dr["FolderID"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.FolderPath = Null.SetNullString(dr["FolderPath"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -139,6 +124,21 @@ namespace DotNetNuke.Security.Permissions
             {
                 this.FolderPermissionID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a FolderPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
+            this.FolderID = Null.SetNullInteger(dr["FolderID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.FolderPath = Null.SetNullString(dr["FolderPath"]);
         }
     }
 }

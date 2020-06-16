@@ -48,6 +48,24 @@ namespace DotNetNuke.Entities.Host
         public int RuleType { get; set; }
 
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>KeyId of the IHydratable.Key.</returns>
+        /// <remarks><seealso cref="Fill"></seealso></remarks>
+        public int KeyID
+        {
+            get
+            {
+                return this.IPFilterID;
+            }
+
+            set
+            {
+                this.IPFilterID = value;
+            }
+        }
+
+        /// <summary>
         /// Fills an IPFilterInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -71,24 +89,6 @@ namespace DotNetNuke.Entities.Host
             this.RuleType = Null.SetNullInteger(dr["RuleType"]);
 
             this.FillInternal(dr);
-        }
-
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>KeyId of the IHydratable.Key.</returns>
-        /// <remarks><seealso cref="Fill"></seealso></remarks>
-        public int KeyID
-        {
-            get
-            {
-                return this.IPFilterID;
-            }
-
-            set
-            {
-                this.IPFilterID = value;
-            }
         }
     }
 }

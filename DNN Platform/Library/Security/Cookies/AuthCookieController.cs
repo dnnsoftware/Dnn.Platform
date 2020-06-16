@@ -16,11 +16,6 @@ namespace DotNetNuke.Security.Cookies
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
 
-        protected override Func<IAuthCookieController> GetFactory()
-        {
-            return () => new AuthCookieController();
-        }
-
         public void Update(string cookieValue, DateTime utcExpiry, int userId)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -42,6 +37,11 @@ namespace DotNetNuke.Security.Cookies
             return CBO.Instance.GetCachedObject<PersistedAuthCookie>(
                 new CacheItemArgs(GetKey(cookieValue), (int)FormsAuthentication.Timeout.TotalMinutes, CacheItemPriority.AboveNormal),
                 _ => CBO.Instance.FillObject<PersistedAuthCookie>(this._dataProvider.FindAuthCookie(cookieValue)), false);
+        }
+
+        protected override Func<IAuthCookieController> GetFactory()
+        {
+            return () => new AuthCookieController();
         }
 
         public void DeleteByValue(string cookieValue)

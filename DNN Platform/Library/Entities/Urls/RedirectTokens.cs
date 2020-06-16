@@ -27,121 +27,6 @@ namespace DotNetNuke.Entities.Urls
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         /// <summary>
-        /// Returns the list of tokens found in a rewrite path as a key/value dictionary.
-        /// </summary>
-        /// <param name="rewritePath">
-        ///     Rewritten Url path.
-        /// </param>
-        /// <returns></returns>
-        /// <summary>
-        /// Returns a list of the redirect tokens found in the querystring.
-        /// </summary>
-        /// <returns></returns>
-        private static List<string> GetRedirectReasonTokensFromRewritePath(string rewritePath)
-        {
-            var reasons = new List<string>();
-            MatchCollection matches = RewritePathRx.Matches(rewritePath);
-            foreach (Match match in matches)
-            {
-                if (match.Success)
-                {
-                    Group rrG = match.Groups["rr"];
-                    if (rrG.Success)
-                    {
-                        string rr = match.Groups["rr"].Value;
-                        reasons.Add(rr);
-                    }
-                }
-            }
-
-            return reasons;
-        }
-
-        private static void GetRedirectActionTokenAndValue(ActionType action, out string token, out string value)
-        {
-            switch (action)
-            {
-                case ActionType.CheckFor301:
-                    token = "do301";
-                    value = "check";
-                    break;
-                case ActionType.Redirect301:
-                    token = "do301";
-                    value = "true";
-                    break;
-                case ActionType.Output404:
-                    token = "do404";
-                    value = "true";
-                    break;
-                case ActionType.Redirect302:
-                    token = "do302";
-                    value = "true";
-                    break;
-                default:
-                    token = string.Empty;
-                    value = string.Empty;
-                    break;
-            }
-        }
-
-        private static string GetRedirectReasonRewriteToken(RedirectReason reason)
-        {
-            string result = string.Empty;
-            switch (reason)
-            {
-                case RedirectReason.Deleted_Page:
-                    result = "&rr=dl";
-                    break;
-                case RedirectReason.Disabled_Page:
-                    // 838 : handle disabled page separately
-                    result = "&rr=db";
-                    break;
-                case RedirectReason.Tab_Permanent_Redirect:
-                    result = "&rr=pr";
-                    break;
-                case RedirectReason.Spaces_Replaced:
-                    result = "&rr=sr";
-                    break;
-                case RedirectReason.Site_Root_Home:
-                    result = "&rr=hp";
-                    break;
-                case RedirectReason.Diacritic_Characters:
-                    result = "&rr=dc";
-                    break;
-                case RedirectReason.User_Profile_Url:
-                    result = "&rr=up";
-                    break;
-                case RedirectReason.Custom_Redirect:
-                    result = "&rr=cr";
-                    break;
-            }
-
-            return result;
-        }
-
-        private static Dictionary<string, string> GetRedirectTokensAndValuesFromRewritePath(string rewritePath, out bool hasDupes)
-        {
-            hasDupes = false;
-            var results = new Dictionary<string, string>();
-            MatchCollection matches = RedirectTokensRx.Matches(rewritePath);
-            foreach (Match tokenMatch in matches)
-            {
-                string tk = tokenMatch.Groups["tk"].Value;
-                string val = tokenMatch.Groups["val"].Value;
-                if (results.ContainsKey(tk))
-                {
-                    hasDupes = true;
-                }
-                else
-                {
-                    results.Add(tk, val);
-                }
-            }
-
-            return results;
-        }
-
-        /// <summary>
         /// Adds on a redirect reason to the rewrite path.
         /// </summary>
         /// <param name="existingRewritePath"></param>
@@ -357,6 +242,121 @@ namespace DotNetNuke.Entities.Urls
                 // clear just reason
                 newUrl = RemoveAnyRedirectReasons(newUrl);
             }
+        }
+
+        /// <summary>
+        /// Returns the list of tokens found in a rewrite path as a key/value dictionary.
+        /// </summary>
+        /// <param name="rewritePath">
+        ///     Rewritten Url path.
+        /// </param>
+        /// <returns></returns>
+        /// <summary>
+        /// Returns a list of the redirect tokens found in the querystring.
+        /// </summary>
+        /// <returns></returns>
+        private static List<string> GetRedirectReasonTokensFromRewritePath(string rewritePath)
+        {
+            var reasons = new List<string>();
+            MatchCollection matches = RewritePathRx.Matches(rewritePath);
+            foreach (Match match in matches)
+            {
+                if (match.Success)
+                {
+                    Group rrG = match.Groups["rr"];
+                    if (rrG.Success)
+                    {
+                        string rr = match.Groups["rr"].Value;
+                        reasons.Add(rr);
+                    }
+                }
+            }
+
+            return reasons;
+        }
+
+        private static void GetRedirectActionTokenAndValue(ActionType action, out string token, out string value)
+        {
+            switch (action)
+            {
+                case ActionType.CheckFor301:
+                    token = "do301";
+                    value = "check";
+                    break;
+                case ActionType.Redirect301:
+                    token = "do301";
+                    value = "true";
+                    break;
+                case ActionType.Output404:
+                    token = "do404";
+                    value = "true";
+                    break;
+                case ActionType.Redirect302:
+                    token = "do302";
+                    value = "true";
+                    break;
+                default:
+                    token = string.Empty;
+                    value = string.Empty;
+                    break;
+            }
+        }
+
+        private static string GetRedirectReasonRewriteToken(RedirectReason reason)
+        {
+            string result = string.Empty;
+            switch (reason)
+            {
+                case RedirectReason.Deleted_Page:
+                    result = "&rr=dl";
+                    break;
+                case RedirectReason.Disabled_Page:
+                    // 838 : handle disabled page separately
+                    result = "&rr=db";
+                    break;
+                case RedirectReason.Tab_Permanent_Redirect:
+                    result = "&rr=pr";
+                    break;
+                case RedirectReason.Spaces_Replaced:
+                    result = "&rr=sr";
+                    break;
+                case RedirectReason.Site_Root_Home:
+                    result = "&rr=hp";
+                    break;
+                case RedirectReason.Diacritic_Characters:
+                    result = "&rr=dc";
+                    break;
+                case RedirectReason.User_Profile_Url:
+                    result = "&rr=up";
+                    break;
+                case RedirectReason.Custom_Redirect:
+                    result = "&rr=cr";
+                    break;
+            }
+
+            return result;
+        }
+
+        private static Dictionary<string, string> GetRedirectTokensAndValuesFromRewritePath(string rewritePath, out bool hasDupes)
+        {
+            hasDupes = false;
+            var results = new Dictionary<string, string>();
+            MatchCollection matches = RedirectTokensRx.Matches(rewritePath);
+            foreach (Match tokenMatch in matches)
+            {
+                string tk = tokenMatch.Groups["tk"].Value;
+                string val = tokenMatch.Groups["val"].Value;
+                if (results.ContainsKey(tk))
+                {
+                    hasDupes = true;
+                }
+                else
+                {
+                    results.Add(tk, val);
+                }
+            }
+
+            return results;
         }
 
         /// <summary>

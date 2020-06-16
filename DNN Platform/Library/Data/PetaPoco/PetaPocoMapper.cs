@@ -13,13 +13,29 @@ namespace DotNetNuke.Data.PetaPoco
     public class PetaPocoMapper : IMapper
     {
         private static IMapper _defaultMapper;
-        private readonly string _tablePrefix;
         private static ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+        private readonly string _tablePrefix;
 
         public PetaPocoMapper(string tablePrefix)
         {
             this._tablePrefix = tablePrefix;
             _defaultMapper = new StandardMapper();
+        }
+
+        public static void SetMapper<T>(IMapper mapper)
+        {
+            _lock.EnterWriteLock();
+            try
+            {
+                if (Mappers.GetMapper(typeof(T), _defaultMapper) is StandardMapper)
+                {
+                    Mappers.Register(typeof(T), mapper);
+                }
+            }
+            finally
+            {
+                _lock.ExitWriteLock();
+            }
         }
 
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
@@ -82,22 +98,6 @@ namespace DotNetNuke.Data.PetaPoco
         public Func<object, object> GetToDbConverter(PropertyInfo SourceProperty)
         {
             return null;
-        }
-
-        public static void SetMapper<T>(IMapper mapper)
-        {
-            _lock.EnterWriteLock();
-            try
-            {
-                if (Mappers.GetMapper(typeof(T), _defaultMapper) is StandardMapper)
-                {
-                    Mappers.Register(typeof(T), mapper);
-                }
-            }
-            finally
-            {
-                _lock.ExitWriteLock();
-            }
         }
     }
 }

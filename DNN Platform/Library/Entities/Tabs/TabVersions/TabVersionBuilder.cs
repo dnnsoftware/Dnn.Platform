@@ -20,8 +20,8 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
     public class TabVersionBuilder : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
         private const int DefaultVersionNumber = 1;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
         private readonly ITabController _tabController;
         private readonly IModuleController _moduleController;
         private readonly ITabVersionSettings _tabVersionSettings;
@@ -103,33 +103,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             this.DiscardVersion(tabId, tabVersion);
         }
 
-        private void DiscardVersion(int tabId, TabVersion tabVersion)
-        {
-            var unPublishedDetails = this._tabVersionDetailController.GetTabVersionDetails(tabVersion.TabVersionId);
-
-            var currentPublishedVersion = this.GetCurrentVersion(tabId);
-            TabVersionDetail[] publishedChanges = null;
-
-            if (currentPublishedVersion != null)
-            {
-                publishedChanges = this.GetVersionModulesDetails(tabId, this.GetCurrentVersion(tabId).Version).ToArray();
-            }
-
-            foreach (var unPublishedDetail in unPublishedDetails)
-            {
-                if (publishedChanges == null)
-                {
-                    this.DiscardDetailWithoutPublishedTabVersions(tabId, unPublishedDetail);
-                }
-                else
-                {
-                    this.DiscardDetailWithPublishedTabVersions(tabId, unPublishedDetail, publishedChanges);
-                }
-            }
-
-            this._tabVersionController.DeleteTabVersion(tabId, tabVersion.TabVersionId);
-        }
-
         public void DeleteVersion(int tabId, int createdByUserId, int version)
         {
             this.CheckVersioningEnabled(tabId);
@@ -194,6 +167,33 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             // Publish Version
             return this.PublishVersion(this.GetCurrentPortalId(), tabId, createdByUserId, newVersion);
+        }
+
+        private void DiscardVersion(int tabId, TabVersion tabVersion)
+        {
+            var unPublishedDetails = this._tabVersionDetailController.GetTabVersionDetails(tabVersion.TabVersionId);
+
+            var currentPublishedVersion = this.GetCurrentVersion(tabId);
+            TabVersionDetail[] publishedChanges = null;
+
+            if (currentPublishedVersion != null)
+            {
+                publishedChanges = this.GetVersionModulesDetails(tabId, this.GetCurrentVersion(tabId).Version).ToArray();
+            }
+
+            foreach (var unPublishedDetail in unPublishedDetails)
+            {
+                if (publishedChanges == null)
+                {
+                    this.DiscardDetailWithoutPublishedTabVersions(tabId, unPublishedDetail);
+                }
+                else
+                {
+                    this.DiscardDetailWithPublishedTabVersions(tabId, unPublishedDetail, publishedChanges);
+                }
+            }
+
+            this._tabVersionController.DeleteTabVersion(tabId, tabVersion.TabVersionId);
         }
 
         public TabVersion CreateNewVersion(int tabId, int createdByUserId)
@@ -270,6 +270,61 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var versionableController = this.GetVersionableController(module);
             return versionableController != null ? versionableController.GetLatestVersion(module.ModuleID) : DefaultVersionNumber;
+        }
+
+        protected override Func<ITabVersionBuilder> GetFactory()
+        {
+            return () => new TabVersionBuilder();
+        }
+
+        private static IEnumerable<TabVersionDetail> GetSnapShot(IEnumerable<TabVersionDetail> tabVersionDetails)
+        {
+            var versionModules = new Dictionary<int, TabVersionDetail>();
+            foreach (var tabVersionDetail in tabVersionDetails)
+            {
+                switch (tabVersionDetail.Action)
+                {
+                    case TabVersionDetailAction.Added:
+                    case TabVersionDetailAction.Modified:
+                        if (versionModules.ContainsKey(tabVersionDetail.ModuleId))
+                        {
+                            versionModules[tabVersionDetail.ModuleId] = JoinVersionDetails(versionModules[tabVersionDetail.ModuleId], tabVersionDetail);
+                        }
+                        else
+                        {
+                            versionModules.Add(tabVersionDetail.ModuleId, tabVersionDetail);
+                        }
+
+                        break;
+                    case TabVersionDetailAction.Deleted:
+                        if (versionModules.ContainsKey(tabVersionDetail.ModuleId))
+                        {
+                            versionModules.Remove(tabVersionDetail.ModuleId);
+                        }
+
+                        break;
+                    case TabVersionDetailAction.Reset:
+                        versionModules.Clear();
+                        break;
+                }
+            }
+
+            // Return Snapshot ordering by PaneName and ModuleOrder (this is required as Skin.cs does not order by these fields)
+            return versionModules.Values
+                .OrderBy(m => m.PaneName)
+                .ThenBy(m => m.ModuleOrder)
+                .ToList();
+        }
+
+        private static TabVersionDetail JoinVersionDetails(TabVersionDetail tabVersionDetail, TabVersionDetail newVersionDetail)
+        {
+            // Movement changes have not ModuleVersion
+            if (newVersionDetail.ModuleVersion == Null.NullInteger)
+            {
+                newVersionDetail.ModuleVersion = tabVersionDetail.ModuleVersion;
+            }
+
+            return newVersionDetail;
         }
 
         private IEnumerable<ModuleInfo> GetCurrentModulesInternal(int tabId)
@@ -765,56 +820,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return null;
         }
 
-        private static IEnumerable<TabVersionDetail> GetSnapShot(IEnumerable<TabVersionDetail> tabVersionDetails)
-        {
-            var versionModules = new Dictionary<int, TabVersionDetail>();
-            foreach (var tabVersionDetail in tabVersionDetails)
-            {
-                switch (tabVersionDetail.Action)
-                {
-                    case TabVersionDetailAction.Added:
-                    case TabVersionDetailAction.Modified:
-                        if (versionModules.ContainsKey(tabVersionDetail.ModuleId))
-                        {
-                            versionModules[tabVersionDetail.ModuleId] = JoinVersionDetails(versionModules[tabVersionDetail.ModuleId], tabVersionDetail);
-                        }
-                        else
-                        {
-                            versionModules.Add(tabVersionDetail.ModuleId, tabVersionDetail);
-                        }
-
-                        break;
-                    case TabVersionDetailAction.Deleted:
-                        if (versionModules.ContainsKey(tabVersionDetail.ModuleId))
-                        {
-                            versionModules.Remove(tabVersionDetail.ModuleId);
-                        }
-
-                        break;
-                    case TabVersionDetailAction.Reset:
-                        versionModules.Clear();
-                        break;
-                }
-            }
-
-            // Return Snapshot ordering by PaneName and ModuleOrder (this is required as Skin.cs does not order by these fields)
-            return versionModules.Values
-                .OrderBy(m => m.PaneName)
-                .ThenBy(m => m.ModuleOrder)
-                .ToList();
-        }
-
-        private static TabVersionDetail JoinVersionDetails(TabVersionDetail tabVersionDetail, TabVersionDetail newVersionDetail)
-        {
-            // Movement changes have not ModuleVersion
-            if (newVersionDetail.ModuleVersion == Null.NullInteger)
-            {
-                newVersionDetail.ModuleVersion = tabVersionDetail.ModuleVersion;
-            }
-
-            return newVersionDetail;
-        }
-
         private void CreateFirstTabVersion(int tabId, TabInfo tab, IEnumerable<ModuleInfo> modules)
         {
             var tabVersion = this._tabVersionController.CreateTabVersion(tabId, tab.CreatedByUserID, true);
@@ -838,11 +843,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             var versionableController = this.GetVersionableController(module);
             return versionableController != null ? versionableController.GetPublishedVersion(module.ModuleID) : Null.NullInteger;
-        }
-
-        protected override Func<ITabVersionBuilder> GetFactory()
-        {
-            return () => new TabVersionBuilder();
         }
     }
 }

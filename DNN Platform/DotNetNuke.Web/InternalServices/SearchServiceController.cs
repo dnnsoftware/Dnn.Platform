@@ -31,7 +31,40 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize(StaticRoles = "Administrators")]
     public class SearchServiceController : DnnApiController
     {
+        private const string ModuleInfosCacheKey = "ModuleInfos{0}";
+        private const CacheItemPriority ModuleInfosCachePriority = CacheItemPriority.AboveNormal;
+        private const int ModuleInfosCacheTimeOut = 20;
+
         private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private int HtmlModuleDefitionId;
+
+        public SearchServiceController()
+        {
+            var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
+            this.HtmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
+        }
+
+        // this constructor is for unit tests
+        internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
+        {
+            this.HtmlModuleDefitionId = htmlModuleDefitionId;
+
+            // _tabController = newtabController;
+            // _moduleController = newmoduleController;
+        }
+
+        private bool IsWildCardEnabledForModule()
+        {
+            var searchModuleSettings = this.GetSearchModuleSettings();
+            var enableWildSearch = true;
+            if (!string.IsNullOrEmpty(Convert.ToString(searchModuleSettings["EnableWildSearch"])))
+            {
+                enableWildSearch = Convert.ToBoolean(searchModuleSettings["EnableWildSearch"]);
+            }
+
+            return enableWildSearch;
+        }
 
         public class SynonymsGroupDto
         {
@@ -55,225 +88,9 @@ namespace DotNetNuke.Web.InternalServices
             public string Culture { get; set; }
         }
 
-        public SearchServiceController()
-        {
-            var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
-            this.HtmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
-        }
-
-        // this constructor is for unit tests
-        internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
-        {
-            this.HtmlModuleDefitionId = htmlModuleDefitionId;
-
-            // _tabController = newtabController;
-            // _moduleController = newmoduleController;
-        }
-
-        private int HtmlModuleDefitionId;
-
-        private bool IsWildCardEnabledForModule()
-        {
-            var searchModuleSettings = this.GetSearchModuleSettings();
-            var enableWildSearch = true;
-            if (!string.IsNullOrEmpty(Convert.ToString(searchModuleSettings["EnableWildSearch"])))
-            {
-                enableWildSearch = Convert.ToBoolean(searchModuleSettings["EnableWildSearch"]);
-            }
-
-            return enableWildSearch;
-        }
-
-        private const string ModuleInfosCacheKey = "ModuleInfos{0}";
-        private const CacheItemPriority ModuleInfosCachePriority = CacheItemPriority.AboveNormal;
-        private const int ModuleInfosCacheTimeOut = 20;
-
-        private static ArrayList GetModulesByDefinition(int portalID, string friendlyName)
-        {
-            var cacheKey = string.Format(ModuleInfosCacheKey, portalID);
-            return CBO.GetCachedObject<ArrayList>(
-                new CacheItemArgs(cacheKey, ModuleInfosCacheTimeOut, ModuleInfosCachePriority),
-                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo)));
-        }
-
-        private ModuleInfo GetSearchModule()
-        {
-            var arrModules = GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
-            ModuleInfo findModule = null;
-            if (arrModules.Count > 1)
-            {
-                findModule = arrModules.Cast<ModuleInfo>().FirstOrDefault(searchModule => searchModule.CultureCode == this.PortalSettings.CultureCode);
-            }
-
-            return findModule ?? (arrModules.Count > 0 ? (ModuleInfo)arrModules[0] : null);
-        }
-
-        private Hashtable GetSearchModuleSettings()
-        {
-            if (this.ActiveModule != null && this.ActiveModule.ModuleDefinition.FriendlyName == "Search Results")
-            {
-                return this.ActiveModule.ModuleSettings;
-            }
-
-            var searchModule = this.GetSearchModule();
-            return searchModule != null ? searchModule.ModuleSettings : null;
-        }
-
-        private bool GetBooleanSetting(string settingName, bool defaultValue)
-        {
-            if (this.PortalSettings == null)
-            {
-                return defaultValue;
-            }
-
-            var settings = this.GetSearchModuleSettings();
-            if (settings == null || !settings.ContainsKey(settingName))
-            {
-                return defaultValue;
-            }
-
-            return Convert.ToBoolean(settings[settingName]);
-        }
-
-        private int GetIntegerSetting(string settingName, int defaultValue)
-        {
-            if (this.PortalSettings == null)
-            {
-                return defaultValue;
-            }
-
-            var settings = this.GetSearchModuleSettings();
-            if (settings == null || !settings.ContainsKey(settingName))
-            {
-                return defaultValue;
-            }
-
-            var settingValue = Convert.ToString(settings[settingName]);
-            if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
-            {
-                return Convert.ToInt32(settingValue);
-            }
-
-            return defaultValue;
-        }
-
-        private List<int> GetSearchPortalIds(IDictionary settings, int portalId)
-        {
-            var list = new List<int>();
-            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForPortals"])))
-            {
-                list = Convert.ToString(settings["ScopeForPortals"]).Split('|').Select(s => Convert.ToInt32(s)).ToList();
-            }
-
-            if (portalId == -1)
-            {
-                portalId = this.PortalSettings.ActiveTab.PortalID;
-            }
-
-            if (portalId > -1 && !list.Contains(portalId))
-            {
-                list.Add(portalId);
-            }
-
-            // Add Host
-            var userInfo = this.UserInfo;
-            if (userInfo.IsSuperUser)
-            {
-                list.Add(-1);
-            }
-
-            return list;
-        }
-
-        private static List<int> GetSearchTypeIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
-        {
-            var list = new List<int>();
-            var configuredList = new List<string>();
-            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForFilters"])))
-            {
-                configuredList = Convert.ToString(settings["ScopeForFilters"]).Split('|').ToList();
-            }
-
-            // check content source in configured list or not
-            foreach (var contentSource in searchContentSources)
-            {
-                if (contentSource.IsPrivate)
-                {
-                    continue;
-                }
-
-                if (configuredList.Count > 0)
-                {
-                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName))) // in configured list
-                    {
-                        list.Add(contentSource.SearchTypeId);
-                    }
-                }
-                else
-                {
-                    list.Add(contentSource.SearchTypeId);
-                }
-            }
-
-            return list.Distinct().ToList();
-        }
-
-        private static IEnumerable<int> GetSearchModuleDefIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
-        {
-            var list = new List<int>();
-            var configuredList = new List<string>();
-            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForFilters"])))
-            {
-                configuredList = Convert.ToString(settings["ScopeForFilters"]).Split('|').ToList();
-            }
-
-            // check content source in configured list or not
-            foreach (var contentSource in searchContentSources)
-            {
-                if (contentSource.IsPrivate)
-                {
-                    continue;
-                }
-
-                if (configuredList.Count > 0)
-                {
-                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0) // in configured list
-                    {
-                        list.Add(contentSource.ModuleDefinitionId);
-                    }
-                }
-                else
-                {
-                    if (contentSource.ModuleDefinitionId > 0)
-                    {
-                        list.Add(contentSource.ModuleDefinitionId);
-                    }
-                }
-            }
-
-            return list;
-        }
-
-        private IList<SearchContentSource> GetSearchContentSources(IList<string> typesList)
-        {
-            var sources = new List<SearchContentSource>();
-            var list = InternalSearchController.Instance.GetSearchContentSourceList(this.PortalSettings.PortalId);
-
-            if (typesList.Any())
-            {
-                foreach (var contentSources in typesList.Select(t1 => list.Where(src => string.Equals(src.LocalizedName, t1, StringComparison.OrdinalIgnoreCase))))
-                {
-                    sources.AddRange(contentSources);
-                }
-            }
-            else
-            {
-                // no types fitler specified, add all available content sources
-                sources.AddRange(list);
-            }
-
-            return sources;
-        }
+        private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
+        private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
+        private const int ModuleTitleCacheTimeOut = 20;
 
         internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId, out int totalHits, out bool more)
         {
@@ -379,16 +196,6 @@ namespace DotNetNuke.Web.InternalServices
             return groups;
         }
 
-        private string GetFriendlyTitle(SearchResult result)
-        {
-            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
-            {
-                return result.Keywords["title"];
-            }
-
-            return result.Title;
-        }
-
         internal List<GroupedBasicView> GetGroupedBasicViews(SearchQuery query, SearchContentSource userSearchSource, int portalId)
         {
             int totalHists;
@@ -464,6 +271,203 @@ namespace DotNetNuke.Web.InternalServices
             });
         }
 
+        private static ArrayList GetModulesByDefinition(int portalID, string friendlyName)
+        {
+            var cacheKey = string.Format(ModuleInfosCacheKey, portalID);
+            return CBO.GetCachedObject<ArrayList>(
+                new CacheItemArgs(cacheKey, ModuleInfosCacheTimeOut, ModuleInfosCachePriority),
+                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalID, friendlyName), typeof(ModuleInfo)));
+        }
+
+        private static List<int> GetSearchTypeIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
+        {
+            var list = new List<int>();
+            var configuredList = new List<string>();
+            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForFilters"])))
+            {
+                configuredList = Convert.ToString(settings["ScopeForFilters"]).Split('|').ToList();
+            }
+
+            // check content source in configured list or not
+            foreach (var contentSource in searchContentSources)
+            {
+                if (contentSource.IsPrivate)
+                {
+                    continue;
+                }
+
+                if (configuredList.Count > 0)
+                {
+                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName))) // in configured list
+                    {
+                        list.Add(contentSource.SearchTypeId);
+                    }
+                }
+                else
+                {
+                    list.Add(contentSource.SearchTypeId);
+                }
+            }
+
+            return list.Distinct().ToList();
+        }
+
+        private static IEnumerable<int> GetSearchModuleDefIds(IDictionary settings, IEnumerable<SearchContentSource> searchContentSources)
+        {
+            var list = new List<int>();
+            var configuredList = new List<string>();
+            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForFilters"])))
+            {
+                configuredList = Convert.ToString(settings["ScopeForFilters"]).Split('|').ToList();
+            }
+
+            // check content source in configured list or not
+            foreach (var contentSource in searchContentSources)
+            {
+                if (contentSource.IsPrivate)
+                {
+                    continue;
+                }
+
+                if (configuredList.Count > 0)
+                {
+                    if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0) // in configured list
+                    {
+                        list.Add(contentSource.ModuleDefinitionId);
+                    }
+                }
+                else
+                {
+                    if (contentSource.ModuleDefinitionId > 0)
+                    {
+                        list.Add(contentSource.ModuleDefinitionId);
+                    }
+                }
+            }
+
+            return list;
+        }
+
+        private ModuleInfo GetSearchModule()
+        {
+            var arrModules = GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
+            ModuleInfo findModule = null;
+            if (arrModules.Count > 1)
+            {
+                findModule = arrModules.Cast<ModuleInfo>().FirstOrDefault(searchModule => searchModule.CultureCode == this.PortalSettings.CultureCode);
+            }
+
+            return findModule ?? (arrModules.Count > 0 ? (ModuleInfo)arrModules[0] : null);
+        }
+
+        private Hashtable GetSearchModuleSettings()
+        {
+            if (this.ActiveModule != null && this.ActiveModule.ModuleDefinition.FriendlyName == "Search Results")
+            {
+                return this.ActiveModule.ModuleSettings;
+            }
+
+            var searchModule = this.GetSearchModule();
+            return searchModule != null ? searchModule.ModuleSettings : null;
+        }
+
+        private bool GetBooleanSetting(string settingName, bool defaultValue)
+        {
+            if (this.PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = this.GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            return Convert.ToBoolean(settings[settingName]);
+        }
+
+        private int GetIntegerSetting(string settingName, int defaultValue)
+        {
+            if (this.PortalSettings == null)
+            {
+                return defaultValue;
+            }
+
+            var settings = this.GetSearchModuleSettings();
+            if (settings == null || !settings.ContainsKey(settingName))
+            {
+                return defaultValue;
+            }
+
+            var settingValue = Convert.ToString(settings[settingName]);
+            if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
+            {
+                return Convert.ToInt32(settingValue);
+            }
+
+            return defaultValue;
+        }
+
+        private List<int> GetSearchPortalIds(IDictionary settings, int portalId)
+        {
+            var list = new List<int>();
+            if (settings != null && !string.IsNullOrEmpty(Convert.ToString(settings["ScopeForPortals"])))
+            {
+                list = Convert.ToString(settings["ScopeForPortals"]).Split('|').Select(s => Convert.ToInt32(s)).ToList();
+            }
+
+            if (portalId == -1)
+            {
+                portalId = this.PortalSettings.ActiveTab.PortalID;
+            }
+
+            if (portalId > -1 && !list.Contains(portalId))
+            {
+                list.Add(portalId);
+            }
+
+            // Add Host
+            var userInfo = this.UserInfo;
+            if (userInfo.IsSuperUser)
+            {
+                list.Add(-1);
+            }
+
+            return list;
+        }
+
+        private IList<SearchContentSource> GetSearchContentSources(IList<string> typesList)
+        {
+            var sources = new List<SearchContentSource>();
+            var list = InternalSearchController.Instance.GetSearchContentSourceList(this.PortalSettings.PortalId);
+
+            if (typesList.Any())
+            {
+                foreach (var contentSources in typesList.Select(t1 => list.Where(src => string.Equals(src.LocalizedName, t1, StringComparison.OrdinalIgnoreCase))))
+                {
+                    sources.AddRange(contentSources);
+                }
+            }
+            else
+            {
+                // no types fitler specified, add all available content sources
+                sources.AddRange(list);
+            }
+
+            return sources;
+        }
+
+        private string GetFriendlyTitle(SearchResult result)
+        {
+            if (result.Keywords.ContainsKey("title") && !string.IsNullOrEmpty(result.Keywords["title"]))
+            {
+                return result.Keywords["title"];
+            }
+
+            return result.Title;
+        }
+
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
             if (result.ModuleDefId > 0 && result.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
@@ -481,32 +485,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return showFriendlyTitle ? this.GetFriendlyTitle(result) : result.Title;
-        }
-
-        private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
-        private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
-        private const int ModuleTitleCacheTimeOut = 20;
-
-        private string GetTabTitleFromModuleId(int moduleId)
-        {
-            // no manual clearing of the cache exists; let is just expire
-            var cacheKey = string.Format(ModuleTitleCacheKey, moduleId);
-
-            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, ModuleTitleCacheTimeOut, ModuleTitleCachePriority, moduleId), this.GetTabTitleCallBack);
-        }
-
-        private object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var moduleId = (int)cacheItemArgs.ParamList[0];
-            var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-            if (moduleInfo != null)
-            {
-                var tab = moduleInfo.ParentTab;
-
-                return !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
-            }
-
-            return string.Empty;
         }
 
         [HttpGet]
@@ -613,6 +591,28 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { results, totalHits, more });
+        }
+
+        private string GetTabTitleFromModuleId(int moduleId)
+        {
+            // no manual clearing of the cache exists; let is just expire
+            var cacheKey = string.Format(ModuleTitleCacheKey, moduleId);
+
+            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, ModuleTitleCacheTimeOut, ModuleTitleCachePriority, moduleId), this.GetTabTitleCallBack);
+        }
+
+        private object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var moduleId = (int)cacheItemArgs.ParamList[0];
+            var moduleInfo = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
+            if (moduleInfo != null)
+            {
+                var tab = moduleInfo.ParentTab;
+
+                return !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
+            }
+
+            return string.Empty;
         }
 
         [HttpPost]

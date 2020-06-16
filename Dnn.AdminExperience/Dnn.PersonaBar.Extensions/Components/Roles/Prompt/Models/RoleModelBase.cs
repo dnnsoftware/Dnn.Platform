@@ -9,6 +9,10 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 
     public class RoleModelBase
     {
+        public RoleModelBase()
+        {
+        }
+
         public int RoleId { get; set; }
         public int RoleGroupId { get; set; }
         public string RoleName { get; set; }
@@ -17,10 +21,6 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         public int UserCount { get; set; }
         public string ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
-
-        public RoleModelBase()
-        {
-        }
 
         public RoleModelBase(RoleInfo role)
         {

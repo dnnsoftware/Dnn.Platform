@@ -54,9 +54,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(MenuName = Components.Constants.Constants.MenuName)]
     public class SiteSettingsController : PersonaBarApiController
     {
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
         private readonly Components.SiteSettingsController _controller = new Components.SiteSettingsController();
-        private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         //Field Boost Settings - they are scaled down by 10.
         private const int DefaultSearchTitleBoost = 50;
@@ -73,12 +73,12 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
         private const double DefaultMessagingThrottlingInterval = 0.5; // set default MessagingThrottlingInterval value to 30 seconds.
-
-        protected INavigationManager NavigationManager { get; }
         public SiteSettingsController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
@@ -3181,6 +3181,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
+        private static string ResourceFile(string filename, string language)
+        {
+            return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
+        }
+
         private bool IsLanguagePublished(int portalId, string code)
         {
             bool isPublished = Null.NullBoolean;
@@ -3355,11 +3360,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
             }
             return isValid;
-        }
-
-        private static string ResourceFile(string filename, string language)
-        {
-            return Localization.GetResourceFileName(filename, language, "", Globals.GetPortalSettings().PortalId);
         }
 
         private static void GetResourceFiles(SortedList fileList, string path)

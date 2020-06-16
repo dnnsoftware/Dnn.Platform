@@ -6,10 +6,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
     public class TemplateArgument
     {
-        public string Name { get; set; }
-
-        public string Value { get; set; }
-
         public TemplateArgument()
         {
         }
@@ -19,5 +15,9 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             this.Name = name;
             this.Value = value;
         }
+
+        public string Name { get; set; }
+
+        public string Value { get; set; }
     }
 }

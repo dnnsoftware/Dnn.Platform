@@ -45,14 +45,14 @@ namespace DotNetNuke.UI.Modules
     /// </summary>
     public sealed class ModuleHost : Panel
     {
+        private const string DefaultCssProvider = "DnnPageHeaderProvider";
+        private const string DefaultJsProvider = "DnnBodyProvider";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
 
         private static readonly Regex CdfMatchRegex = new Regex(
             @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private const string DefaultCssProvider = "DnnPageHeaderProvider";
-        private const string DefaultJsProvider = "DnnBodyProvider";
         private readonly ModuleInfo _moduleConfiguration;
         private Control _control;
         private bool _isCached;
@@ -103,6 +103,84 @@ namespace DotNetNuke.UI.Modules
         }
 
         public Skins.Skin Skin { get; private set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a flag that indicates whether the Module is in View Mode.
+        /// </summary>
+        /// <returns>A Boolean.</returns>
+        internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
+        {
+            bool viewMode;
+
+            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString,
+                                                              moduleInfo))
+            {
+                viewMode = false;
+            }
+            else
+            {
+                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
+                                                              moduleInfo);
+            }
+
+            return viewMode || settings.UserMode == PortalSettings.Mode.View;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// CreateChildControls builds the control tree.
+        /// </summary>
+        protected override void CreateChildControls()
+        {
+            this.Controls.Clear();
+
+            // Load Module Control (or cached control)
+            this.LoadModuleControl();
+
+            // Optionally Inject AJAX Update Panel
+            if (this.ModuleControl != null)
+            {
+                // if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
+                if (!this._isCached && this._moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
+                {
+                    this.LoadUpdatePanel();
+                }
+                else
+                {
+                    // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
+                    InjectMessageControl(this);
+
+                    this.InjectVersionToTheModuleIfSupported();
+
+                    // inject the module into the panel
+                    this.InjectModuleContent(this._control);
+                }
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (Host.EnableCustomModuleCssClass)
+            {
+                string moduleName = this.ModuleControl.ModuleContext.Configuration.DesktopModule.ModuleName;
+                if (moduleName != null)
+                {
+                    moduleName = Globals.CleanName(moduleName);
+                }
+
+                this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
+            }
+        }
+
+        private static void InjectMessageControl(Control container)
+        {
+            // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
+            var messagePlaceholder = new PlaceHolder { ID = "MessagePlaceHolder", Visible = false };
+            container.Controls.Add(messagePlaceholder);
+        }
 
         private bool IsVersionRequest()
         {
@@ -204,36 +282,6 @@ namespace DotNetNuke.UI.Modules
             }
 
             return content;
-        }
-
-        private static void InjectMessageControl(Control container)
-        {
-            // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
-            var messagePlaceholder = new PlaceHolder { ID = "MessagePlaceHolder", Visible = false };
-            container.Controls.Add(messagePlaceholder);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a flag that indicates whether the Module is in View Mode.
-        /// </summary>
-        /// <returns>A Boolean.</returns>
-        internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
-        {
-            bool viewMode;
-
-            if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, Null.NullString,
-                                                              moduleInfo))
-            {
-                viewMode = false;
-            }
-            else
-            {
-                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
-                                                              moduleInfo);
-            }
-
-            return viewMode || settings.UserMode == PortalSettings.Mode.View;
         }
 
         /// -----------------------------------------------------------------------------
@@ -477,54 +525,6 @@ namespace DotNetNuke.UI.Modules
 
                         break;
                 }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateChildControls builds the control tree.
-        /// </summary>
-        protected override void CreateChildControls()
-        {
-            this.Controls.Clear();
-
-            // Load Module Control (or cached control)
-            this.LoadModuleControl();
-
-            // Optionally Inject AJAX Update Panel
-            if (this.ModuleControl != null)
-            {
-                // if module is dynamically loaded and AJAX is installed and the control supports partial rendering (defined in ModuleControls table )
-                if (!this._isCached && this._moduleConfiguration.ModuleControl.SupportsPartialRendering && AJAX.IsInstalled())
-                {
-                    this.LoadUpdatePanel();
-                }
-                else
-                {
-                    // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
-                    InjectMessageControl(this);
-
-                    this.InjectVersionToTheModuleIfSupported();
-
-                    // inject the module into the panel
-                    this.InjectModuleContent(this._control);
-                }
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (Host.EnableCustomModuleCssClass)
-            {
-                string moduleName = this.ModuleControl.ModuleContext.Configuration.DesktopModule.ModuleName;
-                if (moduleName != null)
-                {
-                    moduleName = Globals.CleanName(moduleName);
-                }
-
-                this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
             }
         }
 

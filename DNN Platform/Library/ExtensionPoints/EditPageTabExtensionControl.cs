@@ -47,33 +47,6 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            var extensionPointManager = new ExtensionPointManager();
-
-            var tabs = (HtmlGenericControl)this.Parent.FindControl(this.TabControlId);
-            var panel = this.Parent.FindControl(this.PanelControlId);
-
-            foreach (var extension in extensionPointManager.GetEditPageTabExtensionPoints(this.Module, this.Group))
-            {
-                if (extension.Visible)
-                {
-                    var liElement = new HtmlGenericControl("li")
-                    {
-                        InnerHtml = "<a href=\"#" + extension.EditPageTabId + "\">" + extension.Text + "</a>",
-                    };
-                    liElement.Attributes.Add("class", extension.CssClass);
-                    tabs.Controls.Add(liElement);
-
-                    var container = new PanelTabExtensionControl { PanelId = extension.EditPageTabId };
-                    var control = this.Page.LoadControl(extension.UserControlSrc);
-                    control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
-                    container.Controls.Add(control);
-                    panel.Controls.Add(container);
-                }
-            }
-        }
-
         public void BindAction(int portalId, int tabId, int moduleId)
         {
             var panel = this.Parent.FindControl(this.PanelControlId);
@@ -112,6 +85,33 @@ namespace DotNetNuke.ExtensionPoints
                             actionsControl.SaveAction(portalId, tabId, moduleId);
                         }
                     }
+                }
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            var extensionPointManager = new ExtensionPointManager();
+
+            var tabs = (HtmlGenericControl)this.Parent.FindControl(this.TabControlId);
+            var panel = this.Parent.FindControl(this.PanelControlId);
+
+            foreach (var extension in extensionPointManager.GetEditPageTabExtensionPoints(this.Module, this.Group))
+            {
+                if (extension.Visible)
+                {
+                    var liElement = new HtmlGenericControl("li")
+                    {
+                        InnerHtml = "<a href=\"#" + extension.EditPageTabId + "\">" + extension.Text + "</a>",
+                    };
+                    liElement.Attributes.Add("class", extension.CssClass);
+                    tabs.Controls.Add(liElement);
+
+                    var container = new PanelTabExtensionControl { PanelId = extension.EditPageTabId };
+                    var control = this.Page.LoadControl(extension.UserControlSrc);
+                    control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
+                    container.Controls.Add(control);
+                    panel.Controls.Add(container);
                 }
             }
         }

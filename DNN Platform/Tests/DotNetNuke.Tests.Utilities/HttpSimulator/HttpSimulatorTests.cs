@@ -16,31 +16,6 @@ namespace UnitTests.Subtext
     ////[TestFixture]
     public class HttpSimulatorTests
     {
-        internal class TestHttpHandler : IHttpHandler
-        {
-            public void ProcessRequest(HttpContext context)
-            {
-                var physicalPath = context.Request.MapPath("/MyHandler.ashx");
-                var username = context.Request.Form["username"];
-                var id = context.Request.QueryString["id"];
-                if (context.Request.UrlReferrer == null)
-                {
-                    return;
-                }
-
-                var referer = context.Request.UrlReferrer.ToString();
-
-                // Imagine, if you will, a bunch of complex interesting
-                // and fascinating logic here.
-                context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
-            }
-
-            public bool IsReusable
-            {
-                get { return true; }
-            }
-        }
-
         ////[Test]
         public void CanGetSetSession()
         {
@@ -77,6 +52,31 @@ namespace UnitTests.Subtext
                 const string expected = @"c:\inetpub\MyHandler.ashx:phil:1234:http://example.com/1/";
                 Assert.AreEqual(expected, simulator.ResponseText, "The Expected Response is all wrong.");
             } // HttpContext.Current is set to null again.
+        }
+
+        internal class TestHttpHandler : IHttpHandler
+        {
+            public bool IsReusable
+            {
+                get { return true; }
+            }
+
+            public void ProcessRequest(HttpContext context)
+            {
+                var physicalPath = context.Request.MapPath("/MyHandler.ashx");
+                var username = context.Request.Form["username"];
+                var id = context.Request.QueryString["id"];
+                if (context.Request.UrlReferrer == null)
+                {
+                    return;
+                }
+
+                var referer = context.Request.UrlReferrer.ToString();
+
+                // Imagine, if you will, a bunch of complex interesting
+                // and fascinating logic here.
+                context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
+            }
         }
 
         ////[Test]

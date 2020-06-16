@@ -16,6 +16,8 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
     [TestFixture]
     public class PostJournalTests : IntegrationTestBase
     {
+        private static readonly Random rnd = new Random();
+
         private readonly string _hostName;
         private readonly string _hostPass;
 
@@ -424,8 +426,6 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             response = hostConnector.GetContent($"/Activity-Feed/userId/{userId}").Content.ReadAsStringAsync().Result;
             Assert.AreEqual(response.IndexOf(journalText), -1);
         }
-
-        private static readonly Random rnd = new Random();
 
         private IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId)
         {

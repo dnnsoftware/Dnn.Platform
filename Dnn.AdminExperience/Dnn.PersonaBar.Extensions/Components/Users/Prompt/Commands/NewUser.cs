@@ -19,10 +19,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("new-user", Constants.UsersCategory, "Prompt_NewUser_Description")]
     public class NewUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("email", "Prompt_NewUser_FlagEmail", "String", true)]
         private const string FlagEmail = "email";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("username", "Prompt_NewUser_FlagUsername", "String", true)]
         private const string FlagUsername = "username";
         [FlagParameter("firstname", "Prompt_NewUser_FlagFirstname", "String", true)]

@@ -29,6 +29,12 @@ namespace DotNetNuke.Web.UI.WebControls
         [TemplateInstance(TemplateInstance.Single)]
         public virtual ITemplate Content { get; set; }
 
+        public override Control FindControl(string id)
+        {
+            this.EnsureChildControls();
+            return base.FindControl(id);
+        }
+
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -37,12 +43,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Content.InstantiateIn(this);
             }
-        }
-
-        public override Control FindControl(string id)
-        {
-            this.EnsureChildControls();
-            return base.FindControl(id);
         }
 
         protected override void Render(HtmlTextWriter writer)

@@ -25,18 +25,13 @@ namespace Dnn.PersonaBar.Themes.Components
 
     public class ThemesController : ServiceLocator<IThemesController, ThemesController>, IThemesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
-
         internal static readonly IList<string> ImageExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
         internal static readonly IList<string> DefaultLayoutNames = new List<string>() { "Default", "2-Col", "Home", "Index", "Main" };
         internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default" };
 
         private static readonly object _threadLocker = new object();
-
-        protected override Func<IThemesController> GetFactory()
-        {
-            return () => new ThemesController();
-        }
 
         /// <summary>
         /// Get Skins.
@@ -63,6 +58,11 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             return themes;
+        }
+
+        protected override Func<IThemesController> GetFactory()
+        {
+            return () => new ThemesController();
         }
 
         /// <summary>
@@ -406,143 +406,6 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
-        {
-            var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
-            if (File.Exists(themePath.Replace(".ascx", ".htm")))
-            {
-                var strFile = themePath.Replace(".ascx", ".xml");
-                if (File.Exists(strFile) == false)
-                {
-                    strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
-                }
-                XmlDocument xmlDoc = null;
-                try
-                {
-                    xmlDoc = new XmlDocument { XmlResolver = null };
-                    xmlDoc.Load(strFile);
-                }
-                catch
-                {
-                    xmlDoc.InnerXml = "<Objects></Objects>";
-                }
-                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
-                if (xmlToken == null)
-                {
-                    //add token
-                    string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
-                    xmlToken = xmlDoc.CreateElement("Object");
-                    xmlToken.InnerXml = strToken;
-                    xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
-                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
-                }
-                var strValue = updateTheme.Value;
-
-                var blnUpdate = false;
-                foreach (XmlNode xmlSetting in xmlToken.SelectNodes(".//Settings/Setting"))
-                {
-                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Setting)
-                    {
-                        xmlSetting.SelectSingleNode("Value").InnerText = strValue;
-                        blnUpdate = true;
-                    }
-                }
-                if (blnUpdate == false)
-                {
-                    var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
-                    XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
-                    xmlSetting.InnerXml = strSetting;
-                    xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
-                }
-                try
-                {
-                    if (File.Exists(strFile))
-                    {
-                        File.SetAttributes(strFile, FileAttributes.Normal);
-                    }
-                    var objStream = File.CreateText(strFile);
-                    var strXML = xmlDoc.InnerXml;
-                    strXML = strXML.Replace("><", ">" + Environment.NewLine + "<");
-                    objStream.WriteLine(strXML);
-                    objStream.Close();
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-            }
-
-        }
-
-        private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
-        {
-            var themes = new List<ThemeInfo>();
-            if (Directory.Exists(strRoot))
-            {
-                foreach (var strFolder in Directory.GetDirectories(strRoot))
-                {
-                    var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
-                    if (strName != "_default")
-                    {
-                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
-                        var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
-                        var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
-                        var defaultThemeFile = GetDefaultThemeFileName(themePath, type);
-                        themes.Add(new ThemeInfo()
-                        {
-                            PackageName = strName,
-                            Type = type,
-                            Path = themePath,
-                            DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
-                            Thumbnail = GetThumbnail(themePath, defaultThemeFile),
-                            CanDelete = canDelete
-                        });
-                    }
-                }
-            }
-
-            return themes;
-        }
-
-        private static string GetDefaultThemeFileName(string themePath, ThemeType type)
-        {
-            var themeFiles = new List<string>();
-            var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
-            themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
-
-            var defaultFile = themeFiles.FirstOrDefault(i =>
-            {
-                var fileName = Path.GetFileNameWithoutExtension(i);
-                return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
-                                              : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
-            });
-
-            if (string.IsNullOrEmpty(defaultFile))
-            {
-                defaultFile = themeFiles.FirstOrDefault();
-            }
-
-            return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
-        }
-
-        private static string GetThumbnail(string themePath, string themeFileName)
-        {
-            var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
-            var filePath = Path.Combine(folderPath, themeFileName);
-            var imagePath = string.Empty;
-            foreach (var ext in ImageExtensions)
-            {
-                var path = Path.ChangeExtension(filePath, ext);
-                if (File.Exists(path))
-                {
-                    imagePath = path;
-                    break;
-                }
-            }
-
-            return !string.IsNullOrEmpty(imagePath) ? CreateThumbnail(imagePath) : string.Empty;
-        }
-
         internal static string CreateThumbnail(string strImage)
         {
             var imageFileName = Path.GetFileName(strImage);
@@ -620,6 +483,171 @@ namespace Dnn.PersonaBar.Themes.Components
             return strThumbnail;
         }
 
+        internal static ThemeLevel GetThemeLevel(string themeFilePath)
+        {
+            themeFilePath = themeFilePath.Replace("\\", "/");
+            if (!string.IsNullOrEmpty(Globals.ApplicationPath)
+                && !themeFilePath.StartsWith("[")
+                && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
+                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : "")}{themeFilePath}";
+            }
+
+            if (themeFilePath.IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+                || themeFilePath.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
+            {
+                return ThemeLevel.Global;
+            }
+            else if ((PortalSettings.Current != null &&
+                        themeFilePath.IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
+                        || themeFilePath.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
+            {
+                return ThemeLevel.SiteSystem;
+            }
+            else
+            {
+                return ThemeLevel.Site;
+            }
+        }
+
+        private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
+        {
+            var themes = new List<ThemeInfo>();
+            if (Directory.Exists(strRoot))
+            {
+                foreach (var strFolder in Directory.GetDirectories(strRoot))
+                {
+                    var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
+                    if (strName != "_default")
+                    {
+                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
+                        var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
+                        var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
+                        var defaultThemeFile = GetDefaultThemeFileName(themePath, type);
+                        themes.Add(new ThemeInfo()
+                        {
+                            PackageName = strName,
+                            Type = type,
+                            Path = themePath,
+                            DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
+                            Thumbnail = GetThumbnail(themePath, defaultThemeFile),
+                            CanDelete = canDelete
+                        });
+                    }
+                }
+            }
+
+            return themes;
+        }
+
+        private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
+        {
+            var themePath = SkinController.FormatSkinSrc(updateTheme.Path, portalSettings);
+            if (File.Exists(themePath.Replace(".ascx", ".htm")))
+            {
+                var strFile = themePath.Replace(".ascx", ".xml");
+                if (File.Exists(strFile) == false)
+                {
+                    strFile = strFile.Replace(Path.GetFileName(strFile), "skin.xml");
+                }
+                XmlDocument xmlDoc = null;
+                try
+                {
+                    xmlDoc = new XmlDocument { XmlResolver = null };
+                    xmlDoc.Load(strFile);
+                }
+                catch
+                {
+                    xmlDoc.InnerXml = "<Objects></Objects>";
+                }
+                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
+                if (xmlToken == null)
+                {
+                    //add token
+                    string strToken = "<Token>[" + updateTheme.Token + "]</Token><Settings></Settings>";
+                    xmlToken = xmlDoc.CreateElement("Object");
+                    xmlToken.InnerXml = strToken;
+                    xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
+                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + updateTheme.Token + "]']");
+                }
+                var strValue = updateTheme.Value;
+
+                var blnUpdate = false;
+                foreach (XmlNode xmlSetting in xmlToken.SelectNodes(".//Settings/Setting"))
+                {
+                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Setting)
+                    {
+                        xmlSetting.SelectSingleNode("Value").InnerText = strValue;
+                        blnUpdate = true;
+                    }
+                }
+                if (blnUpdate == false)
+                {
+                    var strSetting = "<Name>" + updateTheme.Setting + "</Name><Value>" + strValue + "</Value>";
+                    XmlNode xmlSetting = xmlDoc.CreateElement("Setting");
+                    xmlSetting.InnerXml = strSetting;
+                    xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
+                }
+                try
+                {
+                    if (File.Exists(strFile))
+                    {
+                        File.SetAttributes(strFile, FileAttributes.Normal);
+                    }
+                    var objStream = File.CreateText(strFile);
+                    var strXML = xmlDoc.InnerXml;
+                    strXML = strXML.Replace("><", ">" + Environment.NewLine + "<");
+                    objStream.WriteLine(strXML);
+                    objStream.Close();
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            }
+
+        }
+
+        private static string GetDefaultThemeFileName(string themePath, ThemeType type)
+        {
+            var themeFiles = new List<string>();
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
+            themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
+
+            var defaultFile = themeFiles.FirstOrDefault(i =>
+            {
+                var fileName = Path.GetFileNameWithoutExtension(i);
+                return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
+                                              : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
+            });
+
+            if (string.IsNullOrEmpty(defaultFile))
+            {
+                defaultFile = themeFiles.FirstOrDefault();
+            }
+
+            return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
+        }
+
+        private static string GetThumbnail(string themePath, string themeFileName)
+        {
+            var folderPath = Path.Combine(Globals.ApplicationMapPath, themePath);
+            var filePath = Path.Combine(folderPath, themeFileName);
+            var imagePath = string.Empty;
+            foreach (var ext in ImageExtensions)
+            {
+                var path = Path.ChangeExtension(filePath, ext);
+                if (File.Exists(path))
+                {
+                    imagePath = path;
+                    break;
+                }
+            }
+
+            return !string.IsNullOrEmpty(imagePath) ? CreateThumbnail(imagePath) : string.Empty;
+        }
+
         private static bool NeedCreateThumbnail(string thumbnailPath, string imagePath)
         {
             return !File.Exists(thumbnailPath) || File.GetLastWriteTime(thumbnailPath) != File.GetLastWriteTime(imagePath);
@@ -671,34 +699,6 @@ namespace Dnn.PersonaBar.Themes.Components
                         .TrimStart('/');
 
             return "[" + strSkinType + "]" + strUrl;
-        }
-
-        internal static ThemeLevel GetThemeLevel(string themeFilePath)
-        {
-            themeFilePath = themeFilePath.Replace("\\", "/");
-            if (!string.IsNullOrEmpty(Globals.ApplicationPath)
-                && !themeFilePath.StartsWith("[")
-                && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
-            {
-                var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
-                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : "")}{themeFilePath}";
-            }
-
-            if (themeFilePath.IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
-                || themeFilePath.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
-            {
-                return ThemeLevel.Global;
-            }
-            else if ((PortalSettings.Current != null &&
-                        themeFilePath.IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
-                        || themeFilePath.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
-            {
-                return ThemeLevel.SiteSystem;
-            }
-            else
-            {
-                return ThemeLevel.Site;
-            }
         }
     }
 }

@@ -33,6 +33,21 @@ namespace DotNetNuke.UI.Containers
         private int _animationFrames = 5;
         private Panel _pnlModuleContent;
 
+        public int AnimationFrames
+        {
+            get
+            {
+                return this._animationFrames;
+            }
+
+            set
+            {
+                this._animationFrames = value;
+            }
+        }
+
+        public string BorderWidth { get; set; }
+
         private string MinIconLoc
         {
             get
@@ -83,21 +98,6 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleControl.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1);
             }
         }
-
-        public int AnimationFrames
-        {
-            get
-            {
-                return this._animationFrames;
-            }
-
-            set
-            {
-                this._animationFrames = value;
-            }
-        }
-
-        public string BorderWidth { get; set; }
 
         public bool ContentVisible
         {

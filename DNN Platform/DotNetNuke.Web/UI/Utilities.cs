@@ -24,11 +24,6 @@ namespace DotNetNuke.Web.UI
 
     public class Utilities
     {
-        private static void AddMessageWindow(Control ctrl)
-        {
-            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
-        }
-
         public static void ApplySkin(Control telerikControl)
         {
             ApplySkin(telerikControl, string.Empty, string.Empty, string.Empty);
@@ -37,6 +32,11 @@ namespace DotNetNuke.Web.UI
         public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName)
         {
             ApplySkin(telerikControl, string.Empty, string.Empty, fallBackEmbeddedSkinName);
+        }
+
+        private static void AddMessageWindow(Control ctrl)
+        {
+            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
         }
 
         public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName)

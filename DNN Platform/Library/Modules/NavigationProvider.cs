@@ -16,6 +16,10 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public delegate void PopulateOnDemandEventHandler(NavigationEventArgs args);
 
+        public event NodeClickEventHandler NodeClick;
+
+        public event PopulateOnDemandEventHandler PopulateOnDemand;
+
         public enum Alignment
         {
             Left,
@@ -974,10 +978,6 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
             }
         }
-
-        public event NodeClickEventHandler NodeClick;
-
-        public event PopulateOnDemandEventHandler PopulateOnDemand;
 
         public static NavigationProvider Instance(string FriendlyName)
         {

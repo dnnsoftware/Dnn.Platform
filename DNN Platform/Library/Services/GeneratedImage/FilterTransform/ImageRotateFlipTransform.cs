@@ -12,6 +12,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageRotateFlipTransform : ImageTransform
     {
+        public ImageRotateFlipTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
+        }
+
         /// <summary>
         /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.
         /// </summary>
@@ -21,15 +30,6 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Gets provides an Unique String for this transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
-
-        public ImageRotateFlipTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.RotateFlip = RotateFlipType.RotateNoneFlipNone;
-        }
 
         /// <summary>
         /// Processes an input image applying a rotation image transformation.

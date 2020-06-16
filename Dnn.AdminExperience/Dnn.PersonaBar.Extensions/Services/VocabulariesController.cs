@@ -26,10 +26,10 @@ namespace Dnn.PersonaBar.Vocabularies.Services
     [MenuPermission(MenuName = Constants.MenuIdentifier)]
     public class VocabulariesController : PersonaBarApiController
     {
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
         private Components.VocabulariesController _controller = new Components.VocabulariesController();
         private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Vocabularies/App_LocalResources/Vocabularies.resx");
-        private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
         /// GET: api/Vocabularies/GetVocabularies
         /// <summary>

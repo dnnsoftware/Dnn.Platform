@@ -14,6 +14,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
     public partial class DataConsent : UserModuleBase
     {
+        public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
+
+        public event DataConsentEventHandler DataConsentCompleted;
+
+        public enum DataConsentStatus
+        {
+            Consented,
+            Cancelled,
+            RemovedAccount,
+            FailedToRemoveAccount,
+        }
+
         public string DeleteMeConfirmString
         {
             get
@@ -31,10 +43,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 return string.Empty;
             }
         }
-
-        public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
-
-        public event DataConsentEventHandler DataConsentCompleted;
 
         public void OnDataConsentComplete(DataConsentEventArgs e)
         {
@@ -129,14 +137,6 @@ namespace DotNetNuke.Modules.Admin.Users
             /// Gets or sets and sets the Update Status.
             /// </summary>
             public DataConsentStatus Status { get; set; }
-        }
-
-        public enum DataConsentStatus
-        {
-            Consented,
-            Cancelled,
-            RemovedAccount,
-            FailedToRemoveAccount,
         }
     }
 }

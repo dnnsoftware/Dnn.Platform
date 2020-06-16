@@ -31,48 +31,6 @@ namespace DotNetNuke.Framework
 
         private static readonly object InstallerFilesRemovedLock = new object();
 
-        protected override void RegisterAjaxScript()
-        {
-            if (this.Page.Form != null)
-            {
-                if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
-                {
-                    ServicesFrameworkInternal.Instance.RegisterAjaxScript(this.Page);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Allows the scroll position on the page to be moved to the top of the passed in control.
-        /// </summary>
-        /// <param name="objControl">Control to scroll to.</param>
-        /// -----------------------------------------------------------------------------
-        public void ScrollToControl(Control objControl)
-        {
-            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))
-            {
-                JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
-                ClientAPI.RegisterClientVariable(this, "ScrollToControl", objControl.ClientID, true);
-                DNNClientAPI.SetScrollTop(this.Page);
-            }
-        }
-
-        protected void ManageInstallerFiles()
-        {
-            if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
-            {
-                lock (InstallerFilesRemovedLock)
-                {
-                    if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
-                    {
-                        Services.Upgrade.Upgrade.DeleteInstallerFiles();
-                        HostController.Instance.Update("InstallerFilesRemoved", "True", true);
-                    }
-                }
-            }
-        }
-
         protected string AdvancedSettingsPageUrl
         {
             get
@@ -92,6 +50,48 @@ namespace DotNetNuke.Framework
                 }
 
                 return result;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Allows the scroll position on the page to be moved to the top of the passed in control.
+        /// </summary>
+        /// <param name="objControl">Control to scroll to.</param>
+        /// -----------------------------------------------------------------------------
+        public void ScrollToControl(Control objControl)
+        {
+            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.Positioning))
+            {
+                JavaScript.RegisterClientReference(this, ClientAPI.ClientNamespaceReferences.dnn_dom_positioning);
+                ClientAPI.RegisterClientVariable(this, "ScrollToControl", objControl.ClientID, true);
+                DNNClientAPI.SetScrollTop(this.Page);
+            }
+        }
+
+        protected override void RegisterAjaxScript()
+        {
+            if (this.Page.Form != null)
+            {
+                if (ServicesFrameworkInternal.Instance.IsAjaxScriptSupportRequired)
+                {
+                    ServicesFrameworkInternal.Instance.RegisterAjaxScript(this.Page);
+                }
+            }
+        }
+
+        protected void ManageInstallerFiles()
+        {
+            if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+            {
+                lock (InstallerFilesRemovedLock)
+                {
+                    if (!HostController.Instance.GetBoolean("InstallerFilesRemoved"))
+                    {
+                        Services.Upgrade.Upgrade.DeleteInstallerFiles();
+                        HostController.Instance.Update("InstallerFilesRemoved", "True", true);
+                    }
+                }
             }
         }
     }

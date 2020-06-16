@@ -1,10 +1,8 @@
-﻿
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
-    // Licensed to the .NET Foundation under one or more agreements.
-    // The .NET Foundation licenses this file to you under the MIT license.
-    // See the LICENSE file in the project root for more information
-
     using System.Collections.Generic;
     using System.Linq;
 
@@ -18,6 +16,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
     [JsonObject]
     public class ParseResultDto : PackageInfoDto
     {
+        public ParseResultDto()
+        {
+        }
+
+        public ParseResultDto(PackageInfo package) : base(Null.NullInteger, package)
+        {
+        }
+
         [JsonProperty("success")]
         public bool Success { get; set; } = true;
 
@@ -47,16 +53,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         [JsonProperty("logs")]
         public IList<InstallerLogEntry> Logs { get; set; }
-
-        public ParseResultDto()
-        {
-
-        }
-
-        public ParseResultDto(PackageInfo package) : base(Null.NullInteger, package)
-        {
-
-        }
 
         public void Failed(string message, IList<LogEntry> logs = null)
         {

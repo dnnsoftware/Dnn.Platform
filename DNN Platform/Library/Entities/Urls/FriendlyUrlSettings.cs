@@ -12,6 +12,10 @@ namespace DotNetNuke.Entities.Urls
     [Serializable]
     public class FriendlyUrlSettings
     {
+        public const string ReplaceSpaceWithNothing = "None";
+        public const string SpaceEncodingPlus = "+";
+        public const string SpaceEncodingHex = "%20";
+
         private readonly IHostController _hostControllerInstance = HostController.Instance;
 
         // 894 : new switch to disable custom url provider
@@ -60,10 +64,6 @@ namespace DotNetNuke.Entities.Urls
 
         internal List<string> PortalValues { get; private set; }
 
-        public const string ReplaceSpaceWithNothing = "None";
-        public const string SpaceEncodingPlus = "+";
-        public const string SpaceEncodingHex = "%20";
-
         // Settings Keys
         public const string DeletedTabHandlingTypeSetting = "AUM_DeletedTabHandlingType";
         public const string ForceLowerCaseSetting = "AUM_ForceLowerCase";
@@ -107,6 +107,28 @@ namespace DotNetNuke.Entities.Urls
         public const string ProcessRequestsSetting = "AUM_ProcessRequests";
         public const string CacheTimeSetting = "AUM_CacheTime";
         public const string IncludePageNameSetting = "AUM_IncludePageName";
+
+        public FriendlyUrlSettings(int portalId)
+        {
+            this.PortalId = portalId < -1 ? -1 : portalId;
+            this.IsDirty = false;
+            this.IsLoading = false;
+
+            this.PortalValues = new List<string>();
+
+            this.TabId500 = this.TabId404 = -1;
+
+            if (portalId > -1)
+            {
+                var portal = PortalController.Instance.GetPortal(portalId);
+                this.TabId500 = this.TabId404 = portal.Custom404TabId;
+
+                if (this.TabId500 == -1)
+                {
+                    this.TabId500 = this.TabId404;
+                }
+            }
+        }
 
         public List<InternalAlias> InternalAliasList { get; private set; }
 
@@ -721,28 +743,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return returnValue;
-        }
-
-        public FriendlyUrlSettings(int portalId)
-        {
-            this.PortalId = portalId < -1 ? -1 : portalId;
-            this.IsDirty = false;
-            this.IsLoading = false;
-
-            this.PortalValues = new List<string>();
-
-            this.TabId500 = this.TabId404 = -1;
-
-            if (portalId > -1)
-            {
-                var portal = PortalController.Instance.GetPortal(portalId);
-                this.TabId500 = this.TabId404 = portal.Custom404TabId;
-
-                if (this.TabId500 == -1)
-                {
-                    this.TabId500 = this.TabId404;
-                }
-            }
         }
 
         private void ParseInternalAliases()

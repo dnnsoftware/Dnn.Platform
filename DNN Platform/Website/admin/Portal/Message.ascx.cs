@@ -9,15 +9,15 @@ namespace DotNetNuke.Common.Controls
 
     public partial class Message : PortalModuleBase
     {
-        private void InitializeComponent()
-        {
-            this.ID = "Message";
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             this.InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            this.ID = "Message";
         }
     }
 }

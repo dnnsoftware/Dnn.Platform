@@ -19,11 +19,6 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
             this.provider = DataProvider.Instance();
         }
 
-        protected override Func<IDataService> GetFactory()
-        {
-            return () => new DataService();
-        }
-
         public int AddSubscriptionType(string subscriptionName, string friendlyName, int desktopModuleId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_AddSubscriptionType", subscriptionName, friendlyName, desktopModuleId);
@@ -32,6 +27,11 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
         public IDataReader GetSubscriptionTypes()
         {
             return this.provider.ExecuteReader("CoreMessaging_GetSubscriptionTypes");
+        }
+
+        protected override Func<IDataService> GetFactory()
+        {
+            return () => new DataService();
         }
 
         public bool DeleteSubscriptionType(int subscriptionTypeId)

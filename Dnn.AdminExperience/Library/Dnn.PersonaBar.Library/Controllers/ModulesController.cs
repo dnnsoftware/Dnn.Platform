@@ -35,11 +35,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             this._contentVerifier = contentVerifier;
         }
 
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
-        }
-
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -165,6 +160,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 return null;
             }
+        }
+
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
         }
 
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)

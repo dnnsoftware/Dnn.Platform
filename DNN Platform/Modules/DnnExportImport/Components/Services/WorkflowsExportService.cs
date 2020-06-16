@@ -83,25 +83,6 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        private static List<ExportWorkflow> GetWorkflows(int portalId, bool includeDeletions)
-        {
-            return CBO.FillCollection<ExportWorkflow>(
-                DataProvider.Instance().GetAllWorkflows(portalId, includeDeletions));
-        }
-
-        private static List<ExportWorkflowState> GetWorkflowStates(int workflowId)
-        {
-            return CBO.FillCollection<ExportWorkflowState>(
-                DataProvider.Instance().GetAllWorkflowStates(workflowId));
-        }
-
-        private static List<ExportWorkflowStatePermission> GetWorkflowStatePermissions(
-            int stateId, DateTime toDate, DateTime? fromDate)
-        {
-            return CBO.FillCollection<ExportWorkflowStatePermission>(
-                DataProvider.Instance().GetAllWorkflowStatePermissions(stateId, toDate, fromDate));
-        }
-
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob) || this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed || this.CheckPointStageCallback(this))
@@ -278,6 +259,25 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPoint.TotalItems = importWorkflows.Count;
             this.CheckPoint.ProcessedItems = importWorkflows.Count;
             this.CheckPointStageCallback(this);
+        }
+
+        private static List<ExportWorkflow> GetWorkflows(int portalId, bool includeDeletions)
+        {
+            return CBO.FillCollection<ExportWorkflow>(
+                DataProvider.Instance().GetAllWorkflows(portalId, includeDeletions));
+        }
+
+        private static List<ExportWorkflowState> GetWorkflowStates(int workflowId)
+        {
+            return CBO.FillCollection<ExportWorkflowState>(
+                DataProvider.Instance().GetAllWorkflowStates(workflowId));
+        }
+
+        private static List<ExportWorkflowStatePermission> GetWorkflowStatePermissions(
+            int stateId, DateTime toDate, DateTime? fromDate)
+        {
+            return CBO.FillCollection<ExportWorkflowStatePermission>(
+                DataProvider.Instance().GetAllWorkflowStatePermissions(stateId, toDate, fromDate));
         }
     }
 }

@@ -30,13 +30,6 @@ namespace DotNetNuke.Modules.Groups
             base.OnInit(e);
         }
 
-        private void InitializeComponent()
-        {
-            this.Load += this.Page_Load;
-            this.btnSave.Click += this.Save_Click;
-            this.btnCancel.Click += this.Cancel_Click;
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -84,6 +77,13 @@ namespace DotNetNuke.Modules.Groups
                     this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false));
                 }
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.Load += this.Page_Load;
+            this.btnSave.Click += this.Save_Click;
+            this.btnCancel.Click += this.Cancel_Click;
         }
 
         private void Cancel_Click(object sender, EventArgs e)

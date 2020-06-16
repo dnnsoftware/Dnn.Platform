@@ -27,6 +27,21 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             get { return "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx"; }
         }
 
+        public static string LoadScript(string name)
+        {
+            var resourceName = string.Format("Dnn.PersonaBar.Extensions.Components.Security.Resources.{0}.resources", name);
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    var script = new StreamReader(stream).ReadToEnd();
+                    return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
+                }
+
+                return null;
+            }
+        }
+
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);
@@ -102,21 +117,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 //ignore; return no failure
             }
             return true;
-        }
-
-        public static string LoadScript(string name)
-        {
-            var resourceName = string.Format("Dnn.PersonaBar.Extensions.Components.Security.Resources.{0}.resources", name);
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-            {
-                if (stream != null)
-                {
-                    var script = new StreamReader(stream).ReadToEnd();
-                    return script.Replace("%SiteRoot%", Globals.ApplicationMapPath);
-                }
-
-                return null;
-            }
         }
     }
 }

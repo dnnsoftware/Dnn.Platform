@@ -36,15 +36,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
-        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
-        private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        protected INavigationManager NavigationManager { get; }
-        public LanguagesController(INavigationManager navigationManager)
-        {
-            this.NavigationManager = navigationManager;
-        }
-
         // Sample matches:
         // MyResources.ascx.en-US.resx
         // MyResources.ascx.en-US.Host.resx
@@ -52,6 +43,15 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         internal static readonly Regex FileInfoRegex = new Regex(
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
+        public LanguagesController(INavigationManager navigationManager)
+        {
+            this.NavigationManager = navigationManager;
+        }
+        protected INavigationManager NavigationManager { get; }
 
         private ITabController _tabController = TabController.Instance;
         private ILocaleController _localeController = LocaleController.Instance;
@@ -665,6 +665,70 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return Localization.GetString(key, LocalResourcesFile);
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///  Loads resources from file into the HastTable.
+        /// </summary>
+        /// <param name = "ht">Current resources HashTable.</param>
+        /// <param name = "filepath">Resources file.</param>
+        /// <remarks>
+        ///   Returned hashtable uses resourcekey as key.
+        ///   Value contains a Pair object where:
+        ///   First=>value to be edited
+        ///   Second=>default value.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static void LoadResource(IDictionary ht, string filepath)
+        {
+            var d = new XmlDocument { XmlResolver = null };
+            bool xmlLoaded;
+            try
+            {
+                d.Load(filepath);
+                xmlLoaded = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message);
+                xmlLoaded = false;
+            }
+            if (xmlLoaded)
+            {
+                var nLoopVariables = d.SelectNodes("root/data");
+                if (nLoopVariables != null)
+                {
+                    foreach (XmlNode nLoopVariable in nLoopVariables)
+                    {
+                        var n = nLoopVariable;
+                        if (n.NodeType != XmlNodeType.Comment)
+                        {
+                            var selectSingleNode = n.SelectSingleNode("value");
+                            if (selectSingleNode != null)
+                            {
+                                var val = selectSingleNode.InnerText;
+                                if (n.Attributes != null)
+                                {
+                                    if (ht[n.Attributes["name"].Value] == null)
+                                    {
+                                        ht.Add(n.Attributes["name"].Value, new Pair(val, val));
+                                    }
+                                    else
+                                    {
+                                        ht[n.Attributes["name"].Value] = new Pair(val, val);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static string GetResourceKeyXPath(string resourceKeyName)
+        {
+            return "//root/data[@name=" + XmlUtils.XPathLiteral(resourceKeyName) + "]";
+        }
+
         private bool IsDefaultLanguage(int portalId, string cultureCode)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
@@ -742,65 +806,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
 
             return ht;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///  Loads resources from file into the HastTable.
-        /// </summary>
-        /// <param name = "ht">Current resources HashTable.</param>
-        /// <param name = "filepath">Resources file.</param>
-        /// <remarks>
-        ///   Returned hashtable uses resourcekey as key.
-        ///   Value contains a Pair object where:
-        ///   First=>value to be edited
-        ///   Second=>default value.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static void LoadResource(IDictionary ht, string filepath)
-        {
-            var d = new XmlDocument { XmlResolver = null };
-            bool xmlLoaded;
-            try
-            {
-                d.Load(filepath);
-                xmlLoaded = true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex.Message);
-                xmlLoaded = false;
-            }
-            if (xmlLoaded)
-            {
-                var nLoopVariables = d.SelectNodes("root/data");
-                if (nLoopVariables != null)
-                {
-                    foreach (XmlNode nLoopVariable in nLoopVariables)
-                    {
-                        var n = nLoopVariable;
-                        if (n.NodeType != XmlNodeType.Comment)
-                        {
-                            var selectSingleNode = n.SelectSingleNode("value");
-                            if (selectSingleNode != null)
-                            {
-                                var val = selectSingleNode.InnerText;
-                                if (n.Attributes != null)
-                                {
-                                    if (ht[n.Attributes["name"].Value] == null)
-                                    {
-                                        ht.Add(n.Attributes["name"].Value, new Pair(val, val));
-                                    }
-                                    else
-                                    {
-                                        ht[n.Attributes["name"].Value] = new Pair(val, val);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -943,11 +948,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
 
             return string.Format(LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
-        }
-
-        private static string GetResourceKeyXPath(string resourceKeyName)
-        {
-            return "//root/data[@name=" + XmlUtils.XPathLiteral(resourceKeyName) + "]";
         }
 
         private static XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)

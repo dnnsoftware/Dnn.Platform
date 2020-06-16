@@ -9,15 +9,15 @@ namespace DotNetNuke.Common.Controls
 
     public partial class NoContent : PortalModuleBase
     {
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             this.InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

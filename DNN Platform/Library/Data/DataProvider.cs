@@ -30,14 +30,9 @@ namespace DotNetNuke.Data
 
     public abstract class DataProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
-
         private const int DuplicateKey = 2601;
 
-        public static DataProvider Instance()
-        {
-            return ComponentFactory.GetComponent<DataProvider>();
-        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
 
         public virtual string ConnectionString
         {
@@ -72,6 +67,11 @@ namespace DotNetNuke.Data
         public string DefaultProviderName
         {
             get { return Instance().ProviderName; }
+        }
+
+        public static DataProvider Instance()
+        {
+            return ComponentFactory.GetComponent<DataProvider>();
         }
 
         public abstract bool IsConnectionValid { get; }
@@ -112,6 +112,10 @@ namespace DotNetNuke.Data
             }
         }
 
+        public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
+
+        public abstract void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters);
+
         private static DateTime FixDate(DateTime dateToFix)
         {
             // Fix for Sql Dates having a minimum value of January 1, 1753
@@ -137,10 +141,6 @@ namespace DotNetNuke.Data
 
             return RoleID;
         }
-
-        public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
-
-        public abstract void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters);
 
         public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
 
@@ -266,6 +266,42 @@ namespace DotNetNuke.Data
             return this.GetVersionInternal(false);
         }
 
+        public virtual DbConnectionStringBuilder GetConnectionStringBuilder()
+        {
+            return new SqlConnectionStringBuilder();
+        }
+
+        public virtual string GetProviderPath()
+        {
+            string path = this.ProviderPath;
+            if (!string.IsNullOrEmpty(path))
+            {
+                path = HostingEnvironment.MapPath(path);
+
+                // ReSharper disable AssignNullToNotNullAttribute
+                if (Directory.Exists(path))
+
+                // ReSharper restore AssignNullToNotNullAttribute
+                {
+                    if (!this.IsConnectionValid)
+                    {
+                        path = "ERROR: Could not connect to database specified in connectionString for SqlDataProvider";
+                    }
+                }
+                else
+                {
+                    path = "ERROR: providerPath folder " + path +
+                           " specified for SqlDataProvider does not exist on web server";
+                }
+            }
+            else
+            {
+                path = "ERROR: providerPath folder value not specified in web.config for SqlDataProvider";
+            }
+
+            return path;
+        }
+
         private Version GetVersionInternal(bool current)
         {
             Version version = null;
@@ -303,42 +339,6 @@ namespace DotNetNuke.Data
             }
 
             return version;
-        }
-
-        public virtual DbConnectionStringBuilder GetConnectionStringBuilder()
-        {
-            return new SqlConnectionStringBuilder();
-        }
-
-        public virtual string GetProviderPath()
-        {
-            string path = this.ProviderPath;
-            if (!string.IsNullOrEmpty(path))
-            {
-                path = HostingEnvironment.MapPath(path);
-
-                // ReSharper disable AssignNullToNotNullAttribute
-                if (Directory.Exists(path))
-
-                // ReSharper restore AssignNullToNotNullAttribute
-                {
-                    if (!this.IsConnectionValid)
-                    {
-                        path = "ERROR: Could not connect to database specified in connectionString for SqlDataProvider";
-                    }
-                }
-                else
-                {
-                    path = "ERROR: providerPath folder " + path +
-                           " specified for SqlDataProvider does not exist on web server";
-                }
-            }
-            else
-            {
-                path = "ERROR: providerPath folder value not specified in web.config for SqlDataProvider";
-            }
-
-            return path;
         }
 
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string Owner, string Qualifier)
@@ -566,20 +566,6 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetPortalSettings", PortalId, CultureCode);
         }
 
-        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
-        {
-            var result = new Dictionary<int, string>();
-            using (var reader = this.ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
-            {
-                while (reader.Read())
-                {
-                    result[reader.GetInt32(0)] = reader.GetString(1);
-                }
-            }
-
-            return result;
-        }
-
         public virtual IDataReader GetPortalSpaceUsed(int PortalId)
         {
             return this.ExecuteReader("GetPortalSpaceUsed", this.GetNull(PortalId));
@@ -670,6 +656,20 @@ namespace DotNetNuke.Data
                 homeDirectory,
                 lastModifiedByUserID,
                 cultureCode);
+        }
+
+        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
+        {
+            var result = new Dictionary<int, string>();
+            using (var reader = this.ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
+            {
+                while (reader.Read())
+                {
+                    result[reader.GetInt32(0)] = reader.GetString(1);
+                }
+            }
+
+            return result;
         }
 
         public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,

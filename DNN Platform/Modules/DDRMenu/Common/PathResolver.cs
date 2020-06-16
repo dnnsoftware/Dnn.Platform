@@ -11,6 +11,13 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
     public class PathResolver
     {
+        private readonly string manifestFolder;
+
+        public PathResolver(string manifestFolder)
+        {
+            this.manifestFolder = manifestFolder;
+        }
+
         public enum RelativeTo
         {
             Container,
@@ -19,13 +26,6 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             Module,
             Portal,
             Skin,
-        }
-
-        private readonly string manifestFolder;
-
-        public PathResolver(string manifestFolder)
-        {
-            this.manifestFolder = manifestFolder;
         }
 
         public string Resolve(string path, params RelativeTo[] roots)

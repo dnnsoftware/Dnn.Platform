@@ -24,10 +24,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
     internal class BasicUrlRewriter : UrlRewriterBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
-
         public static readonly Regex TabIdRegex = new Regex("&?tabid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
 
         internal override void RewriteUrl(object sender, EventArgs e)
         {

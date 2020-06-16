@@ -19,8 +19,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool IncludeExpandAll { get; set; }
 
-        internal string ExpandAllScript { get; set; }
-
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
@@ -30,6 +28,8 @@ namespace DotNetNuke.Web.UI.WebControls
         [PersistenceMode(PersistenceMode.InnerProperty)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormSection> Sections { get; private set; }
+
+        internal string ExpandAllScript { get; set; }
 
         public string ResourceKey { get; set; }
     }

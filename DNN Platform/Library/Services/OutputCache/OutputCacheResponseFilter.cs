@@ -132,14 +132,6 @@ namespace DotNetNuke.Services.OutputCache
             throw new NotSupportedException();
         }
 
-        protected virtual void AddItemToCache(int itemId, string output)
-        {
-        }
-
-        protected virtual void RemoveItemFromCache(int itemId)
-        {
-        }
-
         public virtual byte[] StopFiltering(int itemId, bool deleteData)
         {
             if (this.HasErrored)
@@ -166,6 +158,14 @@ namespace DotNetNuke.Services.OutputCache
             }
 
             return null;
+        }
+
+        protected virtual void AddItemToCache(int itemId, string output)
+        {
+        }
+
+        protected virtual void RemoveItemFromCache(int itemId)
+        {
         }
     }
 }

@@ -40,6 +40,8 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
+        public PackageDependencyInfo PackageDependency { get; set; }
+
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.PackageDependency = new PackageDependencyInfo
@@ -48,7 +50,5 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 Version = new Version(Util.ReadAttribute(dependencyNav, "version")),
             };
         }
-
-        public PackageDependencyInfo PackageDependency { get; set; }
     }
 }

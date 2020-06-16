@@ -256,6 +256,23 @@ namespace DotNetNuke.Services.FileSystem
             this.RemoveOldestsVersions(file);
         }
 
+        internal static string GetVersionedFilename(IFileInfo file, int version)
+        {
+            return string.Format("{0}_{1}.v.resources", file.FileId, version);
+        }
+
+        private static void RenameFile(IFileInfo file, string newFileName)
+        {
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
+            if (folderMapping != null)
+            {
+                var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
+                folderProvider.RenameFile(file, newFileName);
+            }
+
+            DataCache.RemoveCache("GetFileById" + file.FileId);
+        }
+
         private void OnFileChanged(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileChanged(new FileChangedEventArgs
@@ -282,23 +299,6 @@ namespace DotNetNuke.Services.FileSystem
                     this.DeleteFileVersion(file, v.Version);
                 }
             }
-        }
-
-        internal static string GetVersionedFilename(IFileInfo file, int version)
-        {
-            return string.Format("{0}_{1}.v.resources", file.FileId, version);
-        }
-
-        private static void RenameFile(IFileInfo file, string newFileName)
-        {
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping != null)
-            {
-                var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
-                folderProvider.RenameFile(file, newFileName);
-            }
-
-            DataCache.RemoveCache("GetFileById" + file.FileId);
         }
     }
 }

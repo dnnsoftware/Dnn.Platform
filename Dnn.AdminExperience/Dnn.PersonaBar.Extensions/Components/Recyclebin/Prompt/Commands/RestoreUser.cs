@@ -16,18 +16,18 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("restore-user", Constants.RecylcleBinCategory, "Prompt_RestoreUser_Description")]
     public class RestoreUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private IUserValidator _userValidator;
         private IRecyclebinController _recyclebinController;
-
-        private int UserId { get; set; }
 
         public RestoreUser() : this(new UserValidator(), RecyclebinController.Instance)
         {
         }
+
+        private int UserId { get; set; }
 
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {

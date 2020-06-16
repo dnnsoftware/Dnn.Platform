@@ -60,6 +60,16 @@ namespace DotNetNuke.Instrumentation
             ReloadLevels(logger.Repository);
         }
 
+        public static DnnLogger GetClassLogger(Type type)
+        {
+            return new DnnLogger(LogManager.GetLogger(Assembly.GetCallingAssembly(), type).Logger);
+        }
+
+        public static DnnLogger GetLogger(string name)
+        {
+            return new DnnLogger(LogManager.GetLogger(name).Logger);
+        }
+
         /// <summary>
         ///   Virtual method called when the configuration of the repository changes.
         /// </summary>
@@ -85,16 +95,6 @@ namespace DotNetNuke.Instrumentation
             //// Register custom logging levels with the default LoggerRepository
             LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
             LogManager.GetRepository().LevelMap.Add(LevelLogError);
-        }
-
-        public static DnnLogger GetClassLogger(Type type)
-        {
-            return new DnnLogger(LogManager.GetLogger(Assembly.GetCallingAssembly(), type).Logger);
-        }
-
-        public static DnnLogger GetLogger(string name)
-        {
-            return new DnnLogger(LogManager.GetLogger(name).Logger);
         }
 
         /// <summary>
@@ -253,21 +253,6 @@ namespace DotNetNuke.Instrumentation
             this.Logger.Log(this._stackBoundary, LevelInfo, new SystemStringFormat(provider, format, args), null);
         }
 
-        internal void TraceFormat(string format, params object[] args)
-        {
-            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
-        }
-
-        internal void Trace(string message)
-        {
-            this.Logger.Log(this._stackBoundary, LevelTrace, message, null);
-        }
-
-        internal void TraceFormat(IFormatProvider provider, string format, params object[] args)
-        {
-            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
-        }
-
         /// <summary>
         ///   Logs a message object with the <c>WARN</c> level.
         /// </summary>
@@ -315,6 +300,21 @@ namespace DotNetNuke.Instrumentation
         public void Warn(object message, Exception exception)
         {
             this.Logger.Log(this._stackBoundary, LevelWarn, message, exception);
+        }
+
+        internal void TraceFormat(string format, params object[] args)
+        {
+            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+        }
+
+        internal void Trace(string message)
+        {
+            this.Logger.Log(this._stackBoundary, LevelTrace, message, null);
+        }
+
+        internal void TraceFormat(IFormatProvider provider, string format, params object[] args)
+        {
+            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>

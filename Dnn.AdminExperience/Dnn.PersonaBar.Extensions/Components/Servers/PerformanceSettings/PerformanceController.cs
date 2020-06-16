@@ -63,15 +63,15 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
             };
         }
 
+        public string GetCachingProvider()
+        {
+            return ProviderConfiguration.GetProviderConfiguration("caching").DefaultProvider;
+        }
+
         private IEnumerable<KeyValuePair<string, string>> GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
         {
             var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string>(filteredkey, provider.Key);
             return providers;
-        }
-
-        public string GetCachingProvider()
-        {
-            return ProviderConfiguration.GetProviderConfiguration("caching").DefaultProvider;
         }
     }
 }

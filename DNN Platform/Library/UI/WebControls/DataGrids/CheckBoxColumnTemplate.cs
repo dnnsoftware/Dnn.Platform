@@ -37,6 +37,8 @@ namespace DotNetNuke.UI.WebControls
             this.ItemType = itemType;
         }
 
+        public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
@@ -202,8 +204,6 @@ namespace DotNetNuke.UI.WebControls
                 container.Controls.Add(box);
             }
         }
-
-        public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -22,6 +22,12 @@ namespace DotNetNuke.Data
             this.InitializeInternal();
         }
 
+        protected CacheItemArgs CacheArgs { get; private set; }
+
+        protected string Scope { get; private set; }
+
+        protected bool IsCacheable { get; private set; }
+
         public void Delete(T item)
         {
             this.DeleteInternal(item);
@@ -152,13 +158,27 @@ namespace DotNetNuke.Data
             }
         }
 
-        protected CacheItemArgs CacheArgs { get; private set; }
-
-        protected string Scope { get; private set; }
-
-        protected bool IsCacheable { get; private set; }
-
         protected bool IsScoped { get; private set; }
+
+        public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
+        {
+            this.Scope = scope;
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
+            this.IsCacheable = !string.IsNullOrEmpty(cacheKey);
+            if (this.IsCacheable)
+            {
+                if (this.IsScoped)
+                {
+                    cacheKey += "_" + this.Scope + "_{0}";
+                }
+
+                this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
+            }
+            else
+            {
+                this.CacheArgs = null;
+            }
+        }
 
         protected int CompareTo<TProperty>(TProperty first, TProperty second)
         {
@@ -204,25 +224,5 @@ namespace DotNetNuke.Data
         protected abstract void InsertInternal(T item);
 
         protected abstract void UpdateInternal(T item);
-
-        public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
-        {
-            this.Scope = scope;
-            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
-            this.IsCacheable = !string.IsNullOrEmpty(cacheKey);
-            if (this.IsCacheable)
-            {
-                if (this.IsScoped)
-                {
-                    cacheKey += "_" + this.Scope + "_{0}";
-                }
-
-                this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
-            }
-            else
-            {
-                this.CacheArgs = null;
-            }
-        }
     }
 }

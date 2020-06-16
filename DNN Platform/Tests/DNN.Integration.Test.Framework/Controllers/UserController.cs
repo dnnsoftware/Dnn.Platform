@@ -14,10 +14,10 @@ namespace DNN.Integration.Test.Framework.Controllers
 
     public static class UserController
     {
-        private static readonly string UserToCopy = AppConfigHelper.HostUserName;
-
         private const string PortalIdMarker = @"'$[portal_id]'";
         private const string UserToCopyMarker = @"$[users_to_copy]";
+
+        private static readonly string UserToCopy = AppConfigHelper.HostUserName;
         private const string FirstNameMarker = @"$[first_name]";
         private const string LastNameMarker = @"$[last_name]";
         private const string IsSuperUserMarker = @"'$[isSuperUser]'";
@@ -75,6 +75,31 @@ namespace DNN.Integration.Test.Framework.Controllers
             return results.SelectMany(x => x.Where(y => y.Key == "UserId").Select(y => (int)y.Value)).FirstOrDefault();
         }
 
+        public static void DeleteUser(int userId)
+        {
+            var fileContent = SqlScripts.UserDelete;
+            var script = new StringBuilder(fileContent)
+                .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture))
+                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
+                .ToString();
+
+            DatabaseHelper.ExecuteQuery(script);
+        }
+
+        public static TimeZoneInfo GetUserPreferredTimeZone(int userId, int portalId)
+        {
+            var fileContent = SqlScripts.UserGetPreferredTimeZone;
+            var script = new StringBuilder(fileContent)
+                .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture))
+                .Replace(PortalIdMarker, portalId.ToString(CultureInfo.InvariantCulture))
+                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
+                .ToString();
+
+            var timeZoneString = DatabaseHelper.ExecuteQuery(script).First()["PropertyValue"].ToString();
+
+            return TimeZoneInfo.FindSystemTimeZoneById(timeZoneString);
+        }
+
         private static int CreateUser(CreateUserParams parms)
         {
             parms.FirstName = parms.FirstName.Replace("'", "''");
@@ -107,31 +132,6 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .Replace(RoleMarker, string.IsNullOrEmpty(parms.Role) ? string.Empty : parms.Role);
             DatabaseHelper.ExecuteQuery(script.ToString());
             return GetUserId(username);
-        }
-
-        public static void DeleteUser(int userId)
-        {
-            var fileContent = SqlScripts.UserDelete;
-            var script = new StringBuilder(fileContent)
-                .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture))
-                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
-                .ToString();
-
-            DatabaseHelper.ExecuteQuery(script);
-        }
-
-        public static TimeZoneInfo GetUserPreferredTimeZone(int userId, int portalId)
-        {
-            var fileContent = SqlScripts.UserGetPreferredTimeZone;
-            var script = new StringBuilder(fileContent)
-                .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture))
-                .Replace(PortalIdMarker, portalId.ToString(CultureInfo.InvariantCulture))
-                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
-                .ToString();
-
-            var timeZoneString = DatabaseHelper.ExecuteQuery(script).First()["PropertyValue"].ToString();
-
-            return TimeZoneInfo.FindSystemTimeZoneById(timeZoneString);
         }
 
         public class CreateUserParams

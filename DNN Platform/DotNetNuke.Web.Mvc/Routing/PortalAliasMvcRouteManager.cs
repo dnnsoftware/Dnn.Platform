@@ -44,23 +44,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
-        private static string GeneratePrefixString(int count)
-        {
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-
-            var prefix = string.Empty;
-
-            for (var i = count - 1; i >= 0; i--)
-            {
-                prefix = "{prefix" + i + "}/" + prefix;
-            }
-
-            return prefix;
-        }
-
         public RouteValueDictionary GetAllRouteValues(PortalAliasInfo portalAliasInfo, object routeValues)
         {
             var allRouteValues = new RouteValueDictionary(routeValues);
@@ -88,6 +71,23 @@ namespace DotNetNuke.Web.Mvc.Routing
             Requires.NotNullOrEmpty("moduleFolderName", moduleFolderName);
 
             return $"{GeneratePrefixString(count)}DesktopModules/MVC/{moduleFolderName}/{url}";
+        }
+
+        private static string GeneratePrefixString(int count)
+        {
+            if (count == 0)
+            {
+                return string.Empty;
+            }
+
+            var prefix = string.Empty;
+
+            for (var i = count - 1; i >= 0; i--)
+            {
+                prefix = "{prefix" + i + "}/" + prefix;
+            }
+
+            return prefix;
         }
 
         public void ClearCachedData()
@@ -133,13 +133,6 @@ namespace DotNetNuke.Web.Mvc.Routing
             return alias.Count(c => c == '/');
         }
 
-        private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
-        {
-            var appPath = TestableGlobals.Instance.ApplicationPath;
-
-            return string.IsNullOrEmpty(appPath) ? aliases : StripApplicationPathIterable(aliases, appPath);
-        }
-
         private static IEnumerable<string> StripApplicationPathIterable(IEnumerable<string> aliases, string appPath)
         {
             foreach (var alias in aliases)
@@ -155,6 +148,13 @@ namespace DotNetNuke.Web.Mvc.Routing
                     yield return alias;
                 }
             }
+        }
+
+        private IEnumerable<string> StripApplicationPath(IEnumerable<string> aliases)
+        {
+            var appPath = TestableGlobals.Instance.ApplicationPath;
+
+            return string.IsNullOrEmpty(appPath) ? aliases : StripApplicationPathIterable(aliases, appPath);
         }
     }
 }

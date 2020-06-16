@@ -39,17 +39,17 @@ namespace DotNetNuke.Services.Registration
             return results;
         }
 
+        protected override Func<IRegistrationProfileController> GetFactory()
+        {
+            return () => new RegistrationProfileController();
+        }
+
         private void AddProperty(List<string> results, string field, string searchTerm)
         {
             if (field.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant().Trim()))
             {
                 results.Add(field);
             }
-        }
-
-        protected override Func<IRegistrationProfileController> GetFactory()
-        {
-            return () => new RegistrationProfileController();
         }
     }
 }

@@ -243,6 +243,17 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// The SetVersion method sets the version of the file.
+        /// </summary>
+        /// <param name="version">The version of the file.</param>
+        /// -----------------------------------------------------------------------------
+        public void SetVersion(Version version)
+        {
+            this.Version = version;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// The ParseFileName parses the ZipEntry metadata.
         /// </summary>
         /// <param name="fileName">A String representing the file name.</param>
@@ -334,17 +345,6 @@ namespace DotNetNuke.Services.Installer
             this.ParseFileName(entry.Name);
             Util.WriteStream(unzip, this.TempFileName);
             File.SetLastWriteTime(this.TempFileName, entry.DateTime);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The SetVersion method sets the version of the file.
-        /// </summary>
-        /// <param name="version">The version of the file.</param>
-        /// -----------------------------------------------------------------------------
-        public void SetVersion(Version version)
-        {
-            this.Version = version;
         }
     }
 }

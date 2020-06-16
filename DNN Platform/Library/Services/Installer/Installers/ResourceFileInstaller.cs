@@ -21,9 +21,23 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class ResourceFileInstaller : FileInstaller
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
         public const string DEFAULT_MANIFESTEXT = ".manifest";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
         private string _Manifest;
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "resources, zip";
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -59,20 +73,6 @@ namespace DotNetNuke.Services.Installer.Installers
             get
             {
                 return this._Manifest;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "resources, zip";
             }
         }
 

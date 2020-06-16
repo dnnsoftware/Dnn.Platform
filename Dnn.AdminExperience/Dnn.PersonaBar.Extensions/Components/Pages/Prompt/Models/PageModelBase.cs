@@ -6,6 +6,10 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 {
     public class PageModelBase
     {
+        public PageModelBase()
+        {
+        }
+
         public int TabId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
@@ -22,10 +26,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         public string __IncludeInMenu => $"list-pages --visible{(this.IncludeInMenu ? "" : " false")}";
 
         public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? "" : " false")}";
-
-        public PageModelBase()
-        {
-        }
         public PageModelBase(DotNetNuke.Entities.Tabs.TabInfo tab)
         {
             this.Name = tab.TabName;

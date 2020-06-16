@@ -80,6 +80,30 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return filename;
         }
+        public IEnumerable<Template> GetTemplates()
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
+
+            return this.LoadTemplates(portalSettings.PortalId, templateFolder);
+        }
+
+        public int GetDefaultTemplateId(IEnumerable<Template> templates)
+        {
+            var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
+            if (firstOrDefault != null)
+            {
+                return firstOrDefault.Value;
+            }
+
+            return Null.NullInteger;
+        }
+
+        protected override Func<ITemplateController> GetFactory()
+        {
+            return () => new TemplateController();
+        }
+
         private static IFolderInfo GetTemplateFolder()
         {
             return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
@@ -97,19 +121,6 @@ namespace Dnn.PersonaBar.Pages.Components
             var xmlTab = new XmlDocument { XmlResolver = null };
             var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
             nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
-        }
-
-        protected override Func<ITemplateController> GetFactory()
-        {
-            return () => new TemplateController();
-        }
-
-        public IEnumerable<Template> GetTemplates()
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var templateFolder = FolderManager.Instance.GetFolder(portalSettings.PortalId, TemplatesFolderPath);
-
-            return this.LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
         private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
@@ -139,17 +150,6 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return templates;
-        }
-
-        public int GetDefaultTemplateId(IEnumerable<Template> templates)
-        {
-            var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
-            if (firstOrDefault != null)
-            {
-                return firstOrDefault.Value;
-            }
-
-            return Null.NullInteger;
         }
 
         public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)

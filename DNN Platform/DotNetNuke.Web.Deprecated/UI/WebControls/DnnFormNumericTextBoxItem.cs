@@ -32,11 +32,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public NumericType Type { get; set; }
 
-        private void TextChanged(object sender, EventArgs e)
-        {
-            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
-        }
-
         protected override WebControl CreateControlInternal(Control container)
         {
             // _textBox = new DnnNumericTextBox {EmptyMessage = LocalizeString(ResourceKey + ".Hint"), ID = ID + "_TextBox", Width = TextBoxWidth };
@@ -67,6 +62,11 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnInit(e);
 
             this.FormMode = DnnFormMode.Short;
+        }
+
+        private void TextChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
         }
     }
 }

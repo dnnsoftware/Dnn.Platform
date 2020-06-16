@@ -10,11 +10,6 @@ namespace DotNetNuke.Tests.Core.Collections
     [TestFixture]
     public class ReaderWriterLockStrategyTests : LockStrategyTests
     {
-        internal override ILockStrategy GetLockStrategy()
-        {
-            return new ReaderWriterLockStrategy();
-        }
-
         [Test] // no ExpectedException attribute
         public override void DoubleReadLockThrows()
         {
@@ -25,6 +20,11 @@ namespace DotNetNuke.Tests.Core.Collections
         public override void DoubleWriteLockThrows()
         {
             base.DoubleWriteLockThrows();
+        }
+
+        internal override ILockStrategy GetLockStrategy()
+        {
+            return new ReaderWriterLockStrategy();
         }
     }
 }

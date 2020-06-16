@@ -25,11 +25,6 @@ namespace Dnn.PersonaBar.Prompt.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
-        }
-
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = new KeyValuePair<HttpStatusCode, string>();
@@ -100,6 +95,11 @@ namespace Dnn.PersonaBar.Prompt.Components
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
             return moduleList;
+        }
+
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
         }
 
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)

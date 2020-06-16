@@ -26,6 +26,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class PackageWriterBase
     {
+        private static readonly Regex FileVersionMatchRegex = new Regex(Util.REGEX_Version, RegexOptions.Compiled);
+
         private readonly Dictionary<string, InstallFile> _AppCodeFiles = new Dictionary<string, InstallFile>();
         private readonly Dictionary<string, InstallFile> _Assemblies = new Dictionary<string, InstallFile>();
         private readonly SortedList<string, InstallFile> _CleanUpFiles = new SortedList<string, InstallFile>();
@@ -36,24 +38,14 @@ namespace DotNetNuke.Services.Installer.Writers
         private string _BasePath = Null.NullString;
         private PackageInfo _Package;
 
-        private static readonly Regex FileVersionMatchRegex = new Regex(Util.REGEX_Version, RegexOptions.Compiled);
-
-        protected PackageWriterBase()
-        {
-        }
-
         public PackageWriterBase(PackageInfo package)
         {
             this._Package = package;
             this._Package.AttachInstallerInfo(new InstallerInfo());
         }
 
-        protected virtual Dictionary<string, string> Dependencies
+        protected PackageWriterBase()
         {
-            get
-            {
-                return new Dictionary<string, string>();
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -77,6 +69,14 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string AppCodePath { get; set; }
+
+        protected virtual Dictionary<string, string> Dependencies
+        {
+            get
+            {
+                return new Dictionary<string, string>();
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -254,6 +254,72 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        public static void WriteManifestEndElement(XmlWriter writer)
+        {
+            // Close packages Element
+            writer.WriteEndElement();
+
+            // Close root Element
+            writer.WriteEndElement();
+        }
+
+        public static void WriteManifestStartElement(XmlWriter writer)
+        {
+            // Start the new Root Element
+            writer.WriteStartElement("dotnetnuke");
+            writer.WriteAttributeString("type", "Package");
+            writer.WriteAttributeString("version", "5.0");
+
+            // Start packages Element
+            writer.WriteStartElement("packages");
+        }
+
+        public virtual void AddFile(InstallFile file)
+        {
+            switch (file.Type)
+            {
+                case InstallFileType.AppCode:
+                    this._AppCodeFiles[file.FullName.ToLowerInvariant()] = file;
+                    break;
+                case InstallFileType.Assembly:
+                    this._Assemblies[file.FullName.ToLowerInvariant()] = file;
+                    break;
+                case InstallFileType.CleanUp:
+                    this._CleanUpFiles[file.FullName.ToLowerInvariant()] = file;
+                    break;
+                case InstallFileType.Script:
+                    this._Scripts[file.FullName.ToLowerInvariant()] = file;
+                    break;
+                default:
+                    this._Files[file.FullName.ToLowerInvariant()] = file;
+                    break;
+            }
+
+            if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
+            {
+                string version = Path.GetFileNameWithoutExtension(file.Name);
+                if (!this._Versions.Contains(version))
+                {
+                    this._Versions.Add(version);
+                }
+            }
+        }
+
+        public void AddResourceFile(InstallFile file)
+        {
+            this._Resources[file.FullName.ToLowerInvariant()] = file;
+        }
+
+        protected virtual void AddFile(string fileName)
+        {
+            this.AddFile(new InstallFile(fileName, this.Package.InstallerInfo));
+        }
+
+        protected virtual void AddFile(string fileName, string sourceFileName)
+        {
+            this.AddFile(new InstallFile(fileName, sourceFileName, this.Package.InstallerInfo));
+        }
+
         private void AddFilesToZip(ZipOutputStream stream, IDictionary<string, InstallFile> files, string basePath)
         {
             foreach (InstallFile packageFile in files.Values)
@@ -397,16 +463,6 @@ namespace DotNetNuke.Services.Installer.Writers
 
             // Write components Element
             writer.WriteStartElement("components");
-        }
-
-        protected virtual void AddFile(string fileName)
-        {
-            this.AddFile(new InstallFile(fileName, this.Package.InstallerInfo));
-        }
-
-        protected virtual void AddFile(string fileName, string sourceFileName)
-        {
-            this.AddFile(new InstallFile(fileName, sourceFileName, this.Package.InstallerInfo));
         }
 
         protected virtual void ConvertLegacyManifest(XPathNavigator legacyManifest, XmlWriter writer)
@@ -564,42 +620,6 @@ namespace DotNetNuke.Services.Installer.Writers
         {
         }
 
-        public virtual void AddFile(InstallFile file)
-        {
-            switch (file.Type)
-            {
-                case InstallFileType.AppCode:
-                    this._AppCodeFiles[file.FullName.ToLowerInvariant()] = file;
-                    break;
-                case InstallFileType.Assembly:
-                    this._Assemblies[file.FullName.ToLowerInvariant()] = file;
-                    break;
-                case InstallFileType.CleanUp:
-                    this._CleanUpFiles[file.FullName.ToLowerInvariant()] = file;
-                    break;
-                case InstallFileType.Script:
-                    this._Scripts[file.FullName.ToLowerInvariant()] = file;
-                    break;
-                default:
-                    this._Files[file.FullName.ToLowerInvariant()] = file;
-                    break;
-            }
-
-            if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
-            {
-                string version = Path.GetFileNameWithoutExtension(file.Name);
-                if (!this._Versions.Contains(version))
-                {
-                    this._Versions.Add(version);
-                }
-            }
-        }
-
-        public void AddResourceFile(InstallFile file)
-        {
-            this._Resources[file.FullName.ToLowerInvariant()] = file;
-        }
-
         public void CreatePackage(string archiveName, string manifestName, string manifest, bool createManifest)
         {
             if (createManifest)
@@ -741,26 +761,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 
             this.Log.EndJob(Util.WRITER_CreatedManifest);
-        }
-
-        public static void WriteManifestEndElement(XmlWriter writer)
-        {
-            // Close packages Element
-            writer.WriteEndElement();
-
-            // Close root Element
-            writer.WriteEndElement();
-        }
-
-        public static void WriteManifestStartElement(XmlWriter writer)
-        {
-            // Start the new Root Element
-            writer.WriteStartElement("dotnetnuke");
-            writer.WriteAttributeString("type", "Package");
-            writer.WriteAttributeString("version", "5.0");
-
-            // Start packages Element
-            writer.WriteStartElement("packages");
         }
     }
 }

@@ -19,12 +19,12 @@ namespace DotNetNuke.Services.FileSystem
 
     public class FolderMappingController : ComponentBase<IFolderMappingController, FolderMappingController>, IFolderMappingController
     {
+        private const string CacheKeyPrefix = "GetFolderMappingSettings";
+        private static readonly DataProvider dataProvider = DataProvider.Instance();
+
         internal FolderMappingController()
         {
         }
-
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
-        private const string CacheKeyPrefix = "GetFolderMappingSettings";
 
         public FolderMappingInfo GetDefaultFolderMapping(int portalId)
         {

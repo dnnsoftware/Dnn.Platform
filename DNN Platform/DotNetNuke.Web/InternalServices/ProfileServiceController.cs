@@ -82,11 +82,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
 
-        public class VanityUrlDTO
-        {
-            public string Url { get; set; }
-        }
-
         [DnnAuthorize]
         [HttpGet]
         public HttpResponseMessage ProfilePropertyValues()
@@ -95,6 +90,11 @@ namespace DotNetNuke.Web.InternalServices
             string propertyName = HttpContext.Current.Request.Params["PropName"].NormalizeString();
             int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
             return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
+        }
+
+        public class VanityUrlDTO
+        {
+            public string Url { get; set; }
         }
     }
 }

@@ -21,6 +21,62 @@ namespace DotNetNuke.Web.UI.WebControls
             this._owner = owner;
         }
 
+        /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// </summary>
+        /// <returns>
+        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
+        /// </returns>
+        public int Count
+        {
+            get
+            {
+                return this._owner.HasControls() ? this._owner.Controls.Count : 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
+        /// </summary>
+        /// <returns>
+        /// true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
+        /// </returns>
+        public bool IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <returns>
+        /// The element at the specified index.
+        /// </returns>
+        /// <param name="index">
+        /// The zero-based index of the element to get or set.
+        /// </param>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
+        /// </exception>
+        /// <exception cref="T:System.NotSupportedException">
+        /// The property is set and the <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
+        /// </exception>
+        public TChildren this[int index]
+        {
+            get
+            {
+                return this._owner.Controls[index] as TChildren;
+            }
+
+            set
+            {
+                this.RemoveAt(index);
+                this.AddAt(index, value);
+            }
+        }
+
         public void AddAt(int index, TChildren childControl)
         {
             this._owner.Controls.AddAt(index, childControl);
@@ -76,48 +132,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the element at the specified index.
-        /// </summary>
-        /// <returns>
-        /// The element at the specified index.
-        /// </returns>
-        /// <param name="index">
-        /// The zero-based index of the element to get or set.
-        /// </param>
-        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index" /> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1" />.
-        /// </exception>
-        /// <exception cref="T:System.NotSupportedException">
-        /// The property is set and the <see cref="T:System.Collections.Generic.IList`1" /> is read-only.
-        /// </exception>
-        public TChildren this[int index]
-        {
-            get
-            {
-                return this._owner.Controls[index] as TChildren;
-            }
-
-            set
-            {
-                this.RemoveAt(index);
-                this.AddAt(index, value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
-        /// </summary>
-        /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
-        /// </returns>
-        public int Count
-        {
-            get
-            {
-                return this._owner.HasControls() ? this._owner.Controls.Count : 0;
-            }
-        }
-
-        /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <returns>
@@ -133,20 +147,6 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this._owner.Controls.Remove(item);
             return true;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
-        /// </summary>
-        /// <returns>
-        /// true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.
-        /// </returns>
-        public bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
         }
 
         /// <summary>
@@ -237,6 +237,11 @@ namespace DotNetNuke.Web.UI.WebControls
             return this._owner.Controls.Contains(item);
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.EnumerableGetEnumerator();
+        }
+
         /// <summary>
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
@@ -247,11 +252,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private IEnumerator EnumerableGetEnumerator()
         {
             return this._owner.Controls.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.EnumerableGetEnumerator();
         }
     }
 }

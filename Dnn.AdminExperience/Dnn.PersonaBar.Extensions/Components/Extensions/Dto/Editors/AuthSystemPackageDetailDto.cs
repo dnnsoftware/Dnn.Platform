@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
     using DotNetNuke.Services.Installer.Packages;
@@ -10,6 +9,14 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class AuthSystemPackageDetailDto : PackageInfoDto
     {
+        public AuthSystemPackageDetailDto()
+        {
+        }
+
+        public AuthSystemPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
+        {
+        }
+
         [JsonProperty("authenticationType")]
         public string AuthenticationType { get; set; }
 
@@ -37,14 +44,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         [JsonProperty("appEnabled")]
         public bool AppEnabled { get; set; }
-
-        public AuthSystemPackageDetailDto()
-        {
-        }
-
-        public AuthSystemPackageDetailDto(int portalId, PackageInfo package) : base(portalId, package)
-        {
-
-        }
     }
 }

@@ -28,6 +28,25 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class MenuBase
     {
+        private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
+                                                                          {
+                                                                            { "rootonly", "*,0,0" },
+                                                                            { "rootchildren", "+0" },
+                                                                            { "currentchildren", "." },
+                                                                          };
+
+        private Settings menuSettings;
+
+        private HttpContext currentContext;
+
+        private PortalSettings hostPortalSettings;
+
+        public TemplateDefinition TemplateDef { get; set; }
+
+        internal MenuNode RootNode { get; set; }
+
+        internal bool SkipLocalisation { get; set; }
+
         public static MenuBase Instantiate(string menuStyle)
         {
             try
@@ -41,34 +60,15 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        private Settings menuSettings;
-
-        internal MenuNode RootNode { get; set; }
-
-        internal bool SkipLocalisation { get; set; }
-
-        public TemplateDefinition TemplateDef { get; set; }
-
-        private HttpContext currentContext;
-
-        private HttpContext CurrentContext
-        {
-            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
-        }
-
-        private PortalSettings hostPortalSettings;
-
         internal PortalSettings HostPortalSettings
         {
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
         }
 
-        private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
-                                                                          {
-                                                                            { "rootonly", "*,0,0" },
-                                                                            { "rootchildren", "+0" },
-                                                                            { "currentchildren", "." },
-                                                                          };
+        private HttpContext CurrentContext
+        {
+            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
+        }
 
         internal void ApplySettings(Settings settings)
         {
@@ -140,6 +140,16 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.AddClientOptions(new List<ClientOption> { new ClientString("MenuStyle", this.menuSettings.MenuStyle) }, false);
 
             this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
+        }
+
+        protected string MapPath(string path)
+        {
+            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
+        }
+
+        private static List<string> SplitAndTrim(string str)
+        {
+            return new List<string>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
         }
 
         private void LoadNodeXml()
@@ -365,16 +375,6 @@ namespace DotNetNuke.Web.DDRMenu
                 new MenuNode(
                     ((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(this.menuSettings.NodeManipulator, true, true))).
                         ManipulateNodes(this.RootNode.Children, this.HostPortalSettings));
-        }
-
-        protected string MapPath(string path)
-        {
-            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
-        }
-
-        private static List<string> SplitAndTrim(string str)
-        {
-            return new List<string>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
         }
     }
 }

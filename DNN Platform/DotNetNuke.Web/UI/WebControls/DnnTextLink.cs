@@ -107,6 +107,21 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public bool Localize
+        {
+            get
+            {
+                return this._localize;
+            }
+
+            set
+            {
+                this._localize = value;
+            }
+        }
+
+        public string LocalResourceFile { get; set; }
+
         private HyperLink TextHyperlinkControl
         {
             get
@@ -117,6 +132,32 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 return this._textHyperlinkControl;
+            }
+        }
+
+        public virtual void LocalizeStrings()
+        {
+            if (this.Localize)
+            {
+                if (!string.IsNullOrEmpty(this.ToolTip))
+                {
+                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
+                }
+
+                if (!string.IsNullOrEmpty(this.Text))
+                {
+                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
+
+                    if (string.IsNullOrEmpty(this.ToolTip))
+                    {
+                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
+                    }
+
+                    if (string.IsNullOrEmpty(this.ToolTip))
+                    {
+                        this.ToolTip = this.Text;
+                    }
+                }
             }
         }
 
@@ -149,47 +190,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.RenderBeginTag(writer);
             this.RenderChildren(writer);
             this.RenderEndTag(writer);
-        }
-
-        public bool Localize
-        {
-            get
-            {
-                return this._localize;
-            }
-
-            set
-            {
-                this._localize = value;
-            }
-        }
-
-        public string LocalResourceFile { get; set; }
-
-        public virtual void LocalizeStrings()
-        {
-            if (this.Localize)
-            {
-                if (!string.IsNullOrEmpty(this.ToolTip))
-                {
-                    this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
-                }
-
-                if (!string.IsNullOrEmpty(this.Text))
-                {
-                    this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
-
-                    if (string.IsNullOrEmpty(this.ToolTip))
-                    {
-                        this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
-                    }
-
-                    if (string.IsNullOrEmpty(this.ToolTip))
-                    {
-                        this.ToolTip = this.Text;
-                    }
-                }
-            }
         }
     }
 }

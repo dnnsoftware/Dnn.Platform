@@ -23,6 +23,8 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
 
+        public bool IsReusable => true;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This handler handles requests for LinkClick.aspx, but only those specifc
@@ -264,7 +266,5 @@ namespace DotNetNuke.Services.FileSystem
                 UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
             }
         }
-
-        public bool IsReusable => true;
     }
 }

@@ -13,6 +13,83 @@ namespace DotNetNuke.Tests.Urls
 
     internal static class UrlTestFactoryClass
     {
+        internal static IEnumerable FriendlyUrl_BaseTestCases
+        {
+            get
+            {
+                var testData = new ArrayList();
+
+                TestUtil.ReadStream("FriendlyUrl\\BaseTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
+
+                return testData;
+            }
+        }
+
+        internal static IEnumerable FriendlyUrl_ForceLowerCaseTestCases
+        {
+            get
+            {
+                var testData = new ArrayList();
+
+                GetTestsWithAliases("FriendlyUrl", "ForceLowerCase", testData);
+
+                return testData;
+            }
+        }
+
+        internal static IEnumerable FriendlyUrl_ImprovedTestCases
+        {
+            get
+            {
+                var testData = new ArrayList();
+
+                TestUtil.ReadStream("FriendlyUrl\\ImprovedTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
+
+                return testData;
+            }
+        }
+
+        internal static FriendlyUrlSettings GetSettings(string testType, string testName, int portalId)
+        {
+            return GetSettings(testType, testName, "Settings", portalId);
+        }
+
+        internal static FriendlyUrlSettings GetSettings(string testType, string testName, string settingsFile, int portalId)
+        {
+            var settings = new FriendlyUrlSettings(portalId);
+
+            // Read Test Settings
+            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            {
+                string[] fields = line.Split(',');
+                string key = fields[0].Trim();
+                string value = fields[1].Trim();
+
+                var type = typeof(FriendlyUrlSettings);
+                var property = type.GetProperty(key);
+                if (property != null)
+                {
+                    if (property.PropertyType == typeof(bool))
+                    {
+                        property.SetValue(settings, Convert.ToBoolean(value), null);
+                    }
+                    else if (property.PropertyType == typeof(int))
+                    {
+                        property.SetValue(settings, Convert.ToInt32(value), null);
+                    }
+                    else if (property.PropertyType.BaseType == typeof(Enum))
+                    {
+                        property.SetValue(settings, Enum.Parse(property.PropertyType, value), null);
+                    }
+                    else
+                    {
+                        property.SetValue(settings, value, null);
+                    }
+                }
+            });
+            return settings;
+        }
+
         private static void GetTestsWithAliases(string testType, string testName, ArrayList testData)
         {
             TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
@@ -65,47 +142,6 @@ namespace DotNetNuke.Tests.Urls
             // ReSharper restore RedundantCatchClause
         }
 
-        internal static FriendlyUrlSettings GetSettings(string testType, string testName, int portalId)
-        {
-            return GetSettings(testType, testName, "Settings", portalId);
-        }
-
-        internal static FriendlyUrlSettings GetSettings(string testType, string testName, string settingsFile, int portalId)
-        {
-            var settings = new FriendlyUrlSettings(portalId);
-
-            // Read Test Settings
-            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
-            {
-                string[] fields = line.Split(',');
-                string key = fields[0].Trim();
-                string value = fields[1].Trim();
-
-                var type = typeof(FriendlyUrlSettings);
-                var property = type.GetProperty(key);
-                if (property != null)
-                {
-                    if (property.PropertyType == typeof(bool))
-                    {
-                        property.SetValue(settings, Convert.ToBoolean(value), null);
-                    }
-                    else if (property.PropertyType == typeof(int))
-                    {
-                        property.SetValue(settings, Convert.ToInt32(value), null);
-                    }
-                    else if (property.PropertyType.BaseType == typeof(Enum))
-                    {
-                        property.SetValue(settings, Enum.Parse(property.PropertyType, value), null);
-                    }
-                    else
-                    {
-                        property.SetValue(settings, value, null);
-                    }
-                }
-            });
-            return settings;
-        }
-
         internal static Dictionary<string, string> GetDictionary(string testType, string testName, string settingsFile)
         {
             var dictionary = new Dictionary<string, string>();
@@ -120,42 +156,6 @@ namespace DotNetNuke.Tests.Urls
                 dictionary.Add(key, value);
             });
             return dictionary;
-        }
-
-        internal static IEnumerable FriendlyUrl_BaseTestCases
-        {
-            get
-            {
-                var testData = new ArrayList();
-
-                TestUtil.ReadStream("FriendlyUrl\\BaseTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
-
-                return testData;
-            }
-        }
-
-        internal static IEnumerable FriendlyUrl_ForceLowerCaseTestCases
-        {
-            get
-            {
-                var testData = new ArrayList();
-
-                GetTestsWithAliases("FriendlyUrl", "ForceLowerCase", testData);
-
-                return testData;
-            }
-        }
-
-        internal static IEnumerable FriendlyUrl_ImprovedTestCases
-        {
-            get
-            {
-                var testData = new ArrayList();
-
-                TestUtil.ReadStream("FriendlyUrl\\ImprovedTestList", (line, header) => GetTestsWithAliases("FriendlyUrl", line, testData));
-
-                return testData;
-            }
         }
 
         internal static IEnumerable FriendlyUrl_PageExtensionTestCases

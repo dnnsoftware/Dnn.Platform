@@ -76,12 +76,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.SetupDataTables();
         }
 
-        private void SetupDataProvider()
-        {
-            // Standard DataProvider Path for Logging
-            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-        }
-
         [TearDown]
         public void TearDown()
         {
@@ -96,6 +90,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void CreateNotificationType_Throws_On_Null_NotificationType()
         {
             this._notificationsController.CreateNotificationType(null);
+        }
+
+        private void SetupDataProvider()
+        {
+            // Standard DataProvider Path for Logging
+            this._dataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
         }
 
         [Test]

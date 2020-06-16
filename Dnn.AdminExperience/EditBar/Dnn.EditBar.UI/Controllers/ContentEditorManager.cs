@@ -42,8 +42,8 @@ namespace Dnn.EditBar.UI.Controllers
     /// </summary>
     public class ContentEditorManager : UserControlBase
     {
-        private const int CssFileOrder = 40;
         public const string ControlFolder = "~/DesktopModules/admin/Dnn.EditBar/Resources";
+        private const int CssFileOrder = 40;
         private bool _supportAjax = true;
 
         public Skin Skin { get; set; }
@@ -64,6 +64,25 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 this._supportAjax = value;
             }
+        }
+
+        public static bool HasTabPermission(string permissionKey)
+        {
+            var principal = Thread.CurrentPrincipal;
+            if (!principal.Identity.IsAuthenticated)
+            {
+                return false;
+            }
+
+            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+
+            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
+            if (isAdminUser)
+            {
+                return true;
+            }
+
+            return TabPermissionController.HasTabPermission(permissionKey);
         }
 
         internal static ContentEditorManager GetCurrent(Page page)
@@ -214,6 +233,19 @@ namespace Dnn.EditBar.UI.Controllers
             base.Render(writer);
         }
 
+        private static void FindControlRecursive(Control rootControl, string controlId, ICollection<Control> foundControls)
+        {
+            if (rootControl.ID == controlId)
+            {
+                foundControls.Add(rootControl);
+            }
+
+            foreach (Control subControl in rootControl.Controls)
+            {
+                FindControlRecursive(subControl, controlId, foundControls);
+            }
+        }
+
         private void RegisterClientResources()
         {
             ClientResourceManager.EnableAsyncPostBackHandler();
@@ -273,25 +305,6 @@ namespace Dnn.EditBar.UI.Controllers
             return HasTabPermission("EDIT");
         }
 
-        public static bool HasTabPermission(string permissionKey)
-        {
-            var principal = Thread.CurrentPrincipal;
-            if (!principal.Identity.IsAuthenticated)
-            {
-                return false;
-            }
-
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-
-            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
-            if (isAdminUser)
-            {
-                return true;
-            }
-
-            return TabPermissionController.HasTabPermission(permissionKey);
-        }
-
         private IEnumerable<IEnumerable<string>> GetPaneClientIdCollection()
         {
             var panelClientIds = new List<List<string>>(this.PortalSettings.ActiveTab.Panes.Count);
@@ -313,19 +326,6 @@ namespace Dnn.EditBar.UI.Controllers
             }
 
             return panelClientIds;
-        }
-
-        private static void FindControlRecursive(Control rootControl, string controlId, ICollection<Control> foundControls)
-        {
-            if (rootControl.ID == controlId)
-            {
-                foundControls.Add(rootControl);
-            }
-
-            foreach (Control subControl in rootControl.Controls)
-            {
-                FindControlRecursive(subControl, controlId, foundControls);
-            }
         }
 
         /// <summary>
@@ -703,6 +703,11 @@ namespace Dnn.EditBar.UI.Controllers
                 }
             }
 
+            public override Control FindControl(string id)
+            {
+                return this._originalPage.FindControl(id);
+            }
+
             private void SetField(string name, object value)
             {
                 var field = typeof(Page).GetField(name, BindingFlags.NonPublic | BindingFlags.Instance);
@@ -721,11 +726,6 @@ namespace Dnn.EditBar.UI.Controllers
 
                     property.SetValue(this, value, new object[] { });
                 }
-            }
-
-            public override Control FindControl(string id)
-            {
-                return this._originalPage.FindControl(id);
             }
         }
     }

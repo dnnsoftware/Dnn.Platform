@@ -79,6 +79,25 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public virtual int KeyID
+        {
+            get
+            {
+                return this.AuthenticationID;
+            }
+
+            set
+            {
+                this.AuthenticationID = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Fills a RoleInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -95,25 +114,6 @@ namespace DotNetNuke.Services.Authentication
 
             // Fill base class fields
             this.FillInternal(dr);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        public virtual int KeyID
-        {
-            get
-            {
-                return this.AuthenticationID;
-            }
-
-            set
-            {
-                this.AuthenticationID = value;
-            }
         }
     }
 }

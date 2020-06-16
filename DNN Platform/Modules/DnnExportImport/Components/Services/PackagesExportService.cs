@@ -133,6 +133,53 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportPackage>();
         }
 
+        public void InstallPackage(string filePath)
+        {
+            using (var stream = new FileStream(filePath, FileMode.Open))
+            {
+                try
+                {
+                    var installer = GetInstaller(stream);
+
+                    if (installer.IsValid)
+                    {
+                        // Reset Log
+                        installer.InstallerInfo.Log.Logs.Clear();
+
+                        // Set the IgnnoreWhiteList flag
+                        installer.InstallerInfo.IgnoreWhiteList = true;
+
+                        // Set the Repair flag
+                        installer.InstallerInfo.RepairInstall = true;
+
+                        // Install
+                        installer.Install();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
+                    Logger.Error(ex);
+                }
+            }
+        }
+
+        private static Installer GetInstaller(Stream stream)
+        {
+            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
+            {
+                InstallerInfo = { PortalID = Null.NullInteger },
+            };
+
+            // Read the manifest
+            if (installer.InstallerInfo.ManifestFile != null)
+            {
+                installer.ReadManifest(true);
+            }
+
+            return installer;
+        }
+
         private int GetCurrentSkip()
         {
             if (!string.IsNullOrEmpty(this.CheckPoint.StageData))
@@ -270,53 +317,6 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
                 this.Result.AddLogEntry("PackagesFileNotFound", "Packages file not found. Skipping packages import", ReportLevel.Warn);
             }
-        }
-
-        public void InstallPackage(string filePath)
-        {
-            using (var stream = new FileStream(filePath, FileMode.Open))
-            {
-                try
-                {
-                    var installer = GetInstaller(stream);
-
-                    if (installer.IsValid)
-                    {
-                        // Reset Log
-                        installer.InstallerInfo.Log.Logs.Clear();
-
-                        // Set the IgnnoreWhiteList flag
-                        installer.InstallerInfo.IgnoreWhiteList = true;
-
-                        // Set the Repair flag
-                        installer.InstallerInfo.RepairInstall = true;
-
-                        // Install
-                        installer.Install();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    this.Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
-                    Logger.Error(ex);
-                }
-            }
-        }
-
-        private static Installer GetInstaller(Stream stream)
-        {
-            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
-            {
-                InstallerInfo = { PortalID = Null.NullInteger },
-            };
-
-            // Read the manifest
-            if (installer.InstallerInfo.ManifestFile != null)
-            {
-                installer.ReadManifest(true);
-            }
-
-            return installer;
         }
     }
 }

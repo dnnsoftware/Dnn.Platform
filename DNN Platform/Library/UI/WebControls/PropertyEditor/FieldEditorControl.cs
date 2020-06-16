@@ -65,13 +65,11 @@ namespace DotNetNuke.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
+        public event PropertyChangedEventHandler ItemAdded;
+
+        public event PropertyChangedEventHandler ItemChanged;
+
+        public event EditorCreatedEventHandler ItemCreated;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -93,6 +91,14 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue("")]
         [Description("Enter the name of the field that is data bound to the Control.")]
         public string DataField { get; set; }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -330,13 +336,130 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
-        public event PropertyChangedEventHandler ItemAdded;
-
-        public event PropertyChangedEventHandler ItemChanged;
-
-        public event EditorCreatedEventHandler ItemCreated;
-
         public event PropertyChangedEventHandler ItemDeleted;
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Binds the controls to the DataSource.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void DataBind()
+        {
+            // Invoke OnDataBinding so DataBinding Event is raised
+            this.OnDataBinding(EventArgs.Empty);
+
+            // Clear Existing Controls
+            this.Controls.Clear();
+
+            // Clear Child View State as controls will be loaded from DataSource
+            this.ClearChildViewState();
+
+            // Start Tracking ViewState
+            this.TrackViewState();
+
+            // Create the editor
+            this.CreateEditor();
+
+            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+            this.ChildControlsCreated = true;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Validates the data, and sets the IsValid Property.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public virtual void Validate()
+        {
+            this._IsValid = this.Editor.IsValid;
+
+            if (this._IsValid)
+            {
+                IEnumerator valEnumerator = this.Validators.GetEnumerator();
+                while (valEnumerator.MoveNext())
+                {
+                    var validator = (IValidator)valEnumerator.Current;
+                    validator.Validate();
+                    if (!validator.IsValid)
+                    {
+                        this._IsValid = false;
+                        break;
+                    }
+                }
+
+                this._Validated = true;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// CreateEditor creates the control collection for this control.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void CreateEditor()
+        {
+            EditorInfo editInfo = this.EditorInfoAdapter.CreateEditControl();
+
+            this.ID = editInfo.Name;
+
+            if (editInfo != null)
+            {
+                editInfo.User = this.User;
+
+                if (editInfo.EditMode == PropertyEditorMode.Edit)
+                {
+                    editInfo.EditMode = this.EditMode;
+                }
+
+                // Get the Editor Type to use (if specified)
+                if (!string.IsNullOrEmpty(this.EditorTypeName))
+                {
+                    editInfo.Editor = this.EditorTypeName;
+                }
+
+                // Get the Label Mode to use (if specified)
+                if (this.LabelMode != LabelMode.Left)
+                {
+                    editInfo.LabelMode = this.LabelMode;
+                }
+
+                // if Required is specified set editors property
+                if (this.Required)
+                {
+                    editInfo.Required = this.Required;
+                }
+
+                // Get the ValidationExpression to use (if specified)
+                if (!string.IsNullOrEmpty(this.ValidationExpression))
+                {
+                    editInfo.ValidationExpression = this.ValidationExpression;
+                }
+
+                // Raise the ItemCreated Event
+                this.OnItemCreated(new PropertyEditorItemEventArgs(editInfo));
+
+                this.Visible = editInfo.Visible;
+
+                if (this.EditorDisplayMode == EditorDisplayMode.Div)
+                {
+                    this.BuildDiv(editInfo);
+                }
+                else
+                {
+                    this.BuildTable(editInfo);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Runs when an item is added to a collection type property.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
+        {
+            this.OnItemAdded(e);
+        }
 
         /// <summary>
         /// BuildDiv creates the Control as a Div.
@@ -672,76 +795,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateEditor creates the control collection for this control.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void CreateEditor()
-        {
-            EditorInfo editInfo = this.EditorInfoAdapter.CreateEditControl();
-
-            this.ID = editInfo.Name;
-
-            if (editInfo != null)
-            {
-                editInfo.User = this.User;
-
-                if (editInfo.EditMode == PropertyEditorMode.Edit)
-                {
-                    editInfo.EditMode = this.EditMode;
-                }
-
-                // Get the Editor Type to use (if specified)
-                if (!string.IsNullOrEmpty(this.EditorTypeName))
-                {
-                    editInfo.Editor = this.EditorTypeName;
-                }
-
-                // Get the Label Mode to use (if specified)
-                if (this.LabelMode != LabelMode.Left)
-                {
-                    editInfo.LabelMode = this.LabelMode;
-                }
-
-                // if Required is specified set editors property
-                if (this.Required)
-                {
-                    editInfo.Required = this.Required;
-                }
-
-                // Get the ValidationExpression to use (if specified)
-                if (!string.IsNullOrEmpty(this.ValidationExpression))
-                {
-                    editInfo.ValidationExpression = this.ValidationExpression;
-                }
-
-                // Raise the ItemCreated Event
-                this.OnItemCreated(new PropertyEditorItemEventArgs(editInfo));
-
-                this.Visible = editInfo.Visible;
-
-                if (this.EditorDisplayMode == EditorDisplayMode.Div)
-                {
-                    this.BuildDiv(editInfo);
-                }
-                else
-                {
-                    this.BuildTable(editInfo);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Runs when an item is added to a collection type property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
-        {
-            this.OnItemAdded(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Runs when an item is removed from a collection type property.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -817,59 +870,6 @@ namespace DotNetNuke.UI.WebControls
         protected virtual void VisibilityChanged(object sender, PropertyEditorEventArgs e)
         {
             this.IsDirty = this.EditorInfoAdapter.UpdateVisibility(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Binds the controls to the DataSource.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void DataBind()
-        {
-            // Invoke OnDataBinding so DataBinding Event is raised
-            this.OnDataBinding(EventArgs.Empty);
-
-            // Clear Existing Controls
-            this.Controls.Clear();
-
-            // Clear Child View State as controls will be loaded from DataSource
-            this.ClearChildViewState();
-
-            // Start Tracking ViewState
-            this.TrackViewState();
-
-            // Create the editor
-            this.CreateEditor();
-
-            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
-            this.ChildControlsCreated = true;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Validates the data, and sets the IsValid Property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public virtual void Validate()
-        {
-            this._IsValid = this.Editor.IsValid;
-
-            if (this._IsValid)
-            {
-                IEnumerator valEnumerator = this.Validators.GetEnumerator();
-                while (valEnumerator.MoveNext())
-                {
-                    var validator = (IValidator)valEnumerator.Current;
-                    validator.Validate();
-                    if (!validator.IsValid)
-                    {
-                        this._IsValid = false;
-                        break;
-                    }
-                }
-
-                this._Validated = true;
-            }
         }
 
         /// -----------------------------------------------------------------------------

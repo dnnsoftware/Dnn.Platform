@@ -27,6 +27,8 @@ namespace DotNetNuke.UI.Containers
         private ActionManager _ActionManager;
         private ModuleAction _ModuleAction;
 
+        public event ActionEventHandler Action;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the ModuleAction for this Action control.
@@ -50,8 +52,6 @@ namespace DotNetNuke.UI.Containers
                 this._ModuleAction = value;
             }
         }
-
-        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

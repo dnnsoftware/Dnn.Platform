@@ -19,10 +19,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("purge-module", Constants.RecylcleBinCategory, "Prompt_PurgeModule_Description")]
     public class PurgeModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_PurgeModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_PurgeModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";

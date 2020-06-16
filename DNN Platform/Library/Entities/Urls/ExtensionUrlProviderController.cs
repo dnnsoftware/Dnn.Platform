@@ -30,77 +30,16 @@ namespace DotNetNuke.Entities.Urls
             @"(?<tabid>(?:\?|&)tabid=\d+)(?<qs>&[^=]+=[^&]*)*",
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        private static void ClearCache()
+        public static void DeleteProvider(ExtensionUrlProviderInfo urlProvider)
         {
-            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
-            {
-                ClearCache(portal.PortalID);
-            }
+            DataProvider.Instance().DeleteExtensionUrlProvider(urlProvider.ExtensionUrlProviderId);
+            ClearCache();
         }
 
-        private static void ClearCache(int portalId)
+        public static void DisableProvider(int providerId, int portalId)
         {
-            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
-            DataCache.RemoveCache(cacheKey);
-        }
-
-        /// <summary>
-        /// Returns the providers to call. Returns tabid matches first, and any portal id matches after that.
-        /// </summary>
-        /// <param name="tabId"></param>
-        /// <param name="portalId"></param>
-        /// <param name="settings"></param>
-        /// <param name="parentTraceId"></param>
-        /// <returns></returns>
-        private static List<ExtensionUrlProvider> GetProvidersToCall(
-            int tabId,
-            int portalId,
-            FriendlyUrlSettings settings,
-            Guid parentTraceId)
-        {
-            List<ExtensionUrlProvider> providers;
-
-            // 887 : introduce lockable code to prevent caching race errors
-            lock (providersBuildLock)
-            {
-                bool definitelyNoProvider;
-
-                // 887 : use cached list of tabs instead of per-tab cache of provider
-                // get the list of providers to call based on the tab and the portal
-                var providersToCall = CacheController.GetProvidersForTabAndPortal(
-                    tabId,
-                    portalId,
-                    settings,
-                    out definitelyNoProvider,
-                    parentTraceId);
-                if (definitelyNoProvider == false && providersToCall == null)
-
-                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
-                {
-                    // get all providers for the portal
-                    var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
-
-                    // store the list of tabs for this portal that have a provider attached
-                    CacheController.StoreListOfTabsWithProviders(allProviders, portalId, settings);
-
-                    // stash the provider portals in the cache
-                    CacheController.StoreModuleProvidersForPortal(portalId, settings, allProviders);
-
-                    // now check if there is a provider for this tab/portal combination
-                    if (allProviders.Count > 0)
-                    {
-                        // find if a module is specific to a tab
-                        providersToCall = new List<ExtensionUrlProvider>();
-                        providersToCall.AddRange(allProviders);
-                    }
-                }
-
-                // always return an instantiated provider collection
-                providers = providersToCall ?? new List<ExtensionUrlProvider>();
-            }
-
-            // return the collection of module providers
-            return providers;
+            DataProvider.Instance().UpdateExtensionUrlProvider(providerId, false);
+            ClearCache(portalId);
         }
 
         /// <summary>
@@ -213,6 +152,79 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return redirected;
+        }
+
+        private static void ClearCache()
+        {
+            foreach (PortalInfo portal in PortalController.Instance.GetPortals())
+            {
+                ClearCache(portal.PortalID);
+            }
+        }
+
+        private static void ClearCache(int portalId)
+        {
+            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
+            DataCache.RemoveCache(cacheKey);
+        }
+
+        /// <summary>
+        /// Returns the providers to call. Returns tabid matches first, and any portal id matches after that.
+        /// </summary>
+        /// <param name="tabId"></param>
+        /// <param name="portalId"></param>
+        /// <param name="settings"></param>
+        /// <param name="parentTraceId"></param>
+        /// <returns></returns>
+        private static List<ExtensionUrlProvider> GetProvidersToCall(
+            int tabId,
+            int portalId,
+            FriendlyUrlSettings settings,
+            Guid parentTraceId)
+        {
+            List<ExtensionUrlProvider> providers;
+
+            // 887 : introduce lockable code to prevent caching race errors
+            lock (providersBuildLock)
+            {
+                bool definitelyNoProvider;
+
+                // 887 : use cached list of tabs instead of per-tab cache of provider
+                // get the list of providers to call based on the tab and the portal
+                var providersToCall = CacheController.GetProvidersForTabAndPortal(
+                    tabId,
+                    portalId,
+                    settings,
+                    out definitelyNoProvider,
+                    parentTraceId);
+                if (definitelyNoProvider == false && providersToCall == null)
+
+                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
+                {
+                    // get all providers for the portal
+                    var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
+
+                    // store the list of tabs for this portal that have a provider attached
+                    CacheController.StoreListOfTabsWithProviders(allProviders, portalId, settings);
+
+                    // stash the provider portals in the cache
+                    CacheController.StoreModuleProvidersForPortal(portalId, settings, allProviders);
+
+                    // now check if there is a provider for this tab/portal combination
+                    if (allProviders.Count > 0)
+                    {
+                        // find if a module is specific to a tab
+                        providersToCall = new List<ExtensionUrlProvider>();
+                        providersToCall.AddRange(allProviders);
+                    }
+                }
+
+                // always return an instantiated provider collection
+                providers = providersToCall ?? new List<ExtensionUrlProvider>();
+            }
+
+            // return the collection of module providers
+            return providers;
         }
 
         /// <summary>
@@ -462,18 +474,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return rewriteDone;
-        }
-
-        public static void DeleteProvider(ExtensionUrlProviderInfo urlProvider)
-        {
-            DataProvider.Instance().DeleteExtensionUrlProvider(urlProvider.ExtensionUrlProviderId);
-            ClearCache();
-        }
-
-        public static void DisableProvider(int providerId, int portalId)
-        {
-            DataProvider.Instance().UpdateExtensionUrlProvider(providerId, false);
-            ClearCache(portalId);
         }
 
         public static void EnableProvider(int providerId, int portalId)

@@ -36,6 +36,10 @@ namespace DotNetNuke.Entities.Tabs
     [Serializable]
     public class TabInfo : ContentItem, IPropertyAccess
     {
+        private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
+        private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
+        private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+
         private string _administratorRoles;
         private string _authorizedRoles;
         private TabInfo _defaultLanguageTab;
@@ -585,6 +589,14 @@ namespace DotNetNuke.Entities.Tabs
         [XmlIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
 
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;
@@ -750,121 +762,6 @@ namespace DotNetNuke.Entities.Tabs
             return result;
         }
 
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
-
-        private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
-        private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
-        private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
-
-        /// <summary>
-        /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
-        /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
-        /// Adds xmlns and lang parameters when appropiate.
-        /// </summary>
-        /// <remarks></remarks>
-        private string CheckIfDoctypeConfigExists()
-        {
-            if (string.IsNullOrEmpty(this.SkinSrc))
-            {
-                return string.Empty;
-            }
-
-            // loading an XML document from disk for each page request is expensive
-            // let's implement some local caching
-            if (!_docTypeCache.ContainsKey(this.SkinSrc))
-            {
-                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
-                _docTypeCacheLock.EnterWriteLock();
-                try
-                {
-                    var docType = this.LoadDocType();
-                    _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
-                }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
-                finally
-                {
-                    _docTypeCacheLock.ExitWriteLock();
-                }
-            }
-
-            // return if file exists from cache
-            _docTypeCacheLock.EnterReadLock();
-            try
-            {
-                return _docTypeCache[this.SkinSrc];
-            }
-            finally
-            {
-                _docTypeCacheLock.ExitReadLock();
-            }
-        }
-
-        private XmlDocument LoadDocType()
-        {
-            var xmlSkinDocType = new XmlDocument { XmlResolver = null };
-
-            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
-            var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
-            if (File.Exists(skinFileName))
-            {
-                xmlSkinDocType.Load(skinFileName);
-                return xmlSkinDocType;
-            }
-
-            // use the skin.doctype.xml file
-            var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(this.SkinSrc, "skin.doctype.xml"));
-            if (File.Exists(packageFileName))
-            {
-                xmlSkinDocType.Load(packageFileName);
-                return xmlSkinDocType;
-            }
-
-            // no doctype
-            return null;
-        }
-
-        private void IconFileGetter(ref string iconFile, string iconRaw)
-        {
-            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
-            {
-                iconFile = iconRaw;
-            }
-            else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
-            {
-                IFileInfo fileInfo;
-                if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    var fileId = Convert.ToInt32(iconRaw.Substring(7));
-                    fileInfo = FileManager.Instance.GetFile(fileId);
-                }
-                else
-                {
-                    fileInfo = FileManager.Instance.GetFile(this.PortalID, iconRaw);
-                }
-
-                iconFile = fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconRaw;
-            }
-        }
-
-        internal void ClearTabUrls()
-        {
-            this._tabUrls = null;
-        }
-
-        internal void ClearSettingsCache()
-        {
-            this._settings = null;
-        }
-
         public TabInfo Clone()
         {
             var clonedTab = new TabInfo(this._localizedTabNameDictionary, this._fullUrlDictionary)
@@ -970,6 +867,109 @@ namespace DotNetNuke.Entities.Tabs
             this.BreadCrumbs = null;
             this.Modules = null;
             this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
+        }
+
+        internal void ClearTabUrls()
+        {
+            this._tabUrls = null;
+        }
+
+        internal void ClearSettingsCache()
+        {
+            this._settings = null;
+        }
+
+        /// <summary>
+        /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
+        /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
+        /// Adds xmlns and lang parameters when appropiate.
+        /// </summary>
+        /// <remarks></remarks>
+        private string CheckIfDoctypeConfigExists()
+        {
+            if (string.IsNullOrEmpty(this.SkinSrc))
+            {
+                return string.Empty;
+            }
+
+            // loading an XML document from disk for each page request is expensive
+            // let's implement some local caching
+            if (!_docTypeCache.ContainsKey(this.SkinSrc))
+            {
+                // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
+                _docTypeCacheLock.EnterWriteLock();
+                try
+                {
+                    var docType = this.LoadDocType();
+                    _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
+                }
+                catch (Exception ex)
+                {
+                    Exceptions.LogException(ex);
+                }
+                finally
+                {
+                    _docTypeCacheLock.ExitWriteLock();
+                }
+            }
+
+            // return if file exists from cache
+            _docTypeCacheLock.EnterReadLock();
+            try
+            {
+                return _docTypeCache[this.SkinSrc];
+            }
+            finally
+            {
+                _docTypeCacheLock.ExitReadLock();
+            }
+        }
+
+        private XmlDocument LoadDocType()
+        {
+            var xmlSkinDocType = new XmlDocument { XmlResolver = null };
+
+            // default to the skinname.doctype.xml to allow the individual skin to override the skin package
+            var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
+            if (File.Exists(skinFileName))
+            {
+                xmlSkinDocType.Load(skinFileName);
+                return xmlSkinDocType;
+            }
+
+            // use the skin.doctype.xml file
+            var packageFileName = HttpContext.Current.Server.MapPath(SkinSrcRegex.Replace(this.SkinSrc, "skin.doctype.xml"));
+            if (File.Exists(packageFileName))
+            {
+                xmlSkinDocType.Load(packageFileName);
+                return xmlSkinDocType;
+            }
+
+            // no doctype
+            return null;
+        }
+
+        private void IconFileGetter(ref string iconFile, string iconRaw)
+        {
+            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
+            {
+                iconFile = iconRaw;
+            }
+            else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
+            {
+                IFileInfo fileInfo;
+                if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var fileId = Convert.ToInt32(iconRaw.Substring(7));
+                    fileInfo = FileManager.Instance.GetFile(fileId);
+                }
+                else
+                {
+                    fileInfo = FileManager.Instance.GetFile(this.PortalID, iconRaw);
+                }
+
+                iconFile = fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconRaw;
+            }
         }
 
         public string GetCurrentUrl(string cultureCode)

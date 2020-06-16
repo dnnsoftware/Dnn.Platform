@@ -20,27 +20,49 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     public class TabPathHelper
     {
-        private static string AppendToTabPath(string path, TabInfo tab, FriendlyUrlOptions options, out bool modified)
+        public static string BuildTabPathWithReplacement(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
-            string tabName = tab.TabName;
-            var result = new StringBuilder(tabName.Length);
-
-            // 922 : change to harmonise cleaning of tab + other url name items
-            tabName = FriendlyUrlController.CleanNameForUrl(tabName, options, out modified);
-            if (!modified
-                && string.IsNullOrEmpty(options.PunctuationReplacement) == false
-                && tab.TabName.Contains(" ")
-                && tabName.Contains(" ") == false)
+            string path = string.Empty;
+            if (tab.ParentId > -1)
             {
-                modified = true;
+                TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
 
-                // spaces replaced - the modified parameter is for all other replacements but space replacements
+                // 822 : don't assume parent tab is going to exist - database might be corrupted
+                // 896 : check to make sure tabid and parentid are different - or stack overflow occurs with terminal loop
+                if (parentTab != null && parentTab.TabID != tab.TabID)
+                {
+                    path = BuildTabPathWithReplacement(parentTab, options, parentTraceId);
+                }
             }
 
-            result.Append(tabName);
-            result.Insert(0, "//");
-            result.Insert(0, path); // effectively adds result to the end of the path
-            return result.ToString();
+            bool modified;
+            path = AppendToTabPath(path, tab, options, out modified);
+
+            return path;
+        }
+
+        /// <summary>
+        /// Replaces the diacritic characters in a path with other values.
+        /// </summary>
+        /// <param name="tabPath"></param>
+        /// <param name="replacedDiacritic"></param>
+        /// <returns></returns>
+        public static string ReplaceDiacritics(string tabPath, out bool replacedDiacritic)
+        {
+            string nmTabPath = tabPath.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
+            for (int i = 0; i < nmTabPath.Length; i++)
+            {
+                char c = nmTabPath[i];
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            string result = sb.ToString();
+            replacedDiacritic = string.CompareOrdinal(tabPath, result) != 0;
+            return sb.ToString();
         }
 
         /// <summary>
@@ -96,6 +118,29 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return homeTabId;
+        }
+
+        private static string AppendToTabPath(string path, TabInfo tab, FriendlyUrlOptions options, out bool modified)
+        {
+            string tabName = tab.TabName;
+            var result = new StringBuilder(tabName.Length);
+
+            // 922 : change to harmonise cleaning of tab + other url name items
+            tabName = FriendlyUrlController.CleanNameForUrl(tabName, options, out modified);
+            if (!modified
+                && string.IsNullOrEmpty(options.PunctuationReplacement) == false
+                && tab.TabName.Contains(" ")
+                && tabName.Contains(" ") == false)
+            {
+                modified = true;
+
+                // spaces replaced - the modified parameter is for all other replacements but space replacements
+            }
+
+            result.Append(tabName);
+            result.Insert(0, "//");
+            result.Insert(0, path); // effectively adds result to the end of the path
+            return result.ToString();
         }
 
         internal static string GetTabAliasSkinForTabAndAlias(int portalId, string httpAlias, string culture)
@@ -347,51 +392,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return isTabHomePage;
-        }
-
-        public static string BuildTabPathWithReplacement(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
-        {
-            string path = string.Empty;
-            if (tab.ParentId > -1)
-            {
-                TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
-
-                // 822 : don't assume parent tab is going to exist - database might be corrupted
-                // 896 : check to make sure tabid and parentid are different - or stack overflow occurs with terminal loop
-                if (parentTab != null && parentTab.TabID != tab.TabID)
-                {
-                    path = BuildTabPathWithReplacement(parentTab, options, parentTraceId);
-                }
-            }
-
-            bool modified;
-            path = AppendToTabPath(path, tab, options, out modified);
-
-            return path;
-        }
-
-        /// <summary>
-        /// Replaces the diacritic characters in a path with other values.
-        /// </summary>
-        /// <param name="tabPath"></param>
-        /// <param name="replacedDiacritic"></param>
-        /// <returns></returns>
-        public static string ReplaceDiacritics(string tabPath, out bool replacedDiacritic)
-        {
-            string nmTabPath = tabPath.Normalize(NormalizationForm.FormD);
-            var sb = new StringBuilder();
-            for (int i = 0; i < nmTabPath.Length; i++)
-            {
-                char c = nmTabPath[i];
-                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                {
-                    sb.Append(c);
-                }
-            }
-
-            string result = sb.ToString();
-            replacedDiacritic = string.CompareOrdinal(tabPath, result) != 0;
-            return sb.ToString();
         }
     }
 }

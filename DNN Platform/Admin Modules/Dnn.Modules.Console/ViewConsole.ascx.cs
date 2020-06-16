@@ -29,8 +29,8 @@ namespace Dnn.Modules.Console
 
     public partial class ViewConsole : PortalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
+        private readonly INavigationManager _navigationManager;
         private ConsoleController _consoleCtrl;
         private string _defaultSize = string.Empty;
         private string _defaultView = string.Empty;
@@ -191,6 +191,118 @@ namespace Dnn.Modules.Console
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            try
+            {
+                JavaScript.RequestRegistration(CommonJs.jQuery);
+
+                ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/admin/console/scripts/jquery.console.js");
+
+                this.DetailView.ItemDataBound += this.RepeaterItemDataBound;
+
+                // Save User Preferences
+                this.SavePersonalizedSettings();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            try
+            {
+                this.IconSize.Visible = this.AllowSizeChange;
+                this.View.Visible = this.AllowViewChange;
+
+                foreach (string val in ConsoleController.GetSizeValues())
+                {
+                    this.IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", this.LocalResourceFile), val));
+                }
+
+                foreach (string val in ConsoleController.GetViewValues())
+                {
+                    this.View.Items.Add(new ListItem(Localization.GetString(val + ".Text", this.LocalResourceFile), val));
+                }
+
+                this.IconSize.SelectedValue = this.DefaultSize;
+                this.View.SelectedValue = this.DefaultView;
+
+                if (!this.IsPostBack)
+                {
+                    this.Console.Attributes["class"] = this.Console.Attributes["class"] + " " + this.Mode.ToLower(CultureInfo.InvariantCulture);
+
+                    this.SettingsBreak.Visible = this.AllowSizeChange && this.AllowViewChange;
+
+                    List<TabInfo> tempTabs = this.IsHostTab()
+                                        ? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
+                                        : TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList();
+
+                    this._tabs = new List<TabInfo>();
+
+                    IList<int> tabIdList = new List<int>();
+                    tabIdList.Add(this.ConsoleTabID);
+
+                    if (this.IncludeParent)
+                    {
+                        TabInfo consoleTab = TabController.Instance.GetTab(this.ConsoleTabID, this.PortalId);
+                        if (consoleTab != null)
+                        {
+                            this._tabs.Add(consoleTab);
+                        }
+                    }
+
+                    foreach (TabInfo tab in tempTabs)
+                    {
+                        if (!this.CanShowTab(tab))
+                        {
+                            continue;
+                        }
+
+                        if (tabIdList.Contains(tab.ParentId))
+                        {
+                            if (!tabIdList.Contains(tab.TabID))
+                            {
+                                tabIdList.Add(tab.TabID);
+                            }
+
+                            this._tabs.Add(tab);
+                        }
+                    }
+
+                    // if OrderTabsByHierarchy set to true, we need reorder the tab list to move tabs which have child tabs to the end of list.
+                    // so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
+                    if (this.OrderTabsByHierarchy)
+                    {
+                        this._tabs = this._tabs.OrderBy(t => t.HasChildren).ToList();
+                    }
+
+                    int minLevel = -1;
+                    if (this._tabs.Count > 0)
+                    {
+                        minLevel = this._tabs.Min(t => t.Level);
+                    }
+
+                    this.DetailView.DataSource = (minLevel > -1) ? this._tabs.Where(t => t.Level == minLevel) : this._tabs;
+                    this.DetailView.DataBind();
+                }
+
+                if (this.ConsoleWidth != string.Empty)
+                {
+                    this.Console.Attributes.Add("style", "width:" + this.ConsoleWidth);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         private bool CanShowTab(TabInfo tab)
         {
             bool canShowTab = TabPermissionController.CanViewPage(tab) &&
@@ -325,132 +437,6 @@ namespace Dnn.Modules.Console
             Personalization.SetProfile(this.ModuleConfiguration.ModuleDefinition.FriendlyName, this.PersonalizationKey(key), val);
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            try
-            {
-                JavaScript.RequestRegistration(CommonJs.jQuery);
-
-                ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/admin/console/scripts/jquery.console.js");
-
-                this.DetailView.ItemDataBound += this.RepeaterItemDataBound;
-
-                // Save User Preferences
-                this.SavePersonalizedSettings();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            try
-            {
-                this.IconSize.Visible = this.AllowSizeChange;
-                this.View.Visible = this.AllowViewChange;
-
-                foreach (string val in ConsoleController.GetSizeValues())
-                {
-                    this.IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", this.LocalResourceFile), val));
-                }
-
-                foreach (string val in ConsoleController.GetViewValues())
-                {
-                    this.View.Items.Add(new ListItem(Localization.GetString(val + ".Text", this.LocalResourceFile), val));
-                }
-
-                this.IconSize.SelectedValue = this.DefaultSize;
-                this.View.SelectedValue = this.DefaultView;
-
-                if (!this.IsPostBack)
-                {
-                    this.Console.Attributes["class"] = this.Console.Attributes["class"] + " " + this.Mode.ToLower(CultureInfo.InvariantCulture);
-
-                    this.SettingsBreak.Visible = this.AllowSizeChange && this.AllowViewChange;
-
-                    List<TabInfo> tempTabs = this.IsHostTab()
-                                        ? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
-                                        : TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList();
-
-                    this._tabs = new List<TabInfo>();
-
-                    IList<int> tabIdList = new List<int>();
-                    tabIdList.Add(this.ConsoleTabID);
-
-                    if (this.IncludeParent)
-                    {
-                        TabInfo consoleTab = TabController.Instance.GetTab(this.ConsoleTabID, this.PortalId);
-                        if (consoleTab != null)
-                        {
-                            this._tabs.Add(consoleTab);
-                        }
-                    }
-
-                    foreach (TabInfo tab in tempTabs)
-                    {
-                        if (!this.CanShowTab(tab))
-                        {
-                            continue;
-                        }
-
-                        if (tabIdList.Contains(tab.ParentId))
-                        {
-                            if (!tabIdList.Contains(tab.TabID))
-                            {
-                                tabIdList.Add(tab.TabID);
-                            }
-
-                            this._tabs.Add(tab);
-                        }
-                    }
-
-                    // if OrderTabsByHierarchy set to true, we need reorder the tab list to move tabs which have child tabs to the end of list.
-                    // so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
-                    if (this.OrderTabsByHierarchy)
-                    {
-                        this._tabs = this._tabs.OrderBy(t => t.HasChildren).ToList();
-                    }
-
-                    int minLevel = -1;
-                    if (this._tabs.Count > 0)
-                    {
-                        minLevel = this._tabs.Min(t => t.Level);
-                    }
-
-                    this.DetailView.DataSource = (minLevel > -1) ? this._tabs.Where(t => t.Level == minLevel) : this._tabs;
-                    this.DetailView.DataBind();
-                }
-
-                if (this.ConsoleWidth != string.Empty)
-                {
-                    this.Console.Attributes.Add("style", "width:" + this.ConsoleWidth);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        private void RepeaterItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            var tab = e.Item.DataItem as TabInfo;
-            e.Item.Controls.Add(new Literal() { Text = this.GetHtml(tab) });
-            if (this._tabs.Any(t => t.ParentId == tab.TabID))
-            {
-                var repeater = new Repeater();
-                repeater.ItemDataBound += this.RepeaterItemDataBound;
-                e.Item.Controls.Add(repeater);
-                repeater.DataSource = this._tabs.Where(t => t.ParentId == tab.TabID);
-                repeater.DataBind();
-            }
-        }
-
         protected string GetHtml(TabInfo tab)
         {
             string returnValue = string.Empty;
@@ -534,6 +520,20 @@ namespace Dnn.Modules.Console
                 this.DefaultView,
                 tmid,
                 this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+        }
+
+        private void RepeaterItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            var tab = e.Item.DataItem as TabInfo;
+            e.Item.Controls.Add(new Literal() { Text = this.GetHtml(tab) });
+            if (this._tabs.Any(t => t.ParentId == tab.TabID))
+            {
+                var repeater = new Repeater();
+                repeater.ItemDataBound += this.RepeaterItemDataBound;
+                e.Item.Controls.Add(repeater);
+                repeater.DataSource = this._tabs.Where(t => t.ParentId == tab.TabID);
+                repeater.DataBind();
+            }
         }
     }
 }

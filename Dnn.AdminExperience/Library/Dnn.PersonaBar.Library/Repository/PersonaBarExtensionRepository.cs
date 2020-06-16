@@ -17,19 +17,9 @@ namespace Dnn.PersonaBar.Library.Repository
     public class PersonaBarExtensionRepository : ServiceLocator<IPersonaBarExtensionRepository, PersonaBarExtensionRepository>,
         IPersonaBarExtensionRepository
     {
-        private readonly IDataService _dataService = new DataService();
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
-        }
-
-        protected override Func<IPersonaBarExtensionRepository> GetFactory()
-        {
-            return () => new PersonaBarExtensionRepository();
-        }
+        private readonly IDataService _dataService = new DataService();
 
         public void SaveExtension(PersonaBarExtension extension)
         {
@@ -50,6 +40,16 @@ namespace Dnn.PersonaBar.Library.Repository
         public void DeleteExtension(PersonaBarExtension extension)
         {
             this.DeleteExtension(extension.Identifier);
+        }
+
+        protected override Func<IPersonaBarExtensionRepository> GetFactory()
+        {
+            return () => new PersonaBarExtensionRepository();
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(PersonaBarExtensionsCacheKey);
         }
 
         public void DeleteExtension(string identifier)

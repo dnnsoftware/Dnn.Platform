@@ -36,6 +36,8 @@ namespace DotNetNuke.UI.UserControls
         protected Panel TypeRow;
         protected Panel URLRow;
         protected Panel UserRow;
+        protected DropDownList cboFiles;
+        protected DropDownList cboFolders;
         private bool _doChangeURL;
         private bool _doReloadFiles;
         private bool _doReloadFolders;
@@ -43,8 +45,6 @@ namespace DotNetNuke.UI.UserControls
         private bool _doRenderTypes;
         private string _localResourceFile;
         private PortalInfo _objPortal;
-        protected DropDownList cboFiles;
-        protected DropDownList cboFolders;
         protected DropDownList cboImages;
         protected DropDownList cboTabs;
         protected DropDownList cboUrls;
@@ -583,6 +583,65 @@ namespace DotNetNuke.UI.UserControls
                     this.txtUser.Width = Unit.Parse(value);
                     this.ViewState["SkinControlWidth"] = value;
                 }
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            AJAX.RegisterPostBackControl(this.FindControl("cmdSave"));
+
+            // prevent unauthorized access
+            if (this.Request.IsAuthenticated == false)
+            {
+                this.Visible = false;
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cboFolders.SelectedIndexChanged += this.cboFolders_SelectedIndexChanged;
+            this.optType.SelectedIndexChanged += this.optType_SelectedIndexChanged;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdDelete.Click += this.cmdDelete_Click;
+            this.cmdSave.Click += this.cmdSave_Click;
+            this.cmdSelect.Click += this.cmdSelect_Click;
+            this.cmdUpload.Click += this.cmdUpload_Click;
+
+            this.ErrorRow.Visible = false;
+
+            try
+            {
+                if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                {
+                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
+                }
+                else
+                {
+                    this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
+                }
+
+                if (this.ViewState["IsUrlControlLoaded"] == null)
+                {
+                    // If Not Page.IsPostBack Then
+                    // let's make at least an initialization
+                    // The type radio button must be initialized
+                    // The url must be initialized no matter its value
+                    this._doRenderTypes = true;
+                    this._doChangeURL = true;
+                    ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
+
+                    // The following line was mover to the pre-render event to ensure render for the first time
+                    // ViewState("IsUrlControlLoaded") = "Loaded"
+                }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -1161,65 +1220,6 @@ namespace DotNetNuke.UI.UserControls
                 this.TabRow.Visible = false;
                 this.FileRow.Visible = false;
                 this.UserRow.Visible = false;
-            }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            AJAX.RegisterPostBackControl(this.FindControl("cmdSave"));
-
-            // prevent unauthorized access
-            if (this.Request.IsAuthenticated == false)
-            {
-                this.Visible = false;
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cboFolders.SelectedIndexChanged += this.cboFolders_SelectedIndexChanged;
-            this.optType.SelectedIndexChanged += this.optType_SelectedIndexChanged;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.cmdCancel.Click += this.cmdCancel_Click;
-            this.cmdDelete.Click += this.cmdDelete_Click;
-            this.cmdSave.Click += this.cmdSave_Click;
-            this.cmdSelect.Click += this.cmdSelect_Click;
-            this.cmdUpload.Click += this.cmdUpload_Click;
-
-            this.ErrorRow.Visible = false;
-
-            try
-            {
-                if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
-                {
-                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
-                }
-                else
-                {
-                    this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
-                }
-
-                if (this.ViewState["IsUrlControlLoaded"] == null)
-                {
-                    // If Not Page.IsPostBack Then
-                    // let's make at least an initialization
-                    // The type radio button must be initialized
-                    // The url must be initialized no matter its value
-                    this._doRenderTypes = true;
-                    this._doChangeURL = true;
-                    ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
-
-                    // The following line was mover to the pre-render event to ensure render for the first time
-                    // ViewState("IsUrlControlLoaded") = "Loaded"
-                }
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 

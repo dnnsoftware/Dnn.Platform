@@ -14,14 +14,6 @@ namespace DotNetNuke.Services.Journal
 
     public class JournalEntity : IPropertyAccess
     {
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-
-        public string Vanity { get; set; }
-
-        public string Avatar { get; set; }
-
         public JournalEntity()
         {
         }
@@ -49,6 +41,14 @@ namespace DotNetNuke.Services.Journal
                 }
             }
         }
+
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Vanity { get; set; }
+
+        public string Avatar { get; set; }
 
         public CacheLevel Cacheability
         {

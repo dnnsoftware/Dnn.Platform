@@ -19,16 +19,16 @@ namespace DotNetNuke.Services.Search.Internals
                             : ServiceLocator<ISearchQueryStringParser, SearchQueryStringParser>,
                             ISearchQueryStringParser
     {
-        protected override Func<ISearchQueryStringParser> GetFactory()
-        {
-            return () => new SearchQueryStringParser();
-        }
-
         private static readonly Regex TagRegex = new Regex(@"\[(.*?)\]", RegexOptions.Compiled);
 
         private static readonly Regex DateRegex = new Regex(@"after:(\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static readonly Regex TypeRegex = new Regex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        protected override Func<ISearchQueryStringParser> GetFactory()
+        {
+            return () => new SearchQueryStringParser();
+        }
 
         /// <summary>
         /// Gets the list of tags parsing the search keywords.

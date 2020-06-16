@@ -17,9 +17,10 @@ namespace DNN.Integration.Test.Framework.Helpers
     {
         private const string QualifierPrefix = "{objectQualifier}";
 
-        private static string ReplaceQueryQualifier(string input)
+        private static IDictionary<string, object> ValuesDictionary
         {
-            return input.Replace(QualifierPrefix, AppConfigHelper.ObjectQualifier);
+            // case insensitive dictionary keys
+            get { return new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase); }
         }
 
         public static bool CanConnectToDatabase()
@@ -40,6 +41,11 @@ namespace DNN.Integration.Test.Framework.Helpers
         {
             var qstr = ReplaceQueryQualifier(queryString);
             return PetaPocoHelper.ExecuteScalar<T>(AppConfigHelper.ConnectionString, CommandType.Text, qstr, args);
+        }
+
+        private static string ReplaceQueryQualifier(string input)
+        {
+            return input.Replace(QualifierPrefix, AppConfigHelper.ObjectQualifier);
         }
 
         public static IEnumerable<TItem> ExecuteQuery<TItem>(string queryString)
@@ -234,12 +240,6 @@ namespace DNN.Integration.Test.Framework.Helpers
             }
 
             return values;
-        }
-
-        private static IDictionary<string, object> ValuesDictionary
-        {
-            // case insensitive dictionary keys
-            get { return new Dictionary<string, object>(StringComparer.InvariantCultureIgnoreCase); }
         }
     }
 }

@@ -12,6 +12,25 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     [AttributeUsage(AttributeTargets.Field)]
     public class FlagParameterAttribute : Attribute
     {
+        public FlagParameterAttribute(string flag, string description, string type, string defaultValue, bool required)
+        {
+            this.Flag = flag;
+            this.Type = type;
+            this.Required = required;
+            this.DefaultValue = defaultValue;
+            this.Description = description;
+        }
+
+        public FlagParameterAttribute(string flag, string description, string type, string defaultValue)
+            : this(flag, description, type, defaultValue, false)
+        {
+        }
+
+        public FlagParameterAttribute(string flag, string description, string type)
+            : this(flag, description, type, string.Empty, false)
+        {
+        }
+
         /// <summary>
         /// Gets or sets name of the flag.
         /// </summary>
@@ -36,25 +55,6 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         /// Gets or sets description of flag.
         /// </summary>
         public string Description { get; set; }
-
-        public FlagParameterAttribute(string flag, string description, string type, string defaultValue, bool required)
-        {
-            this.Flag = flag;
-            this.Type = type;
-            this.Required = required;
-            this.DefaultValue = defaultValue;
-            this.Description = description;
-        }
-
-        public FlagParameterAttribute(string flag, string description, string type, string defaultValue)
-            : this(flag, description, type, defaultValue, false)
-        {
-        }
-
-        public FlagParameterAttribute(string flag, string description, string type)
-            : this(flag, description, type, string.Empty, false)
-        {
-        }
 
         public FlagParameterAttribute(string flag, string description, string type, bool required)
             : this(flag, description, type, string.Empty, required)

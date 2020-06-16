@@ -477,6 +477,27 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
+        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
+        [Browsable(false)]
+        [XmlIgnore]
+        public UserVisibilityMode Visibility
+        {
+            get
+            {
+                return this.ProfileVisibility.VisibilityMode;
+            }
+
+            set
+            {
+                if (this.ProfileVisibility.VisibilityMode != value)
+                {
+                    this.IsDirty = true;
+                }
+
+                this.ProfileVisibility.VisibilityMode = value;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Clears the IsDirty Flag.
@@ -514,27 +535,6 @@ namespace DotNetNuke.Entities.Profile
             };
             clone.ClearIsDirty();
             return clone;
-        }
-
-        [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
-        [Browsable(false)]
-        [XmlIgnore]
-        public UserVisibilityMode Visibility
-        {
-            get
-            {
-                return this.ProfileVisibility.VisibilityMode;
-            }
-
-            set
-            {
-                if (this.ProfileVisibility.VisibilityMode != value)
-                {
-                    this.IsDirty = true;
-                }
-
-                this.ProfileVisibility.VisibilityMode = value;
-            }
         }
     }
 }

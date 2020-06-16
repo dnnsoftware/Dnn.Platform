@@ -18,6 +18,18 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchResult : SearchDocument
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResult"/> class.
+        /// Empty Constructor.
+        /// </summary>
+        public SearchResult()
+        {
+            this.Tags = new string[0];
+            this.NumericKeys = new Dictionary<string, int>();
+            this.Keywords = new Dictionary<string, string>();
+            this.SearchContext = new Dictionary<string, string>();
+        }
+
+        /// <summary>
         /// Gets time when Content was last modified (in friendly format).
         /// </summary>
         public string DisplayModifiedTime
@@ -53,17 +65,5 @@ namespace DotNetNuke.Services.Search.Entities
         /// <remarks>This is key-value pair, e.g. "SearchSource","SiteSearch"</remarks>
         /// </summary>
         public IDictionary<string, string> SearchContext { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SearchResult"/> class.
-        /// Empty Constructor.
-        /// </summary>
-        public SearchResult()
-        {
-            this.Tags = new string[0];
-            this.NumericKeys = new Dictionary<string, int>();
-            this.Keywords = new Dictionary<string, string>();
-            this.SearchContext = new Dictionary<string, string>();
-        }
     }
 }

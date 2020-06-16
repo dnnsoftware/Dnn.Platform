@@ -13,12 +13,6 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private bool _localize = true;
 
-        protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            base.Render(writer);
-        }
-
         public string ResourceKey { get; set; }
 
         public bool Localize
@@ -40,6 +34,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         public string LocalResourceFile { get; set; }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
+        }
 
         public virtual void LocalizeStrings()
         {

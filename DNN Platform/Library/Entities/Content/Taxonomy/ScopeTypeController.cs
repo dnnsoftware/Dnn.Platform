@@ -17,8 +17,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     /// <seealso cref="TermController"/>
     public class ScopeTypeController : IScopeTypeController
     {
-        private readonly IDataService _DataService;
         private const int _CacheTimeOut = 20;
+        private readonly IDataService _DataService;
 
         public ScopeTypeController()
             : this(Util.GetDataService())
@@ -28,11 +28,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public ScopeTypeController(IDataService dataService)
         {
             this._DataService = dataService;
-        }
-
-        private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
         }
 
         public int AddScopeType(ScopeType scopeType)
@@ -52,6 +47,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public void ClearScopeTypeCache()
         {
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
+        }
+
+        private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
         }
 
         public void DeleteScopeType(ScopeType scopeType)

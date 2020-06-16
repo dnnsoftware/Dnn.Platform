@@ -15,11 +15,11 @@ namespace DotNetNuke.Entities.Users
 
     public class UserRegistrationEmailNotifier
     {
-        private static UserInfo CurrentUser => UserController.Instance.GetCurrentUserInfo();
-
         public UserRegistrationEmailNotifier()
         {
         }
+
+        private static UserInfo CurrentUser => UserController.Instance.GetCurrentUserInfo();
 
         public static void NotifyAdministrator(UserInfo user)
         {

@@ -98,19 +98,6 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModulePermissionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.FillInternal(dr);
-            this.ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
-            this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -127,6 +114,19 @@ namespace DotNetNuke.Security.Permissions
             {
                 this.ModulePermissionID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a ModulePermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
+            this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
         }
 
         /// -----------------------------------------------------------------------------

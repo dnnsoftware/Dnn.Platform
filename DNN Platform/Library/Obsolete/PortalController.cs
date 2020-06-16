@@ -31,6 +31,20 @@ namespace DotNetNuke.Entities.Portals
     public partial class PortalController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by PortalController.Instance.GetCurrentPortalSettings. Scheduled removal in v10.0.0.")]
+        public static PortalSettings GetCurrentPortalSettings()
+        {
+            return GetCurrentPortalSettingsInternal();
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in DNN 7.4.0. Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v10.0.0.")]
+        public static Dictionary<string, string> GetPortalSettingsDictionary(int portalId)
+        {
+            return Instance.GetPortalSettings(portalId);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DotNetNuke 7.3.0. Use one of the alternate overloads. Scheduled removal in v10.0.0.")]
         public int CreatePortal(string portalName, string firstName, string lastName, string username, string password, string email,
                         string description, string keyWords, string templatePath, string templateFile, string homeDirectory,
@@ -75,20 +89,6 @@ namespace DotNetNuke.Entities.Portals
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_DELETED);
 
             DataCache.ClearHostCache(true);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DotNetNuke 7.3. Replaced by PortalController.Instance.GetCurrentPortalSettings. Scheduled removal in v10.0.0.")]
-        public static PortalSettings GetCurrentPortalSettings()
-        {
-            return GetCurrentPortalSettingsInternal();
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in DNN 7.4.0. Replaced by PortalController.Instance.GetPortalSettings. Scheduled removal in v10.0.0.")]
-        public static Dictionary<string, string> GetPortalSettingsDictionary(int portalId)
-        {
-            return Instance.GetPortalSettings(portalId);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

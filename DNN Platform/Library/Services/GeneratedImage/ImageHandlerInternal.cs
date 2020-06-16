@@ -32,6 +32,21 @@ namespace DotNetNuke.Services.GeneratedImage
         private IImageStore _imageStore;
         private DateTime? _now;
 
+        public ImageHandlerInternal()
+        {
+            this.ContentType = ImageFormat.Jpeg;
+            this.ImageCompression = 95;
+            this.ImageTransforms = new List<ImageTransform>();
+            this.AllowStandalone = false;
+        }
+
+        internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
+            : this()
+        {
+            this._imageStore = imageStore;
+            this._now = now;
+        }
+
         public TimeSpan ClientCacheExpiration
         {
             get
@@ -55,6 +70,18 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public long ImageCompression { get; set; }
 
+        public int IPCountMax
+        {
+            get { return IPCount.MaxCount; }
+            set { IPCount.MaxCount = value; }
+        }
+
+        public TimeSpan IpCountPurgeInterval
+        {
+            get { return IPCount.PurgeInterval; }
+            set { IPCount.PurgeInterval = value; }
+        }
+
         private DateTime DateTime_Now
         {
             get
@@ -69,18 +96,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return this._imageStore ?? DiskImageStore.Instance;
             }
-        }
-
-        public int IPCountMax
-        {
-            get { return IPCount.MaxCount; }
-            set { IPCount.MaxCount = value; }
-        }
-
-        public TimeSpan IpCountPurgeInterval
-        {
-            get { return IPCount.PurgeInterval; }
-            set { IPCount.PurgeInterval = value; }
         }
 
         public bool EnableClientCache { get; set; }
@@ -99,53 +114,6 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get;
             private set;
-        }
-
-        public ImageHandlerInternal()
-        {
-            this.ContentType = ImageFormat.Jpeg;
-            this.ImageCompression = 95;
-            this.ImageTransforms = new List<ImageTransform>();
-            this.AllowStandalone = false;
-        }
-
-        internal ImageHandlerInternal(IImageStore imageStore, DateTime now)
-            : this()
-        {
-            this._imageStore = imageStore;
-            this._now = now;
-        }
-
-        internal static string GetImageMimeType(ImageFormat format)
-        {
-            string mimeType = "image/x-unknown";
-
-            if (format.Equals(ImageFormat.Gif))
-            {
-                mimeType = "image/gif";
-            }
-            else if (format.Equals(ImageFormat.Jpeg))
-            {
-                mimeType = "image/jpeg";
-            }
-            else if (format.Equals(ImageFormat.Png))
-            {
-                mimeType = "image/png";
-            }
-            else if (format.Equals(ImageFormat.Bmp) || format.Equals(ImageFormat.MemoryBmp))
-            {
-                mimeType = "image/bmp";
-            }
-            else if (format.Equals(ImageFormat.Tiff))
-            {
-                mimeType = "image/tiff";
-            }
-            else if (format.Equals(ImageFormat.Icon))
-            {
-                mimeType = "image/x-icon";
-            }
-
-            return mimeType;
         }
 
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)
@@ -351,6 +319,65 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
+        internal static string GetImageMimeType(ImageFormat format)
+        {
+            string mimeType = "image/x-unknown";
+
+            if (format.Equals(ImageFormat.Gif))
+            {
+                mimeType = "image/gif";
+            }
+            else if (format.Equals(ImageFormat.Jpeg))
+            {
+                mimeType = "image/jpeg";
+            }
+            else if (format.Equals(ImageFormat.Png))
+            {
+                mimeType = "image/png";
+            }
+            else if (format.Equals(ImageFormat.Bmp) || format.Equals(ImageFormat.MemoryBmp))
+            {
+                mimeType = "image/bmp";
+            }
+            else if (format.Equals(ImageFormat.Tiff))
+            {
+                mimeType = "image/tiff";
+            }
+            else if (format.Equals(ImageFormat.Icon))
+            {
+                mimeType = "image/x-icon";
+            }
+
+            return mimeType;
+        }
+
+        private static string GetIDFromBytes(byte[] buffer)
+        {
+            using (var hasher = SHA1.Create())
+            {
+                byte[] result = hasher.ComputeHash(buffer);
+                var sb = new StringBuilder();
+                foreach (var b in result)
+                {
+                    sb.Append(b.ToString("X2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Returns the encoder for the specified mime type.
+        /// </summary>
+        /// <param name="mimeType">The mime type of the content.</param>
+        /// <returns>ImageCodecInfo.</returns>
+        private static ImageCodecInfo GetEncoderInfo(string mimeType)
+        {
+            var encoders = ImageCodecInfo.GetImageEncoders();
+            var e = encoders.FirstOrDefault(x => x.MimeType == mimeType);
+            return e;
+        }
+
         private string GetUniqueIDString(HttpContextBase context, string uniqueIdStringSeed)
         {
             var builder = new StringBuilder();
@@ -367,21 +394,6 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             return GetIDFromBytes(ASCIIEncoding.ASCII.GetBytes(builder.ToString()));
-        }
-
-        private static string GetIDFromBytes(byte[] buffer)
-        {
-            using (var hasher = SHA1.Create())
-            {
-                byte[] result = hasher.ComputeHash(buffer);
-                var sb = new StringBuilder();
-                foreach (var b in result)
-                {
-                    sb.Append(b.ToString("X2"));
-                }
-
-                return sb.ToString();
-            }
         }
 
         private Image GetImageThroughTransforms(Image image)
@@ -462,18 +474,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 image?.Dispose();
             }
-        }
-
-        /// <summary>
-        /// Returns the encoder for the specified mime type.
-        /// </summary>
-        /// <param name="mimeType">The mime type of the content.</param>
-        /// <returns>ImageCodecInfo.</returns>
-        private static ImageCodecInfo GetEncoderInfo(string mimeType)
-        {
-            var encoders = ImageCodecInfo.GetImageEncoders();
-            var e = encoders.FirstOrDefault(x => x.MimeType == mimeType);
-            return e;
         }
     }
 }

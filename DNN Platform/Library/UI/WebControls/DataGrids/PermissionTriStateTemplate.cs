@@ -20,6 +20,12 @@ namespace DotNetNuke.UI.WebControls.Internal
             this._permission = permission;
         }
 
+        public bool IsFullControl { get; set; }
+
+        public bool IsView { get; set; }
+
+        public bool SupportDenyMode { get; set; }
+
         public void InstantiateIn(Control container)
         {
             var triState = new PermissionTriState();
@@ -39,11 +45,5 @@ namespace DotNetNuke.UI.WebControls.Internal
             triState.IsView = this.IsView;
             triState.PermissionKey = this._permission.PermissionKey;
         }
-
-        public bool IsFullControl { get; set; }
-
-        public bool IsView { get; set; }
-
-        public bool SupportDenyMode { get; set; }
     }
 }

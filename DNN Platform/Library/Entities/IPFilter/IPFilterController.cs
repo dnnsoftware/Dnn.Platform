@@ -23,14 +23,14 @@ namespace DotNetNuke.Entities.Host
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IPFilterController));
 
+        internal IPFilterController()
+        {
+        }
+
         private enum FilterType
         {
             Allow = 1,
             Deny = 2,
-        }
-
-        internal IPFilterController()
-        {
         }
 
         /// <summary>
@@ -101,46 +101,6 @@ namespace DotNetNuke.Entities.Host
         public bool IsIPBanned(string ipAddress)
         {
             return this.CheckIfBannedIPAddress(ipAddress);
-        }
-
-        private bool CheckIfBannedIPAddress(string ipAddress)
-        {
-            IList<IPFilterInfo> filterList = Instance.GetIPFilters();
-            bool ipAllowed = true;
-            foreach (var ipFilterInfo in filterList)
-            {
-                // if a single deny exists, this win's
-                if (ipFilterInfo.RuleType == (int)FilterType.Deny)
-                {
-                    if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
-                    {
-                        // log
-                        this.LogBannedIPAttempt(ipAddress);
-                        return true;
-                    }
-                }
-
-                // check any allows - if one exists set flag but let processing continue to verify no deny overrides
-                if (ipFilterInfo.RuleType == (int)FilterType.Allow)
-                {
-                    if (ipFilterInfo.IPAddress == "*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
-                    {
-                        ipAllowed = false;
-                    }
-                }
-            }
-
-            return ipAllowed;
-        }
-
-        private void LogBannedIPAttempt(string ipAddress)
-        {
-            var log = new LogInfo
-            {
-                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
-            };
-            log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
-            LogController.Instance.AddLog(log);
         }
 
         /// <summary>
@@ -225,6 +185,46 @@ namespace DotNetNuke.Entities.Host
             }
 
             return true;
+        }
+
+        private bool CheckIfBannedIPAddress(string ipAddress)
+        {
+            IList<IPFilterInfo> filterList = Instance.GetIPFilters();
+            bool ipAllowed = true;
+            foreach (var ipFilterInfo in filterList)
+            {
+                // if a single deny exists, this win's
+                if (ipFilterInfo.RuleType == (int)FilterType.Deny)
+                {
+                    if (NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
+                    {
+                        // log
+                        this.LogBannedIPAttempt(ipAddress);
+                        return true;
+                    }
+                }
+
+                // check any allows - if one exists set flag but let processing continue to verify no deny overrides
+                if (ipFilterInfo.RuleType == (int)FilterType.Allow)
+                {
+                    if (ipFilterInfo.IPAddress == "*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
+                    {
+                        ipAllowed = false;
+                    }
+                }
+            }
+
+            return ipAllowed;
+        }
+
+        private void LogBannedIPAttempt(string ipAddress)
+        {
+            var log = new LogInfo
+            {
+                LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+            };
+            log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
+            LogController.Instance.AddLog(log);
         }
 
         private static void AssertValidIPFilter(IPFilterInfo ipFilter)

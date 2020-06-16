@@ -37,12 +37,13 @@ namespace DotNetNuke.UI.WebControls.Internal
             LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
+        public bool IsFullControl { get; set; }
 
-            RegisterScripts(this.Page, this);
-        }
+        public bool IsView { get; set; }
+
+        // Locked is currently not used on a post-back and therefore the
+        // value on postback is undefined at this time
+        public bool Locked { get; set; }
 
         public static void RegisterScripts(Page page, Control ctl)
         {
@@ -84,16 +85,11 @@ namespace DotNetNuke.UI.WebControls.Internal
             return script;
         }
 
-        private static void LookupScriptValues(Control ctl, out string grantImagePath, out string denyImagePath, out string nullImagePath, out string lockImagePath, out string grantAltText, out string denyAltText, out string nullAltText)
+        protected override void OnInit(EventArgs e)
         {
-            grantImagePath = IconController.IconURL("Grant");
-            denyImagePath = IconController.IconURL("Deny");
-            nullImagePath = IconController.IconURL("Unchecked");
-            lockImagePath = IconController.IconURL("Lock");
+            base.OnInit(e);
 
-            grantAltText = Localization.GetString("PermissionTypeGrant");
-            denyAltText = Localization.GetString("PermissionTypeDeny");
-            nullAltText = Localization.GetString("PermissionTypeNull");
+            RegisterScripts(this.Page, this);
         }
 
         protected override void Render(HtmlTextWriter writer)
@@ -153,13 +149,17 @@ namespace DotNetNuke.UI.WebControls.Internal
             base.Render(writer);
         }
 
-        public bool IsFullControl { get; set; }
+        private static void LookupScriptValues(Control ctl, out string grantImagePath, out string denyImagePath, out string nullImagePath, out string lockImagePath, out string grantAltText, out string denyAltText, out string nullAltText)
+        {
+            grantImagePath = IconController.IconURL("Grant");
+            denyImagePath = IconController.IconURL("Deny");
+            nullImagePath = IconController.IconURL("Unchecked");
+            lockImagePath = IconController.IconURL("Lock");
 
-        public bool IsView { get; set; }
-
-        // Locked is currently not used on a post-back and therefore the
-        // value on postback is undefined at this time
-        public bool Locked { get; set; }
+            grantAltText = Localization.GetString("PermissionTypeGrant");
+            denyAltText = Localization.GetString("PermissionTypeDeny");
+            nullAltText = Localization.GetString("PermissionTypeNull");
+        }
 
         public string PermissionKey { get; set; }
 

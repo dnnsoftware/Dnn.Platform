@@ -19,11 +19,11 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class Controller : IUpgradeable, IPortable
     {
-        private const string ddrMenuModuleName = "DDRMenu";
-        private const string ddrMenuMmoduleDefinitionName = "DDR Menu";
-
         public static readonly Regex AscxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private const string ddrMenuModuleName = "DDRMenu";
+        private const string ddrMenuMmoduleDefinitionName = "DDR Menu";
         public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
 

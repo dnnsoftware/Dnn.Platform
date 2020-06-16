@@ -16,9 +16,24 @@ namespace DotNetNuke.Security.Permissions
     {
         private static readonly PermissionProvider provider = PermissionProvider.Instance();
 
-        protected override Func<IFolderPermissionController> GetFactory()
+        /// <summary>
+        /// Returns a list with all roles with implicit permissions on Folders.
+        /// </summary>
+        /// <param name="portalId">The Portal Id where the Roles are.</param>
+        /// <returns>A List with the implicit roles.</returns>
+        public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
         {
-            return () => new FolderPermissionController();
+            return provider.ImplicitRolesForPages(portalId);
+        }
+
+        /// <summary>
+        /// Returns a flag indicating whether the current user can add a folder or file.
+        /// </summary>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
+        public static bool CanAddFolder(FolderInfo folder)
+        {
+            return provider.CanAddFolder(folder);
         }
 
         /// <summary>
@@ -41,6 +56,11 @@ namespace DotNetNuke.Security.Permissions
             return provider.CanAdminFolder((FolderInfo)folder);
         }
 
+        protected override Func<IFolderPermissionController> GetFactory()
+        {
+            return () => new FolderPermissionController();
+        }
+
         /// <summary>
         /// Returns a flag indicating whether the current user can view a folder or file.
         /// </summary>
@@ -56,26 +76,6 @@ namespace DotNetNuke.Security.Permissions
             DataCache.ClearFolderPermissionsCache(PortalID);
             DataCache.ClearCache(string.Format("Folders|{0}|", PortalID));
             DataCache.ClearFolderCache(PortalID);
-        }
-
-        /// <summary>
-        /// Returns a list with all roles with implicit permissions on Folders.
-        /// </summary>
-        /// <param name="portalId">The Portal Id where the Roles are.</param>
-        /// <returns>A List with the implicit roles.</returns>
-        public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
-        {
-            return provider.ImplicitRolesForPages(portalId);
-        }
-
-        /// <summary>
-        /// Returns a flag indicating whether the current user can add a folder or file.
-        /// </summary>
-        /// <param name="folder">The page.</param>
-        /// <returns>A flag indicating whether the user has permission.</returns>
-        public static bool CanAddFolder(FolderInfo folder)
-        {
-            return provider.CanAddFolder(folder);
         }
 
         /// <summary>
@@ -193,26 +193,6 @@ namespace DotNetNuke.Security.Permissions
             }
         }
 
-        private static bool CopyPermissionsToSubfoldersRecursive(IFolderInfo folder, FolderPermissionCollection newPermissions)
-        {
-            bool clearCache = Null.NullBoolean;
-            IEnumerable<IFolderInfo> childFolders = FolderManager.Instance.GetFolders(folder);
-            foreach (var f in childFolders)
-            {
-                if (CanAdminFolder((FolderInfo)f))
-                {
-                    f.FolderPermissions.Clear();
-                    f.FolderPermissions.AddRange(newPermissions);
-                    SaveFolderPermissions(f);
-                    clearCache = true;
-                }
-
-                clearCache = CopyPermissionsToSubfoldersRecursive(f, newPermissions) || clearCache;
-            }
-
-            return clearCache;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// SaveFolderPermissions updates a Folder's permissions.
@@ -232,6 +212,26 @@ namespace DotNetNuke.Security.Permissions
         {
             provider.SaveFolderPermissions(folder);
             ClearPermissionCache(folder.PortalID);
+        }
+
+        private static bool CopyPermissionsToSubfoldersRecursive(IFolderInfo folder, FolderPermissionCollection newPermissions)
+        {
+            bool clearCache = Null.NullBoolean;
+            IEnumerable<IFolderInfo> childFolders = FolderManager.Instance.GetFolders(folder);
+            foreach (var f in childFolders)
+            {
+                if (CanAdminFolder((FolderInfo)f))
+                {
+                    f.FolderPermissions.Clear();
+                    f.FolderPermissions.AddRange(newPermissions);
+                    SaveFolderPermissions(f);
+                    clearCache = true;
+                }
+
+                clearCache = CopyPermissionsToSubfoldersRecursive(f, newPermissions) || clearCache;
+            }
+
+            return clearCache;
         }
     }
 }

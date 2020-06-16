@@ -21,6 +21,8 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Login : SkinObjectBase
     {
+        private const string MyFileName = "Login.ascx";
+
         private readonly INavigationManager _navigationManager;
 
         public Login()
@@ -28,8 +30,6 @@ namespace DotNetNuke.UI.Skins.Controls
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
             this.LegacyMode = true;
         }
-
-        private const string MyFileName = "Login.ascx";
 
         public string Text { get; set; }
 

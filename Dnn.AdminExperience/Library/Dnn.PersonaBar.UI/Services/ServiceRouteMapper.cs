@@ -26,6 +26,17 @@ namespace Dnn.PersonaBar.UI.Services
             }
         }
 
+        private static IEnumerable<Type> GetAllApiControllers()
+        {
+            var typeLocator = new TypeLocator();
+            return typeLocator.GetAllMatchingTypes(
+                t => t != null &&
+                     t.IsClass &&
+                     !t.IsAbstract &&
+                     t.IsVisible &&
+                     typeof(PersonaBarApiController).IsAssignableFrom(t));
+        }
+
         private IList<string> FindPersonaBarServices()
         {
             var controllerTypes = GetAllApiControllers();
@@ -43,17 +54,6 @@ namespace Dnn.PersonaBar.UI.Services
             }
 
             return namespaces;
-        }
-
-        private static IEnumerable<Type> GetAllApiControllers()
-        {
-            var typeLocator = new TypeLocator();
-            return typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible &&
-                     typeof(PersonaBarApiController).IsAssignableFrom(t));
         }
     }
 }

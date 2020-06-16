@@ -47,6 +47,22 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public override Control FindControl(string id)
+        {
+            this.EnsureChildControls();
+            return base.FindControl(id);
+        }
+
+        public override void RenderControl(HtmlTextWriter writer)
+        {
+            if (this.CheckVisibility())
+            {
+                this.RenderBeginTag(writer);
+                this.RenderChildren(writer);
+                this.RenderEndTag(writer);
+            }
+        }
+
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -134,22 +150,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             return returnValue;
-        }
-
-        public override Control FindControl(string id)
-        {
-            this.EnsureChildControls();
-            return base.FindControl(id);
-        }
-
-        public override void RenderControl(HtmlTextWriter writer)
-        {
-            if (this.CheckVisibility())
-            {
-                this.RenderBeginTag(writer);
-                this.RenderChildren(writer);
-                this.RenderEndTag(writer);
-            }
         }
     }
 }

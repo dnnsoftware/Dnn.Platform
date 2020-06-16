@@ -15,6 +15,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public abstract class Quantizer
     {
         /// <summary>
+        /// Flag used to indicate whether a single pass or two passes are needed for quantization.
+        /// </summary>
+        private bool _singlePass;
+        private int _pixelSize;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Quantizer"/> class.
         /// Construct the quantizer.
         /// </summary>
@@ -227,12 +233,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         protected abstract ColorPalette GetPalette(ColorPalette original);
 
         /// <summary>
-        /// Flag used to indicate whether a single pass or two passes are needed for quantization.
-        /// </summary>
-        private bool _singlePass;
-        private int _pixelSize;
-
-        /// <summary>
         /// Struct that defines a 32 bpp colour.
         /// </summary>
         /// <remarks>
@@ -243,11 +243,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         [StructLayout(LayoutKind.Explicit)]
         public struct Color32
         {
-            public Color32(IntPtr pSourcePixel)
-            {
-                this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
-            }
-
             /// <summary>
             /// Holds the blue component of the colour.
             /// </summary>
@@ -265,6 +260,11 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// </summary>
             [FieldOffset(2)]
             public byte Red;
+
+            public Color32(IntPtr pSourcePixel)
+            {
+                this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
+            }
 
             /// <summary>
             /// Holds the alpha component of the colour.

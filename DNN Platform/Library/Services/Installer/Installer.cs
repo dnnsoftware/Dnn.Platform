@@ -170,6 +170,165 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        public static XPathNavigator ConvertLegacyNavigator(XPathNavigator rootNav, InstallerInfo info)
+        {
+            XPathNavigator nav = null;
+
+            var packageType = Null.NullString;
+            if (rootNav.Name == "dotnetnuke")
+            {
+                packageType = Util.ReadAttribute(rootNav, "type");
+            }
+            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
+            {
+                packageType = "LanguagePack";
+            }
+
+            XPathDocument legacyDoc;
+            string legacyManifest;
+            switch (packageType.ToLowerInvariant())
+            {
+                case "module":
+                    var sb = new StringBuilder();
+                    using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+                    {
+                        // Write manifest start element
+                        PackageWriterBase.WriteManifestStartElement(writer);
+
+                        // Legacy Module - Process each folder
+                        foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
+                        {
+                            var modulewriter = new ModulePackageWriter(folderNav, info);
+                            modulewriter.WriteManifest(writer, true);
+                        }
+
+                        // Write manifest end element
+                        PackageWriterBase.WriteManifestEndElement(writer);
+
+                        // Close XmlWriter
+                        writer.Close();
+                    }
+
+                    // Load manifest into XPathDocument for processing
+                    legacyDoc = new XPathDocument(new StringReader(sb.ToString()));
+
+                    // Parse the package nodes
+                    nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
+                    break;
+                case "languagepack":
+                    // Legacy Language Pack
+                    var languageWriter = new LanguagePackWriter(rootNav, info);
+                    info.LegacyError = languageWriter.LegacyError;
+                    if (string.IsNullOrEmpty(info.LegacyError))
+                    {
+                        legacyManifest = languageWriter.WriteManifest(false);
+                        legacyDoc = new XPathDocument(new StringReader(legacyManifest));
+
+                        // Parse the package nodes
+                        nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
+                    }
+
+                    break;
+                case "skinobject":
+                    // Legacy Skin Object
+                    var skinControlwriter = new SkinControlPackageWriter(rootNav, info);
+                    legacyManifest = skinControlwriter.WriteManifest(false);
+                    legacyDoc = new XPathDocument(new StringReader(legacyManifest));
+
+                    // Parse the package nodes
+                    nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
+                    break;
+            }
+
+            return nav;
+        }
+
+        public void DeleteTempFolder()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(this.TempInstallFolder))
+                {
+                    Directory.Delete(this.TempInstallFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
+                Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The Install method installs the feature.
+        /// </summary>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public bool Install()
+        {
+            this.InstallerInfo.Log.StartJob(Util.INSTALL_Start);
+            bool bStatus = true;
+            try
+            {
+                bool clearClientCache = false;
+                this.InstallPackages(ref clearClientCache);
+                if (clearClientCache)
+                {
+                    // Update the version of the client resources - so the cache is cleared
+                    HostController.Instance.IncrementCrmVersion(true);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.InstallerInfo.Log.AddFailure(ex);
+                bStatus = false;
+            }
+            finally
+            {
+                // Delete Temp Folder
+                if (!string.IsNullOrEmpty(this.TempInstallFolder))
+                {
+                    Globals.DeleteFolderRecursive(this.TempInstallFolder);
+                }
+
+                this.InstallerInfo.Log.AddInfo(Util.FOLDER_DeletedBackup);
+            }
+
+            if (this.InstallerInfo.Log.Valid)
+            {
+                this.InstallerInfo.Log.EndJob(Util.INSTALL_Success);
+            }
+            else
+            {
+                this.InstallerInfo.Log.EndJob(Util.INSTALL_Failed);
+                bStatus = false;
+            }
+
+            // log installation event
+            this.LogInstallEvent("Package", "Install");
+
+            // when the installer initialized by file stream, we need save the file stream into backup folder.
+            if (this._inputStream != null && bStatus && this.Packages.Any())
+            {
+                Task.Run(() =>
+                {
+                    this.BackupStreamIntoFile(this._inputStream, this.Packages[0].Package);
+                });
+            }
+
+            // Clear Host Cache
+            DataCache.ClearHostCache(true);
+
+            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
+            {
+                // force application restart after the new changes only when FCN is disabled
+                Config.Touch();
+            }
+
+            return bStatus;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The InstallPackages method installs the packages.
@@ -319,79 +478,6 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        public static XPathNavigator ConvertLegacyNavigator(XPathNavigator rootNav, InstallerInfo info)
-        {
-            XPathNavigator nav = null;
-
-            var packageType = Null.NullString;
-            if (rootNav.Name == "dotnetnuke")
-            {
-                packageType = Util.ReadAttribute(rootNav, "type");
-            }
-            else if (rootNav.Name.Equals("languagepack", StringComparison.InvariantCultureIgnoreCase))
-            {
-                packageType = "LanguagePack";
-            }
-
-            XPathDocument legacyDoc;
-            string legacyManifest;
-            switch (packageType.ToLowerInvariant())
-            {
-                case "module":
-                    var sb = new StringBuilder();
-                    using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-                    {
-                        // Write manifest start element
-                        PackageWriterBase.WriteManifestStartElement(writer);
-
-                        // Legacy Module - Process each folder
-                        foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
-                        {
-                            var modulewriter = new ModulePackageWriter(folderNav, info);
-                            modulewriter.WriteManifest(writer, true);
-                        }
-
-                        // Write manifest end element
-                        PackageWriterBase.WriteManifestEndElement(writer);
-
-                        // Close XmlWriter
-                        writer.Close();
-                    }
-
-                    // Load manifest into XPathDocument for processing
-                    legacyDoc = new XPathDocument(new StringReader(sb.ToString()));
-
-                    // Parse the package nodes
-                    nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                    break;
-                case "languagepack":
-                    // Legacy Language Pack
-                    var languageWriter = new LanguagePackWriter(rootNav, info);
-                    info.LegacyError = languageWriter.LegacyError;
-                    if (string.IsNullOrEmpty(info.LegacyError))
-                    {
-                        legacyManifest = languageWriter.WriteManifest(false);
-                        legacyDoc = new XPathDocument(new StringReader(legacyManifest));
-
-                        // Parse the package nodes
-                        nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                    }
-
-                    break;
-                case "skinobject":
-                    // Legacy Skin Object
-                    var skinControlwriter = new SkinControlPackageWriter(rootNav, info);
-                    legacyManifest = skinControlwriter.WriteManifest(false);
-                    legacyDoc = new XPathDocument(new StringReader(legacyManifest));
-
-                    // Parse the package nodes
-                    nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                    break;
-            }
-
-            return nav;
-        }
-
         private void BackupStreamIntoFile(Stream stream, PackageInfo package)
         {
             try
@@ -418,92 +504,6 @@ namespace DotNetNuke.Services.Installer
             {
                 Logger.Error(ex);
             }
-        }
-
-        public void DeleteTempFolder()
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(this.TempInstallFolder))
-                {
-                    Directory.Delete(this.TempInstallFolder, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
-                Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the feature.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public bool Install()
-        {
-            this.InstallerInfo.Log.StartJob(Util.INSTALL_Start);
-            bool bStatus = true;
-            try
-            {
-                bool clearClientCache = false;
-                this.InstallPackages(ref clearClientCache);
-                if (clearClientCache)
-                {
-                    // Update the version of the client resources - so the cache is cleared
-                    HostController.Instance.IncrementCrmVersion(true);
-                }
-            }
-            catch (Exception ex)
-            {
-                this.InstallerInfo.Log.AddFailure(ex);
-                bStatus = false;
-            }
-            finally
-            {
-                // Delete Temp Folder
-                if (!string.IsNullOrEmpty(this.TempInstallFolder))
-                {
-                    Globals.DeleteFolderRecursive(this.TempInstallFolder);
-                }
-
-                this.InstallerInfo.Log.AddInfo(Util.FOLDER_DeletedBackup);
-            }
-
-            if (this.InstallerInfo.Log.Valid)
-            {
-                this.InstallerInfo.Log.EndJob(Util.INSTALL_Success);
-            }
-            else
-            {
-                this.InstallerInfo.Log.EndJob(Util.INSTALL_Failed);
-                bStatus = false;
-            }
-
-            // log installation event
-            this.LogInstallEvent("Package", "Install");
-
-            // when the installer initialized by file stream, we need save the file stream into backup folder.
-            if (this._inputStream != null && bStatus && this.Packages.Any())
-            {
-                Task.Run(() =>
-                {
-                    this.BackupStreamIntoFile(this._inputStream, this.Packages[0].Package);
-                });
-            }
-
-            // Clear Host Cache
-            DataCache.ClearHostCache(true);
-
-            if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
-            {
-                // force application restart after the new changes only when FCN is disabled
-                Config.Touch();
-            }
-
-            return bStatus;
         }
 
         /// -----------------------------------------------------------------------------

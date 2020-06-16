@@ -12,6 +12,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageContrastTransform : ImageTransform
     {
+        public ImageContrastTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.Contrast = 0;
+        }
+
         /// <summary>
         /// Gets or sets the contrast value. Defaultvalue is 0. Range is -100 .. 100.
         /// </summary>
@@ -21,15 +30,6 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Contrast;
-
-        public ImageContrastTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.Contrast = 0;
-        }
 
         /// <summary>
         /// Processes an input image applying a contrast image transformation.

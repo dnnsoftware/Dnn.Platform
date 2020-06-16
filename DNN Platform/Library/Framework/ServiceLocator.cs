@@ -22,20 +22,6 @@ namespace DotNetNuke.Framework
         private static TContract _testableInstance;
         private static bool _useTestable;
 
-        // ReSharper restore StaticFieldInGenericType
-        protected static Func<TContract> Factory { get; set; }
-
-        private static TContract InitInstance()
-        {
-            if (Factory == null)
-            {
-                var controllerInstance = new TSelf();
-                Factory = controllerInstance.GetFactory();
-            }
-
-            return Factory();
-        }
-
         /// <summary>
         /// Gets a singleton of T.
         /// </summary>
@@ -51,6 +37,9 @@ namespace DotNetNuke.Framework
                 return _instance.Value;
             }
         }
+
+        // ReSharper restore StaticFieldInGenericType
+        protected static Func<TContract> Factory { get; set; }
 
         /// <summary>
         /// Registers an instance to use for the Singleton.
@@ -72,6 +61,17 @@ namespace DotNetNuke.Framework
             _useTestable = false;
             _testableInstance = default(TContract);
             _instance = new Lazy<TContract>(InitInstance, true);
+        }
+
+        private static TContract InitInstance()
+        {
+            if (Factory == null)
+            {
+                var controllerInstance = new TSelf();
+                Factory = controllerInstance.GetFactory();
+            }
+
+            return Factory();
         }
 
         protected abstract Func<TContract> GetFactory();

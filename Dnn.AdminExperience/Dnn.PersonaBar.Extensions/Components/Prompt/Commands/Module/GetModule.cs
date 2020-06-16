@@ -19,10 +19,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("get-module", Constants.ModulesCategory, "Prompt_GetModule_Description")]
     public class GetModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_GetModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_GetModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";

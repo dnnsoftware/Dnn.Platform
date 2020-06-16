@@ -25,6 +25,8 @@ namespace DotNetNuke.Modules.SearchResults
         private const int DefaultPageSize = 15;
         private const int DefaultSortOption = 0;
 
+        private const string MyFileName = "SearchResults.ascx";
+
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
@@ -150,31 +152,6 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string MaxDescriptionLength => this.GetIntegerSetting("MaxDescriptionLength", 100).ToString();
 
-        private IList<int> SearchPortalIds
-        {
-            get
-            {
-                if (this._searchPortalIds == null)
-                {
-                    this._searchPortalIds = new List<int>();
-                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
-                    {
-                        List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
-                        foreach (string l in list)
-                        {
-                            this._searchPortalIds.Add(Convert.ToInt32(l));
-                        }
-                    }
-                    else
-                    {
-                        this._searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
-                    }
-                }
-
-                return this._searchPortalIds;
-            }
-        }
-
         protected IList<string> SearchContentSources
         {
             get
@@ -228,11 +205,34 @@ namespace DotNetNuke.Modules.SearchResults
             }
         }
 
-        private const string MyFileName = "SearchResults.ascx";
-
         protected string DefaultText
         {
             get { return Localization.GetSafeJSString("DefaultText", Localization.GetResourceFile(this, MyFileName)); }
+        }
+
+        private IList<int> SearchPortalIds
+        {
+            get
+            {
+                if (this._searchPortalIds == null)
+                {
+                    this._searchPortalIds = new List<int>();
+                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
+                    {
+                        List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
+                        foreach (string l in list)
+                        {
+                            this._searchPortalIds.Add(Convert.ToInt32(l));
+                        }
+                    }
+                    else
+                    {
+                        this._searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
+                    }
+                }
+
+                return this._searchPortalIds;
+            }
         }
 
         protected string NoResultsText

@@ -15,10 +15,15 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public UserBasicDto()
+        {
+
+        }
 
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
+
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         [DataMember(Name = "userName")]
         public string Username { get; set; }
@@ -58,11 +63,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "avatar")]
         public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
-
-        public UserBasicDto()
-        {
-
-        }
 
         public UserBasicDto(UserInfo user)
         {

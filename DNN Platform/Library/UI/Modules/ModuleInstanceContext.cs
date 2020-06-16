@@ -275,6 +275,44 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
+        public string EditUrl()
+        {
+            return this.EditUrl(string.Empty, string.Empty, "Edit");
+        }
+
+        public string EditUrl(string controlKey)
+        {
+            return this.EditUrl(string.Empty, string.Empty, controlKey);
+        }
+
+        private static string FilterUrl(HttpRequest request)
+        {
+            return request.RawUrl.Replace("\"", string.Empty);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetActionsCount gets the current number of actions.
+        /// </summary>
+        /// <param name="actions">The actions collection to count.</param>
+        /// <param name="count">The current count.</param>
+        /// -----------------------------------------------------------------------------
+        private static int GetActionsCount(int count, ModuleActionCollection actions)
+        {
+            foreach (ModuleAction action in actions)
+            {
+                if (action.HasChildren())
+                {
+                    count += action.Actions.Count;
+
+                    // Recursively call to see if this collection has any child actions that would affect the count
+                    count = GetActionsCount(count, action.Actions);
+                }
+            }
+
+            return count;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddHelpActions Adds the Help actions to the Action Menu.
@@ -447,34 +485,6 @@ namespace DotNetNuke.UI.Modules
                         false);
                 }
             }
-        }
-
-        private static string FilterUrl(HttpRequest request)
-        {
-            return request.RawUrl.Replace("\"", string.Empty);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetActionsCount gets the current number of actions.
-        /// </summary>
-        /// <param name="actions">The actions collection to count.</param>
-        /// <param name="count">The current count.</param>
-        /// -----------------------------------------------------------------------------
-        private static int GetActionsCount(int count, ModuleActionCollection actions)
-        {
-            foreach (ModuleAction action in actions)
-            {
-                if (action.HasChildren())
-                {
-                    count += action.Actions.Count;
-
-                    // Recursively call to see if this collection has any child actions that would affect the count
-                    count = GetActionsCount(count, action.Actions);
-                }
-            }
-
-            return count;
         }
 
         /// -----------------------------------------------------------------------------
@@ -737,16 +747,6 @@ namespace DotNetNuke.UI.Modules
             var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
             return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                    || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public string EditUrl()
-        {
-            return this.EditUrl(string.Empty, string.Empty, "Edit");
-        }
-
-        public string EditUrl(string controlKey)
-        {
-            return this.EditUrl(string.Empty, string.Empty, controlKey);
         }
 
         public string EditUrl(string keyName, string keyValue)

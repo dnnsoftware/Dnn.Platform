@@ -27,9 +27,27 @@ namespace DotNetNuke.UI.Containers
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
+        protected bool m_supportsIcons = true;
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
-        protected bool m_supportsIcons = true;
+
+        public event ActionEventHandler Action;
+
+        public bool EditMode
+        {
+            get
+            {
+                return this.ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
+            }
+        }
+
+        public bool SupportsIcons
+        {
+            get
+            {
+                return this.m_supportsIcons;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -87,24 +105,6 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.PortalSettings;
             }
         }
-
-        public bool EditMode
-        {
-            get
-            {
-                return this.ModuleContext.PortalSettings.UserMode != PortalSettings.Mode.View;
-            }
-        }
-
-        public bool SupportsIcons
-        {
-            get
-            {
-                return this.m_supportsIcons;
-            }
-        }
-
-        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

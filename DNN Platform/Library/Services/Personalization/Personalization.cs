@@ -12,6 +12,29 @@ namespace DotNetNuke.Services.Personalization
 
     public class Personalization
     {
+        /// <summary>
+        /// load users profile and extract value base on naming container and key.
+        /// </summary>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <returns></returns>
+        public static object GetProfile(string namingContainer, string key)
+        {
+            return GetProfile(LoadProfile(), namingContainer, key);
+        }
+
+        /// <summary>
+        /// extract value base on naming container and key from PersonalizationInfo object.
+        /// </summary>
+        /// <param name="personalization">Object containing user personalization info.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <returns></returns>
+        public static object GetProfile(PersonalizationInfo personalization, string namingContainer, string key)
+        {
+            return personalization != null ? personalization.Profile[namingContainer + ":" + key] : string.Empty;
+        }
+
         private static PersonalizationInfo LoadProfile()
         {
             HttpContext context = HttpContext.Current;
@@ -36,29 +59,6 @@ namespace DotNetNuke.Services.Personalization
             }
 
             return personalization;
-        }
-
-        /// <summary>
-        /// load users profile and extract value base on naming container and key.
-        /// </summary>
-        /// <param name="namingContainer">Container for related set of values.</param>
-        /// <param name="key">Individual profile key.</param>
-        /// <returns></returns>
-        public static object GetProfile(string namingContainer, string key)
-        {
-            return GetProfile(LoadProfile(), namingContainer, key);
-        }
-
-        /// <summary>
-        /// extract value base on naming container and key from PersonalizationInfo object.
-        /// </summary>
-        /// <param name="personalization">Object containing user personalization info.</param>
-        /// <param name="namingContainer">Container for related set of values.</param>
-        /// <param name="key">Individual profile key.</param>
-        /// <returns></returns>
-        public static object GetProfile(PersonalizationInfo personalization, string namingContainer, string key)
-        {
-            return personalization != null ? personalization.Profile[namingContainer + ":" + key] : string.Empty;
         }
 
         /// <summary>

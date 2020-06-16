@@ -16,6 +16,11 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     /// </summary>
     public class SimpleWebFarmSynchronizationHandler : IHttpHandler
     {
+        /// <summary>
+        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests.
+        /// </summary>
+        public bool IsReusable => true;
+
         public void ProcessRequest(HttpContext context)
         {
             // Validate the request for required inputs, return if no action possible
@@ -48,10 +53,5 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             var provider = (Caching.SimpleWebFarmCachingProvider.SimpleWebFarmCachingProvider)CachingProvider.Instance();
             provider.ProcessSynchronizationRequest(command, detail);
         }
-
-        /// <summary>
-        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests.
-        /// </summary>
-        public bool IsReusable => true;
     }
 }

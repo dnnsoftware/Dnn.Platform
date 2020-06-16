@@ -26,8 +26,8 @@ namespace Dnn.PersonaBar.SqlConsole.Services
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SqlConsoleController : PersonaBarApiController
     {
-        private ISqlQueryController _controller = SqlQueryController.Instance;
         const string ScriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+        private ISqlQueryController _controller = SqlQueryController.Instance;
         private static readonly Regex SqlObjRegex = new Regex(ScriptDelimiterRegex,
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 

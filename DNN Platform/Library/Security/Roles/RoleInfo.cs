@@ -278,25 +278,21 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        private void GetRoleType()
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public virtual int KeyID
         {
-            var portal = PortalController.Instance.GetPortal(this.PortalID);
-            if (this.RoleID == portal.AdministratorRoleId)
-            {
-                this._RoleType = RoleType.Administrator;
-            }
-            else if (this.RoleID == portal.RegisteredRoleId)
-            {
-                this._RoleType = RoleType.RegisteredUser;
-            }
-            else if (this.RoleName == "Subscribers")
-            {
-                this._RoleType = RoleType.Subscriber;
-            }
-            else if (this.RoleName == "Unverified Users")
-            {
-                this._RoleType = RoleType.UnverifiedUser;
-            }
+            get { return this.RoleID; }
+            set { this.RoleID = value; }
+        }
+
+        public CacheLevel Cacheability
+        {
+            get { return CacheLevel.fullyCacheable; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -378,23 +374,6 @@ namespace DotNetNuke.Security.Roles
             this.FillInternal(dr);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        public virtual int KeyID
-        {
-            get { return this.RoleID; }
-            set { this.RoleID = value; }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get { return CacheLevel.fullyCacheable; }
-        }
-
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser,
                                   Scope accessLevel, ref bool propertyNotFound)
         {
@@ -465,6 +444,27 @@ namespace DotNetNuke.Security.Roles
 
                     propertyNotFound = true;
                     return string.Empty;
+            }
+        }
+
+        private void GetRoleType()
+        {
+            var portal = PortalController.Instance.GetPortal(this.PortalID);
+            if (this.RoleID == portal.AdministratorRoleId)
+            {
+                this._RoleType = RoleType.Administrator;
+            }
+            else if (this.RoleID == portal.RegisteredRoleId)
+            {
+                this._RoleType = RoleType.RegisteredUser;
+            }
+            else if (this.RoleName == "Subscribers")
+            {
+                this._RoleType = RoleType.Subscriber;
+            }
+            else if (this.RoleName == "Unverified Users")
+            {
+                this._RoleType = RoleType.UnverifiedUser;
             }
         }
 

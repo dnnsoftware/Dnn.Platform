@@ -15,7 +15,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     [ConsoleCommand("goto", Constants.PagesCategory, "Prompt_Goto_Description")]
     public class Goto : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
         [FlagParameter("name", "Prompt_Goto_FlagName", "String")]
         private const string FlagName = "name";
         [FlagParameter("id", "Prompt_Goto_FlagId", "Integer")]
@@ -23,6 +22,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         [FlagParameter("parentid", "Prompt_Goto_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
+        public override string LocalResourceFile => Constants.LocalResourceFile;
         private int PageId { get; set; } = -1;
         private string PageName { get; set; }
         private int ParentId { get; set; } = -1;

@@ -18,12 +18,12 @@ namespace DotNetNuke.Web.Api.Auth
 
     public class DigestAuthMessageHandler : AuthMessageHandlerBase
     {
-        public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
-
         public DigestAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
         }
+
+        public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -55,17 +55,6 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             return base.OnOutboundResponse(response, cancellationToken);
-        }
-
-        private void AddStaleWwwAuthenticateHeader(HttpResponseMessage response)
-        {
-            this.AddWwwAuthenticateHeader(response, true);
-        }
-
-        private void AddWwwAuthenticateHeader(HttpResponseMessage response, bool isStale = false)
-        {
-            var value = string.Format("realm=\"DNNAPI\", nonce=\"{0}\",  opaque=\"0000000000000000\", stale={1}, algorithm=MD5, qop=\"auth\"", CreateNewNonce(), isStale);
-            response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, value));
         }
 
         private static string CreateNewNonce()
@@ -101,6 +90,17 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             return false;
+        }
+
+        private void AddStaleWwwAuthenticateHeader(HttpResponseMessage response)
+        {
+            this.AddWwwAuthenticateHeader(response, true);
+        }
+
+        private void AddWwwAuthenticateHeader(HttpResponseMessage response, bool isStale = false)
+        {
+            var value = string.Format("realm=\"DNNAPI\", nonce=\"{0}\",  opaque=\"0000000000000000\", stale={1}, algorithm=MD5, qop=\"auth\"", CreateNewNonce(), isStale);
+            response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, value));
         }
 
         private bool SupportsDigestAuth(HttpRequestMessage request)

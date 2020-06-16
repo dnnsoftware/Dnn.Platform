@@ -16,6 +16,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class ProfileVisibilityDto
     {
+        public ProfileVisibilityDto()
+        {
+
+        }
+
         [DataMember(Name = "visibilityMode")]
         public UserVisibilityMode VisibilityMode { get; set; }
 
@@ -24,11 +29,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "relationshipVisibilities")]
         public IList<int> RelationshipVisibilities { get; set; } = new List<int>();
-
-        public ProfileVisibilityDto()
-        {
-
-        }
 
         public ProfileVisibilityDto(ProfileVisibility visibility)
         {

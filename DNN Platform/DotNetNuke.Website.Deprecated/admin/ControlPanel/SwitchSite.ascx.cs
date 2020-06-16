@@ -18,6 +18,37 @@ namespace DotNetNuke.UI.ControlPanel
 
     public partial class SwitchSite : UserControl, IDnnRibbonBarTool
     {
+        public override bool Visible
+        {
+            get
+            {
+                if (PortalSettings.Current.UserId == Null.NullInteger)
+                {
+                    return false;
+                }
+
+                return PortalSettings.Current.UserInfo.IsSuperUser && base.Visible;
+            }
+
+            set
+            {
+                base.Visible = value;
+            }
+        }
+
+        public string ToolName
+        {
+            get
+            {
+                return "QuickSwitchSite";
+            }
+
+            set
+            {
+                throw new NotSupportedException("Set ToolName not supported");
+            }
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -59,37 +90,6 @@ namespace DotNetNuke.UI.ControlPanel
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
-            }
-        }
-
-        public override bool Visible
-        {
-            get
-            {
-                if (PortalSettings.Current.UserId == Null.NullInteger)
-                {
-                    return false;
-                }
-
-                return PortalSettings.Current.UserInfo.IsSuperUser && base.Visible;
-            }
-
-            set
-            {
-                base.Visible = value;
-            }
-        }
-
-        public string ToolName
-        {
-            get
-            {
-                return "QuickSwitchSite";
-            }
-
-            set
-            {
-                throw new NotSupportedException("Set ToolName not supported");
             }
         }
 

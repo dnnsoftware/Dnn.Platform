@@ -32,11 +32,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:VisibilityControl runat=server></{0}:VisibilityControl>")]
     public class VisibilityControl : WebControl, IPostBackDataHandler, INamingContainer
     {
-        protected ProfileVisibility Visibility
-        {
-            get { return this.Value as ProfileVisibility; }
-            set { this.Value = value; }
-        }
+        public event PropertyChangedEventHandler VisibilityChanged;
 
         /// <summary>
         /// Gets or sets caption.
@@ -49,6 +45,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the property.</value>
         public string Name { get; set; }
+
+        protected ProfileVisibility Visibility
+        {
+            get { return this.Value as ProfileVisibility; }
+            set { this.Value = value; }
+        }
 
         /// <summary>
         /// Gets or sets the UserInfo object that represents the User whose profile is being displayed.
@@ -126,7 +128,20 @@ namespace DotNetNuke.UI.WebControls
             this.OnVisibilityChanged(args);
         }
 
-        public event PropertyChangedEventHandler VisibilityChanged;
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            this.Page.RegisterRequiresPostBack(this);
+            this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
+        }
 
         private void RenderVisibility(HtmlTextWriter writer, string optionValue, UserVisibilityMode selectedVisibility, string optionText)
         {
@@ -192,21 +207,6 @@ namespace DotNetNuke.UI.WebControls
                                         relationship.Name,
                                         this.Visibility.RelationshipVisibilities.Count(r => r.RelationshipId == relationship.RelationshipId) == 1);
             }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            this.Page.RegisterRequiresPostBack(this);
-            this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "visibleChange", "$(document).ready(function(){$('.dnnFormVisibility').on('click', 'input[type=radio]', function(){$(this).parent().parent().find('ul').hide();$(this).parent().next('ul').show();});});", true);
         }
 
         /// <summary>

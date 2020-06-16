@@ -18,6 +18,24 @@ namespace DotNetNuke.Web.Client.Providers
     {
         private readonly ClientResourceSettings clientResourceSettings = new ClientResourceSettings();
 
+        private bool MinifyCss
+        {
+            get
+            {
+                var enableCssMinification = this.clientResourceSettings.EnableCssMinification();
+                return enableCssMinification.HasValue ? enableCssMinification.Value : this.EnableCssMinify;
+            }
+        }
+
+        private bool MinifyJs
+        {
+            get
+            {
+                var enableJsMinification = this.clientResourceSettings.EnableJsMinification();
+                return enableJsMinification.HasValue ? enableJsMinification.Value : this.EnableJsMinify;
+            }
+        }
+
         public override string MinifyFile(Stream fileStream, ClientDependencyType type)
         {
             Func<Stream, string> streamToString = stream =>
@@ -71,24 +89,6 @@ namespace DotNetNuke.Web.Client.Providers
 
                 default:
                     return fileContents;
-            }
-        }
-
-        private bool MinifyCss
-        {
-            get
-            {
-                var enableCssMinification = this.clientResourceSettings.EnableCssMinification();
-                return enableCssMinification.HasValue ? enableCssMinification.Value : this.EnableCssMinify;
-            }
-        }
-
-        private bool MinifyJs
-        {
-            get
-            {
-                var enableJsMinification = this.clientResourceSettings.EnableJsMinification();
-                return enableJsMinification.HasValue ? enableJsMinification.Value : this.EnableJsMinify;
             }
         }
     }

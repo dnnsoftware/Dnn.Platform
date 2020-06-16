@@ -30,14 +30,14 @@ namespace DotNetNuke.Services.Social.Notifications
                         : ServiceLocator<INotificationsController, NotificationsController>,
                         INotificationsController
     {
+        internal const int ConstMaxSubject = 400;
+        internal const int ConstMaxTo = 2000;
+        private const string ToastsCacheKey = "GetToasts_{0}";
+
         protected override Func<INotificationsController> GetFactory()
         {
             return () => new NotificationsController();
         }
-
-        internal const int ConstMaxSubject = 400;
-        internal const int ConstMaxTo = 2000;
-        private const string ToastsCacheKey = "GetToasts_{0}";
         private readonly IDataService _dataService;
         private readonly Messaging.Data.IDataService _messagingDataService;
 

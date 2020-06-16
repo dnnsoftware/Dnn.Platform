@@ -35,16 +35,6 @@ namespace Dnn.ExportImport.Repository
             this.Dispose(true);
         }
 
-        private void Dispose(bool isDisposing)
-        {
-            var temp = Interlocked.Exchange(ref this._liteDb, null);
-            temp?.Dispose();
-            if (isDisposing)
-            {
-                GC.SuppressFinalize(this);
-            }
-        }
-
         public T AddSingleItem<T>(T item)
             where T : class
         {
@@ -59,6 +49,16 @@ namespace Dnn.ExportImport.Repository
             var collection = this.DbCollection<T>();
             collection.Update(item);
             return item;
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            var temp = Interlocked.Exchange(ref this._liteDb, null);
+            temp?.Dispose();
+            if (isDisposing)
+            {
+                GC.SuppressFinalize(this);
+            }
         }
 
         public T GetSingleItem<T>()
@@ -152,6 +152,20 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(null, orderKeySelector, asc, skip, max);
         }
 
+        public T GetItem<T>(int id)
+            where T : BasicExportImportDto
+        {
+            var collection = this.DbCollection<T>();
+            return collection.FindById(id);
+        }
+
+        public IEnumerable<T> GetItems<T>(IEnumerable<int> idList)
+            where T : BasicExportImportDto
+        {
+            Expression<Func<T, bool>> predicate = p => idList.Contains(p.Id);
+            return this.InternalGetItems(predicate);
+        }
+
         private IEnumerable<T> InternalGetItems<T>(
             Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
@@ -169,20 +183,6 @@ namespace Dnn.ExportImport.Repository
             }
 
             return result.AsEnumerable();
-        }
-
-        public T GetItem<T>(int id)
-            where T : BasicExportImportDto
-        {
-            var collection = this.DbCollection<T>();
-            return collection.FindById(id);
-        }
-
-        public IEnumerable<T> GetItems<T>(IEnumerable<int> idList)
-            where T : BasicExportImportDto
-        {
-            Expression<Func<T, bool>> predicate = p => idList.Contains(p.Id);
-            return this.InternalGetItems(predicate);
         }
 
         public IEnumerable<T> GetRelatedItems<T>(int referenceId)

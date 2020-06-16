@@ -35,38 +35,7 @@ namespace DotNetNuke.UI.Containers
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionRoot.
-        /// </summary>
-        /// <returns>A ModuleActionCollection.</returns>
-        /// -----------------------------------------------------------------------------
-        protected ModuleAction ActionRoot
-        {
-            get
-            {
-                if (this._ActionRoot == null)
-                {
-                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
-                }
-
-                return this._ActionRoot;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Provider Control.
-        /// </summary>
-        /// <returns>A NavigationProvider.</returns>
-        /// -----------------------------------------------------------------------------
-        protected NavigationProvider ProviderControl
-        {
-            get
-            {
-                return this._ProviderControl;
-            }
-        }
+        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -102,6 +71,39 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ActionRoot.
+        /// </summary>
+        /// <returns>A ModuleActionCollection.</returns>
+        /// -----------------------------------------------------------------------------
+        protected ModuleAction ActionRoot
+        {
+            get
+            {
+                if (this._ActionRoot == null)
+                {
+                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
+                }
+
+                return this._ActionRoot;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Provider Control.
+        /// </summary>
+        /// <returns>A NavigationProvider.</returns>
+        /// -----------------------------------------------------------------------------
+        protected NavigationProvider ProviderControl
+        {
+            get
+            {
+                return this._ProviderControl;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client.
         /// </summary>
         /// <returns>A Boolean.</returns>
@@ -126,8 +128,6 @@ namespace DotNetNuke.UI.Containers
                 this._ProviderName = value;
             }
         }
-
-        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -155,6 +155,29 @@ namespace DotNetNuke.UI.Containers
         /// <returns>An IModuleControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// BindMenu binds the Navigation Provider to the Node Collection.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected void BindMenu()
+        {
+            this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnAction raises the Action Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected virtual void OnAction(ActionEventArgs e)
+        {
+            if (this.Action != null)
+            {
+                this.Action(this, e);
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -233,29 +256,6 @@ namespace DotNetNuke.UI.Containers
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// BindMenu binds the Navigation Provider to the Node Collection.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected void BindMenu()
-        {
-            this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnAction raises the Action Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected virtual void OnAction(ActionEventArgs e)
-        {
-            if (this.Action != null)
-            {
-                this.Action(this, e);
             }
         }
 

@@ -43,6 +43,28 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initialises the Column.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Initialize()
+        {
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+            if (HttpContext.Current == null)
+            {
+                this.ItemStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.ItemStyle.Font.Size = new FontUnit("10pt");
+                this.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
+                this.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Creates a TextColumnTemplate.
         /// </summary>
         /// <returns>A TextColumnTemplate.</returns>
@@ -73,28 +95,6 @@ namespace DotNetNuke.UI.WebControls
 
             template.DesignMode = isDesignMode;
             return template;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Initialize()
-        {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-            if (HttpContext.Current == null)
-            {
-                this.ItemStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.ItemStyle.Font.Size = new FontUnit("10pt");
-                this.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
-                this.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
-            }
         }
     }
 }

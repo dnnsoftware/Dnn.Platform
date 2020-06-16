@@ -178,9 +178,14 @@ namespace DotNetNuke.Services.Log.EventLog
             FOLDER_MOVED,
         }
 
-        protected override Func<IEventLogController> GetFactory()
+        public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
         {
-            return () => new EventLogController();
+            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
+            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
+            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
+            log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
+
+            LogController.Instance.AddLog(log);
         }
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType)
@@ -191,6 +196,11 @@ namespace DotNetNuke.Services.Log.EventLog
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType)
         {
             this.AddLog(propertyName, propertyValue, portalSettings, userID, logType.ToString());
+        }
+
+        protected override Func<IEventLogController> GetFactory()
+        {
+            return () => new EventLogController();
         }
 
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
@@ -414,16 +424,6 @@ namespace DotNetNuke.Services.Log.EventLog
         public virtual void UpdateLogType(LogTypeInfo logType)
         {
             LogController.Instance.UpdateLogType(logType);
-        }
-
-        public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
-        {
-            var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
-            log.LogProperties.Add(new LogDetailInfo(idFieldName, idValue.ToString()));
-            log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
-            log.LogProperties.Add(new LogDetailInfo("SettingValue", settingValue));
-
-            LogController.Instance.AddLog(log);
         }
     }
 }

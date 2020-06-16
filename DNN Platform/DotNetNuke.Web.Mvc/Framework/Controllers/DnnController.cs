@@ -44,11 +44,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         public string LocalResourceFile { get; set; }
 
-        public string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
-
         public ModuleActionCollection ModuleActions { get; set; }
 
         public ModuleInstanceContext ModuleContext { get; set; }
@@ -58,14 +53,9 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
         }
 
-        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
+        public string LocalizeString(string key)
         {
-            return new DnnRedirecttoRouteResult(actionName, controllerName, string.Empty, routeValues, false, this.Url);
-        }
-
-        protected internal RedirectToRouteResult RedirectToDefaultRoute()
-        {
-            return new DnnRedirecttoRouteResult(string.Empty, string.Empty, string.Empty, null, false);
+            return Localization.GetString(key, this.LocalResourceFile);
         }
 
         public ActionResult ResultOfLastExecute
@@ -80,6 +70,18 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         public new UserInfo User
         {
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
+        }
+
+        public ViewEngineCollection ViewEngineCollectionEx { get; set; }
+
+        protected internal RedirectToRouteResult RedirectToDefaultRoute()
+        {
+            return new DnnRedirecttoRouteResult(string.Empty, string.Empty, string.Empty, null, false);
+        }
+
+        protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
+        {
+            return new DnnRedirecttoRouteResult(actionName, controllerName, string.Empty, routeValues, false, this.Url);
         }
 
         protected override ViewResult View(IView view, object model)
@@ -135,7 +137,5 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             base.Initialize(requestContext);
             this.Url = new DnnUrlHelper(requestContext, this);
         }
-
-        public ViewEngineCollection ViewEngineCollectionEx { get; set; }
     }
 }

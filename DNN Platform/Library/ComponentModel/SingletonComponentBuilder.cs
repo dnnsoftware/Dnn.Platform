@@ -24,6 +24,14 @@ namespace DotNetNuke.ComponentModel
             this._Type = type;
         }
 
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+        }
+
         public object BuildComponent()
         {
             if (this._Instance == null)
@@ -32,14 +40,6 @@ namespace DotNetNuke.ComponentModel
             }
 
             return this._Instance;
-        }
-
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
         }
 
         private void CreateInstance()

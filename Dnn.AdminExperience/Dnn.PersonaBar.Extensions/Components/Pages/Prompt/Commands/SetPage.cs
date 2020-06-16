@@ -19,8 +19,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     [ConsoleCommand("set-page", Constants.PagesCategory, "Prompt_SetPage_Description")]
     public class SetPage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
-
         [FlagParameter("id", "Prompt_SetPage_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
@@ -44,6 +42,8 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         [FlagParameter("parentid", "Prompt_SetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
+
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int PageId { get; set; }
         private int? ParentId { get; set; }

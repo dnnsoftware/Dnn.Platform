@@ -35,34 +35,6 @@ namespace DotNetNuke.Security.Profile
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
 
-        private void UpdateTimeZoneInfo(UserInfo user, ProfilePropertyDefinitionCollection properties)
-        {
-            ProfilePropertyDefinition newTimeZone = properties["PreferredTimeZone"];
-            ProfilePropertyDefinition oldTimeZone = properties["TimeZone"];
-            if (newTimeZone != null && oldTimeZone != null)
-            {
-                // Old timezone is present but new is not...we will set that up.
-                if (!string.IsNullOrEmpty(oldTimeZone.PropertyValue) && string.IsNullOrEmpty(newTimeZone.PropertyValue))
-                {
-                    int oldOffset;
-                    int.TryParse(oldTimeZone.PropertyValue, out oldOffset);
-                    TimeZoneInfo timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset);
-                    newTimeZone.PropertyValue = timeZoneInfo.Id;
-                    this.UpdateUserProfile(user);
-                }
-
-                // It's also possible that the new value is set but not the old value. We need to make them backwards compatible
-                else if (!string.IsNullOrEmpty(newTimeZone.PropertyValue) && string.IsNullOrEmpty(oldTimeZone.PropertyValue))
-                {
-                    TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(newTimeZone.PropertyValue);
-                    if (timeZoneInfo != null)
-                    {
-                        oldTimeZone.PropertyValue = timeZoneInfo.BaseUtcOffset.TotalMinutes.ToString(CultureInfo.InvariantCulture);
-                    }
-                }
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Provider Properties can be edited.
@@ -210,6 +182,34 @@ namespace DotNetNuke.Security.Profile
                                                 propertyValue, (int)profProperty.ProfileVisibility.VisibilityMode,
                                                 profProperty.ProfileVisibility.ExtendedVisibilityString(), DateTime.Now);
                     EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");
+                }
+            }
+        }
+
+        private void UpdateTimeZoneInfo(UserInfo user, ProfilePropertyDefinitionCollection properties)
+        {
+            ProfilePropertyDefinition newTimeZone = properties["PreferredTimeZone"];
+            ProfilePropertyDefinition oldTimeZone = properties["TimeZone"];
+            if (newTimeZone != null && oldTimeZone != null)
+            {
+                // Old timezone is present but new is not...we will set that up.
+                if (!string.IsNullOrEmpty(oldTimeZone.PropertyValue) && string.IsNullOrEmpty(newTimeZone.PropertyValue))
+                {
+                    int oldOffset;
+                    int.TryParse(oldTimeZone.PropertyValue, out oldOffset);
+                    TimeZoneInfo timeZoneInfo = Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(oldOffset);
+                    newTimeZone.PropertyValue = timeZoneInfo.Id;
+                    this.UpdateUserProfile(user);
+                }
+
+                // It's also possible that the new value is set but not the old value. We need to make them backwards compatible
+                else if (!string.IsNullOrEmpty(newTimeZone.PropertyValue) && string.IsNullOrEmpty(oldTimeZone.PropertyValue))
+                {
+                    TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(newTimeZone.PropertyValue);
+                    if (timeZoneInfo != null)
+                    {
+                        oldTimeZone.PropertyValue = timeZoneInfo.BaseUtcOffset.TotalMinutes.ToString(CultureInfo.InvariantCulture);
+                    }
                 }
             }
         }

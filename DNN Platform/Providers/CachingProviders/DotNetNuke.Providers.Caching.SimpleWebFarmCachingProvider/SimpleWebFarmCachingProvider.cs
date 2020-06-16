@@ -25,6 +25,73 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
         private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
+        public override void Clear(string type, string data)
+        {
+            // Clear the local cache
+            this.ClearCacheInternal(type, data, true);
+
+            // Per API implementation standards only notify others if expiration has not been desabled
+            if (CacheExpirationDisable)
+            {
+                return;
+            }
+
+            // Notify other servers
+            this.NotifyOtherServers("Clear~" + type, data);
+        }
+
+        public override void Remove(string key)
+        {
+            // Remove from local cache
+            this.RemoveInternal(key);
+
+            // Per API implementation standards only notify others if expiration has not been disabled
+            if (CacheExpirationDisable)
+            {
+                return;
+            }
+
+            // Notify Other Servers
+            this.NotifyOtherServers("Remove", key);
+        }
+
+        /// <summary>
+        /// This method responds to an incoming request to process synchronization from an additional server.
+        /// </summary>
+        /// <remarks>
+        /// This is internal as it should only be called from <see cref="SimpleWebFarmSynchronizationHandler"/>.
+        /// </remarks>
+        /// <param name="command">The command to process, currently supported Remove and Clear~{Type}.</param>
+        /// <param name="detail">Additional detail to pass to the caching sub-system.</param>
+        internal void ProcessSynchronizationRequest(string command, string detail)
+        {
+            // Handle basic removal
+            if (command.StartsWith("remove", StringComparison.OrdinalIgnoreCase))
+            {
+                this.RemoveInternal(detail);
+                return;
+            }
+
+            // A clear method will have additional type information included, split using the ~ character
+            if (command.StartsWith("clear~", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var commandParts = command.Split('~');
+                this.ClearCacheInternal(commandParts[1], detail, true);
+            }
+        }
+
+        private static void HandleNotificationTimeout(object state, bool timedOut)
+        {
+            if (!timedOut)
+            {
+                return;
+            }
+
+            // Abort if possible
+            var request = (HttpWebRequest)state;
+            request?.Abort();
+        }
+
         private void NotifyOtherServers(string command, string detail)
         {
             // Do not send notifications to other servers if currently upgrading
@@ -102,73 +169,6 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                     Exceptions.LogException(new Exception("Synchronization Error in Request: " + request.RequestUri.AbsoluteUri, e));
                 }
             }
-        }
-
-        private static void HandleNotificationTimeout(object state, bool timedOut)
-        {
-            if (!timedOut)
-            {
-                return;
-            }
-
-            // Abort if possible
-            var request = (HttpWebRequest)state;
-            request?.Abort();
-        }
-
-        /// <summary>
-        /// This method responds to an incoming request to process synchronization from an additional server.
-        /// </summary>
-        /// <remarks>
-        /// This is internal as it should only be called from <see cref="SimpleWebFarmSynchronizationHandler"/>.
-        /// </remarks>
-        /// <param name="command">The command to process, currently supported Remove and Clear~{Type}.</param>
-        /// <param name="detail">Additional detail to pass to the caching sub-system.</param>
-        internal void ProcessSynchronizationRequest(string command, string detail)
-        {
-            // Handle basic removal
-            if (command.StartsWith("remove", StringComparison.OrdinalIgnoreCase))
-            {
-                this.RemoveInternal(detail);
-                return;
-            }
-
-            // A clear method will have additional type information included, split using the ~ character
-            if (command.StartsWith("clear~", StringComparison.InvariantCultureIgnoreCase))
-            {
-                var commandParts = command.Split('~');
-                this.ClearCacheInternal(commandParts[1], detail, true);
-            }
-        }
-
-        public override void Clear(string type, string data)
-        {
-            // Clear the local cache
-            this.ClearCacheInternal(type, data, true);
-
-            // Per API implementation standards only notify others if expiration has not been desabled
-            if (CacheExpirationDisable)
-            {
-                return;
-            }
-
-            // Notify other servers
-            this.NotifyOtherServers("Clear~" + type, data);
-        }
-
-        public override void Remove(string key)
-        {
-            // Remove from local cache
-            this.RemoveInternal(key);
-
-            // Per API implementation standards only notify others if expiration has not been disabled
-            if (CacheExpirationDisable)
-            {
-                return;
-            }
-
-            // Notify Other Servers
-            this.NotifyOtherServers("Remove", key);
         }
     }
 }

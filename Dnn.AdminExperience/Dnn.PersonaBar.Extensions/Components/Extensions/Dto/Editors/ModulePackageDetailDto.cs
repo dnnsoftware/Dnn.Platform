@@ -1,10 +1,8 @@
-﻿
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
-    // Licensed to the .NET Foundation under one or more agreements.
-    // The .NET Foundation licenses this file to you under the MIT license.
-    // See the LICENSE file in the project root for more information
-
     using System.Collections.Generic;
     using System.Linq;
 
@@ -16,51 +14,8 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
     [JsonObject]
     public class ModulePackageDetailDto : ModulePackagePermissionsDto
     {
-        [JsonProperty("moduleName")]
-        public string ModuleName { get; set; }
-
-        [JsonProperty("folderName")]
-        public string FolderName { get; set; }
-
-        [JsonProperty("category")]
-        public string Category { get; set; }
-
-        [JsonProperty("businessController")]
-        public string BusinessController { get; set; }
-
-        [JsonProperty("dependencies")]
-        public string Dependencies { get; set; }
-
-        [JsonProperty("hostPermissions")]
-        public string HostPermissions { get; set; }
-
-        [JsonProperty("portable")]
-        public bool Portable { get; set; }
-
-        [JsonProperty("searchable")]
-        public bool Searchable { get; set; }
-
-        [JsonProperty("upgradeable")]
-        public bool Upgradeable { get; set; }
-
-        [JsonProperty("shareable")]
-        public ModuleSharing Shareable { get; set; }
-
-        [JsonProperty("premiumModule")]
-        public bool PremiumModule { get; set; }
-
-        [JsonProperty("assignedPortals")]
-        public IList<ListItemDto> AssignedPortals { get; set; } = new List<ListItemDto>();
-
-        [JsonProperty("unassignedPortals")]
-        public IList<ListItemDto> UnassignedPortals { get; set; } = new List<ListItemDto>();
-
-        [JsonProperty("moduleDefinitions")]
-        public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; } = new List<ModuleDefinitionDto>();
-
         public ModulePackageDetailDto()
         {
-
         }
 
         public ModulePackageDetailDto(int portalId, PackageInfo package, DesktopModuleInfo desktopModule) : base(portalId, package)
@@ -102,5 +57,47 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 this.ModuleDefinitions.Add(new ModuleDefinitionDto(moduleDefinition));
             }
         }
+
+        [JsonProperty("moduleName")]
+        public string ModuleName { get; set; }
+
+        [JsonProperty("folderName")]
+        public string FolderName { get; set; }
+
+        [JsonProperty("category")]
+        public string Category { get; set; }
+
+        [JsonProperty("businessController")]
+        public string BusinessController { get; set; }
+
+        [JsonProperty("dependencies")]
+        public string Dependencies { get; set; }
+
+        [JsonProperty("hostPermissions")]
+        public string HostPermissions { get; set; }
+
+        [JsonProperty("portable")]
+        public bool Portable { get; set; }
+
+        [JsonProperty("searchable")]
+        public bool Searchable { get; set; }
+
+        [JsonProperty("upgradeable")]
+        public bool Upgradeable { get; set; }
+
+        [JsonProperty("shareable")]
+        public ModuleSharing Shareable { get; set; }
+
+        [JsonProperty("premiumModule")]
+        public bool PremiumModule { get; set; }
+
+        [JsonProperty("assignedPortals")]
+        public IList<ListItemDto> AssignedPortals { get; set; } = new List<ListItemDto>();
+
+        [JsonProperty("unassignedPortals")]
+        public IList<ListItemDto> UnassignedPortals { get; set; } = new List<ListItemDto>();
+
+        [JsonProperty("moduleDefinitions")]
+        public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; } = new List<ModuleDefinitionDto>();
     }
 }

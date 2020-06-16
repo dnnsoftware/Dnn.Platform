@@ -25,9 +25,9 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:PropertyLabelControl runat=server></{0}:PropertyLabelControl>")]
     public class PropertyLabelControl : WebControl
     {
-        private string _ResourceKey;
         protected LinkButton cmdHelp;
         protected HtmlGenericControl label;
+        private string _ResourceKey;
         protected Label lblHelp;
         protected Label lblLabel;
         protected Panel pnlTooltip;
@@ -35,14 +35,6 @@ namespace DotNetNuke.UI.WebControls
 
         public PropertyLabelControl()
         {
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
         }
 
         /// <summary>
@@ -80,6 +72,14 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.EnsureChildControls();
                 this.lblLabel.AssociatedControlID = value;
+            }
+        }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
             }
         }
 

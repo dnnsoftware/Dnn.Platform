@@ -26,6 +26,18 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowStateRepository = WorkflowStateRepository.Instance;
         }
 
+        public void CreateSystemWorkflows(int portalId)
+        {
+            this.CreateDirectPublishWorkflow(portalId);
+            this.CreateSaveDraftWorkflow(portalId);
+            this.CreateContentApprovalWorkflow(portalId);
+        }
+
+        public Entities.Workflow GetDirectPublishWorkflow(int portalId)
+        {
+            return this._workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
+        }
+
         private WorkflowState GetDefaultWorkflowState(int order)
         {
             return new WorkflowState
@@ -97,18 +109,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             state = this.GetPublishedStateDefinition(3);
             state.WorkflowID = workflow.WorkflowID;
             this._workflowStateRepository.AddWorkflowState(state);
-        }
-
-        public void CreateSystemWorkflows(int portalId)
-        {
-            this.CreateDirectPublishWorkflow(portalId);
-            this.CreateSaveDraftWorkflow(portalId);
-            this.CreateContentApprovalWorkflow(portalId);
-        }
-
-        public Entities.Workflow GetDirectPublishWorkflow(int portalId)
-        {
-            return this._workflowRepository.GetSystemWorkflows(portalId).SingleOrDefault(sw => sw.WorkflowKey == DirectPublishWorkflowKey);
         }
 
         public Entities.Workflow GetSaveDraftWorkflow(int portalId)

@@ -39,9 +39,9 @@ namespace DotNetNuke.Modules.Journal
     /// -----------------------------------------------------------------------------
     public partial class View : JournalModuleBase
     {
-        private readonly INavigationManager _navigationManager;
         public int PageSize = 20;
         public bool AllowPhotos = true;
+        private readonly INavigationManager _navigationManager;
         public bool AllowFiles = true;
         public int MaxMessageLength = 250;
         public bool CanRender = true;

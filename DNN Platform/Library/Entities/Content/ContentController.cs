@@ -22,11 +22,6 @@ namespace DotNetNuke.Entities.Content
     {
         private readonly IDataService _dataService;
 
-        protected override Func<IContentController> GetFactory()
-        {
-            return () => new ContentController();
-        }
-
         public ContentController()
             : this(Util.GetDataService())
         {
@@ -57,6 +52,11 @@ namespace DotNetNuke.Entities.Content
             UpdateContentItemsCache(contentItem);
 
             return contentItem.ContentItemId;
+        }
+
+        protected override Func<IContentController> GetFactory()
+        {
+            return () => new ContentController();
         }
 
         public void DeleteContentItem(ContentItem contentItem)
@@ -234,6 +234,25 @@ namespace DotNetNuke.Entities.Content
             return metadata;
         }
 
+        private static bool MetaDataChanged(
+            IEnumerable<KeyValuePair<string, string>> lh,
+            IEnumerable<KeyValuePair<string, string>> rh)
+        {
+            return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
+        }
+
+        private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
+        {
+            DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
+            if (readdItem)
+            {
+                CBO.GetCachedObject<ContentItem>(
+                    new CacheItemArgs(
+                    GetContentItemCacheKey(contentItem.ContentItemId),
+                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+            }
+        }
+
         private void SaveMetadataDelta(ContentItem contentItem)
         {
             var persisted = this.GetMetaData(contentItem.ContentItemId);
@@ -256,25 +275,6 @@ namespace DotNetNuke.Entities.Content
             this._dataService.SynchronizeMetaData(contentItem, added, deleted);
 
             UpdateContentItemsCache(contentItem, false);
-        }
-
-        private static bool MetaDataChanged(
-            IEnumerable<KeyValuePair<string, string>> lh,
-            IEnumerable<KeyValuePair<string, string>> rh)
-        {
-            return lh.SequenceEqual(rh, new NameValueEqualityComparer()) == false;
-        }
-
-        private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
-        {
-            DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
-            if (readdItem)
-            {
-                CBO.GetCachedObject<ContentItem>(
-                    new CacheItemArgs(
-                    GetContentItemCacheKey(contentItem.ContentItemId),
-                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
-            }
         }
 
         private static string GetContentItemCacheKey(int contetnItemId)

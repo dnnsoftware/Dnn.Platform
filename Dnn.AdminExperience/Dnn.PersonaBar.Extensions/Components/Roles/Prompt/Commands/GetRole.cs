@@ -18,10 +18,10 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     [ConsoleCommand("get-role", Constants.RolesCategory, "Prompt_GetRole_Description")]
     public class GetRole : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing);
 

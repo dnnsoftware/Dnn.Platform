@@ -41,6 +41,112 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets moduleActions is an interface property that returns the module actions collection for the module.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                // add the Edit Text action
+                var Actions = new ModuleActionCollection();
+                Actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
+                    ModuleActionType.AddContent,
+                    string.Empty,
+                    string.Empty,
+                    this.EditUrl(),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
+
+                // get the content
+                var objHTML = new HtmlTextController();
+                var objWorkflow = new WorkflowStateController();
+                this.WorkflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+
+                HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
+                if (objContent != null)
+                {
+                    // if content is in the first state
+                    if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.WorkflowID))
+                    {
+                        // if not direct publish workflow
+                        if (objWorkflow.GetWorkflowStates(this.WorkflowID).Count > 1)
+                        {
+                            // add publish action
+                            Actions.Add(
+                                this.GetNextActionID(),
+                                Localization.GetString("PublishContent.Action", this.LocalResourceFile),
+                                ModuleActionType.AddContent,
+                                "publish",
+                                "grant.gif",
+                                string.Empty,
+                                true,
+                                SecurityAccessLevel.Edit,
+                                true,
+                                false);
+                        }
+                    }
+                    else
+                    {
+                        // if the content is not in the last state of the workflow then review is required
+                        if (objContent.StateID != objWorkflow.GetLastWorkflowStateID(this.WorkflowID))
+                        {
+                            // if the user has permissions to review the content
+                            if (WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(objContent.StateID), "REVIEW"))
+                            {
+                                // add approve and reject actions
+                                Actions.Add(
+                                    this.GetNextActionID(),
+                                    Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
+                                    ModuleActionType.AddContent,
+                                    string.Empty,
+                                    "grant.gif",
+                                    this.EditUrl("action", "approve", "Review"),
+                                    false,
+                                    SecurityAccessLevel.Edit,
+                                    true,
+                                    false);
+                                Actions.Add(
+                                    this.GetNextActionID(),
+                                    Localization.GetString("RejectContent.Action", this.LocalResourceFile),
+                                    ModuleActionType.AddContent,
+                                    string.Empty,
+                                    "deny.gif",
+                                    this.EditUrl("action", "reject", "Review"),
+                                    false,
+                                    SecurityAccessLevel.Edit,
+                                    true,
+                                    false);
+                            }
+                        }
+                    }
+                }
+
+                // add mywork to action menu
+                Actions.Add(
+                    this.GetNextActionID(),
+                    Localization.GetString("MyWork.Action", this.LocalResourceFile),
+                    "MyWork.Action",
+                    string.Empty,
+                    "view.gif",
+                    this.EditUrl("MyWork"),
+                    false,
+                    SecurityAccessLevel.Edit,
+                    true,
+                    false);
+
+                return Actions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Page_Init runs when the control is initialized.
         /// </summary>
         /// <remarks>
@@ -251,112 +357,6 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets moduleActions is an interface property that returns the module actions collection for the module.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        public ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                // add the Edit Text action
-                var Actions = new ModuleActionCollection();
-                Actions.Add(
-                    this.GetNextActionID(),
-                    Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
-                    ModuleActionType.AddContent,
-                    string.Empty,
-                    string.Empty,
-                    this.EditUrl(),
-                    false,
-                    SecurityAccessLevel.Edit,
-                    true,
-                    false);
-
-                // get the content
-                var objHTML = new HtmlTextController();
-                var objWorkflow = new WorkflowStateController();
-                this.WorkflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
-
-                HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
-                if (objContent != null)
-                {
-                    // if content is in the first state
-                    if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.WorkflowID))
-                    {
-                        // if not direct publish workflow
-                        if (objWorkflow.GetWorkflowStates(this.WorkflowID).Count > 1)
-                        {
-                            // add publish action
-                            Actions.Add(
-                                this.GetNextActionID(),
-                                Localization.GetString("PublishContent.Action", this.LocalResourceFile),
-                                ModuleActionType.AddContent,
-                                "publish",
-                                "grant.gif",
-                                string.Empty,
-                                true,
-                                SecurityAccessLevel.Edit,
-                                true,
-                                false);
-                        }
-                    }
-                    else
-                    {
-                        // if the content is not in the last state of the workflow then review is required
-                        if (objContent.StateID != objWorkflow.GetLastWorkflowStateID(this.WorkflowID))
-                        {
-                            // if the user has permissions to review the content
-                            if (WorkflowStatePermissionController.HasWorkflowStatePermission(WorkflowStatePermissionController.GetWorkflowStatePermissions(objContent.StateID), "REVIEW"))
-                            {
-                                // add approve and reject actions
-                                Actions.Add(
-                                    this.GetNextActionID(),
-                                    Localization.GetString("ApproveContent.Action", this.LocalResourceFile),
-                                    ModuleActionType.AddContent,
-                                    string.Empty,
-                                    "grant.gif",
-                                    this.EditUrl("action", "approve", "Review"),
-                                    false,
-                                    SecurityAccessLevel.Edit,
-                                    true,
-                                    false);
-                                Actions.Add(
-                                    this.GetNextActionID(),
-                                    Localization.GetString("RejectContent.Action", this.LocalResourceFile),
-                                    ModuleActionType.AddContent,
-                                    string.Empty,
-                                    "deny.gif",
-                                    this.EditUrl("action", "reject", "Review"),
-                                    false,
-                                    SecurityAccessLevel.Edit,
-                                    true,
-                                    false);
-                            }
-                        }
-                    }
-                }
-
-                // add mywork to action menu
-                Actions.Add(
-                    this.GetNextActionID(),
-                    Localization.GetString("MyWork.Action", this.LocalResourceFile),
-                    "MyWork.Action",
-                    string.Empty,
-                    "view.gif",
-                    this.EditUrl("MyWork"),
-                    false,
-                    SecurityAccessLevel.Edit,
-                    true,
-                    false);
-
-                return Actions;
             }
         }
     }

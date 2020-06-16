@@ -18,6 +18,8 @@ namespace DotNetNuke.ExtensionPoints
     {
         private static readonly object SyncRoot = new object();
 
+        private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
+
 #pragma warning disable 649
 
         [ImportMany]
@@ -51,16 +53,6 @@ namespace DotNetNuke.ExtensionPoints
             ComposeParts(this);
         }
 
-        private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
-
-        private static CompositionContainer InitializeMefCompositionContainer()
-        {
-            var catalog = new AggregateCatalog();
-            var path = Path.Combine(Globals.ApplicationMapPath, "bin");
-            catalog.Catalogs.Add(new SafeDirectoryCatalog(path));
-            return new CompositionContainer(catalog, true);
-        }
-
         public static void ComposeParts(params object[] attributeParts)
         {
             lock (SyncRoot)
@@ -72,6 +64,14 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module)
         {
             return this.GetEditPageTabExtensionPoints(module, null);
+        }
+
+        private static CompositionContainer InitializeMefCompositionContainer()
+        {
+            var catalog = new AggregateCatalog();
+            var path = Path.Combine(Globals.ApplicationMapPath, "bin");
+            catalog.Catalogs.Add(new SafeDirectoryCatalog(path));
+            return new CompositionContainer(catalog, true);
         }
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module, string group)

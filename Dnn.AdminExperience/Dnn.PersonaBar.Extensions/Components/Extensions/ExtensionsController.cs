@@ -1,10 +1,8 @@
-﻿
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components
 {
-    // Licensed to the .NET Foundation under one or more agreements.
-    // The .NET Foundation licenses this file to you under the MIT license.
-    // See the LICENSE file in the project root for more information
-
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -30,11 +28,11 @@ namespace Dnn.PersonaBar.Extensions.Components
     public class ExtensionsController
     {
         private const string OwnerUpdateService = "DotNetNuke Update Service";
-        protected INavigationManager NavigationManager { get; }
         public ExtensionsController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+        protected INavigationManager NavigationManager { get; }
 
         public IDictionary<string, PackageType> GetPackageTypes()
         {
@@ -150,6 +148,16 @@ namespace Dnn.PersonaBar.Extensions.Components
             return packages;
         }
 
+        public List<TabInfo> GetPackageUsage(int portalId, int packageId)
+        {
+            IDictionary<int, TabInfo> tabs = BuildData(portalId, packageId);
+            if (tabs != null && tabs.Count > 0)
+            {
+                return tabs.Values.ToList();
+            }
+            return null;
+        }
+
         private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
         {
             try
@@ -224,16 +232,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
         }
 
-        public List<TabInfo> GetPackageUsage(int portalId, int packageId)
-        {
-            IDictionary<int, TabInfo> tabs = BuildData(portalId, packageId);
-            if (tabs != null && tabs.Count > 0)
-            {
-                return tabs.Values.ToList();
-            }
-            return null;
-        }
-
         public string GetFormattedTabLink(int portalId, TabInfo tab)
         {
             var returnValue = new StringBuilder();
@@ -267,16 +265,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             return returnValue.ToString();
         }
 
-        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
-        {
-            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
-            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
-                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
-                              from portalModule in portalModules.Values
-                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
-                              select modulePackage);
-        }
-
         internal static string IsPackageInUse(PackageInfo packageInfo, int portalId)
         {
             if (packageInfo.PackageID == Null.NullInteger)
@@ -296,6 +284,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                 }
             }
             return string.Empty;
+        }
+
+        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
+        {
+            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
+            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
+                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
+                              from portalModule in portalModules.Values
+                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
+                              select modulePackage);
         }
 
         internal static string UpgradeRedirect(Version version, string packageType, string packageName)
@@ -343,16 +341,16 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
         }
 
+        internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
+        {
+            return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
+        }
+
         private static string FixIconUrl(string url)
         {
             return !string.IsNullOrEmpty(Globals.ApplicationPath)
                 ? $"{Globals.ApplicationPath}/{url.TrimStart('~').TrimStart('/')}"
                 : url;
-        }
-
-        internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
-        {
-            return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
         }
 
         private static IDictionary<int, TabInfo> BuildData(int portalId, int packageId)

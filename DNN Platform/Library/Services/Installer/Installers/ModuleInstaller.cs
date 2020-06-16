@@ -46,91 +46,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The DeleteModule method deletes the Module from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteModule()
-        {
-            try
-            {
-                // Attempt to get the Desktop Module
-                DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(this.Package.PackageID);
-                if (tempDesktopModule != null)
-                {
-                    var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
-
-                    // Remove CodeSubDirectory
-                    if ((this._desktopModule != null) && (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory)))
-                    {
-                        Config.RemoveCodeSubDirectory(this._desktopModule.CodeSubDirectory);
-                    }
-
-                    var controller = new DesktopModuleController();
-
-                    this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
-
-                    // remove admin/host pages
-                    if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
-                    {
-                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
-
-                        var portals = PortalController.Instance.GetPortals();
-                        foreach (PortalInfo portal in portals)
-                        {
-                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-
-                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
-                            if (temp != null)
-                            {
-                                var mods = TabModulesController.Instance.GetTabModules(temp);
-                                bool noOtherTabModule = true;
-                                foreach (ModuleInfo mod in mods)
-                                {
-                                    if (mod.DesktopModuleID != tempDesktopModule.DesktopModuleID)
-                                    {
-                                        noOtherTabModule = false;
-                                    }
-                                }
-
-                                if (noOtherTabModule)
-                                {
-                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
-                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
-                                }
-
-                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
-                            }
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
-                    {
-                        Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
-                        this.Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
-                        this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
-                    }
-
-                    controller.DeleteDesktopModule(tempDesktopModule);
-
-                    // Remove all the tab versions related with the module.
-                    foreach (var module in modules)
-                    {
-                        var moduleInfo = module as ModuleInfo;
-                        if (moduleInfo != null)
-                        {
-                            TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Modules this is not neccessary.</remarks>
@@ -248,6 +163,91 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 this.Completed = true;
                 this.Log.AddInfo(string.Format(Util.MODULE_Registered, this._desktopModule.ModuleName));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The DeleteModule method deletes the Module from the data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void DeleteModule()
+        {
+            try
+            {
+                // Attempt to get the Desktop Module
+                DesktopModuleInfo tempDesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(this.Package.PackageID);
+                if (tempDesktopModule != null)
+                {
+                    var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
+
+                    // Remove CodeSubDirectory
+                    if ((this._desktopModule != null) && (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory)))
+                    {
+                        Config.RemoveCodeSubDirectory(this._desktopModule.CodeSubDirectory);
+                    }
+
+                    var controller = new DesktopModuleController();
+
+                    this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+
+                    // remove admin/host pages
+                    if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
+                    {
+                        string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
+
+                        var portals = PortalController.Instance.GetPortals();
+                        foreach (PortalInfo portal in portals)
+                        {
+                            var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
+
+                            TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
+                            if (temp != null)
+                            {
+                                var mods = TabModulesController.Instance.GetTabModules(temp);
+                                bool noOtherTabModule = true;
+                                foreach (ModuleInfo mod in mods)
+                                {
+                                    if (mod.DesktopModuleID != tempDesktopModule.DesktopModuleID)
+                                    {
+                                        noOtherTabModule = false;
+                                    }
+                                }
+
+                                if (noOtherTabModule)
+                                {
+                                    this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                                    TabController.Instance.DeleteTab(tabID, portal.PortalID);
+                                }
+
+                                this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
+                    {
+                        Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
+                        this.Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
+                        this.Log.AddInfo(string.Format(Util.MODULE_HostPagemoduleRemoved, tempDesktopModule.HostPage));
+                    }
+
+                    controller.DeleteDesktopModule(tempDesktopModule);
+
+                    // Remove all the tab versions related with the module.
+                    foreach (var module in modules)
+                    {
+                        var moduleInfo = module as ModuleInfo;
+                        if (moduleInfo != null)
+                        {
+                            TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {

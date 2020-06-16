@@ -39,6 +39,43 @@ namespace DotNetNuke.Modules.Journal.Components
 
         private static readonly Regex HtmlTextRegex = new Regex("<(.|\\n)*?>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        public static string LocalizeControl(string controlText)
+        {
+            string sKey = string.Empty;
+            string sReplace = string.Empty;
+            MatchCollection matches = default(MatchCollection);
+            matches = ResexRegex.Matches(controlText);
+            foreach (Match match in matches)
+            {
+                sKey = match.Value;
+                sReplace = GetSharedResource(sKey);
+
+                string newValue = match.Value;
+                if (!string.IsNullOrEmpty(sReplace))
+                {
+                    newValue = sReplace;
+                }
+
+                controlText = controlText.Replace(sKey, newValue);
+            }
+
+            return controlText;
+        }
+
+        public static string GetSharedResource(string key)
+        {
+            string sValue = key;
+            sValue = DotNetNuke.Services.Localization.Localization.GetString(key, Constants.SharedResourcesPath);
+            if (sValue == string.Empty)
+            {
+                return key;
+            }
+            else
+            {
+                return sValue;
+            }
+        }
+
         internal static Bitmap GetImageFromURL(string url)
         {
             string sImgName = string.Empty;
@@ -287,43 +324,6 @@ namespace DotNetNuke.Modules.Journal.Components
             }
 
             return sHTML;
-        }
-
-        public static string LocalizeControl(string controlText)
-        {
-            string sKey = string.Empty;
-            string sReplace = string.Empty;
-            MatchCollection matches = default(MatchCollection);
-            matches = ResexRegex.Matches(controlText);
-            foreach (Match match in matches)
-            {
-                sKey = match.Value;
-                sReplace = GetSharedResource(sKey);
-
-                string newValue = match.Value;
-                if (!string.IsNullOrEmpty(sReplace))
-                {
-                    newValue = sReplace;
-                }
-
-                controlText = controlText.Replace(sKey, newValue);
-            }
-
-            return controlText;
-        }
-
-        public static string GetSharedResource(string key)
-        {
-            string sValue = key;
-            sValue = DotNetNuke.Services.Localization.Localization.GetString(key, Constants.SharedResourcesPath);
-            if (sValue == string.Empty)
-            {
-                return key;
-            }
-            else
-            {
-                return sValue;
-            }
         }
 
         public static string RemoveHTML(string sText)

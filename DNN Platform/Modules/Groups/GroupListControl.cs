@@ -25,6 +25,8 @@ namespace DotNetNuke.Modules.Groups.Controls
 
     public class GroupListControl : WebControl
     {
+        public UserInfo currentUser;
+
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string ItemTemplate { get; set; }
@@ -82,25 +84,12 @@ namespace DotNetNuke.Modules.Groups.Controls
         [DefaultValue(false)]
         public bool DisplayCurrentUserGroups { get; set; }
 
-        public UserInfo currentUser;
-
         public int GroupViewTabId { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             this.currentUser = UserController.Instance.GetCurrentUserInfo();
-        }
-
-        private static bool TestPredicateGroup(IEnumerable<Func<RoleInfo, bool>> predicates, RoleInfo ri)
-        {
-            return predicates.All(p => p(ri));
-        }
-
-        private static object GetOrderByProperty(object obj, string property)
-        {
-            var propertyInfo = obj.GetType().GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null);
         }
 
         protected override void Render(HtmlTextWriter output)
@@ -255,6 +244,17 @@ namespace DotNetNuke.Modules.Groups.Controls
             output.Write("<div class=\"dnnClear groupPager\">");
             output.Write(sb.ToString());
             output.Write("</div>");
+        }
+
+        private static bool TestPredicateGroup(IEnumerable<Func<RoleInfo, bool>> predicates, RoleInfo ri)
+        {
+            return predicates.All(p => p(ri));
+        }
+
+        private static object GetOrderByProperty(object obj, string property)
+        {
+            var propertyInfo = obj.GetType().GetProperty(property, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            return propertyInfo == null ? null : propertyInfo.GetValue(obj, null);
         }
     }
 }

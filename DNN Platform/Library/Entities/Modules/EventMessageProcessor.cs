@@ -18,6 +18,59 @@ namespace DotNetNuke.Entities.Modules
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventMessageProcessor));
 
+        public static void CreateImportModuleMessage(ModuleInfo objModule, string content, string version, int userID)
+        {
+            var appStartMessage = new EventMessage
+            {
+                Priority = MessagePriority.High,
+                ExpirationDate = DateTime.Now.AddYears(-1),
+                SentDate = DateTime.Now,
+                Body = string.Empty,
+                ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
+                ProcessorCommand = "ImportModule",
+            };
+
+            // Add custom Attributes for this message
+            appStartMessage.Attributes.Add("BusinessControllerClass", objModule.DesktopModule.BusinessControllerClass);
+            appStartMessage.Attributes.Add("ModuleId", objModule.ModuleID.ToString());
+            appStartMessage.Attributes.Add("Content", content);
+            appStartMessage.Attributes.Add("Version", version);
+            appStartMessage.Attributes.Add("UserID", userID.ToString());
+
+            // send it to occur on next App_Start Event
+            EventQueueController.SendMessage(appStartMessage, "Application_Start_FirstRequest");
+        }
+
+        public override bool ProcessMessage(EventMessage message)
+        {
+            try
+            {
+                switch (message.ProcessorCommand)
+                {
+                    case "UpdateSupportedFeatures":
+                        UpdateSupportedFeatures(message);
+                        break;
+                    case "UpgradeModule":
+                        UpgradeModule(message);
+                        break;
+                    case "ImportModule":
+                        ImportModule(message);
+                        break;
+                    default:
+                        // other events can be added here
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                message.ExceptionMessage = ex.Message;
+                return false;
+            }
+
+            return true;
+        }
+
         private static void ImportModule(EventMessage message)
         {
             try
@@ -119,59 +172,6 @@ namespace DotNetNuke.Entities.Modules
             {
                 Exceptions.LogException(exc);
             }
-        }
-
-        public static void CreateImportModuleMessage(ModuleInfo objModule, string content, string version, int userID)
-        {
-            var appStartMessage = new EventMessage
-            {
-                Priority = MessagePriority.High,
-                ExpirationDate = DateTime.Now.AddYears(-1),
-                SentDate = DateTime.Now,
-                Body = string.Empty,
-                ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                ProcessorCommand = "ImportModule",
-            };
-
-            // Add custom Attributes for this message
-            appStartMessage.Attributes.Add("BusinessControllerClass", objModule.DesktopModule.BusinessControllerClass);
-            appStartMessage.Attributes.Add("ModuleId", objModule.ModuleID.ToString());
-            appStartMessage.Attributes.Add("Content", content);
-            appStartMessage.Attributes.Add("Version", version);
-            appStartMessage.Attributes.Add("UserID", userID.ToString());
-
-            // send it to occur on next App_Start Event
-            EventQueueController.SendMessage(appStartMessage, "Application_Start_FirstRequest");
-        }
-
-        public override bool ProcessMessage(EventMessage message)
-        {
-            try
-            {
-                switch (message.ProcessorCommand)
-                {
-                    case "UpdateSupportedFeatures":
-                        UpdateSupportedFeatures(message);
-                        break;
-                    case "UpgradeModule":
-                        UpgradeModule(message);
-                        break;
-                    case "ImportModule":
-                        ImportModule(message);
-                        break;
-                    default:
-                        // other events can be added here
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                message.ExceptionMessage = ex.Message;
-                return false;
-            }
-
-            return true;
         }
     }
 }

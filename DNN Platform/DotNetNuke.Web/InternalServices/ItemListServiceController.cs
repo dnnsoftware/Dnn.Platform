@@ -31,33 +31,10 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ItemListServiceController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
-
         private const string PortalPrefix = "P-";
         private const string RootKey = "Root";
 
-        [DataContract]
-        public class ItemDto
-        {
-            [DataMember(Name = "key")]
-            public string Key { get; set; }
-
-            [DataMember(Name = "value")]
-            public string Value { get; set; }
-
-            [DataMember(Name = "hasChildren")]
-            public bool HasChildren { get; set; }
-
-            [DataMember(Name = "selectable")]
-            public bool Selectable { get; set; }
-        }
-
-        [DataContract]
-        public class ItemIdDto
-        {
-            [DataMember(Name = "id")]
-            public string Id { get; set; }
-        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
 
         [HttpGet]
         public HttpResponseMessage GetPageDescendants(string parentId = null, int sortOrder = 0,
@@ -102,6 +79,29 @@ namespace DotNetNuke.Web.InternalServices
                 IgnoreRoot = true,
             };
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
+        }
+
+        [DataContract]
+        public class ItemDto
+        {
+            [DataMember(Name = "key")]
+            public string Key { get; set; }
+
+            [DataMember(Name = "value")]
+            public string Value { get; set; }
+
+            [DataMember(Name = "hasChildren")]
+            public bool HasChildren { get; set; }
+
+            [DataMember(Name = "selectable")]
+            public bool Selectable { get; set; }
+        }
+
+        [DataContract]
+        public class ItemIdDto
+        {
+            [DataMember(Name = "id")]
+            public string Id { get; set; }
         }
 
         [HttpGet]
@@ -297,6 +297,93 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        [HttpGet]
+        public HttpResponseMessage SearchUser(string q)
+        {
+            try
+            {
+                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
+                const int numResults = 5;
+
+                // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
+                q = q.Replace(",", string.Empty).Replace("'", string.Empty);
+                if (q.Length == 0)
+                {
+                    return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                }
+
+                var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
+                    .Select(user => new SearchResult
+                    {
+                        id = user.UserID,
+                        name = user.DisplayName,
+                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32),
+                    }).ToList();
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetTerms(string q, bool includeSystem, bool includeTags)
+        {
+            var portalId = PortalSettings.Current.PortalId;
+
+            var vocabRep = Util.GetVocabularyController();
+            var termRep = Util.GetTermController();
+
+            var terms = new ArrayList();
+            var vocabularies = from v in vocabRep.GetVocabularies()
+                               where (v.ScopeType.ScopeType == "Application"
+                                      || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
+                                     && (!v.IsSystem || includeSystem)
+                                     && (v.Name != "Tags" || includeTags)
+                               select v;
+
+            foreach (var v in vocabularies)
+            {
+                terms.AddRange(new[]
+                {
+                    from t in termRep.GetTermsByVocabulary(v.VocabularyId)
+                                      where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
+                                        select new { text = t.Name, value = t.TermId },
+                });
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, terms);
+        }
+
+        private static NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
+        {
+            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
+            var portals = GetPortalGroup(sortOrder);
+            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            return treeNode;
+        }
+
+        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, IList<int> filterTabs = null)
+        {
+            return tabs.Where(tab => tab.ParentId == parentId).Select(tab => new ItemDto
+            {
+                Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
+                Value = tab.LocalizedTabName,
+                HasChildren = tab.HasChildren,
+                Selectable = filterTabs == null || filterTabs.Contains(tab.TabID),
+            }).ToList();
+        }
+
+        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, string parentId)
+        {
+            int id;
+            id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
+            return GetChildrenOf(tabs, id);
+        }
+
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder, bool includeDisabled = false,
             bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false,
             string roles = "", bool disabledNotSelectable = false)
@@ -317,14 +404,6 @@ namespace DotNetNuke.Web.InternalServices
             var children = ApplySort(GetChildrenOf(tabs, Null.NullInteger, filterTabs), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             sortedTree.Children = children;
             return sortedTree;
-        }
-
-        private static NTree<ItemDto> GetPagesInPortalGroupInternal(int sortOrder)
-        {
-            var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
-            var portals = GetPortalGroup(sortOrder);
-            treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
-            return treeNode;
         }
 
         private IEnumerable<ItemDto> GetPageDescendantsInPortalGroupInternal(string parentId, int sortOrder,
@@ -564,22 +643,54 @@ namespace DotNetNuke.Web.InternalServices
             return tabs;
         }
 
-        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, int parentId, IList<int> filterTabs = null)
+        private static void SortPagesRecursevely(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
         {
-            return tabs.Where(tab => tab.ParentId == parentId).Select(tab => new ItemDto
+            if (openedNode == null)
             {
-                Key = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                Value = tab.LocalizedTabName,
-                HasChildren = tab.HasChildren,
-                Selectable = filterTabs == null || filterTabs.Contains(tab.TabID),
-            }).ToList();
+                return;
+            }
+
+            var children = ApplySort(GetChildrenOf(tabs, openedNode.Data.Id), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
+            treeNode.Children = children;
+            if (openedNode.HasChildren())
+            {
+                foreach (var openedNodeChild in openedNode.Children)
+                {
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    if (treeNodeChild == null)
+                    {
+                        continue;
+                    }
+
+                    SortPagesRecursevely(tabs, treeNodeChild, openedNodeChild, sortOrder);
+                }
+            }
         }
 
-        private static IEnumerable<ItemDto> GetChildrenOf(IEnumerable<TabInfo> tabs, string parentId)
+        private static IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
         {
-            int id;
-            id = int.TryParse(parentId, out id) ? id : Null.NullInteger;
-            return GetChildrenOf(tabs, id);
+            var mygroup = GetMyPortalGroup();
+            var portals = mygroup.Select(p => new ItemDto
+            {
+                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
+                Value = p.PortalName,
+                HasChildren = true,
+                Selectable = false,
+            }).ToList();
+            return ApplySort(portals, sortOrder);
+        }
+
+        private static IEnumerable<ItemDto> ApplySort(IEnumerable<ItemDto> items, int sortOrder)
+        {
+            switch (sortOrder)
+            {
+                case 1: // sort by a-z
+                    return items.OrderBy(item => item.Value).ToList();
+                case 2: // sort by z-a
+                    return items.OrderByDescending(item => item.Value).ToList();
+                default: // no sort
+                    return items;
+            }
         }
 
         private NTree<ItemDto> SortPagesInternal(int portalId, string treeAsJson, int sortOrder,
@@ -707,30 +818,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return treeNode;
-        }
-
-        private static void SortPagesRecursevely(IEnumerable<TabInfo> tabs, NTree<ItemDto> treeNode, NTree<ItemIdDto> openedNode, int sortOrder)
-        {
-            if (openedNode == null)
-            {
-                return;
-            }
-
-            var children = ApplySort(GetChildrenOf(tabs, openedNode.Data.Id), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
-            treeNode.Children = children;
-            if (openedNode.HasChildren())
-            {
-                foreach (var openedNodeChild in openedNode.Children)
-                {
-                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
-                    if (treeNodeChild == null)
-                    {
-                        continue;
-                    }
-
-                    SortPagesRecursevely(tabs, treeNodeChild, openedNodeChild, sortOrder);
-                }
-            }
         }
 
         private NTree<ItemDto> GetTreePathForPageInternal(int portalId, string itemId, int sortOrder,
@@ -891,19 +978,6 @@ namespace DotNetNuke.Web.InternalServices
             tree.Children = rootTree;
 
             return tree;
-        }
-
-        private static IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
-        {
-            var mygroup = GetMyPortalGroup();
-            var portals = mygroup.Select(p => new ItemDto
-            {
-                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
-                Value = p.PortalName,
-                HasChildren = true,
-                Selectable = false,
-            }).ToList();
-            return ApplySort(portals, sortOrder);
         }
 
         private List<int> FilterTabsByRole(IList<TabInfo> tabs, string roles, bool disabledNotSelectable)
@@ -1322,80 +1396,6 @@ namespace DotNetNuke.Web.InternalServices
 
             // ReSharper restore NotAccessedField.Local
             // ReSharper restore InconsistentNaming
-        }
-
-        [HttpGet]
-        public HttpResponseMessage SearchUser(string q)
-        {
-            try
-            {
-                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
-                const int numResults = 5;
-
-                // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
-                q = q.Replace(",", string.Empty).Replace("'", string.Empty);
-                if (q.Length == 0)
-                {
-                    return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
-                }
-
-                var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
-                    .Select(user => new SearchResult
-                    {
-                        id = user.UserID,
-                        name = user.DisplayName,
-                        iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32),
-                    }).ToList();
-
-                return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpGet]
-        public HttpResponseMessage GetTerms(string q, bool includeSystem, bool includeTags)
-        {
-            var portalId = PortalSettings.Current.PortalId;
-
-            var vocabRep = Util.GetVocabularyController();
-            var termRep = Util.GetTermController();
-
-            var terms = new ArrayList();
-            var vocabularies = from v in vocabRep.GetVocabularies()
-                               where (v.ScopeType.ScopeType == "Application"
-                                      || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
-                                     && (!v.IsSystem || includeSystem)
-                                     && (v.Name != "Tags" || includeTags)
-                               select v;
-
-            foreach (var v in vocabularies)
-            {
-                terms.AddRange(new[]
-                {
-                    from t in termRep.GetTermsByVocabulary(v.VocabularyId)
-                                      where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
-                                        select new { text = t.Name, value = t.TermId },
-                });
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, terms);
-        }
-
-        private static IEnumerable<ItemDto> ApplySort(IEnumerable<ItemDto> items, int sortOrder)
-        {
-            switch (sortOrder)
-            {
-                case 1: // sort by a-z
-                    return items.OrderBy(item => item.Value).ToList();
-                case 2: // sort by z-a
-                    return items.OrderByDescending(item => item.Value).ToList();
-                default: // no sort
-                    return items;
-            }
         }
 
         private static IEnumerable<PortalInfo> GetMyPortalGroup()

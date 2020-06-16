@@ -25,13 +25,13 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
-        protected INavigationManager NavigationManager { get; }
-        internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
-
         public ServerController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
+
+        internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
+        protected INavigationManager NavigationManager { get; }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

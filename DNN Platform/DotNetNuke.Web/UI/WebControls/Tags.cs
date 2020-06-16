@@ -24,6 +24,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string _Tags;
 
+        public event EventHandler<EventArgs> TagsUpdated;
+
+        public string AddImageUrl { get; set; }
+
+        public bool AllowTagging { get; set; }
+
         private Vocabulary TagVocabulary
         {
             get
@@ -32,10 +38,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return (from v in vocabularyController.GetVocabularies() where v.IsSystem && v.Name == "Tags" select v).SingleOrDefault();
             }
         }
-
-        public string AddImageUrl { get; set; }
-
-        public bool AllowTagging { get; set; }
 
         public string CancelImageUrl { get; set; }
 
@@ -93,132 +95,6 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool ShowCategories { get; set; }
 
         public bool ShowTags { get; set; }
-
-        private string LocalizeString(string key)
-        {
-            string LocalResourceFile = Utilities.GetLocalResourceFile(this);
-            string localizedString = null;
-            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(LocalResourceFile))
-            {
-                localizedString = Localization.GetString(key, LocalResourceFile);
-            }
-            else
-            {
-                localizedString = Null.NullString;
-            }
-
-            return localizedString;
-        }
-
-        private void RenderButton(HtmlTextWriter writer, string buttonType, string imageUrl)
-        {
-            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString(string.Format("{0}.ToolTip", buttonType)));
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
-            writer.RenderBeginTag(HtmlTextWriterTag.A);
-
-            // Image
-            if (!string.IsNullOrEmpty(imageUrl))
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveUrl(imageUrl));
-                writer.RenderBeginTag(HtmlTextWriterTag.Img);
-                writer.RenderEndTag();
-            }
-
-            writer.Write(this.LocalizeString(buttonType));
-            writer.RenderEndTag();
-        }
-
-        private void RenderTerm(HtmlTextWriter writer, Term term, bool renderSeparator)
-        {
-            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(this.NavigateUrlFormatString, term.Name));
-            writer.AddAttribute(HtmlTextWriterAttribute.Title, term.Name);
-            writer.AddAttribute(HtmlTextWriterAttribute.Rel, "tag");
-            writer.RenderBeginTag(HtmlTextWriterTag.A);
-            writer.Write(term.Name);
-            writer.RenderEndTag();
-
-            if (renderSeparator)
-            {
-                writer.Write(this.Separator);
-            }
-        }
-
-        private void SaveTags()
-        {
-            string tags = this._Tags;
-
-            if (!string.IsNullOrEmpty(tags))
-            {
-                foreach (string t in tags.Split(','))
-                {
-                    if (!string.IsNullOrEmpty(t))
-                    {
-                        string tagName = t.Trim(' ');
-                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
-
-                        if (existingTerm == null)
-                        {
-                            // Not tagged
-                            TermController termController = new TermController();
-                            Term term =
-                                (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
-                                    SingleOrDefault();
-                            if (term == null)
-                            {
-                                // Add term
-                                term = new Term(this.TagVocabulary.VocabularyId);
-                                term.Name = tagName;
-                                termController.AddTerm(term);
-                            }
-
-                            // Add term to content
-                            this.ContentItem.Terms.Add(term);
-                            termController.AddTermToContent(term, this.ContentItem);
-                        }
-                    }
-                }
-            }
-
-            this.IsEditMode = false;
-
-            // Raise the Tags Updated Event
-            this.OnTagsUpdate(EventArgs.Empty);
-        }
-
-        public event EventHandler<EventArgs> TagsUpdated;
-
-        protected void OnTagsUpdate(EventArgs e)
-        {
-            if (this.TagsUpdated != null)
-            {
-                this.TagsUpdated(this, e);
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (!this.Page.ClientScript.IsClientScriptBlockRegistered(this.UniqueID))
-            {
-                StringBuilder sb = new StringBuilder();
-
-                sb.Append("<script language='javascript' type='text/javascript' >");
-                sb.Append(Environment.NewLine);
-                sb.Append("function disableEnterKey(e)");
-                sb.Append("{");
-                sb.Append("var key;");
-                sb.Append("if(window.event)");
-                sb.Append("key = window.event.keyCode;");
-                sb.Append("else ");
-                sb.Append("key = e.which;");
-                sb.Append("return (key != 13);");
-                sb.Append("}");
-                sb.Append("</script>");
-
-                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), this.UniqueID, sb.ToString());
-            }
-        }
 
         public override void RenderControl(HtmlTextWriter writer)
         {
@@ -335,6 +211,130 @@ namespace DotNetNuke.Web.UI.WebControls
             this._Tags = postCollection[postDataKey];
 
             return true;
+        }
+
+        protected void OnTagsUpdate(EventArgs e)
+        {
+            if (this.TagsUpdated != null)
+            {
+                this.TagsUpdated(this, e);
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (!this.Page.ClientScript.IsClientScriptBlockRegistered(this.UniqueID))
+            {
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("<script language='javascript' type='text/javascript' >");
+                sb.Append(Environment.NewLine);
+                sb.Append("function disableEnterKey(e)");
+                sb.Append("{");
+                sb.Append("var key;");
+                sb.Append("if(window.event)");
+                sb.Append("key = window.event.keyCode;");
+                sb.Append("else ");
+                sb.Append("key = e.which;");
+                sb.Append("return (key != 13);");
+                sb.Append("}");
+                sb.Append("</script>");
+
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), this.UniqueID, sb.ToString());
+            }
+        }
+
+        private string LocalizeString(string key)
+        {
+            string LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            string localizedString = null;
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(LocalResourceFile))
+            {
+                localizedString = Localization.GetString(key, LocalResourceFile);
+            }
+            else
+            {
+                localizedString = Null.NullString;
+            }
+
+            return localizedString;
+        }
+
+        private void RenderButton(HtmlTextWriter writer, string buttonType, string imageUrl)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString(string.Format("{0}.ToolTip", buttonType)));
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
+            writer.RenderBeginTag(HtmlTextWriterTag.A);
+
+            // Image
+            if (!string.IsNullOrEmpty(imageUrl))
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveUrl(imageUrl));
+                writer.RenderBeginTag(HtmlTextWriterTag.Img);
+                writer.RenderEndTag();
+            }
+
+            writer.Write(this.LocalizeString(buttonType));
+            writer.RenderEndTag();
+        }
+
+        private void RenderTerm(HtmlTextWriter writer, Term term, bool renderSeparator)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Href, string.Format(this.NavigateUrlFormatString, term.Name));
+            writer.AddAttribute(HtmlTextWriterAttribute.Title, term.Name);
+            writer.AddAttribute(HtmlTextWriterAttribute.Rel, "tag");
+            writer.RenderBeginTag(HtmlTextWriterTag.A);
+            writer.Write(term.Name);
+            writer.RenderEndTag();
+
+            if (renderSeparator)
+            {
+                writer.Write(this.Separator);
+            }
+        }
+
+        private void SaveTags()
+        {
+            string tags = this._Tags;
+
+            if (!string.IsNullOrEmpty(tags))
+            {
+                foreach (string t in tags.Split(','))
+                {
+                    if (!string.IsNullOrEmpty(t))
+                    {
+                        string tagName = t.Trim(' ');
+                        Term existingTerm = (from term in this.ContentItem.Terms.AsQueryable() where term.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select term).SingleOrDefault();
+
+                        if (existingTerm == null)
+                        {
+                            // Not tagged
+                            TermController termController = new TermController();
+                            Term term =
+                                (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
+                                    SingleOrDefault();
+                            if (term == null)
+                            {
+                                // Add term
+                                term = new Term(this.TagVocabulary.VocabularyId);
+                                term.Name = tagName;
+                                termController.AddTerm(term);
+                            }
+
+                            // Add term to content
+                            this.ContentItem.Terms.Add(term);
+                            termController.AddTermToContent(term, this.ContentItem);
+                        }
+                    }
+                }
+            }
+
+            this.IsEditMode = false;
+
+            // Raise the Tags Updated Event
+            this.OnTagsUpdate(EventArgs.Empty);
         }
 
         public void RaisePostDataChangedEvent()

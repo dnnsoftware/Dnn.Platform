@@ -27,16 +27,16 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
     {
-        protected INavigationManager NavigationManager { get; }
+        private IDictionary<string, RibbonBarToolInfo> _allTools;
+        private DnnTextLink _dnnLink;
+        private DnnTextButton _dnnLinkButton;
 
         public DnnRibbonBarTool()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        private IDictionary<string, RibbonBarToolInfo> _allTools;
-        private DnnTextLink _dnnLink;
-        private DnnTextButton _dnnLinkButton;
+        protected INavigationManager NavigationManager { get; }
 
         public virtual RibbonBarToolInfo ToolInfo
         {
@@ -105,6 +105,26 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this.ViewState["ToolTip"] = value;
+            }
+        }
+
+        public virtual string ToolName
+        {
+            get
+            {
+                return this.ToolInfo.ToolName;
+            }
+
+            set
+            {
+                if (this.AllTools.ContainsKey(value))
+                {
+                    this.ToolInfo = this.AllTools[value];
+                }
+                else
+                {
+                    throw new NotSupportedException("Tool not found [" + value + "]");
+                }
             }
         }
 
@@ -177,46 +197,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public virtual string ToolName
-        {
-            get
-            {
-                return this.ToolInfo.ToolName;
-            }
-
-            set
-            {
-                if (this.AllTools.ContainsKey(value))
-                {
-                    this.ToolInfo = this.AllTools[value];
-                }
-                else
-                {
-                    throw new NotSupportedException("Tool not found [" + value + "]");
-                }
-            }
-        }
-
-        protected override void CreateChildControls()
-        {
-            this.Controls.Clear();
-            this.Controls.Add(this.DnnLinkButton);
-            this.Controls.Add(this.DnnLink);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            this.EnsureChildControls();
-            this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            this.ProcessTool();
-            this.Visible = this.DnnLink.Visible || this.DnnLinkButton.Visible;
-            base.OnPreRender(e);
-        }
-
         public virtual void ControlPanelTool_OnClick(object sender, EventArgs e)
         {
             switch (this.ToolInfo.ToolName)
@@ -263,6 +243,26 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     break;
             }
+        }
+
+        protected override void CreateChildControls()
+        {
+            this.Controls.Clear();
+            this.Controls.Add(this.DnnLinkButton);
+            this.Controls.Add(this.DnnLink);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.EnsureChildControls();
+            this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            this.ProcessTool();
+            this.Visible = this.DnnLink.Visible || this.DnnLinkButton.Visible;
+            base.OnPreRender(e);
         }
 
         protected virtual void ProcessTool()
@@ -595,11 +595,6 @@ namespace DotNetNuke.Web.UI.WebControls
             return Utilities.GetLocalizedStringFromParent(key, this);
         }
 
-        private static ModuleInfo GetInstalledModule(int portalID, string friendlyName)
-        {
-            return ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
-        }
-
         protected virtual void ClearCache()
         {
             DataCache.ClearCache();
@@ -611,6 +606,11 @@ namespace DotNetNuke.Web.UI.WebControls
             log.AddProperty("Message", this.GetString("UserRestart"));
             LogController.Instance.AddLog(log);
             Config.Touch();
+        }
+
+        private static ModuleInfo GetInstalledModule(int portalID, string friendlyName)
+        {
+            return ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
         }
     }
 }

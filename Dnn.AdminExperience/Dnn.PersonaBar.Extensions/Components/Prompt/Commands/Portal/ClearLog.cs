@@ -15,9 +15,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     [ConsoleCommand("clear-log", Constants.PortalCategory, "Prompt_ClearLog_Description")]
     public class ClearLog : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearLog));
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         public override ConsoleResultModel Run()
         {
             try

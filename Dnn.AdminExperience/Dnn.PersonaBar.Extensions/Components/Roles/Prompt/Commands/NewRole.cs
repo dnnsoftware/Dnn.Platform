@@ -22,12 +22,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
     public class NewRole : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
+        private const string FlagIsPublic = "public";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
-        [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
-        private const string FlagIsPublic = "public";
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
         private const string FlagAutoAssign = "autoassign";
         [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]

@@ -18,8 +18,31 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
     [TestFixture]
     public class XmlMergeTests : DnnUnitTest
     {
-        private readonly Assembly _assembly = typeof(XmlMergeTests).Assembly;
         private const bool OutputXml = true;
+        private readonly Assembly _assembly = typeof(XmlMergeTests).Assembly;
+
+        [SetUp]
+        public void SetUp()
+        {
+            AppDomain.CurrentDomain.SetData("APPBASE", this.WebsitePhysicalAppPath);
+
+            LoggerSource.SetTestableInstance(new TestLogSource());
+        }
+
+        // ReSharper disable PossibleNullReferenceException
+        [Test]
+        public void SimpleUpdate()
+        {
+            XmlDocument targetDoc = this.ExecuteMerge();
+
+            // children are in correct location
+            XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
+            Assert.AreEqual(2, nodes.Count);
+
+            // children only inserted once
+            nodes = targetDoc.SelectNodes("//child");
+            Assert.AreEqual(2, nodes.Count);
+        }
 
         /// <summary>
         /// Merges the Merge and Target files based on the name of the calling method.
@@ -112,29 +135,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
                     }
                 }
             }
-        }
-
-        [SetUp]
-        public void SetUp()
-        {
-            AppDomain.CurrentDomain.SetData("APPBASE", this.WebsitePhysicalAppPath);
-
-            LoggerSource.SetTestableInstance(new TestLogSource());
-        }
-
-        // ReSharper disable PossibleNullReferenceException
-        [Test]
-        public void SimpleUpdate()
-        {
-            XmlDocument targetDoc = this.ExecuteMerge();
-
-            // children are in correct location
-            XmlNodeList nodes = targetDoc.SelectNodes("/configuration/updateme/children/child");
-            Assert.AreEqual(2, nodes.Count);
-
-            // children only inserted once
-            nodes = targetDoc.SelectNodes("//child");
-            Assert.AreEqual(2, nodes.Count);
         }
 
         [Test]
@@ -511,6 +511,21 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
     internal class TestLogger : ILog
     {
+        public bool IsDebugEnabled
+        {
+            get { return false; }
+        }
+
+        public bool IsErrorEnabled
+        {
+            get { return false; }
+        }
+
+        public bool IsFatalEnabled
+        {
+            get { return false; }
+        }
+
         public void Debug(object message, Exception exception)
         {
         }
@@ -573,21 +588,6 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
         public void InfoFormat(string format, params object[] args)
         {
-        }
-
-        public bool IsDebugEnabled
-        {
-            get { return false; }
-        }
-
-        public bool IsErrorEnabled
-        {
-            get { return false; }
-        }
-
-        public bool IsFatalEnabled
-        {
-            get { return false; }
         }
 
         public bool IsInfoEnabled

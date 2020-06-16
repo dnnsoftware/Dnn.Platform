@@ -40,27 +40,6 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateUsersOnline updates the Users Online information.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        private void UpdateUsersOnline()
-        {
-            var objUserOnlineController = new UserOnlineController();
-
-            // Is Users Online Enabled?
-            if (objUserOnlineController.IsEnabled())
-            {
-                // Update the Users Online records from Cache
-                this.Status = "Updating Users Online";
-                objUserOnlineController.UpdateUsersOnline();
-                this.Status = "Update Users Online Successfully";
-                this.ScheduleHistoryItem.Succeeded = true;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// DoWork does th4 Scheduler work.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -85,6 +64,27 @@ namespace DotNetNuke.Entities.Users
 
                 // log the exception
                 Exceptions.LogException(exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// UpdateUsersOnline updates the Users Online information.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        private void UpdateUsersOnline()
+        {
+            var objUserOnlineController = new UserOnlineController();
+
+            // Is Users Online Enabled?
+            if (objUserOnlineController.IsEnabled())
+            {
+                // Update the Users Online records from Cache
+                this.Status = "Updating Users Online";
+                objUserOnlineController.UpdateUsersOnline();
+                this.Status = "Update Users Online Successfully";
+                this.ScheduleHistoryItem.Succeeded = true;
             }
         }
     }

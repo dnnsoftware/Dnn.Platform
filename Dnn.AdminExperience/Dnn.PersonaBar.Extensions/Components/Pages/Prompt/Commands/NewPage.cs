@@ -19,8 +19,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     [ConsoleCommand("new-page", Constants.PagesCategory, "Prompt_NewPage_Description")]
     public class NewPage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
-
         [FlagParameter("parentid", "Prompt_NewPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
@@ -41,6 +39,8 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         [FlagParameter("visible", "Prompt_NewPage_FlagVisible", "Boolean", "true")]
         private const string FlagVisible = "visible";
+
+        public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private string Title { get; set; }
         private string Name { get; set; }

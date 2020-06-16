@@ -16,22 +16,22 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("delete-user", Constants.UsersCategory, "Prompt_DeleteUser_Description")]
     public class DeleteUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_DeleteUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
         private IUserValidator _userValidator;
         private IUserControllerWrapper _userControllerWrapper;
 
-        private int UserId { get; set; }
-        private bool Notify { get; set; }
-
         public DeleteUser() : this(new UserValidator(), new UserControllerWrapper())
         {
         }
+
+        private int UserId { get; set; }
+        private bool Notify { get; set; }
 
         public DeleteUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {

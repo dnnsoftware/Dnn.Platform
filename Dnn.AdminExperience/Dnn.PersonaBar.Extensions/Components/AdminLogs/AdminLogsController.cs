@@ -28,21 +28,21 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
         private PortalSettings _portalSettings;
 
-        private PortalSettings PortalSettings
-        {
-            get
-            {
-                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return this._portalSettings;
-            }
-        }
-
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary
         {
             get
             {
                 this._logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
                 return this._logTypeDictionary;
+            }
+        }
+
+        private PortalSettings PortalSettings
+        {
+            get
+            {
+                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                return this._portalSettings;
             }
         }
 
