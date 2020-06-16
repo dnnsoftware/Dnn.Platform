@@ -355,7 +355,7 @@ namespace DotNetNuke.Entities.Controllers
         /// <summary>
         /// Gets all settings from the databse.
         /// </summary>
-        /// <returns><see cref="Dictionary"/>&lt;<see cref="string"/>, <see cref="ConfigurationSetting"/>&gt.</returns>
+        /// <returns><see cref="Dictionary{TKey, TValue}"/></returns>
         private static Dictionary<string, ConfigurationSetting> GetSettingsFromDatabase()
         {
             var dicSettings = new Dictionary<string, ConfigurationSetting>();

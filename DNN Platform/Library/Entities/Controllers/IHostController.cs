@@ -70,13 +70,13 @@ namespace DotNetNuke.Entities.Controllers
         /// <summary>
         /// Gets the host settings.
         /// </summary>
-        /// <returns>Host settings as a <see cref="Dictionary"/>&lt;<see cref="string"/>, <see cref="ConfigurationSetting"/>&gt.</returns>
+        /// <returns>Host settings as a <see cref="Dictionary{TKey, TValue}"/>.</returns>
         Dictionary<string, ConfigurationSetting> GetSettings();
 
         /// <summary>
         /// Gets the host settings.
         /// </summary>
-        /// <returns>Host settings as a <see cref="Dictionary"/>&lt;<see cref="string"/>, <see cref="string"/>&gt.</returns>
+        /// <returns>Host settings as a <see cref="Dictionary{TKey, TValue}"/>.</returns>
         Dictionary<string, string> GetSettingsDictionary();
 
         /// <summary>
