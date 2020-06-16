@@ -2,26 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Xml;
-using System.Xml.XPath;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Localization;
-using Constants = Dnn.PersonaBar.Library.Constants;
-
 namespace Dnn.PersonaBar.SiteSettings.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Localization;
+
+    using Constants = Dnn.PersonaBar.Library.Constants;
+
     public class SiteSettingsController
     {
         private Dictionary<string, InstallFile> _Files;

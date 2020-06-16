@@ -1,20 +1,21 @@
 ﻿
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information
-
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Vocabularies.Exceptions;
-using Dnn.PersonaBar.Vocabularies.Services.Dto;
-using Dnn.PersonaBar.Vocabularies.Validators;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Web.Validators;
-
 namespace Dnn.PersonaBar.Vocabularies.Components
 {
+    // Licensed to the .NET Foundation under one or more agreements.
+    // The .NET Foundation licenses this file to you under the MIT license.
+    // See the LICENSE file in the project root for more information
+
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Vocabularies.Exceptions;
+    using Dnn.PersonaBar.Vocabularies.Services.Dto;
+    using Dnn.PersonaBar.Vocabularies.Validators;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Web.Validators;
+
     public class VocabulariesController
     {
         private TermController _termController;

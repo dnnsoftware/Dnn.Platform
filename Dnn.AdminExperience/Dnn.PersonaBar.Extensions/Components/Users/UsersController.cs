@@ -1,34 +1,36 @@
 ﻿
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web.Security;
-using Dnn.PersonaBar.Users.Components.Contracts;
-using Dnn.PersonaBar.Users.Components.Dto;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Membership;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
-using System.Net;
-using DotNetNuke.Services.Mail;
-using Dnn.PersonaBar.Users.Components.Helpers;
-using System.Data;
-
 namespace Dnn.PersonaBar.Users.Components
 {
+    // Licensed to the .NET Foundation under one or more agreements.
+    // The .NET Foundation licenses this file to you under the MIT license.
+    // See the LICENSE file in the project root for more information
+
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Net;
+    using System.Threading;
+    using System.Web.Security;
+
+    using Dnn.PersonaBar.Users.Components.Contracts;
+    using Dnn.PersonaBar.Users.Components.Dto;
+    using Dnn.PersonaBar.Users.Components.Helpers;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Membership;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+
+    using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
+
     public class UsersController : ServiceLocator<IUsersController, UsersController>, IUsersController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));

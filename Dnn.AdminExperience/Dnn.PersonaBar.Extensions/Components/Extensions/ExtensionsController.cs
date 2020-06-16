@@ -1,31 +1,32 @@
 ﻿
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Services.Upgrade.Internals;
-
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    // Licensed to the .NET Foundation under one or more agreements.
+    // The .NET Foundation licenses this file to you under the MIT license.
+    // See the LICENSE file in the project root for more information
+
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class ExtensionsController
     {
         private const string OwnerUpdateService = "DotNetNuke Update Service";

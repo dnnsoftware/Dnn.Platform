@@ -1,48 +1,50 @@
 ﻿
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Xml;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.DTO.Tabs;
-using Dnn.PersonaBar.Sites.Components.Dto;
-using Dnn.PersonaBar.Sites.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Mail;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace Dnn.PersonaBar.Sites.Components
 {
+    // Licensed to the .NET Foundation under one or more agreements.
+    // The .NET Foundation licenses this file to you under the MIT license.
+    // See the LICENSE file in the project root for more information
+
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Sites.Components.Dto;
+    using Dnn.PersonaBar.Sites.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
+    using ICSharpCode.SharpZipLib;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class SitesController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));

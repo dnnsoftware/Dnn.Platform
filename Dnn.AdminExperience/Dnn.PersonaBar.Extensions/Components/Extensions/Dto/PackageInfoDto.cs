@@ -1,23 +1,24 @@
 ﻿
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-// See the LICENSE file in the project root for more information
-
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Components.Controllers.Models;
-using Newtonsoft.Json;
-
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
+    // Licensed to the .NET Foundation under one or more agreements.
+    // The .NET Foundation licenses this file to you under the MIT license.
+    // See the LICENSE file in the project root for more information
+
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Components.Controllers.Models;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class PackageInfoDto
     {
