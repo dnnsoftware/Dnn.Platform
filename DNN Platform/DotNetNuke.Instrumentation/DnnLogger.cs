@@ -42,9 +42,9 @@ namespace DotNetNuke.Instrumentation
             {
                 int frameDepth = 0;
                 Type methodType = stack[frameDepth].GetMethod().ReflectedType;
-                #pragma warning disable 612,618
+#pragma warning disable 612, 618
                 while (methodType == this._dnnExceptionType || methodType == typeof(DnnLogger) || methodType == typeof(DnnLog) || methodType == typeof(Control))
-                #pragma warning restore 612,618
+#pragma warning restore 612, 618
                 {
                     frameDepth++;
                     methodType = stack[frameDepth].GetMethod().ReflectedType;

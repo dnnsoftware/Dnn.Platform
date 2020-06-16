@@ -467,7 +467,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private int AddDocumentsWithNumericKeys(int searchTypeId = OtherSearchTypeId)
         {
-             var doc1 = new SearchDocument
+            var doc1 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key1",
@@ -477,7 +477,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
             };
-             var doc2 = new SearchDocument
+            var doc2 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key2",
@@ -486,7 +486,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
             };
-             var doc3 = new SearchDocument
+            var doc3 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key3",
@@ -495,7 +495,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
             };
-             var doc4 = new SearchDocument
+            var doc4 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key4",
@@ -504,7 +504,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 PortalId = PortalId12,
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
             };
-             var doc5 = new SearchDocument
+            var doc5 = new SearchDocument
             {
                 Title = "Title",
                 UniqueKey = "key5",
@@ -514,11 +514,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
             };
 
-             var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
 
-             this._internalSearchController.AddSearchDocuments(docs);
+            this._internalSearchController.AddSearchDocuments(docs);
 
-             return docs.Count;
+            return docs.Count;
         }
 
         private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)
@@ -577,18 +577,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             return docs.Count;
         }
 
-        private int AddDocuments(IList<string> titles, string body,  int searchTypeId = OtherSearchTypeId)
+        private int AddDocuments(IList<string> titles, string body, int searchTypeId = OtherSearchTypeId)
         {
             var count = 0;
             foreach (var doc in titles.Select(title => new SearchDocument
-                                                           {
-                                                               Title = title,
-                                                               UniqueKey = Guid.NewGuid().ToString(),
-                                                               Body = body,
-                                                               SearchTypeId = OtherSearchTypeId,
-                                                               ModifiedTimeUtc = DateTime.UtcNow,
-                                                               PortalId = PortalId12,
-                                                           }))
+            {
+                Title = title,
+                UniqueKey = Guid.NewGuid().ToString(),
+                Body = body,
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+            }))
             {
                 this._internalSearchController.AddSearchDocument(doc);
                 count++;
@@ -1665,7 +1665,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             };
 
             this._searchController.SiteSearch(query);
-         }
+        }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
@@ -1717,10 +1717,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery
-                {
-                    SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.LastModified,
-                };
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.LastModified,
+            };
             var search = this._searchController.SiteSearch(query);
 
             // Assert
@@ -1830,7 +1830,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Assert.AreEqual(title, search.Results[count++].Title);
             }
-       }
+        }
 
         [Test]
         public void SearchController_GetResult_Sorty_By_Title_Descending_Returns_Alphabetic_Descending()
@@ -1991,11 +1991,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery
-                {
-                    SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.Relevance,
-                    KeyWords = "brown OR fox",
-                };
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.Relevance,
+                KeyWords = "brown OR fox",
+            };
             var search = this._searchController.SiteSearch(query);
 
             // Assert
@@ -2124,11 +2124,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act
             var query = new SearchQuery
-                {
-                    SearchTypeIds = new List<int> { ModuleSearchTypeId },
-                    SortField = SortFields.LastModified,
-                    CultureCode = CultureItIt,
-                };
+            {
+                SearchTypeIds = new List<int> { ModuleSearchTypeId },
+                SortField = SortFields.LastModified,
+                CultureCode = CultureItIt,
+            };
             var search = this._searchController.SiteSearch(query);
 
             // Assert

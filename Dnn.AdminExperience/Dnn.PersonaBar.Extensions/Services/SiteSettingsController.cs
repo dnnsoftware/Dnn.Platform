@@ -132,14 +132,16 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         folderPath = logoFile.Folder,
                         fileId = logoFile.FileId,
                         folderId = logoFile.FolderId
-                    } : null,
+                    }
+                    : null,
                     FavIcon = favIcon != null ? new FileDto()
                     {
                         fileName = favIcon.FileName,
                         folderPath = favIcon.Folder,
                         fileId = favIcon.FileId,
                         folderId = favIcon.FolderId
-                    } : null,
+                    }
+                    : null,
                     new DnnFileUploadOptions().ValidationCode,
                     IconSet = PortalController.GetPortalSetting("DefaultIconLocation", pid, "Sigma", cultureCode).Replace("icons/", "")
                 };
@@ -644,7 +646,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         profileProperty.Visible,
                         profileProperty.ViewOrder,
                         DefaultVisibility = (int)profileProperty.DefaultVisibility
-                    } : null,
+                    }
+                    : null,
                     UserVisibilityOptions = Enum.GetValues(typeof(UserVisibilityMode)).Cast<UserVisibilityMode>().Select(
                         v => new
                         {
@@ -1454,7 +1457,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]
-        public HttpResponseMessage DeleteListEntry([FromUri]int entryId, [FromUri] int? portalId)
+        public HttpResponseMessage DeleteListEntry([FromUri] int entryId, [FromUri] int? portalId)
         {
             try
             {
@@ -2509,7 +2512,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         CanEnableDisable = this.CanEnableDisable(portalSettings, language.Code),
                         IsDefault = language.Code == portalSettings.DefaultLanguage,
                         Roles = PortalController.GetPortalSetting($"DefaultTranslatorRoles-{language.Code}", pid, "Administrators")
-                    } : new
+                    }
+                    : new
                     {
                         PortalId = pid,
                         LanguageId = Null.NullInteger,

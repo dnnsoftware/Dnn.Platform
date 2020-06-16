@@ -198,9 +198,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             (context.Controller as IDnnController).ViewEngineCollectionEx = engines;
 
             var activeModuleRequest = new ModuleRequestResult
-                                            {
-                                                ModuleApplication = mockApp.Object,
-                                            };
+            {
+                ModuleApplication = mockApp.Object,
+            };
 
             context.HttpContext.SetModuleRequestResult(activeModuleRequest);
         }

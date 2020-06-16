@@ -247,11 +247,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             var moduleContext = new ModuleInstanceContext { Configuration = new ModuleInfo { ModuleID = 42 } };
             return new ModuleRequestContext
-                        {
-                            HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
-                            RouteData = routeData,
-                            ModuleContext = moduleContext,
-                        };
+            {
+                HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),
+                RouteData = routeData,
+                ModuleContext = moduleContext,
+            };
         }
     }
 }

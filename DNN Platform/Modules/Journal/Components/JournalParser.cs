@@ -313,34 +313,34 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     sb.Append(" {resx:likethis}");
                 }
-        }
+            }
             else
-        {
-            foreach (XmlNode l in xLikes)
             {
-                int userId = Convert.ToInt32(l.Attributes["uid"].Value);
-                string name = l.Attributes["un"].Value;
-                sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
-                xc += 1;
-                if (xc == xLikes.Count - 1)
+                foreach (XmlNode l in xLikes)
                 {
-                    sb.Append(" {resx:and} ");
+                    int userId = Convert.ToInt32(l.Attributes["uid"].Value);
+                    string name = l.Attributes["un"].Value;
+                    sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
+                    xc += 1;
+                    if (xc == xLikes.Count - 1)
+                    {
+                        sb.Append(" {resx:and} ");
+                    }
+                    else if (xc < xLikes.Count - 1)
+                    {
+                        sb.Append(", ");
+                    }
                 }
-                else if (xc < xLikes.Count - 1)
-                {
-                    sb.Append(", ");
-                }
-            }
 
-            if (xc == 1)
-            {
-                sb.Append(" {resx:likesthis}");
+                if (xc == 1)
+                {
+                    sb.Append(" {resx:likesthis}");
+                }
+                else if (xc > 1)
+                {
+                    sb.Append(" {resx:likethis}");
+                }
             }
-            else if (xc > 1)
-            {
-                sb.Append(" {resx:likethis}");
-            }
-        }
 
             sb.Append("</div>");
             return sb.ToString();

@@ -63,6 +63,6 @@ namespace DotNetNuke.Tests.Integration.Executers.Dto
 
         public IList<CopyModuleItem> modules { get; set; }
 
-        public bool isSecure { get; set;  }
+        public bool isSecure { get; set; }
     }
 }

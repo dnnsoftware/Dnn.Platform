@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
         public static void ProcessModuleLoadException(string FriendlyMessage, Control ctrl, Exception exc, bool DisplayErrorMessage)
         {
-                        // Exit Early if ThreadAbort Exception
+            // Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
             {
                 return;

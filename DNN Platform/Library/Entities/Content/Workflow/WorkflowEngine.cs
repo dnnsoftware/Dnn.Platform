@@ -292,10 +292,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         private ReviewersDto GetUserAndRolesForStateReviewers(PortalSettings portalSettings, WorkflowState state)
         {
             var reviewers = new ReviewersDto
-                                             {
-                                                 Roles = new List<RoleInfo>(),
-                                                 Users = new List<UserInfo>(),
-                                             };
+            {
+                Roles = new List<RoleInfo>(),
+                Users = new List<UserInfo>(),
+            };
             if (state.SendNotification)
             {
                 var permissions = this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
@@ -320,8 +320,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
         {
             return (from permission in permissions
-                         where permission.AllowAccess && permission.RoleID > Null.NullInteger
-                         select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
+                    where permission.AllowAccess && permission.RoleID > Null.NullInteger
+                    select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
         }
 
         private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
@@ -332,8 +332,8 @@ namespace DotNetNuke.Entities.Content.Workflow
         private static List<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
         {
             return (from permission in permissions
-                where permission.AllowAccess && permission.UserID > Null.NullInteger
-                select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
+                    where permission.AllowAccess && permission.UserID > Null.NullInteger
+                    select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
         }
 
         private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)

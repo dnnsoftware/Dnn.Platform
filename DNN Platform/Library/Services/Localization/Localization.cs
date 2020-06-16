@@ -478,11 +478,11 @@ namespace DotNetNuke.Services.Localization
                     if (!string.IsNullOrEmpty(alias))
                     {
                         var newAlias = new PortalAliasInfo(currentAlias)
-                            {
-                                IsPrimary = true,
-                                CultureCode = locale.Code,
-                                HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant()),
-                            };
+                        {
+                            IsPrimary = true,
+                            CultureCode = locale.Code,
+                            HTTPAlias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant()),
+                        };
 
                         PortalAliasController.Instance.AddPortalAlias(newAlias);
                     }

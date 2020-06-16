@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseController));
         private readonly DatabaseController _databaseController = new DatabaseController();
-        
+
         [HttpGet]
         public HttpResponseMessage GetDatabaseServerInfo()
         {

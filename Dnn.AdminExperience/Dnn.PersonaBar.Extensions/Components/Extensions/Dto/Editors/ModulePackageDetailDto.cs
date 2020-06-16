@@ -56,11 +56,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
         public IList<ListItemDto> UnassignedPortals { get; set; } = new List<ListItemDto>();
 
         [JsonProperty("moduleDefinitions")]
-        public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; }  = new List<ModuleDefinitionDto>();
+        public IList<ModuleDefinitionDto> ModuleDefinitions { get; set; } = new List<ModuleDefinitionDto>();
 
         public ModulePackageDetailDto()
         {
-            
+
         }
 
         public ModulePackageDetailDto(int portalId, PackageInfo package, DesktopModuleInfo desktopModule) : base(portalId, package)

@@ -89,7 +89,8 @@ namespace DotNetNuke.Web.DDRMenu
 
         public List<MenuNode> Children
         {
-            get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; }
+            get { return this._Children ?? (this._Children = new List<MenuNode>()); }
+            set { this._Children = value; }
         }
 
         public MenuNode Parent { get; set; }
@@ -321,8 +322,8 @@ namespace DotNetNuke.Web.DDRMenu
                             this.Target = reader.Value;
                             break;
 
-                        // default:
-                        //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
+                            // default:
+                            //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
                     }
                 }
                 while (reader.MoveToNextAttribute());

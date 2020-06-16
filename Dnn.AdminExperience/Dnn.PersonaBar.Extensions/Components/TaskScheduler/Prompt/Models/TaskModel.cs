@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         public TaskModel()
         {
         }
-        public TaskModel(ScheduleItem item):base(item)
+        public TaskModel(ScheduleItem item) : base(item)
         {
             this.NextStart = item.NextStart.ToPromptLongDateString();
             this.CatchUp = item.CatchUpEnabled;

@@ -11,12 +11,12 @@ using log4net.Layout.Pattern;
 using log4net.Util;
 using log4net.Util.PatternStringConverters;
 
-using AppDomainPatternConverter=log4net.Layout.Pattern.AppDomainPatternConverter;
-using DatePatternConverter=log4net.Layout.Pattern.DatePatternConverter;
-using IdentityPatternConverter=log4net.Layout.Pattern.IdentityPatternConverter;
-using PropertyPatternConverter=log4net.Layout.Pattern.PropertyPatternConverter;
-using UserNamePatternConverter=log4net.Layout.Pattern.UserNamePatternConverter;
-using UtcDatePatternConverter=log4net.Layout.Pattern.UtcDatePatternConverter;
+using AppDomainPatternConverter = log4net.Layout.Pattern.AppDomainPatternConverter;
+using DatePatternConverter = log4net.Layout.Pattern.DatePatternConverter;
+using IdentityPatternConverter = log4net.Layout.Pattern.IdentityPatternConverter;
+using PropertyPatternConverter = log4net.Layout.Pattern.PropertyPatternConverter;
+using UserNamePatternConverter = log4net.Layout.Pattern.UserNamePatternConverter;
+using UtcDatePatternConverter = log4net.Layout.Pattern.UtcDatePatternConverter;
 
 namespace log4net.Layout
 {
@@ -852,8 +852,8 @@ namespace log4net.Layout
             s_globalRulesRegistry.Add("newline", typeof(NewLinePatternConverter));
             s_globalRulesRegistry.Add("n", typeof(NewLinePatternConverter));
 
-// .NET Compact Framework 1.0 has no support for ASP.NET
-// SSCLI 1.0 has no support for ASP.NET
+            // .NET Compact Framework 1.0 has no support for ASP.NET
+            // SSCLI 1.0 has no support for ASP.NET
 #if !NETCF && !SSCLI && !CLIENT_PROFILE && !NETSTANDARD1_3
             s_globalRulesRegistry.Add("aspnet-cache", typeof(AspNetCachePatternConverter));
             s_globalRulesRegistry.Add("aspnet-context", typeof(AspNetContextPatternConverter));
@@ -994,7 +994,7 @@ namespace log4net.Layout
         /// </remarks>
         public string ConversionPattern
         {
-            get { return this.m_pattern;    }
+            get { return this.m_pattern; }
             set { this.m_pattern = value; }
         }
 

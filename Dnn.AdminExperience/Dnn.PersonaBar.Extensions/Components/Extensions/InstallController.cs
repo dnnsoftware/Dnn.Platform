@@ -171,7 +171,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
             // We always assume we are installing from //Host/Extensions (in the previous releases)
             // This will not work when we try to install a skin/container under a specific portal.
-            installer.InstallerInfo.PortalID = isPortalPackage ? portalId: Null.NullInteger;
+            installer.InstallerInfo.PortalID = isPortalPackage ? portalId : Null.NullInteger;
 
             //Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)
@@ -227,8 +227,8 @@ namespace Dnn.PersonaBar.Extensions.Components
             {
                 if (File.Exists(installerFile))
                 {
-                        File.SetAttributes(installerFile, FileAttributes.Normal);
-                        File.Delete(installerFile);
+                    File.SetAttributes(installerFile, FileAttributes.Normal);
+                    File.Delete(installerFile);
                 }
             }
             catch (Exception ex)

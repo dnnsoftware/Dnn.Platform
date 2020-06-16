@@ -743,27 +743,27 @@ namespace log4net
             return LoggerManager.GetAllRepositories();
         }
 
-            /// <summary>
-            /// Flushes logging events buffered in all configured appenders in the default repository.
-            /// </summary>
-            /// <param name="millisecondsTimeout">The maximum time in milliseconds to wait for logging events from asycnhronous appenders to be flushed.</param>
-            /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
+        /// <summary>
+        /// Flushes logging events buffered in all configured appenders in the default repository.
+        /// </summary>
+        /// <param name="millisecondsTimeout">The maximum time in milliseconds to wait for logging events from asycnhronous appenders to be flushed.</param>
+        /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public static bool Flush(int millisecondsTimeout)
-            {
+        {
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
-                Appender.IFlushable flushableRepository = LoggerManager.GetRepository(Assembly.GetCallingAssembly()) as Appender.IFlushable;
-                if (flushableRepository == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return flushableRepository.Flush(millisecondsTimeout);
-                }
+            Appender.IFlushable flushableRepository = LoggerManager.GetRepository(Assembly.GetCallingAssembly()) as Appender.IFlushable;
+            if (flushableRepository == null)
+            {
+                return false;
+            }
+            else
+            {
+                return flushableRepository.Flush(millisecondsTimeout);
+            }
 #else
                 return false;
 #endif
-            }
+        }
 
         /// <summary>
         /// Looks up the wrapper object for the logger specified.

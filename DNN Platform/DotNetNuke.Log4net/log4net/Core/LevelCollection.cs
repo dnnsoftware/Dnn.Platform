@@ -601,7 +601,7 @@ namespace log4net.Core
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator) this.GetEnumerator();
+            return (IEnumerator)this.GetEnumerator();
         }
 
         /// <summary>

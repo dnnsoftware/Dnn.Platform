@@ -131,10 +131,10 @@ namespace DotNetNuke.UI.Modules
                 // Assign the class - hslice to the Drag-N-Drop Panel
                 this.CssClass = "hslice";
                 var titleLabel = new Label
-                                     {
-                                         CssClass = "entry-title Hidden",
-                                         Text = !string.IsNullOrEmpty(this._moduleConfiguration.WebSliceTitle) ? this._moduleConfiguration.WebSliceTitle : this._moduleConfiguration.ModuleTitle,
-                                     };
+                {
+                    CssClass = "entry-title Hidden",
+                    Text = !string.IsNullOrEmpty(this._moduleConfiguration.WebSliceTitle) ? this._moduleConfiguration.WebSliceTitle : this._moduleConfiguration.ModuleTitle,
+                };
                 this.Controls.Add(titleLabel);
 
                 var websliceContainer = new Panel { CssClass = "entry-content" };
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                viewMode = ! ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
+                viewMode = !ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
                                                               moduleInfo);
             }
 
@@ -319,10 +319,10 @@ namespace DotNetNuke.UI.Modules
 
             // create update panel
             var updatePanel = new UpdatePanel
-                                  {
-                                      UpdateMode = UpdatePanelUpdateMode.Conditional,
-                                      ID = this._control.ID + "_UP",
-                                  };
+            {
+                UpdateMode = UpdatePanelUpdateMode.Conditional,
+                ID = this._control.ID + "_UP",
+            };
 
             // get update panel content template
             var templateContainer = updatePanel.ContentTemplateContainer;
@@ -341,12 +341,12 @@ namespace DotNetNuke.UI.Modules
 
             // inject updateprogress into the panel
             var updateProgress = new UpdateProgress
-                                     {
-                                         AssociatedUpdatePanelID = updatePanel.ID,
-                                         ID = updatePanel.ID + "_Prog",
+            {
+                AssociatedUpdatePanelID = updatePanel.ID,
+                ID = updatePanel.ID + "_Prog",
 
-                                         ProgressTemplate = new LiteralTemplate(progressTemplate),
-                                     };
+                ProgressTemplate = new LiteralTemplate(progressTemplate),
+            };
             this.Controls.Add(updateProgress);
         }
 

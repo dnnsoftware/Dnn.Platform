@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public ProfileVisibilityDto()
         {
-            
+
         }
 
         public ProfileVisibilityDto(ProfileVisibility visibility)

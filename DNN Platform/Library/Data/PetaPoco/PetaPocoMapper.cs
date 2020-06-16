@@ -43,7 +43,7 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     includeColumn = false;
                 }
-             }
+            }
 
             ColumnInfo ci = null;
             if (includeColumn)

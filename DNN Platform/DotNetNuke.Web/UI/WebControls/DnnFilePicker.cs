@@ -545,13 +545,13 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (FolderInfo folder in folders)
                 {
                     var folderItem = new ListItem
-                                         {
-                                             Text =
+                    {
+                        Text =
                                                  folder.FolderPath == Null.NullString
                                                      ? Utilities.GetLocalizedString("PortalRoot")
                                                      : folder.DisplayPath,
-                                             Value = folder.FolderPath,
-                                         };
+                        Value = folder.FolderPath,
+                    };
                     this._cboFolders.Items.Add(folderItem);
                 }
             }

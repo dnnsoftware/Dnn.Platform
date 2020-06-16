@@ -696,18 +696,18 @@ namespace DotNetNuke.Entities.Urls
                 // }
                 // else
                 // {
-                    if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
-                        (!Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex,
-                            RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)))
-                    {
-                        retVal = true;
-                        result.CanRewrite = StateBoolean.True;
-                    }
-                    else
-                    {
-                        retVal = false;
-                        result.CanRewrite = StateBoolean.False;
-                    }
+                if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
+                    (!Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex,
+                        RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)))
+                {
+                    retVal = true;
+                    result.CanRewrite = StateBoolean.True;
+                }
+                else
+                {
+                    retVal = false;
+                    result.CanRewrite = StateBoolean.False;
+                }
 
                 // }
             }
@@ -1065,10 +1065,10 @@ namespace DotNetNuke.Entities.Urls
                                                 // 866 : redirect back from no extension to extension if it didn't have one
                                                 if (settings.PageExtensionUsageType != PageExtensionUsageType.Never &&
                                                     hadExtension == false)
-                                                {
-                                                    // 948 : use new 'no downgrade' method
-                                                    result.SetActionWithNoDowngrade(ActionType.CheckFor301);
-                                                }
+                                            {
+                                                // 948 : use new 'no downgrade' method
+                                                result.SetActionWithNoDowngrade(ActionType.CheckFor301);
+                                            }
                                         }
 
                                         if (isSiteRootMatch && !finished)

@@ -501,12 +501,12 @@ namespace DotNetNuke.Modules.Journal
                         && findedUsers.All(s => s.userId != targetUser.UserID))
                     {
                         findedUsers.Add(new SuggestDTO
-                                            {
-                                                displayName = targetUser.DisplayName.Replace(" ", "-"),
-                                                userId = targetUser.UserID,
-                                                avatar = targetUser.Profile.PhotoURL,
-                                                key = keyword,
-                                            });
+                        {
+                            displayName = targetUser.DisplayName.Replace(" ", "-"),
+                            userId = targetUser.UserID,
+                            avatar = targetUser.Profile.PhotoURL,
+                            key = keyword,
+                        });
                     }
                 }
 

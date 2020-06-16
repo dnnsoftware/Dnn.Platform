@@ -10,12 +10,12 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
     {
         public VocabulariesException()
         {
-            
+
         }
 
         public VocabulariesException(string message) : base(message)
         {
-            
+
         }
 
         public VocabulariesException(string message, Exception innerException) : base(message, innerException)

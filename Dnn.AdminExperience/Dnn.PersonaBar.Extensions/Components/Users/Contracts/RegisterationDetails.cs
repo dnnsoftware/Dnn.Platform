@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
         public bool Authorize { get; set; }
         public bool Notify { get; set; }
         public bool RandomPassword { get; set; }
-        
+
         /// <summary>Gets of sets a value indicating whether, whatever registration mode is set, it will always add user.</summary>
         [IgnoreDataMember]
         public bool IgnoreRegistrationMode { get; set; }

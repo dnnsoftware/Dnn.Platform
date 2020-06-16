@@ -207,12 +207,12 @@ namespace DotNetNuke.Services.Social.Notifications
             var recipients = from user in users
                              where InternalMessagingController.Instance.GetMessageRecipient(notification.NotificationID, user.UserID) == null
                              select new MessageRecipient
-                                        {
-                                            MessageID = notification.NotificationID,
-                                            UserID = user.UserID,
-                                            Read = false,
-                                            RecipientID = Null.NullInteger,
-                                        };
+                             {
+                                 MessageID = notification.NotificationID,
+                                 UserID = user.UserID,
+                                 Read = false,
+                                 RecipientID = Null.NullInteger,
+                             };
 
             foreach (var recipient in recipients)
             {

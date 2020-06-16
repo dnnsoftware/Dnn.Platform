@@ -37,9 +37,9 @@ namespace DotNetNuke.Entities.Profile
         private int _moduleDefId = Null.NullInteger;
         private int _portalId;
         private ProfileVisibility _profileVisibility = new ProfileVisibility
-                                                            {
-                                                                VisibilityMode = UserVisibilityMode.AdminOnly,
-                                                            };
+        {
+            VisibilityMode = UserVisibilityMode.AdminOnly,
+        };
 
         private string _propertyCategory;
         private string _propertyName;
@@ -494,24 +494,24 @@ namespace DotNetNuke.Entities.Profile
         public ProfilePropertyDefinition Clone()
         {
             var clone = new ProfilePropertyDefinition(this.PortalId)
-                            {
-                                DataType = this.DataType,
-                                DefaultValue = this.DefaultValue,
-                                Length = this.Length,
-                                ModuleDefId = this.ModuleDefId,
-                                PropertyCategory = this.PropertyCategory,
-                                PropertyDefinitionId = this.PropertyDefinitionId,
-                                PropertyName = this.PropertyName,
-                                PropertyValue = this.PropertyValue,
-                                ReadOnly = this.ReadOnly,
-                                Required = this.Required,
-                                ValidationExpression = this.ValidationExpression,
-                                ViewOrder = this.ViewOrder,
-                                DefaultVisibility = this.DefaultVisibility,
-                                ProfileVisibility = this.ProfileVisibility.Clone(),
-                                Visible = this.Visible,
-                                Deleted = this.Deleted,
-                            };
+            {
+                DataType = this.DataType,
+                DefaultValue = this.DefaultValue,
+                Length = this.Length,
+                ModuleDefId = this.ModuleDefId,
+                PropertyCategory = this.PropertyCategory,
+                PropertyDefinitionId = this.PropertyDefinitionId,
+                PropertyName = this.PropertyName,
+                PropertyValue = this.PropertyValue,
+                ReadOnly = this.ReadOnly,
+                Required = this.Required,
+                ValidationExpression = this.ValidationExpression,
+                ViewOrder = this.ViewOrder,
+                DefaultVisibility = this.DefaultVisibility,
+                ProfileVisibility = this.ProfileVisibility.Clone(),
+                Visible = this.Visible,
+                Deleted = this.Deleted,
+            };
             clone.ClearIsDirty();
             return clone;
         }

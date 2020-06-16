@@ -34,7 +34,7 @@ namespace Dnn.PersonaBar.Security.Components
             new Regex(Regex.Escape(AppDomain.CurrentDomain.BaseDirectory + "web.config"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
-        private const long MaxFileSize = 1024*1024*10; //10M
+        private const long MaxFileSize = 1024 * 1024 * 10; //10M
 
         private const int ModifiedFilesCount = 50;
 
@@ -222,7 +222,7 @@ namespace Dnn.PersonaBar.Security.Components
 
         public static IList<FileInfo> GetLastModifiedExecutableFiles()
         {
-            var executableExtensions = new List<string>() {".asp", ".aspx", ".php"};
+            var executableExtensions = new List<string>() { ".asp", ".aspx", ".php" };
             var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
                 .Where(f =>
                 {

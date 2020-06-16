@@ -22,11 +22,16 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class PageUrlsController : ServiceLocator<IPageUrlsController, PageUrlsController>, IPageUrlsController
     {
-        private enum SortingFields { None = 0, Url, Locale, Status };
+        private enum SortingFields
+        {
+            None = 0,
+            Url,
+            Locale,
+            Status,
+        }
 
         public IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId)
         {
-            
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
             var customUrls = this.GetSortedUrls(tab, portalId, locales, 1, true, false);
             var automaticUrls = this.GetSortedUrls(tab, portalId, locales, 1, true, true).ToList();
@@ -58,7 +63,8 @@ namespace Dnn.PersonaBar.Pages.Components
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
-                return new PageUrlResult {
+                return new PageUrlResult
+                {
                     Success = false,
                     ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
                     SuggestedUrlPath = "/" + urlPath
@@ -69,7 +75,8 @@ namespace Dnn.PersonaBar.Pages.Components
             urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, portalSettings, out modified);
             if (modified)
             {
-                return new PageUrlResult {
+                return new PageUrlResult
+                {
                     Success = false,
                     ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
                     SuggestedUrlPath = "/" + urlPath
@@ -79,7 +86,8 @@ namespace Dnn.PersonaBar.Pages.Components
             if (tab.TabUrls.Any(u => u.Url.ToLowerInvariant() == dto.Path.ValueOrEmpty().ToLowerInvariant()
                                      && (u.PortalAliasId == dto.SiteAliasKey || u.PortalAliasId == -1)))
             {
-                return new PageUrlResult {
+                return new PageUrlResult
+                {
                     Success = false,
                     ErrorMessage = Localization.GetString("DuplicateUrl.Error")
                 };

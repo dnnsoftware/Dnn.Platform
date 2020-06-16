@@ -620,7 +620,8 @@ namespace Dnn.PersonaBar.Users.Services
         {
             var settings = new MembershipPasswordSettings(this.PortalId);
 
-            var passwordSettings = new PasswordSettingsDto{
+            var passwordSettings = new PasswordSettingsDto
+            {
                 MinLength = settings.MinPasswordLength,
                 MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters,
                 ValidationExpression = settings.ValidationExpression

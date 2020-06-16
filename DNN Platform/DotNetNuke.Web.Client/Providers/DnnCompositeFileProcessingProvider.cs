@@ -54,20 +54,20 @@ namespace DotNetNuke.Web.Client.Providers
                 case ClientDependencyType.Css:
                     return this.MinifyCss ? CssHelper.MinifyCss(fileContents) : fileContents;
                 case ClientDependencyType.Javascript:
-                {
-                    if (!this.MinifyJs)
+                    {
+                        if (!this.MinifyJs)
                         {
                             return fileContents;
                         }
 
                         using (var ms = new MemoryStream())
-                    using (var writer = new StreamWriter(ms))
-                    {
-                        writer.Write(fileContents);
-                        writer.Flush();
-                        return JSMin.CompressJS(ms);
+                        using (var writer = new StreamWriter(ms))
+                        {
+                            writer.Write(fileContents);
+                            writer.Flush();
+                            return JSMin.CompressJS(ms);
+                        }
                     }
-                }
 
                 default:
                     return fileContents;

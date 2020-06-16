@@ -49,11 +49,11 @@ namespace DotNetNuke.Web.InternalServices
                     HttpStatusCode.OK,
                     new
                     {
-                            Result = "warning",
-                            Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
-                            Message = Localization.GetString("ProfileUrlCleaned", Localization.SharedResourceFile),
-                            SuggestedUrl = cleanUrl,
-                        });
+                        Result = "warning",
+                        Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
+                        Message = Localization.GetString("ProfileUrlCleaned", Localization.SharedResourceFile),
+                        SuggestedUrl = cleanUrl,
+                    });
             }
 
             // Validate for uniqueness
@@ -64,12 +64,12 @@ namespace DotNetNuke.Web.InternalServices
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,
                     new
-                                                  {
-                                                      Result = "warning",
-                                                      Title = Localization.GetString("DuplicateUrlWarningTitle", Localization.SharedResourceFile),
-                                                      Message = Localization.GetString("ProfileUrlNotUnique", Localization.SharedResourceFile),
-                                                      SuggestedUrl = uniqueUrl,
-                                                  });
+                    {
+                        Result = "warning",
+                        Title = Localization.GetString("DuplicateUrlWarningTitle", Localization.SharedResourceFile),
+                        Message = Localization.GetString("ProfileUrlNotUnique", Localization.SharedResourceFile),
+                        SuggestedUrl = uniqueUrl,
+                    });
             }
 
             var user = this.PortalSettings.UserInfo;

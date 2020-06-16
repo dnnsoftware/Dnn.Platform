@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.FileSystem
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                     bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
+                    bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
 
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;

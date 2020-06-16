@@ -168,10 +168,10 @@ namespace DotNetNuke.Data
             var firstComparable = first as IComparable;
             var secondComparable = second as IComparable;
 
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             return firstComparable.CompareTo(secondComparable);
 
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper restore PossibleNullReferenceException
         }
 
         protected TProperty GetPropertyValue<TProperty>(T item, string propertyName)

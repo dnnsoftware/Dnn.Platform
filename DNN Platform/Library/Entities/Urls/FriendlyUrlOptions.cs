@@ -82,17 +82,17 @@ namespace DotNetNuke.Entities.Urls
         public FriendlyUrlOptions Clone()
         {
             var cloned = new FriendlyUrlOptions
-                {
-                    PunctuationReplacement = this.PunctuationReplacement,
-                    SpaceEncoding = this.SpaceEncoding,
-                    MaxUrlPathLength = this.MaxUrlPathLength,
-                    ConvertDiacriticChars = this.ConvertDiacriticChars,
-                    PageExtension = this.PageExtension,
-                    RegexMatch = this.RegexMatch,
-                    ReplaceCharWithChar = this.ReplaceCharWithChar,
-                    IllegalChars = this.IllegalChars,
-                    ReplaceChars = this.ReplaceChars,
-                };
+            {
+                PunctuationReplacement = this.PunctuationReplacement,
+                SpaceEncoding = this.SpaceEncoding,
+                MaxUrlPathLength = this.MaxUrlPathLength,
+                ConvertDiacriticChars = this.ConvertDiacriticChars,
+                PageExtension = this.PageExtension,
+                RegexMatch = this.RegexMatch,
+                ReplaceCharWithChar = this.ReplaceCharWithChar,
+                IllegalChars = this.IllegalChars,
+                ReplaceChars = this.ReplaceChars,
+            };
             return cloned;
         }
     }

@@ -147,14 +147,14 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 // Set an Event Message so the features are loaded by reflection on restart
                 var oAppStartMessage = new EventMessage
-                                        {
-                                            Priority = MessagePriority.High,
-                                            ExpirationDate = DateTime.Now.AddYears(-1),
-                                            SentDate = DateTime.Now,
-                                            Body = string.Empty,
-                                            ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                                            ProcessorCommand = "UpdateSupportedFeatures",
-                                        };
+                {
+                    Priority = MessagePriority.High,
+                    ExpirationDate = DateTime.Now.AddYears(-1),
+                    SentDate = DateTime.Now,
+                    Body = string.Empty,
+                    ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
+                    ProcessorCommand = "UpdateSupportedFeatures",
+                };
 
                 // Add custom Attributes for this message
                 oAppStartMessage.Attributes.Add("BusinessControllerClass", this._desktopModule.BusinessControllerClass);

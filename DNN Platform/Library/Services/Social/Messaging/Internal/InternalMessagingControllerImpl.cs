@@ -381,7 +381,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <returns>A list of message attachments for the given message.</returns>
         public IEnumerable<MessageFileView> GetAttachments(int messageId)
         {
-           return this._dataService.GetMessageAttachmentsByMessage(messageId);
+            return this._dataService.GetMessageAttachmentsByMessage(messageId);
         }
 
         internal virtual DateTime GetDateTimeNow()

@@ -173,16 +173,16 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             if (module != null)
             {
-                    try
-                    {
-                        ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
-                        ModuleController.Instance.ClearCache(pageId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
-                    }
+                try
+                {
+                    ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
+                    ModuleController.Instance.ClearCache(pageId);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
+                }
             }
         }
 

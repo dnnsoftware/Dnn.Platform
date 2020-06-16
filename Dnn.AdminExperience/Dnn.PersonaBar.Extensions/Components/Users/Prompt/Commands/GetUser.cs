@@ -16,7 +16,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
     [ConsoleCommand("get-user", Constants.UsersCategory, "Prompt_GetUser_Description")]
     public class GetUser : ConsoleCommandBase
-    {        
+    {
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private IUserValidator _userValidator;
@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.UserId = this.GetFlagValue<int?>(FlagId, "User Id", null);
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     // do username lookup
                     var searchTerm = this.Username.Replace("%", "").Replace("*", "%");
-                    
+
                     userId = this._userControllerWrapper.GetUsersByUserName(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
@@ -112,7 +112,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 {
                     // must be email
                     var searchTerm = this.Email.Replace("%", "").Replace("*", "%");
-                    
+
                     userId = this._userControllerWrapper.GetUsersByEmail(this.PortalId, searchTerm, -1, int.MaxValue, ref recCount, true, false) ?? UserIdZero;
 
                     // search against superusers if no regular user found

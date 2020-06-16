@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.DDRMenu
     {
         public override bool EnableViewState
         {
-            get { return false; } set { }
+            get { return false; }
+            set { }
         }
 
         internal MenuNode RootNode { get; set; }

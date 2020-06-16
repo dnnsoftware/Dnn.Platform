@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private int PageId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
-        {            
+        {
             this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
             this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }

@@ -149,13 +149,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 // Return the final result
                 return new ModuleRequestResult
-                                {
-                                    ActionResult = result,
-                                    ControllerContext = moduleController.ControllerContext,
-                                    ModuleActions = moduleController.ModuleActions,
-                                    ModuleContext = context.ModuleContext,
-                                    ModuleApplication = this,
-                                };
+                {
+                    ActionResult = result,
+                    ControllerContext = moduleController.ControllerContext,
+                    ModuleActions = moduleController.ModuleActions,
+                    ModuleContext = context.ModuleContext,
+                    ModuleApplication = this,
+                };
             }
             finally
             {
@@ -180,11 +180,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             };
 
             this.ViewEngines.Add(new RazorViewEngine
-                                    {
-                                        MasterLocationFormats = masterFormats,
-                                        ViewLocationFormats = viewFormats,
-                                        PartialViewLocationFormats = viewFormats,
-                                    });
+            {
+                MasterLocationFormats = masterFormats,
+                ViewLocationFormats = viewFormats,
+                PartialViewLocationFormats = viewFormats,
+            });
         }
 
         protected static string NormalizeFolderPath(string path)

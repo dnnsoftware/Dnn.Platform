@@ -164,8 +164,8 @@ namespace DotNetNuke.Modules.SearchResults
             var mygroup = (from @group in groups
                            select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
                                into portals
-                               where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                               select portals.ToArray()).FirstOrDefault();
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
 
             var result = new List<string[]>();
             if (mygroup != null && mygroup.Any())

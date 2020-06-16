@@ -94,13 +94,13 @@ namespace DotNetNuke.Services.Scheduling
             /// <remarks>Thread Safe.</remarks>
             private static void AddToScheduleInProgress(ScheduleHistoryItem scheduleHistoryItem)
             {
-                if (! ScheduleInProgressContains(scheduleHistoryItem))
+                if (!ScheduleInProgressContains(scheduleHistoryItem))
                 {
                     try
                     {
                         using (ScheduleInProgress.GetWriteLock(LockTimeout))
                         {
-                            if (! ScheduleInProgressContains(scheduleHistoryItem))
+                            if (!ScheduleInProgressContains(scheduleHistoryItem))
                             {
                                 ScheduleInProgress.Add(scheduleHistoryItem);
                             }

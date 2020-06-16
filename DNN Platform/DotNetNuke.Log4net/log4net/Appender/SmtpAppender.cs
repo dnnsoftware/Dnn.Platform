@@ -629,18 +629,18 @@ namespace log4net.Appender
 
         private static readonly char[] ADDRESS_DELIMITERS = new char[] { ',', ';' };
 
-            /// <summary>
-            ///   trims leading and trailing commas or semicolons.
-            /// </summary>
+        /// <summary>
+        ///   trims leading and trailing commas or semicolons.
+        /// </summary>
         private static string MaybeTrimSeparators(string s)
         {
 #if NET_2_0 || MONO_2_0
-                return string.IsNullOrEmpty(s) ? s : s.Trim(ADDRESS_DELIMITERS);
+            return string.IsNullOrEmpty(s) ? s : s.Trim(ADDRESS_DELIMITERS);
 #else
                 return s != null && s.Length > 0 ? s : s.Trim(ADDRESS_DELIMITERS);
 #endif
-            }
         }
+    }
 }
 
 #endif // !NETCF && !SSCLI

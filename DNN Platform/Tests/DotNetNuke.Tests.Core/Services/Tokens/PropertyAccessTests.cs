@@ -144,38 +144,38 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("system", "en", "dd/mm/yy")]
         [TestCase("utc", "it", "mmm dd, yyyy")]
         public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
-         {
-             // Arrange
-             var dtPropertyAccess = new DateTimePropertyAccess();
-             var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
-             var culture = new CultureInfo(cultureName);
+        {
+            // Arrange
+            var dtPropertyAccess = new DateTimePropertyAccess();
+            var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
+            var culture = new CultureInfo(cultureName);
 
-             string expected = string.Empty;
+            string expected = string.Empty;
 
-             switch (propertyName)
-             {
-                 case "current":
-                     expected = DateTime.Now.ToString(format, culture);
-                     break;
-                 case "now":
-                     expected = DateTime.Now.ToString(format, culture);
-                     break;
-                 case "system":
-                     expected = DateTime.Now.ToString(format, culture);
-                     break;
-                 case "utc":
-                     expected = DateTime.Now.ToUniversalTime().ToString(format, culture);
-                     break;
-             }
+            switch (propertyName)
+            {
+                case "current":
+                    expected = DateTime.Now.ToString(format, culture);
+                    break;
+                case "now":
+                    expected = DateTime.Now.ToString(format, culture);
+                    break;
+                case "system":
+                    expected = DateTime.Now.ToString(format, culture);
+                    break;
+                case "utc":
+                    expected = DateTime.Now.ToUniversalTime().ToString(format, culture);
+                    break;
+            }
 
-             // Act
-             bool propertyNotFound = false;
-             string propertyValue = dtPropertyAccess.GetProperty(propertyName, format, culture,
-                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
+            // Act
+            bool propertyNotFound = false;
+            string propertyValue = dtPropertyAccess.GetProperty(propertyName, format, culture,
+                                                                   accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-             // Assert
-             Assert.AreEqual(expected, propertyValue);
-         }
+            // Assert
+            Assert.AreEqual(expected, propertyValue);
+        }
 
         [Test]
         [TestCase("current", "Tokyo Standard Time")]
@@ -186,10 +186,10 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var dtPropertyAccess = new DateTimePropertyAccess();
             var userTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
             var timeZoneProfileProperty = new ProfilePropertyDefinition(Constants.PORTAL_Zero)
-                                              {
-                                                  PropertyName = "PreferredTimeZone",
-                                                  PropertyValue = timeZoneId,
-                                              };
+            {
+                PropertyName = "PreferredTimeZone",
+                PropertyValue = timeZoneId,
+            };
             var userProfile = new UserProfile();
             userProfile.ProfileProperties.Add(timeZoneProfileProperty);
 

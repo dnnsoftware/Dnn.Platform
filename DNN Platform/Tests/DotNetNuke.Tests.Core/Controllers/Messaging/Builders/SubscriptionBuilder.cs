@@ -86,18 +86,18 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         internal Subscription Build()
         {
             return new Subscription
-                       {
-                           SubscriptionTypeId = this.subscriptionTypeId,
-                           SubscriptionId = this.subscriptionId,
-                           CreatedOnDate = DateTime.UtcNow,
-                           ModuleId = this.moduleId,
-                           ObjectKey = this.objectKey,
-                           Description = this.description,
-                           PortalId = this.portalId,
-                           TabId = this.tabId,
-                           UserId = this.userId,
-                           ObjectData = this.objectData,
-                       };
+            {
+                SubscriptionTypeId = this.subscriptionTypeId,
+                SubscriptionId = this.subscriptionId,
+                CreatedOnDate = DateTime.UtcNow,
+                ModuleId = this.moduleId,
+                ObjectKey = this.objectKey,
+                Description = this.description,
+                PortalId = this.portalId,
+                TabId = this.tabId,
+                UserId = this.userId,
+                ObjectData = this.objectData,
+            };
         }
     }
 }

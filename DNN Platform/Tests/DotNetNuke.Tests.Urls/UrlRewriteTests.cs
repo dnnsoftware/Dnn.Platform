@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.Urls
             this.DeleteTab(_testPage);
             this.CreateTab(_testPage);
             this.UpdateTabName(this._tabId, "About Us");
-            this.UpdateTabSkin(this._tabId,  string.Empty);
+            this.UpdateTabSkin(this._tabId, string.Empty);
             CacheController.FlushPageIndexFromCache();
             this.GetDefaultAlias();
             this._redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", this.PortalId, "CANONICALURL");
@@ -242,16 +242,16 @@ namespace DotNetNuke.Tests.Urls
 
             var request = HttpContext.Current.Request;
             var testHelper = new UrlTestHelper
-                    {
-                        HttpAliasFull = scheme + httpAlias + "/",
-                        Result = new UrlAction(request)
-                                        {
-                                            IsSecureConnection = request.IsSecureConnection,
-                                            RawUrl = request.RawUrl,
-                                        },
-                        RequestUri = new Uri(testurl),
-                        QueryStringCol = new NameValueCollection(),
-                    };
+            {
+                HttpAliasFull = scheme + httpAlias + "/",
+                Result = new UrlAction(request)
+                {
+                    IsSecureConnection = request.IsSecureConnection,
+                    RawUrl = request.RawUrl,
+                },
+                RequestUri = new Uri(testurl),
+                QueryStringCol = new NameValueCollection(),
+            };
 
             this.ProcessRequest(settings, testHelper);
 

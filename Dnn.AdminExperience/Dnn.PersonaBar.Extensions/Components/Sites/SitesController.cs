@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
 
                 text = string.Format("{0} - {1}", template.Name, Localization.GetLocaleName(template.CultureCode, this.DisplayType));
-                
+
                 value = string.Format("{0}|{1}|{2}", fileName, template.CultureCode, this.GetThumbnail(fileName));
             }
 
@@ -522,7 +522,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     var objPortal = PortalController.Instance.GetPortal(intPortalId);
                     var newSettings = new PortalSettings
                     {
-                        PortalAlias = new PortalAliasInfo {HTTPAlias = strPortalAlias},
+                        PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias },
                         PortalId = intPortalId,
                         DefaultLanguage = objPortal.DefaultLanguage
                     };
@@ -841,7 +841,7 @@ namespace Dnn.PersonaBar.Sites.Components
             //End Portal Settings
             writer.WriteEndElement();
         }
-        
+
         private void SerializeEnabledLocales(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<string> locales)
         {
             var enabledLocales = LocaleController.Instance.GetLocales(portal.PortalID);
@@ -946,7 +946,7 @@ namespace Dnn.PersonaBar.Sites.Components
             writer.WriteStartElement("files");
             foreach (var fileInfo in folderManager.GetFiles(objFolder))
             {
-                var objFile = (FileInfo) fileInfo;
+                var objFile = (FileInfo)fileInfo;
                 //verify that the file exists on the file system
                 var filePath = objportal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
                 if (File.Exists(filePath))
@@ -959,7 +959,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     writer.WriteElementString("height", objFile.Height.ToString(CultureInfo.InvariantCulture));
                     writer.WriteElementString("size", objFile.Size.ToString(CultureInfo.InvariantCulture));
                     writer.WriteElementString("width", objFile.Width.ToString(CultureInfo.InvariantCulture));
-                    
+
                     writer.WriteEndElement();
 
                     FileSystemUtils.AddToZip(ref zipFile, filePath, this.GetActualFileName(objFile), folderPath);
@@ -1071,7 +1071,7 @@ namespace Dnn.PersonaBar.Sites.Components
         private void SerializeTabs(XmlWriter writer, PortalInfo portal, Hashtable tabs, TabCollection tabCollection, IEnumerable<TabDto> pages, bool chkContent)
         {
             pages = pages.ToList();
-            foreach (var tab in tabCollection.Values.OrderBy(x=>x.Level))
+            foreach (var tab in tabCollection.Values.OrderBy(x => x.Level))
             {
                 //if not deleted
                 if (!tab.IsDeleted)

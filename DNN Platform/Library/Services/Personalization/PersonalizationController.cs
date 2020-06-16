@@ -38,10 +38,10 @@ namespace DotNetNuke.Services.Personalization
             string profileData = Null.NullString;
             if (userId > Null.NullInteger)
             {
-               var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
-               profileData = CBO.GetCachedObject<string>(
-                    new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
-                    DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
+                var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                profileData = CBO.GetCachedObject<string>(
+                     new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
+                     DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
             }
             else
             {

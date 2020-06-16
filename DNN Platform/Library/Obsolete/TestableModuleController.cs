@@ -20,18 +20,18 @@ namespace DotNetNuke.Entities.Modules.Internal
         }
 
         public ModuleInfo GetModule(int moduleId, int tabId)
-         {
-             return ModuleController.Instance.GetModule(moduleId, tabId, false);
-         }
+        {
+            return ModuleController.Instance.GetModule(moduleId, tabId, false);
+        }
 
         public void UpdateModuleSetting(int moduleId, string settingName, string settingValue)
-         {
-             ModuleController.Instance.UpdateModuleSetting(moduleId, settingName, settingValue);
-         }
+        {
+            ModuleController.Instance.UpdateModuleSetting(moduleId, settingName, settingValue);
+        }
 
         public void UpdateTabModuleSetting(int tabModuleId, string settingName, string settingValue)
-         {
-             ModuleController.Instance.UpdateTabModuleSetting(tabModuleId, settingName, settingValue);
-         }
+        {
+            ModuleController.Instance.UpdateTabModuleSetting(tabModuleId, settingName, settingValue);
+        }
     }
 }

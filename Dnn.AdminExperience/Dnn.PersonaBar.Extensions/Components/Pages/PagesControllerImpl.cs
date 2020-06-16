@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Pages.Components
         private readonly IPortalController _portalController;
 
         public const string PageTagsVocabulary = "PageTags";
-        private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };        
+        private static readonly IList<string> TabSettingKeys = new List<string> { "CustomStylesheet" };
 
         private PortalSettings PortalSettings { get; set; }
 
@@ -388,7 +388,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                    Regex.IsMatch(tab.TabPath, tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
                     if (!string.IsNullOrEmpty(tabSkin))
                     {
-                        var escapedString = Regex.Replace(tabSkin, "([^\\w^\\*\\s]+)+", @"\$1", RegexOptions.Compiled|RegexOptions.ECMAScript|RegexOptions.IgnoreCase|RegexOptions.Multiline);
+                        var escapedString = Regex.Replace(tabSkin, "([^\\w^\\*\\s]+)+", @"\$1", RegexOptions.Compiled | RegexOptions.ECMAScript | RegexOptions.IgnoreCase | RegexOptions.Multiline);
                         bIsMatch = bIsMatch &
                                    Regex.IsMatch(tab.SkinSrc, escapedString.Replace("*", ".*"), RegexOptions.IgnoreCase);
                     }
@@ -810,7 +810,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 tab.IconFileLarge = null;
             }
-            
+
         }
 
         private string GetContainerSrc(PageSettings pageSettings)
@@ -1051,7 +1051,7 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 throw new PageNotFoundException();
             }
-           
+
             var page = Converters.ConvertToPageSettings<PageSettings>(tab);
             page.Modules = this.GetModules(page.TabId).Select(Converters.ConvertToModuleItem);
             page.PageUrls = this.GetPageUrls(page.TabId);
@@ -1063,7 +1063,8 @@ namespace Dnn.PersonaBar.Pages.Components
 
             // icons
             var iconFile = string.IsNullOrEmpty(tab.IconFile) ? null : FileManager.Instance.GetFile(tab.PortalID, tab.IconFileRaw);
-            if (iconFile != null) {
+            if (iconFile != null)
+            {
                 page.IconFile = new FileDto
                 {
                     fileId = iconFile.FileId,

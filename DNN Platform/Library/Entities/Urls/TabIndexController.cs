@@ -1002,16 +1002,16 @@ namespace DotNetNuke.Entities.Urls
 
         private static OrderedDictionary BuildPortalAliasesDictionary()
         {
-           var aliases = PortalAliasController.Instance.GetPortalAliases();
+            var aliases = PortalAliasController.Instance.GetPortalAliases();
 
             // create a new OrderedDictionary.  We use this because we
             // want to key by the correct regex pattern and return the
             // portalAlias that matches, and we want to preserve the
             // order of the items, such that the item with the most path separators (/)
             // is at the front of the list.
-           var aliasList = new OrderedDictionary(aliases.Count);
-           var pathLengths = new List<int>();
-           foreach (string aliasKey in aliases.Keys)
+            var aliasList = new OrderedDictionary(aliases.Count);
+            var pathLengths = new List<int>();
+            foreach (string aliasKey in aliases.Keys)
             {
                 PortalAliasInfo alias = aliases[aliasKey];
 
@@ -1086,7 +1086,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-           return aliasList;
+            return aliasList;
         }
 
         private static SharedDictionary<string, string> BuildTabDictionary(

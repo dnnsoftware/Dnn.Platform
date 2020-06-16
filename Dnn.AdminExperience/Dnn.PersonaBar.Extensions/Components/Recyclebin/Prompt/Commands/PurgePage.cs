@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
             this._tabController = tabController;
             this._recyclebinController = recyclebinController;
-            this._contentVerifier = contentVerifier;        
+            this._contentVerifier = contentVerifier;
         }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)

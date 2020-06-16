@@ -523,7 +523,7 @@ namespace log4net.Appender
         /// string to <c>"%s"</c>.
         /// </para>
         /// </remarks>
-        [DllImport("libc", CharSet=CharSet.Ansi, CallingConvention=CallingConvention.Cdecl)]
+        [DllImport("libc", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern void syslog(int priority, string format, string message);
 
         /// <summary>

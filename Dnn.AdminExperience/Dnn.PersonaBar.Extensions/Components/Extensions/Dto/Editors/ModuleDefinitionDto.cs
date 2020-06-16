@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         public ModuleDefinitionDto()
         {
-            
+
         }
 
         public ModuleDefinitionDto(ModuleDefinitionInfo definition)

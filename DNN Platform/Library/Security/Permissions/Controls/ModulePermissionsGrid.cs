@@ -234,14 +234,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
         {
             var objPermission = new ModulePermissionInfo(permission)
-                {
-                    ModuleID = this.ModuleID,
-                    RoleID = roleId,
-                    RoleName = roleName,
-                    AllowAccess = allowAccess,
-                    UserID = userId,
-                    DisplayName = displayName,
-                };
+            {
+                ModuleID = this.ModuleID,
+                RoleID = roleId,
+                RoleName = roleName,
+                AllowAccess = allowAccess,
+                UserID = userId,
+                DisplayName = displayName,
+            };
             this._ModulePermissions.Add(objPermission, true);
 
             // Clear Permission List

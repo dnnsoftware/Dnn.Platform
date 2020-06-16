@@ -111,17 +111,17 @@ namespace DotNetNuke.Web.InternalServices
                 // Roles should be visible to Administrators or User in the Role.
                 var roles = RoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
                 results.AddRange(from roleInfo in roles
-                                    where
-                                        isAdmin ||
-                                        this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
-                                    select new SearchResult
-                                    {
-                                        id = "role-" + roleInfo.RoleID,
-                                        name = roleInfo.RoleName,
-                                        iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
-                                                    ? "~/images/no_avatar.gif"
-                                                    : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
-                                    });
+                                 where
+                                     isAdmin ||
+                                     this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
+                                 select new SearchResult
+                                 {
+                                     id = "role-" + roleInfo.RoleID,
+                                     name = roleInfo.RoleName,
+                                     iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
+                                                 ? "~/images/no_avatar.gif"
+                                                 : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
+                                 });
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
             }

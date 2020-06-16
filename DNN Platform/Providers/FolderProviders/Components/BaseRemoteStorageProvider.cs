@@ -268,7 +268,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var pattern = "^" + mappedPath;
             return (from i in list
                     let f = i.Key
-                     let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
+                    let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
                     select Path.GetFileName(f)).ToArray();
         }
@@ -356,15 +356,15 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var pattern = "^" + Regex.Escape(folderPath);
 
             return (from o in list
-                let f = o.Key
-                let r =
-                    !string.IsNullOrEmpty(folderPath)
-                        ? Regex.Replace(f,  pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
-                        : f
-                where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
-                                   && f.Length > folderPath.Length
-                                   && r.IndexOf("/", StringComparison.Ordinal) > -1
-                           select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
+                    let f = o.Key
+                    let r =
+                        !string.IsNullOrEmpty(folderPath)
+                            ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
+                            : f
+                    where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
+                                       && f.Length > folderPath.Length
+                                       && r.IndexOf("/", StringComparison.Ordinal) > -1
+                    select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
             // var mylist =  (from o in list
             //        let f = o.Key

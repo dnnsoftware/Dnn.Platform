@@ -15,8 +15,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     {
         [DataMember(Name = "key")]
         public int Key { get; set; }
-        
+
         [DataMember(Name = "value")]
-        public string Value { get; set; }        
+        public string Value { get; set; }
     }
 }

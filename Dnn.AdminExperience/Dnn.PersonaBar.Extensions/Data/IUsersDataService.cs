@@ -16,6 +16,6 @@ namespace Dnn.PersonaBar.Users.Data
         /// <param name="portalId">PortalId.</param>
         /// <param name="userIds">Comma separated user Id.</param>
         /// <returns>List of UserBasic.</returns>
-        IList<UserBasicDto> GetUsersByUserIds(int portalId, string userIds);        
+        IList<UserBasicDto> GetUsersByUserIds(int portalId, string userIds);
     }
 }

@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Search
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
 
-                        // max cluaseCount is 1024, if reach the max value, perform a delete action.
+                    // max cluaseCount is 1024, if reach the max value, perform a delete action.
                     {
                         keyword.Append(")");
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());

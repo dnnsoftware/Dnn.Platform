@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Journal
     using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
-   public class JournalItem : IHydratable, IPropertyAccess
+    public class JournalItem : IHydratable, IPropertyAccess
     {
         public int JournalId { get; set; }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Journal
 
         public int SimilarCount { get; set; }
 
-       /// <summary>
+        /// <summary>
         /// Gets or sets the key ID.
         /// </summary>
         /// <value>

@@ -84,9 +84,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Options.Preload = "focus";
             this.Options.Plugins.Add("remove_button");
             this.Options.Render = new RenderOption
-                {
-                    Option = "function(item, escape) {return '<div>' + item.text + '</div>';}",
-                };
+            {
+                Option = "function(item, escape) {return '<div>' + item.text + '</div>';}",
+            };
 
             this.Options.Load = $@"function(query, callback) {{
                                 $.ajax({{

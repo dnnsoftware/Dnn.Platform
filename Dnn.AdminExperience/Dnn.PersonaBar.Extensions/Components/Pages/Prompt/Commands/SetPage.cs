@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, true, true, true);
             this.ParentId = this.GetFlagValue<int?>(FlagParentId, "Parent Id", null);
             this.Title = this.GetFlagValue(FlagTitle, "Title", string.Empty);
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
                 }
                 pageSettings.Name = !string.IsNullOrEmpty(this.Name) ? this.Name : pageSettings.Name;
                 pageSettings.Title = !string.IsNullOrEmpty(this.Title) ? this.Title : pageSettings.Title;
-                pageSettings.Url = !string.IsNullOrEmpty(this.Url) ? this.Url : pageSettings.Url;         
+                pageSettings.Url = !string.IsNullOrEmpty(this.Url) ? this.Url : pageSettings.Url;
                 pageSettings.Description = !string.IsNullOrEmpty(this.Description) ? this.Description : pageSettings.Description;
                 pageSettings.Keywords = !string.IsNullOrEmpty(this.Keywords) ? this.Keywords : pageSettings.Keywords;
                 pageSettings.ParentId = this.ParentId.HasValue ? this.ParentId : pageSettings.ParentId;
@@ -104,6 +104,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(ex.Message);
             }
-        }        
+        }
     }
 }

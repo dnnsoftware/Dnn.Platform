@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             detail.ControlSrc = skinControl.ControlSrc;
             detail.SupportsPartialRendering = skinControl.SupportsPartialRendering;
             detail.ReadOnly |= !isHostUser;
-            
+
             return detail;
         }
 

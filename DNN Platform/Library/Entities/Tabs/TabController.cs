@@ -416,13 +416,13 @@ namespace DotNetNuke.Entities.Tabs
                 if (roleID != int.MinValue)
                 {
                     var tabPermission = new TabPermissionInfo
-                        {
-                            TabID = tab.TabID,
-                            PermissionID = permissionID,
-                            RoleID = roleID,
-                            UserID = Null.NullInteger,
-                            AllowAccess = allowAccess,
-                        };
+                    {
+                        TabID = tab.TabID,
+                        PermissionID = permissionID,
+                        RoleID = roleID,
+                        UserID = Null.NullInteger,
+                        AllowAccess = allowAccess,
+                    };
 
                     bool canAdd = !tab.TabPermissions.Cast<TabPermissionInfo>()
                                       .Any(tp => tp.TabID == tabPermission.TabID

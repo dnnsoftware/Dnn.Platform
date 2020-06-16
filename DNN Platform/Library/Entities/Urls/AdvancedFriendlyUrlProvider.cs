@@ -461,11 +461,11 @@ namespace DotNetNuke.Entities.Urls
             if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-               friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
+                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
                 // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
-               var sslUrl = portalSettings.SSLURL;
-               if (!string.IsNullOrEmpty(sslUrl))
+                var sslUrl = portalSettings.SSLURL;
+                if (!string.IsNullOrEmpty(sslUrl))
                 {
                     friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
                 }

@@ -47,10 +47,10 @@ namespace DotNetNuke.Modules.UrlManagement
 
                 this.providerSettingsPlaceHolder.Controls.Add(settingsControl);
 
-// ReSharper disable SuspiciousTypeConversion.Global
+                // ReSharper disable SuspiciousTypeConversion.Global
                 this._providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
 
-// ReSharper restore SuspiciousTypeConversion.Global
+                // ReSharper restore SuspiciousTypeConversion.Global
                 if (this._providerSettingsControl != null)
                 {
                     this._providerSettingsControl.Provider = provider.ProviderConfig;

@@ -111,8 +111,8 @@ namespace DotNetNuke.UI.ControlPanels
 
         public virtual bool IsDockable
         {
-          get { return false; }
-          set { }
+            get { return false; }
+            set { }
         }
 
         protected bool IsModuleAdmin()

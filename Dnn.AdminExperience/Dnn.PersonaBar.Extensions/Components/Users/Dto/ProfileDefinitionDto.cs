@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         public ProfileDefinitionDto()
         {
-            
+
         }
 
         public ProfileDefinitionDto(ProfilePropertyDefinition definition)

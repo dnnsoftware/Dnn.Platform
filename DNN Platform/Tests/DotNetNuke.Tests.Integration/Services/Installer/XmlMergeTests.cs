@@ -97,10 +97,10 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 
         private void WriteToDebug(XmlDocument targetDoc)
         {
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (OutputXml)
 
-// ReSharper restore ConditionIsAlwaysTrueOrFalse
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 using (var writer = new StreamWriter(new MemoryStream()))
                 {
@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             LoggerSource.SetTestableInstance(new TestLogSource());
         }
 
-// ReSharper disable PossibleNullReferenceException
+        // ReSharper disable PossibleNullReferenceException
         [Test]
         public void SimpleUpdate()
         {
@@ -493,7 +493,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             Assert.AreEqual("4.1.0.0", bindingRedirect.Attributes["newVersion"].Value);
         }
 
-// ReSharper restore PossibleNullReferenceException
+        // ReSharper restore PossibleNullReferenceException
     }
 
     internal class TestLogSource : ILoggerSource

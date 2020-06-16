@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             this.Modules = new List<DnnModuleDto>(); // one module for each language
             foreach (var locale in locales)
             {
-                this.Modules.Add(new DnnModuleDto {CultureCode = locale});
+                this.Modules.Add(new DnnModuleDto { CultureCode = locale });
             }
         }
 

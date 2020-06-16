@@ -149,10 +149,10 @@ namespace DotNetNuke.Entities.Modules
             {
                 var modulePermission = new ModulePermissionInfo(permission);
 
-// ReSharper disable ImplicitlyCapturedClosure
+                // ReSharper disable ImplicitlyCapturedClosure
                 var role = RoleController.Instance.GetRole(portalId, r => (r.RoleName == roleName));
 
-// ReSharper restore ImplicitlyCapturedClosure
+                // ReSharper restore ImplicitlyCapturedClosure
                 if (role != null)
                 {
                     modulePermission.RoleID = role.RoleID;

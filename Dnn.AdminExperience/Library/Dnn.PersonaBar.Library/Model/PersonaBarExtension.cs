@@ -57,7 +57,8 @@ namespace Dnn.PersonaBar.Library.Model
 
         public int KeyID
         {
-            get { return this.ExtensionId; } set { this.ExtensionId = value; }
+            get { return this.ExtensionId; }
+            set { this.ExtensionId = value; }
         }
     }
 }

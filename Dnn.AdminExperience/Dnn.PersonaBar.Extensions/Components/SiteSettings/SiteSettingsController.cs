@@ -130,7 +130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
         public bool CreateCorePackage(string cultureCode, string fileName, bool createZip)
         {
-            var package = new PackageInfo {Name = Globals.CleanFileName(fileName)};
+            var package = new PackageInfo { Name = Globals.CleanFileName(fileName) };
             package.FriendlyName = package.Name;
             package.Version = DotNetNukeContext.Current.Application.Version;
             package.License = Util.PACKAGE_NoLicense;

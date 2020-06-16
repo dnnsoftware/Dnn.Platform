@@ -19,7 +19,7 @@ namespace DNN.Integration.Test.Framework
 
         CookieContainer SessionCookies { get; }
 
-        DateTime LoggedInAtTime { get;  }
+        DateTime LoggedInAtTime { get; }
 
         TimeSpan Timeout { get; set; }
 

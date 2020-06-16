@@ -33,10 +33,10 @@ namespace Dnn.PersonaBar.Security.Components
             var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
             UserControl uc = new UserControl();
             var authProviders = (from authProvider in authSystems
-                let authLoginControl = (AuthenticationLoginBase) uc.LoadControl("~/" + authProvider.LoginControlSrc)
-                let oAuthLoginControl = authLoginControl as OAuthLoginBase
-                where oAuthLoginControl == null && authLoginControl.Enabled
-                select authProvider.AuthenticationType);
+                                 let authLoginControl = (AuthenticationLoginBase)uc.LoadControl("~/" + authProvider.LoginControlSrc)
+                                 let oAuthLoginControl = authLoginControl as OAuthLoginBase
+                                 where oAuthLoginControl == null && authLoginControl.Enabled
+                                 select authProvider.AuthenticationType);
 
             return authProviders;
         }
@@ -101,7 +101,7 @@ namespace Dnn.PersonaBar.Security.Components
                     table.Load(reader);
                     tables.Add(table);
                 }
-                while (!reader.IsClosed); 
+                while (!reader.IsClosed);
             }
             return tables;
         }

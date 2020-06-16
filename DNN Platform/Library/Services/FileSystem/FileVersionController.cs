@@ -259,10 +259,10 @@ namespace DotNetNuke.Services.FileSystem
         private void OnFileChanged(IFileInfo fileInfo, int userId)
         {
             EventManager.Instance.OnFileChanged(new FileChangedEventArgs
-                                                        {
-                                                            FileInfo = fileInfo,
-                                                            UserId = userId,
-                                                        });
+            {
+                FileInfo = fileInfo,
+                UserId = userId,
+            });
         }
 
         private Stream GetVersionContent(FolderProvider provider, IFolderInfo folder, IFileInfo file, int version)

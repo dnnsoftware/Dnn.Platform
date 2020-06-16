@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                     {
-                       this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
+                        this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
                     }
                 }
 

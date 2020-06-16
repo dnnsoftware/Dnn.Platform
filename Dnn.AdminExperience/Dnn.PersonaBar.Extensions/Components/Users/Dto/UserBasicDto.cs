@@ -91,8 +91,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Membership.Approved,
-                HasAgreedToTerms=user.HasAgreedToTerms,
-                RequestsRemoval=user.RequestsRemoval,
+                HasAgreedToTerms = user.HasAgreedToTerms,
+                RequestsRemoval = user.RequestsRemoval,
                 IsSuperUser = user.IsSuperUser
             };
         }

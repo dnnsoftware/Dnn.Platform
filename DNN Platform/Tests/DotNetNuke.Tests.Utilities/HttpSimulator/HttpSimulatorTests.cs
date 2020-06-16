@@ -158,7 +158,7 @@ namespace UnitTests.Subtext
             Assert.IsNull(HttpContext.Current.Request.QueryString["param-name"]);
         }
 
-       // //[Test]
+        // //[Test]
         public void CanSimulateFormPost()
         {
             using (var simulator = new HttpSimulator())
@@ -181,7 +181,7 @@ namespace UnitTests.Subtext
             }
         }
 
-       // //[Test]
+        // //[Test]
         public void CanGetResponse()
         {
             var simulator = new HttpSimulator();
@@ -191,7 +191,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual("Hello World!", simulator.ResponseText);
         }
 
-       // //[Test]
+        // //[Test]
         public void CanGetReferer()
         {
             var simulator = new HttpSimulator();

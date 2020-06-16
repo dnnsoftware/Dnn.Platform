@@ -45,7 +45,7 @@ namespace log4net.Config
     /// </remarks>
     /// <author>Nicko Cadell.</author>
     /// <author>Gert Driesen.</author>
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple=true)]
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     [Serializable]
     public sealed class PluginAttribute : Attribute, IPluginFactory
     {
@@ -143,7 +143,7 @@ namespace log4net.Config
 #endif
 
             // Check that the type is a plugin
-            if (! typeof(IPlugin).IsAssignableFrom(pluginType))
+            if (!typeof(IPlugin).IsAssignableFrom(pluginType))
             {
                 throw new LogException("Plugin type [" + pluginType.FullName + "] does not implement the log4net.IPlugin interface");
             }

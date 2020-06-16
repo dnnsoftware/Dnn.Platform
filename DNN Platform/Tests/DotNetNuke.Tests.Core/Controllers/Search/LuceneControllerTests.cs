@@ -142,17 +142,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         private void AddLinesAsSearchDocs(IEnumerable<string> lines)
-         {
-             foreach (var line in lines)
-             {
-                 var field = new Field(Constants.ContentTag, line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                 var doc = new Document();
-                 doc.Add(field);
-                 this._luceneController.Add(doc);
-             }
+        {
+            foreach (var line in lines)
+            {
+                var field = new Field(Constants.ContentTag, line, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                var doc = new Document();
+                doc.Add(field);
+                this._luceneController.Add(doc);
+            }
 
-             this._luceneController.Commit();
-         }
+            this._luceneController.Commit();
+        }
 
         [Test]
         public void LuceneController_SearchFolderIsAsExpected()
@@ -323,10 +323,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var hits = this._luceneController.Search(this.CreateSearchContext(
                 new LuceneQuery
                 {
-                        Query = new TermQuery(new Term(Constants.ContentTag, "fox")),
-                        PageIndex = 5,
-                        PageSize = 10,
-                    }));
+                    Query = new TermQuery(new Term(Constants.ContentTag, "fox")),
+                    PageIndex = 5,
+                    PageSize = 10,
+                }));
 
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
@@ -340,9 +340,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddStandardDocs();
 
             var query = new LuceneQuery
-                {
-                    Query = new TermQuery(new Term(Constants.ContentTag, "quick")), PageIndex = 2, PageSize = 1,
-                };
+            {
+                Query = new TermQuery(new Term(Constants.ContentTag, "quick")),
+                PageIndex = 2,
+                PageSize = 1,
+            };
 
             var hits = this._luceneController.Search(this.CreateSearchContext(query));
 

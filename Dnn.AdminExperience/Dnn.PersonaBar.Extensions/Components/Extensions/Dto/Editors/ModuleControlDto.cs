@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         public ModuleControlDto()
         {
-            
+
         }
 
         public ModuleControlDto(ModuleControlInfo moduleControl)

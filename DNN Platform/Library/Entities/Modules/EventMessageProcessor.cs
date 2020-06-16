@@ -124,14 +124,14 @@ namespace DotNetNuke.Entities.Modules
         public static void CreateImportModuleMessage(ModuleInfo objModule, string content, string version, int userID)
         {
             var appStartMessage = new EventMessage
-                                       {
-                                           Priority = MessagePriority.High,
-                                           ExpirationDate = DateTime.Now.AddYears(-1),
-                                           SentDate = DateTime.Now,
-                                           Body = string.Empty,
-                                           ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
-                                           ProcessorCommand = "ImportModule",
-                                       };
+            {
+                Priority = MessagePriority.High,
+                ExpirationDate = DateTime.Now.AddYears(-1),
+                SentDate = DateTime.Now,
+                Body = string.Empty,
+                ProcessorType = "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke",
+                ProcessorCommand = "ImportModule",
+            };
 
             // Add custom Attributes for this message
             appStartMessage.Attributes.Add("BusinessControllerClass", objModule.DesktopModule.BusinessControllerClass);

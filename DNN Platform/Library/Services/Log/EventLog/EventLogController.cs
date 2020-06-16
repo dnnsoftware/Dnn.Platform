@@ -205,12 +205,12 @@ namespace DotNetNuke.Services.Log.EventLog
         {
             // supports adding a custom string for LogType
             var log = new LogInfo
-                {
-                    LogUserID = userID,
-                    LogTypeKey = logTypeKey,
-                    LogProperties = properties,
-                    BypassBuffering = bypassBuffering,
-                };
+            {
+                LogUserID = userID,
+                LogTypeKey = logTypeKey,
+                LogProperties = properties,
+                BypassBuffering = bypassBuffering,
+            };
             if (portalSettings != null)
             {
                 log.LogPortalID = portalSettings.PortalId;

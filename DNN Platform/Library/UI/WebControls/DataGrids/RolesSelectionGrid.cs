@@ -144,9 +144,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-         /// <summary>
-         /// Gets or sets and Sets the ResourceFile to localize permissions.
-         /// </summary>
+        /// <summary>
+        /// Gets or sets and Sets the ResourceFile to localize permissions.
+        /// </summary>
         public string ResourceFile { get; set; }
 
         /// <summary>

@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.Page = this.GetFlagValue(FlagPage, "Page", 1);
             this.Max = this.GetFlagValue(FlagMax, "Max", 10);
         }

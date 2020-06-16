@@ -40,8 +40,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public bool IsOnline()
         {
-             var userInfo = UserController.Instance.GetCurrentUserInfo();
-             return userInfo.UserID != -1;
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
+            return userInfo.UserID != -1;
         }
 
         public string GetNotificationLink()

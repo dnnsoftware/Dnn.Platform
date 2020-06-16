@@ -27,9 +27,9 @@ namespace Dnn.PersonaBar.Themes.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
 
-        internal static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png", ".jpeg"};
-        internal static readonly IList<string> DefaultLayoutNames = new List<string>() {"Default", "2-Col", "Home", "Index", "Main"};
-        internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default"};
+        internal static readonly IList<string> ImageExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
+        internal static readonly IList<string> DefaultLayoutNames = new List<string>() { "Default", "2-Col", "Home", "Index", "Main" };
+        internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default" };
 
         private static readonly object _threadLocker = new object();
 
@@ -273,7 +273,7 @@ namespace Dnn.PersonaBar.Themes.Components
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            if (!user.IsSuperUser  && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
+            if (!user.IsSuperUser && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
             {
                 throw new SecurityException("NoPermission");
             }
@@ -548,11 +548,11 @@ namespace Dnn.PersonaBar.Themes.Components
             var imageFileName = Path.GetFileName(strImage);
             if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
             {
-               strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
-               strImage = strImage.Replace("\\", "/");
-               return strImage;
+                strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
+                strImage = strImage.Replace("\\", "/");
+                return strImage;
             }
-            
+
             var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + imageFileName);
 
             if (NeedCreateThumbnail(strThumbnail, strImage))
@@ -612,7 +612,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     }
                 }
             }
-            
+
             strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
             strThumbnail = strThumbnail.Replace("\\", "/");
 

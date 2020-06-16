@@ -729,28 +729,28 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected bool ShowSwitchLanguagesPanel()
         {
-             if (this.PortalSettings.AllowUserUICulture && this.PortalSettings.ContentLocalizationEnabled)
-             {
-                 if (this.CurrentUICulture == null)
-                 {
-                     object oCulture = Personalization.GetProfile("Usability", "UICulture");
+            if (this.PortalSettings.AllowUserUICulture && this.PortalSettings.ContentLocalizationEnabled)
+            {
+                if (this.CurrentUICulture == null)
+                {
+                    object oCulture = Personalization.GetProfile("Usability", "UICulture");
 
-                     if (oCulture != null)
-                     {
-                         this.CurrentUICulture = oCulture.ToString();
-                     }
-                     else
-                     {
-                         var l = new Localization();
-                         this.CurrentUICulture = l.CurrentUICulture;
-                     }
-                 }
+                    if (oCulture != null)
+                    {
+                        this.CurrentUICulture = oCulture.ToString();
+                    }
+                    else
+                    {
+                        var l = new Localization();
+                        this.CurrentUICulture = l.CurrentUICulture;
+                    }
+                }
 
-                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, string.Empty, false);
-                 return cultureListItems.Count() > 1;
-             }
+                IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentUICulture, string.Empty, false);
+                return cultureListItems.Count() > 1;
+            }
 
-             return false;
+            return false;
         }
 
         protected string CheckedWhenInLayoutMode()
@@ -865,8 +865,8 @@ namespace DotNetNuke.UI.ControlPanels
             var result = (from @group in groups
                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
                               into portals
-                              where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                              select portals.ToArray()).FirstOrDefault();
+                          where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                          select portals.ToArray()).FirstOrDefault();
 
             // Are we in a group of one?
             if (result == null || result.Length == 0)

@@ -37,12 +37,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         internal SubscriptionType Build()
         {
             return new SubscriptionType
-                       {
-                           SubscriptionTypeId = this.subscriptionTypeId,
-                           SubscriptionName = this.subscriptionName,
-                           DesktopModuleId = this.desktopModuleId,
-                           FriendlyName = this.friendlyName,
-                       };
+            {
+                SubscriptionTypeId = this.subscriptionTypeId,
+                SubscriptionName = this.subscriptionName,
+                DesktopModuleId = this.desktopModuleId,
+                FriendlyName = this.friendlyName,
+            };
         }
     }
 }

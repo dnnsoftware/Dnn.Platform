@@ -250,7 +250,7 @@ namespace Dnn.PersonaBar.Users.Components
                 };
             }
             throw new Exception(Localization.GetString("InSufficientPermissions", Constants.LocalResourcesFile));
-        }        
+        }
 
         public bool ForceChangePassword(UserInfo userInfo, int portalId, bool notify)
         {
@@ -496,7 +496,7 @@ namespace Dnn.PersonaBar.Users.Components
         }
 
         private IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract,
-            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers, 
+            bool? includeAuthorized, bool? includeDeleted, bool? includeSuperUsers,
             bool? hasAgreedToTerms, bool? requestsRemoval, out int totalRecords)
         {
 
@@ -507,8 +507,8 @@ namespace Dnn.PersonaBar.Users.Components
             List<UserBasicDto2> records = CBO.FillCollection<UserBasicDto2>(
                 this.CallGetUsersBySearchTerm(
                     usersContract,
-                    includeAuthorized, 
-                    includeDeleted, 
+                    includeAuthorized,
+                    includeDeleted,
                     includeSuperUsers,
                     hasAgreedToTerms,
                     requestsRemoval));

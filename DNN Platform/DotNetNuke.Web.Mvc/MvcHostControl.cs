@@ -67,13 +67,13 @@ namespace DotNetNuke.Web.Mvc
                 var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
 
                 moduleApplication = new ModuleApplication
-                                            {
-                                                DefaultActionName = defaultControllerName,
-                                                DefaultControllerName = defaultActionName,
-                                                DefaultNamespaces = defaultNamespaces,
-                                                ModuleName = desktopModule.ModuleName,
-                                                FolderPath = desktopModule.FolderName,
-                                            };
+                {
+                    DefaultActionName = defaultControllerName,
+                    DefaultControllerName = defaultActionName,
+                    DefaultNamespaces = defaultNamespaces,
+                    ModuleName = desktopModule.ModuleName,
+                    FolderPath = desktopModule.FolderName,
+                };
             }
 
             return moduleApplication;
@@ -131,13 +131,13 @@ namespace DotNetNuke.Web.Mvc
             }
 
             var moduleRequestContext = new ModuleRequestContext
-                                            {
-                                                DnnPage = this.Page,
-                                                HttpContext = httpContext,
-                                                ModuleContext = this.ModuleContext,
-                                                ModuleApplication = moduleApplication,
-                                                RouteData = routeData,
-                                            };
+            {
+                DnnPage = this.Page,
+                HttpContext = httpContext,
+                ModuleContext = this.ModuleContext,
+                ModuleApplication = moduleApplication,
+                RouteData = routeData,
+            };
 
             return moduleRequestContext;
         }

@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.DDRMenu
             using (var reader = XmlReader.Create(this.menuSettings.NodeXmlPath))
             {
                 reader.ReadToFollowing("root");
-                this.RootNode = (MenuNode) new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
+                this.RootNode = (MenuNode)new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
             }
 
             cache.Insert(this.menuSettings.NodeXmlPath, this.RootNode, new CacheDependency(this.menuSettings.NodeXmlPath));
@@ -320,10 +320,10 @@ namespace DotNetNuke.Web.DDRMenu
                 }
             }
 
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             this.RootNode = new MenuNode(newRoot.Children);
 
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper restore PossibleNullReferenceException
             if (selectorSplit.Count > 1)
             {
                 for (var n = Convert.ToInt32(selectorSplit[1]); n > 0; n--)

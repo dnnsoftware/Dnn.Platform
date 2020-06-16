@@ -57,14 +57,14 @@ namespace Dnn.PersonaBar.Pages.Components
             foreach (var strLine in pages)
             {
                 var tab = new TabInfo
-                    {
-                        TabName = TabNameRegex.Replace(strLine, "${1}"),
-                        Level = strLine.LastIndexOf(">", StringComparison.Ordinal) + 1,
-                        KeyWords = page.Keywords,
-                        StartDate = page.StartDate ?? Null.NullDate,
-                        EndDate = page.EndDate ?? Null.NullDate,
-                        IsVisible = page.IncludeInMenu
-                    };
+                {
+                    TabName = TabNameRegex.Replace(strLine, "${1}"),
+                    Level = strLine.LastIndexOf(">", StringComparison.Ordinal) + 1,
+                    KeyWords = page.Keywords,
+                    StartDate = page.StartDate ?? Null.NullDate,
+                    EndDate = page.EndDate ?? Null.NullDate,
+                    IsVisible = page.IncludeInMenu
+                };
                 tab.Terms.AddRange(TermHelper.ToTabTerms(page.Tags, portalId));
                 tabs.Add(tab);
             }

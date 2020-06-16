@@ -14,15 +14,15 @@ namespace DotNetNuke.Framework
     public abstract class ServiceLocator<TContract, TSelf>
         where TSelf : ServiceLocator<TContract, TSelf>, new()
     {
-// ReSharper disable StaticFieldInGenericType
-// ReSharper disable InconsistentNaming
+        // ReSharper disable StaticFieldInGenericType
+        // ReSharper disable InconsistentNaming
         private static Lazy<TContract> _instance = new Lazy<TContract>(InitInstance, true);
 
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         private static TContract _testableInstance;
         private static bool _useTestable;
 
-// ReSharper restore StaticFieldInGenericType
+        // ReSharper restore StaticFieldInGenericType
         protected static Func<TContract> Factory { get; set; }
 
         private static TContract InitInstance()

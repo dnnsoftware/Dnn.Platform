@@ -161,11 +161,11 @@ namespace DotNetNuke.UI.UserControls
                             case "T":
                                 return this.Encode(HtmlUtils.ConvertToHtml(RemoveBaseTags(this.TxtDesktopHTML.Text)));
 
-                                // break;
+                            // break;
                             case "R":
                                 return RemoveBaseTags(this.TxtDesktopHTML.Text);
 
-                                // break;
+                            // break;
                             default:
                                 return this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
 

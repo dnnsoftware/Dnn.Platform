@@ -224,18 +224,18 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (this.FoldersComboBox.SelectedFolder.FolderID == userFolder.FolderID)
                 {
                     this.FoldersComboBox.SelectedItem = new ListItem
-                                                   {
-                                                       Text = FolderManager.Instance.MyFolderName,
-                                                       Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
-                                                   };
+                    {
+                        Text = FolderManager.Instance.MyFolderName,
+                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
+                    };
                 }
                 else if (this.UsePersonalFolder) // if UserPersonalFolder is true, make sure the file is under the user folder.
                 {
                     this.FoldersComboBox.SelectedItem = new ListItem
-                                                    {
-                                                        Text = FolderManager.Instance.MyFolderName,
-                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
-                                                    };
+                    {
+                        Text = FolderManager.Instance.MyFolderName,
+                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
+                    };
 
                     this.FilesComboBox.SelectedFile = null;
                 }
@@ -250,9 +250,9 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.FoldersComboBox.SelectedItem.Value, this.FoldersComboBox.SelectedItem.Text);
 
                 this.FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
-                                                                          {
-                                                                              SelectedItem = selectedItem,
-                                                                          };
+                {
+                    SelectedItem = selectedItem,
+                };
                 this.FileUploadControl.Options.FolderPath = this.FoldersComboBox.SelectedFolder.FolderPath;
             }
 

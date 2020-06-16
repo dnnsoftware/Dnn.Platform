@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 {
                     str.Append(objLogInfo.Exception);
                 }
-                str.Append("<p>" + Localization.GetString("ServerName",Constants.LocalResourcesFile) +
+                str.Append("<p>" + Localization.GetString("ServerName", Constants.LocalResourcesFile) +
                            HttpUtility.HtmlEncode(objLogInfo.LogServerName) + "</p>");
             }
             return str.ToString();

@@ -132,21 +132,21 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.Required)
             {
                 var requiredValidator = new RequiredFieldValidator
-                                            {
-                                                ID = this.ID + "_Required",
-                                                ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
-                                            };
+                {
+                    ID = this.ID + "_Required",
+                    ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
+                };
                 this.Validators.Add(requiredValidator);
             }
 
             if (!string.IsNullOrEmpty(this.ValidationExpression))
             {
                 var regexValidator = new RegularExpressionValidator
-                                         {
-                                             ID = this.ID + "_RegEx",
-                                             ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
-                                             ValidationExpression = this.ValidationExpression,
-                                         };
+                {
+                    ID = this.ID + "_RegEx",
+                    ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
+                    ValidationExpression = this.ValidationExpression,
+                };
                 if (!string.IsNullOrEmpty(value))
                 {
                     regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
@@ -196,12 +196,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
             // Add Label
             var label = new DnnFormLabel
-                                {
-                                    LocalResourceFile = this.LocalResourceFile,
-                                    ResourceKey = this.ResourceKey + ".Text",
-                                    ToolTipKey = this.ResourceKey + ".Help",
-                                    ViewStateMode = ViewStateMode.Disabled,
-                                };
+            {
+                LocalResourceFile = this.LocalResourceFile,
+                ResourceKey = this.ResourceKey + ".Text",
+                ToolTipKey = this.ResourceKey + ".Help",
+                ViewStateMode = ViewStateMode.Disabled,
+            };
 
             if (this.Required)
             {

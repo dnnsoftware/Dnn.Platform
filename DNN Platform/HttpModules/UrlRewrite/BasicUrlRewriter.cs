@@ -250,7 +250,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
                     && portalAliasInfo != null && !portalAliasInfo.IsPrimary
                     && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias)) // don't redirect if no primary alias is defined
-                 {
+                {
                     // Permanently Redirect
                     response.StatusCode = 301;
 
@@ -329,7 +329,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
                         else
 
-                            // when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
+                        // when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
                         {
                             response.Clear();
 

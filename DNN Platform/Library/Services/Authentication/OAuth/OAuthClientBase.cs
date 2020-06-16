@@ -630,10 +630,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             // Raise UserAuthenticated Event
             var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, this.Service)
-                                            {
-                                                AutoRegister = true,
-                                                UserName = userName,
-                                            };
+            {
+                AutoRegister = true,
+                UserName = userName,
+            };
 
             var profileProperties = new NameValueCollection();
 
@@ -738,12 +738,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string signatureBase = this.GenerateSignatureBase(url, token, callbackurl, oauthVerifier, httpMethod, timeStamp, nonce, out normalizedUrl, out requestParameters);
 
             var hmacsha1 = new HMACSHA1
-                               {
-                                   Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(this.APISecret),
+            {
+                Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(this.APISecret),
                                                                              string.IsNullOrEmpty(tokenSecret)
                                                                                  ? string.Empty
                                                                                  : UrlEncode(tokenSecret))),
-                               };
+            };
 
             return this.GenerateSignatureUsingHash(signatureBase, hmacsha1);
         }

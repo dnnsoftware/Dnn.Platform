@@ -36,12 +36,12 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
         {
             var providers = ProviderConfiguration.GetProviderConfiguration("caching").Providers;
 
-            return (from object key in providers.Keys select new KeyValuePair<string, string>((string) key, (string) key)).ToList();
+            return (from object key in providers.Keys select new KeyValuePair<string, string>((string)key, (string)key)).ToList();
         }
 
         public object GetCacheSettingOptions()
         {
-            return new []
+            return new[]
             {
                 new KeyValuePair<string, int>("NoCaching", 0),
                 new KeyValuePair<string, int>("LightCaching", 1),
@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 
         public object GetCacheabilityOptions()
         {
-            return new []
+            return new[]
             {
                 new KeyValuePair<string, string>("NoCache", "0"),
                 new KeyValuePair<string, string>("Private", "1"),
@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Servers.Components.PerformanceSettings
 
         private IEnumerable<KeyValuePair<string, string>> GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
         {
-            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string> (filteredkey, provider.Key);
+            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new KeyValuePair<string, string>(filteredkey, provider.Key);
             return providers;
         }
 

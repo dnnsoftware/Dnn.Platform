@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
-            if (! string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
+            if (!string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
             {
                 var resolver = new PathResolver(liveDefinition.Folder);
                 dynamic model = new ExpandoObject();

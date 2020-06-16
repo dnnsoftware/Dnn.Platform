@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
                 LogController.Instance.AddLog(log);
                 Config.Touch();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {url = this.NavigationManager.NavigateURL()});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { url = this.NavigationManager.NavigateURL() });
             }
             catch (Exception exc)
             {
@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 DataCache.ClearCache();
                 ClientResourceManager.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {url = this.NavigationManager.NavigateURL() });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { url = this.NavigationManager.NavigateURL() });
             }
             catch (Exception exc)
             {

@@ -600,7 +600,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             IEnumerable<string> hostAliases =
                 from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
-                 select alias.HTTPAlias.ToLowerInvariant();
+                select alias.HTTPAlias.ToLowerInvariant();
 
             // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
             // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case

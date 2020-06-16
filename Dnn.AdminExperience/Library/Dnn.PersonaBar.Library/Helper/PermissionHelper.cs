@@ -22,21 +22,21 @@ namespace Dnn.PersonaBar.Library.Helper
             if (userPermission == null)
             {
                 userPermission = new UserPermission
-                                    {
-                                        UserId = permissionInfo.UserID,
-                                        DisplayName = permissionInfo.DisplayName,
-                                    };
+                {
+                    UserId = permissionInfo.UserID,
+                    DisplayName = permissionInfo.DisplayName,
+                };
                 dto.UserPermissions.Add(userPermission);
             }
 
             if (userPermission.Permissions.All(p => p.PermissionId != permissionInfo.PermissionID))
             {
                 userPermission.Permissions.Add(new Permission
-                                                    {
-                                                        PermissionId = permissionInfo.PermissionID,
-                                                        PermissionName = permissionInfo.PermissionName,
-                                                        AllowAccess = permissionInfo.AllowAccess,
-                                                    });
+                {
+                    PermissionId = permissionInfo.PermissionID,
+                    PermissionName = permissionInfo.PermissionName,
+                    AllowAccess = permissionInfo.AllowAccess,
+                });
             }
         }
 
@@ -46,21 +46,21 @@ namespace Dnn.PersonaBar.Library.Helper
             if (rolePermission == null)
             {
                 rolePermission = new RolePermission
-                                    {
-                                        RoleId = permissionInfo.RoleID,
-                                        RoleName = permissionInfo.RoleName,
-                                    };
+                {
+                    RoleId = permissionInfo.RoleID,
+                    RoleName = permissionInfo.RoleName,
+                };
                 dto.RolePermissions.Add(rolePermission);
             }
 
             if (rolePermission.Permissions.All(p => p.PermissionId != permissionInfo.PermissionID))
             {
                 rolePermission.Permissions.Add(new Permission
-                                                    {
-                                                        PermissionId = permissionInfo.PermissionID,
-                                                        PermissionName = permissionInfo.PermissionName,
-                                                        AllowAccess = permissionInfo.AllowAccess,
-                                                    });
+                {
+                    PermissionId = permissionInfo.PermissionID,
+                    PermissionName = permissionInfo.PermissionName,
+                    AllowAccess = permissionInfo.AllowAccess,
+                });
             }
         }
 
@@ -89,12 +89,12 @@ namespace Dnn.PersonaBar.Library.Helper
             if (dto.RolePermissions.All(r => r.RoleId != role.RoleID))
             {
                 dto.RolePermissions.Add(new RolePermission
-                                            {
-                                                RoleId = role.RoleID,
-                                                RoleName = role.RoleName,
-                                                Locked = locked,
-                                                IsDefault = isDefault,
-                                            });
+                {
+                    RoleId = role.RoleID,
+                    RoleName = role.RoleName,
+                    Locked = locked,
+                    IsDefault = isDefault,
+                });
             }
         }
 

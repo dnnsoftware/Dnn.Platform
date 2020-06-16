@@ -30,11 +30,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
 
-            if(desktopModule == null)
+            if (desktopModule == null)
             {
                 return new PackageInfoDto(portalId, package);
             }
-        
+
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
 
             var detail = isHostUser ? new ModulePackageDetailDto(portalId, package, desktopModule)
@@ -63,7 +63,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                 this.UpdatePermissions(desktopModule, packageSettings);
 
-                if(isHostUser)
+                if (isHostUser)
                 {
                     foreach (var settingName in packageSettings.EditorActions.Keys)
                     {
@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                                 desktopModule.IsPremium = Convert.ToBoolean(settingValue);
                                 break;
                             case "shareable":
-                                desktopModule.Shareable = (ModuleSharing) Convert.ToInt32(settingValue);
+                                desktopModule.Shareable = (ModuleSharing)Convert.ToInt32(settingValue);
                                 break;
                             case "assignportal":
                                 AssignPortals(desktopModule, JsonConvert.DeserializeObject<IList<ListItemDto>>(settingValue));
@@ -264,7 +264,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
         {
-            foreach(var portal in portals)
+            foreach (var portal in portals)
             {
                 DesktopModuleController.AddDesktopModuleToPortal(portal.Id, desktopModule.DesktopModuleID, true, true);
             }

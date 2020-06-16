@@ -68,10 +68,10 @@ namespace DotNetNuke.Services.ModuleCache
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
-            if (! string.IsNullOrEmpty(homeDirectoryMapPath))
+            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (! Directory.Exists(cacheFolder))
+                if (!Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }

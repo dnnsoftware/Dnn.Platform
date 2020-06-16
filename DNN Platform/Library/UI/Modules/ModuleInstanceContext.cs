@@ -305,29 +305,29 @@ namespace DotNetNuke.UI.Modules
             }
 
             var helpAction = new ModuleAction(this.GetNextActionID())
-                                 {
-                                     Title = Localization.GetString(ModuleActionType.ModuleHelp, Localization.GlobalResourceFile),
-                                     CommandName = ModuleActionType.ModuleHelp,
-                                     CommandArgument = string.Empty,
-                                     Icon = "action_help.gif",
-                                     Url = url,
-                                     Secure = SecurityAccessLevel.Edit,
-                                     Visible = true,
-                                     NewWindow = showInNewWindow,
-                                     UseActionEvent = true,
-                                 };
+            {
+                Title = Localization.GetString(ModuleActionType.ModuleHelp, Localization.GlobalResourceFile),
+                CommandName = ModuleActionType.ModuleHelp,
+                CommandArgument = string.Empty,
+                Icon = "action_help.gif",
+                Url = url,
+                Secure = SecurityAccessLevel.Edit,
+                Visible = true,
+                NewWindow = showInNewWindow,
+                UseActionEvent = true,
+            };
             this._moduleGenericActions.Actions.Add(helpAction);
         }
 
         private void AddPrintAction()
         {
             var action = new ModuleAction(this.GetNextActionID())
-                             {
-                                 Title = Localization.GetString(ModuleActionType.PrintModule, Localization.GlobalResourceFile),
-                                 CommandName = ModuleActionType.PrintModule,
-                                 CommandArgument = string.Empty,
-                                 Icon = "action_print.gif",
-                                 Url = this.NavigateUrl(
+            {
+                Title = Localization.GetString(ModuleActionType.PrintModule, Localization.GlobalResourceFile),
+                CommandName = ModuleActionType.PrintModule,
+                CommandArgument = string.Empty,
+                Icon = "action_print.gif",
+                Url = this.NavigateUrl(
                                      this.TabId,
                                      string.Empty,
                                      false,
@@ -335,28 +335,28 @@ namespace DotNetNuke.UI.Modules
                                      "SkinSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootSkin + "/" + Globals.glbHostSkinFolder + "/" + "No Skin"),
                                      "ContainerSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootContainer + "/" + Globals.glbHostSkinFolder + "/" + "No Container"),
                                      "dnnprintmode=true"),
-                                 Secure = SecurityAccessLevel.Anonymous,
-                                 UseActionEvent = true,
-                                 Visible = true,
-                                 NewWindow = true,
-                             };
+                Secure = SecurityAccessLevel.Anonymous,
+                UseActionEvent = true,
+                Visible = true,
+                NewWindow = true,
+            };
             this._moduleGenericActions.Actions.Add(action);
         }
 
         private void AddSyndicateAction()
         {
             var action = new ModuleAction(this.GetNextActionID())
-                             {
-                                 Title = Localization.GetString(ModuleActionType.SyndicateModule, Localization.GlobalResourceFile),
-                                 CommandName = ModuleActionType.SyndicateModule,
-                                 CommandArgument = string.Empty,
-                                 Icon = "action_rss.gif",
-                                 Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, "RSS.aspx", false, "moduleid=" + this.ModuleId),
-                                 Secure = SecurityAccessLevel.Anonymous,
-                                 UseActionEvent = true,
-                                 Visible = true,
-                                 NewWindow = true,
-                             };
+            {
+                Title = Localization.GetString(ModuleActionType.SyndicateModule, Localization.GlobalResourceFile),
+                CommandName = ModuleActionType.SyndicateModule,
+                CommandArgument = string.Empty,
+                Icon = "action_rss.gif",
+                Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, "RSS.aspx", false, "moduleid=" + this.ModuleId),
+                Secure = SecurityAccessLevel.Anonymous,
+                UseActionEvent = true,
+                Visible = true,
+                NewWindow = true,
+            };
             this._moduleGenericActions.Actions.Add(action);
         }
 

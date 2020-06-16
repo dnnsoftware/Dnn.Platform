@@ -274,14 +274,14 @@ namespace DotNetNuke.Services.Installer
                         {
                             // Create a Package
                             var package = new PackageInfo(new InstallerInfo())
-                                {
-                                    Name = language.Text,
-                                    FriendlyName = language.Text,
-                                    Description = Null.NullString,
-                                    Version = new Version(1, 0, 0),
-                                    PackageType = "CoreLanguagePack",
-                                    License = Util.PACKAGE_NoLicense,
-                                };
+                            {
+                                Name = language.Text,
+                                FriendlyName = language.Text,
+                                Description = Null.NullString,
+                                Version = new Version(1, 0, 0),
+                                PackageType = "CoreLanguagePack",
+                                License = Util.PACKAGE_NoLicense,
+                            };
 
                             // Create a LanguagePackWriter
                             var packageWriter = new LanguagePackWriter(language, package);
@@ -293,11 +293,11 @@ namespace DotNetNuke.Services.Installer
                             PackageController.Instance.SaveExtensionPackage(package);
 
                             var languagePack = new LanguagePackInfo
-                                {
-                                    LanguageID = language.LanguageId,
-                                    PackageID = package.PackageID,
-                                    DependentPackageID = -2,
-                                };
+                            {
+                                LanguageID = language.LanguageId,
+                                PackageID = package.PackageID,
+                                DependentPackageID = -2,
+                            };
                             LanguagePackController.SaveLanguagePack(languagePack);
                         }
                     }

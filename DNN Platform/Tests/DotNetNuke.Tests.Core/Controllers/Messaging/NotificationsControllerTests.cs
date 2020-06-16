@@ -329,15 +329,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
-// _mockDataService
-//                .Setup(ds => ds.AddNotificationTypeAction(
-//                    Constants.Messaging_NotificationTypeId,
-//                    Constants.Messaging_NotificationTypeActionNameResourceKey,
-//                    Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
-//                    Constants.Messaging_NotificationTypeActionConfirmResourceKey,
-//                    Constants.Messaging_NotificationTypeActionAPICall,
-//                    Constants.UserID_User12))
-//                .Verifiable();
+            // _mockDataService
+            //                .Setup(ds => ds.AddNotificationTypeAction(
+            //                    Constants.Messaging_NotificationTypeId,
+            //                    Constants.Messaging_NotificationTypeActionNameResourceKey,
+            //                    Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
+            //                    Constants.Messaging_NotificationTypeActionConfirmResourceKey,
+            //                    Constants.Messaging_NotificationTypeActionAPICall,
+            //                    Constants.UserID_User12))
+            //                .Verifiable();
             this._mockNotificationsController.Setup(nc => nc.GetNotificationTypeAction(It.IsAny<int>()));
 
             this._mockNotificationsController.Object.SetNotificationTypeActions(
@@ -681,11 +681,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         public void SendNotification_Calls_DataService_On_Valid_Notification()
         {
             var adminUser = new UserInfo
-                                {
-                                    UserID = Constants.UserID_Admin,
-                                    DisplayName = Constants.UserDisplayName_Admin,
-                                    PortalID = Constants.PORTAL_Zero,
-                                };
+            {
+                UserID = Constants.UserID_Admin,
+                DisplayName = Constants.UserDisplayName_Admin,
+                PortalID = Constants.PORTAL_Zero,
+            };
 
             this._mockInternalMessagingController.Setup(mc => mc.RecipientLimit(adminUser.PortalID)).Returns(10);
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
@@ -1091,16 +1091,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private static Notification CreateUnsavedNotification()
         {
             return new Notification
-                       {
-                           NotificationTypeID = Constants.Messaging_NotificationTypeId,
-                           Subject = Constants.Messaging_NotificationSubject,
-                           Body = Constants.Messaging_NotificationBody,
-                           To = Constants.UserDisplayName_User12,
-                           From = Constants.UserDisplayName_Admin,
-                           SenderUserID = Constants.UserID_Admin,
-                           Context = Constants.Messaging_NotificationContext,
-                           SendToast = false,
-                       };
+            {
+                NotificationTypeID = Constants.Messaging_NotificationTypeId,
+                Subject = Constants.Messaging_NotificationSubject,
+                Body = Constants.Messaging_NotificationBody,
+                To = Constants.UserDisplayName_User12,
+                From = Constants.UserDisplayName_Admin,
+                SenderUserID = Constants.UserID_Admin,
+                Context = Constants.Messaging_NotificationContext,
+                SendToast = false,
+            };
         }
 
         private static Notification CreateValidNotification()
@@ -1143,12 +1143,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private static NotificationTypeAction CreateNewNotificationTypeAction()
         {
             return new NotificationTypeAction
-                       {
-                           APICall = Constants.Messaging_NotificationTypeActionAPICall,
-                           ConfirmResourceKey = Constants.Messaging_NotificationTypeActionConfirmResourceKey,
-                           DescriptionResourceKey = Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
-                           NameResourceKey = Constants.Messaging_NotificationTypeActionNameResourceKey,
-                       };
+            {
+                APICall = Constants.Messaging_NotificationTypeActionAPICall,
+                ConfirmResourceKey = Constants.Messaging_NotificationTypeActionConfirmResourceKey,
+                DescriptionResourceKey = Constants.Messaging_NotificationTypeActionDescriptionResourceKey,
+                NameResourceKey = Constants.Messaging_NotificationTypeActionNameResourceKey,
+            };
         }
 
         private static PortalInfo CreatePortalInfo(int portalId, int portalGroupId)

@@ -407,13 +407,13 @@ namespace DotNetNuke.UI.Skins
 
         private bool IsVesionableModule(ModuleInfo moduleInfo)
         {
-             if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
             {
                 return false;
             }
 
-             object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
-             return controller is IVersionable;
+            object controller = Framework.Reflection.CreateObject(moduleInfo.DesktopModule.BusinessControllerClass, string.Empty);
+            return controller is IVersionable;
         }
 
         /// -----------------------------------------------------------------------------

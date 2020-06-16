@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Sites.Services.Dto
         public string SiteDescription { get; set; }
 
         public string SiteKeywords { get; set; }
-        
+
         public bool IsChildSite { get; set; }
 
         public string HomeDirectory { get; set; }

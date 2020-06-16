@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
         public TermValidationException()
             : base(Constants.TermValidationError)
         {
-            
+
         }
     }
 }

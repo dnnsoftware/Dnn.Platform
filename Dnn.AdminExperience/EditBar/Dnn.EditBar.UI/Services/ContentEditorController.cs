@@ -39,7 +39,7 @@ namespace Dnn.EditBar.UI.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DeleteModule([FromUri]int moduleId)
+        public HttpResponseMessage DeleteModule([FromUri] int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, this.PortalSettings.ActiveTab.TabID, false);
             if (module == null)

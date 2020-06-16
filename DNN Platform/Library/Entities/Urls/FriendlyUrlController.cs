@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Urls
 
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
-                             // google uses the same name nomo=1 means do not redirect to mobile
+        // google uses the same name nomo=1 means do not redirect to mobile
         private const string MobileViewSiteCookieName = "dnn_IsMobile";
         private const string DisableMobileViewCookieName = "dnn_NoMobile";
 
@@ -985,7 +985,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                             if (viewMobileCookie == null)
                             {
                                 response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
-                                    { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
+                                { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
                             else
                             {

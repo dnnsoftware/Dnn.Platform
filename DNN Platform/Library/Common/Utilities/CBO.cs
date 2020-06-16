@@ -344,31 +344,31 @@ namespace DotNetNuke.Common.Utilities
         }
 
         private static object ChangeType(object obj, Type type)
-         {
-             Type u = Nullable.GetUnderlyingType(type);
+        {
+            Type u = Nullable.GetUnderlyingType(type);
 
-             if (u != null)
-             {
-                 if (obj == null)
-                 {
-                     return GetDefault(type);
-                 }
+            if (u != null)
+            {
+                if (obj == null)
+                {
+                    return GetDefault(type);
+                }
 
-                 return Convert.ChangeType(obj, u);
-             }
+                return Convert.ChangeType(obj, u);
+            }
 
-             return Convert.ChangeType(obj, type);
-         }
+            return Convert.ChangeType(obj, type);
+        }
 
         private static object GetDefault(Type type)
-         {
-             if (type.IsValueType)
-             {
-                 return Activator.CreateInstance(type);
-             }
+        {
+            if (type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
 
-             return null;
-         }
+            return null;
+        }
 
         private static string GetColumnName(PropertyInfo objProperty)
         {
@@ -876,7 +876,7 @@ namespace DotNetNuke.Common.Utilities
 
                     nodeSettingValue = nodeSetting.AppendChild(document.CreateElement("settingvalue"));
                     nodeSettingValue.InnerText = dictionary[sKey].ToString();
-        }
+                }
             }
             else
             {

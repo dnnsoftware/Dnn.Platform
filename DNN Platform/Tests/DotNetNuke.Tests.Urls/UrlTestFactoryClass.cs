@@ -52,12 +52,12 @@ namespace DotNetNuke.Tests.Urls
 
                                 testData.Add(new TestCaseData(fieldList).SetName(name));
                             });
-                        }
+            }
 
             // ReSharper disable RedundantCatchClause
-            #pragma warning disable 168
+#pragma warning disable 168
             catch (Exception exc)
-            #pragma warning restore 168
+#pragma warning restore 168
             {
                 throw;
             }

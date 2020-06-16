@@ -184,7 +184,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 progress.TimeEstimated = (total - stepNo) * 100;
 
                 SaveProgressToFile(progress);
-                
+
                 if (locale.Code == defaultLocale || string.IsNullOrEmpty(locale.Code))
                 {
                     TabController.Instance.LocalizeTab(currentTab, locale, true);

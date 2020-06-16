@@ -152,7 +152,7 @@ namespace Dnn.PersonaBar.Themes.Services
                 }
 
                 this._controller.DeleteThemePackage(this.PortalSettings, theme);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             catch (InvalidOperationException ex)
             {

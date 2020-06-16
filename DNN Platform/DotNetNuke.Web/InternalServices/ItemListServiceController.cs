@@ -544,11 +544,11 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-            tabs = TabController.GetPortalTabs(portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
-                    .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
-                    .ToList();
+                tabs = TabController.GetPortalTabs(portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+                        .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
+                        .ToList();
 
-            if (this.PortalSettings.UserInfo.IsSuperUser && includeHostPages)
+                if (this.PortalSettings.UserInfo.IsSuperUser && includeHostPages)
                 {
                     tabs.AddRange(TabController.Instance.GetTabsByPortal(-1).AsList().Where(t => !t.IsDeleted && !t.DisableLink && !t.IsSystem).ToList());
                 }
@@ -1404,8 +1404,8 @@ namespace DotNetNuke.Web.InternalServices
             var mygroup = (from @group in groups
                            select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
                                into portals
-                               where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                               select portals.ToArray()).FirstOrDefault();
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
             return mygroup;
         }
 

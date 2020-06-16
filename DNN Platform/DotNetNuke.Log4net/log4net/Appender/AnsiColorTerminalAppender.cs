@@ -176,7 +176,7 @@ namespace log4net.Appender
             /// <summary>
             /// color is black
             /// </summary>
-            Black   = 0,
+            Black = 0,
 
             /// <summary>
             /// color is red
@@ -186,17 +186,17 @@ namespace log4net.Appender
             /// <summary>
             /// color is green
             /// </summary>
-            Green   = 2,
+            Green = 2,
 
             /// <summary>
             /// color is yellow
             /// </summary>
-            Yellow  = 3,
+            Yellow = 3,
 
             /// <summary>
             /// color is blue
             /// </summary>
-            Blue    = 4,
+            Blue = 4,
 
             /// <summary>
             /// color is magenta
@@ -206,12 +206,12 @@ namespace log4net.Appender
             /// <summary>
             /// color is cyan
             /// </summary>
-            Cyan    = 6,
+            Cyan = 6,
 
             /// <summary>
             /// color is white
             /// </summary>
-            White   = 7,
+            White = 7,
         }
 
         /// <summary>

@@ -675,23 +675,23 @@ namespace DotNetNuke.Security.Permissions
                     {
                         // Try to add Read permission
                         var newFolderPerm = new FolderPermissionInfo(readPerm)
-                                                {
-                                                    FolderID = folderPermission.FolderID,
-                                                    RoleID = folderPermission.RoleID,
-                                                    UserID = folderPermission.UserID,
-                                                    AllowAccess = true,
-                                                };
+                        {
+                            FolderID = folderPermission.FolderID,
+                            RoleID = folderPermission.RoleID,
+                            UserID = folderPermission.UserID,
+                            AllowAccess = true,
+                        };
 
                         additionalPermissions.Add(newFolderPerm);
 
                         // Try to add Browse permission
                         newFolderPerm = new FolderPermissionInfo(browsePerm)
-                                            {
-                                                FolderID = folderPermission.FolderID,
-                                                RoleID = folderPermission.RoleID,
-                                                UserID = folderPermission.UserID,
-                                                AllowAccess = true,
-                                            };
+                        {
+                            FolderID = folderPermission.FolderID,
+                            RoleID = folderPermission.RoleID,
+                            UserID = folderPermission.UserID,
+                            AllowAccess = true,
+                        };
 
                         additionalPermissions.Add(newFolderPerm);
                     }

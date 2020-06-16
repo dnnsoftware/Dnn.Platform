@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                             try
                             {
                                 connection.Open();
-                                var command = new SqlCommand(script, connection) {CommandType = CommandType.Text};
+                                var command = new SqlCommand(script, connection) { CommandType = CommandType.Text };
                                 using (var reader = command.ExecuteReader())
                                 {
                                     if (reader.Read())

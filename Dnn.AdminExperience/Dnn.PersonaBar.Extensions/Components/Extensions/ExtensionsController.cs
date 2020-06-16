@@ -329,7 +329,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultAuthenicationImage;
                 case "corelanguagepack":
                 case "extensionlanguagepack":
-                    return package.IconFile != "N\\A"  && IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLanguageImage;
+                    return package.IconFile != "N\\A" && IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLanguageImage;
                 case "provider":
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultProviderImage;
                 case "widget":

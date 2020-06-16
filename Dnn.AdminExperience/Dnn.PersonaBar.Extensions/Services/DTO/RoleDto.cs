@@ -71,7 +71,7 @@ namespace Dnn.PersonaBar.Roles.Services.DTO
 
         [DataMember(Name = "allowOwner")]
         public bool AllowOwner { get; set; }
-       
+
         public static RoleDto FromRoleInfo(RoleInfo role)
         {
             if (role == null) return null;

@@ -322,13 +322,13 @@ namespace log4net.Util
             return identity;
         }
 
-        [DllImport("advapi32.dll", SetLastError=true)]
+        [DllImport("advapi32.dll", SetLastError = true)]
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
-        [DllImport("kernel32.dll", CharSet=CharSet.Auto)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         private static extern bool CloseHandle(IntPtr handle);
 
-        [DllImport("advapi32.dll", CharSet=CharSet.Auto, SetLastError=true)]
+        [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool DuplicateToken(IntPtr ExistingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr DuplicateTokenHandle);
 
         /// <summary>

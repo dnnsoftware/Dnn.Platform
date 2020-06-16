@@ -79,9 +79,9 @@ namespace Dnn.PersonaBar.Pages.Components
         private static string GetModuleEditContentUrl(ModuleInfo module)
         {
             var moduleControl = ModuleControlController.GetModuleControlByControlKey("Edit", module.ModuleDefID);
-            if(moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
+            if (moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
             {
-                var parameters = new List<string>{ "mid=" + module.ModuleID };
+                var parameters = new List<string> { "mid=" + module.ModuleID };
                 if (moduleControl.SupportsPopUps)
                 {
                     parameters.Add("popUp=true");

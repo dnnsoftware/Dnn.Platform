@@ -250,7 +250,8 @@ namespace Dnn.PersonaBar.Seo.Services
 
         private void UpdateRegexSettingsInternal(UpdateRegexSettingsRequest request)
         {
-            var settings =  new Dictionary<string, string>() {
+            var settings = new Dictionary<string, string>()
+            {
                         { FriendlyUrlSettings.IgnoreRegexSetting, request.IgnoreRegex },
                         { FriendlyUrlSettings.DoNotRewriteRegExSetting, request.DoNotRewriteRegex },
                         { FriendlyUrlSettings.SiteUrlsOnlyRegexSetting, request.UseSiteUrlsRegex },
@@ -260,7 +261,8 @@ namespace Dnn.PersonaBar.Seo.Services
                         { FriendlyUrlSettings.DoNotUseFriendlyUrlRegexSetting, request.NoFriendlyUrlRegex },
                         { FriendlyUrlSettings.KeepInQueryStringRegexSetting, request.DoNotIncludeInPathRegex },
                         { FriendlyUrlSettings.UrlsWithNoExtensionRegexSetting, request.ValidExtensionlessUrlsRegex },
-                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch }};
+                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch }
+            };
 
             settings.ToList().ForEach((value) =>
             {

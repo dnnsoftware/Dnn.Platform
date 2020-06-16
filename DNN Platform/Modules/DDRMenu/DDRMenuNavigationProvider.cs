@@ -263,18 +263,18 @@ namespace DotNetNuke.Web.DDRMenu
             this.menuControl.RootNode = new MenuNode(objNodes);
             this.menuControl.SkipLocalisation = !localise;
             this.menuControl.MenuSettings = new Settings
-                                       {
-                                        MenuStyle = this.GetCustomAttribute("MenuStyle") ?? this.MenuStyle ?? "DNNMenu",
-                                        NodeXmlPath = this.GetCustomAttribute("NodeXmlPath"),
-                                        NodeSelector = this.GetCustomAttribute("NodeSelector"),
-                                        IncludeContext = Convert.ToBoolean(this.GetCustomAttribute("IncludeContext") ?? "false"),
-                                        IncludeHidden = Convert.ToBoolean(this.GetCustomAttribute("IncludeHidden") ?? "false"),
-                                        IncludeNodes = this.GetCustomAttribute("IncludeNodes"),
-                                        ExcludeNodes = this.GetCustomAttribute("ExcludeNodes"),
-                                        NodeManipulator = this.GetCustomAttribute("NodeManipulator"),
-                                        ClientOptions = clientOptions,
-                                        TemplateArguments = this.TemplateArguments,
-                                       };
+            {
+                MenuStyle = this.GetCustomAttribute("MenuStyle") ?? this.MenuStyle ?? "DNNMenu",
+                NodeXmlPath = this.GetCustomAttribute("NodeXmlPath"),
+                NodeSelector = this.GetCustomAttribute("NodeSelector"),
+                IncludeContext = Convert.ToBoolean(this.GetCustomAttribute("IncludeContext") ?? "false"),
+                IncludeHidden = Convert.ToBoolean(this.GetCustomAttribute("IncludeHidden") ?? "false"),
+                IncludeNodes = this.GetCustomAttribute("IncludeNodes"),
+                ExcludeNodes = this.GetCustomAttribute("ExcludeNodes"),
+                NodeManipulator = this.GetCustomAttribute("NodeManipulator"),
+                ClientOptions = clientOptions,
+                TemplateArguments = this.TemplateArguments,
+            };
         }
 
         private string GetCustomAttribute(string attributeName)

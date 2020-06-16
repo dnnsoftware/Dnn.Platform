@@ -39,8 +39,8 @@ namespace DotNetNuke.Instrumentation
             private static Level _levelFatal;
 
             // add custom logging levels (below trace value of 20000)
-//            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
-//            internal static Level LevelLogError = new Level(10002, "LogError");
+            //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
+            //            internal static Level LevelLogError = new Level(10002, "LogError");
             private readonly Type _stackBoundary = typeof(DnnLogger);
             private const string ConfigFile = "DotNetNuke.log4net.config";
             private static bool _configured;
@@ -92,12 +92,12 @@ namespace DotNetNuke.Instrumentation
                 _levelError = levelMap.LookupWithDefault(Level.Error);
                 _levelFatal = levelMap.LookupWithDefault(Level.Fatal);
 
-// LevelLogError = levelMap.LookupWithDefault(LevelLogError);
-//                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
+                // LevelLogError = levelMap.LookupWithDefault(LevelLogError);
+                //                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
 
                 //// Register custom logging levels with the default LoggerRepository
-//                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
-//                LogManager.GetRepository().LevelMap.Add(LevelLogError);
+                //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
+                //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
             }
 
             private static void AddGlobalContext()
@@ -124,10 +124,10 @@ namespace DotNetNuke.Instrumentation
                     // }
                 }
 
-// ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
 
-// ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // do nothing but just make sure no exception here.
                 }

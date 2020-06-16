@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.ControlPanel
             }
             catch (ThreadAbortException)
             {
-              // Do nothing we are not logging ThreadAbortxceptions caused by redirects
+                // Do nothing we are not logging ThreadAbortxceptions caused by redirects
             }
             catch (Exception ex)
             {

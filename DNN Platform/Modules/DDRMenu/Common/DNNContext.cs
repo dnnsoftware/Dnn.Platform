@@ -18,7 +18,8 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
     {
         public static DNNContext Current
         {
-            get { return (DNNContext)HttpContext.Current.Items[DataName]; } private set { HttpContext.Current.Items[DataName] = value; }
+            get { return (DNNContext)HttpContext.Current.Items[DataName]; }
+            private set { HttpContext.Current.Items[DataName] = value; }
         }
 
         private readonly DNNContext savedContext;
@@ -97,10 +98,10 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         {
             var moduleFullName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
 
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             return moduleFullName.Substring(moduleFullName.LastIndexOf('.') + 1);
 
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper restore PossibleNullReferenceException
         }
 
         public void Dispose()

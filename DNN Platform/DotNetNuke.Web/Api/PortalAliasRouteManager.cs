@@ -68,12 +68,12 @@ namespace DotNetNuke.Web.Api
 
             if (segments.Length > 1)
             {
-                  for (int i = 1; i < segments.Length; i++)
-                  {
-                      var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
-                      var value = segments[i];
-                      allRouteValues.Add(key, value);
-                  }
+                for (int i = 1; i < segments.Length; i++)
+                {
+                    var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
+                    var value = segments[i];
+                    allRouteValues.Add(key, value);
+                }
             }
 
             return allRouteValues;

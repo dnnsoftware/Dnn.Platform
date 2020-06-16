@@ -21,18 +21,18 @@ namespace DotNetNuke.Services.FileSystem
             if (portalId == Null.NullInteger)
             {
                 return new LinkClickPortalSettings
-                    {
-                        PortalGUID = Host.GUID,
-                        EnableUrlLanguage = Host.EnableUrlLanguage,
-                    };
+                {
+                    PortalGUID = Host.GUID,
+                    EnableUrlLanguage = Host.EnableUrlLanguage,
+                };
             }
 
             var portalSettings = new PortalSettings(portalId);
             return new LinkClickPortalSettings
-                {
-                    PortalGUID = portalSettings.GUID.ToString(),
-                    EnableUrlLanguage = portalSettings.EnableUrlLanguage,
-                };
+            {
+                PortalGUID = portalSettings.GUID.ToString(),
+                EnableUrlLanguage = portalSettings.EnableUrlLanguage,
+            };
         }
 
         private int GetPortalIdFromLinkClick(NameValueCollection queryParams)

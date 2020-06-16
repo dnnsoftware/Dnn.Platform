@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             // default usage: return current portal if nothing else specified
             if (args.Length == 1)
             {

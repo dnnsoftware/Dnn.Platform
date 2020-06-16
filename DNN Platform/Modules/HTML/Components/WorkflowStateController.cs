@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public object GetWorkflowStatesCallBack(CacheItemArgs cacheItemArgs)
         {
-            var WorkflowID = (int) cacheItemArgs.ParamList[0];
+            var WorkflowID = (int)cacheItemArgs.ParamList[0];
             return CBO.FillCollection(DataProvider.Instance().GetWorkflowStates(WorkflowID), typeof(WorkflowStateInfo));
         }
 
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.Html
             ArrayList arrWorkflowStates = this.GetWorkflowStates(WorkflowID);
             if (arrWorkflowStates.Count > 0)
             {
-                intStateID = ((WorkflowStateInfo) arrWorkflowStates[0]).StateID;
+                intStateID = ((WorkflowStateInfo)arrWorkflowStates[0]).StateID;
             }
 
             return intStateID;
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Html
             // locate the current state
             for (intItem = 0; intItem < arrWorkflowStates.Count; intItem++)
             {
-                if (((WorkflowStateInfo) arrWorkflowStates[intItem]).StateID == StateID)
+                if (((WorkflowStateInfo)arrWorkflowStates[intItem]).StateID == StateID)
                 {
                     intPreviousStateID = StateID;
                     break;
@@ -125,9 +125,9 @@ namespace DotNetNuke.Modules.Html
                 intItem = intItem - 1;
                 while (intItem >= 0)
                 {
-                    if (((WorkflowStateInfo) arrWorkflowStates[intItem]).IsActive)
+                    if (((WorkflowStateInfo)arrWorkflowStates[intItem]).IsActive)
                     {
-                        intPreviousStateID = ((WorkflowStateInfo) arrWorkflowStates[intItem]).StateID;
+                        intPreviousStateID = ((WorkflowStateInfo)arrWorkflowStates[intItem]).StateID;
                         break;
                     }
 
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.Html
             // locate the current state
             for (intItem = 0; intItem < arrWorkflowStates.Count; intItem++)
             {
-                if (((WorkflowStateInfo) arrWorkflowStates[intItem]).StateID == StateID)
+                if (((WorkflowStateInfo)arrWorkflowStates[intItem]).StateID == StateID)
                 {
                     intNextStateID = StateID;
                     break;
@@ -176,9 +176,9 @@ namespace DotNetNuke.Modules.Html
                 intItem = intItem + 1;
                 while (intItem < arrWorkflowStates.Count)
                 {
-                    if (((WorkflowStateInfo) arrWorkflowStates[intItem]).IsActive)
+                    if (((WorkflowStateInfo)arrWorkflowStates[intItem]).IsActive)
                     {
-                        intNextStateID = ((WorkflowStateInfo) arrWorkflowStates[intItem]).StateID;
+                        intNextStateID = ((WorkflowStateInfo)arrWorkflowStates[intItem]).StateID;
                         break;
                     }
 
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.Html
             ArrayList arrWorkflowStates = this.GetWorkflowStates(WorkflowID);
             if (arrWorkflowStates.Count > 0)
             {
-                intStateID = ((WorkflowStateInfo) arrWorkflowStates[arrWorkflowStates.Count - 1]).StateID;
+                intStateID = ((WorkflowStateInfo)arrWorkflowStates[arrWorkflowStates.Count - 1]).StateID;
             }
 
             return intStateID;

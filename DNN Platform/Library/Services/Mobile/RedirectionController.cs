@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Mobile
                             checkFurther = true;
                         }
 
-                            // is child tabs to be included as well
+                        // is child tabs to be included as well
                         else if (redirection.IncludeChildTabs)
                         {
                             // Get all the descendents of the source tab and find out if current tab is in source tab's hierarchy or not.
@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Mobile
                         }
                     }
 
-                        // redirection is based on portal
+                    // redirection is based on portal
                     else if (redirection.SourceTabId == Null.NullInteger)
                     {
                         checkFurther = true;

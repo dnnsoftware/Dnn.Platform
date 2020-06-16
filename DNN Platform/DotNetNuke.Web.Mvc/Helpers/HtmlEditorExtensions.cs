@@ -37,7 +37,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the object that contains the properties to display.</param><param name="additionalViewData">An anonymous object that can contain additional view data that will be merged into the <see cref="T:System.Web.Mvc.ViewDataDictionary`1"/> instance that is created for the template.</param>
         public static MvcHtmlString Editor(this DnnHtmlHelper html, string expression, object additionalViewData)
         {
-            return html.HtmlHelper.Editor(expression,  additionalViewData);
+            return html.HtmlHelper.Editor(expression, additionalViewData);
         }
 
         /// <summary>

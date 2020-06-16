@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         private int UserId { get; set; }
 
-        public RestoreUser(): this (new UserValidator(), RecyclebinController.Instance)
+        public RestoreUser() : this(new UserValidator(), RecyclebinController.Instance)
         {
         }
 
@@ -37,7 +37,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
             UserInfo userInfo;
             this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
-                
+
             if (userInfo == null)
                 return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
 

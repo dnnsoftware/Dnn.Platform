@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerSettingsSmtpHostController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
-        
+
         [HttpGet]
         public HttpResponseMessage GetSmtpSettings()
         {
@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Servers.Services
                         smtpHostEmail = HostController.Instance.GetString("HostEmail"),
                         messageSchedulerBatchSize = Host.MessageSchedulerBatchSize
                     },
-                    site = new 
+                    site = new
                     {
                         smtpServer = PortalController.GetPortalSetting("SMTPServer", portalId, string.Empty),
                         smtpConnectionLimit = PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", portalId, 2),
@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 }
 
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {success = true});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { success = true });
             }
             catch (Exception exc)
             {

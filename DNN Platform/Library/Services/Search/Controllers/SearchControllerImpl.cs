@@ -236,12 +236,12 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     if (searchTypeId == this._moduleSearchTypeId)
                     {
-            foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
+                        foreach (var moduleDefId in searchQuery.ModuleDefIds.OrderBy(id => id))
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
 
-            if (!searchQuery.ModuleDefIds.Any())
+                        if (!searchQuery.ModuleDefIds.Any())
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                         }
@@ -487,11 +487,11 @@ namespace DotNetNuke.Services.Search.Controllers
             if (searchQuery.PageSize > 0)
             {
                 var luceneResults = LuceneController.Instance.Search(new LuceneSearchContext
-                    {
-                        LuceneQuery = luceneQuery,
-                        SearchQuery = searchQuery,
-                        SecurityCheckerDelegate = this.HasPermissionToViewDoc,
-                    });
+                {
+                    LuceneQuery = luceneQuery,
+                    SearchQuery = searchQuery,
+                    SecurityCheckerDelegate = this.HasPermissionToViewDoc,
+                });
                 results = luceneResults.Results.Select(this.GetSearchResultFromLuceneResult).ToList();
                 totalHits = luceneResults.TotalHits;
 

@@ -89,7 +89,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             {
                 this._controller.DeleteQuery(savedQuery);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
@@ -134,7 +134,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             this.RecordAuditEventLog(query.Query);
 
             var statusCode = string.IsNullOrEmpty(errorMessage) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
-            return this.Request.CreateResponse(statusCode,  new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
+            return this.Request.CreateResponse(statusCode, new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
         }
 
         private void RecordAuditEventLog(string query)

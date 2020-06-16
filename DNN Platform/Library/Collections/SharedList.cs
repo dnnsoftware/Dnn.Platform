@@ -213,7 +213,7 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureReadAccess()
         {
-            if (! this._lockStrategy.ThreadCanRead)
+            if (!this._lockStrategy.ThreadCanRead)
             {
                 throw new ReadLockRequiredException();
             }

@@ -465,14 +465,14 @@ namespace DotNetNuke.Services.Search.Internals
             var size = files.Select(name => new FileInfo(name)).Select(fInfo => fInfo.Length).Sum();
 
             return new SearchStatistics
-                {
-                    // Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
-                    TotalActiveDocuments = searcher.IndexReader.NumDocs(),
-                    TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
-                    IndexLocation = this.IndexFolder,
-                    LastModifiedOn = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder),
-                    IndexDbSize = size,
-                };
+            {
+                // Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
+                TotalActiveDocuments = searcher.IndexReader.NumDocs(),
+                TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
+                IndexLocation = this.IndexFolder,
+                LastModifiedOn = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder),
+                IndexDbSize = size,
+            };
         }
 
         public void Dispose()

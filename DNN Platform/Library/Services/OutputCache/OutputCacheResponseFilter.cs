@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.OutputCache
                 return;
             }
 
-            if ( this._captureStream != null)
+            if (this._captureStream != null)
             {
                 this._captureStream.Flush();
             }
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.OutputCache
                 return;
             }
 
-            if ( this._captureStream != null)
+            if (this._captureStream != null)
             {
                 this._captureStream.Write(buffer, offset, count);
             }
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.OutputCache
                 return null;
             }
 
-            if ( this.CaptureStream != null)
+            if (this.CaptureStream != null)
             {
                 this.CaptureStream.Position = 0;
                 using (var reader = new StreamReader(this.CaptureStream, Encoding.Default))

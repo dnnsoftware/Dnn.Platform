@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.PageId = this.GetFlagValue(FlagId, "Page Id", -1, false, true);
             this.ParentId = this.GetFlagValue(FlagParentId, "Parent Id", -1);
             this.PageName = this.GetFlagValue(FlagName, "Page Name", string.Empty);
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             {
                 return new ConsoleErrorResultModel(this.LocalizeString("MethodPermissionDenied"));
             }
-            return new ConsoleResultModel(tab.FullUrl) {MustReload = true};
+            return new ConsoleResultModel(tab.FullUrl) { MustReload = true };
         }
     }
 }

@@ -65,12 +65,12 @@ namespace DotNetNuke.HttpModules.Config
                         doc.CreateNavigator().Select("AnalyticsEngineConfig/Engines/AnalyticsEngine"))
                     {
                         var analyticsEngine = new AnalyticsEngine
-                                                  {
-                                                      EngineType = nav.SelectSingleNode("EngineType").Value,
-                                                      ElementId = nav.SelectSingleNode("ElementId").Value,
-                                                      InjectTop = Convert.ToBoolean(nav.SelectSingleNode("InjectTop").Value),
-                                                      ScriptTemplate = nav.SelectSingleNode("ScriptTemplate").Value,
-                                                  };
+                        {
+                            EngineType = nav.SelectSingleNode("EngineType").Value,
+                            ElementId = nav.SelectSingleNode("ElementId").Value,
+                            InjectTop = Convert.ToBoolean(nav.SelectSingleNode("InjectTop").Value),
+                            ScriptTemplate = nav.SelectSingleNode("ScriptTemplate").Value,
+                        };
                         config.AnalyticsEngines.Add(analyticsEngine);
                     }
 

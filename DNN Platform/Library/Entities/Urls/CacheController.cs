@@ -864,10 +864,10 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-// ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
 
-// ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1

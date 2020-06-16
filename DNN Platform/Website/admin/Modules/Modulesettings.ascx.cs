@@ -258,9 +258,9 @@ namespace DotNetNuke.Modules.Admin.Modules
                                         .OrderByDescending(a => a.IsPrimary)
                                         .FirstOrDefault();
                 var portalSettings = new PortalSettings(tab.PortalID)
-                                         {
-                                             PortalAlias = defaultAlias,
-                                         };
+                {
+                    PortalAlias = defaultAlias,
+                };
 
                 var tabUrl = this._navigationManager.NavigateURL(tab.TabID, portalSettings, string.Empty);
 

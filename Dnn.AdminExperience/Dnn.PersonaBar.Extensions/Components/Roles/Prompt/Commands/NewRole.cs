@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.RoleName = this.GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
             this.Description = this.GetFlagValue(FlagDescription, "Description", string.Empty);
             this.IsPublic = this.GetFlagValue(FlagIsPublic, "Is Public", false);

@@ -183,7 +183,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 var response = new
                 {
                     Success = true,
-                    Results = terms.Select(t => new 
+                    Results = terms.Select(t => new
                     {
                         t.TermId,
                         t.Description,

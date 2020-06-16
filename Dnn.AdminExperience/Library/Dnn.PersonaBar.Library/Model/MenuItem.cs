@@ -142,7 +142,8 @@ namespace Dnn.PersonaBar.Library.Model
 
         public int KeyID
         {
-            get { return this.MenuId; } set { this.MenuId = value; }
+            get { return this.MenuId; }
+            set { this.MenuId = value; }
         }
     }
 }

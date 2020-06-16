@@ -63,38 +63,38 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                if (Convert.ToInt32(setting) <= 0)
-                {
-                    if (this.Request.QueryString["returnurl"] != null)
+                    if (Convert.ToInt32(setting) <= 0)
                     {
-                        // return to the url passed to register
-                        _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
-
-                        // clean the return url to avoid possible XSS attack.
-                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
-
-                        if (_RedirectURL.Contains("?returnurl"))
+                        if (this.Request.QueryString["returnurl"] != null)
                         {
-                            string baseURL = _RedirectURL.Substring(
-                                0,
-                                _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
-                            string returnURL =
-                                _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+                            // return to the url passed to register
+                            _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                            _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                            // clean the return url to avoid possible XSS attack.
+                            _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
+                            if (_RedirectURL.Contains("?returnurl"))
+                            {
+                                string baseURL = _RedirectURL.Substring(
+                                    0,
+                                    _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
+                                string returnURL =
+                                    _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+
+                                _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(_RedirectURL))
+                        {
+                            // redirect to current page
+                            _RedirectURL = this._navigationManager.NavigateURL();
                         }
                     }
-
-                    if (string.IsNullOrEmpty(_RedirectURL))
+                    else // redirect to after registration page
                     {
-                        // redirect to current page
-                        _RedirectURL = this._navigationManager.NavigateURL();
+                        _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
-                }
-                else // redirect to after registration page
-                {
-                    _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
-                }
                 }
 
                 return _RedirectURL;

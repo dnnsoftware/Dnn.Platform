@@ -444,17 +444,17 @@ namespace DotNetNuke.UI.WebControls
 
             // Create a FieldEditor for this Row
             var editor = new FieldEditorControl
-                             {
-                                 DataSource = this.DataSource,
-                                 EditorInfoAdapter = adapter,
-                                 DataField = name,
-                                 EditorDisplayMode = this.DisplayMode,
-                                 EnableClientValidation = this.EnableClientValidation,
-                                 EditMode = this.EditMode,
-                                 HelpDisplayMode = this.HelpDisplayMode,
-                                 LabelMode = this.LabelMode,
-                                 LabelWidth = this.LabelWidth,
-                             };
+            {
+                DataSource = this.DataSource,
+                EditorInfoAdapter = adapter,
+                DataField = name,
+                EditorDisplayMode = this.DisplayMode,
+                EnableClientValidation = this.EnableClientValidation,
+                EditMode = this.EditMode,
+                HelpDisplayMode = this.HelpDisplayMode,
+                LabelMode = this.LabelMode,
+                LabelWidth = this.LabelWidth,
+            };
             this.AddEditorRow(editor, cell);
 
             this.Fields.Add(editor);

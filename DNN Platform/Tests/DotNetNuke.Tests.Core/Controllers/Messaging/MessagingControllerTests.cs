@@ -144,9 +144,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         private void SetupPortalSettings()
         {
             var portalSettings = new PortalSettings
-                                    {
-                                        AdministratorRoleName = Constants.RoleName_Administrators,
-                                    };
+            {
+                AdministratorRoleName = Constants.RoleName_Administrators,
+            };
 
             this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
         }

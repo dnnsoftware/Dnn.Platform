@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Sites.Services
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SitesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SitesController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
         private readonly Components.SitesController _controller = new Components.SitesController();
 
         /// <summary>
@@ -53,11 +53,11 @@ namespace Dnn.PersonaBar.Sites.Services
                 if (portalGroupId > Null.NullInteger)
                 {
                     portals = PortalGroupController.Instance.GetPortalsByGroup(portalGroupId)
-                                .Where(p => string.IsNullOrEmpty(filter) 
+                                .Where(p => string.IsNullOrEmpty(filter)
                                                 || p.PortalName.ToLowerInvariant().Contains(filter.ToLowerInvariant()))
                                 .ToList();
                     totalRecords = portals.Count();
-                    portals = portals.Skip(pageIndex*pageSize).Take(pageSize);
+                    portals = portals.Skip(pageIndex * pageSize).Take(pageSize);
                 }
                 else
                 {
@@ -138,7 +138,7 @@ namespace Dnn.PersonaBar.Sites.Services
                         var strMessage = PortalController.DeletePortal(portal, this.GetAbsoluteServerPath());
                         if (string.IsNullOrEmpty(strMessage))
                         {
-                            return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                         }
                         return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, strMessage);
                     }
@@ -239,7 +239,7 @@ namespace Dnn.PersonaBar.Sites.Services
             try
             {
                 PortalController.DeleteExpiredPortals(this.GetAbsoluteServerPath());
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception exc)
             {

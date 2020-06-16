@@ -362,7 +362,7 @@ namespace log4net.Util
         /// </remarks>
         public string ConversionPattern
         {
-            get { return this.m_pattern;    }
+            get { return this.m_pattern; }
             set { this.m_pattern = value; }
         }
 

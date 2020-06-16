@@ -56,16 +56,16 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 // Construct UserInfo object
                 var superUser = new UserInfo
-                                {
-                                    PortalID = -1,
-                                    FirstName = installConfig.SuperUser.FirstName,
-                                    LastName = installConfig.SuperUser.LastName,
-                                    Username = installConfig.SuperUser.UserName,
-                                    DisplayName = installConfig.SuperUser.FirstName + " " + installConfig.SuperUser.LastName,
-                                    Membership = { Password = installConfig.SuperUser.Password },
-                                    Email = installConfig.SuperUser.Email,
-                                    IsSuperUser = true,
-                                };
+                {
+                    PortalID = -1,
+                    FirstName = installConfig.SuperUser.FirstName,
+                    LastName = installConfig.SuperUser.LastName,
+                    Username = installConfig.SuperUser.UserName,
+                    DisplayName = installConfig.SuperUser.FirstName + " " + installConfig.SuperUser.LastName,
+                    Membership = { Password = installConfig.SuperUser.Password },
+                    Email = installConfig.SuperUser.Email,
+                    IsSuperUser = true,
+                };
                 superUser.Membership.Approved = true;
 
                 superUser.Profile.FirstName = installConfig.SuperUser.FirstName;

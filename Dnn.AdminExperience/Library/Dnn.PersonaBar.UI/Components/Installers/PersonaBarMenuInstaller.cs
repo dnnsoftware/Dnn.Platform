@@ -24,11 +24,11 @@ namespace Dnn.PersonaBar.UI.Components.Installers
     {
         private struct PermissionDefinition
         {
-             public string Identifier { get; set; }
+            public string Identifier { get; set; }
 
-             public string Key { get; set; }
+            public string Key { get; set; }
 
-             public string Name { get; set; }
+            public string Name { get; set; }
         }
 
         private readonly IList<MenuItem> _menuItems = new List<MenuItem>();

@@ -1761,12 +1761,12 @@ namespace Dnn.ExportImport.Components.Services
 
                         this.Repository.CreateItem(
                             new ExportPackage
-                        {
-                            PackageName = package.Name,
-                            Version = package.Version,
-                            PackageType = package.PackageType,
-                            PackageFileName = InstallerUtil.GetPackageBackupName(package),
-                        }, null);
+                            {
+                                PackageName = package.Name,
+                                Version = package.Version,
+                                PackageType = package.PackageType,
+                                PackageFileName = InstallerUtil.GetPackageBackupName(package),
+                            }, null);
 
                         this._exportedModuleDefinitions.Add(exportModule.ModuleDefID);
                         return 1;

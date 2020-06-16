@@ -19,12 +19,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         public ModulePackagePermissionsDto()
         {
-            
+
         }
 
         public ModulePackagePermissionsDto(int portalId, PackageInfo package) : base(portalId, package)
         {
-            
+
         }
     }
 }

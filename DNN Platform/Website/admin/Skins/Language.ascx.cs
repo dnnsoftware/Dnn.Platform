@@ -204,7 +204,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        public bool UseCurrentCultureForTemplate { get; set;  }
+        public bool UseCurrentCultureForTemplate { get; set; }
 
         protected string CurrentCulture
         {

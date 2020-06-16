@@ -497,10 +497,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             contentType = file.ContentType;
 
             EventManager.Instance.OnFileDownloaded(new FileDownloadedEventArgs()
-                                                    {
-                                                        FileInfo = file,
-                                                        UserId = UserController.Instance.GetCurrentUserInfo().UserID,
-                                                    });
+            {
+                FileInfo = file,
+                UserId = UserController.Instance.GetCurrentUserInfo().UserID,
+            });
             return content;
         }
 

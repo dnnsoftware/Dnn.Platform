@@ -191,15 +191,15 @@ namespace DotNetNuke.Modules.DigitalAssets
             foreach (var columnExtension in this.epm.GetGridColumnExtensionPoints("DigitalAssets", "GridColumns", this.Filter))
             {
                 var column = new DnnGridBoundColumn
-                                    {
-                                        HeaderText = columnExtension.HeaderText,
-                                        DataField = columnExtension.DataField,
-                                        UniqueName = columnExtension.UniqueName,
-                                        ReadOnly = columnExtension.ReadOnly,
-                                        Reorderable = columnExtension.Reorderable,
-                                        SortExpression = columnExtension.SortExpression,
-                                        HeaderTooltip = columnExtension.HeaderText,
-                                    };
+                {
+                    HeaderText = columnExtension.HeaderText,
+                    DataField = columnExtension.DataField,
+                    UniqueName = columnExtension.UniqueName,
+                    ReadOnly = columnExtension.ReadOnly,
+                    Reorderable = columnExtension.Reorderable,
+                    SortExpression = columnExtension.SortExpression,
+                    HeaderTooltip = columnExtension.HeaderText,
+                };
                 column.HeaderStyle.Width = columnExtension.HeaderStyleWidth;
 
                 var index = Math.Min(columnExtension.ColumnAt, this.Grid.Columns.Count - 1);
@@ -450,12 +450,12 @@ namespace DotNetNuke.Modules.DigitalAssets
             foreach (var menuItem in this.epm.GetMenuItemExtensionPoints("DigitalAssets", "GridContextMenu", this.Filter))
             {
                 this.GridMenu.Items.Add(new DnnMenuItem
-                                       {
-                                           Text = menuItem.Text,
-                                           Value = menuItem.Value,
-                                           CssClass = menuItem.CssClass,
-                                           ImageUrl = menuItem.Icon,
-                                       });
+                {
+                    Text = menuItem.Text,
+                    Value = menuItem.Value,
+                    CssClass = menuItem.CssClass,
+                    ImageUrl = menuItem.Icon,
+                });
             }
         }
 

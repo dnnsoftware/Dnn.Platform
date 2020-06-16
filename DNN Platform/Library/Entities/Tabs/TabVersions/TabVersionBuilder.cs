@@ -557,13 +557,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private IEnumerable<TabVersionDetail> CopyVersionDetails(IEnumerable<TabVersionDetail> tabVersionDetails)
         {
             return tabVersionDetails.Select(tabVersionDetail => new TabVersionDetail
-                                                                {
-                                                                    ModuleId = tabVersionDetail.ModuleId,
-                                                                    ModuleOrder = tabVersionDetail.ModuleOrder,
-                                                                    ModuleVersion = tabVersionDetail.ModuleVersion,
-                                                                    PaneName = tabVersionDetail.PaneName,
-                                                                    Action = tabVersionDetail.Action,
-                                                                }).ToList();
+            {
+                ModuleId = tabVersionDetail.ModuleId,
+                ModuleOrder = tabVersionDetail.ModuleOrder,
+                ModuleVersion = tabVersionDetail.ModuleVersion,
+                PaneName = tabVersionDetail.PaneName,
+                Action = tabVersionDetail.Action,
+            }).ToList();
         }
 
         private void CheckVersioningEnabled(int tabId)
@@ -823,14 +823,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 var moduleVersion = this.GetModuleContentPublishedVersion(module);
                 this._tabVersionDetailController.SaveTabVersionDetail(
                     new TabVersionDetail
-                {
-                    Action = TabVersionDetailAction.Added,
-                    ModuleId = module.ModuleID,
-                    ModuleOrder = module.ModuleOrder,
-                    ModuleVersion = moduleVersion,
-                    PaneName = module.PaneName,
-                    TabVersionId = tabVersion.TabVersionId,
-                }, module.CreatedByUserID);
+                    {
+                        Action = TabVersionDetailAction.Added,
+                        ModuleId = module.ModuleID,
+                        ModuleOrder = module.ModuleOrder,
+                        ModuleVersion = moduleVersion,
+                        PaneName = module.PaneName,
+                        TabVersionId = tabVersion.TabVersionId,
+                    }, module.CreatedByUserID);
             }
         }
 

@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (this.LanguagePackType == LanguagePackType.Core || this.LanguagePack.DependentPackageID > 0)
             {
-               base.Commit();
+                base.Commit();
             }
             else
             {

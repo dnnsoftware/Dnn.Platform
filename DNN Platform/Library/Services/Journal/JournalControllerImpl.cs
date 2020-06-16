@@ -627,7 +627,7 @@ namespace DotNetNuke.Services.Journal
 
         public void ShowComments(int portalId, int journalId)
         {
-           this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
+            this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
         }
 
         // Delete Journal Items

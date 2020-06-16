@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
 // ReSharper disable InconsistentNaming
         public string OnClickJS { get; set; }
 
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether an Image is displayed.

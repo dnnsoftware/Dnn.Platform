@@ -359,7 +359,7 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpPost]
-        public HttpResponseMessage EditModeForPage([FromUri]int id)
+        public HttpResponseMessage EditModeForPage([FromUri] int id)
         {
             if (!TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(id, this.PortalId)))
             {
@@ -829,7 +829,7 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage ClearCache([FromUri]string cacheProvider, [FromUri]int pageId)
+        public HttpResponseMessage ClearCache([FromUri] string cacheProvider, [FromUri] int pageId)
         {
             try
             {

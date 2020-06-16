@@ -189,7 +189,7 @@ namespace DotNetNuke.Common.Utilities
                 string ssloffload = request.Headers[ssloffloadheader];
                 if (!string.IsNullOrEmpty(ssloffload) && (string.IsNullOrWhiteSpace(ssloffloadValue) || ssloffloadValue == ssloffload))
                 {
-                        return true;
+                    return true;
                 }
             }
 

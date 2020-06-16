@@ -69,15 +69,15 @@ namespace Dnn.PersonaBar.Roles.Components
                 var allRoles = (groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
                 : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == groupId));
-                
-                foundRoles = allRoles.Where(r => 
+
+                foundRoles = allRoles.Where(r =>
                 {
                     bool adminCheck = isAdmin || r.RoleID != portalSettings.AdministratorRoleId;
                     return adminCheck && rolesFilter.Contains(r.RoleName);
                 }).ToList();
-            
+
             }
-            
+
             return foundRoles;
         }
 

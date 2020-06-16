@@ -192,28 +192,28 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         // Add new Log Type
                         var logType = new LogTypeInfo()
-                                            {
-                                                LogTypeKey = logInfo.LogTypeKey,
-                                                LogTypeFriendlyName = logInfo.LogTypeKey,
-                                                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                                                LogTypeCSSClass = "GeneralAdminOperation",
-                                                LogTypeDescription = string.Empty,
-                                            };
+                        {
+                            LogTypeKey = logInfo.LogTypeKey,
+                            LogTypeFriendlyName = logInfo.LogTypeKey,
+                            LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                            LogTypeCSSClass = "GeneralAdminOperation",
+                            LogTypeDescription = string.Empty,
+                        };
                         this.AddLogType(logType);
 
                         var logTypeConfigInfo = new LogTypeConfigInfo()
-                                            {
-                                                LogTypeKey = logInfo.LogTypeKey,
-                                                LogTypePortalID = "*",
-                                                LoggingIsActive = false,
-                                                KeepMostRecent = "-1",
-                                                EmailNotificationIsActive = false,
-                                                NotificationThreshold = 1,
-                                                NotificationThresholdTime = 1,
-                                                NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                                                MailFromAddress = string.Empty,
-                                                MailToAddress = string.Empty,
-                                            };
+                        {
+                            LogTypeKey = logInfo.LogTypeKey,
+                            LogTypePortalID = "*",
+                            LoggingIsActive = false,
+                            KeepMostRecent = "-1",
+                            EmailNotificationIsActive = false,
+                            NotificationThreshold = 1,
+                            NotificationThresholdTime = 1,
+                            NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                            MailFromAddress = string.Empty,
+                            MailToAddress = string.Empty,
+                        };
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
 
@@ -262,13 +262,13 @@ namespace DotNetNuke.Services.Log.EventLog
                     if (typeInfo.Attributes != null)
                     {
                         var objLogTypeInfo = new LogTypeInfo
-                                                 {
-                                                     LogTypeKey = typeInfo.Attributes["LogTypeKey"].Value,
-                                                     LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
-                                                     LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
-                                                     LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
-                                                     LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
-                                                 };
+                        {
+                            LogTypeKey = typeInfo.Attributes["LogTypeKey"].Value,
+                            LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
+                            LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
+                            LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
+                            LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
+                        };
                         this.AddLogType(objLogTypeInfo);
                     }
                 }
@@ -282,19 +282,19 @@ namespace DotNetNuke.Services.Log.EventLog
                     if (typeConfigInfo.Attributes != null)
                     {
                         var logTypeConfigInfo = new LogTypeConfigInfo
-                                                    {
-                                                        EmailNotificationIsActive = typeConfigInfo.Attributes["EmailNotificationStatus"].Value == "On",
-                                                        KeepMostRecent = typeConfigInfo.Attributes["KeepMostRecent"].Value,
-                                                        LoggingIsActive = typeConfigInfo.Attributes["LoggingStatus"].Value == "On",
-                                                        LogTypeKey = typeConfigInfo.Attributes["LogTypeKey"].Value,
-                                                        LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
-                                                        MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
-                                                        MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
-                                                        NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
-                                                        NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
-                                                        NotificationThresholdTimeType =
+                        {
+                            EmailNotificationIsActive = typeConfigInfo.Attributes["EmailNotificationStatus"].Value == "On",
+                            KeepMostRecent = typeConfigInfo.Attributes["KeepMostRecent"].Value,
+                            LoggingIsActive = typeConfigInfo.Attributes["LoggingStatus"].Value == "On",
+                            LogTypeKey = typeConfigInfo.Attributes["LogTypeKey"].Value,
+                            LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
+                            MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
+                            MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
+                            NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
+                            NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
+                            NotificationThresholdTimeType =
                                                             (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
-                                                    };
+                        };
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }
                 }

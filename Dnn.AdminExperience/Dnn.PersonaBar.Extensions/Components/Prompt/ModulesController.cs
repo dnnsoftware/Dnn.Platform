@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.Prompt.Components
     [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency", false)]
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));        
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 
         protected override Func<IModulesController> GetFactory()
         {
@@ -115,7 +115,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
 
             if (targetPage == null)
-            {                
+            {
                 return null;
             }
 
@@ -147,26 +147,26 @@ namespace Dnn.PersonaBar.Prompt.Components
             else
             {
                 return null;
-            }            
-        }      
+            }
+        }
 
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
-        {         
-            var module = this.GetModule(portalSettings,moduleId,pageId,out message);
+        {
+            var module = this.GetModule(portalSettings, moduleId, pageId, out message);
 
             if (module != null)
-            {               
-                    try
-                    {
-                        ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
-                        ModuleController.Instance.ClearCache(pageId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
-                    }             
-            }           
+            {
+                try
+                {
+                    ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
+                    ModuleController.Instance.ClearCache(pageId);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
+                }
+            }
         }
 
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
@@ -207,7 +207,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
             return null;
         }
-      
+
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
             int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {

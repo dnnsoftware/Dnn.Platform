@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
-            var usedBy = PackageController.Instance.GetPackageDependencies(d => 
+            var usedBy = PackageController.Instance.GetPackageDependencies(d =>
                             d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) &&
                             d.Version <= package.Version).Select(d => d.PackageId);
 

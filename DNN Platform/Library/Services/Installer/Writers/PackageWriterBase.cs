@@ -70,12 +70,12 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-         /// -----------------------------------------------------------------------------
-         /// <summary>
-         /// Gets or sets and sets the Path for the Package's app code files.
-         /// </summary>
-         /// <value>A String.</value>
-         /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Path for the Package's app code files.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
         public string AppCodePath { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -92,12 +92,12 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-         /// -----------------------------------------------------------------------------
-         /// <summary>
-         /// Gets or sets and sets the Path for the Package's assemblies.
-         /// </summary>
-         /// <value>A String.</value>
-         /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Path for the Package's assemblies.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
         public string AssemblyPath { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -147,12 +147,12 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets a value indicating whether gets and sets whether a project file is found in the folder.
- /// </summary>
- /// <value>A String.</value>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and sets whether a project file is found in the folder.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
         public bool HasProjectFile { get; set; }
 
         /// -----------------------------------------------------------------------------

@@ -97,16 +97,16 @@ namespace DotNetNuke.UI.WebControls
                     }
 
                     this.Value = new ProfileVisibility(this.User.PortalID, sb.ToString())
-                                    {
-                                        VisibilityMode = postedVisibility,
-                                    };
+                    {
+                        VisibilityMode = postedVisibility,
+                    };
                 }
                 else
                 {
                     this.Value = new ProfileVisibility
-                                    {
-                                        VisibilityMode = postedVisibility,
-                                    };
+                    {
+                        VisibilityMode = postedVisibility,
+                    };
                 }
 
                 dataChanged = true;

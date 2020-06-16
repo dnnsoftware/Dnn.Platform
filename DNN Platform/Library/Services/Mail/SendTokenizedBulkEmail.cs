@@ -178,16 +178,16 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-         /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
-         /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
+        /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
+        /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-         /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
-         /// <remarks>default value: false.</remarks>
+        /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
+        /// <remarks>default value: false.</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-         /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
-         /// <remarks>enabled by default.</remarks>
+        /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
+        /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 
         public string RelayEmailAddress

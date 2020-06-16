@@ -112,7 +112,7 @@ namespace Dnn.PersonaBar.Servers.Services
         public HttpResponseMessage IncrementPortalVersion()
         {
             try
-            { 
+            {
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.IncrementCrmVersion(portalId);
                 PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
@@ -150,7 +150,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-}
+        }
 
         /// POST: api/Servers/UpdatePerformanceSettings
         /// <summary>

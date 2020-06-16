@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <returns>The quantized value.</returns>
         protected override byte QuantizePixel(Color32 pixel)
         {
-            byte    paletteIndex = (byte)this._maxColors;   // The color at [_maxColors] is set to transparent
+            byte paletteIndex = (byte)this._maxColors;   // The color at [_maxColors] is set to transparent
 
             // Get the palette index if this non-transparent
             if (pixel.Alpha > 0)
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         protected override ColorPalette GetPalette(ColorPalette original)
         {
             // First off convert the octree to _maxColors colors
-            ArrayList   palette = this._octree.Palletize(this._maxColors - 1);
+            ArrayList palette = this._octree.Palletize(this._maxColors - 1);
 
             // Then convert the palette based on those colors
             for (int index = 0; index < palette.Count; index++)
@@ -219,7 +219,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 }
 
                 // Now palettize the nodes
-                ArrayList   palette = new ArrayList(this.Leaves);
+                ArrayList palette = new ArrayList(this.Leaves);
                 int paletteIndex = 0;
                 this._root.ConstructPalette(palette, ref paletteIndex);
 
@@ -255,7 +255,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// <summary>
             /// Array of reducible nodes.
             /// </summary>
-            private OctreeNode[]    _reducibleNodes;
+            private OctreeNode[] _reducibleNodes;
 
             /// <summary>
             /// Maximum number of significant bits in the image.
@@ -333,7 +333,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                             ((pixel.Green & mask[level]) >> (shift - 1)) |
                             ((pixel.Blue & mask[level]) >> shift);
 
-                        OctreeNode  child = this._children[index];
+                        OctreeNode child = this._children[index];
 
                         if (child == null)
                         {
@@ -488,7 +488,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 /// <summary>
                 /// Pointers to any child nodes.
                 /// </summary>
-                private OctreeNode[]    _children;
+                private OctreeNode[] _children;
 
                 /// <summary>
                 /// Pointer to next reducible node.

@@ -273,11 +273,11 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                 // Raise UserAuthenticated Event
                 var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
-                                    {
-                                        Authenticated = authenticated,
-                                        Message = message,
-                                        RememberMe = this.chkCookie.Checked,
-                                    };
+                {
+                    Authenticated = authenticated,
+                    Message = message,
+                    RememberMe = this.chkCookie.Checked,
+                };
                 this.OnUserAuthenticated(eventArgs);
             }
         }

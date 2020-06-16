@@ -622,8 +622,8 @@ namespace DotNetNuke.UI.ControlPanel
             var result = (from @group in groups
                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
                               into portals
-                              where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                              select portals.ToArray()).FirstOrDefault();
+                          where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                          select portals.ToArray()).FirstOrDefault();
 
             // Are we in a group of one?
             if (result == null || result.Length == 0)

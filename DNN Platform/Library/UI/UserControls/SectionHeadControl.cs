@@ -163,26 +163,26 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the
- /// title text.
- /// </summary>
- /// <value>A string representing the ResourceKey.</value>
- /// <remarks>
- /// </remarks>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the
+        /// title text.
+        /// </summary>
+        /// <value>A string representing the ResourceKey.</value>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public string ResourceKey { get; set; }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the Section is the Id of the DHTML object  that contains the xection content
- /// title text.
- /// </summary>
- /// <value>A string representing the Section.</value>
- /// <remarks>
- /// </remarks>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Section is the Id of the DHTML object  that contains the xection content
+        /// title text.
+        /// </summary>
+        /// <value>A string representing the Section.</value>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public string Section { get; set; }
 
         /// -----------------------------------------------------------------------------

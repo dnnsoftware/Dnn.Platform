@@ -71,10 +71,10 @@ namespace DotNetNuke.Tests.Urls
                             if (alias == null)
                             {
                                 alias = new PortalAliasInfo
-                                                {
-                                                    HTTPAlias = fields[0],
-                                                    PortalID = this.PortalId,
-                                                };
+                                {
+                                    HTTPAlias = fields[0],
+                                    PortalID = this.PortalId,
+                                };
                                 PortalAliasController.Instance.AddPortalAlias(alias);
                             }
                         });

@@ -657,12 +657,12 @@ namespace DotNetNuke.UI.WebControls
             if (this.ShowVisibility)
             {
                 visControl = new VisibilityControl
-                                 {
-                                     ID = "_visibility",
-                                     Name = editInfo.Name,
-                                     User = this.User,
-                                     Value = editInfo.ProfileVisibility,
-                                 };
+                {
+                    ID = "_visibility",
+                    Name = editInfo.Name,
+                    User = this.User,
+                    Value = editInfo.ProfileVisibility,
+                };
                 visControl.ControlStyle.CopyFrom(this.VisibilityStyle);
                 visControl.VisibilityChanged += this.VisibilityChanged;
             }

@@ -34,14 +34,16 @@ namespace DotNetNuke.Web.DDRMenu
 
         public List<ClientOption> ClientOptions
         {
-            get { return this.clientOptions ?? (this.clientOptions = new List<ClientOption>()); } set { this.clientOptions = value; }
+            get { return this.clientOptions ?? (this.clientOptions = new List<ClientOption>()); }
+            set { this.clientOptions = value; }
         }
 
         private List<TemplateArgument> templateArguments;
 
         public List<TemplateArgument> TemplateArguments
         {
-            get { return this.templateArguments ?? (this.templateArguments = new List<TemplateArgument>()); } set { this.templateArguments = value; }
+            get { return this.templateArguments ?? (this.templateArguments = new List<TemplateArgument>()); }
+            set { this.templateArguments = value; }
         }
 
         public static Settings FromXml(string xml)

@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         public string BasePath { get; set; }
 
         [JsonProperty("manifests")]
-        public IDictionary<string, string> Manifests  { get; set; } = new Dictionary<string, string>();
+        public IDictionary<string, string> Manifests { get; set; } = new Dictionary<string, string>();
 
         [JsonProperty("assemblies")]
         public IList<string> Assemblies { get; set; } = new List<string>();
@@ -32,12 +32,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         public PackageManifestDto()
         {
-            
+
         }
 
         public PackageManifestDto(int portalId, PackageInfo package) : base(portalId, package)
         {
-            
+
         }
     }
 }

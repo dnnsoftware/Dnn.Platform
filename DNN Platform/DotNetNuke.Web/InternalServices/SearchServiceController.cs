@@ -275,7 +275,7 @@ namespace DotNetNuke.Web.InternalServices
             return sources;
         }
 
-        internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId,  out int totalHits, out bool more)
+        internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId, out int totalHits, out bool more)
         {
             var searchResults = SearchController.Instance.SiteSearch(searchQuery);
             totalHits = searchResults.TotalHits;
@@ -585,22 +585,22 @@ namespace DotNetNuke.Web.InternalServices
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
                 var query = new SearchQuery
-                    {
-                        KeyWords = cleanedKeywords,
-                        Tags = tags,
-                        PortalIds = portalIds,
-                        SearchTypeIds = searchTypeIds,
-                        ModuleDefIds = moduleDefids,
-                        BeginModifiedTimeUtc = beginModifiedTimeUtc,
-                        EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
-                        PageIndex = pageIndex,
-                        PageSize = pageSize,
-                        SortField = (SortFields)sortOption,
-                        TitleSnippetLength = 120,
-                        BodySnippetLength = 300,
-                        CultureCode = culture,
-                        WildCardSearch = this.IsWildCardEnabledForModule(),
-                    };
+                {
+                    KeyWords = cleanedKeywords,
+                    Tags = tags,
+                    PortalIds = portalIds,
+                    SearchTypeIds = searchTypeIds,
+                    ModuleDefIds = moduleDefids,
+                    BeginModifiedTimeUtc = beginModifiedTimeUtc,
+                    EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
+                    PageIndex = pageIndex,
+                    PageSize = pageSize,
+                    SortField = (SortFields)sortOption,
+                    TitleSnippetLength = 120,
+                    BodySnippetLength = 300,
+                    CultureCode = culture,
+                    WildCardSearch = this.IsWildCardEnabledForModule(),
+                };
 
                 try
                 {

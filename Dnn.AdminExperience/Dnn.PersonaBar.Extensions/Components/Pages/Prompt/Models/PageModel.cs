@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         public PageModel()
         {
         }
-        public PageModel(DotNetNuke.Entities.Tabs.TabInfo tab): base(tab)
+        public PageModel(DotNetNuke.Entities.Tabs.TabInfo tab) : base(tab)
         {
             this.Container = tab.ContainerSrc;
             this.Url = tab.Url;

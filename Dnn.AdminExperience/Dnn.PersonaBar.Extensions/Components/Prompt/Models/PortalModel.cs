@@ -6,7 +6,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 {
     using DotNetNuke.Entities.Portals;
 
-    public class PortalModel: PortalModelBase
+    public class PortalModel : PortalModelBase
     {
         public int CdfVersion { get; set; }
         public string SiteTheme { get; set; }
@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public PortalModel()
         {
         }
-        public PortalModel(PortalInfo portal): base(portal)
+        public PortalModel(PortalInfo portal) : base(portal)
         {
             // get portal settings for specified portal
             var ps = new PortalSettings(portal);

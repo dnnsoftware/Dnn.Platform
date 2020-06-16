@@ -56,7 +56,10 @@ namespace DotNetNuke.Tests.Web.Api
             this._tabInfo = new TabInfo { TabID = ValidTabId };
             this._moduleInfo = new ModuleInfo
             {
-                TabModuleID = ValidTabModuleId, TabID = ValidTabId, ModuleID = ValidModuleId, PortalID = ValidPortalId,
+                TabModuleID = ValidTabModuleId,
+                TabID = ValidTabId,
+                ModuleID = ValidModuleId,
+                PortalID = ValidPortalId,
             };
 
             this._mockTabController.Setup(x => x.GetTab(ValidTabId, ValidPortalId)).Returns(this._tabInfo);

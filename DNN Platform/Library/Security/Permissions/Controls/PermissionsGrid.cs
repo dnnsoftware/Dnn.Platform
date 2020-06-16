@@ -478,31 +478,31 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             grid.Columns.Clear();
             var nameColumn = new BoundColumn
-                                {
-                                    HeaderText = permissionHeaderText,
-                                    DataField = nameColumnDataField,
-                                };
+            {
+                HeaderText = permissionHeaderText,
+                DataField = nameColumnDataField,
+            };
             nameColumn.ItemStyle.CssClass = "permissionHeader";
             nameColumn.HeaderStyle.CssClass = "permissionHeader";
             grid.Columns.Add(nameColumn);
 
             var idColumn = new BoundColumn
-                                {
-                                    HeaderText = string.Empty,
-                                    DataField = idColumnDataField,
-                                    Visible = false,
-                                };
+            {
+                HeaderText = string.Empty,
+                DataField = idColumnDataField,
+                Visible = false,
+            };
             grid.Columns.Add(idColumn);
 
             foreach (PermissionInfo permission in this._permissions)
             {
                 var templateCol = new TemplateColumn();
                 var columnTemplate = new PermissionTriStateTemplate(permission)
-                                                {
-                                                    IsFullControl = this.IsFullControl(permission),
-                                                    IsView = this.IsViewPermisison(permission),
-                                                    SupportDenyMode = this.SupportsDenyPermissions(permission),
-                                                };
+                {
+                    IsFullControl = this.IsFullControl(permission),
+                    IsView = this.IsViewPermisison(permission),
+                    SupportDenyMode = this.SupportsDenyPermissions(permission),
+                };
                 templateCol.ItemTemplate = columnTemplate;
 
                 var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission

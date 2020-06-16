@@ -314,7 +314,7 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("hostspace")]
         public int HostSpace { get; set; }
 
-         /// <summary>
+        /// <summary>
         /// Gets or sets keywords (separated by ,) for this portal.
         /// </summary>
         /// <value>Keywords seperated by .</value>

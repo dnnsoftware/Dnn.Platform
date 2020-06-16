@@ -121,14 +121,14 @@ namespace DotNetNuke.Services.Installer.Installers
             if (eventMessageNav != null)
             {
                 eventMessage = new EventMessage
-                                    {
-                                        Priority = MessagePriority.High,
-                                        ExpirationDate = DateTime.Now.AddYears(-1),
-                                        SentDate = DateTime.Now,
-                                        Body = string.Empty,
-                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing),
-                                    };
+                {
+                    Priority = MessagePriority.High,
+                    ExpirationDate = DateTime.Now.AddYears(-1),
+                    SentDate = DateTime.Now,
+                    Body = string.Empty,
+                    ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
+                    ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing),
+                };
                 foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
                 {
                     var attribName = attributeNav.Name;
