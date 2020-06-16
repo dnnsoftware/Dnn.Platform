@@ -550,7 +550,7 @@ namespace Dnn.PersonaBar.Themes.Components
             {
                strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
                strImage = strImage.Replace("\\", "/");
-                                return strImage;
+               return strImage;
             }
             
             var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + imageFileName);

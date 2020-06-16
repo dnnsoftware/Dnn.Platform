@@ -47,7 +47,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     Success = false,
                     ErrorMessage = Localization.GetString("CustomUrlPortalAlias.Error"),
                     SuggestedUrlPath = String.Empty
-                    };
+                };
             }
 
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');

@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         StartDate = page.StartDate ?? Null.NullDate,
                         EndDate = page.EndDate ?? Null.NullDate,
                         IsVisible = page.IncludeInMenu
-                };
+                    };
                 tab.Terms.AddRange(TermHelper.ToTabTerms(page.Tags, portalId));
                 tabs.Add(tab);
             }
