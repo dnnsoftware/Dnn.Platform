@@ -754,7 +754,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// </summary>
         /// <param name = "ht">Current resources HashTable</param>
         /// <param name = "filepath">Resources file</param>
-        /// <returns>Base table updated with new resources </returns>
         /// <remarks>
         ///   Returned hashtable uses resourcekey as key.
         ///   Value contains a Pair object where:
