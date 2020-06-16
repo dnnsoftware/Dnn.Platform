@@ -33,14 +33,11 @@ namespace Dnn.PersonaBar.Themes.Services
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
         private IThemesController _controller = Components.ThemesController.Instance;
 
-        #region Public API
-
         [HttpGet]
         public HttpResponseMessage GetCurrentTheme(string language)
         {
             try
             {
-
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetCurrentThemeObject());
             }
@@ -340,10 +337,6 @@ namespace Dnn.PersonaBar.Themes.Services
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private object GetCurrentThemeObject()
         {
             var cultureCode = LocaleController.Instance.GetCurrentLocale(this.PortalId).Code;
@@ -363,7 +356,5 @@ namespace Dnn.PersonaBar.Themes.Services
 
             return currentTheme;
         }
-
-        #endregion
     }
 }

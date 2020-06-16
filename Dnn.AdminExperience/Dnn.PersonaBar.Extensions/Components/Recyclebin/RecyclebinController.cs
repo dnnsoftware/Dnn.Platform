@@ -31,16 +31,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
-
-        #region Fields
-
         private readonly ITabController _tabController;
         private readonly ITabVersionSettings _tabVersionSettings;
         private readonly ITabChangeSettings _tabChangeSettings;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
         private readonly IModuleController _moduleController;
-
-        #endregion
 
         public RecyclebinController()
         {
@@ -51,22 +46,12 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             this._tabChangeSettings = TabChangeSettings.Instance;
         }
 
-        #region Properties
-
         private static PortalSettings PortalSettings => PortalSettings.Current;
-
-        #endregion
-
-        #region ServiceLocator
 
         protected override Func<IRecyclebinController> GetFactory()
         {
             return () => new RecyclebinController();
         }
-
-        #endregion
-
-        #region Public Methods
 
         public string LocalizeString(string key)
         {
@@ -363,6 +348,5 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             return false;
         }
-        #endregion        
     }
 }

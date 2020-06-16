@@ -55,8 +55,6 @@ namespace Dnn.PersonaBar.Extensions.Services
         private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
-        #region Extensions Lists API
-
         /// GET: api/Extensions/GetPackageTypes
         /// <summary>
         /// Get installed package types.
@@ -319,10 +317,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, Utility.GetAllLanguagesList());
         }
 
-        #endregion
-
-        #region Edit Extensions API
-
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetModuleCategories()
@@ -482,10 +476,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        #endregion
-
-        #region Install Wizard API
 
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -752,10 +742,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        #endregion
-
-        #region Create Extension API
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -881,10 +867,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        #endregion
-
-        #region Create Module API
 
         [HttpGet]
         [RequireHost]
@@ -1058,10 +1040,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        #endregion
-
-        #region Create Package API
-
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetPackageManifest(int packageId)
@@ -1073,7 +1051,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "PackageNotFound");
                 }
-
 
                 switch (package.PackageType.ToLowerInvariant())
                 {
@@ -1367,10 +1344,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private Task<HttpResponseMessage> UploadFileAction(Func<PortalSettings, UserInfo, string, Stream, object> action)
         {
             var request = this.Request;
@@ -1623,7 +1596,5 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
             return returnValue.ToString();
         }
-
-        #endregion
     }
 }

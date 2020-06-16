@@ -38,8 +38,6 @@ namespace Dnn.PersonaBar.Themes.Components
             return () => new ThemesController();
         }
 
-        #region Public Methods
-
         /// <summary>
         /// Get Skins.
         /// </summary>
@@ -146,7 +144,6 @@ namespace Dnn.PersonaBar.Themes.Components
                     {
                         themeFile.Thumbnail = CreateThumbnail(imagePath);
                     }
-
 
                     themeFile.Name = Path.GetFileNameWithoutExtension(file);
                     themeFile.Path = FormatThemePath(portalSettings, themePath, Path.GetFileName(strFile), theme.Type);
@@ -408,10 +405,6 @@ namespace Dnn.PersonaBar.Themes.Components
                     break;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
@@ -680,10 +673,6 @@ namespace Dnn.PersonaBar.Themes.Components
             return "[" + strSkinType + "]" + strUrl;
         }
 
-        #endregion
-
-        #region Internal Static Methods
-
         internal static ThemeLevel GetThemeLevel(string themeFilePath)
         {
             themeFilePath = themeFilePath.Replace("\\", "/");
@@ -711,7 +700,5 @@ namespace Dnn.PersonaBar.Themes.Components
                 return ThemeLevel.Site;
             }
         }
-
-        #endregion
     }
 }

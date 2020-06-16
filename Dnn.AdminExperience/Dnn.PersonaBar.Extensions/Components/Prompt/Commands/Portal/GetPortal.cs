@@ -60,6 +60,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetPortal_Found"), this.PortalIdFlagValue) };
         }
 
-
     }
 }

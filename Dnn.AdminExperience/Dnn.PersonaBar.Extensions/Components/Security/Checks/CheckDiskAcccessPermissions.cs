@@ -41,7 +41,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 //Some security exception
             }
 
-
             if (accessErrors.Count == 0)
             {
                 result.Severity = SeverityEnum.Pass;
@@ -54,13 +53,10 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return result;
         }
 
-        #region private methods
-
         private static IList<string> CheckAccessToDrives()
         {
             var errors = new List<string>();
             var dir = new DirectoryInfo(Globals.ApplicationMapPath);
-
 
             while (dir.Parent != null)
             {
@@ -176,10 +172,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             return permissions;
         }
 
-        #endregion
-
-        #region helpers
-
         private const char Yes = 'Y';
         private const char No = 'N';
 
@@ -265,7 +257,5 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 }
             }
         }
-
-        #endregion
     }
 }

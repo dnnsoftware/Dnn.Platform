@@ -33,8 +33,6 @@ namespace Dnn.PersonaBar.SqlConsole.Services
 
         //private const int MaxOutputRecords = 500;
 
-        #region API
-
         [HttpGet]
         public HttpResponseMessage GetSavedQueries()
         {
@@ -139,10 +137,6 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             return this.Request.CreateResponse(statusCode,  new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void RecordAuditEventLog(string query)
         {
             var props = new LogProperties { new LogDetailInfo("User", this.UserInfo.Username), new LogDetailInfo("SQL Query", query) };
@@ -164,7 +158,5 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         {
             return SqlObjRegex.IsMatch(query);
         }
-
-        #endregion
     }
 }

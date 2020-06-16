@@ -30,14 +30,10 @@ namespace Dnn.PersonaBar.Users.Components
 
     internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
     {
-        #region Overrides of ServiceLocator
-
         protected override Func<IRegisterController> GetFactory()
         {
             return () => new RegisterController();
         }
-
-        #endregion
 
         //NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
         //Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.

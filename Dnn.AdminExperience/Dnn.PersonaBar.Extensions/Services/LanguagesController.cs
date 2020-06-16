@@ -59,10 +59,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private string _selectedResourceFile;
 
-        #region -------------------------------- PUBLIC API METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-        #endregion
 
         // GET /api/personabar/pages/GetTabsForTranslation?portalId=&cultureCode=fr-FR
         [HttpGet]
@@ -608,10 +606,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-        #endregion
 
         private static IEnumerable<KeyValuePair<string, string>> GetResxDirectories(string path)
         {

@@ -195,8 +195,6 @@ namespace Dnn.PersonaBar.CssEditor.Services
             }
         }
 
-        #region Private Methods
-
         private string LoadStyleSheet(int portalId)
         {
             var activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
@@ -220,7 +218,5 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
             return styleSheetContent;
         }
-
-        #endregion
     }
 }

@@ -36,7 +36,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             "Created"
         };
 
-        #region Constructors
         public UserModel()
         {
         }
@@ -51,9 +50,5 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             this.LastPasswordChange = user.Membership.LastPasswordChangeDate.ToPromptLongDateString();
             this.Created = user.CreatedOnDate.ToPromptLongDateString();
         }
-        #endregion
-
-        #region Command Links
-        #endregion
     }
 }

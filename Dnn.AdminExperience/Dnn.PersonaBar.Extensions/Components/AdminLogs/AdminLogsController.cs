@@ -253,8 +253,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return returnMsg;
         }
 
-        #region Private Methods
-
         private XmlDocument GetExceptions(IEnumerable<string> logIds)
         {
             var objXml = new XmlDocument { XmlResolver = null };
@@ -270,7 +268,5 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             }
             return objXml;
         }
-
-        #endregion
     }
 }

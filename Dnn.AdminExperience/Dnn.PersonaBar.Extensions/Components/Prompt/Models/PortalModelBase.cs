@@ -16,7 +16,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public int UserCount { get; set; }
         public string Language { get; set; }
 
-        #region Constructors
         public PortalModelBase()
         {
         }
@@ -48,7 +47,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
                     break;
             }
         }
-        #endregion
-
     }
 }

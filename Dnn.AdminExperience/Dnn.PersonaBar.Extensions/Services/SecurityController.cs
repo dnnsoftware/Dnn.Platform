@@ -63,8 +63,6 @@ namespace Dnn.PersonaBar.Security.Services
             this._portalAliasController = portalAliasController;
         }
 
-        #region Login Settings
-
         /// GET: api/Security/GetBasicLoginSettings
         /// <summary>
         /// Gets portal's basic login settings
@@ -175,10 +173,6 @@ namespace Dnn.PersonaBar.Security.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region IP Filters
 
         /// GET: api/Security/GetIpFilters
         /// <summary>
@@ -336,10 +330,6 @@ namespace Dnn.PersonaBar.Security.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Member Accounts
 
         /// GET: api/Security/GetMemberSettings
         /// <summary>
@@ -567,10 +557,6 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region SSL Settings
-
         /// GET: api/Security/GetSslSettings
         /// <summary>
         /// Gets portal's SSL settings
@@ -644,10 +630,6 @@ namespace Dnn.PersonaBar.Security.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Security Bulletins
 
         /// GET: api/Security/GetSecurityBulletins
         /// <summary>
@@ -727,10 +709,6 @@ namespace Dnn.PersonaBar.Security.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Other Settings
 
         /// GET: api/Security/GetOtherSettings
         /// <summary>
@@ -817,10 +795,6 @@ namespace Dnn.PersonaBar.Security.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Security Analyzer
 
         /// GET: api/Security/GetAuditCheckResults
         /// <summary>
@@ -1071,10 +1045,6 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        #endregion
-
-        #region Helpers
-
         internal string AddPortalAlias(string portalAlias, int portalId)
         {
             if (!String.IsNullOrEmpty(portalAlias))
@@ -1106,7 +1076,5 @@ namespace Dnn.PersonaBar.Security.Services
             var path = Regex.Replace(filePath, Regex.Escape(Globals.ApplicationMapPath), string.Empty, RegexOptions.IgnoreCase);
             return path.TrimStart('\\');
         }
-
-        #endregion
     }
 }

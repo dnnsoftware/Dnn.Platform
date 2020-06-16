@@ -1,12 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-
-
-#endregion
 
 using System;
 using System.Collections.Generic;
@@ -44,8 +39,6 @@ namespace Dnn.PersonaBar.Users.Components
         {
             return () => new UsersController();
         }
-
-        #region Public Methods
 
         public IEnumerable<UserBasicDto> GetUsers(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
@@ -381,10 +374,6 @@ namespace Dnn.PersonaBar.Users.Components
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
 
-        #endregion
-
-        #region Private Methods
-
         private IEnumerable<UserBasicDto> GetUsersFromDb(GetUsersContract usersContract, bool isSuperUser, out int totalRecords)
         {
             totalRecords = 0;
@@ -555,7 +544,5 @@ namespace Dnn.PersonaBar.Users.Components
             portalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(portalSettings.DefaultPortalAlias);
             return portalSettings;
         }
-
-        #endregion
     }
 }

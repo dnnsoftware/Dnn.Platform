@@ -1,8 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -16,8 +15,6 @@ using DotNetNuke.Framework;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 
-#endregion
-
 namespace Dnn.PersonaBar.Roles.Components
 {
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
@@ -27,7 +24,6 @@ namespace Dnn.PersonaBar.Roles.Components
             return () => new RolesController();
         }
 
-        #region Public Methods
         /// <summary>
         /// Gets a paginated list of Roles matching given search criteria
         /// </summary>
@@ -185,15 +181,10 @@ namespace Dnn.PersonaBar.Roles.Components
             return role.RoleName;
         }
 
-        #endregion
-
-        #region Private Methods
         private bool IsAdmin(PortalSettings portalSettings)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
-
-        #endregion
     }
 }

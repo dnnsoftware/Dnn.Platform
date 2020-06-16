@@ -346,7 +346,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
 
-
                 if (updatedItem.ScheduleStartDate != existingItem.ScheduleStartDate ||
                     updatedItem.Enabled ||
                     updatedItem.Enabled != existingItem.Enabled ||

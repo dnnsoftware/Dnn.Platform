@@ -14,14 +14,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string Container { get; set; }
         public string AdminContainer { get; set; }
 
-        #region Command Links
         public string __PageCount => "list-pages";
 
         public string __UserCount => "list-users";
 
-        #endregion
-
-        #region Constructors
         public PortalModel()
         {
         }
@@ -35,7 +31,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
             this.Container = Utilities.FormatContainerName(ps.DefaultPortalContainer);
             this.AdminContainer = Utilities.FormatContainerName(ps.DefaultAdminContainer);
         }
-        #endregion
-
     }
 }

@@ -266,7 +266,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
 
-
             return new PageUrlResult
             {
                 Success = true

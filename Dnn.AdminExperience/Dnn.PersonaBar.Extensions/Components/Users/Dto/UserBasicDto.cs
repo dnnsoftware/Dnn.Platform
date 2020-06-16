@@ -56,7 +56,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-
         [DataMember(Name = "avatar")]
         public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
 

@@ -26,8 +26,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageEditor));
 
-        #region IPackageEditor Implementation
-
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
@@ -129,10 +127,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)
         {
             var permissions = new PermissionsDto(true);
@@ -226,7 +220,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 }
             }
 
-
             //add user permissions
             if (permissions.UserPermissions != null)
             {
@@ -298,9 +291,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
         {
             ModuleControlController.DeleteModuleControl(controlId);
         }
-
-
-        #endregion
-
     }
 }

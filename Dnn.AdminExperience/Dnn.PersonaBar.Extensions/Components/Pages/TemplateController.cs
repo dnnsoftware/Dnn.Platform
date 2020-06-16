@@ -103,8 +103,6 @@ namespace Dnn.PersonaBar.Pages.Components
             return () => new TemplateController();
         }
 
-
-        #region Templates
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -220,6 +218,5 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
         }
-        #endregion
     }
 }

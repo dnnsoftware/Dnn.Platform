@@ -18,7 +18,6 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
         public string ModifiedDate { get; set; }
         public int ModifiedBy { get; set; }
 
-        #region Constructors
         public RoleModelBase()
         {
         }
@@ -34,14 +33,10 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
             this.RoleName = role.RoleName;
             this.UserCount = role.UserCount;
         }
-        #endregion
 
-        #region Command Links
         public string __ModifiedBy => $"get-user {this.ModifiedBy}";
 
         public string __RoleId => $"get-role {this.RoleId}";
         public string __UserCount => $"list-users --role '{this.RoleName}'";
-
-        #endregion
     }
 }

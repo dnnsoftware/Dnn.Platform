@@ -1,8 +1,7 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,6 @@ using System.Xml;
 using DotNetNuke.Application;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
-
-#endregion
 
 namespace Dnn.PersonaBar.ConfigConsole.Components
 {
@@ -63,8 +60,6 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             }
         }
 
-        #region Private Functions
-
         private bool IsValidXmlMergDocument(string mergeDocText)
         {
             if (string.IsNullOrEmpty(mergeDocText.Trim()))
@@ -84,7 +79,5 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                 throw new ArgumentException("Invalid File Path");
             }
         }
-
-        #endregion
     }
 }

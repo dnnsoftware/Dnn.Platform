@@ -17,8 +17,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinObjectPackageEditor));
 
-        #region IPackageEditor Implementation
-
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
@@ -70,7 +68,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 return false;
             }
         }
-
-        #endregion
     }
 }

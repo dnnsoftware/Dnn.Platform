@@ -37,8 +37,6 @@ namespace Dnn.PersonaBar.Users.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
 
-        #region Users API
-
         /// <summary>
         /// Create a User.
         /// </summary>
@@ -485,10 +483,6 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        #endregion
-
-        #region User Roles API
-
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
         public HttpResponseMessage GetSuggestRoles(string keyword, int count)
@@ -599,9 +593,6 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        #endregion
-
-        #region Profiles API
         //        User profile is not implemented currently
         //        [HttpGet]
         //        public HttpResponseMessage GetProfileDefinitions()
@@ -617,8 +608,6 @@ namespace Dnn.PersonaBar.Users.Services
         //        {
         //            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
         //        }
-
-        #endregion
 
         /// <summary>
         /// Return Password security options from server 

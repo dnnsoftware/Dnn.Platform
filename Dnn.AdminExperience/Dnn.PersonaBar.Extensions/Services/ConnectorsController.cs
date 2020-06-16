@@ -25,13 +25,7 @@ namespace Dnn.PersonaBar.Connectors.Services
     [MenuPermission(MenuName = "Dnn.Connectors")]
     public class ConnectorsController : PersonaBarApiController
     {
-        #region Properties
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectorsController));
-
-        #endregion
-
-        #region Public Methods
 
         [HttpGet]
         public HttpResponseMessage GetConnections()
@@ -229,9 +223,6 @@ namespace Dnn.PersonaBar.Connectors.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, localizedStrings);
         }
 
-        #endregion
-
-        #region Public Methods
         private IList<IConnector> GetConnections(int portalId)
         {
             var connectors = ConnectionsManager.Instance.GetConnectors();
@@ -262,7 +253,5 @@ namespace Dnn.PersonaBar.Connectors.Services
 
             return configs;
         }
-
-        #endregion    }
     }
 }

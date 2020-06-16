@@ -46,7 +46,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private bool? Deleted { get; set; }
         //public string PageName { get; }
 
-
         public override void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
             

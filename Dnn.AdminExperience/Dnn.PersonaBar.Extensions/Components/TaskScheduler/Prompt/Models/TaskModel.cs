@@ -17,7 +17,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         public string Created { get; set; }
         public string StartDate { get; set; }
 
-        #region Constructors
         public TaskModel()
         {
         }
@@ -29,6 +28,5 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
             this.StartDate = item.ScheduleStartDate.ToPromptLongDateString();
             this.TypeName = item.TypeFullName;
         }
-        #endregion
     }
 }

@@ -335,7 +335,6 @@ namespace Dnn.PersonaBar.Seo.Services
                     sitemapExcludePriority = 0.1f;
                 }
 
-
                 var settings = new
                 {
                     SitemapUrl = Globals.AddHTTP(portalAlias) + @"/SiteMap.aspx",

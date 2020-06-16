@@ -46,7 +46,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [IgnoreDataMember]
         public int PortalId { get; set; }
 
-
         [DataMember(Name = "profileUrl")]
         public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
 

@@ -27,7 +27,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("pageid", "Prompt_GetModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
-
         private int ModuleId { get; set; }
         private int PageId { get; set; }
 

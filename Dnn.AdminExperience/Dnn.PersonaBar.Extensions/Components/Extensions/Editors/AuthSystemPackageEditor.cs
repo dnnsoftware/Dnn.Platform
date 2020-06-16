@@ -22,7 +22,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthSystemPackageEditor));
         private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        #region IPackageEditor Implementation
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
@@ -95,10 +94,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 return false;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static string GetSettingUrl(int portalId, int authSystemPackageId)
         {
@@ -176,7 +171,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 }
             }
         }
-
-        #endregion
     }
 }

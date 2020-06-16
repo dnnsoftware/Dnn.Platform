@@ -80,8 +80,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             this.NavigationManager = navigationManager;
         }
 
-        #region Site Info API
-
         /// GET: api/SiteSettings/GetPortalSettings
         /// <summary>
         /// Gets site settings
@@ -210,7 +208,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-
         /// POST: api/SiteSettings/UpdatePortalSettings
         /// <summary>
         /// Updates site settings
@@ -273,10 +270,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Site Behavior API
 
         /// GET: api/SiteSettings/GetDefaultPagesSettings
         /// <summary>
@@ -1663,10 +1656,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        #endregion
-
-        #region Search Settings API
-
         /// GET: api/SiteSettings/GetBasicSearchSettings
         /// <summary>
         /// Gets basic search settings
@@ -2235,10 +2224,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Language Settings API
 
         /// GET: api/SiteSettings/GetLanguageSettings
         /// <summary>
@@ -3121,10 +3106,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
         }
 
-        #endregion
-
-        #region Other Settings API
-
         /// GET: api/SiteSettings/GetOtherSettings
         /// <summary>
         /// Gets other settings
@@ -3195,10 +3176,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private bool IsLanguagePublished(int portalId, string code)
         {
@@ -3500,7 +3477,5 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             var tab = TabController.Instance.GetTab(tabId, portalId);
             return tab != null && !tab.IsDeleted ? tab.TabID : Null.NullInteger;
         }
-
-        #endregion
     }
 }

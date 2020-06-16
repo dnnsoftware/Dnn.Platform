@@ -534,10 +534,8 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        #region -------------------------------- LOCALIZATION API METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-        #endregion
 
         // POST /api/personabar/pages/MakePageNeutral?tabId=123
         [HttpPost]
@@ -850,10 +848,8 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-        #endregion
 
         private static string LocalizeString(string key)
         {

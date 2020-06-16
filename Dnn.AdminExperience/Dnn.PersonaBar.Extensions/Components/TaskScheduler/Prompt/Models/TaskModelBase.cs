@@ -14,7 +14,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         public string NextStart { get; set; }
         public bool Enabled { get; set; }
 
-        #region Constructors
         public TaskModelBase()
         {
         }
@@ -26,9 +25,5 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
             this.NextStart = item.NextStart.ToPromptShortDateAndTimeString();
             this.ScheduleId = item.ScheduleID;
         }
-        #endregion
-
-        #region CommandLinks
-        #endregion
     }
 }

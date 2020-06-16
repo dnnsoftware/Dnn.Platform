@@ -106,8 +106,6 @@ namespace Dnn.PersonaBar.Security.Components
             return tables;
         }
 
-        #region Private Methods
-
         private void AddChildNodes(TabDto parentNode, PortalInfo portal, string cultureCode)
         {
             if (parentNode.ChildTabs != null)
@@ -139,7 +137,5 @@ namespace Dnn.PersonaBar.Security.Components
             var filteredTabs = tabs.Where(kvp => !kvp.Value.IsSystem && !kvp.Value.IsDeleted && !kvp.Value.DisableLink).Select(kvp => kvp.Value);
             return new TabCollection(filteredTabs);
         }
-
-        #endregion
     }
 }

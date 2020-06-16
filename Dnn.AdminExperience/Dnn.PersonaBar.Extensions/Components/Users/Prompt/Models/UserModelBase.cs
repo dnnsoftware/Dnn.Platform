@@ -27,7 +27,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             "IsLockedOut"
         };
 
-        #region Constructors
         public UserModelBase()
         {
         }
@@ -41,14 +40,9 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             this.IsAuthorized = userInfo.Membership.Approved;
             this.IsLockedOut = userInfo.Membership.LockedOut;
         }
-        #endregion
 
-        #region Command Links
         public string __Email => $"get-user '{this.Email}'";
         public string __UserId => $"get-user {this.UserId}";
         public string __Username => $"get-user '{this.Username}'";
-
-        #endregion
-
     }
 }

@@ -94,7 +94,6 @@ namespace Dnn.PersonaBar.Pages.Components
             this._portalController = portalController;
         }
 
-
         public bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage)
         {
             var portalSettings = this.PortalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
@@ -168,7 +167,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return paths;
         }
-
 
         public TabInfo MovePage(PageMoveRequest request)
         {
@@ -965,7 +963,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     this._tabController.SaveTabUrl(tabUrl, portalSettings.PortalId, true);
                 }
 
-
                 //Delete any redirects to the same url
                 foreach (var redirecturl in this._tabController.GetTabUrls(tab.TabID, tab.PortalID))
                 {
@@ -1146,7 +1143,6 @@ namespace Dnn.PersonaBar.Pages.Components
                  where t.ContentType == "Tab"
                  select t).SingleOrDefault();
 
-
             if (contentType != null)
             {
                 tab.ContentTypeId = contentType.ContentTypeId;
@@ -1215,7 +1211,6 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
-
 
             //add user permissions
             if (permissions.UserPermissions != null)
@@ -1332,7 +1327,6 @@ namespace Dnn.PersonaBar.Pages.Components
             this._moduleController.DeleteTabModule(pageId, moduleId, true);
             this._moduleController.ClearCache(pageId);
         }
-
 
         public void CopyContentFromSourceTab(TabInfo tab, int sourceTabId, IEnumerable<ModuleItem> includedModules)
         {

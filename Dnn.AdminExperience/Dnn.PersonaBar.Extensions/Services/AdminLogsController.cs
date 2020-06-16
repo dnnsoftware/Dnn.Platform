@@ -75,8 +75,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             }
         }
 
-        #region Event Viewer
-
         /// GET: api/AdminLogs/GetLogItems
         /// <summary>
         /// Gets log items
@@ -223,10 +221,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
-
-        #region Log Settings
 
         /// GET: api/AdminLogs/GetKeepMostRecentOptions
         /// <summary>
@@ -477,10 +471,6 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         /// GET: api/AdminLogs/GetLatestLogSetting
         /// <summary>
         /// Gets latest log setting
@@ -527,7 +517,5 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-
-        #endregion
     }
 }

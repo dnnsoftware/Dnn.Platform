@@ -38,14 +38,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("status", "Prompt_SetRole_FlagStatus", "Boolean")]
         private const string FlagStatus = "status";
 
-
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
         public bool? IsPublic { get; set; }
         public bool? AutoAssign { get; set; }
         public RoleStatus? Status { get; set; }
-
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

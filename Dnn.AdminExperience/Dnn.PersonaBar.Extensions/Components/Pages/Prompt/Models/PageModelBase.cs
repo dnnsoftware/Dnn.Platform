@@ -15,7 +15,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
         public bool IncludeInMenu { get; set; }
         public bool IsDeleted { get; set; }
 
-        #region Command Links
         public string __TabId => $"get-page {this.TabId}";
 
         public string __ParentId => $"list-pages --parentid {this.ParentId}";
@@ -24,9 +23,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
 
         public string __IsDeleted => $"list-pages --deleted{(this.IsDeleted ? "" : " false")}";
 
-        #endregion
-
-        #region constructors
         public PageModelBase()
         {
         }
@@ -41,6 +37,5 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
             this.IncludeInMenu = tab.IsVisible;
             this.IsDeleted = tab.IsDeleted;
         }
-        #endregion
     }
 }
