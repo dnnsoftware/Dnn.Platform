@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Common;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Common;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+
     [ToolboxData("<{0}:DnnFolderDropDownList runat='server'></{0}:DnnFolderDropDownList>")]
     public class DnnFolderDropDownList : DnnDropDownList
     {
@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.AddCssClass("folder");
             base.OnPreRender(e);
 
-            //add the selected folder's level path so that it can expand to the selected node in client side.
+            // add the selected folder's level path so that it can expand to the selected node in client side.
             var selectedFolder = this.SelectedFolder;
             if (selectedFolder != null && selectedFolder.ParentID > Null.NullInteger)
             {
@@ -56,13 +56,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 this.ExpandPath = folderLevel.TrimEnd(',');
             }
-            
         }
 
         /// <summary>
-        /// Gets the selected Folder in the control, or selects the Folder in the control.
+        /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IFolderInfo SelectedFolder
         {
             get
@@ -70,6 +70,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var folderId = this.SelectedItemValueAsInt;
                 return (folderId == Null.NullInteger) ? null : FolderManager.Instance.GetFolder(folderId);
             }
+
             set
             {
                 var folderName = value != null ? value.FolderName : null;
@@ -81,6 +82,5 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
-
     }
 }

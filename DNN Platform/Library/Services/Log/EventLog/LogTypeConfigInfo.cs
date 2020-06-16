@@ -1,33 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common;
-
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
     [Serializable]
     public class LogTypeConfigInfo : LogTypeInfo
     {
-        #region NotificationThresholdTimeTypes enum
-
         public enum NotificationThresholdTimeTypes
         {
             None = 0,
             Seconds = 1,
             Minutes = 2,
             Hours = 3,
-            Days = 4
+            Days = 4,
         }
-
-        #endregion
 
         private string _mailFromAddress;
 
@@ -38,13 +29,13 @@ namespace DotNetNuke.Services.Log.EventLog
                 switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddHours(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddDays(this.NotificationThresholdTime * -1);
                     default:
                         return Null.NullDate;
                 }
@@ -55,15 +46,17 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string MailFromAddress
         {
-            get {                
+            get
+            {
                 var portalSettings = Globals.GetPortalSettings();
-                return 
-                    string.IsNullOrWhiteSpace(this._mailFromAddress) 
-                    ? (portalSettings == null ? string.Empty : portalSettings.Email) 
-                    : this._mailFromAddress; }
+                return
+                    string.IsNullOrWhiteSpace(this._mailFromAddress)
+                    ? (portalSettings == null ? string.Empty : portalSettings.Email)
+                    : this._mailFromAddress;
+            }
+
             set { this._mailFromAddress = value; }
         }
-
 
         public string MailToAddress { get; set; }
 

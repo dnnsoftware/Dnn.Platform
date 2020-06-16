@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Assets;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Assets;
+
     public class DigitalAssetsSettingsRepository
     {
         private const string DefaultFolderTypeIdSetting = "DefaultFolderTypeId";
@@ -81,10 +81,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             SubfolderFilter excludeSubfolders;
             return !Enum.TryParse(setting, true, out excludeSubfolders) ? SubfolderFilter.IncludeSubfoldersFolderStructure : excludeSubfolders;
         }
-        
+
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
         {
-            ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));            
+            ModuleController.Instance.UpdateModuleSetting(moduleId, DefaultFolderTypeIdSetting, defaultFolderTypeId.ToString(CultureInfo.InvariantCulture));
         }
 
         public void SaveMode(int moduleId, DigitalAssestsMode mode)
@@ -110,20 +110,22 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private string GetSettingByKey(int moduleId, string key)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-            var moduleSettings = module.ModuleSettings; 
-            return (string)moduleSettings[key];               
+            var moduleSettings = module.ModuleSettings;
+            return (string)moduleSettings[key];
         }
 
         internal bool SettingExists(int moduleId, string settingName)
         {
-            return !String.IsNullOrEmpty(this.GetSettingByKey(moduleId, settingName));
+            return !string.IsNullOrEmpty(this.GetSettingByKey(moduleId, settingName));
         }
 
         internal void SetDefaultFilterCondition(int moduleId)
         {
-            //handle upgrades where FilterCondition didn't exist
+            // handle upgrades where FilterCondition didn't exist
             if (this.SettingExists(moduleId, "RootFolderId") && !this.SettingExists(moduleId, "FilterCondition"))
+            {
                 this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
+            }
         }
     }
 
@@ -131,12 +133,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     {
         Normal,
         Group,
-        User
+        User,
     }
 
     public enum FilterCondition
     {
         NotSet,
-        FilterByFolder
+        FilterByFolder,
     }
 }

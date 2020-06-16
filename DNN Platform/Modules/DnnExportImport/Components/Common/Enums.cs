@@ -7,7 +7,7 @@ namespace Dnn.ExportImport.Components.Common
     public enum JobType
     {
         Export = 0, // never change these numbers
-        Import
+        Import,
     }
 
     public enum JobStatus
@@ -16,7 +16,7 @@ namespace Dnn.ExportImport.Components.Common
         InProgress,
         Successful,
         Failed,
-        Cancelled
+        Cancelled,
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace Dnn.ExportImport.Components.Common
     public enum ExportMode
     {
         Full = 0,
-        Differential = 1
+        Differential = 1,
     }
 
     /// <summary>
@@ -49,6 +49,6 @@ namespace Dnn.ExportImport.Components.Common
         Verbose,
         Info,
         Warn,
-        Error
+        Error,
     }
 }

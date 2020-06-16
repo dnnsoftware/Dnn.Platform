@@ -2,27 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+
     [ToolboxData("<{0}:DnnPageDropDownList runat='server'></{0}:DnnPageDropDownList>")]
     public class DnnPageDropDownList : DnnDropDownList
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -44,10 +43,10 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.InternalPortalId.HasValue)
             {
                 this.Services.Parameters.Add("PortalId", this.InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
-			}
+            }
 
-			this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
-			this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
             this.Services.Parameters.Add("includeActive", this.IncludeActiveTab.ToString().ToLowerInvariant());
             this.Services.Parameters.Add("disabledNotSelectable", this.DisabledNotSelectable.ToString().ToLowerInvariant());
             this.Services.Parameters.Add("includeHostPages", (this.IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
@@ -55,7 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             base.OnPreRender(e);
 
-            //add the selected folder's level path so that it can expand to the selected node in client side.
+            // add the selected folder's level path so that it can expand to the selected node in client side.
             var selectedPage = this.SelectedPage;
             if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
             {
@@ -72,28 +71,28 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Whether disabled pages are not selectable
-        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages
+        /// Gets or sets a value indicating whether whether disabled pages are not selectable
+        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
         /// </summary>
         public bool DisabledNotSelectable { get; set; }
 
         /// <summary>
-        /// Whether include active page.
+        /// Gets or sets a value indicating whether whether include active page.
         /// </summary>
         public bool IncludeActiveTab { get; set; }
-        
-        /// <summary>
-		/// Whether include pages which are disabled.
-		/// </summary>
-		public bool IncludeDisabledTabs { get; set; }
-
-		/// <summary>
-		/// Whether include pages which tab type is not normal.
-		/// </summary>
-		public bool IncludeAllTabTypes { get; set; }
 
         /// <summary>
-        /// Whether include Host Pages
+        /// Gets or sets a value indicating whether whether include pages which are disabled.
+        /// </summary>
+        public bool IncludeDisabledTabs { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether whether include pages which tab type is not normal.
+        /// </summary>
+        public bool IncludeAllTabTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether whether include Host Pages.
         /// </summary>
         public bool IncludeHostPages { get; set; }
 
@@ -105,8 +104,10 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return this.InternalPortalId.Value;
                 }
+
                 return PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId;
             }
+
             set
             {
                 this.InternalPortalId = value;
@@ -119,6 +120,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue<int?>("PortalId", null);
             }
+
             set
             {
                 this.ViewState.SetValue<int?>("PortalId", value, null);
@@ -126,9 +128,10 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected Page in the control, or selects the Page in the control.
+        /// Gets or sets the selected Page in the control, or selects the Page in the control.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TabInfo SelectedPage
         {
             get
@@ -136,6 +139,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var pageId = this.SelectedItemValueAsInt;
                 return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this.PortalId, false);
             }
+
             set
             {
                 this.SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
@@ -143,9 +147,8 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Specific to only show tabs which have view permission on these roles.
+        /// Gets or sets specific to only show tabs which have view permission on these roles.
         /// </summary>
-        public IList<int> Roles { get; set; } 
-
+        public IList<int> Roles { get; set; }
     }
 }

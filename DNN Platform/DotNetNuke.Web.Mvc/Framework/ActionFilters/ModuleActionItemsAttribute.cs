@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Reflection;
-using System.Web.Mvc;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Framework;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Reflection;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public class ModuleActionItemsAttribute : ActionFilterAttribute
     {
         private const string MethodNameTemplate = "Get{0}Actions";
@@ -25,7 +26,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             Type type;
             string methodName;
 
-            if(controller == null)
+            if (controller == null)
             {
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }
@@ -43,9 +44,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 instance = Reflection.CreateInstance(type);
             }
 
-            if (String.IsNullOrEmpty(this.MethodName))
+            if (string.IsNullOrEmpty(this.MethodName))
             {
-                methodName = String.Format(MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
+                methodName = string.Format(MethodNameTemplate, filterContext.ActionDescriptor.ActionName);
             }
             else
             {
@@ -63,7 +64,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
             if (method == null)
             {
-                throw new NotImplementedException(String.Format("The expected method to get the module actions cannot be found. Type: {0}, Method: {1}", type.FullName, methodName));
+                throw new NotImplementedException(string.Format("The expected method to get the module actions cannot be found. Type: {0}, Method: {1}", type.FullName, methodName));
             }
 
             var returnType = method.ReturnType.FullName;

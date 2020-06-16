@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.Localization;
-using System.Collections.Generic;
-
 namespace Dnn.PersonaBar.Security.Helper
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Services.Localization;
+
     class RegistrationSettingsHelper
     {
         internal static List<KeyValuePair<string, int>> GetUserRegistrationOptions()

@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.UI;
-using ClientDependency.Core;
-using ClientDependency.Core.Controls;
-
 namespace DotNetNuke.Web.Client.Controls
 {
+    using System;
+    using System.Web.UI;
+
+    using ClientDependency.Core;
+    using ClientDependency.Core.Controls;
+
     public abstract class ClientResourceExclude : Control
     {
-
         public string Name { get; set; }
 
         public ClientDependencyType DependencyType { get; internal set; }
@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Client.Controls
             if (loader != null)
             {
                 ClientDependencyInclude ctlToRemove = null;
-                if (!String.IsNullOrEmpty(this.Name))
+                if (!string.IsNullOrEmpty(this.Name))
                 {
                     foreach (ClientDependencyInclude ctl in loader.Controls)
                     {
@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.Client.Controls
                         }
                     }
                 }
+
                 if (ctlToRemove != null)
                 {
                     loader.Controls.Remove(ctlToRemove);

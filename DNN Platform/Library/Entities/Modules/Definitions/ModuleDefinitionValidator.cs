@@ -1,22 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules.Definitions
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+
     public enum ModuleDefinitionVersion
     {
         VUnknown = 0,
@@ -24,7 +19,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         V2 = 2,
         V2_Skin = 3,
         V2_Provider = 4,
-        V3 = 5
+        V3 = 5,
     }
 
     public class ModuleDefinitionValidator : XmlValidatorBase
@@ -32,7 +27,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         private string GetDnnSchemaPath(Stream xmlStream)
         {
             ModuleDefinitionVersion Version = this.GetModuleDefinitionVersion(xmlStream);
-            string schemaPath = "";
+            string schemaPath = string.Empty;
             switch (Version)
             {
                 case ModuleDefinitionVersion.V2:
@@ -50,16 +45,18 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 case ModuleDefinitionVersion.VUnknown:
                     throw new Exception(GetLocalizedString("EXCEPTION_LoadFailed"));
             }
+
             return Path.Combine(Globals.ApplicationMapPath, schemaPath);
         }
 
         private static string GetLocalizedString(string key)
         {
-            var objPortalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             if (objPortalSettings == null)
             {
                 return key;
             }
+
             return Localization.GetString(key, objPortalSettings);
         }
 
@@ -70,11 +67,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
             var xmlReader = new XmlTextReader(xmlStream)
             {
                 XmlResolver = null,
-                DtdProcessing = DtdProcessing.Prohibit
+                DtdProcessing = DtdProcessing.Prohibit,
             };
             xmlReader.MoveToContent();
 
-            //This test assumes provides a simple validation 
+            // This test assumes provides a simple validation
             switch (xmlReader.LocalName.ToLowerInvariant())
             {
                 case "module":
@@ -95,6 +92,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                                 default:
                                     return ModuleDefinitionVersion.VUnknown;
                             }
+
                             break;
                         case "SkinObject":
                             retValue = ModuleDefinitionVersion.V2_Skin;
@@ -106,17 +104,19 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             retValue = ModuleDefinitionVersion.VUnknown;
                             break;
                     }
+
                     break;
                 default:
                     retValue = ModuleDefinitionVersion.VUnknown;
                     break;
             }
+
             return retValue;
         }
 
         public override bool Validate(Stream XmlStream)
         {
-            this.SchemaSet.Add("", this.GetDnnSchemaPath(XmlStream));
+            this.SchemaSet.Add(string.Empty, this.GetDnnSchemaPath(XmlStream));
             return base.Validate(XmlStream);
         }
     }

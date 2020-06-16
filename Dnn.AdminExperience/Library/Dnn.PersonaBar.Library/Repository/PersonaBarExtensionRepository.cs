@@ -2,25 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Library.Data;
-using Dnn.PersonaBar.Library.Model;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-
 namespace Dnn.PersonaBar.Library.Repository
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Data;
+    using Dnn.PersonaBar.Library.Model;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+
     public class PersonaBarExtensionRepository : ServiceLocator<IPersonaBarExtensionRepository, PersonaBarExtensionRepository>,
         IPersonaBarExtensionRepository
     {
-        #region Fields
         private readonly IDataService _dataService = new DataService();
         private const string PersonaBarExtensionsCacheKey = "PersonaBarExtensions";
         private static readonly object ThreadLocker = new object();
-        #endregion
 
         private void ClearCache()
         {
@@ -43,8 +42,7 @@ namespace Dnn.PersonaBar.Library.Repository
                 extension.Path,
                 extension.Order,
                 extension.Enabled,
-                UserController.Instance.GetCurrentUserInfo().UserID
-                );
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             this.ClearCache();
         }

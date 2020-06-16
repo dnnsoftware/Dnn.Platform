@@ -1,29 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Reflection;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.ComponentModel;
+    using System.Reflection;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Localization;
+
     public class DualListBox : WebControl, IPostBackEventHandler, IPostBackDataHandler
     {
-		#region Private Members
-
         private readonly Style _AvailableListBoxStyle = new Style();
         private readonly Style _ButtonStyle = new Style();
         private readonly TableStyle _ContainerStyle = new TableStyle();
@@ -32,8 +25,6 @@ namespace DotNetNuke.UI.WebControls
         private List<string> _AddValues;
         private List<string> _RemoveValues;
 
-		#endregion
-
         public DualListBox()
         {
             this.ShowAddButton = true;
@@ -41,8 +32,6 @@ namespace DotNetNuke.UI.WebControls
             this.ShowRemoveButton = true;
             this.ShowRemoveAllButton = true;
         }
-
-		#region Public Properties
 
         public string AddAllImageURL { get; set; }
 
@@ -98,16 +87,18 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#region Style Properties
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Available List Box Style
+        /// Gets the value of the Available List Box Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Available List Box.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Available List Box.")]
         public Style AvailableListBoxStyle
         {
             get
@@ -118,12 +109,16 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Button Style
+        /// Gets the value of the Button Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Button.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Button.")]
         public Style ButtonStyle
         {
             get
@@ -134,12 +129,16 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Container Style
+        /// Gets the value of the Container Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Container.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Container.")]
         public TableStyle ContainerStyle
         {
             get
@@ -150,12 +149,16 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Header Style
+        /// Gets the value of the Header Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Header.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Header.")]
         public Style HeaderStyle
         {
             get
@@ -166,12 +169,16 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Selected List Box Style
+        /// Gets the value of the Selected List Box Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Selected List Box.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Selected List Box.")]
         public Style SelectedListBoxStyle
         {
             get
@@ -179,11 +186,6 @@ namespace DotNetNuke.UI.WebControls
                 return this._SelectedListBoxStyle;
             }
         }
-		#endregion
-		
-		#endregion
-
-        #region IPostBackDataHandler Members
 
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -196,8 +198,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._AddValues.Add(addItem);
                 }
+
                 retValue = true;
             }
+
             string removeItems = postCollection[postDataKey + "_Selected"];
             if (!string.IsNullOrEmpty(removeItems))
             {
@@ -206,18 +210,16 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._RemoveValues.Add(removeItem);
                 }
+
                 retValue = true;
             }
+
             return retValue;
         }
 
         public void RaisePostDataChangedEvent()
         {
         }
-
-        #endregion
-
-        #region IPostBackEventHandler Members
 
         public void RaisePostBackEvent(string eventArgument)
         {
@@ -238,18 +240,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        #endregion
-		
-		#region Events
-
         public event DualListBoxEventHandler AddButtonClick;
-        public event EventHandler AddAllButtonClick;
-        public event DualListBoxEventHandler RemoveButtonClick;
-        public event EventHandler RemoveAllButtonClick;
-		
-		#endregion
 
-		#region Private Methods
+        public event EventHandler AddAllButtonClick;
+
+        public event DualListBoxEventHandler RemoveButtonClick;
+
+        public event EventHandler RemoveAllButtonClick;
 
         private NameValueCollection GetList(string listType, object dataSource)
         {
@@ -272,6 +269,7 @@ namespace DotNetNuke.UI.WebControls
                     list.Add(objText, objValue);
                 }
             }
+
             return list;
         }
 
@@ -280,45 +278,45 @@ namespace DotNetNuke.UI.WebControls
             string buttonText = Null.NullString;
             string imageURL = Null.NullString;
 
-            //Begin Button Row
+            // Begin Button Row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-            //Begin Button Cell
+            // Begin Button Cell
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             switch (buttonType)
             {
                 case "Add":
-                    buttonText = string.IsNullOrEmpty(this.AddKey) 
-                                    ? this.AddText 
+                    buttonText = string.IsNullOrEmpty(this.AddKey)
+                                    ? this.AddText
                                     : Localization.GetString(this.AddKey, this.LocalResourceFile);
                     imageURL = this.AddImageURL;
                     break;
                 case "AddAll":
-                    buttonText = string.IsNullOrEmpty(this.AddAllKey) 
-                                    ? this.AddAllText 
+                    buttonText = string.IsNullOrEmpty(this.AddAllKey)
+                                    ? this.AddAllText
                                     : Localization.GetString(this.AddAllKey, this.LocalResourceFile);
                     imageURL = this.AddAllImageURL;
                     break;
                 case "Remove":
-                    buttonText = string.IsNullOrEmpty(this.RemoveKey) 
-                                    ? this.RemoveText 
+                    buttonText = string.IsNullOrEmpty(this.RemoveKey)
+                                    ? this.RemoveText
                                     : Localization.GetString(this.RemoveKey, this.LocalResourceFile);
                     imageURL = this.RemoveImageURL;
                     break;
                 case "RemoveAll":
-                    buttonText = string.IsNullOrEmpty(this.RemoveAllKey) 
-                                    ? this.RemoveAllText 
+                    buttonText = string.IsNullOrEmpty(this.RemoveAllKey)
+                                    ? this.RemoveAllText
                                     : Localization.GetString(this.RemoveAllKey, this.LocalResourceFile);
                     imageURL = this.RemoveAllImageURL;
                     break;
             }
-			
-            //Render Hyperlink
+
+            // Render Hyperlink
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackEventReference(this.GetPostBackOptions(buttonType)));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-            //Render Image
+            // Render Image
             if (!string.IsNullOrEmpty(imageURL))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveClientUrl(imageURL));
@@ -331,55 +329,57 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(buttonText);
             }
-			
-            //End of Hyperlink
+
+            // End of Hyperlink
             writer.RenderEndTag();
 
-            //End of Button Cell
+            // End of Button Cell
             writer.RenderEndTag();
 
-            //Render end of Button Row
+            // Render end of Button Row
             writer.RenderEndTag();
         }
 
         private void RenderButtons(HtmlTextWriter writer)
         {
-			//render table
+            // render table
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
             if (this.ShowAddButton)
             {
                 this.RenderButton("Add", writer);
             }
+
             if (this.ShowAddAllButton)
             {
                 this.RenderButton("AddAll", writer);
             }
 
-            //Begin Button Row
+            // Begin Button Row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-            //Begin Button Cell
+            // Begin Button Cell
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
             writer.Write("&nbsp;");
 
-        	//End of Button Cell
+            // End of Button Cell
             writer.RenderEndTag();
 
-            //Render end of Button Row
+            // Render end of Button Row
             writer.RenderEndTag();
 
             if (this.ShowRemoveButton)
             {
                 this.RenderButton("Remove", writer);
             }
+
             if (this.ShowRemoveAllButton)
             {
                 this.RenderButton("RemoveAll", writer);
             }
 
-            //Render end of table
+            // Render end of table
             writer.RenderEndTag();
         }
 
@@ -394,21 +394,21 @@ namespace DotNetNuke.UI.WebControls
                     {
                         style.AddAttributesToRender(writer);
                     }
-					
-                    //Render ListBox
+
+                    // Render ListBox
                     writer.AddAttribute(HtmlTextWriterAttribute.Multiple, "multiple");
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + listType);
                     writer.RenderBeginTag(HtmlTextWriterTag.Select);
                     for (int i = 0; i <= list.Count - 1; i++)
                     {
-						//Render option tags for each item
+                        // Render option tags for each item
                         writer.AddAttribute(HtmlTextWriterAttribute.Value, list.Get(i));
                         writer.RenderBeginTag(HtmlTextWriterTag.Option);
                         writer.Write(list.GetKey(i));
                         writer.RenderEndTag();
                     }
-					
-                    //Render ListBox end
+
+                    // Render ListBox end
                     writer.RenderEndTag();
                 }
             }
@@ -416,12 +416,13 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderHeader(HtmlTextWriter writer)
         {
-			//render Header row
+            // render Header row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
             if (this.HeaderStyle != null)
             {
                 this.HeaderStyle.AddAttributesToRender(writer);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write(Localization.GetString(this.ID + "_Available", this.LocalResourceFile));
             writer.RenderEndTag();
@@ -432,17 +433,18 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.HeaderStyle.AddAttributesToRender(writer);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write(Localization.GetString(this.ID + "_Selected", this.LocalResourceFile));
             writer.RenderEndTag();
 
-            //Render end of Header Row
+            // Render end of Header Row
             writer.RenderEndTag();
         }
 
         private void RenderListBoxes(HtmlTextWriter writer)
         {
-			//render List Boxes row
+            // render List Boxes row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
@@ -457,25 +459,22 @@ namespace DotNetNuke.UI.WebControls
             this.RenderListBox("Selected", this.SelectedDataSource, this.SelectedListBoxStyle, writer);
             writer.RenderEndTag();
 
-            //Render end of List Boxes Row
+            // Render end of List Boxes Row
             writer.RenderEndTag();
         }
 
         protected virtual PostBackOptions GetPostBackOptions(string argument)
         {
-            var postBackOptions = new PostBackOptions(this, argument) {RequiresJavaScriptProtocol = true};
+            var postBackOptions = new PostBackOptions(this, argument) { RequiresJavaScriptProtocol = true };
 
             if (this.CausesValidation && this.Page.GetValidators(this.ValidationGroup).Count > 0)
             {
                 postBackOptions.PerformValidation = true;
                 postBackOptions.ValidationGroup = this.ValidationGroup;
             }
+
             return postBackOptions;
         }
-		
-		#endregion
-
-		#region Protected Methods
 
         protected void OnAddButtonClick(DualListBoxEventArgs e)
         {
@@ -520,23 +519,22 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
-			//render table
+            // render table
             if (this.ContainerStyle != null)
             {
                 this.ContainerStyle.AddAttributesToRender(writer);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
-            //Render Header Row
+            // Render Header Row
             this.RenderHeader(writer);
 
-            //Render ListBox row
+            // Render ListBox row
             this.RenderListBoxes(writer);
 
-            //Render end of table
+            // Render end of table
             writer.RenderEndTag();
         }
-		
-		#endregion
     }
 }

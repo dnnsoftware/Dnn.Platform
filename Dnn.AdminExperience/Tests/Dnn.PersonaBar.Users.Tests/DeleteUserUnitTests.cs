@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Users;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DeleteUserUnitTests : CommandTests<DeleteUser>
     {
@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteValidUserId_ReturnSuccessResponse()
         {
-            // Arrange          
+            // Arrange
             int userId = 2;
 
             UserInfo userInfo = this.GetUser(userId, false);
@@ -62,7 +62,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteAlreadyDeletedUser_ReturnErrorResponse()
         {
-            // Arrange          
+            // Arrange
             int userId = 2;
 
             UserInfo userInfo = this.GetUser(userId, true);
@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteUserFailed_ReturnErrorResponse()
         {
-            // Arrange          
+            // Arrange
             int userId = 2;
 
             UserInfo userInfo = this.GetUser(userId, false);
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_DeleteNullUserId_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             UserInfo userinfo;
             this.errorResultModel = new ConsoleErrorResultModel();
             this._userValidatorMock

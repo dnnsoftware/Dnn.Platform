@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Security.Attributes;
-
 namespace Dnn.PersonaBar.Security.Services.Dto
 {
+    using Dnn.PersonaBar.Security.Attributes;
+
     public class UpdateBasicLoginSettingsRequest
     {
         [CultureCodeExist]

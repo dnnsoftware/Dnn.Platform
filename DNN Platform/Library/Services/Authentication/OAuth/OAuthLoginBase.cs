@@ -1,23 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Web;
-using DotNetNuke.Common;
-
-#endregion
-
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Web;
+
+    using DotNetNuke.Common;
+
     public abstract class OAuthLoginBase : AuthenticationLoginBase
     {
         protected virtual string AuthSystemApplicationName
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected OAuthClientBase OAuthClient { get; set; }
@@ -26,7 +22,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected virtual void AddCustomProperties(NameValueCollection properties)
         {
-            
         }
 
         protected override void OnLoad(EventArgs e)
@@ -35,16 +30,16 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (!this.IsPostBack)
             {
-                //Save the return Url in the cookie
+                // Save the return Url in the cookie
                 HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", this.RedirectURL)
                 {
                     Expires = DateTime.Now.AddMinutes(5),
-                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
                 });
             }
 
             bool shouldAuthorize = this.OAuthClient.IsCurrentService() && this.OAuthClient.HaveVerificationCode();
-            if(this.Mode == AuthMode.Login)
+            if (this.Mode == AuthMode.Login)
             {
                 shouldAuthorize = shouldAuthorize || this.OAuthClient.IsCurrentUserAuthorized();
             }
@@ -58,13 +53,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
         }
 
-        #region Overrides of AuthenticationLoginBase
-
         public override bool Enabled
         {
             get { return OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId).Enabled; }
         }
-
-        #endregion
     }
 }

@@ -2,18 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Entities.Modules;
-
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class BusinessController : IUpgradeable
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="version"></param>
         /// <returns></returns>
@@ -24,9 +25,10 @@ namespace Dnn.ExportImport.Components.Controllers
                 switch (version)
                 {
                     case "09.01.00":
-                        //AddNewLogTypes(); // moved to SQL migration script
+                        // AddNewLogTypes(); // moved to SQL migration script
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception)

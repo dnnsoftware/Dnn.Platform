@@ -2,38 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class EditFolderMapping : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public EditFolderMapping()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Private Variables
-
         private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
         private int _folderMappingID = Null.NullInteger;
-
-        #endregion
-
-        #region Properties
 
         public int FolderPortalID
         {
@@ -54,13 +49,10 @@ namespace DotNetNuke.Modules.DigitalAssets
                         int.TryParse(this.Request.QueryString["ItemID"], out this._folderMappingID);
                     }
                 }
+
                 return this._folderMappingID;
             }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -77,7 +69,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             var controlTitle = Localization.GetString("ControlTitle", this.LocalResourceFile);
             var controlTitlePrefix = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("New") : Localization.GetString("Edit");
 
-            this.SyncWarningPlaceHolder.Visible = (this.FolderMappingID != Null.NullInteger);
+            this.SyncWarningPlaceHolder.Visible = this.FolderMappingID != Null.NullInteger;
 
             this.ModuleConfiguration.ModuleControl.ControlTitle = string.Format(controlTitle, controlTitlePrefix);
         }
@@ -119,7 +111,10 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             this.Page.Validate("vgEditFolderMapping");
 
-            if (!this.Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
             try
             {
@@ -164,6 +159,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                             {
                                 this._folderMappingController.DeleteFolderMapping(this.FolderPortalID, folderMappingID);
                             }
+
                             return;
                         }
                     }
@@ -192,7 +188,9 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
 
                 if (!this.Response.IsRequestBeingRedirected)
+                {
                     this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "FolderMappings", "mid=" + this.ModuleId, "popUp=true"));
+                }
             }
             catch (Exception exc)
             {
@@ -205,10 +203,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             this.BindFolderMappingSettings();
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void BindFolderProviders()
         {
             var defaultProviders = DefaultFolderProviders.GetDefaultProviders();
@@ -217,7 +211,8 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 this.FolderProvidersComboBox.AddItem(provider, provider);
             }
-            this.FolderProvidersComboBox.InsertItem(0, "", "");
+
+            this.FolderProvidersComboBox.InsertItem(0, string.Empty, string.Empty);
         }
 
         private void BindFolderMapping()
@@ -244,13 +239,22 @@ namespace DotNetNuke.Modules.DigitalAssets
                 folderProviderType = this.FolderProvidersComboBox.SelectedValue;
             }
 
-            if (string.IsNullOrEmpty(folderProviderType)) return;
+            if (string.IsNullOrEmpty(folderProviderType))
+            {
+                return;
+            }
 
             var settingsControlVirtualPath = FolderProvider.Instance(folderProviderType).GetSettingsControlVirtualPath();
-            if (String.IsNullOrEmpty(settingsControlVirtualPath)) return;
+            if (string.IsNullOrEmpty(settingsControlVirtualPath))
+            {
+                return;
+            }
 
             var settingsControl = this.LoadControl(settingsControlVirtualPath);
-            if (settingsControl == null || !(settingsControl is FolderMappingSettingsControlBase)) return;
+            if (settingsControl == null || !(settingsControl is FolderMappingSettingsControlBase))
+            {
+                return;
+            }
 
             // This is important to allow settings control to be localizable
             var baseType = settingsControl.GetType().BaseType;
@@ -262,7 +266,5 @@ namespace DotNetNuke.Modules.DigitalAssets
             this.ProviderSettingsPlaceHolder.Controls.Clear();
             this.ProviderSettingsPlaceHolder.Controls.Add(settingsControl);
         }
-
-        #endregion
     }
 }

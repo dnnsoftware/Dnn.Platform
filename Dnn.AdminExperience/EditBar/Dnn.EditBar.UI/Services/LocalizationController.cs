@@ -2,33 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-using Dnn.EditBar.Library;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
-
 namespace Dnn.EditBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web;
+    using System.Web.Http;
+
+    using Dnn.EditBar.Library;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Web.Api;
+    using Newtonsoft.Json;
+
     [DnnAuthorize]
     public class LocalizationController : DnnApiController
     {
         private static object _threadLocker = new object();
 
-        #region Public API methods
-        
         /// <summary>
-        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture. 
+        /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetTable(string culture)
         {
@@ -56,13 +56,8 @@ namespace Dnn.EditBar.UI.Services
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private IDictionary<string, IDictionary<string, string>> GetResourcesFromFile(string culture)
         {
-
             if (!this.Expired(culture))
             {
                 var jsonFileContent = this.GetJsonFileContent(culture);
@@ -146,14 +141,11 @@ namespace Dnn.EditBar.UI.Services
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
             var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);
             return Directory.GetFiles(physicalPath, "*.resx");
-        } 
-
-        #endregion
+        }
     }
 
     [Serializable]
     public class CacheDto
     {
-
     }
 }

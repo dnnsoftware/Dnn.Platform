@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DNN.Integration.Test.Framework
 {
+    using System;
+
     internal class CachedWebPage
     {
         private string[] _inputFields;
@@ -18,6 +18,7 @@ namespace DNN.Integration.Test.Framework
         }
 
         public DateTime FetchDateTime { get; private set; } // when was this loaded
+
         public string VerificationToken { get; private set; }
 
         public string[] InputFields

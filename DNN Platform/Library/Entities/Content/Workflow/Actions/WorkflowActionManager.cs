@@ -2,27 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
-    public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager> , IWorkflowActionManager
-    {
-        #region Members
-        private readonly IWorkflowActionRepository _workflowActionRepository;
-        #endregion
+    using System;
 
-        #region Constructor
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+
+    public class WorkflowActionManager : ServiceLocator<IWorkflowActionManager, WorkflowActionManager>, IWorkflowActionManager
+    {
+        private readonly IWorkflowActionRepository _workflowActionRepository;
+
         public WorkflowActionManager()
         {
             this._workflowActionRepository = WorkflowActionRepository.Instance;
         }
-        #endregion
 
-        #region Public Methods
         public IWorkflowAction GetWorkflowActionInstance(int contentTypeId, WorkflowActionTypes actionType)
         {
             var action = this._workflowActionRepository.GetWorkflowAction(contentTypeId, actionType.ToString());
@@ -46,13 +42,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Actions
 
             this._workflowActionRepository.AddWorkflowAction(workflowAction);
         }
-        #endregion
 
-        #region Service Locator
         protected override Func<IWorkflowActionManager> GetFactory()
         {
             return () => new WorkflowActionManager();
         }
-        #endregion
     }
 }

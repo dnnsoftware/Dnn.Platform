@@ -1,32 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-
-#endregion
-
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+
     public class EventLogController : ServiceLocator<IEventLogController, EventLogController>, IEventLogController
     {
-        #region EventLogType enum
-
         public enum EventLogType
         {
             USER_CREATED,
@@ -182,17 +175,13 @@ namespace DotNetNuke.Services.Log.EventLog
             WEBSERVER_DISABLED,
             WEBSERVER_ENABLED,
             WEBSERVER_PINGFAILED,
-            FOLDER_MOVED
+            FOLDER_MOVED,
         }
-
-        #endregion
 
         protected override Func<IEventLogController> GetFactory()
         {
             return () => new EventLogController();
         }
-
-        #region IEventLogController Members
 
         public void AddLog(string propertyName, string propertyValue, EventLogType logType)
         {
@@ -207,26 +196,27 @@ namespace DotNetNuke.Services.Log.EventLog
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
-            var logDetailInfo = new LogDetailInfo {PropertyName = propertyName, PropertyValue = propertyValue};
+            var logDetailInfo = new LogDetailInfo { PropertyName = propertyName, PropertyValue = propertyValue };
             properties.Add(logDetailInfo);
             this.AddLog(properties, portalSettings, userID, logType, false);
         }
 
         public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
         {
-            //supports adding a custom string for LogType
+            // supports adding a custom string for LogType
             var log = new LogInfo
                 {
                     LogUserID = userID,
                     LogTypeKey = logTypeKey,
                     LogProperties = properties,
-                    BypassBuffering = bypassBuffering
+                    BypassBuffering = bypassBuffering,
                 };
             if (portalSettings != null)
             {
                 log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
+
             LogController.Instance.AddLog(log);
         }
 
@@ -339,16 +329,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             else
             {
-                //Serialise using XmlSerializer
+                // Serialise using XmlSerializer
                 log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
             }
 
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
-        #region ILogController Members
 
         public void AddLog(LogInfo logInfo)
         {
@@ -430,11 +416,6 @@ namespace DotNetNuke.Services.Log.EventLog
             LogController.Instance.UpdateLogType(logType);
         }
 
-
-        #endregion
-
-        #region Helper Methods
-
         public static void AddSettingLog(EventLogType logTypeKey, string idFieldName, int idValue, string settingName, string settingValue, int userId)
         {
             var log = new LogInfo() { LogUserID = userId, LogTypeKey = logTypeKey.ToString() };
@@ -444,8 +425,5 @@ namespace DotNetNuke.Services.Log.EventLog
 
             LogController.Instance.AddLog(log);
         }
-
-        #endregion
-
     }
 }

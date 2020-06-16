@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Http.Routing;
-using System.Web.Routing;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Web.Http.Routing;
+    using System.Web.Routing;
+
     public static class RouteExtensions
     {
         private const string NamespaceKey = "namespaces";
@@ -24,18 +24,18 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Get Namespaces that are searched for controllers for this route
+        /// Get Namespaces that are searched for controllers for this route.
         /// </summary>
-        /// <returns>Namespaces</returns>
+        /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
-            return (string[]) route.DataTokens[NamespaceKey];
+            return (string[])route.DataTokens[NamespaceKey];
         }
 
         /// <summary>
-        /// Get Namespaces that are searched for controllers for this route
+        /// Get Namespaces that are searched for controllers for this route.
         /// </summary>
-        /// <returns>Namespaces</returns>
+        /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this IHttpRoute route)
         {
             return (string[])route.DataTokens[NamespaceKey];
@@ -52,18 +52,18 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Get the name of the route
+        /// Get the name of the route.
         /// </summary>
-        /// <returns>Route name</returns>
+        /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
-            return (string) route.DataTokens[NameKey];
+            return (string)route.DataTokens[NameKey];
         }
 
         /// <summary>
-        /// Get the name of the route
+        /// Get the name of the route.
         /// </summary>
-        /// <returns>Route name</returns>
+        /// <returns>Route name.</returns>
         public static string GetName(this IHttpRoute route)
         {
             return (string)route.DataTokens[NameKey];

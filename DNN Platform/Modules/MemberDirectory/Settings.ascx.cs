@@ -1,33 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Modules.MemberDirectory.Presenters;
-using DotNetNuke.Modules.MemberDirectory.ViewModels;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Mvp;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
-using WebFormsMvp;
-
-#endregion
-
 namespace DotNetNuke.Modules.MemberDirectory
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Modules.MemberDirectory.Presenters;
+    using DotNetNuke.Modules.MemberDirectory.ViewModels;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Mvp;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+    using WebFormsMvp;
+
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     [PresenterBinding(typeof(ModuleSettingsPresenter))]
     public partial class Settings : SettingsView<MemberDirectorySettingsModel>
@@ -43,7 +38,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         private string _defaultSortOrder = "ASC";
 
         private string _defaultFilterBy = "None";
-        private string _defaultFilterValue = String.Empty;
+        private string _defaultFilterValue = string.Empty;
 
         private string _defaultDisplaySearch = "Both";
         private string _defaultEnablePopUp = "false";
@@ -56,10 +51,11 @@ namespace DotNetNuke.Modules.MemberDirectory
             get
             {
                 string template;
-                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "AlternateItemTemplate.htm"))) 
+                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "AlternateItemTemplate.htm")))
                 {
                     template = sr.ReadToEnd();
                 }
+
                 return template;
             }
         }
@@ -73,6 +69,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     template = sr.ReadToEnd();
                 }
+
                 return template;
             }
         }
@@ -88,6 +85,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     template = sr.ReadToEnd();
                 }
+
                 return template;
             }
         }
@@ -103,13 +101,13 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             base.OnLoad(e);
 
-            if(!this.IsPostBack)
+            if (!this.IsPostBack)
             {
                 if (this.Model.Groups.Count > 0)
                 {
                     this.groupList.DataSource = this.Model.Groups;
                     this.groupList.DataBind();
-					this.groupList.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), Null.NullInteger.ToString()));
+                    this.groupList.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), Null.NullInteger.ToString()));
                 }
                 else
                 {
@@ -118,27 +116,23 @@ namespace DotNetNuke.Modules.MemberDirectory
 
                 foreach (var rel in this.Model.Relationships)
                 {
-                    this.relationShipList.AddItem(Localization.GetString(rel.Name,Localization.SharedResourceFile),rel.RelationshipId.ToString());
+                    this.relationShipList.AddItem(Localization.GetString(rel.Name, Localization.SharedResourceFile), rel.RelationshipId.ToString());
                 }
-
 
                 var profileResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
 
-                
                 System.Web.UI.WebControls.ListItemCollection propertiesCollection = this.GetPropertiesCollection(profileResourceFile);
-                    
-                
-                //Bind the ListItemCollection to the list
+
+                // Bind the ListItemCollection to the list
                 this.propertyList.DataSource = propertiesCollection;
                 this.propertyList.DataBind();
 
-                //Insert custom properties to the Search field lists
-                propertiesCollection.Insert(0,new ListItem(Localization.GetString("Username",this.LocalResourceFile),"Username"));
+                // Insert custom properties to the Search field lists
+                propertiesCollection.Insert(0, new ListItem(Localization.GetString("Username", this.LocalResourceFile), "Username"));
                 propertiesCollection.Insert(1, new ListItem(Localization.GetString("DisplayName", this.LocalResourceFile), "DisplayName"));
                 propertiesCollection.Insert(2, new ListItem(Localization.GetString("Email", this.LocalResourceFile), "Email"));
 
-                //Bind the properties collection in the Search Field Lists
-
+                // Bind the properties collection in the Search Field Lists
                 this.searchField1List.DataSource = propertiesCollection;
                 this.searchField1List.DataBind();
 
@@ -173,7 +167,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.searchField3List.Select(this.GetTabModuleSetting("SearchField3", this._defaultSearchField3));
                 this.searchField4List.Select(this.GetTabModuleSetting("SearchField4", this._defaultSearchField4));
 
-                this.ExcludeHostUsersCheckBox.Checked = Boolean.Parse(this.GetTabModuleSetting("ExcludeHostUsers", "false"));
+                this.ExcludeHostUsersCheckBox.Checked = bool.Parse(this.GetTabModuleSetting("ExcludeHostUsers", "false"));
             }
         }
 
@@ -182,9 +176,9 @@ namespace DotNetNuke.Modules.MemberDirectory
             var result = new ListItemCollection();
             foreach (var property in this.Model.ProfileProperties)
             {
-                result.Add(new ListItem(this.GetLocalizeName(property.PropertyName,profileResourceFile),property.PropertyName));
+                result.Add(new ListItem(this.GetLocalizeName(property.PropertyName, profileResourceFile), property.PropertyName));
             }
-            
+
             return result;
         }
 
@@ -192,7 +186,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             base.OnSettingsLoaded();
 
-            if(!this.IsPostBack)
+            if (!this.IsPostBack)
             {
                 this.BindSortList();
 
@@ -200,17 +194,17 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.alternateItemTemplate.Text = this.GetTabModuleSetting("AlternateItemTemplate", DefaultAlternateItemTemplate);
                 this.popUpTemplate.Text = this.GetTabModuleSetting("PopUpTemplate", DefaultPopUpTemplate);
                 this.displaySearchList.Select(this.GetTabModuleSetting("DisplaySearch", this._defaultDisplaySearch));
-                this.enablePopUp.Checked = Boolean.Parse(this.GetTabModuleSetting("EnablePopUp", this._defaultEnablePopUp));
+                this.enablePopUp.Checked = bool.Parse(this.GetTabModuleSetting("EnablePopUp", this._defaultEnablePopUp));
 
                 this._filterBy = this.GetModuleSetting("FilterBy", this._defaultFilterBy);
                 this._filterValue = this.GetModuleSetting("FilterValue", this._defaultFilterValue);
-                this.propertyValue.Text = this.GetModuleSetting("FilterPropertyValue", String.Empty);
+                this.propertyValue.Text = this.GetModuleSetting("FilterPropertyValue", string.Empty);
 
                 this.sortFieldList.Select(this.GetTabModuleSetting("SortField", this._defaultSortField));
                 this.sortOrderList.Select(this.GetTabModuleSetting("SortOrder", this._defaultSortOrder));
 
                 this.pageSize.Text = this.GetTabModuleSetting("PageSize", DefaultPageSize.ToString(CultureInfo.InvariantCulture));
-                this.disablePager.Checked = Boolean.Parse(this.GetTabModuleSetting("DisablePaging", "False"));
+                this.disablePager.Checked = bool.Parse(this.GetTabModuleSetting("DisablePaging", "False"));
             }
         }
 
@@ -250,7 +244,7 @@ namespace DotNetNuke.Modules.MemberDirectory
 
             this.Model.TabModuleSettings["DisablePaging"] = this.disablePager.Checked.ToString(CultureInfo.InvariantCulture);
             this.Model.TabModuleSettings["PageSize"] = this.pageSize.Text;
-            
+
             this.Model.TabModuleSettings["ExcludeHostUsers"] = this.ExcludeHostUsersCheckBox.Checked.ToString(CultureInfo.InvariantCulture);
 
             base.OnSavingSettings();
@@ -287,10 +281,11 @@ namespace DotNetNuke.Modules.MemberDirectory
         private ListItem AddSearchItem(string name, string resourceKey)
         {
             var text = Localization.GetString(resourceKey, this.LocalResourceFile);
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
                 text = resourceKey;
             }
+
             var item = new ListItem(text, name);
             return item;
         }

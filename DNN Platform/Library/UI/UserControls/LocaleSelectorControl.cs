@@ -1,38 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   LocaleSelectorControl is a user control that provides all the server code to manage
-    ///   localisation selection
+    ///   localisation selection.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase
     {
-        #region "Controls"
-
         protected DropDownList ddlPortalDefaultLanguage;
         protected Literal litStatus;
         protected RadioButtonList rbViewType;
-
-        #endregion
-
         private string MyFileName = "LocaleSelectorControl.ascx";
-        private string _ViewType = "";
+        private string _ViewType = string.Empty;
 
         private CultureDropDownTypes DisplayType
         {
@@ -58,15 +48,15 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this._ViewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
                 }
+
                 if (string.IsNullOrEmpty(this._ViewType))
                 {
                     this._ViewType = "NATIVE";
                 }
+
                 return this._ViewType;
             }
         }
-
-        #region "Public Methods"
 
         public void BindDefaultLanguageSelector()
         {
@@ -76,10 +66,6 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        #endregion
-
-        #region "Public properties"
-
         public string CultureCode
         {
             get
@@ -87,10 +73,6 @@ namespace DotNetNuke.UI.UserControls
                 return this.ddlPortalDefaultLanguage.SelectedValue;
             }
         }
-
-        #endregion
-
-        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -108,6 +90,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     item.Selected = true;
                 }
+
                 item = new ListItem(Localization.GetString("EnglishName.Text", Localization.GetResourceFile(this, this.MyFileName)), "ENGLISH");
                 this.rbViewType.Items.Add(item);
                 if (this.ViewType == "ENGLISH")
@@ -131,7 +114,5 @@ namespace DotNetNuke.UI.UserControls
         {
             this._ViewType = this.rbViewType.SelectedValue;
         }
-
-        #endregion
     }
 }

@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Web.Api.Internal;
-using System.Threading;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Web.Api.Internal;
+
     public class ValidateAntiForgeryTokenAttribute : ActionFilterAttribute
     {
         private static readonly List<string> BypassedAuthTypes = new List<string>();
@@ -20,7 +21,7 @@ namespace DotNetNuke.Web.Api
 
         internal static void AppendToBypassAuthTypes(string authType)
         {
-            var text = (authType ?? "").Trim();
+            var text = (authType ?? string.Empty).Trim();
             if (text.Length > 0)
             {
                 BypassedAuthTypes.Add(text);
@@ -61,7 +62,9 @@ namespace DotNetNuke.Web.Api
                     }
 
                     if (string.IsNullOrEmpty(token))
+                    {
                         return new Tuple<bool, string>(false, "RequestVerificationToken not present");
+                    }
 
                     var cookieValue = GetAntiForgeryCookieValue(actionContext);
                     AntiForgery.Instance.Validate(cookieValue, token);
@@ -92,7 +95,7 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
-            return "";
+            return string.Empty;
         }
 
         public override bool AllowMultiple => false;

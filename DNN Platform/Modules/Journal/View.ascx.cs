@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-/*
+namespace DotNetNuke.Modules.Journal
+{
+    /*
 ' Copyright (c) 2011  DotNetNuke Corporation
 '  All rights reserved.
 '
@@ -14,30 +16,29 @@
 '
 */
 
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Modules.Journal.Components;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Abstractions;
+    using System;
 
-namespace DotNetNuke.Modules.Journal {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.Journal.Components;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ViewJournal class displays the content
+    /// The ViewJournal class displays the content.
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class View : JournalModuleBase {
-
+    public partial class View : JournalModuleBase
+    {
         private readonly INavigationManager _navigationManager;
         public int PageSize = 20;
         public bool AllowPhotos = true;
@@ -59,9 +60,7 @@ namespace DotNetNuke.Modules.Journal {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        #region Event Handlers
-
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
@@ -70,8 +69,8 @@ namespace DotNetNuke.Modules.Journal {
 
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/journal.js");
             ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/journalcomments.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/json2.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/json2.js");
 
             var isAdmin = this.UserInfo.IsInRole(RoleController.Instance.GetRoleById(this.PortalId, this.PortalSettings.AdministratorRoleId).RoleName);
             if (!this.Request.IsAuthenticated || (!this.UserInfo.IsSuperUser && !isAdmin && this.UserInfo.IsInRole("Unverified Users")))
@@ -87,18 +86,22 @@ namespace DotNetNuke.Modules.Journal {
             {
                 this.PageSize = Convert.ToInt16(this.Settings[Constants.DefaultPageSize]);
             }
+
             if (this.Settings.ContainsKey(Constants.MaxCharacters))
             {
                 this.MaxMessageLength = Convert.ToInt16(this.Settings[Constants.MaxCharacters]);
             }
+
             if (this.Settings.ContainsKey(Constants.AllowPhotos))
             {
                 this.AllowPhotos = Convert.ToBoolean(this.Settings[Constants.AllowPhotos]);
             }
+
             if (this.Settings.ContainsKey(Constants.AllowFiles))
             {
                 this.AllowFiles = Convert.ToBoolean(this.Settings[Constants.AllowFiles]);
             }
+
             this.ctlJournalList.Enabled = true;
             this.ctlJournalList.ProfileId = -1;
             this.ctlJournalList.PageSize = this.PageSize;
@@ -126,7 +129,8 @@ namespace DotNetNuke.Modules.Journal {
                                 this.ShowEditor = true;
                                 this.CanComment = true;
                                 this.IsGroup = true;
-                            } else
+                            }
+                            else
                             {
                                 this.ShowEditor = false;
                                 this.CanComment = false;
@@ -136,14 +140,17 @@ namespace DotNetNuke.Modules.Journal {
                             {
                                 this.ctlJournalList.Enabled = false;
                             }
+
                             if (roleInfo.IsPublic && !this.ShowEditor)
                             {
                                 this.ctlJournalList.Enabled = true;
                             }
+
                             if (roleInfo.IsPublic && this.ShowEditor)
                             {
                                 this.ctlJournalList.Enabled = true;
                             }
+
                             if (roleInfo.IsPublic)
                             {
                                 this.IsPublicGroup = true;
@@ -155,11 +162,10 @@ namespace DotNetNuke.Modules.Journal {
                             this.ctlJournalList.Enabled = false;
                         }
                     }
-
                 }
             }
 
-            if (!String.IsNullOrEmpty(this.Request.QueryString["userId"]))
+            if (!string.IsNullOrEmpty(this.Request.QueryString["userId"]))
             {
                 this.ctlJournalList.ProfileId = Convert.ToInt32(this.Request.QueryString["userId"]);
                 if (!this.UserInfo.IsSuperUser && !isAdmin && this.ctlJournalList.ProfileId != this.UserId)
@@ -176,25 +182,27 @@ namespace DotNetNuke.Modules.Journal {
             base.OnInit(e);
         }
 
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.Load += this.Page_Load;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void Page_Load(object sender, EventArgs e) {
+        private void Page_Load(object sender, EventArgs e)
+        {
             try
             {
                 this.BaseUrl = Globals.ApplicationPath;
                 this.BaseUrl = this.BaseUrl.EndsWith("/") ? this.BaseUrl : this.BaseUrl + "/";
                 this.BaseUrl += "DesktopModules/Journal/";
 
-                this.ProfilePage = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] {"userId=xxx"});
+                this.ProfilePage = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" });
 
-                if (!String.IsNullOrEmpty(this.Request.QueryString["userId"]))
+                if (!string.IsNullOrEmpty(this.Request.QueryString["userId"]))
                 {
                     this.Pid = Convert.ToInt32(this.Request.QueryString["userId"]);
                     this.ctlJournalList.ProfileId = this.Pid;
@@ -204,13 +212,13 @@ namespace DotNetNuke.Modules.Journal {
                     this.Gid = this.GroupId;
                     this.ctlJournalList.SocialGroupId = this.GroupId;
                 }
+
                 this.ctlJournalList.PageSize = this.PageSize;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-        #endregion
     }
 }

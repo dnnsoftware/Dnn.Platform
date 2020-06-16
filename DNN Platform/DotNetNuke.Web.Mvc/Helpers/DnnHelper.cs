@@ -2,25 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.UI;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-
 // ReSharper disable ConvertPropertyToExpressionBody
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+
     public class DnnHelper
     {
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
@@ -75,19 +75,34 @@ namespace DotNetNuke.Web.Mvc.Helpers
             get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
         }
 
-        public RouteCollection RouteCollection { get { return this.HtmlHelper.RouteCollection; } }
+        public RouteCollection RouteCollection
+        {
+            get { return this.HtmlHelper.RouteCollection; }
+        }
 
         public UserInfo User
         {
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
         }
 
-        public dynamic ViewBag { get { return this.HtmlHelper.ViewBag; } }
+        public dynamic ViewBag
+        {
+            get { return this.HtmlHelper.ViewBag; }
+        }
 
-        public ViewContext ViewContext { get { return this.HtmlHelper.ViewContext; } }
+        public ViewContext ViewContext
+        {
+            get { return this.HtmlHelper.ViewContext; }
+        }
 
-        public ViewDataDictionary ViewData { get { return this.HtmlHelper.ViewData; } }
+        public ViewDataDictionary ViewData
+        {
+            get { return this.HtmlHelper.ViewData; }
+        }
 
-        public IViewDataContainer ViewDataContainer { get { return this.HtmlHelper.ViewDataContainer; } }
+        public IViewDataContainer ViewDataContainer
+        {
+            get { return this.HtmlHelper.ViewDataContainer; }
+        }
     }
 }

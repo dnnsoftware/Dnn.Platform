@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Runtime.Serialization;
-
-using DotNetNuke.Services.Exceptions;
-
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Services.Exceptions;
+
     [Serializable]
     public class UserRelationshipForDifferentPortalException : Exception
     {

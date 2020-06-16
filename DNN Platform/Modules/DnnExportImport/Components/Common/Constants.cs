@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
 // ReSharper disable InconsistentNaming
-
 namespace Dnn.ExportImport.Components.Common
 {
+    using System;
+
     public class Constants
     {
         /// <summary>
         /// This is the currently supported schema version support as of this release.
-        /// In future releases thi must be updated to be compatible wiht th e
+        /// In future releases thi must be updated to be compatible wiht th e.
         /// </summary>
         public const string CurrentSchemaVersion = "1.0.2";
 
@@ -19,10 +19,10 @@ namespace Dnn.ExportImport.Components.Common
         internal const string ExportManifestName = "export.json"; // export manifest file name
         internal const string ExportDbName = "export.dnndb"; // export database file name
         internal const string ExportZipDbName = "export_db.zip"; // export compressed database file name
-        internal const string ExportZipFiles = "export_files.zip"; //Compressed assets file name
-        internal const string ExportZipTemplates = "export_templates.zip"; //Compressed templates file name
-        internal const string ExportZipPackages = "export_packages.zip"; //Compressed extension packages
-        internal const string ExportZipThemes = "export_themes.zip"; //Compressed site used themes
+        internal const string ExportZipFiles = "export_files.zip"; // Compressed assets file name
+        internal const string ExportZipTemplates = "export_templates.zip"; // Compressed templates file name
+        internal const string ExportZipPackages = "export_packages.zip"; // Compressed extension packages
+        internal const string ExportZipThemes = "export_themes.zip"; // Compressed site used themes
 
         internal const string LogTypeSiteExport = "SITE_EXPORT";
         internal const string LogTypeSiteImport = "SITE_IMPORT";
@@ -38,7 +38,7 @@ namespace Dnn.ExportImport.Components.Common
 
         internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        internal static int MaxZipFilesMemory = 104857600;//100 MB
+        internal static int MaxZipFilesMemory = 104857600; // 100 MB
 
         internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
 

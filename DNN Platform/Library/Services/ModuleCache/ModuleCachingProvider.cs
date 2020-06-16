@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-using DotNetNuke.ComponentModel;
-
-#endregion
-
 namespace DotNetNuke.Services.ModuleCache
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
+    using DotNetNuke.ComponentModel;
+
     public abstract class ModuleCachingProvider
     {
         public static Dictionary<string, ModuleCachingProvider> GetProviderList()
@@ -42,10 +37,9 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 sOutput.Append(arrInput[i].ToString("X2"));
             }
+
             return sOutput.ToString();
         }
-
-        #region Abstract methods
 
         public abstract string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy);
 
@@ -57,10 +51,6 @@ namespace DotNetNuke.Services.ModuleCache
 
         public abstract void SetModule(int tabModuleId, string cacheKey, TimeSpan duration, byte[] moduleOutput);
 
-        #endregion
-
-        #region Virtual Methods
-
         public virtual void PurgeCache(int portalId)
         {
         }
@@ -68,7 +58,5 @@ namespace DotNetNuke.Services.ModuleCache
         public virtual void PurgeExpiredItems(int portalId)
         {
         }
-
-        #endregion
     }
 }

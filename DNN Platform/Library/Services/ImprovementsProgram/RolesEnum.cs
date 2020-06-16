@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Services.ImprovementsProgram
 {
+    using System;
+
     [Flags]
     internal enum RolesEnum
     {
@@ -14,6 +14,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
         Admin = 2,
         CommunityManager = 4,
         ContentManager = 8,
-        ContentEditor = 16
+        ContentEditor = 16,
     }
 }

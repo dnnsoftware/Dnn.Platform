@@ -2,37 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class SystemWorkflowManager : ServiceLocator<ISystemWorkflowManager, SystemWorkflowManager>, ISystemWorkflowManager
     {
-        #region Public Constants
         public const string DirectPublishWorkflowKey = "DirectPublish";
         public const string SaveDraftWorkflowKey = "SaveDraft";
         public const string ContentAprovalWorkflowKey = "ContentApproval";
-        #endregion
-
-        #region Members
         private readonly IWorkflowRepository _workflowRepository;
         private readonly IWorkflowStateRepository _workflowStateRepository;
-        #endregion
 
-        #region Constructor
         public SystemWorkflowManager()
         {
             this._workflowRepository = WorkflowRepository.Instance;
             this._workflowStateRepository = WorkflowStateRepository.Instance;
         }
-        #endregion
 
-        #region Private Methods
         private WorkflowState GetDefaultWorkflowState(int order)
         {
             return new WorkflowState
@@ -40,7 +33,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 IsSystem = true,
                 SendNotification = true,
                 SendNotificationToAdministrators = false,
-                Order = order
+                Order = order,
             };
         }
 
@@ -52,7 +45,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Description = Localization.GetString("DefaultDirectPublishWorkflowDescription"),
                 WorkflowKey = DirectPublishWorkflowKey,
                 IsSystem = true,
-                PortalID = portalId
+                PortalID = portalId,
             };
             this._workflowRepository.AddWorkflow(workflow);
             var publishedState = this.GetPublishedStateDefinition(1);
@@ -68,7 +61,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Description = Localization.GetString("DefaultSaveDraftWorkflowDescription"),
                 WorkflowKey = SaveDraftWorkflowKey,
                 IsSystem = true,
-                PortalID = portalId
+                PortalID = portalId,
             };
             this._workflowRepository.AddWorkflow(workflow);
 
@@ -89,7 +82,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 Description = Localization.GetString("DefaultWorkflowDescription"),
                 WorkflowKey = ContentAprovalWorkflowKey,
                 IsSystem = true,
-                PortalID = portalId
+                PortalID = portalId,
             };
             this._workflowRepository.AddWorkflow(workflow);
 
@@ -105,9 +98,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.WorkflowID = workflow.WorkflowID;
             this._workflowStateRepository.AddWorkflowState(state);
         }
-        #endregion
 
-        #region Public Methods
         public void CreateSystemWorkflows(int portalId)
         {
             this.CreateDirectPublishWorkflow(portalId);
@@ -152,13 +143,10 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.SendNotificationToAdministrators = true;
             return state;
         }
-        #endregion
-        
-        #region Service Locator
+
         protected override Func<ISystemWorkflowManager> GetFactory()
         {
             return () => new SystemWorkflowManager();
         }
-        #endregion
     }
 }

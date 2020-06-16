@@ -1,38 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+
     [Serializable]
     public class PortalAliasCollection : DictionaryBase
     {
-		/// <summary>
-		/// Gets or sets the value associated with the specified key.
-		/// </summary>
+        /// <summary>
+        /// Gets or sets the value associated with the specified key.
+        /// </summary>
         public PortalAliasInfo this[string key]
         {
             get
             {
-                return (PortalAliasInfo) this.Dictionary[key];
+                return (PortalAliasInfo)this.Dictionary[key];
             }
+
             set
             {
                 this.Dictionary[key] = value;
             }
         }
 
-		/// <summary>
-		/// Gets a value indicating if the collection contains keys that are not null.
-		/// </summary>
-        public Boolean HasKeys
+        /// <summary>
+        /// Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.
+        /// </summary>
+        public bool HasKeys
         {
             get
             {
@@ -56,15 +52,15 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        public bool Contains(String key)
+        public bool Contains(string key)
         {
             return this.Dictionary.Contains(key);
         }
 
-		/// <summary>
-		/// Adds an entry to the collection.
-		/// </summary>
-        public void Add(String key, PortalAliasInfo value)
+        /// <summary>
+        /// Adds an entry to the collection.
+        /// </summary>
+        public void Add(string key, PortalAliasInfo value)
         {
             this.Dictionary.Add(key, value);
         }

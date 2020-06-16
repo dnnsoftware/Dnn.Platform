@@ -1,26 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-
-using Telerik.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using Telerik.Web.UI;
+
     public class DnnComboBox : RadComboBox
     {
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
+            this.EnableEmbeddedBaseStylesheet = false;
             this.OnClientLoad = "$.dnnComboBoxLoaded";
             this.OnClientFocus = "$.dnnComboBoxHack";
             this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
@@ -69,16 +63,16 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if (this.FindItemByText(initial, true) != null)
                 {
-					this.FindItemByText(initial, true).Selected = true;
+                    this.FindItemByText(initial, true).Selected = true;
                 }
             }
             else
             {
-				if (this.FindItemByValue(initial, true) != null)
+                if (this.FindItemByValue(initial, true) != null)
                 {
-					this.FindItemByValue(initial, true).Selected = true;
+                    this.FindItemByValue(initial, true).Selected = true;
                 }
-            } 
+            }
         }
     }
 }

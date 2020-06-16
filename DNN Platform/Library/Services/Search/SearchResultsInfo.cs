@@ -1,22 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-#endregion
-
 namespace DotNetNuke.Services.Search
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke
     /// Class:      SearchResultsInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchResultsInfo represents a Search Result Item
+    /// The SearchResultsInfo represents a Search Result Item.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -47,6 +42,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_SearchItemID;
             }
+
             set
             {
                 this.m_SearchItemID = value;
@@ -59,6 +55,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Title;
             }
+
             set
             {
                 this.m_Title = value;
@@ -71,6 +68,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Description;
             }
+
             set
             {
                 this.m_Description = value;
@@ -83,6 +81,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Author;
             }
+
             set
             {
                 this.m_Author = value;
@@ -95,6 +94,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_PubDate;
             }
+
             set
             {
                 this.m_PubDate = value;
@@ -107,6 +107,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Guid;
             }
+
             set
             {
                 this.m_Guid = value;
@@ -119,6 +120,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Image;
             }
+
             set
             {
                 this.m_Image = value;
@@ -131,6 +133,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_TabId;
             }
+
             set
             {
                 this.m_TabId = value;
@@ -143,6 +146,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_SearchKey;
             }
+
             set
             {
                 this.m_SearchKey = value;
@@ -155,6 +159,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Occurrences;
             }
+
             set
             {
                 this.m_Occurrences = value;
@@ -167,6 +172,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Relevance;
             }
+
             set
             {
                 this.m_Relevance = value;
@@ -179,6 +185,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_ModuleId;
             }
+
             set
             {
                 this.m_ModuleId = value;
@@ -191,6 +198,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_Delete;
             }
+
             set
             {
                 this.m_Delete = value;
@@ -203,6 +211,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_AuthorName;
             }
+
             set
             {
                 this.m_AuthorName = value;
@@ -215,6 +224,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.m_PortalId;
             }
+
             set
             {
                 this.m_PortalId = value;

@@ -1,45 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Linq;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.Web.UI;
-using DotNetNuke.Web.UI.WebControls;
-
-using Telerik.Web.UI;
-
-
-#endregion
-
 namespace DotNetNuke.UI.ControlPanel
 {
-    using DotNetNuke.Abstractions;
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.UI;
+    using DotNetNuke.Web.UI.WebControls;
+    using Microsoft.Extensions.DependencyInjection;
+    using Telerik.Web.UI;
 
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool
     {
         private readonly INavigationManager _navigationManager;
+
         public UpdatePage()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -68,19 +59,19 @@ namespace DotNetNuke.UI.ControlPanel
 
         protected void CmdUpdateClick(object sender, EventArgs e)
         {
-            if ((TabPermissionController.CanManagePage()))
+            if (TabPermissionController.CanManagePage())
             {
                 TabInfo selectedTab = null;
-                if ((!string.IsNullOrEmpty(this.PageLst.SelectedValue)))
+                if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
                 {
-                    int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
+                    int selectedTabID = int.Parse(this.PageLst.SelectedValue);
                     selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
                 }
 
                 TabRelativeLocation tabLocation = TabRelativeLocation.NOTSET;
-                if ((!string.IsNullOrEmpty(this.LocationLst.SelectedValue)))
+                if (!string.IsNullOrEmpty(this.LocationLst.SelectedValue))
                 {
-                    tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), this.LocationLst.SelectedValue);
+                    tabLocation = (TabRelativeLocation)Enum.Parse(typeof(TabRelativeLocation), this.LocationLst.SelectedValue);
                 }
 
                 TabInfo tab = this.CurrentTab;
@@ -91,7 +82,7 @@ namespace DotNetNuke.UI.ControlPanel
                 tab.IsSecure = this.IsSecure.Checked;
                 tab.SkinSrc = this.SkinLst.SelectedValue;
 
-                string errMsg = "";
+                string errMsg = string.Empty;
                 try
                 {
                     RibbonBarManager.SaveTabInfoObject(tab, selectedTab, tabLocation, null);
@@ -107,17 +98,17 @@ namespace DotNetNuke.UI.ControlPanel
                     errMsg = ex.Message;
                 }
 
-                //Clear the Tab's Cached modules
+                // Clear the Tab's Cached modules
                 DataCache.ClearModuleCache(PortalSettings.ActiveTab.TabID);
 
-                //Update Cached Tabs as TabPath may be needed before cache is cleared
+                // Update Cached Tabs as TabPath may be needed before cache is cleared
                 TabInfo tempTab;
                 if (TabController.Instance.GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(tab.TabID, out tempTab))
                 {
                     tempTab.TabPath = tab.TabPath;
                 }
 
-                if ((string.IsNullOrEmpty(errMsg)))
+                if (string.IsNullOrEmpty(errMsg))
                 {
                     this.Response.Redirect(this._navigationManager.NavigateURL(tab.TabID));
                 }
@@ -129,16 +120,13 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        #endregion
-
-        #region "Properties"
-
         public override bool Visible
         {
             get
             {
                 return base.Visible && TabPermissionController.CanManagePage();
             }
+
             set
             {
                 base.Visible = value;
@@ -151,15 +139,12 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickUpdatePage";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");
             }
         }
-
-        #endregion
-
-        #region "Methods"
 
         private TabInfo _currentTab;
 
@@ -167,11 +152,12 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                //Weird - but the activetab has different skin src value than getting from the db
-                if (((this._currentTab == null)))
+                // Weird - but the activetab has different skin src value than getting from the db
+                if (this._currentTab == null)
                 {
                     this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
                 }
+
                 return this._currentTab;
             }
         }
@@ -196,7 +182,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             this.LocationLst.Enabled = RibbonBarManager.CanMovePage();
             this.PageLst.Enabled = RibbonBarManager.CanMovePage();
-            if ((this.LocationLst.Enabled))
+            if (this.LocationLst.Enabled)
             {
                 this.LoadLocationList();
                 this.LoadPageList();
@@ -212,12 +198,12 @@ namespace DotNetNuke.UI.ControlPanel
             this.SkinLst.Items.Add(new RadComboBoxItem(this.GetString("DefaultSkin"), string.Empty));
 
             // load portal skins
-            var portalSkinsHeader = new RadComboBoxItem(this.GetString("PortalSkins"), string.Empty) {Enabled = false, CssClass = "SkinListHeader"};
+            var portalSkinsHeader = new RadComboBoxItem(this.GetString("PortalSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader" };
             this.SkinLst.Items.Add(portalSkinsHeader);
 
             string[] arrFolders;
             string[] arrFiles;
-            string strLastFolder = "";
+            string strLastFolder = string.Empty;
             string strRoot = PortalSettings.HomeDirectoryMapPath + SkinController.RootSkin;
             if (Directory.Exists(strRoot))
             {
@@ -234,22 +220,25 @@ namespace DotNetNuke.UI.ControlPanel
                             {
                                 this.SkinLst.Items.Add(this.GetSeparatorItem());
                             }
+
                             strLastFolder = folder;
                         }
-                        this.SkinLst.Items.Add(new RadComboBoxItem(FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
-                                                              "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
+
+                        this.SkinLst.Items.Add(new RadComboBoxItem(
+                            FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
+                            "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                     }
                 }
             }
 
-            //No portal skins added, remove the header
-            if ((this.SkinLst.Items.Count == 2))
+            // No portal skins added, remove the header
+            if (this.SkinLst.Items.Count == 2)
             {
                 this.SkinLst.Items.Remove(1);
             }
 
-            //load host skins
-            var hostSkinsHeader = new RadComboBoxItem(this.GetString("HostSkins"), string.Empty) {Enabled = false, CssClass = "SkinListHeader"};
+            // load host skins
+            var hostSkinsHeader = new RadComboBoxItem(this.GetString("HostSkins"), string.Empty) { Enabled = false, CssClass = "SkinListHeader" };
             this.SkinLst.Items.Add(hostSkinsHeader);
 
             strRoot = Globals.HostMapPath + SkinController.RootSkin;
@@ -270,21 +259,24 @@ namespace DotNetNuke.UI.ControlPanel
                                 {
                                     this.SkinLst.Items.Add(this.GetSeparatorItem());
                                 }
+
                                 strLastFolder = folder;
                             }
-                            this.SkinLst.Items.Add(new RadComboBoxItem(FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
-                                                                  "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
+
+                            this.SkinLst.Items.Add(new RadComboBoxItem(
+                                FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
+                                "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
                         }
                     }
                 }
             }
 
-            //Set the selected item
+            // Set the selected item
             this.SkinLst.SelectedIndex = 0;
-            if ((!string.IsNullOrEmpty(this.CurrentTab.SkinSrc)))
+            if (!string.IsNullOrEmpty(this.CurrentTab.SkinSrc))
             {
                 RadComboBoxItem selectItem = this.SkinLst.FindItemByValue(this.CurrentTab.SkinSrc);
-                if (((selectItem != null)))
+                if (selectItem != null)
                 {
                     selectItem.Selected = true;
                 }
@@ -293,7 +285,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         private RadComboBoxItem GetSeparatorItem()
         {
-            return new RadComboBoxItem(this.GetString("SkinLstSeparator"), string.Empty) {CssClass = "SkinLstSeparator", Enabled = false};
+            return new RadComboBoxItem(this.GetString("SkinLstSeparator"), string.Empty) { CssClass = "SkinLstSeparator", Enabled = false };
         }
 
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
@@ -302,6 +294,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return strSkinFile;
             }
+
             switch (strSkinFile.ToLowerInvariant())
             {
                 case "skin":
@@ -318,12 +311,11 @@ namespace DotNetNuke.UI.ControlPanel
             this.LocationLst.ClearSelection();
             this.LocationLst.Items.Clear();
 
-            //LocationLst.Items.Add(new ListItem(GetString("NoLocationSelection"), ""));
-            //LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
-            //LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
-            //LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
-
-            this.LocationLst.AddItem(this.GetString("NoLocationSelection"), "");
+            // LocationLst.Items.Add(new ListItem(GetString("NoLocationSelection"), ""));
+            // LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
+            // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
+            // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
+            this.LocationLst.AddItem(this.GetString("NoLocationSelection"), string.Empty);
             this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
             this.LocationLst.AddItem(this.GetString("After"), "AFTER");
             this.LocationLst.AddItem(this.GetString("Child"), "CHILD");
@@ -341,7 +333,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PageLst.DataSource = RibbonBarManager.GetPagesList().Where(t => !this.IsParentTab(t, this.CurrentTab.TabID));
             this.PageLst.DataBind();
 
-            //PageLst.Items.Insert(0, new ListItem(GetString("NoPageSelection"), string.Empty));
+            // PageLst.Items.Insert(0, new ListItem(GetString("NoPageSelection"), string.Empty));
             this.PageLst.InsertItem(0, this.GetString("NoPageSelection"), string.Empty);
             this.PageLst.SelectedIndex = 0;
         }
@@ -351,20 +343,19 @@ namespace DotNetNuke.UI.ControlPanel
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-		private bool IsParentTab(TabInfo tab, int parentTabId)
-		{
-			while (tab != null)
-			{
-				if (tab.TabID == parentTabId)
-				{
-					return true;
-				}
+        private bool IsParentTab(TabInfo tab, int parentTabId)
+        {
+            while (tab != null)
+            {
+                if (tab.TabID == parentTabId)
+                {
+                    return true;
+                }
+
                 tab = tab.ParentId != Null.NullInteger ? TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false) : null;
-			}
+            }
 
-			return false;
-		}
-
-        #endregion
+            return false;
+        }
     }
 }

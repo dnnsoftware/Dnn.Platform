@@ -5,7 +5,7 @@
 namespace DotNetNuke.Services.Search.Entities
 {
     /// <summary>
-    /// Sorting criteria to be used for Querying
+    /// Sorting criteria to be used for Querying.
     /// </summary>
     public enum SortFields
     {
@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// Sort by DateTime Modified. Latest come first
         /// </summary>
         LastModified = 1,
-        
+
         /// <summary>
         /// Sort by Title.
         /// </summary>
@@ -49,6 +49,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// Specify custom string filed for sorting. Field name should be specified in SearchQuery.CustomSortField
         /// </summary>
         /// <remarks>This option should be used when you can't any of the previous options, e.g. authorname or UniqueKey (key)</remarks>
-        CustomStringField = 7
+        CustomStringField = 7,
     }
 }

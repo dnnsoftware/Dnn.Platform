@@ -5,12 +5,12 @@
 namespace DotNetNuke.UI.Modules
 {
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Modules
-    /// Class	 : ISettingsControl
+    /// Class    : ISettingsControl
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ISettingsControl provides a common Interface for Module Settings Controls
+    /// ISettingsControl provides a common Interface for Module Settings Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public interface ISettingsControl : IModuleControl

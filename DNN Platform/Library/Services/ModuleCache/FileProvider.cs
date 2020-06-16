@@ -1,37 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
-
-using DotNetNuke.Collections.Internal;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-
-#endregion
-
 namespace DotNetNuke.Services.ModuleCache
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Security.Cryptography;
+    using System.Text;
+
+    using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     public class FileProvider : ModuleCachingProvider
     {
-        #region Private Members
-
         private const string DataFileExtension = ".data.resources";
         private const string AttribFileExtension = ".attrib.resources";
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
-
-        #endregion
-
-        #region Private Methods
 
         private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
         {
@@ -43,8 +32,6 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
-
-
         private static string GetAttribFileName(int tabModuleId, string cacheKey)
         {
             return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
@@ -52,7 +39,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static int GetCachedItemCount(int tabModuleId)
         {
-            return Directory.GetFiles(GetCacheFolder(), String.Format("*{0}", DataFileExtension)).Length;
+            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
         }
 
         private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
@@ -61,7 +48,7 @@ namespace DotNetNuke.Services.ModuleCache
         }
 
         /// <summary>
-        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added
+        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added.
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>
@@ -81,11 +68,10 @@ namespace DotNetNuke.Services.ModuleCache
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
-
-            if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
+            if (! string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (!(Directory.Exists(cacheFolder)))
+                if (! Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }
@@ -94,7 +80,9 @@ namespace DotNetNuke.Services.ModuleCache
             using (var writerLock = CacheFolderPath.GetWriteLock())
             {
                 if (!CacheFolderPath.ContainsKey(portalId))
+                {
                     CacheFolderPath.Add(portalId, cacheFolder);
+                }
             }
 
             return cacheFolder;
@@ -122,11 +110,11 @@ namespace DotNetNuke.Services.ModuleCache
                     return false;
                 }
             }
-			catch
-			{
-				//if check expire time failed, then force to expire the cache.
-				return true;
-			}
+            catch
+            {
+                // if check expire time failed, then force to expire the cache.
+                return true;
+            }
             finally
             {
                 if (oRead != null)
@@ -144,16 +132,17 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
                 {
-                    filesNotDeleted.Append(String.Format("{0};", File));
+                    filesNotDeleted.Append(string.Format("{0};", File));
                 }
                 else
                 {
                     i += 1;
                 }
             }
+
             if (filesNotDeleted.Length > 0)
             {
-                throw new IOException(String.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
             }
         }
 
@@ -162,22 +151,19 @@ namespace DotNetNuke.Services.ModuleCache
             return cacheFolder.Contains(Globals.ApplicationMapPath);
         }
 
-        #endregion
-
-        #region Abstract Method Implementation
-
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
             var cacheKey = new StringBuilder();
             if (varyBy != null)
             {
                 SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
-                while ((varyByParms.MoveNext()))
+                while (varyByParms.MoveNext())
                 {
                     string key = varyByParms.Current.Key.ToLowerInvariant();
                     cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
                 }
             }
+
             return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
         }
 
@@ -193,6 +179,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 return null;
             }
+
             var fInfo = new FileInfo(cachedModule);
             long numBytes = fInfo.Length;
             using (var fStream = new FileStream(cachedModule, FileMode.Open, FileAccess.Read))
@@ -216,14 +203,14 @@ namespace DotNetNuke.Services.ModuleCache
                 string cacheFolder = GetCacheFolder(portalId);
                 if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
                 {
-                    foreach (string File in Directory.GetFiles(cacheFolder, String.Format("*{0}", AttribFileExtension)))
+                    foreach (string File in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
                     {
                         if (this.IsFileExpired(File))
                         {
                             string fileToDelete = File.Replace(AttribFileExtension, DataFileExtension);
                             if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                             {
-                                filesNotDeleted.Append(String.Format("{0};", fileToDelete));
+                                filesNotDeleted.Append(string.Format("{0};", fileToDelete));
                             }
                             else
                             {
@@ -232,9 +219,10 @@ namespace DotNetNuke.Services.ModuleCache
                         }
                     }
                 }
+
                 if (filesNotDeleted.Length > 0)
                 {
-                    throw new IOException(String.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                    throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
                 }
             }
             catch (Exception ex)
@@ -247,9 +235,8 @@ namespace DotNetNuke.Services.ModuleCache
         {
             try
             {
-            
                 string cachedOutputFile = GetCachedOutputFileName(tabModuleId, cacheKey);
-                
+
                 if (File.Exists(cachedOutputFile))
                 {
                     FileSystemUtils.DeleteFileWithWait(cachedOutputFile, 100, 200);
@@ -292,6 +279,7 @@ namespace DotNetNuke.Services.ModuleCache
                         i += 1;
                     }
                 }
+
                 if (filesNotDeleted.Length > 0)
                 {
                     throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
@@ -302,7 +290,5 @@ namespace DotNetNuke.Services.ModuleCache
                 Exceptions.Exceptions.LogException(ex);
             }
         }
-
-        #endregion
     }
 }

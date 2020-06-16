@@ -2,22 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Localization;
-using System;
-using System.Linq;
-using System.Threading;
-
 namespace DotNetNuke.Common
 {
+    using System;
+    using System.Linq;
+    using System.Threading;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Localization;
+
     internal class NavigationManager : INavigationManager
     {
         private readonly IPortalController _portalController;
+
         public NavigationManager(IPortalController portalController)
         {
             this._portalController = portalController;
@@ -170,14 +172,16 @@ namespace DotNetNuke.Common
         public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             string url = tabID == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabID);
-            if (!String.IsNullOrEmpty(controlKey))
+            if (!string.IsNullOrEmpty(controlKey))
             {
                 url += "&ctl=" + controlKey;
             }
+
             if (additionalParameters != null)
             {
                 url = additionalParameters.Where(parameter => !string.IsNullOrEmpty(parameter)).Aggregate(url, (current, parameter) => current + ("&" + parameter));
             }
+
             if (isSuperTab)
             {
                 url += "&portalid=" + settings.PortalId;
@@ -190,12 +194,12 @@ namespace DotNetNuke.Common
                 tab = TabController.Instance.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
             }
 
-            //only add language to url if more than one locale is enabled
+            // only add language to url if more than one locale is enabled
             if (settings != null && language != null && LocaleController.Instance.GetLocales(settings.PortalId).Count > 1)
             {
                 if (settings.ContentLocalizationEnabled)
                 {
-                    if (language == "")
+                    if (language == string.Empty)
                     {
                         if (tab != null && !string.IsNullOrEmpty(tab.CultureCode))
                         {
@@ -209,8 +213,8 @@ namespace DotNetNuke.Common
                 }
                 else if (settings.EnableUrlLanguage)
                 {
-                    //legacy pre 5.5 behavior
-                    if (language == "")
+                    // legacy pre 5.5 behavior
+                    if (language == string.Empty)
                     {
                         url += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
                     }
@@ -223,7 +227,7 @@ namespace DotNetNuke.Common
 
             if (Host.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
             {
-                if (String.IsNullOrEmpty(pageName))
+                if (string.IsNullOrEmpty(pageName))
                 {
                     pageName = Globals.glbDefaultPage;
                 }

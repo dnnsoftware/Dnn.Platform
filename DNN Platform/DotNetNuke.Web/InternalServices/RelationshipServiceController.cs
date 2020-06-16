@@ -2,24 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class RelationshipServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RelationshipServiceController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RelationshipServiceController));
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,15 +51,14 @@ namespace DotNetNuke.Web.InternalServices
             {
                 Logger.Error(exc);
             }
-            
-            if(success)
+
+            if (success)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,8 +81,9 @@ namespace DotNetNuke.Web.InternalServices
                         {
                             var response = new
                             {
-                                Message = Localization.GetExceptionMessage("UserDoesNotExist",
-                                    "The user you are trying to follow no longer exists.")
+                                Message = Localization.GetExceptionMessage(
+                                    "UserDoesNotExist",
+                                    "The user you are trying to follow no longer exists."),
                             };
                             return this.Request.CreateResponse(HttpStatusCode.InternalServerError, response);
                         }
@@ -99,8 +100,9 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exc);
                 var response = new
                 {
-                    Message = Localization.GetExceptionMessage("AlreadyFollowingUser",
-                        "You are already following this user.")
+                    Message = Localization.GetExceptionMessage(
+                        "AlreadyFollowingUser",
+                        "You are already following this user."),
                 };
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, response);
             }

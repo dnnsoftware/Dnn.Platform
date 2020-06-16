@@ -1,34 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : PortalModuleBase
+    /// Project  : DotNetNuke
+    /// Class    : PortalModuleBase
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -36,7 +31,7 @@ namespace DotNetNuke.Entities.Modules
     /// desktop portal modules within the Portal.
     ///
     /// The PortalModuleBase class defines portal specific properties
-    /// that are used by the portal framework to correctly display portal modules
+    /// that are used by the portal framework to correctly display portal modules.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -51,33 +46,36 @@ namespace DotNetNuke.Entities.Modules
         private ModuleInstanceContext _moduleContext;
 
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered 
+        /// Gets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>
         /// The Dependency Service.
         /// </value>
         protected IServiceProvider DependencyProvider { get; }
-        
+
         public PortalModuleBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleActionCollection Actions
         {
             get
             {
                 return this.ModuleContext.Actions;
             }
+
             set
             {
                 this.ModuleContext.Actions = value;
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control ContainerControl
         {
             get
@@ -88,9 +86,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The EditMode property is used to determine whether the user is in the 
+        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
         /// Administrator role
-        /// Cache
+        /// Cache.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -109,13 +107,15 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleContext.HelpURL;
             }
+
             set
             {
                 this.ModuleContext.HelpURL = value;
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsEditable
         {
             get
@@ -124,20 +124,23 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleInfo ModuleConfiguration
         {
             get
             {
                 return this.ModuleContext.Configuration;
             }
+
             set
             {
                 this.ModuleContext.Configuration = value;
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int PortalId
         {
             get
@@ -146,7 +149,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TabId
         {
             get
@@ -155,33 +159,38 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TabModuleId
         {
             get
             {
                 return this.ModuleContext.TabModuleId;
             }
+
             set
             {
                 this.ModuleContext.TabModuleId = value;
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ModuleId
         {
             get
             {
                 return this.ModuleContext.ModuleId;
             }
+
             set
             {
                 this.ModuleContext.ModuleId = value;
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserInfo UserInfo
         {
             get
@@ -190,7 +199,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int UserId
         {
             get
@@ -199,7 +209,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalAliasInfo PortalAlias
         {
             get
@@ -208,7 +219,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Hashtable Settings
         {
             get
@@ -217,13 +229,11 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #region IModuleControl Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the underlying base control for this ModuleControl
+        /// Gets the underlying base control for this ModuleControl.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public Control Control
         {
@@ -235,9 +245,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path for this control (used primarily for UserControls)
+        /// Gets the Path for this control (used primarily for UserControls).
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ControlPath
         {
@@ -249,9 +259,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Name for this control
+        /// Gets the Name for this control.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ControlName
         {
@@ -263,9 +273,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the local resource file for this control
+        /// Gets or sets and sets the local resource file for this control.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
@@ -280,8 +290,10 @@ namespace DotNetNuke.Entities.Modules
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;
@@ -290,9 +302,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Module Context for this control
+        /// Gets the Module Context for this control.
         /// </summary>
-        /// <returns>A ModuleInstanceContext</returns>
+        /// <returns>A ModuleInstanceContext.</returns>
         /// -----------------------------------------------------------------------------
         public ModuleInstanceContext ModuleContext
         {
@@ -302,60 +314,76 @@ namespace DotNetNuke.Entities.Modules
                 {
                     this._moduleContext = new ModuleInstanceContext(this);
                 }
+
                 return this._moduleContext;
             }
         }
 
-        #endregion
-
         protected override void OnInit(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
             base.OnInit(e);
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
         }
+
         protected override void OnLoad(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
             base.OnLoad(e);
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl()
         {
             return this.ModuleContext.EditUrl();
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string ControlKey)
         {
             return this.ModuleContext.EditUrl(ControlKey);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue)
         {
             return this.ModuleContext.EditUrl(KeyName, KeyValue);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue, string ControlKey)
         {
             return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue, string ControlKey, params string[] AdditionalParameters)
         {
             return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(int TabID, string ControlKey, bool PageRedirect, params string[] AdditionalParameters)
         {
             return this.ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);
@@ -363,8 +391,8 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this 
-        /// Module Control
+        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
+        /// Module Control.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -388,19 +416,17 @@ namespace DotNetNuke.Entities.Modules
             return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
 
-
         public int GetNextActionID()
         {
             return this.ModuleContext.GetNextActionID();
         }
 
-        #region "Obsolete methods"
-
         // CONVERSION: Remove obsoleted methods (FYI some core modules use these, such as Links)
+
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   The CacheDirectory property is used to return the location of the "Cache"
-        ///   Directory for the Module
+        ///   Gets the CacheDirectory property is used to return the location of the "Cache"
+        ///   Directory for the Module.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -416,8 +442,8 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   The CacheFileName property is used to store the FileName for this Module's
-        ///   Cache
+        ///   Gets the CacheFileName property is used to store the FileName for this Module's
+        ///   Cache.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -469,7 +495,5 @@ namespace DotNetNuke.Entities.Modules
         {
             ModuleController.SynchronizeModule(this.ModuleId);
         }
-
-        #endregion
     }
 }

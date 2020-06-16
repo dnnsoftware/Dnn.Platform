@@ -9,6 +9,6 @@ namespace DotNetNuke.Services.Messaging.Data
         Draft = 0,
         Unread = 1,
         Read = 2,
-        Deleted = 3
+        Deleted = 3,
     }
 }

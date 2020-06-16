@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 {
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+
     [ConsoleCommand("echo", Constants.GeneralCategory, "Prompt_Echo_Description")]
     public class Echo : ConsoleCommandBase
     {

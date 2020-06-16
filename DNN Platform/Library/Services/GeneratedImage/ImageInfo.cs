@@ -2,29 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Drawing;
-using System.Net;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Drawing;
+    using System.Net;
+
     /// <summary>
-    /// Image info class
+    /// Image info class.
     /// </summary>
     public class ImageInfo
     {
         /// <summary>
-        /// Image
+        /// Gets image.
         /// </summary>
         public Image Image { get; private set; }
 
         /// <summary>
-        /// Image byte buffer
+        /// Gets image byte buffer.
         /// </summary>
         public byte[] ImageByteBuffer { get; private set; }
 
         /// <summary>
-        /// Http status code
+        /// Gets http status code.
         /// </summary>
         public HttpStatusCode? HttpStatusCode { get; private set; }
 
@@ -41,6 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(image));
             }
+
             this.Image = image;
         }
 
@@ -50,6 +51,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(imageBuffer));
             }
+
             this.ImageByteBuffer = imageBuffer;
         }
     }

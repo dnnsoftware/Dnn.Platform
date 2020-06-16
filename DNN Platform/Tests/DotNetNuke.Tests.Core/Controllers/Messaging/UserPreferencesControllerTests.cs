@@ -2,25 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Data;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Helpers;
-using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Services.Social.Messaging.Data;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Builders;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Helpers;
+    using DotNetNuke.Tests.Core.Controllers.Messaging.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UserPreferencesControllerTests
     {
@@ -48,16 +49,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             ComponentFactory.Container = null;
         }
 
-        #region Constructor tests
         [Test]
         public void UserPreferencesController_ShouldThrowArgumentNullException_WhenNullDataServiceIsPassedInTheConstructor()
         {
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new UserPreferencesController(null));
         }
-        #endregion
 
-        #region SetUserPreference tests
         [Test]
         public void SetUserPreference_ShouldCallDataService_WhenNoError()
         {
@@ -65,24 +63,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var userPreference = new UserPreferenceBuilder().Build();
 
             this.mockDataService.Setup(ds => ds.SetUserPreference(
-                userPreference.PortalId, 
-                userPreference.UserId, 
-                (int) userPreference.MessagesEmailFrequency,
+                userPreference.PortalId,
+                userPreference.UserId,
+                (int)userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency)).Verifiable();
 
-            //Act
+            // Act
             this.userPrefencesController.SetUserPreference(userPreference);
 
             // Assert
-            this.mockDataService.Verify(ds => ds.SetUserPreference(
+            this.mockDataService.Verify(
+                ds => ds.SetUserPreference(
                 userPreference.PortalId,
                 userPreference.UserId,
                 (int)userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency), Times.Once);
         }
-        #endregion
 
-        #region GetUserPreference tests
         [Test]
         public void GetUserPreference_ShouldReturnNullObject_WhenUserDoesNotHavePreference()
         {
@@ -92,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Constants.PORTAL_ValidPortalId,
                 Constants.UserID_User12)).Returns(UserPreferenceDataReaderMockHelper.CreateEmptyUserPreferenceReader);
 
-            //Act
+            // Act
             var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
@@ -109,10 +106,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Build();
 
             var user = GetValidUser();
-            this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId,Constants.UserID_User12))
+            this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId, Constants.UserID_User12))
                 .Returns(UserPreferenceDataReaderMockHelper.CreateUserPreferenceReader(expectedUserPreference));
 
-            //Act
+            // Act
             var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
@@ -122,7 +119,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             Assert.AreEqual(user.PortalID, userPreference.PortalId);
             Assert.AreEqual(user.UserID, userPreference.UserId);
         }
-        #endregion
 
         private static UserInfo GetValidUser()
         {
@@ -130,7 +126,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 DisplayName = Constants.UserDisplayName_User12,
                 UserID = Constants.UserID_User12,
-                PortalID = Constants.PORTAL_ValidPortalId
+                PortalID = Constants.PORTAL_ValidPortalId,
             };
         }
     }

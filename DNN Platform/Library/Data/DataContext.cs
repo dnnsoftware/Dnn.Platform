@@ -1,21 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data.PetaPoco;
-using DotNetNuke.UI.Containers;
-using PetaPoco;
-
-#endregion
-
 namespace DotNetNuke.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.UI.Containers;
+    using global::PetaPoco;
+
     public class DataContext
     {
         public static IDataContext Instance()

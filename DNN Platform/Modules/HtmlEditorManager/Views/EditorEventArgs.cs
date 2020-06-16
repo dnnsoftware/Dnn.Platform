@@ -7,7 +7,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     using System;
 
     /// <summary>
-    /// Contains information about the selected editor when saving
+    /// Contains information about the selected editor when saving.
     /// </summary>
     public class EditorEventArgs : EventArgs
     {

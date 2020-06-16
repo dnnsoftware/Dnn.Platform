@@ -8,6 +8,6 @@ namespace DotNetNuke.Entities.Urls
     {
         SearchFriendly,
         HumanFriendly,
-        Advanced
+        Advanced,
     }
 }

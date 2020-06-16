@@ -1,23 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-
-using Telerik.Web.UI;
-
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using Telerik.Web.UI;
+
     public class TermsList : WebControl
     {
         private bool _IsHeirarchical;
@@ -25,13 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private DnnTreeView _TreeView;
 
-        #region "Events"
-
         public event EventHandler<TermsEventArgs> SelectedTermChanged;
-
-        #endregion
-
-        #region "Public Properties"
 
         public bool IsHeirarchical
         {
@@ -58,6 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
                 }
+
                 return _SelectedTerm;
             }
         }
@@ -75,6 +63,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     _SelectedValue = this._ListBox.SelectedValue;
                 }
+
                 return _SelectedValue;
             }
         }
@@ -92,13 +81,10 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     _DataSource = this._ListBox.DataSource;
                 }
+
                 return _DataSource as List<Term>;
             }
         }
-
-        #endregion
-
-        #region "Protected Methods"
 
         protected override void CreateChildControls()
         {
@@ -145,32 +131,24 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void OnSelectedTermChanged(TermsEventArgs e)
         {
-            //Raise the SelectedTermChanged Event
+            // Raise the SelectedTermChanged Event
             if (this.SelectedTermChanged != null)
             {
                 this.SelectedTermChanged(this, e);
             }
         }
 
-        #endregion
-
-        #region "Event Handlers"
-
         private void ListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            //Raise the SelectedTermChanged Event
+            // Raise the SelectedTermChanged Event
             this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
 
         private void TreeViewNodeClick(object sender, RadTreeNodeEventArgs e)
         {
-            //Raise the SelectedTermChanged Event
+            // Raise the SelectedTermChanged Event
             this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public void BindTerms(List<Term> terms, bool isHeirarchical, bool dataBind)
         {
@@ -191,7 +169,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this._ListBox.SelectedIndex = Null.NullInteger;
             this._TreeView.UnselectAllNodes();
         }
-
-        #endregion
     }
 }

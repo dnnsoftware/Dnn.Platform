@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
 
     /// <summary>
     /// The Config class provides a central area for management of Module Configuration Settings.
@@ -24,13 +23,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             : base(portalId)
         {
             this.Service = service;
-            
-            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, "");
-            var hostApiKey = "";
+
+            var portalApiKey = PortalController.GetPortalSetting(this.Service + "_APIKey", portalId, string.Empty);
+            var hostApiKey = string.Empty;
 
             if (string.IsNullOrEmpty(portalApiKey))
             {
-                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", "");
+                hostApiKey = HostController.Instance.GetString(this.Service + "_APIKey", string.Empty);
                 this.HostConfig = !string.IsNullOrEmpty(hostApiKey);
             }
             else
@@ -41,13 +40,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             if (this.HostConfig)
             {
                 this.APIKey = hostApiKey;
-                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", "");
+                this.APISecret = HostController.Instance.GetString(this.Service + "_APISecret", string.Empty);
                 this.Enabled = HostController.Instance.GetBoolean(this.Service + "_Enabled", false);
             }
             else
             {
                 this.APIKey = portalApiKey;
-                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, "");
+                this.APISecret = PortalController.GetPortalSetting(this.Service + "_APISecret", portalId, string.Empty);
                 this.Enabled = PortalController.GetPortalSettingAsBoolean(this.Service + "_Enabled", portalId, false);
             }
         }
@@ -81,6 +80,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 config = new OAuthConfigBase(service, portalId);
                 DataCache.SetCache(key, config);
             }
+
             return config;
         }
 

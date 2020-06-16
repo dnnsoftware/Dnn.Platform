@@ -2,29 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Recyclebin.Components.Dto;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using System.Net;
-using Dnn.PersonaBar.Library.Controllers;
-
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Recyclebin.Components.Dto;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
     public class RecyclebinController : ServiceLocator<IRecyclebinController, RecyclebinController>,
         IRecyclebinController
     {

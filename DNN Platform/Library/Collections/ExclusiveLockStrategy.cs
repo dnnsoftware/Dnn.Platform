@@ -1,24 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Threading;
-
-#endregion
-
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Threading;
+
     public class ExclusiveLockStrategy : ILockStrategy
     {
         private readonly object _lock = new object();
 
         private bool _isDisposed;
         private Thread _lockedThread;
-
-        #region ILockStrategy Members
 
         public ISharedCollectionLock GetReadLock()
         {
@@ -69,10 +62,9 @@ namespace DotNetNuke.Collections.Internal
         public void Dispose()
         {
             this._isDisposed = true;
-            //todo remove disposable from interface?
-        }
 
-        #endregion
+            // todo remove disposable from interface?
+        }
 
         private ISharedCollectionLock GetLock(TimeSpan timeout)
         {

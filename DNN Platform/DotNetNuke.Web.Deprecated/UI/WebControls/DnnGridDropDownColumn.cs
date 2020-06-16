@@ -1,24 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Services.Localization;
-
-using Telerik.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Services.Localization;
+    using Telerik.Web.UI;
+
     public class DnnGridDropDownColumn : GridDropDownColumn
     {
-        #region Public Properties
-
         public string LocalResourceFile
         {
             get
@@ -27,15 +19,11 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         public override GridColumn Clone()
         {
             DnnGridDropDownColumn dnnGridColumn = new DnnGridDropDownColumn();
 
-            //you should override CopyBaseProperties if you have some column specific properties
+            // you should override CopyBaseProperties if you have some column specific properties
             dnnGridColumn.CopyBaseProperties(this);
 
             return dnnGridColumn;
@@ -44,12 +32,10 @@ namespace DotNetNuke.Web.UI.WebControls
         public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
         {
             base.InitializeCell(cell, columnIndex, inItem);
-            if (inItem is GridHeaderItem && !String.IsNullOrEmpty(this.HeaderText))
+            if (inItem is GridHeaderItem && !string.IsNullOrEmpty(this.HeaderText))
             {
                 cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
             }
         }
-
-        #endregion
     }
 }

@@ -1,33 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
 namespace DotNetNuke.Services.Localization
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class LanguagePackInfo : BaseEntityInfo, IHydratable
     {
-		#region "Private Members"
-
         private int _DependentPackageID = Null.NullInteger;
         private int _LanguageID = Null.NullInteger;
         private int _LanguagePackID = Null.NullInteger;
         private int _PackageID = Null.NullInteger;
-
-		#endregion
-
-		#region "Public Properties"
 
         public int LanguagePackID
         {
@@ -35,6 +24,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._LanguagePackID;
             }
+
             set
             {
                 this._LanguagePackID = value;
@@ -47,6 +37,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._LanguageID;
             }
+
             set
             {
                 this._LanguageID = value;
@@ -59,6 +50,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._PackageID;
             }
+
             set
             {
                 this._PackageID = value;
@@ -71,6 +63,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._DependentPackageID;
             }
+
             set
             {
                 this._DependentPackageID = value;
@@ -91,10 +84,6 @@ namespace DotNetNuke.Services.Localization
                 }
             }
         }
-		
-		#endregion
-
-        #region IHydratable Members
 
         public void Fill(IDataReader dr)
         {
@@ -102,8 +91,9 @@ namespace DotNetNuke.Services.Localization
             this.LanguageID = Null.SetNullInteger(dr["LanguageID"]);
             this.PackageID = Null.SetNullInteger(dr["PackageID"]);
             this.DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
         }
 
         public int KeyID
@@ -112,12 +102,11 @@ namespace DotNetNuke.Services.Localization
             {
                 return this.LanguagePackID;
             }
+
             set
             {
                 this.LanguagePackID = value;
             }
         }
-
-        #endregion
     }
 }

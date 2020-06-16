@@ -1,26 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.UI.WebControls;
+
     public class NavObjectBase : SkinObjectBase
     {
-		#region "Private Members"
-		
         private readonly List<CustomAttribute> m_objCustomAttributes = new List<CustomAttribute>();
         private bool m_blnPopulateNodesFromClient = true;
         private int m_intExpandDepth = -1;
@@ -65,7 +58,7 @@ namespace DotNetNuke.UI.Skins
         private string m_strIndicateChildImageRoot;
         private string m_strIndicateChildImageSub;
         private string m_strIndicateChildren;
-        private string m_strLevel = "";
+        private string m_strLevel = string.Empty;
         private string m_strMouseOutHideDelay;
         private string m_strMouseOverAction;
         private string m_strMouseOverDisplay;
@@ -80,7 +73,7 @@ namespace DotNetNuke.UI.Skins
         private string m_strPathImage;
         private string m_strPathSystemImage;
         private string m_strPathSystemScript;
-        private string m_strProviderName = "";
+        private string m_strProviderName = string.Empty;
         private string m_strSeparatorHTML;
         private string m_strSeparatorLeftHTML;
         private string m_strSeparatorLeftHTMLActive;
@@ -102,14 +95,12 @@ namespace DotNetNuke.UI.Skins
         private string m_strStyleSelectionBorderColor;
         private string m_strStyleSelectionColor;
         private string m_strStyleSelectionForeColor;
-        private string m_strToolTip = "";
+        private string m_strToolTip = string.Empty;
         private string m_strWorkImage;
 
-		#endregion
-
-		#region "Public Properties"
-		//JH - 2/5/07 - support for custom attributes
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
+        // JH - 2/5/07 - support for custom attributes
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<CustomAttribute> CustomAttributes
         {
             get
@@ -119,13 +110,14 @@ namespace DotNetNuke.UI.Skins
         }
 
         public bool ShowHiddenTabs { get; set; }
-      
+
         public string ProviderName
         {
             get
             {
                 return this.m_strProviderName;
             }
+
             set
             {
                 this.m_strProviderName = value;
@@ -146,6 +138,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_strLevel;
             }
+
             set
             {
                 this.m_strLevel = value;
@@ -158,6 +151,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_strToolTip;
             }
+
             set
             {
                 this.m_strToolTip = value;
@@ -170,6 +164,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_blnPopulateNodesFromClient;
             }
+
             set
             {
                 this.m_blnPopulateNodesFromClient = value;
@@ -182,6 +177,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_intExpandDepth;
             }
+
             set
             {
                 this.m_intExpandDepth = value;
@@ -194,6 +190,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_intStartTabId;
             }
+
             set
             {
                 this.m_intStartTabId = value;
@@ -213,6 +210,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.PathSystemImage;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -240,6 +238,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.PathImage;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -267,6 +266,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.WorkImage;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -293,6 +293,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.PathSystemScript;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -310,7 +311,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strControlOrientation;
@@ -327,8 +328,10 @@ namespace DotNetNuke.UI.Skins
                             break;
                     }
                 }
+
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -354,7 +357,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strControlAlignment;
@@ -377,8 +380,10 @@ namespace DotNetNuke.UI.Skins
                             break;
                     }
                 }
+
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -419,6 +424,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.ForceCrawlerDisplay;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -445,6 +451,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.ForceDownLevel;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -471,6 +478,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.MouseOutHideDelay.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -488,7 +496,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strMouseOverDisplay;
@@ -508,8 +516,10 @@ namespace DotNetNuke.UI.Skins
                             break;
                     }
                 }
+
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -538,7 +548,7 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                string retValue = "";
+                string retValue = string.Empty;
                 if (this.Control == null)
                 {
                     retValue = this.m_strMouseOverAction;
@@ -555,8 +565,10 @@ namespace DotNetNuke.UI.Skins
                             break;
                     }
                 }
+
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -590,6 +602,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildren.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -616,6 +629,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -643,6 +657,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -670,6 +685,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageExpandedRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -697,6 +713,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageExpandedSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -724,6 +741,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -751,6 +769,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -778,6 +797,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -805,6 +825,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -832,6 +853,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLBreadCrumbRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -859,6 +881,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLBreadCrumbSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -886,6 +909,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLBreadCrumbRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -913,6 +937,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLBreadCrumbSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -940,6 +965,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorHTML;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -967,6 +993,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorLeftHTML;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -994,6 +1021,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorRightHTML;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1021,6 +1049,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorLeftHTMLActive;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1048,6 +1077,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorRightHTMLActive;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1075,6 +1105,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorLeftHTMLBreadCrumb;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1102,6 +1133,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorRightHTMLBreadCrumb;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1129,6 +1161,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSControl;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1155,6 +1188,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSContainerRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1181,6 +1215,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNode;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1207,6 +1242,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSIcon;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1233,6 +1269,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSContainerSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1259,6 +1296,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeHover;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1285,6 +1323,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSBreak;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1311,6 +1350,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSIndicateChildSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1337,6 +1377,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSIndicateChildRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1363,6 +1404,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSBreadCrumbRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1389,6 +1431,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSBreadCrumbSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1415,6 +1458,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1441,6 +1485,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeSelectedRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1467,6 +1512,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeSelectedSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1493,6 +1539,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeHoverRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1519,6 +1566,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeHoverSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1545,6 +1593,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSSeparator;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1571,6 +1620,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSLeftSeparator;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1597,6 +1647,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSRightSeparator;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1623,6 +1674,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSLeftSeparatorSelection;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1649,6 +1701,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSRightSeparatorSelection;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1675,6 +1728,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSLeftSeparatorBreadCrumb;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1701,6 +1755,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSRightSeparatorBreadCrumb;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1727,6 +1782,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleBackColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1753,6 +1809,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleForeColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1779,6 +1836,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleHighlightColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1805,6 +1863,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleIconBackColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1831,6 +1890,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleSelectionBorderColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1857,6 +1917,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleSelectionColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1883,6 +1944,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleSelectionForeColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1909,6 +1971,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleControlHeight.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1935,6 +1998,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleBorderWidth.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1961,6 +2025,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleNodeHeight.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1987,6 +2052,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleIconWidth.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2013,6 +2079,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleFontNames;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2039,6 +2106,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleFontSize.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2065,6 +2133,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleFontBold;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2091,6 +2160,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsShadowColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2117,6 +2187,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsStyle;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2143,6 +2214,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsShadowStrength.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2169,6 +2241,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsTransition;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2195,6 +2268,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsDuration.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2221,6 +2295,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsShadowDirection;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2234,11 +2309,7 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-		#endregion
-
-		#region "Public Methods"
-
-		public DNNNodeCollection GetNavigationNodes(DNNNode objNode)
+        public DNNNodeCollection GetNavigationNodes(DNNNode objNode)
         {
             int intRootParent = this.PortalSettings.ActiveTab.TabID;
             DNNNodeCollection objNodes = null;
@@ -2250,18 +2321,21 @@ namespace DotNetNuke.UI.Skins
                 case "child":
                     break;
                 case "parent":
-                    intNavNodeOptions = (int) Navigation.NavNodeOptions.IncludeParent + (int) Navigation.NavNodeOptions.IncludeSelf;
+                    intNavNodeOptions = (int)Navigation.NavNodeOptions.IncludeParent + (int)Navigation.NavNodeOptions.IncludeSelf;
                     break;
                 case "same":
-                    intNavNodeOptions = (int) Navigation.NavNodeOptions.IncludeSiblings + (int) Navigation.NavNodeOptions.IncludeSelf;
+                    intNavNodeOptions = (int)Navigation.NavNodeOptions.IncludeSiblings + (int)Navigation.NavNodeOptions.IncludeSelf;
                     break;
                 default:
                     intRootParent = -1;
-                    intNavNodeOptions = (int) Navigation.NavNodeOptions.IncludeSiblings + (int) Navigation.NavNodeOptions.IncludeSelf;
+                    intNavNodeOptions = (int)Navigation.NavNodeOptions.IncludeSiblings + (int)Navigation.NavNodeOptions.IncludeSelf;
                     break;
             }
 
-            if (this.ShowHiddenTabs) intNavNodeOptions += (int) Navigation.NavNodeOptions.IncludeHiddenNodes;
+            if (this.ShowHiddenTabs)
+            {
+                intNavNodeOptions += (int)Navigation.NavNodeOptions.IncludeHiddenNodes;
+            }
 
             switch (this.ToolTip.ToLowerInvariant())
             {
@@ -2278,38 +2352,39 @@ namespace DotNetNuke.UI.Skins
                     eToolTips = Navigation.ToolTipSource.None;
                     break;
             }
+
             if (this.PopulateNodesFromClient && this.Control.SupportsPopulateOnDemand)
             {
-                intNavNodeOptions += (int) Navigation.NavNodeOptions.MarkPendingNodes;
+                intNavNodeOptions += (int)Navigation.NavNodeOptions.MarkPendingNodes;
             }
+
             if (this.PopulateNodesFromClient && this.Control.SupportsPopulateOnDemand == false)
             {
                 this.ExpandDepth = -1;
             }
+
             if (this.StartTabId != -1)
             {
                 intRootParent = this.StartTabId;
             }
+
             if (objNode != null)
             {
                 intRootParent = Convert.ToInt32(objNode.ID);
-                intNavNodeOptions = (int) Navigation.NavNodeOptions.MarkPendingNodes;
+                intNavNodeOptions = (int)Navigation.NavNodeOptions.MarkPendingNodes;
                 objNodes = Navigation.GetNavigationNodes(objNode, eToolTips, intRootParent, intDepth, intNavNodeOptions);
             }
             else
             {
                 objNodes = Navigation.GetNavigationNodes(this.Control.ClientID, eToolTips, intRootParent, intDepth, intNavNodeOptions);
             }
+
             return objNodes;
         }
 
-		#endregion
-
-		#region "Protected Methods"
-
-		protected string GetValue(string strVal, string strDefault)
+        protected string GetValue(string strVal, string strDefault)
         {
-            if (String.IsNullOrEmpty(strVal))
+            if (string.IsNullOrEmpty(strVal))
             {
                 return strDefault;
             }
@@ -2321,10 +2396,11 @@ namespace DotNetNuke.UI.Skins
 
         protected void InitializeNavControl(Control objParent, string strDefaultProvider)
         {
-            if (String.IsNullOrEmpty(this.ProviderName))
+            if (string.IsNullOrEmpty(this.ProviderName))
             {
                 this.ProviderName = strDefaultProvider;
             }
+
             this.m_objControl = NavigationProvider.Instance(this.ProviderName);
             this.Control.ControlID = "ctl" + this.ID;
             this.Control.Initialize();
@@ -2332,29 +2408,29 @@ namespace DotNetNuke.UI.Skins
             objParent.Controls.Add(this.Control.NavigationControl);
         }
 
-		#endregion
-
-		#region "Private Methods"
-
-		private void AssignControlProperties()
+        private void AssignControlProperties()
         {
-            if (!String.IsNullOrEmpty(this.m_strPathSystemImage))
+            if (!string.IsNullOrEmpty(this.m_strPathSystemImage))
             {
                 this.Control.PathSystemImage = this.m_strPathSystemImage;
             }
-            if (!String.IsNullOrEmpty(this.m_strPathImage))
+
+            if (!string.IsNullOrEmpty(this.m_strPathImage))
             {
                 this.Control.PathImage = this.m_strPathImage;
             }
-            if (!String.IsNullOrEmpty(this.m_strPathSystemScript))
+
+            if (!string.IsNullOrEmpty(this.m_strPathSystemScript))
             {
                 this.Control.PathSystemScript = this.m_strPathSystemScript;
             }
-            if (!String.IsNullOrEmpty(this.m_strWorkImage))
+
+            if (!string.IsNullOrEmpty(this.m_strWorkImage))
             {
                 this.Control.WorkImage = this.m_strWorkImage;
             }
-            if (!String.IsNullOrEmpty(this.m_strControlOrientation))
+
+            if (!string.IsNullOrEmpty(this.m_strControlOrientation))
             {
                 switch (this.m_strControlOrientation.ToLowerInvariant())
                 {
@@ -2366,7 +2442,8 @@ namespace DotNetNuke.UI.Skins
                         break;
                 }
             }
-            if (!String.IsNullOrEmpty(this.m_strControlAlignment))
+
+            if (!string.IsNullOrEmpty(this.m_strControlAlignment))
             {
                 switch (this.m_strControlAlignment.ToLowerInvariant())
                 {
@@ -2384,13 +2461,15 @@ namespace DotNetNuke.UI.Skins
                         break;
                 }
             }
+
             this.Control.ForceCrawlerDisplay = this.GetValue(this.m_strForceCrawlerDisplay, "False");
             this.Control.ForceDownLevel = this.GetValue(this.m_strForceDownLevel, "False");
-            if (!String.IsNullOrEmpty(this.m_strMouseOutHideDelay))
+            if (!string.IsNullOrEmpty(this.m_strMouseOutHideDelay))
             {
                 this.Control.MouseOutHideDelay = Convert.ToDecimal(this.m_strMouseOutHideDelay);
             }
-            if (!String.IsNullOrEmpty(this.m_strMouseOverDisplay))
+
+            if (!string.IsNullOrEmpty(this.m_strMouseOverDisplay))
             {
                 switch (this.m_strMouseOverDisplay.ToLowerInvariant())
                 {
@@ -2405,6 +2484,7 @@ namespace DotNetNuke.UI.Skins
                         break;
                 }
             }
+
             if (Convert.ToBoolean(this.GetValue(this.m_strMouseOverAction, "True")))
             {
                 this.Control.MouseOverAction = NavigationProvider.HoverAction.Expand;
@@ -2413,255 +2493,318 @@ namespace DotNetNuke.UI.Skins
             {
                 this.Control.MouseOverAction = NavigationProvider.HoverAction.None;
             }
+
             this.Control.IndicateChildren = Convert.ToBoolean(this.GetValue(this.m_strIndicateChildren, "True"));
-            if (!String.IsNullOrEmpty(this.m_strIndicateChildImageRoot))
+            if (!string.IsNullOrEmpty(this.m_strIndicateChildImageRoot))
             {
                 this.Control.IndicateChildImageRoot = this.m_strIndicateChildImageRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strIndicateChildImageSub))
+
+            if (!string.IsNullOrEmpty(this.m_strIndicateChildImageSub))
             {
                 this.Control.IndicateChildImageSub = this.m_strIndicateChildImageSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strIndicateChildImageExpandedRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strIndicateChildImageExpandedRoot))
             {
                 this.Control.IndicateChildImageExpandedRoot = this.m_strIndicateChildImageExpandedRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strIndicateChildImageExpandedSub))
+
+            if (!string.IsNullOrEmpty(this.m_strIndicateChildImageExpandedSub))
             {
                 this.Control.IndicateChildImageExpandedSub = this.m_strIndicateChildImageExpandedSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeLeftHTMLRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeLeftHTMLRoot))
             {
                 this.Control.NodeLeftHTMLRoot = this.m_strNodeLeftHTMLRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeRightHTMLRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeRightHTMLRoot))
             {
                 this.Control.NodeRightHTMLRoot = this.m_strNodeRightHTMLRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeLeftHTMLSub))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeLeftHTMLSub))
             {
                 this.Control.NodeLeftHTMLSub = this.m_strNodeLeftHTMLSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeRightHTMLSub))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeRightHTMLSub))
             {
                 this.Control.NodeRightHTMLSub = this.m_strNodeRightHTMLSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeLeftHTMLBreadCrumbRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeLeftHTMLBreadCrumbRoot))
             {
                 this.Control.NodeLeftHTMLBreadCrumbRoot = this.m_strNodeLeftHTMLBreadCrumbRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeLeftHTMLBreadCrumbSub))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeLeftHTMLBreadCrumbSub))
             {
                 this.Control.NodeLeftHTMLBreadCrumbSub = this.m_strNodeLeftHTMLBreadCrumbSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeRightHTMLBreadCrumbRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeRightHTMLBreadCrumbRoot))
             {
                 this.Control.NodeRightHTMLBreadCrumbRoot = this.m_strNodeRightHTMLBreadCrumbRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strNodeRightHTMLBreadCrumbSub))
+
+            if (!string.IsNullOrEmpty(this.m_strNodeRightHTMLBreadCrumbSub))
             {
                 this.Control.NodeRightHTMLBreadCrumbSub = this.m_strNodeRightHTMLBreadCrumbSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorHTML))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorHTML))
             {
                 this.Control.SeparatorHTML = this.m_strSeparatorHTML;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorLeftHTML))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorLeftHTML))
             {
                 this.Control.SeparatorLeftHTML = this.m_strSeparatorLeftHTML;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorRightHTML))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorRightHTML))
             {
                 this.Control.SeparatorRightHTML = this.m_strSeparatorRightHTML;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorLeftHTMLActive))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorLeftHTMLActive))
             {
                 this.Control.SeparatorLeftHTMLActive = this.m_strSeparatorLeftHTMLActive;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorRightHTMLActive))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorRightHTMLActive))
             {
                 this.Control.SeparatorRightHTMLActive = this.m_strSeparatorRightHTMLActive;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorLeftHTMLBreadCrumb))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorLeftHTMLBreadCrumb))
             {
                 this.Control.SeparatorLeftHTMLBreadCrumb = this.m_strSeparatorLeftHTMLBreadCrumb;
             }
-            if (!String.IsNullOrEmpty(this.m_strSeparatorRightHTMLBreadCrumb))
+
+            if (!string.IsNullOrEmpty(this.m_strSeparatorRightHTMLBreadCrumb))
             {
                 this.Control.SeparatorRightHTMLBreadCrumb = this.m_strSeparatorRightHTMLBreadCrumb;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSControl))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSControl))
             {
                 this.Control.CSSControl = this.m_strCSSControl;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSContainerRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSContainerRoot))
             {
                 this.Control.CSSContainerRoot = this.m_strCSSContainerRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNode))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNode))
             {
                 this.Control.CSSNode = this.m_strCSSNode;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSIcon))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSIcon))
             {
                 this.Control.CSSIcon = this.m_strCSSIcon;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSContainerSub))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSContainerSub))
             {
                 this.Control.CSSContainerSub = this.m_strCSSContainerSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNodeHover))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNodeHover))
             {
                 this.Control.CSSNodeHover = this.m_strCSSNodeHover;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSBreak))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSBreak))
             {
                 this.Control.CSSBreak = this.m_strCSSBreak;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSIndicateChildSub))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSIndicateChildSub))
             {
                 this.Control.CSSIndicateChildSub = this.m_strCSSIndicateChildSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSIndicateChildRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSIndicateChildRoot))
             {
                 this.Control.CSSIndicateChildRoot = this.m_strCSSIndicateChildRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSBreadCrumbRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSBreadCrumbRoot))
             {
                 this.Control.CSSBreadCrumbRoot = this.m_strCSSBreadCrumbRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSBreadCrumbSub))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSBreadCrumbSub))
             {
                 this.Control.CSSBreadCrumbSub = this.m_strCSSBreadCrumbSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNodeRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNodeRoot))
             {
                 this.Control.CSSNodeRoot = this.m_strCSSNodeRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNodeSelectedRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNodeSelectedRoot))
             {
                 this.Control.CSSNodeSelectedRoot = this.m_strCSSNodeSelectedRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNodeSelectedSub))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNodeSelectedSub))
             {
                 this.Control.CSSNodeSelectedSub = this.m_strCSSNodeSelectedSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNodeHoverRoot))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNodeHoverRoot))
             {
                 this.Control.CSSNodeHoverRoot = this.m_strCSSNodeHoverRoot;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSNodeHoverSub))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSNodeHoverSub))
             {
                 this.Control.CSSNodeHoverSub = this.m_strCSSNodeHoverSub;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSSeparator))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSSeparator))
             {
                 this.Control.CSSSeparator = this.m_strCSSSeparator;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSLeftSeparator))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSLeftSeparator))
             {
                 this.Control.CSSLeftSeparator = this.m_strCSSLeftSeparator;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSRightSeparator))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSRightSeparator))
             {
                 this.Control.CSSRightSeparator = this.m_strCSSRightSeparator;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSLeftSeparatorSelection))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSLeftSeparatorSelection))
             {
                 this.Control.CSSLeftSeparatorSelection = this.m_strCSSLeftSeparatorSelection;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSRightSeparatorSelection))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSRightSeparatorSelection))
             {
                 this.Control.CSSRightSeparatorSelection = this.m_strCSSRightSeparatorSelection;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSLeftSeparatorBreadCrumb))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSLeftSeparatorBreadCrumb))
             {
                 this.Control.CSSLeftSeparatorBreadCrumb = this.m_strCSSLeftSeparatorBreadCrumb;
             }
-            if (!String.IsNullOrEmpty(this.m_strCSSRightSeparatorBreadCrumb))
+
+            if (!string.IsNullOrEmpty(this.m_strCSSRightSeparatorBreadCrumb))
             {
                 this.Control.CSSRightSeparatorBreadCrumb = this.m_strCSSRightSeparatorBreadCrumb;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleBackColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleBackColor))
             {
                 this.Control.StyleBackColor = this.m_strStyleBackColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleForeColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleForeColor))
             {
                 this.Control.StyleForeColor = this.m_strStyleForeColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleHighlightColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleHighlightColor))
             {
                 this.Control.StyleHighlightColor = this.m_strStyleHighlightColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleIconBackColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleIconBackColor))
             {
                 this.Control.StyleIconBackColor = this.m_strStyleIconBackColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleSelectionBorderColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleSelectionBorderColor))
             {
                 this.Control.StyleSelectionBorderColor = this.m_strStyleSelectionBorderColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleSelectionColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleSelectionColor))
             {
                 this.Control.StyleSelectionColor = this.m_strStyleSelectionColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleSelectionForeColor))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleSelectionForeColor))
             {
                 this.Control.StyleSelectionForeColor = this.m_strStyleSelectionForeColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleControlHeight))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleControlHeight))
             {
                 this.Control.StyleControlHeight = Convert.ToDecimal(this.m_strStyleControlHeight);
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleBorderWidth))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleBorderWidth))
             {
                 this.Control.StyleBorderWidth = Convert.ToDecimal(this.m_strStyleBorderWidth);
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleNodeHeight))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleNodeHeight))
             {
                 this.Control.StyleNodeHeight = Convert.ToDecimal(this.m_strStyleNodeHeight);
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleIconWidth))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleIconWidth))
             {
                 this.Control.StyleIconWidth = Convert.ToDecimal(this.m_strStyleIconWidth);
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleFontNames))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleFontNames))
             {
                 this.Control.StyleFontNames = this.m_strStyleFontNames;
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleFontSize))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleFontSize))
             {
                 this.Control.StyleFontSize = Convert.ToDecimal(this.m_strStyleFontSize);
             }
-            if (!String.IsNullOrEmpty(this.m_strStyleFontBold))
+
+            if (!string.IsNullOrEmpty(this.m_strStyleFontBold))
             {
                 this.Control.StyleFontBold = this.m_strStyleFontBold;
             }
-            if (!String.IsNullOrEmpty(this.m_strEffectsShadowColor))
+
+            if (!string.IsNullOrEmpty(this.m_strEffectsShadowColor))
             {
                 this.Control.EffectsShadowColor = this.m_strEffectsShadowColor;
             }
-            if (!String.IsNullOrEmpty(this.m_strEffectsStyle))
+
+            if (!string.IsNullOrEmpty(this.m_strEffectsStyle))
             {
                 this.Control.EffectsStyle = this.m_strEffectsStyle;
             }
-            if (!String.IsNullOrEmpty(this.m_strEffectsShadowStrength))
+
+            if (!string.IsNullOrEmpty(this.m_strEffectsShadowStrength))
             {
                 this.Control.EffectsShadowStrength = Convert.ToInt32(this.m_strEffectsShadowStrength);
             }
-            if (!String.IsNullOrEmpty(this.m_strEffectsTransition))
+
+            if (!string.IsNullOrEmpty(this.m_strEffectsTransition))
             {
                 this.Control.EffectsTransition = this.m_strEffectsTransition;
             }
-            if (!String.IsNullOrEmpty(this.m_strEffectsDuration))
+
+            if (!string.IsNullOrEmpty(this.m_strEffectsDuration))
             {
                 this.Control.EffectsDuration = Convert.ToDouble(this.m_strEffectsDuration);
             }
-            if (!String.IsNullOrEmpty(this.m_strEffectsShadowDirection))
+
+            if (!string.IsNullOrEmpty(this.m_strEffectsShadowDirection))
             {
                 this.Control.EffectsShadowDirection = this.m_strEffectsShadowDirection;
             }
+
             this.Control.CustomAttributes = this.CustomAttributes;
         }
 
@@ -2691,11 +2834,10 @@ namespace DotNetNuke.UI.Skins
                     return this.ResolveUrl(strPath);
                 }
             }
-            return strPath;
-		}
 
-		#endregion
-	}
+            return strPath;
+        }
+    }
 
     public class CustomAttribute
     {

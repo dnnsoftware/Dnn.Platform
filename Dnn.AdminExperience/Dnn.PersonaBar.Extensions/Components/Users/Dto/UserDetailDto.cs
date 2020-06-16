@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Runtime.Serialization;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Library.Common;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Abstractions;
-
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
+    using System;
+    using System.Linq;
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Library.Common;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+    using Microsoft.Extensions.DependencyInjection;
+
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {

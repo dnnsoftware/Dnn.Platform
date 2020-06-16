@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Web.Api.Internal.Auth;
-using DotNetNuke.Web.ConfigSection;
-
 namespace DotNetNuke.Web.Api.Auth
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Web.Api.Internal.Auth;
+    using DotNetNuke.Web.ConfigSection;
+
     public class DigestAuthMessageHandler : AuthMessageHandlerBase
     {
         public override string AuthScheme => DigestAuthentication.AuthenticationScheme;
@@ -94,7 +95,7 @@ namespace DotNetNuke.Web.Api.Auth
             {
                 SetCurrentPrincipal(digestAuthentication.User, request);
             }
-            else if(digestAuthentication.IsNonceStale)
+            else if (digestAuthentication.IsNonceStale)
             {
                 return true;
             }

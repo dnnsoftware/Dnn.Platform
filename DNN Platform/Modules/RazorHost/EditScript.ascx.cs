@@ -1,26 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
 namespace DotNetNuke.Modules.RazorHost
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class EditScript : ModuleUserControlBase
     {
@@ -40,10 +35,11 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string m_RazorScriptFile = Null.NullString;
                 var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-                if (!(string.IsNullOrEmpty(scriptFileSetting)))
+                if (! string.IsNullOrEmpty(scriptFileSetting))
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
+
                 return m_RazorScriptFile;
             }
         }
@@ -55,12 +51,13 @@ namespace DotNetNuke.Modules.RazorHost
 
             foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
             {
-                string scriptPath = script.Replace(basePath, "");
+                string scriptPath = script.Replace(basePath, string.Empty);
                 var item = new ListItem(scriptPath, scriptPath);
-                if (!(string.IsNullOrEmpty(scriptFileSetting)) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
+                if (! string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
                 {
                     item.Selected = true;
                 }
+
                 this.scriptList.Items.Add(item);
             }
         }
@@ -78,9 +75,9 @@ namespace DotNetNuke.Modules.RazorHost
             this.txtSource.Text = objStreamReader.ReadToEnd();
             objStreamReader.Close();
 
-            if (!(string.IsNullOrEmpty(scriptFileSetting)))
+            if (! string.IsNullOrEmpty(scriptFileSetting))
             {
-                this.isCurrentScript.Checked = (this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant());
+                this.isCurrentScript.Checked = this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant();
             }
         }
 
@@ -96,7 +93,7 @@ namespace DotNetNuke.Modules.RazorHost
 
             if (this.isCurrentScript.Checked)
             {
-                //Update setting
+                // Update setting
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
             }
         }
@@ -131,7 +128,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -143,7 +140,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.SaveScript();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -156,7 +153,7 @@ namespace DotNetNuke.Modules.RazorHost
                 this.SaveScript();
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -168,7 +165,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.Response.Redirect(this.ModuleContext.EditUrl("Add"), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -178,7 +175,5 @@ namespace DotNetNuke.Modules.RazorHost
         {
             this.DisplayFile();
         }
-
-
     }
 }

@@ -2,34 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using NUnit.Framework;
-using Moq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Tests.Utilities.Mocks;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Common;
-using System.Collections;
-
 namespace DotNetNuke.Tests.Web.InternalServices
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TabVersionControllerTests
     {
-
         private class TabVersionControllerTestable : TabVersionController
         {
         }
 
         private class DateUtilsTestable : DateUtils
         {
-            public new static TimeZoneInfo GetDatabaseDateTimeOffset()
+            public static new TimeZoneInfo GetDatabaseDateTimeOffset()
             {
                 var timeZoneId = "UTC";
                 return TimeZoneInfo.CreateCustomTimeZone(timeZoneId, new TimeSpan(0, 0, 0), timeZoneId, timeZoneId);
@@ -52,10 +50,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private const int UserID = 1;
         private const int TabID = 99;
-        
+
         // Assuming 12:00 Aug 15, 2018 server local time
         private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);
-        
 
         [SetUp]
         public void Setup()
@@ -65,10 +62,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.SetupHostController();
         }
 
-        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        [Test]
+        [TestCaseSource(typeof(TestCaseFactory), "TestCases")]
         public void GetTabVersions_Verify_User_Preferred_TimeZone(string userPreferredTimeZone, DateTime expectedDateTime)
         {
-
             // Arrange
             this.SetupUserController(userPreferredTimeZone);
 
@@ -102,8 +99,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private UserInfo GetMockedUser(string timeZoneId)
         {
-            var profile = new UserProfile() {
-                PreferredTimeZone = this.GetMockedUserTimeZone(timeZoneId)
+            var profile = new UserProfile()
+            {
+                PreferredTimeZone = this.GetMockedUserTimeZone(timeZoneId),
             };
 
             profile.ProfileProperties.Add(new Entities.Profile.ProfilePropertyDefinition(99)
@@ -112,13 +110,13 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PropertyDefinitionId = 20,
                 PropertyCategory = "Preferences",
                 PropertyName = "PreferredTimeZone",
-                PropertyValue = this.GetMockedUserTimeZone(timeZoneId).Id
+                PropertyValue = this.GetMockedUserTimeZone(timeZoneId).Id,
             });
             var user = new UserInfo()
             {
                 Profile = profile,
                 UserID = UserID,
-                PortalID = 99
+                PortalID = 99,
             };
 
             return user;
@@ -137,7 +135,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 TabId = TabID,
                 TabVersionId = 1,
                 Version = 1,
-                CreatedByUserID = UserID
+                CreatedByUserID = UserID,
             };
             tabVersion.GetType().BaseType.GetProperty("CreatedOnDate").SetValue(tabVersion, this.ServerCreateOnDate, null);
 
@@ -148,7 +146,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             return new List<TabVersion>()
             {
-                this.GetMockedTabVersion()
+                this.GetMockedTabVersion(),
             };
         }
 
@@ -159,5 +157,4 @@ namespace DotNetNuke.Tests.Web.InternalServices
             HostController.RegisterInstance(this._mockHostController.Object);
         }
     }
-
 }

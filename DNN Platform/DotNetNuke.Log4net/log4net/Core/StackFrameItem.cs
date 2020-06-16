@@ -1,15 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 #if !NETCF
-#region Apache License
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more 
+// Licensed to the Apache Software Foundation (ASF) under one or more
 // contributor license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership. 
+// this work for additional information regarding copyright ownership.
 // The ASF licenses this file to you under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with 
+// (the "License"); you may not use this file except in compliance with
 // the License. You may obtain a copy of the License at
 //
 // http://www.apache.org/licenses/LICENSE-2.0
@@ -20,11 +18,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#endregion
 using System;
-using System.Text;
 using System.Diagnostics;
 using System.Reflection;
+using System.Text;
+
 using log4net.Util;
 
 namespace log4net.Core
@@ -33,14 +31,13 @@ namespace log4net.Core
     /// provides stack frame information without actually referencing a System.Diagnostics.StackFrame
     /// as that would require that the containing assembly is loaded.
     /// </summary>
-    /// 
+    ///
     [Serializable]
     public class StackFrameItem
     {
-        #region Public Instance Constructors
-
         /// <summary>
-        /// returns a stack frame item from a stack frame. This 
+        /// Initializes a new instance of the <see cref="StackFrameItem"/> class.
+        /// returns a stack frame item from a stack frame. This.
         /// </summary>
         /// <param name="frame"></param>
         /// <returns></returns>
@@ -52,44 +49,44 @@ namespace log4net.Core
             this.m_method = new MethodItem();
             this.m_className = NA;
 
-			try
-			{
-				// get frame values
-				this.m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
-				this.m_fileName = frame.GetFileName();
-				// get method values
-				MethodBase method = frame.GetMethod();
-				if (method != null)
-				{
-					if(method.DeclaringType != null)
-						this.m_className = method.DeclaringType.FullName;
-					this.m_method = new MethodItem(method);
-				}
-			}
-			catch (Exception ex)
-			{
-				LogLog.Error(declaringType, "An exception ocurred while retreiving stack frame information.", ex);
-			}
+            try
+            {
+                // get frame values
+                this.m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
+                this.m_fileName = frame.GetFileName();
+
+                // get method values
+                MethodBase method = frame.GetMethod();
+                if (method != null)
+                {
+                    if (method.DeclaringType != null)
+                    {
+                        this.m_className = method.DeclaringType.FullName;
+                    }
+
+                    this.m_method = new MethodItem(method);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogLog.Error(declaringType, "An exception ocurred while retreiving stack frame information.", ex);
+            }
 
             // set full info
             this.m_fullInfo = this.m_className + '.' + this.m_method.Name + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
         }
 
-        #endregion
-
-        #region Public Instance Properties
-
         /// <summary>
-        /// Gets the fully qualified class name of the caller making the logging 
+        /// Gets the fully qualified class name of the caller making the logging
         /// request.
         /// </summary>
         /// <value>
-        /// The fully qualified class name of the caller making the logging 
+        /// The fully qualified class name of the caller making the logging
         /// request.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets the fully qualified class name of the caller making the logging 
+        /// Gets the fully qualified class name of the caller making the logging
         /// request.
         /// </para>
         /// </remarks>
@@ -147,16 +144,16 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets all available caller information
+        /// Gets all available caller information.
         /// </summary>
         /// <value>
         /// All available caller information, in the format
-        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
+        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>.
         /// </value>
         /// <remarks>
         /// <para>
         /// Gets all available caller information, in the format
-        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
+        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>.
         /// </para>
         /// </remarks>
         public string FullInfo
@@ -164,19 +161,11 @@ namespace log4net.Core
             get { return this.m_fullInfo; }
         }
 
-        #endregion Public Instance Properties
-
-        #region Private Instance Fields
-
         private readonly string m_lineNumber;
         private readonly string m_fileName;
         private readonly string m_className;
         private readonly string m_fullInfo;
-		private readonly MethodItem m_method;
-
-        #endregion
-
-        #region Private Static Fields
+        private readonly MethodItem m_method;
 
         /// <summary>
         /// The fully qualified type of the StackFrameItem class.
@@ -185,7 +174,7 @@ namespace log4net.Core
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(StackFrameItem);
+        private static readonly Type declaringType = typeof(StackFrameItem);
 
         /// <summary>
         /// When location information is not available the constant
@@ -193,8 +182,6 @@ namespace log4net.Core
         /// constant is <b>?</b>.
         /// </summary>
         private const string NA = "?";
-
-        #endregion Private Static Fields
     }
 }
 #endif

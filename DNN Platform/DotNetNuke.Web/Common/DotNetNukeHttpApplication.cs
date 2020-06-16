@@ -1,52 +1,48 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Security;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Framework;
-using DotNetNuke.Modules.HTMLEditorProvider;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.ClientCapability;
-using DotNetNuke.Services.Cryptography;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.ModuleCache;
-using DotNetNuke.Services.OutputCache;
-using DotNetNuke.Services.Scheduling;
-using DotNetNuke.Services.Search;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Services.Sitemap;
-using DotNetNuke.Services.Url.FriendlyUrl;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Cookies;
-using DotNetNuke.Services.Installer.Blocker;
-using DotNetNuke.HttpModules.DependencyInjection;
-
-#endregion
-
 namespace DotNetNuke.Web.Common.Internal
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Framework;
+    using DotNetNuke.HttpModules.DependencyInjection;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.HTMLEditorProvider;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Security.Cookies;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.ClientCapability;
+    using DotNetNuke.Services.Cryptography;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.ModuleCache;
+    using DotNetNuke.Services.OutputCache;
+    using DotNetNuke.Services.Scheduling;
+    using DotNetNuke.Services.Search;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Services.Sitemap;
+    using DotNetNuke.Services.Url.FriendlyUrl;
+
     /// <summary>
     /// DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.
     /// </summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DotNetNukeHttpApplication));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
         private void Application_Error(object sender, EventArgs eventArgs)
         {
@@ -55,7 +51,11 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 // Get the exception object.
                 Logger.Trace("Dumping all Application Errors");
-                foreach (Exception exc in HttpContext.Current.AllErrors) Logger.Fatal(exc);
+                foreach (Exception exc in HttpContext.Current.AllErrors)
+                {
+                    Logger.Fatal(exc);
+                }
+
                 Logger.Trace("End Dumping all Application Errors");
             }
         }
@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.Common.Internal
             Logger.InfoFormat("Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
-            Globals.ServerName = String.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
+            Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
             Globals.DependencyProvider = new LazyServiceProvider();
             var startup = new Startup();
@@ -100,19 +100,21 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("htmlEditor", typeof(HtmlEditorProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("navigationControl", typeof(NavigationProvider), ComponentLifeStyleType.Transient));
             ComponentFactory.InstallComponents(new ProviderInstaller("clientcapability", typeof(ClientCapabilityProvider)));
-            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider),typeof(FipsCompilanceCryptographyProvider)));
+            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
 
             Logger.InfoFormat("Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings();
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
-            //DotNetNukeSecurity.Initialize();
+
+            // DotNetNukeSecurity.Initialize();
         }
-        
-        private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
+
+        private static void RegisterIfNotAlreadyRegistered<TConcrete>()
+            where TConcrete : class, new()
         {
-            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>("");
+            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>(string.Empty);
         }
 
         private static void RegisterIfNotAlreadyRegistered<TAbstract, TConcrete>(string name)
@@ -122,7 +124,7 @@ namespace DotNetNuke.Web.Common.Internal
             var provider = ComponentFactory.GetComponent<TAbstract>();
             if (provider == null)
             {
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                 {
                     ComponentFactory.RegisterComponentInstance<TAbstract>(new TConcrete());
                 }
@@ -155,28 +157,36 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Error(e);
             }
 
-            //Shutdown Lucene, but not when we are installing
+            // Shutdown Lucene, but not when we are installing
             if (Globals.Status != Globals.UpgradeStatus.Install)
             {
                 Logger.Trace("Disposing Lucene");
                 var lucene = LuceneController.Instance as IDisposable;
-                if (lucene != null) lucene.Dispose();
+                if (lucene != null)
+                {
+                    lucene.Dispose();
+                }
             }
+
             Logger.Trace("Dumping all Application Errors");
             if (HttpContext.Current != null)
             {
                 if (HttpContext.Current.AllErrors != null)
                 {
-                    foreach (Exception exc in HttpContext.Current.AllErrors) Logger.Fatal(exc);
+                    foreach (Exception exc in HttpContext.Current.AllErrors)
+                    {
+                        Logger.Fatal(exc);
+                    }
                 }
             }
+
             Logger.Trace("End Dumping all Application Errors");
             Logger.Info("Application Ended");
         }
 
         private static readonly string[] Endings =
             {
-                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd"
+                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",
             };
 
         private void Application_BeginRequest(object sender, EventArgs e)
@@ -194,7 +204,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
 
             var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
-            if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") &&  Endings.Any(requestUrl.EndsWith))
+            if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") && Endings.Any(requestUrl.EndsWith))
             {
                 return;
             }
@@ -208,14 +218,14 @@ namespace DotNetNuke.Web.Common.Internal
             Initialize.RunSchedule(app.Request);
         }
 
-		private void Application_PreSendRequestHeaders(object sender, EventArgs e)
-		{
-			if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
-			{
-				var page = HttpContext.Current.Handler as PageBase;
-				page.HeaderIsWritten = true;
-			}
-		}
+        private void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        {
+            if (HttpContext.Current != null && HttpContext.Current.Handler is PageBase)
+            {
+                var page = HttpContext.Current.Handler as PageBase;
+                page.HeaderIsWritten = true;
+            }
+        }
 
         private bool IsInstallInProgress(HttpApplication app)
         {

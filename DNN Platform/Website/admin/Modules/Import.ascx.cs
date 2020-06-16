@@ -1,43 +1,37 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Xml;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Modules
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class Import : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Import()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Members
 
         private new int ModuleId = -1;
         private ModuleInfo _module;
@@ -58,16 +52,12 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string ImportModule()
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             if (this.Module != null)
             {
-                if (!String.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
+                if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
                 {
                     try
                     {
@@ -84,22 +74,26 @@ namespace DotNetNuke.Modules.Admin.Modules
                             {
                                 strMessage = Localization.GetString("NotValidXml", this.LocalResourceFile);
                             }
-                            if (String.IsNullOrEmpty(strMessage))
+
+                            if (string.IsNullOrEmpty(strMessage))
                             {
                                 var strType = xmlDoc.DocumentElement.GetAttribute("type");
                                 if (strType == Globals.CleanName(this.Module.DesktopModule.ModuleName) || strType == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
                                 {
                                     var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
+
                                     // DNN26810 if rootnode = "content", import only content(the old way)
-                                    if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content" )
+                                    if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
                                     {
                                         ((IPortable)objObject).ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
                                     }
+
                                     // otherwise (="module") import the new way
                                     else
                                     {
                                         ModuleController.DeserializeModule(xmlDoc.DocumentElement, this.Module, this.PortalId, this.TabId);
                                     }
+
                                     this.Response.Redirect(this._navigationManager.NavigateURL(), true);
                                 }
                                 else
@@ -123,12 +117,9 @@ namespace DotNetNuke.Modules.Admin.Modules
                     strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
                 }
             }
+
             return strMessage;
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnInit(EventArgs e)
         {
@@ -136,10 +127,10 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             if (this.Request.QueryString["moduleid"] != null)
             {
-                Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
             }
 
-            //Verify that the current user has access to edit this module
+            // Verify that the current user has access to edit this module
             if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "IMPORT", this.Module))
             {
                 this.Response.Redirect(Globals.AccessDeniedURL(), true);
@@ -177,60 +168,72 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 return;
             }
+
             if (this.Module == null)
             {
                 return;
             }
 
             var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-            if (folder == null) return;
+            if (folder == null)
+            {
+                return;
+            }
 
             var files = Globals.GetFileList(this.PortalId, "export", false, folder.FolderPath);
             files.AddRange(Globals.GetFileList(this.PortalId, "xml", false, folder.FolderPath));
             foreach (FileItem file in files)
             {
-				if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
+                if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-					this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", ""), file.Value);
+                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", string.Empty), file.Value);
                 }
 
-                //legacy support for files which used the FriendlyName
+                // legacy support for files which used the FriendlyName
                 if (Globals.CleanName(this.Module.DesktopModule.ModuleName) == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
                 {
                     continue;
                 }
 
-				if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
+                if (file.Text.IndexOf("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", System.StringComparison.Ordinal) != -1)
                 {
-					this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", ""), file.Value);
+                    this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.FriendlyName) + ".", string.Empty), file.Value);
                 }
             }
         }
 
         protected void OnFilesIndexChanged(object sender, EventArgs e)
         {
-            if (this.cboFolders.SelectedItem == null) return;
-            var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-            if (folder == null) return;
+            if (this.cboFolders.SelectedItem == null)
+            {
+                return;
+            }
 
-	        if (string.IsNullOrEmpty(this.cboFiles.SelectedValue) || this.cboFiles.SelectedValue == "-")
-	        {
-				this.txtContent.Text = string.Empty;
-		        return;
-	        }
-	        try
-	        {
-				var fileId = Convert.ToInt32(this.cboFiles.SelectedValue);
-		        var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
-				using (var streamReader = new StreamReader(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(file)))
-				{
-					this.txtContent.Text = streamReader.ReadToEnd();
-				}
-	        }
-	        catch (Exception)
-	        {
-		        this.txtContent.Text = string.Empty;
-	        }
+            var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
+            if (folder == null)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.cboFiles.SelectedValue) || this.cboFiles.SelectedValue == "-")
+            {
+                this.txtContent.Text = string.Empty;
+                return;
+            }
+
+            try
+            {
+                var fileId = Convert.ToInt32(this.cboFiles.SelectedValue);
+                var file = DotNetNuke.Services.FileSystem.FileManager.Instance.GetFile(fileId);
+                using (var streamReader = new StreamReader(DotNetNuke.Services.FileSystem.FileManager.Instance.GetFileContent(file)))
+                {
+                    this.txtContent.Text = streamReader.ReadToEnd();
+                }
+            }
+            catch (Exception)
+            {
+                this.txtContent.Text = string.Empty;
+            }
         }
 
         protected void OnImportClick(object sender, EventArgs e)
@@ -240,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (this.Module != null)
                 {
                     var strMessage = this.ImportModule();
-                    if (String.IsNullOrEmpty(strMessage))
+                    if (string.IsNullOrEmpty(strMessage))
                     {
                         this.Response.Redirect(this.ReturnURL, true);
                     }
@@ -255,8 +258,5 @@ namespace DotNetNuke.Modules.Admin.Modules
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

@@ -1,31 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+
+    using DotNetNuke.Instrumentation;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      SettingInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SettingInfo class provides a helper class for the Settings Editor
+    /// The SettingInfo class provides a helper class for the Settings Editor.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class SettingInfo
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SettingInfo));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
         private Type _Type;
 
         public SettingInfo(object name, object value)
@@ -40,6 +35,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 IsFound = true;
             }
+
             if (!IsFound)
             {
                 try
@@ -51,9 +47,9 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
             }
+
             if (!IsFound)
             {
                 try
@@ -65,7 +61,6 @@ namespace DotNetNuke.UI.WebControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
             }
         }
@@ -82,6 +77,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._Type;
             }
+
             set
             {
                 this._Type = value;

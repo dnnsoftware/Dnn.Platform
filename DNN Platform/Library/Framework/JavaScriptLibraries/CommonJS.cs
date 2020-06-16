@@ -6,32 +6,32 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     /// <summary>
     ///     this class contains a number of constants that map to <see cref="JavaScriptLibrary.LibraryName"/>s
-    ///     done as a series of constants as enums do not allow hyphens or periods
+    ///     done as a series of constants as enums do not allow hyphens or periods.
     /// </summary>
     public static class CommonJs
     {
-        /// <summary>jQuery library name</summary>
+        /// <summary>jQuery library name.</summary>
         public const string jQuery = "jQuery";
 
-        /// <summary>jQuery Migrate library name</summary>
+        /// <summary>jQuery Migrate library name.</summary>
         public const string jQueryMigrate = "jQuery-Migrate";
 
-        /// <summary>jQuery UI library name</summary>
+        /// <summary>jQuery UI library name.</summary>
         public const string jQueryUI = "jQuery-UI";
 
-        /// <summary>Knockout library name</summary>
+        /// <summary>Knockout library name.</summary>
         public const string Knockout = "Knockout";
 
-        /// <summary>Knockout Mapping library name</summary>
+        /// <summary>Knockout Mapping library name.</summary>
         public const string KnockoutMapping = "Knockout.Mapping";
 
-        /// <summary>jQuery Fileupload library name</summary>
+        /// <summary>jQuery Fileupload library name.</summary>
         public const string jQueryFileUpload = "jQuery.Fileupload";
 
-        /// <summary>DNN jQuery plugins library name</summary>
+        /// <summary>DNN jQuery plugins library name.</summary>
         public const string DnnPlugins = "DnnPlugins";
 
-        /// <summary>HoverIntent library name</summary>
+        /// <summary>HoverIntent library name.</summary>
         public const string HoverIntent = "HoverIntent";
     }
 }

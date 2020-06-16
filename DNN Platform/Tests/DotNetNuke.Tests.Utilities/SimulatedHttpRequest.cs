@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web.Hosting;
-using System.IO;
-
 namespace DotNetNuke.Tests.Instance.Utilities
 {
+    using System;
+    using System.IO;
+    using System.Web.Hosting;
+
     /// <summary>
     /// Used to simulate an HttpRequest.
     /// </summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
-        readonly string _host;
+        private readonly string _host;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedHttpRequest"/> class.
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.
         /// </summary>
         /// <param name="appVirtualDir">App virtual dir.</param>
@@ -24,10 +25,14 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <param name="query">Query.</param>
         /// <param name="output">Output.</param>
         /// <param name="host">Host.</param>
-        public SimulatedHttpRequest(string appVirtualDir, string appPhysicalDir, string page, string query, TextWriter output, string host): base(appVirtualDir, appPhysicalDir, page, query, output)
+        public SimulatedHttpRequest(string appVirtualDir, string appPhysicalDir, string page, string query, TextWriter output, string host)
+            : base(appVirtualDir, appPhysicalDir, page, query, output)
         {
             if (string.IsNullOrEmpty(host))
+            {
                 throw new ArgumentNullException("host", "Host cannot be null nor empty.");
+            }
+
             this._host = host;
         }
 
@@ -47,11 +52,13 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <returns></returns>
         public override string MapPath(string virtualPath)
         {
-            var path = "";
+            var path = string.Empty;
             var appPath = this.GetAppPath();
 
             if (appPath != null)
+            {
                 path = Path.Combine(appPath, virtualPath);
+            }
 
             return path;
         }

@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     public class DnnAuthorizeAttribute : AuthorizeAttributeBase
     {
         private string _staticRoles;
@@ -21,11 +22,12 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         private string[] _denyRolesSplit = new string[0];
 
         /// <summary>
-        /// Gets or sets the authorized roles (separated by comma) 
+        /// Gets or sets the authorized roles (separated by comma).
         /// </summary>
         public string StaticRoles
         {
             get { return this._staticRoles; }
+
             set
             {
                 this._staticRoles = value;
@@ -34,11 +36,12 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         }
 
         /// <summary>
-        /// Gets or sets the denied roles (separated by comma)
+        /// Gets or sets the denied roles (separated by comma).
         /// </summary>
         public string DenyRoles
         {
             get { return this._denyRoles; }
+
             set
             {
                 this._denyRoles = value;
@@ -53,7 +56,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         protected virtual UserInfo GetCurrentUser()
         {
-            return PortalController.Instance.GetCurrentPortalSettings().UserInfo;            
+            return PortalController.Instance.GetCurrentPortalSettings().UserInfo;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -86,17 +89,16 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         private string[] SplitString(string original)
         {
-            if (String.IsNullOrEmpty(original))
+            if (string.IsNullOrEmpty(original))
             {
                 return new string[0];
             }
 
             IEnumerable<string> split = from piece in original.Split(',')
                                         let trimmed = piece.Trim()
-                                        where !String.IsNullOrEmpty(trimmed)
+                                        where !string.IsNullOrEmpty(trimmed)
                                         select trimmed;
             return split.ToArray();
         }
-
     }
 }

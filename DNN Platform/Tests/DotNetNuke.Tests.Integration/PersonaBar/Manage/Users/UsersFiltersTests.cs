@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using Newtonsoft.Json;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
 {
+    using System;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+
     [TestFixture]
     public class UsersFiltersTests : IntegrationTestBase
     {
@@ -53,14 +54,14 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Manage.Users
             for (userIdx = 1; userIdx <= 2; userIdx++)
             {
                 var unauthorizeLink = string.Format(UnauthorizeApi, this._userIds[userIdx]);
-                response = hostConnector.PostJson(unauthorizeLink, "").Content.ReadAsStringAsync().Result;
+                response = hostConnector.PostJson(unauthorizeLink, string.Empty).Content.ReadAsStringAsync().Result;
                 result = JsonConvert.DeserializeObject<dynamic>(response);
                 Assert.IsTrue(bool.Parse(result.Success.ToString()));
             }
 
             // soft delete the next new user
             var deleteLink = string.Format(DeleteApi, this._userIds[userIdx]);
-            response = hostConnector.PostJson(deleteLink, "").Content.ReadAsStringAsync().Result;
+            response = hostConnector.PostJson(deleteLink, string.Empty).Content.ReadAsStringAsync().Result;
             result = JsonConvert.DeserializeObject<dynamic>(response);
             Assert.IsTrue(bool.Parse(result.Success.ToString()));
         }

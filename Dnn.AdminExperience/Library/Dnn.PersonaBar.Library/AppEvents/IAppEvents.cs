@@ -9,7 +9,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
     /// the application lifecycle. All modules that need to have any housekeeping applied
     /// during these events, need to create a concrete class that extends this interface.
     /// The main application start event will enumerate these (through reflection) and
-    /// call the related methods in these classes
+    /// call the related methods in these classes.
     /// </summary>
     public interface IAppEvents
     {

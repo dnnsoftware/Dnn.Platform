@@ -10,6 +10,6 @@ namespace DotNetNuke.Security.Roles
         Subscriber,
         RegisteredUser,
         None,
-        UnverifiedUser
+        UnverifiedUser,
     }
 }

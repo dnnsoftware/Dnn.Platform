@@ -252,6 +252,7 @@
     <Compile Include="Components\Servers\DatabaseServer\DbFileInfo.cs" />
     <Compile Include="Components\Servers\DatabaseServer\DbInfo.cs" />
     <Compile Include="Components\Servers\Log\LogController.cs" />
+    <Compile Include="Components\Servers\Log\LogFile.cs" />
     <Compile Include="Components\Servers\PerformanceSettings\PerformanceController.cs" />
     <Compile Include="Components\Servers\WebServer\ServerInfo.cs" />
     <Compile Include="Components\SiteGroups\IManagePortalGroups.cs" />

@@ -1,24 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
 namespace DotNetNuke.Authentication.Facebook.Components
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+
     public class FacebookClient : OAuthClientBase
     {
-        #region Constructors
-
-        public FacebookClient(int portalId, AuthMode mode) 
+        public FacebookClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Facebook")
         {
             this.TokenEndpoint = new Uri("https://graph.facebook.com/oauth/access_token");
@@ -32,10 +26,8 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
             this.OAuthVersion = "2.0";
 
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
-
-        #endregion
 
         protected override TimeSpan GetExpiry(string responseText)
         {
@@ -45,17 +37,19 @@ namespace DotNetNuke.Authentication.Facebook.Components
                 var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);
                 expiry = new TimeSpan(0, 0, Convert.ToInt32(dictionary["expires_in"]));
             }
+
             return expiry;
         }
 
         protected override string GetToken(string responseText)
         {
-            string authToken = String.Empty;
+            string authToken = string.Empty;
             if (!string.IsNullOrEmpty(responseText))
             {
                 var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);
                 authToken = Convert.ToString(dictionary["access_token"]);
             }
+
             return authToken;
         }
     }

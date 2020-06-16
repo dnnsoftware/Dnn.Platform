@@ -14,6 +14,6 @@ namespace DotNetNuke.Security.Membership
         PasswordMismatch,
         InvalidPasswordAnswer,
         InvalidPasswordQuestion,
-        BannedPasswordUsed
+        BannedPasswordUsed,
     }
 }

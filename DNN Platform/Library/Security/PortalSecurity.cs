@@ -1,33 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Security;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Cookies;
-using DotNetNuke.Services.Cryptography;
 // ReSharper disable MemberCanBeMadeStatic.Global
-
-#endregion
-
 namespace DotNetNuke.Security
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Security.Cookies;
+    using DotNetNuke.Services.Cryptography;
+
     public class PortalSecurity
     {
         public static readonly PortalSecurity Instance = new PortalSecurity();
@@ -40,10 +35,10 @@ namespace DotNetNuke.Security
 
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
-        const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
+        private const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
         private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
+        private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
         private static readonly Regex[] RxListStrings = new[]
         {
             new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
@@ -92,16 +87,14 @@ namespace DotNetNuke.Security
         private static readonly Regex DangerElementsRegex = new Regex(@"(<[^>]*?) on.*?\=(['""]*)[\s\S]*?(\2)( *)([^>]*?>)", RxOptions);
         private static readonly Regex DangerElementContentRegex = new Regex(@"on.*?\=(['""]*)[\s\S]*?(\1)( *)", RxOptions);
 
-        #region FilterFlag enum
-
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// The FilterFlag enum determines which filters are applied by the InputFilter
         /// function.  The Flags attribute allows the user to include multiple
         /// enumerated values in a single variable by OR'ing the individual values
         /// together.
         /// </summary>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         [Flags]
         public enum FilterFlag
         {
@@ -110,42 +103,36 @@ namespace DotNetNuke.Security
             NoScripting = 4,
             NoSQL = 8,
             NoAngleBrackets = 16,
-            NoProfanity = 32
+            NoProfanity = 32,
         }
 
         /// <summary>
-        /// Determines the configuration source for the remove and replace functions
+        /// Determines the configuration source for the remove and replace functions.
         /// </summary>
         public enum ConfigType
         {
             ListController,
-            ExternalFile
+            ExternalFile,
         }
 
         /// <summary>
         /// determines whether to use system (host) list, portal specific list, or combine both
-        /// At present only supported by ConfigType.ListController
+        /// At present only supported by ConfigType.ListController.
         /// </summary>
         public enum FilterScope
         {
             SystemList,
             PortalList,
-            SystemAndPortalList
+            SystemAndPortalList,
         }
 
-        #endregion
-
-        #region private enum
-        enum RoleType
+        private enum RoleType
         {
             Security,
             Friend,
             Follower,
-            Owner
+            Owner,
         }
-        #endregion
-
-        #region Private Methods
 
         private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
         {
@@ -203,33 +190,35 @@ namespace DotNetNuke.Security
         {
             var roleParts = roleName.Split(':');
             int result;
-            if (roleParts.Length > 1 && Int32.TryParse(roleParts[1], out result))
+            if (roleParts.Length > 1 && int.TryParse(roleParts[1], out result))
             {
                 return result;
             }
+
             return Null.NullInteger;
         }
 
         private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
         {
             roleAllowed = null;
-            //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-            if (!String.IsNullOrEmpty(roleName))
+
+            // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+            if (!string.IsNullOrEmpty(roleName))
             {
-                //Deny permission
+                // Deny permission
                 if (roleName.StartsWith("!"))
                 {
-                    //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                    // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
                     {
-                        string denyRole = roleName.Replace("!", "");
+                        string denyRole = roleName.Replace("!", string.Empty);
                         if (denyRole == Globals.glbRoleAllUsersName || user.IsInRole(denyRole))
                         {
                             roleAllowed = false;
                         }
                     }
                 }
-                else //Grant permission
+                else // Grant permission
                 {
                     if (roleName == Globals.glbRoleAllUsersName || user.IsInRole(roleName))
                     {
@@ -245,14 +234,17 @@ namespace DotNetNuke.Security
             {
                 return RoleType.Friend;
             }
+
             if (roleName.StartsWith(RoleFollowerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Follower;
             }
+
             if (roleName.StartsWith(RoleOwnerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Owner;
             }
+
             return RoleType.Security;
         }
 
@@ -261,26 +253,27 @@ namespace DotNetNuke.Security
             var hexString = new StringBuilder();
             foreach (var b in bytes)
             {
-                hexString.Append(String.Format("{0:X2}", b));
+                hexString.Append(string.Format("{0:X2}", b));
             }
+
             return hexString.ToString();
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function uses Regex search strings to remove HTML tags which are
         /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
         /// to provide more robust checking as additional holes are found.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the FormatDisableScripting function
+        /// This is a private function that is used internally by the FormatDisableScripting function.
         /// </remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         private static string FilterStrings(string strInput)
         {
-            //setup up list of search terms as items may be used twice
+            // setup up list of search terms as items may be used twice
             var tempInput = strInput;
             if (string.IsNullOrEmpty(tempInput))
             {
@@ -289,7 +282,7 @@ namespace DotNetNuke.Security
 
             const string replacement = " ";
 
-            //remove the js event from html tags
+            // remove the js event from html tags
             var tagMatches = DangerElementsRegex.Matches(tempInput);
             foreach (Match match in tagMatches)
             {
@@ -298,14 +291,14 @@ namespace DotNetNuke.Security
                 tempInput = tempInput.Replace(tagContent, cleanTagContent);
             }
 
-            //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
+            // check if text contains encoded angle brackets, if it does it we decode it to check the plain text
             if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
             {
-                //text is encoded, so decode and try again
+                // text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);
                 tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
 
-                //Re-encode
+                // Re-encode
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
             else
@@ -316,51 +309,51 @@ namespace DotNetNuke.Security
             return tempInput;
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function uses Regex search strings to remove HTML tags which are
         /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
         /// to provide more robust checking as additional holes are found.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
         {
-            return String.IsNullOrWhiteSpace(strInput)
+            return string.IsNullOrWhiteSpace(strInput)
                 ? strInput
                 : FilterStrings(strInput);
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This filter removes angle brackets i.e.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         private static string FormatAngleBrackets(string strInput)
         {
-            var tempInput = new StringBuilder(strInput).Replace("<", "").Replace(">", "");
+            var tempInput = new StringBuilder(strInput).Replace("<", string.Empty).Replace(">", string.Empty);
             return tempInput.ToString();
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This filter removes CrLf characters and inserts br
+        /// This filter removes CrLf characters and inserts br.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         private static string FormatMultiLine(string strInput)
         {
             const string lbreak = "<br />";
@@ -368,50 +361,46 @@ namespace DotNetNuke.Security
             return tempInput.ToString();
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function verifies raw SQL statements to prevent SQL injection attacks
-        /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module
+        /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module.
         /// </summary>
-        /// <param name="strSQL">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strSQL">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         private static string FormatRemoveSQL(string strSQL)
         {
             // Check for forbidden T-SQL commands. Use word boundaries to filter only real statements.
             return BadStatementRegex.Replace(strSQL, " ").Replace("'", "''");
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function determines if the Input string contains any markup.
         /// </summary>
-        /// <param name="strInput">This is the string to be checked</param>
-        /// <returns>True if string contains Markup tag(s)</returns>
+        /// <param name="strInput">This is the string to be checked.</param>
+        /// <returns>True if string contains Markup tag(s).</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         private static bool IncludesMarkup(string strInput)
         {
             return StripTagsRegex.IsMatch(strInput);
         }
 
-        #endregion
-
-        #region Public Methods
-
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This function creates a random key
+        /// This function creates a random key.
         /// </summary>
-        /// <param name="numBytes">This is the number of bytes for the key</param>
-        /// <returns>A random string</returns>
+        /// <param name="numBytes">This is the number of bytes for the key.</param>
+        /// <returns>A random string.</returns>
         /// <remarks>
-        /// This is a public function used for generating SHA1 keys
+        /// This is a public function used for generating SHA1 keys.
         /// </remarks>
         public string CreateKey(int numBytes)
         {
@@ -443,53 +432,60 @@ namespace DotNetNuke.Security
             return CryptographyProvider.Instance().EncryptString(message, passphrase);
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function applies security filtering to the UserInput string.
         /// </summary>
-        /// <param name="userInput">This is the string to be filtered</param>
-        /// <param name="filterType">Flags which designate the filters to be applied</param>
-        /// <returns>Filtered UserInput</returns>
-        ///-----------------------------------------------------------------------------
+        /// <param name="userInput">This is the string to be filtered.</param>
+        /// <param name="filterType">Flags which designate the filters to be applied.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// -----------------------------------------------------------------------------
         public string InputFilter(string userInput, FilterFlag filterType)
         {
             if (userInput == null)
             {
-                return "";
+                return string.Empty;
             }
+
             var tempInput = userInput;
             if ((filterType & FilterFlag.NoAngleBrackets) == FilterFlag.NoAngleBrackets)
             {
-                var removeAngleBrackets = Config.GetSetting("RemoveAngleBrackets") != null && Boolean.Parse(Config.GetSetting("RemoveAngleBrackets"));
+                var removeAngleBrackets = Config.GetSetting("RemoveAngleBrackets") != null && bool.Parse(Config.GetSetting("RemoveAngleBrackets"));
                 if (removeAngleBrackets)
                 {
                     tempInput = FormatAngleBrackets(tempInput);
                 }
             }
+
             if ((filterType & FilterFlag.NoSQL) == FilterFlag.NoSQL)
             {
                 tempInput = FormatRemoveSQL(tempInput);
             }
+
             if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
             {
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
+
             if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
             {
                 tempInput = this.FormatDisableScripting(tempInput);
             }
+
             if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
             {
                 tempInput = FormatMultiLine(tempInput);
             }
+
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
                 tempInput = this.Replace(tempInput, ConfigType.ListController, "ProfanityFilter", FilterScope.SystemAndPortalList);
             }
+
             return tempInput;
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Replaces profanity words with other words in the provided input string.
         /// </summary>
@@ -505,7 +501,7 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words replaced.</returns>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public string Replace(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -524,22 +520,23 @@ namespace DotNetNuke.Security
                     switch (filterScope)
                     {
                         case FilterScope.SystemList:
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.SystemAndPortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                         case FilterScope.PortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                     }
+
                     break;
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
@@ -550,7 +547,7 @@ namespace DotNetNuke.Security
             return inputString;
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// Removes profanity words in the provided input string.
         /// </summary>
@@ -566,7 +563,7 @@ namespace DotNetNuke.Security
         /// <param name="configSource">The external file to search the words. Ignored when configType is ListController.</param>
         /// <param name="filterScope">When using ListController configType, this parameter indicates which list(s) to use.</param>
         /// <returns>The original text with the profanity words removed.</returns>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public string Remove(string inputString, ConfigType configType, string configSource, FilterScope filterScope)
         {
             switch (configType)
@@ -585,19 +582,19 @@ namespace DotNetNuke.Security
                     switch (filterScope)
                     {
                         case FilterScope.SystemList:
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.SystemAndPortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, "", Null.NullInteger);
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryHostInfos = listController.GetListEntryInfoItems(listName, string.Empty, Null.NullInteger);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryHostInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                         case FilterScope.PortalList:
                             settings = PortalController.Instance.GetCurrentPortalSettings();
-                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, "", settings.PortalId);
+                            listEntryPortalInfos = listController.GetListEntryInfoItems(listName + "-" + settings.PortalId, string.Empty, settings.PortalId);
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", string.Empty, options));
                             break;
                     }
@@ -616,27 +613,29 @@ namespace DotNetNuke.Security
         {
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
             {
-                //Create a custom auth cookie
+                // Create a custom auth cookie
 
-                //first, create the authentication ticket     
+                // first, create the authentication ticket
                 var authenticationTicket = createPersistentCookie
                     ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout())
                     : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout());
 
-                //encrypt it     
+                // encrypt it
                 var encryptedAuthTicket = FormsAuthentication.Encrypt(authenticationTicket);
 
-                //Create a new Cookie
+                // Create a new Cookie
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedAuthTicket)
                 {
                     Expires = authenticationTicket.Expiration,
                     Domain = GetCookieDomain(user.PortalID),
                     Path = FormsAuthentication.FormsCookiePath,
-                    Secure = FormsAuthentication.RequireSSL
+                    Secure = FormsAuthentication.RequireSSL,
                 };
 
                 if (HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName] != null)
+                {
                     HttpContext.Current.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                }
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
                 AuthCookieController.Instance.Update(authCookie.Value, authCookie.Expires.ToUniversalTime(), user.UserID);
@@ -649,7 +648,7 @@ namespace DotNetNuke.Security
                         Expires = authenticationTicket.Expiration,
                         Domain = domain,
                         Path = FormsAuthentication.FormsCookiePath,
-                        Secure = FormsAuthentication.RequireSSL
+                        Secure = FormsAuthentication.RequireSSL,
                     };
 
                     HttpContext.Current.Response.Cookies.Set(siteGroupCookie);
@@ -658,7 +657,9 @@ namespace DotNetNuke.Security
             else
             {
                 if (HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName] != null)
+                {
                     HttpContext.Current.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
+                }
 
                 FormsAuthentication.SetAuthCookie(user.Username, false);
                 var authCookie = HttpContext.Current.Response.Cookies[FormsAuthentication.FormsCookieName];
@@ -674,11 +675,11 @@ namespace DotNetNuke.Security
 
             if (user.IsSuperUser)
             {
-                //save userinfo object in context to ensure Personalization is saved correctly
+                // save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
             }
 
-            //Identity the Login is processed by system.
+            // Identity the Login is processed by system.
             HttpContext.Current.Items["DNN_UserSignIn"] = true;
         }
 
@@ -693,20 +694,20 @@ namespace DotNetNuke.Security
                 AuthCookieController.Instance.Update(currentAuthCookie.Value, OldExpiryTime, Null.NullInteger);
             }
 
-            //Log User Off from Cookie Authentication System
+            // Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
             {
-                //Forms Authentication's Logout
+                // Forms Authentication's Logout
                 FormsAuthentication.SignOut();
             }
             else
             {
-                //clear custom domain cookie
+                // clear custom domain cookie
                 var domain = domainCookie.Value;
 
-                //Create a new Cookie
-                var str = String.Empty;
+                // Create a new Cookie
+                var str = string.Empty;
                 if (HttpContext.Current.Request.Browser["supportsEmptyStringInCookieValue"] == "false")
                 {
                     str = "NoCookie";
@@ -717,7 +718,7 @@ namespace DotNetNuke.Security
                     Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
-                    Secure = FormsAuthentication.RequireSSL
+                    Secure = FormsAuthentication.RequireSSL,
                 };
 
                 HttpContext.Current.Response.Cookies.Set(authCookie);
@@ -727,35 +728,35 @@ namespace DotNetNuke.Security
                     Expires = OldExpiryTime,
                     Domain = domain,
                     Path = FormsAuthentication.FormsCookiePath,
-                    Secure = FormsAuthentication.RequireSSL
+                    Secure = FormsAuthentication.RequireSSL,
                 };
 
                 HttpContext.Current.Response.Cookies.Set(siteGroupCookie);
             }
 
-            //Remove current userinfo from context items
+            // Remove current userinfo from context items
             HttpContext.Current.Items.Remove("UserInfo");
 
-            //remove language cookie
+            // remove language cookie
             var httpCookie = HttpContext.Current.Response.Cookies["language"];
             if (httpCookie != null)
             {
-                httpCookie.Value = "";
+                httpCookie.Value = string.Empty;
             }
 
-            //remove authentication type cookie
+            // remove authentication type cookie
             var cookie = HttpContext.Current.Response.Cookies["authentication"];
             if (cookie != null)
             {
-                cookie.Value = "";
+                cookie.Value = string.Empty;
             }
 
-            //expire cookies
+            // expire cookies
             cookie = HttpContext.Current.Response.Cookies["portalaliasid"];
             if (cookie != null)
             {
                 cookie.Value = null;
-                cookie.Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/");
+                cookie.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
@@ -763,11 +764,11 @@ namespace DotNetNuke.Security
             if (cookie != null)
             {
                 cookie.Value = null;
-                cookie.Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/");
+                cookie.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            //clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            // clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
             var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
             foreach (var authCookie in authCookies)
             {
@@ -777,7 +778,7 @@ namespace DotNetNuke.Security
                     if (auth != null)
                     {
                         auth.Value = null;
-                        auth.Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/");
+                        auth.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
                         auth.Expires = DateTime.Now.AddYears(-30);
                     }
                 }
@@ -794,29 +795,29 @@ namespace DotNetNuke.Security
             }
         }
 
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function applies security filtering to the UserInput string, and reports
         /// whether the input string is valid.
         /// </summary>
-        /// <param name="userInput">This is the string to be filtered</param>
-        /// <param name="filterType">Flags which designate the filters to be applied</param>
+        /// <param name="userInput">This is the string to be filtered.</param>
+        /// <param name="filterType">Flags which designate the filters to be applied.</param>
         /// <returns></returns>
-        ///-----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public bool ValidateInput(string userInput, FilterFlag filterType)
         {
             string filteredInput = this.InputFilter(userInput, filterType);
 
-            return (userInput == filteredInput);
+            return userInput == filteredInput;
         }
 
         /// <summary>
         /// This function loops through every portal that has set its own AllowedExtensionWhitelist
         /// and checks that there are no extensions there that are restriced by the host
-        /// 
-        /// The only time we should call this is if the host allowed extensions list has changed
+        ///
+        /// The only time we should call this is if the host allowed extensions list has changed.
         /// </summary>
-        /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation</param>
+        /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation.</param>
         public void CheckAllPortalFileExtensionWhitelists(string newMasterList)
         {
             var masterList = new FileExtensionWhitelist(newMasterList);
@@ -835,20 +836,18 @@ namespace DotNetNuke.Security
             }
         }
 
-        #endregion
-
-        #region Public Shared/Static Methods
-
         public static void ForceSecureConnection()
         {
-            //get current url
+            // get current url
             var url = HttpContext.Current.Request.Url.ToString();
-            //if unsecure connection
+
+            // if unsecure connection
             if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-                //switch to secure connection
+                // switch to secure connection
                 url = "https://" + url.Substring("http://".Length);
-                //append ssl parameter to querystring to indicate secure connection processing has already occurred
+
+                // append ssl parameter to querystring to indicate secure connection processing has already occurred
                 if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                 {
                     url = url + "?ssl=1";
@@ -857,17 +856,18 @@ namespace DotNetNuke.Security
                 {
                     url = url + "&ssl=1";
                 }
-                //redirect to secure connection
+
+                // redirect to secure connection
                 HttpContext.Current.Response.Redirect(url, true);
             }
         }
 
         public static string GetCookieDomain(int portalId)
         {
-            string cookieDomain = String.Empty;
+            string cookieDomain = string.Empty;
             if (PortalController.IsMemberOfPortalGroup(portalId))
             {
-                //set cookie domain for portal group
+                // set cookie domain for portal group
                 var groupController = new PortalGroupController();
                 var group = groupController.GetPortalGroups().SingleOrDefault(p => p.MasterPortalId == PortalController.GetEffectivePortalId(portalId));
 
@@ -878,17 +878,16 @@ namespace DotNetNuke.Security
                     cookieDomain = @group.AuthenticationDomain;
                 }
 
-                if (String.IsNullOrEmpty(cookieDomain))
+                if (string.IsNullOrEmpty(cookieDomain))
                 {
                     cookieDomain = FormsAuthentication.CookieDomain;
                 }
             }
             else
             {
-                //set cookie domain to be consistent with domain specification in web.config
+                // set cookie domain to be consistent with domain specification in web.config
                 cookieDomain = FormsAuthentication.CookieDomain;
             }
-
 
             return cookieDomain;
         }
@@ -899,10 +898,10 @@ namespace DotNetNuke.Security
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsDenied(objUserInfo, settings, roles);
         }
-         
+
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
-            //super user always has full access
+            // super user always has full access
             if (objUserInfo.IsSuperUser)
             {
                 return false;
@@ -912,18 +911,18 @@ namespace DotNetNuke.Security
 
             if (roles != null)
             {
-                //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
                 foreach (string role in roles.Split(new[] { ';' }))
                 {
-                    if (!String.IsNullOrEmpty(role))
+                    if (!string.IsNullOrEmpty(role))
                     {
-                        //Deny permission
+                        // Deny permission
                         if (role.StartsWith("!"))
                         {
-                            //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                            // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
                             {
-                                string denyRole = role.Replace("!", "");
+                                string denyRole = role.Replace("!", string.Empty);
                                 if (denyRole == Globals.glbRoleAllUsersName || objUserInfo.IsInRole(denyRole))
                                 {
                                     isDenied = true;
@@ -957,7 +956,7 @@ namespace DotNetNuke.Security
 
         public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
-            //super user always has full access
+            // super user always has full access
             bool isInRoles = objUserInfo.IsSuperUser;
 
             if (!isInRoles)
@@ -976,6 +975,7 @@ namespace DotNetNuke.Security
                     }
                 }
             }
+
             return isInRoles;
         }
 
@@ -999,6 +999,5 @@ namespace DotNetNuke.Security
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
             return IsInRoles(objUserInfo, settings, RoleOwnerPrefix + userId);
         }
-        #endregion
     }
 }

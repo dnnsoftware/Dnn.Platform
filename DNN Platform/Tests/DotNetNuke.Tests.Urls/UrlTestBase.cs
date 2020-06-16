@@ -2,52 +2,51 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Tests.Utilities;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Tests.Utilities;
+    using NUnit.Framework;
+
     public class UrlTestBase : DnnWebTest
     {
-        public UrlTestBase(int portalId) : base(portalId)
+        public UrlTestBase(int portalId)
+            : base(portalId)
         {
         }
 
         protected virtual string DefaultAlias { get; private set; }
 
-        protected virtual string TestType { get { return String.Empty; } }
-
-        #region SetUp and TearDown
+        protected virtual string TestType
+        {
+            get { return string.Empty; }
+        }
 
         public virtual void SetUp()
         {
-            this.ExecuteScriptFile(String.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "SetUp.sql"));
+            this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "SetUp.sql"));
         }
 
         public virtual void TestFixtureSetUp()
         {
-            this.ExecuteScriptFile(String.Format("{0}\\{1}", this.TestType, "SetUp.sql"));
+            this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "SetUp.sql"));
         }
 
         public virtual void TearDown()
         {
-            this.ExecuteScriptFile(String.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "TearDown.sql"));
+            this.ExecuteScriptFile(string.Format("{0}\\{1}\\{2}", this.TestType, this.GetTestFolder(), "TearDown.sql"));
         }
 
         public virtual void TestFixtureTearDown()
         {
-            this.ExecuteScriptFile(String.Format("{0}\\{1}", this.TestType, "TearDown.sql"));
+            this.ExecuteScriptFile(string.Format("{0}\\{1}", this.TestType, "TearDown.sql"));
         }
-
-        #endregion
 
         protected void CreateTab(string tabName)
         {
@@ -60,7 +59,7 @@ namespace DotNetNuke.Tests.Urls
         {
             var sql = TestUtil.ReadStream(fileName);
 
-            if (!String.IsNullOrEmpty(sql))
+            if (!string.IsNullOrEmpty(sql))
             {
                 DataProvider.Instance().ExecuteScript(sql);
             }
@@ -101,8 +100,5 @@ namespace DotNetNuke.Tests.Urls
                 }
             }
         }
-
-
-
     }
 }

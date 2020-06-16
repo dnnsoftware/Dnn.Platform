@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel.Composition;
-using System.Globalization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace DotNetNuke.Entities.Users
 {
+    using System.ComponentModel.Composition;
+    using System.Globalization;
+
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+
     [Export(typeof(IUserEventHandlers))]
     public class UserEventHandlers : IUserEventHandlers
     {
@@ -41,6 +42,7 @@ namespace DotNetNuke.Entities.Users
             {
                 UserRegistrationEmailNotifier.NotifyUser(args.User, MessageType.UserRegistrationPublic);
             }
+
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 

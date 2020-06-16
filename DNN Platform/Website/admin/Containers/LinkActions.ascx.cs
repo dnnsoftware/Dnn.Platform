@@ -1,25 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Exceptions;
-
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Exceptions;
+
     public partial class LinkActions : ActionBase
     {
-        protected string _itemSeparator = "";
+        protected string _itemSeparator = string.Empty;
 
         public string ItemSeparator
         {
@@ -27,6 +22,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._itemSeparator;
             }
+
             set
             {
                 this._itemSeparator = value;
@@ -41,20 +37,21 @@ namespace DotNetNuke.UI.Containers
                 {
                     if (this.ActionRoot.Visible)
                     {
-						//Is Root Menu visible?
+                        // Is Root Menu visible?
                         if (this.Controls.Count > 0)
                         {
                             this.Controls.Clear();
                         }
+
                         var PreSpacer = new LiteralControl(this.ItemSeparator);
                         this.Controls.Add(PreSpacer);
 
-                        //Add Menu Items
+                        // Add Menu Items
                         foreach (ModuleAction action in this.ActionRoot.Actions)
                         {
                             if (action.Title == "~")
                             {
-								//not supported in this Action object
+                                // not supported in this Action object
                             }
                             else
                             {
@@ -79,8 +76,8 @@ namespace DotNetNuke.UI.Containers
                         }
                     }
                 }
-				
-                //Need to determine if this action list actually has any items.
+
+                // Need to determine if this action list actually has any items.
                 if (this.Controls.Count > 0)
                 {
                     this.Visible = true;
@@ -90,7 +87,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -99,7 +96,7 @@ namespace DotNetNuke.UI.Containers
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (String.IsNullOrEmpty(this._itemSeparator))
+            if (string.IsNullOrEmpty(this._itemSeparator))
             {
                 this._itemSeparator = "&nbsp;&nbsp;";
             }
@@ -109,9 +106,9 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                this.ProcessAction(((LinkButton) sender).ID.Substring(3));
+                this.ProcessAction(((LinkButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

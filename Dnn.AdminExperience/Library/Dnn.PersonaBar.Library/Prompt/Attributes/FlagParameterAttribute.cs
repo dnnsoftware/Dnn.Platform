@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.PersonaBar.Library.Prompt.Attributes
 {
+    using System;
+
     /// <summary>
     /// Attribute to define the help for the flag parameter.
     /// </summary>
@@ -13,27 +13,27 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     public class FlagParameterAttribute : Attribute
     {
         /// <summary>
-        /// Name of the flag
+        /// Gets or sets name of the flag.
         /// </summary>
         public string Flag { get; set; }
 
         /// <summary>
-        /// Type of the flag value expected.
+        /// Gets or sets type of the flag value expected.
         /// </summary>
         public string Type { get; set; }
 
         /// <summary>
-        /// Is flag required or not
+        /// Gets or sets a value indicating whether is flag required or not.
         /// </summary>
         public bool Required { get; set; }
 
         /// <summary>
-        /// Default value of the flag
+        /// Gets or sets default value of the flag.
         /// </summary>
         public string DefaultValue { get; set; }
 
         /// <summary>
-        /// Description of flag
+        /// Gets or sets description of flag.
         /// </summary>
         public string Description { get; set; }
 
@@ -45,8 +45,20 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
             this.DefaultValue = defaultValue;
             this.Description = description;
         }
-        public FlagParameterAttribute(string flag, string description, string type, string defaultValue) : this(flag, description, type, defaultValue, false) { }
-        public FlagParameterAttribute(string flag, string description, string type) : this(flag, description, type, string.Empty, false) { }
-        public FlagParameterAttribute(string flag, string description, string type, bool required) : this(flag, description, type, string.Empty, required) { }
+
+        public FlagParameterAttribute(string flag, string description, string type, string defaultValue)
+            : this(flag, description, type, defaultValue, false)
+        {
+        }
+
+        public FlagParameterAttribute(string flag, string description, string type)
+            : this(flag, description, type, string.Empty, false)
+        {
+        }
+
+        public FlagParameterAttribute(string flag, string description, string type, bool required)
+            : this(flag, description, type, string.Empty, required)
+        {
+        }
     }
 }

@@ -1,21 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Modules.Actions;
-
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules.Actions;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionButton
+    /// Class    : ActionButton
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   ActionButton provides a button (or group of buttons) for action(s).
@@ -29,16 +24,14 @@ namespace DotNetNuke.UI.Containers
     {
         private ActionButtonList _ButtonList;
 
-        #region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the Command Name
+        ///   Gets or sets the Command Name.
         /// </summary>
         /// <remarks>
-        ///   Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions
+        ///   Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CommandName
         {
@@ -47,6 +40,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.CommandName;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -56,12 +50,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the CSS Class
+        ///   Gets or sets the CSS Class.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 'CommandButton'
+        ///   Defaults to 'CommandButton'.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CssClass
         {
@@ -70,6 +64,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.CssClass;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -79,12 +74,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets whether the link is displayed
+        ///   Gets or sets a value indicating whether gets or sets whether the link is displayed.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
@@ -93,6 +88,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.DisplayLink;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -102,12 +98,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets whether the icon is displayed
+        ///   Gets or sets a value indicating whether gets or sets whether the icon is displayed.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
@@ -116,6 +112,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.DisplayIcon;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -125,12 +122,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the Icon used
+        ///   Gets or sets the Icon used.
         /// </summary>
         /// <remarks>
-        ///   Defaults to the icon defined in Action
+        ///   Defaults to the icon defined in Action.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconFile
         {
@@ -139,6 +136,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.ImageURL;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -148,12 +146,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the Separator between Buttons
+        ///   Gets or sets the Separator between Buttons.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 2 non-breaking spaces
+        ///   Defaults to 2 non-breaking spaces.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
@@ -162,6 +160,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.ButtonSeparator;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -169,13 +168,9 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        #endregion
-
-        #region "Private Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Action_Click responds to an Action Event in the contained actionButtonList
+        ///   Action_Click responds to an Action Event in the contained actionButtonList.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Action_Click(object sender, ActionEventArgs e)
@@ -183,13 +178,9 @@ namespace DotNetNuke.UI.Containers
             this.ProcessAction(e.Action.ID.ToString());
         }
 
-        #endregion
-
-        #region "Protected Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   CreateChildControls builds the control tree
+        ///   CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
@@ -201,7 +192,5 @@ namespace DotNetNuke.UI.Containers
 
             this.Controls.Add(this._ButtonList);
         }
-
-        #endregion
     }
 }

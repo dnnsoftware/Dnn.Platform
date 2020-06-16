@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-
 namespace DotNetNuke.Entities.DataStructures
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
     [Serializable]
     [DataContract]
     public class NTree<T>
@@ -27,7 +27,5 @@ namespace DotNetNuke.Entities.DataStructures
         {
             return this.Children != null && this.Children.Count > 0;
         }
-
     }
-
 }

@@ -2,23 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.Caching;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using System.Text.RegularExpressions;
-
 namespace Dnn.PersonaBar.Prompt.Components.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Localization;
+
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
         protected override Func<ICommandRepository> GetFactory()

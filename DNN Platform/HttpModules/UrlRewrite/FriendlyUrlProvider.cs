@@ -1,23 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.HttpModules.UrlRewrite;
-
-#endregion
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.Url.FriendlyUrl
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.HttpModules.UrlRewrite;
+
     public class DNNFriendlyUrlProvider : FriendlyUrlProvider
     {
         internal const string ProviderName = "DNNFriendlyUrl";
@@ -31,10 +28,10 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
         public DNNFriendlyUrlProvider()
         {
-            //Read the configuration specific information for this provider
+            // Read the configuration specific information for this provider
             var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
 
-            if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
+            if (!string.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
             {
                 switch (objProvider.Attributes["urlFormat"].ToLowerInvariant())
                 {
@@ -53,7 +50,8 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
                         break;
                 }
             }
-            //instance the correct provider implementation
+
+            // instance the correct provider implementation
             switch (this._urlFormat)
             {
                 case UrlFormatType.Advanced:
@@ -65,7 +63,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
                     break;
             }
 
-            string extensions = !String.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
+            string extensions = !string.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
             this._validExtensions = extensions.Split(',');
         }
 

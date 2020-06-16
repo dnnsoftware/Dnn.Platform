@@ -1,46 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-using Newtonsoft.Json;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    using System;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+    using Newtonsoft.Json;
+
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     public class DnnComboBox : DropDownList
     {
-        #region Fields
-
         private string _initValue;
         private string _multipleValue;
-
-        #endregion
-
-        #region Properties
 
         public override string SelectedValue
         {
             get
             {
                 return base.SelectedValue;
-
             }
+
             set
             {
                 if (this.RequiresDataBinding)
@@ -72,6 +62,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                 return this.SelectedValue ?? string.Empty;
             }
+
             set
             {
                 if (this.TagKey == HtmlTextWriterTag.Input)
@@ -93,10 +84,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
-
-        #endregion
-
-        #region Override Methods
 
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -138,6 +125,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 this.Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
             }
+
             if (!this.Options.Localization.ContainsKey("AllItemsChecked"))
             {
                 this.Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));
@@ -162,10 +150,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 base.DataBind();
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         public void AddItem(string text, string value)
         {
@@ -195,16 +179,16 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 if (this.FindItemByText(initial, true) != null)
                 {
-					this.FindItemByText(initial, true).Selected = true;
+                    this.FindItemByText(initial, true).Selected = true;
                 }
             }
             else
             {
-				if (this.FindItemByValue(initial, true) != null)
+                if (this.FindItemByValue(initial, true) != null)
                 {
-					this.FindItemByValue(initial, true).Selected = true;
+                    this.FindItemByValue(initial, true).Selected = true;
                 }
-            } 
+            }
         }
 
         public ListItem FindItemByText(string text, bool ignoreCase = false)
@@ -221,10 +205,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             return this.Items.IndexOf(this.FindItemByValue(value));
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void RegisterRequestResources()
         {
@@ -247,7 +227,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                     var options = JsonConvert.SerializeObject(this.Options, Formatting.None,
                                     new JsonSerializerSettings
                                     {
-                                        NullValueHandling = NullValueHandling.Ignore
+                                        NullValueHandling = NullValueHandling.Ignore,
                                     });
 
                     var initScripts = $"$('#{this.ClientID}').dnnComboBox({options});";
@@ -256,7 +236,5 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 }
             }
         }
-
-        #endregion
     }
 }

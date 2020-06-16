@@ -1,30 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using System.Data.SqlTypes;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.WebControls;
-
-using Telerik.Web.UI;
-
-using Calendar = DotNetNuke.Common.Utilities.Calendar;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Data.SqlTypes;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.WebControls;
+    using Telerik.Web.UI;
+
+    using Calendar = DotNetNuke.Common.Utilities.Calendar;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DateEditControl control provides a standard UI component for editing
@@ -36,16 +30,14 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DateEditControl));
-		private DnnDatePicker _dateControl;
-
-		#region Protected Properties
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
+        private DnnDatePicker _dateControl;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DateValue returns the Date representation of the Value
+        /// Gets dateValue returns the Date representation of the Value.
         /// </summary>
-        /// <value>A Date representing the Value</value>
+        /// <value>A Date representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected DateTime DateValue
         {
@@ -60,19 +52,19 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
+
                 return dteValue;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DefaultDateFormat is a string that will be used to format the date in the absence of a
-        /// FormatAttribute
+        /// Gets defaultDateFormat is a string that will be used to format the date in the absence of a
+        /// FormatAttribute.
         /// </summary>
-        /// <value>A String representing the default format to use to render the date</value>
-        /// <returns>A Format String</returns>
+        /// <value>A String representing the default format to use to render the date.</value>
+        /// <returns>A Format String.</returns>
         /// -----------------------------------------------------------------------------
         protected virtual string DefaultFormat
         {
@@ -84,10 +76,10 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Format is a string that will be used to format the date in View mode
+        /// Gets format is a string that will be used to format the date in View mode.
         /// </summary>
-        /// <value>A String representing the format to use to render the date</value>
-        /// <returns>A Format String</returns>
+        /// <value>A String representing the format to use to render the date.</value>
+        /// <returns>A Format String.</returns>
         /// -----------------------------------------------------------------------------
         protected virtual string Format
         {
@@ -100,21 +92,22 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                     {
                         if (attribute is FormatAttribute)
                         {
-                            var formatAtt = (FormatAttribute) attribute;
+                            var formatAtt = (FormatAttribute)attribute;
                             _Format = formatAtt.Format;
                             break;
                         }
                     }
                 }
+
                 return _Format;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldDateValue returns the Date representation of the OldValue
+        /// Gets oldDateValue returns the Date representation of the OldValue.
         /// </summary>
-        /// <value>A Date representing the OldValue</value>
+        /// <value>A Date representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected DateTime OldDateValue
         {
@@ -123,7 +116,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-					//Try and cast the value to an DateTime
+                    // Try and cast the value to an DateTime
                     var dteString = this.OldValue as string;
                     if (!string.IsNullOrEmpty(dteString))
                     {
@@ -133,47 +126,46 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
+
                 return dteValue;
             }
         }
 
         /// <summary>
-        /// The Value expressed as a String
+        /// Gets or sets the Value expressed as a String.
         /// </summary>
         protected override string StringValue
         {
             get
             {
                 string _StringValue = Null.NullString;
-                if ((this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate))
+                if (this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate)
                 {
                     _StringValue = this.DateValue.ToString(this.Format);
                 }
+
                 return _StringValue;
             }
+
             set
             {
                 this.Value = DateTime.Parse(value);
             }
         }
 
-		#endregion
+        public override string ID
+        {
+            get
+            {
+                return base.ID + "_control";
+            }
 
-		#region Override Properties
-		
-		public override string ID
-		{
-			get
-			{
-				return base.ID + "_control";
-			}
-			set
-			{
-				base.ID = value;
-			}
-		}
+            set
+            {
+                base.ID = value;
+            }
+        }
 
         public override string EditControlClientId
         {
@@ -181,45 +173,37 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             {
                 this.EnsureChildControls();
                 return this.DateControl.DateInput.ClientID;
-
             }
         }
-		
-		#endregion
 
-		#region Private Properties
+        private DnnDatePicker DateControl
+        {
+            get
+            {
+                if (this._dateControl == null)
+                {
+                    this._dateControl = new DnnDatePicker();
+                }
 
-	    private DnnDatePicker DateControl
-	    {
-		    get
-		    {
-			    if (this._dateControl == null)
-			    {
-				    this._dateControl = new DnnDatePicker();
-			    }
-
-			    return this._dateControl;
-		    }
-	    }
-
-		#endregion
+                return this._dateControl;
+            }
+        }
 
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
 
+            this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
+            this.DateControl.ID = base.ID + "_control";
 
-			this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
-			this.DateControl.ID = base.ID + "_control";
-
-			this.Controls.Add(this.DateControl);
+            this.Controls.Add(this.DateControl);
         }
 
         protected virtual void LoadDateControls()
         {
             if (this.DateValue != Null.NullDate)
             {
-				this.DateControl.SelectedDate = this.DateValue.Date;
+                this.DateControl.SelectedDate = this.DateValue.Date;
             }
         }
 
@@ -228,7 +212,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             this.EnsureChildControls();
             bool dataChanged = false;
             string presentValue = this.StringValue;
-			string postedValue = postCollection[postDataKey + "_control"];
+            string postedValue = postCollection[postDataKey + "_control"];
             if (!presentValue.Equals(postedValue))
             {
                 if (string.IsNullOrEmpty(postedValue))
@@ -242,21 +226,22 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                     dataChanged = true;
                 }
             }
+
             this.LoadDateControls();
             return dataChanged;
         }
 
         /// <summary>
-        /// OnDataChanged is called by the PostBack Handler when the Data has changed
+        /// OnDataChanged is called by the PostBack Handler when the Data has changed.
         /// </summary>
-        /// <param name="e">An EventArgs object</param>
+        /// <param name="e">An EventArgs object.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
             args.Value = this.DateValue;
             args.OldValue = this.OldDateValue;
             args.StringValue = this.DateValue.ToString(CultureInfo.InvariantCulture);
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         protected override void OnPreRender(EventArgs e)
@@ -272,7 +257,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         }
 
         /// <summary>
-        /// RenderEditMode is called by the base control to render the control in Edit Mode
+        /// RenderEditMode is called by the base control to render the control in Edit Mode.
         /// </summary>
         /// <param name="writer"></param>
         protected override void RenderEditMode(HtmlTextWriter writer)
@@ -282,7 +267,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

@@ -1,15 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections;
-
-#endregion
-
 namespace DotNetNuke.Services.Search
 {
+    using System.Collections;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.Index
@@ -24,9 +19,8 @@ namespace DotNetNuke.Services.Search
     #pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase
     {
-		#region "Constructors"
-		
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.
         /// </summary>
         public SearchContentModuleInfoCollection()
@@ -34,6 +28,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> with which to initialize the collection.</param>
@@ -43,6 +38,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class containing the specified array of <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> objects with which to initialize the collection. </param>
@@ -50,10 +46,6 @@ namespace DotNetNuke.Services.Search
         {
             this.AddRange(value);
         }
-		
-		#endregion
-		
-		#region "Properties"
 
         /// <summary>
         /// Gets the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> at the specified index in the collection.
@@ -65,22 +57,20 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchContentModuleInfo) this.List[index];
+                return (SearchContentModuleInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to the end of the collection.
         /// </summary>
         /// <param name="value">An object of type <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to add to the collection.</param>
+        /// <returns></returns>
         public int Add(SearchContentModuleInfo value)
         {
             return this.List.Add(value);
@@ -99,7 +89,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Add an element of the specified <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to the collection at the designated index.
         /// </summary>
-        /// <param name="index">An <see cref="System.Int32">Integer</see> to indicate the location to add the object to the collection.</param>
+        /// <param name="index">An <see cref="int">Integer</see> to indicate the location to add the object to the collection.</param>
         /// <param name="value">An object of type <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> to add to the collection.</param>
         public void Insert(int index, SearchContentModuleInfo value)
         {
@@ -122,7 +112,7 @@ namespace DotNetNuke.Services.Search
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         public bool Contains(SearchContentModuleInfo value)
         {
-			//If value is not of type SearchContentModuleInfo, this will return false.
+            // If value is not of type SearchContentModuleInfo, this will return false.
             return this.List.Contains(value);
         }
 
@@ -146,7 +136,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                this.Add((SearchContentModuleInfo) value.List[i]);
+                this.Add((SearchContentModuleInfo)value.List[i]);
             }
         }
 
@@ -163,15 +153,13 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.
         /// </summary>
-        /// <returns>Array of type SearchContentModuleInfo</returns>
+        /// <returns>Array of type SearchContentModuleInfo.</returns>
         public SearchContentModuleInfo[] ToArray()
         {
             var arr = new SearchContentModuleInfo[this.Count];
             this.CopyTo(arr, 0);
             return arr;
         }
-		
-		#endregion
     }
-    #pragma warning restore 0618
+#pragma warning restore 0618
 }

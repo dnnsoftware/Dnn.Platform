@@ -2,42 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.FileSystem;
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.FileSystem;
+
     public class PathUtils : ComponentBase<IPathUtils, PathUtils>, IPathUtils
     {
         private static readonly Regex FolderPathRx = new Regex("^0\\\\", RegexOptions.Compiled);
-
-        #region Constructor
 
         internal PathUtils()
         {
         }
 
-        #endregion
-
-        #region Public Enums
-
         public enum UserFolderElement
         {
             Root = 0,
-            SubFolder = 1
+            SubFolder = 1,
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         /// Adds backslash to the specified source.
@@ -58,19 +48,20 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The formatted path.</returns>
         public virtual string FormatFolderPath(string folderPath)
         {
-            //Can not call trim on folderpath since folder passed in might have a legit space
-            //at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test" 
-            if (String.IsNullOrEmpty(folderPath) || String.IsNullOrEmpty(folderPath.Trim()))
+            // Can not call trim on folderpath since folder passed in might have a legit space
+            // at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test"
+            if (string.IsNullOrEmpty(folderPath) || string.IsNullOrEmpty(folderPath.Trim()))
             {
-                return "";
+                return string.Empty;
             }
 
-			return folderPath.EndsWith("/") ? folderPath.Trim() : folderPath.Trim() + "/";
+            return folderPath.EndsWith("/") ? folderPath.Trim() : folderPath.Trim() + "/";
         }
 
         /// <summary>
         /// Gets the physical path for the specified relative path.
         /// </summary>
+        /// <returns></returns>
         public virtual string GetPhysicalPath(int portalID, string relativePath)
         {
             Requires.PropertyNotNull("relativePath", relativePath);
@@ -91,6 +82,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the relative path for the specified physical path.
         /// </summary>
+        /// <returns></returns>
         public virtual string GetRelativePath(int portalID, string physicalPath)
         {
             Requires.PropertyNotNull("physicalPath", physicalPath);
@@ -124,8 +116,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets the physical root folder path for the specified portal
+        /// Gets the physical root folder path for the specified portal.
         /// </summary>
+        /// <returns></returns>
         public virtual string GetRootFolderMapPath(int portalID)
         {
             return (portalID == Null.NullInteger) ? GetHostMapPath() : GetPortalMapPath(portalID);
@@ -140,7 +133,7 @@ namespace DotNetNuke.Common.Utilities
         {
             return FolderManager.Instance.GetUserFolder(user).FolderPath;
         }
-        
+
         /// <summary>
         /// Get elements from the user folder path.
         /// </summary>
@@ -156,7 +149,7 @@ namespace DotNetNuke.Common.Utilities
         {
             const int subfolderSeedLength = 2;
             const int byteOffset = 255;
-            var element = "";
+            var element = string.Empty;
 
             switch (mode)
             {
@@ -169,8 +162,8 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return element;
-        } 
-        
+        }
+
         internal string GetUserFolderPathInternal(UserInfo user)
         {
             var rootFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.Root);
@@ -178,7 +171,7 @@ namespace DotNetNuke.Common.Utilities
 
             var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), user.UserID.ToString(CultureInfo.InvariantCulture));
 
-            return String.Format("Users/{0}/", fullPath.Replace("\\", "/"));
+            return string.Format("Users/{0}/", fullPath.Replace("\\", "/"));
         }
 
         /// <summary>
@@ -188,7 +181,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>True if the folderPath is a default protected folder. False otherwise.</returns>
         public virtual bool IsDefaultProtectedPath(string folderPath)
         {
-            return String.IsNullOrEmpty(folderPath) ||
+            return string.IsNullOrEmpty(folderPath) ||
                    folderPath.Equals("skins", StringComparison.InvariantCultureIgnoreCase) ||
                    folderPath.Equals("containers", StringComparison.InvariantCultureIgnoreCase) ||
                    folderPath.StartsWith("skins/", StringComparison.InvariantCultureIgnoreCase) ||
@@ -198,13 +191,13 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// The MapPath method maps the specified relative or virtual path to the corresponding physical directory on the server.
         /// </summary>
-        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either 
-        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path 
-        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed</param>
+        /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either
+        /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path
+        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed.</param>
         /// <returns></returns>
         /// <remarks>
-        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path 
-        /// of the directory that contains the current application
+        /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path
+        /// of the directory that contains the current application.
         /// </remarks>
         public virtual string MapPath(string path)
         {
@@ -244,9 +237,9 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The original string minus the trailing slash.</returns>
         public virtual string RemoveTrailingSlash(string source)
         {
-            if (String.IsNullOrEmpty(source))
+            if (string.IsNullOrEmpty(source))
             {
-                return "";
+                return string.Empty;
             }
 
             if (source.EndsWith("\\") || source.EndsWith("/"))
@@ -268,15 +261,11 @@ namespace DotNetNuke.Common.Utilities
 
             if (originalPath.IndexOf("\\", StringComparison.InvariantCulture) >= 0)
             {
-                return FolderPathRx.Replace(originalPath, "");
+                return FolderPathRx.Replace(originalPath, string.Empty);
             }
 
             return originalPath.StartsWith("0") ? originalPath.Substring(1) : originalPath;
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static string GetHostMapPath()
         {
@@ -288,7 +277,5 @@ namespace DotNetNuke.Common.Utilities
             var portalInfo = PortalController.Instance.GetPortal(portalId);
             return portalInfo.HomeDirectoryMapPath;
         }
-
-        #endregion
     }
 }

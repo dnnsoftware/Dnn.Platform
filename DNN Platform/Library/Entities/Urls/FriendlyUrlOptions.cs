@@ -1,20 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>
-    /// This class encapsulates different options used in generating friendly urls
+    /// This class encapsulates different options used in generating friendly urls.
     /// </summary>
     [Serializable]
     public class FriendlyUrlOptions
@@ -27,7 +23,8 @@ namespace DotNetNuke.Entities.Urls
         public int MaxUrlPathLength;
         public string PageExtension;
         public string PunctuationReplacement;
-        //922 : change to use regexMatch pattern for allowable characters
+
+        // 922 : change to use regexMatch pattern for allowable characters
         public string RegexMatch;
         public Dictionary<string, string> ReplaceCharWithChar = new Dictionary<string, string>();
         public string ReplaceChars;
@@ -36,8 +33,8 @@ namespace DotNetNuke.Entities.Urls
 
         public bool CanGenerateNonStandardPath
         {
-            //replaces statements like this
-            //if ((settings.ReplaceSpaceWith != null && settings.ReplaceSpaceWith.Length > 0) || settings.ReplaceCharWithCharDict != null && settings.ReplaceCharWithCharDict.Count > 0)
+            // replaces statements like this
+            // if ((settings.ReplaceSpaceWith != null && settings.ReplaceSpaceWith.Length > 0) || settings.ReplaceCharWithCharDict != null && settings.ReplaceCharWithCharDict.Count > 0)
             get
             {
                 bool result = false;
@@ -94,7 +91,7 @@ namespace DotNetNuke.Entities.Urls
                     RegexMatch = this.RegexMatch,
                     ReplaceCharWithChar = this.ReplaceCharWithChar,
                     IllegalChars = this.IllegalChars,
-                    ReplaceChars = this.ReplaceChars
+                    ReplaceChars = this.ReplaceChars,
                 };
             return cloned;
         }

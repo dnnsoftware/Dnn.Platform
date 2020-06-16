@@ -1,47 +1,42 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Entities.Portals;
-
-#endregion
-
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Entities.Portals;
+
     /// <summary>
-    /// The UrlAction class keeps state of the current Request throughout the rewriting process
+    /// The UrlAction class keeps state of the current Request throughout the rewriting process.
     /// </summary>
     public class UrlAction
     {
-        //829 add in constructor that works around physical path length restriction
+        // 829 add in constructor that works around physical path length restriction
         public UrlAction(HttpRequest request)
         {
             this.BrowserType = BrowserTypes.Normal;
             this.CanRewrite = StateBoolean.NotSet;
             this.Action = ActionType.Continue;
-            string physicalPath = "";
+            string physicalPath = string.Empty;
             try
             {
                 physicalPath = request.PhysicalPath;
             }
             catch (PathTooLongException)
             {
-                //don't handle exception, but put something into the physical path
-                physicalPath = request.ApplicationPath; //will be no file for this location
+                // don't handle exception, but put something into the physical path
+                physicalPath = request.ApplicationPath; // will be no file for this location
                 this.VirtualPath = StateBoolean.True;
             }
             catch (ArgumentException)
             {
-                //don't handle exception, but put something into the physical path
-                physicalPath = request.ApplicationPath; //will be no file for this location
+                // don't handle exception, but put something into the physical path
+                physicalPath = request.ApplicationPath; // will be no file for this location
                 this.VirtualPath = StateBoolean.True;
             }
             finally
@@ -68,8 +63,9 @@ namespace DotNetNuke.Entities.Urls
             {
                 this.Scheme = scheme;
             }
+
             this.ApplicationPath = applicationPath;
-            string domainPath = applicationPath.Replace(scheme, "");
+            string domainPath = applicationPath.Replace(scheme, string.Empty);
             this.DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
             this.PhysicalPath = physicalPath;
             this.PortalId = -1;
@@ -84,35 +80,48 @@ namespace DotNetNuke.Entities.Urls
             this.CultureCode = null;
         }
 
-        #region Private Members
-
         private List<string> _licensedProviders;
         private PortalAliasInfo _portalAlias;
 
-        #endregion
-
-        #region Public Properties
-
         public Uri Url { get; set; }
+
         public bool DoRewrite { get; set; }
+
         public bool FriendlyRewrite { get; set; }
-        //friendlyRewrite means it was rewritten without looking up the tabid in the url
+
+        // friendlyRewrite means it was rewritten without looking up the tabid in the url
         public bool BypassCachedDictionary { get; set; }
+
         public string RewritePath { get; set; }
+
         public string RawUrl { get; set; }
+
         public string DebugData { get; set; }
+
         public string PhysicalPath { get; set; }
+
         public StateBoolean VirtualPath { get; set; }
+
         public string ApplicationPath { get; set; }
+
         public bool RebuildRequested { get; set; }
+
         public string FinalUrl { get; set; }
+
         public string Scheme { get; set; }
+
         public bool IsSecureConnection { get; set; }
+
         public bool IsSSLOffloaded { get; set; }
+
         public string DomainName { get; set; }
+
         public Exception Ex { get; set; }
+
         public string dictKey { get; set; }
+
         public string dictVal { get; set; }
+
         public List<string> DebugMessages { get; set; }
 
         public int TabId { get; set; }
@@ -135,10 +144,11 @@ namespace DotNetNuke.Entities.Urls
 
         public StateBoolean CanRewrite { get; set; }
 
-        //the alias for the current request
+        // the alias for the current request
         public PortalAliasInfo PortalAlias
         {
             get { return this._portalAlias; }
+
             set
             {
                 if (value != null)
@@ -146,30 +156,30 @@ namespace DotNetNuke.Entities.Urls
                     this.PortalId = value.PortalID;
                     this.HttpAlias = value.HTTPAlias;
                 }
+
                 this._portalAlias = value;
             }
         }
-        //the primary alias, if different to the current alias
+
+        // the primary alias, if different to the current alias
         public PortalAliasInfo PrimaryAlias { get; set; }
-        public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping {get; set;}
+
+        public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping { get; set; }
+
         public bool CustomParmRewrite { get; set; }
 
-        //737 : mobile browser identificatino
+        // 737 : mobile browser identificatino
         public BrowserTypes BrowserType { get; private set; }
 
         public bool IsPhysicalResource { get; set; }
-
-        #endregion
-
-        #region public methods
 
         public string UnlicensedProviderMessage { get; set; }
 
         public bool UnlicensedProviderCalled { get; set; }
 
         /// <summary>
-        /// Sets the action value, but checks to ensure that the action is 
-        /// not being 'downgraded' (example: cannot set 'Redirect301' to 'CheckFor301')
+        /// Sets the action value, but checks to ensure that the action is
+        /// not being 'downgraded' (example: cannot set 'Redirect301' to 'CheckFor301').
         /// </summary>
         /// <param name="newAction"></param>
         public void SetActionWithNoDowngrade(ActionType newAction)
@@ -184,6 +194,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         this.Action = newAction;
                     }
+
                     break;
                 default:
                     this.Action = newAction;
@@ -191,13 +202,13 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-
         public void AddLicensedProviders(List<string> licensedProviders)
         {
             if (this._licensedProviders == null)
             {
                 this._licensedProviders = new List<string>();
             }
+
             foreach (string lp in licensedProviders)
             {
                 if (this._licensedProviders.Contains(lp.ToLowerInvariant()) == false)
@@ -213,6 +224,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 this._licensedProviders = new List<string>();
             }
+
             if (this._licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
             {
                 this._licensedProviders.Add(providerName.ToLowerInvariant());
@@ -225,11 +237,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 return false;
             }
+
             return this._licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 
         /// <summary>
-        /// Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias)
+        /// Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).
         /// </summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>
@@ -245,7 +258,7 @@ namespace DotNetNuke.Entities.Urls
 
         public void SetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
         {
-            //set the mobile browser type
+            // set the mobile browser type
             if (request != null && response != null && settings != null)
             {
                 this.BrowserType = FriendlyUrlController.GetBrowserType(request, response, settings);
@@ -259,7 +272,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!string.IsNullOrEmpty(regexExpr))
                 {
-                    //if a regex match, redirect Not allowed
+                    // if a regex match, redirect Not allowed
                     this.RedirectAllowed = !Regex.IsMatch(path, regexExpr, RegexOptions.IgnoreCase);
                 }
                 else
@@ -269,14 +282,12 @@ namespace DotNetNuke.Entities.Urls
             }
             catch (Exception ex)
             {
-                this.RedirectAllowed = true; //default : true, unless regex allows it.  So if regex causes an exception
-                //then we should allow the redirect
+                this.RedirectAllowed = true; // default : true, unless regex allows it.  So if regex causes an exception
 
+                // then we should allow the redirect
                 UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", this);
                 this.Ex = ex;
             }
         }
-
-        #endregion
     }
 }

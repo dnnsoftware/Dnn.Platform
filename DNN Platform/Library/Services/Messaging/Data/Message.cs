@@ -1,23 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-
-#endregion
-
 namespace DotNetNuke.Services.Messaging.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Info class for Messaging
+    ///   The Info class for Messaging.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -42,18 +37,12 @@ namespace DotNetNuke.Services.Messaging.Data
         private bool _allowReply;
         private bool _skipInbox;
 
-        #region "Constructors"
-
         public Message()
         {
             this.Conversation = Guid.Empty;
             this.Status = MessageStatusType.Draft;
             this.MessageDate = DateTime.Now;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         private Guid _EmailSchedulerInstance;
         private DateTime _EmailSentDate;
@@ -64,12 +53,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._FromUserName;
             }
+
             private set
             {
                 this._FromUserName = value;
             }
         }
-
 
         public int FromUserID
         {
@@ -77,12 +66,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._FromUserID;
             }
+
             set
             {
                 this._FromUserID = value;
             }
         }
-
 
         public int ToRoleID
         {
@@ -90,12 +79,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ToRoleId;
             }
+
             set
             {
                 this._ToRoleId = value;
             }
         }
-
 
         public bool AllowReply
         {
@@ -103,12 +92,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._allowReply;
             }
+
             set
             {
                 this._allowReply = value;
             }
         }
-
 
         public bool SkipInbox
         {
@@ -116,6 +105,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._skipInbox;
             }
+
             set
             {
                 this._skipInbox = value;
@@ -128,12 +118,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._EmailSent;
             }
+
             set
             {
                 this._EmailSent = value;
             }
         }
-
 
         public string Body
         {
@@ -141,6 +131,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._Body;
             }
+
             set
             {
                 this._Body = value;
@@ -153,6 +144,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._MessageDate;
             }
+
             set
             {
                 this._MessageDate = value;
@@ -165,6 +157,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._Conversation;
             }
+
             set
             {
                 this._Conversation = value;
@@ -177,12 +170,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._MessageID;
             }
+
             private set
             {
                 this._MessageID = value;
             }
         }
-
 
         public int PortalID
         {
@@ -190,6 +183,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._PortalID;
             }
+
             set
             {
                 this._PortalID = value;
@@ -202,6 +196,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ReplyTo;
             }
+
             private set
             {
                 this._ReplyTo = value;
@@ -214,6 +209,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._Status;
             }
+
             set
             {
                 this._Status = value;
@@ -227,6 +223,7 @@ namespace DotNetNuke.Services.Messaging.Data
                 var ps = PortalSecurity.Instance;
                 return ps.InputFilter(this._Subject, PortalSecurity.FilterFlag.NoMarkup);
             }
+
             set
             {
                 var ps = PortalSecurity.Instance;
@@ -235,13 +232,13 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-
         public int ToUserID
         {
             get
             {
                 return this._ToUserID;
             }
+
             set
             {
                 this._ToUserID = value;
@@ -254,12 +251,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ToUserName;
             }
+
             private set
             {
                 this._ToUserName = value;
             }
         }
-
 
         public DateTime EmailSentDate
         {
@@ -267,12 +264,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._EmailSentDate;
             }
+
             private set
             {
                 this._EmailSentDate = value;
             }
         }
-
 
         public Guid EmailSchedulerInstance
         {
@@ -280,15 +277,12 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._EmailSchedulerInstance;
             }
+
             private set
             {
                 this._EmailSchedulerInstance = value;
             }
         }
-
-        #endregion
-
-        #region "Public Methods"
 
         public Message GetReplyMessage()
         {
@@ -307,10 +301,6 @@ namespace DotNetNuke.Services.Messaging.Data
             return message;
         }
 
-        #endregion
-
-        #region "IHydratable Implementation"
-
         public void Fill(IDataReader dr)
         {
             this.MessageID = Null.SetNullInteger(dr["MessageID"]);
@@ -318,9 +308,10 @@ namespace DotNetNuke.Services.Messaging.Data
             this.FromUserID = Null.SetNullInteger(dr["FromUserID"]);
             this.FromUserName = Null.SetNullString(dr["FromUserName"]);
             this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
-            //'_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
+
+            // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
             this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
-            this.Status = (MessageStatusType) Enum.Parse(typeof (MessageStatusType), Null.SetNullString(dr["Status"]));
+            this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
             this.Body = Null.SetNullString(dr["Body"]);
             this.Subject = Null.SetNullString(dr["Subject"]);
             this.MessageDate = Null.SetNullDateTime(dr["Date"]);
@@ -334,8 +325,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
             this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
-
-            //'Conversation = New Guid(g)
+            // 'Conversation = New Guid(g)
         }
 
         public int KeyID
@@ -344,12 +334,11 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this.MessageID;
             }
+
             set
             {
                 this.MessageID = value;
             }
         }
-
-        #endregion
     }
 }

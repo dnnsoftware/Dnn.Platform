@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Cache;
-using Moq;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Helpers
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Cache;
+    using Moq;
+
     public class SetupCachingProviderHelper
     {
         public static void SetupCachingProvider(Mock<CachingProvider> mockCachingProvider)
         {
             mockCachingProvider.Setup(c => c.GetItem(It.IsAny<string>()))
-                .Returns<string>((key =>
+                .Returns<string>(key =>
                 {
                     if (key.Contains("Portal-1_"))
                     {
@@ -22,8 +23,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Helpers
 
                         return portals;
                     }
+
                     return key.Contains("PortalGroups") ? new List<PortalGroupInfo>() : null;
-                }));
+                });
         }
     }
 }

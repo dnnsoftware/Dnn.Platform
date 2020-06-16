@@ -2,47 +2,47 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Services.Cache;
-using System.Web.Caching;
-
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Net.Http;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Upgrade;
+
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ServerSummaryController : PersonaBarApiController
     {
         private const string CriticalUpdateHash = "e67b666fb40c4f304a41d1706d455c09017b7bcf4ec1e411450ebfcd2c8f12d0";
         private const string NormalUpdateHash = "df29e1cda367bb8fa8534b5fb2415406100252dec057138b8d63cbadb44fb8e7";
 
-        enum UpdateType
+        private enum UpdateType
         {
             None,
             Normal,
-            Critical
+            Critical,
         }
-
-        #region Public API methods
 
         /// <summary>
         /// Return server info.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetServerInfo()
         {
@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.UI.Services
             UpdateType updateType;
             var url = this.NeedUpdate(out updateType) ? Upgrade.UpgradeRedirect() : string.Empty;
 
-            return this.Request.CreateResponse(HttpStatusCode.OK, new {Url = url, Type = updateType});
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Url = url, Type = updateType });
         }
 
         private bool GetVisibleSetting(string settingName)
@@ -88,7 +88,7 @@ namespace Dnn.PersonaBar.UI.Services
         private bool NeedUpdate(out UpdateType updateType)
         {
             updateType = UpdateType.None;
-            
+
             if (HttpContext.Current == null || !Host.CheckUpgrade || !this.UserInfo.IsSuperUser)
             {
                 return false;
@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.UI.Services
             var version = DotNetNukeContext.Current.Application.Version;
             var request = HttpContext.Current.Request;
 
-            var imageUrl = Upgrade.UpgradeIndicator(version, request.IsLocal, request.IsSecureConnection); ;
+            var imageUrl = Upgrade.UpgradeIndicator(version, request.IsLocal, request.IsSecureConnection);
             imageUrl = Globals.AddHTTP(imageUrl.TrimStart('/'));
 
             try
@@ -116,21 +116,23 @@ namespace Dnn.PersonaBar.UI.Services
                     webRequest.UserAgent = request.UserAgent;
                     webRequest.Referer = request.RawUrl;
 
-                    using (var stream = ((HttpWebResponse) webRequest.GetResponse()).GetResponseStream())
+                    using (var stream = ((HttpWebResponse)webRequest.GetResponse()).GetResponseStream())
                     {
                         if (stream == null)
                         {
                             return false;
                         }
+
                         using (var sha256 = SHA256.Create())
                         {
                             hash =
-                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency) null,
+                                BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", string.Empty).ToLowerInvariant();
+                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency)null,
                                 Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
                         }
                     }
                 }
+
                 switch (hash)
                 {
                     case NormalUpdateHash:
@@ -148,7 +150,5 @@ namespace Dnn.PersonaBar.UI.Services
                 return false;
             }
         }
-
-        #endregion
     }
 }

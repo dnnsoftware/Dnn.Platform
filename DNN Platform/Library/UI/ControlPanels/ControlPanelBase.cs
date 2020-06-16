@@ -1,32 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Personalization;
-
-#endregion
-
 namespace DotNetNuke.UI.ControlPanels
 {
+    using System;
+    using System.Collections;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Personalization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ControlPanel class defines a custom base class inherited by all
@@ -37,19 +32,13 @@ namespace DotNetNuke.UI.ControlPanels
     /// -----------------------------------------------------------------------------
     public class ControlPanelBase : UserControl
     {
-		#region Private Members
-
         private string _localResourceFile;
-		
-		#endregion
-
-		#region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the ControlPanel is Visible
+        /// Gets a value indicating whether gets whether the ControlPanel is Visible.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         protected bool IsVisible
         {
@@ -61,7 +50,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the current Portal Settings
+        /// Gets the current Portal Settings.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
@@ -74,9 +63,9 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the User mode of the Control Panel
+        /// Gets the User mode of the Control Panel.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         protected PortalSettings.Mode UserMode
         {
@@ -88,16 +77,16 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Local ResourceFile for the Control Panel
+        /// Gets or sets and sets the Local ResourceFile for the Control Panel.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile
         {
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
                 }
@@ -105,14 +94,15 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;
             }
         }
-
 
         public virtual bool IncludeInControlHierarchy
         {
@@ -150,6 +140,7 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                 }
             }
+
             return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
         }
 
@@ -161,22 +152,19 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 _IsPageAdmin = true;
             }
+
             return _IsPageAdmin;
         }
 
-		#endregion
-		
-		#region Private Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a Module Permission
+        /// Adds a Module Permission.
         /// </summary>
-        /// <param name="objModule">Module Info</param>
-        /// <param name="permission">The permission to add</param>
+        /// <param name="objModule">Module Info.</param>
+        /// <param name="permission">The permission to add.</param>
         /// <param name="roleId">The Id of the role to add the permission for.</param>
-        /// <param name="userId">Operator</param>
-        /// <param name="allowAccess">Whether allow to access the module</param>
+        /// <param name="userId">Operator.</param>
+        /// <param name="allowAccess">Whether allow to access the module.</param>
         /// -----------------------------------------------------------------------------
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
@@ -188,27 +176,24 @@ namespace DotNetNuke.UI.ControlPanels
             objModulePermission.PermissionKey = permission.PermissionKey;
             objModulePermission.AllowAccess = allowAccess;
 
-            //add the permission to the collection
+            // add the permission to the collection
             if (!objModule.ModulePermissions.Contains(objModulePermission))
             {
                 objModule.ModulePermissions.Add(objModulePermission);
             }
+
             return objModulePermission;
         }
-		
-		#endregion
 
-		#region Protected Methods
-		
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds an Existing Module to a Pane
+        /// Adds an Existing Module to a Pane.
         /// </summary>
-        /// <param name="align">The alignment for the Modue</param>
-        /// <param name="moduleId">The Id of the existing module</param>
-        /// <param name="tabId">The id of the tab</param>
-        /// <param name="paneName">The pane to add the module to</param>
-        /// <param name="position">The relative position within the pane for the module</param>
+        /// <param name="align">The alignment for the Modue.</param>
+        /// <param name="moduleId">The Id of the existing module.</param>
+        /// <param name="tabId">The id of the tab.</param>
+        /// <param name="paneName">The pane to add the module to.</param>
+        /// <param name="position">The relative position within the pane for the module.</param>
         /// -----------------------------------------------------------------------------
         protected void AddExistingModule(int moduleId, int tabId, string paneName, int position, string align)
         {
@@ -220,30 +205,31 @@ namespace DotNetNuke.UI.ControlPanels
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
+
             objModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if (objModule != null)
             {
-                //clone the module object ( to avoid creating an object reference to the data cache )
+                // clone the module object ( to avoid creating an object reference to the data cache )
                 ModuleInfo objClone = objModule.Clone();
                 objClone.TabID = this.PortalSettings.ActiveTab.TabID;
                 objClone.ModuleOrder = position;
                 objClone.PaneName = paneName;
                 objClone.Alignment = align;
                 ModuleController.Instance.AddModule(objClone);
-                EventLogController.Instance.AddLog(objClone, this.PortalSettings, UserId, "", EventLogController.EventLogType.MODULE_CREATED);
+                EventLogController.Instance.AddLog(objClone, this.PortalSettings, UserId, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a New Module to a Pane
+        /// Adds a New Module to a Pane.
         /// </summary>
-        /// <param name="align">The alignment for the Modue</param>
-        /// <param name="desktopModuleId">The Id of the DesktopModule</param>
-        /// <param name="permissionType">The View Permission Type for the Module</param>
-        /// <param name="title">The Title for the resulting module</param>
-        /// <param name="paneName">The pane to add the module to</param>
-        /// <param name="position">The relative position within the pane for the module</param>
+        /// <param name="align">The alignment for the Modue.</param>
+        /// <param name="desktopModuleId">The Id of the DesktopModule.</param>
+        /// <param name="permissionType">The View Permission Type for the Module.</param>
+        /// <param name="title">The Title for the resulting module.</param>
+        /// <param name="paneName">The pane to add the module to.</param>
+        /// <param name="position">The relative position within the pane for the module.</param>
         /// -----------------------------------------------------------------------------
         protected void AddNewModule(string title, int desktopModuleId, string paneName, int position, ViewPermissionType permissionType, string align)
         {
@@ -261,12 +247,14 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 Exceptions.LogException(ex);
             }
+
             int UserId = -1;
             if (this.Request.IsAuthenticated)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
+
             foreach (ModuleDefinitionInfo objModuleDefinition in
                 ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
             {
@@ -275,7 +263,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objModule.PortalID = this.PortalSettings.PortalId;
                 objModule.TabID = this.PortalSettings.ActiveTab.TabID;
                 objModule.ModuleOrder = position;
-                if (String.IsNullOrEmpty(title))
+                if (string.IsNullOrEmpty(title))
                 {
                     objModule.ModuleTitle = objModuleDefinition.FriendlyName;
                 }
@@ -283,6 +271,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     objModule.ModuleTitle = title;
                 }
+
                 objModule.PaneName = paneName;
                 objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                 if (objModuleDefinition.DefaultCacheTime > 0)
@@ -297,6 +286,7 @@ namespace DotNetNuke.UI.ControlPanels
                         }
                     }
                 }
+
                 switch (permissionType)
                 {
                     case ViewPermissionType.View:
@@ -306,61 +296,65 @@ namespace DotNetNuke.UI.ControlPanels
                         objModule.InheritViewPermissions = false;
                         break;
                 }
-				
-                //get the default module view permissions
+
+                // get the default module view permissions
                 ArrayList arrSystemModuleViewPermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
 
-                //get the permissions from the page
+                // get the permissions from the page
                 foreach (TabPermissionInfo objTabPermission in objTabPermissions)
                 {
                     if (objTabPermission.PermissionKey == "VIEW" && permissionType == ViewPermissionType.View)
                     {
-						//Don't need to explicitly add View permisisons if "Same As Page"
+                        // Don't need to explicitly add View permisisons if "Same As Page"
                         continue;
                     }
-					
-                    //get the system module permissions for the permissionkey
+
+                    // get the system module permissions for the permissionkey
                     ArrayList arrSystemModulePermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", objTabPermission.PermissionKey);
-                    //loop through the system module permissions
+
+                    // loop through the system module permissions
                     int j;
                     for (j = 0; j <= arrSystemModulePermissions.Count - 1; j++)
                     {
                         PermissionInfo objSystemModulePermission;
-                        objSystemModulePermission = (PermissionInfo) arrSystemModulePermissions[j];
+                        objSystemModulePermission = (PermissionInfo)arrSystemModulePermissions[j];
                         if (objSystemModulePermission.PermissionKey == "VIEW" && permissionType == ViewPermissionType.Edit && objTabPermission.PermissionKey != "EDIT")
                         {
-							//Only Page Editors get View permissions if "Page Editors Only"
+                            // Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
-                        ModulePermissionInfo objModulePermission = this.AddModulePermission(objModule,
-                                                                                       objSystemModulePermission,
-                                                                                       objTabPermission.RoleID,
-                                                                                       objTabPermission.UserID,
-                                                                                       objTabPermission.AllowAccess);
 
-                        //ensure that every EDIT permission which allows access also provides VIEW permission
+                        ModulePermissionInfo objModulePermission = this.AddModulePermission(
+                            objModule,
+                            objSystemModulePermission,
+                            objTabPermission.RoleID,
+                            objTabPermission.UserID,
+                            objTabPermission.AllowAccess);
+
+                        // ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" && objModulePermission.AllowAccess)
                         {
-                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
-                                                                                         (PermissionInfo) arrSystemModuleViewPermissions[0],
-                                                                                         objModulePermission.RoleID,
-                                                                                         objModulePermission.UserID,
-                                                                                         true);
+                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(
+                                objModule,
+                                (PermissionInfo)arrSystemModuleViewPermissions[0],
+                                objModulePermission.RoleID,
+                                objModulePermission.UserID,
+                                true);
                         }
                     }
-					
-                    //Get the custom Module Permissions,  Assume that roles with Edit Tab Permissions
-                    //are automatically assigned to the Custom Module Permissions
+
+                    // Get the custom Module Permissions,  Assume that roles with Edit Tab Permissions
+                    // are automatically assigned to the Custom Module Permissions
                     if (objTabPermission.PermissionKey == "EDIT")
                     {
                         ArrayList arrCustomModulePermissions = objPermissionController.GetPermissionsByModuleDefID(objModule.ModuleDefID);
 
-                        //loop through the custom module permissions
+                        // loop through the custom module permissions
                         for (j = 0; j <= arrCustomModulePermissions.Count - 1; j++)
                         {
-							//create the module permission
+                            // create the module permission
                             PermissionInfo objCustomModulePermission;
-                            objCustomModulePermission = (PermissionInfo) arrCustomModulePermissions[j];
+                            objCustomModulePermission = (PermissionInfo)arrCustomModulePermissions[j];
                             this.AddModulePermission(objModule, objCustomModulePermission, objTabPermission.RoleID, objTabPermission.UserID, objTabPermission.AllowAccess);
                         }
                     }
@@ -369,7 +363,8 @@ namespace DotNetNuke.UI.ControlPanels
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //set the culture of the module to that of the tab
+
+                    // set the culture of the module to that of the tab
                     var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
@@ -386,10 +381,11 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Builds a URL
+        /// Builds a URL.
         /// </summary>
-        /// <param name="FriendlyName">The friendly name of the Module</param>
-        /// <param name="PortalID">The ID of the portal</param>
+        /// <param name="FriendlyName">The friendly name of the Module.</param>
+        /// <param name="PortalID">The ID of the portal.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected string BuildURL(int PortalID, string FriendlyName)
         {
@@ -406,6 +402,7 @@ namespace DotNetNuke.UI.ControlPanels
                     strURL = TestableGlobals.Instance.NavigateURL(objModule.TabID);
                 }
             }
+
             return strURL;
         }
 
@@ -417,14 +414,15 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 AllowAccess = ModulePermissionController.CanViewModule(objModule);
             }
+
             return AllowAccess;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets the UserMode
+        /// Sets the UserMode.
         /// </summary>
-        /// <param name="userMode">The userMode to set</param>
+        /// <param name="userMode">The userMode to set.</param>
         /// -----------------------------------------------------------------------------
         protected void SetUserMode(string userMode)
         {
@@ -433,38 +431,32 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets the current Visible Mode
+        /// Sets the current Visible Mode.
         /// </summary>
-        /// <param name="isVisible">A flag indicating whether the Control Panel should be visible</param>
+        /// <param name="isVisible">A flag indicating whether the Control Panel should be visible.</param>
         /// -----------------------------------------------------------------------------
         protected void SetVisibleMode(bool isVisible)
         {
             Personalization.SetProfile("Usability", "ControlPanelVisible" + this.PortalSettings.PortalId, isVisible.ToString());
         }
 
-		protected override void OnInit(EventArgs e)
-		{
-			if (this.Page.Items.Contains(typeof(ControlPanelBase)) && this.Page.Items[typeof(ControlPanelBase)] is ControlPanelBase)
-			{
-				this.Parent.Controls.Remove(this);
-			}
-			else
-			{
-				this.Page.Items[typeof(ControlPanelBase)] = this;
-				base.OnInit(e);
-			}
-		}
-		
-		#endregion
-
-        #region Nested type: ViewPermissionType
+        protected override void OnInit(EventArgs e)
+        {
+            if (this.Page.Items.Contains(typeof(ControlPanelBase)) && this.Page.Items[typeof(ControlPanelBase)] is ControlPanelBase)
+            {
+                this.Parent.Controls.Remove(this);
+            }
+            else
+            {
+                this.Page.Items[typeof(ControlPanelBase)] = this;
+                base.OnInit(e);
+            }
+        }
 
         protected enum ViewPermissionType
         {
             View = 0,
-            Edit = 1
+            Edit = 1,
         }
-
-        #endregion
     }
 }

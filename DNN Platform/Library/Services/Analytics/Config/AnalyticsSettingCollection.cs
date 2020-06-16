@@ -1,16 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
 namespace DotNetNuke.Services.Analytics.Config
 {
+    using System;
+    using System.Collections;
+
     [Serializable]
     public class AnalyticsSettingCollection : CollectionBase
     {
@@ -18,11 +13,12 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return (AnalyticsSetting) base.List[index];
+                return (AnalyticsSetting)this.List[index];
             }
+
             set
             {
-                base.List[index] = value;
+                this.List[index] = value;
             }
         }
 

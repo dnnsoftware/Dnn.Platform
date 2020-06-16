@@ -6,7 +6,7 @@ namespace DotNetNuke.UI.WebControls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Enumeration that determines the field that a List binds to
+    /// Enumeration that determines the field that a List binds to.
     /// </summary>
     /// <remarks>
     /// LabelMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>
@@ -17,6 +17,6 @@ namespace DotNetNuke.UI.WebControls
     {
         Id,
         Value,
-        Text
+        Text,
     }
 }

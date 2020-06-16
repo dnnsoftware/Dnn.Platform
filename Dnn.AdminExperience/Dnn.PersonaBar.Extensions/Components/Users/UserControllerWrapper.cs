@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Net;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using System.Linq;
-using DotNetNuke.Common.Utilities;
-
 namespace Dnn.PersonaBar.Users.Components
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     public class UserControllerWrapper : IUserControllerWrapper
     {
         public UserInfo GetUserById(int portalId, int userId)

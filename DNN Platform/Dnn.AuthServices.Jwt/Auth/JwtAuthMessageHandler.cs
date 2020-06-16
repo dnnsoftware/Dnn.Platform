@@ -2,38 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net.Http;
-using System.Security.Principal;
-using System.Threading;
-using Dnn.AuthServices.Jwt.Components.Common.Controllers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Api.Auth;
-using DotNetNuke.Web.ConfigSection;
-
 namespace Dnn.AuthServices.Jwt.Auth
 {
+    using System;
+    using System.Net.Http;
+    using System.Security.Principal;
+    using System.Threading;
+
+    using Dnn.AuthServices.Jwt.Components.Common.Controllers;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Api.Auth;
+    using DotNetNuke.Web.ConfigSection;
+
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
     /// For detailed description of JWT refer to:
-    /// <para>- JTW standard https://tools.ietf.org/html/rfc7519 </para>
-    /// <para>- Introduction to JSON Web Tokens http://jwt.io/introduction/ </para>
+    /// <para>- JTW standard https://tools.ietf.org/html/rfc7519. </para>
+    /// <para>- Introduction to JSON Web Tokens http://jwt.io/introduction/. </para>
     /// </summary>
     public class JwtAuthMessageHandler : AuthMessageHandlerBase
     {
-        #region constants, properties, etc.
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
         public override string AuthScheme => this._jwtController.SchemeType;
+
         public override bool BypassAntiForgeryToken => true;
 
         internal static bool IsEnabled { get; set; }
+
         private readonly IJwtController _jwtController = JwtController.Instance;
-
-        #endregion
-
-        #region constructor
 
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
@@ -43,10 +40,6 @@ namespace Dnn.AuthServices.Jwt.Auth
             // this scheme gets marked as enabled.
             IsEnabled = true;
         }
-
-        #endregion
-
-        #region implementation
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
@@ -65,7 +58,11 @@ namespace Dnn.AuthServices.Jwt.Auth
                 var username = this._jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
-                    if (Logger.IsTraceEnabled) Logger.Trace($"Authenticated user '{username}'");
+                    if (Logger.IsTraceEnabled)
+                    {
+                        Logger.Trace($"Authenticated user '{username}'");
+                    }
+
                     SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, this.AuthScheme), null), request);
                 }
             }
@@ -74,7 +71,5 @@ namespace Dnn.AuthServices.Jwt.Auth
                 Logger.Error("Unexpected error in authenticating the user. " + ex);
             }
         }
-
-        #endregion
     }
 }

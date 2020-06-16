@@ -2,31 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text.RegularExpressions;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Common;
-using Dnn.PersonaBar.Users.Components.Contracts;
-using Dnn.PersonaBar.Users.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace Dnn.PersonaBar.Users.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Common;
+    using Dnn.PersonaBar.Users.Components.Contracts;
+    using Dnn.PersonaBar.Users.Components.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+
     internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
     {
         #region Overrides of ServiceLocator

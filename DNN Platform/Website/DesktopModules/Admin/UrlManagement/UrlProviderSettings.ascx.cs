@@ -2,22 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke.Modules.UrlManagement
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class ProviderSettings : ModuleUserControlBase
     {
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
-        private string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
+
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
+
         private readonly INavigationManager _navigationManager;
 
         public ProviderSettings()
@@ -47,6 +49,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
 // ReSharper disable SuspiciousTypeConversion.Global
                 this._providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
+
 // ReSharper restore SuspiciousTypeConversion.Global
                 if (this._providerSettingsControl != null)
                 {
@@ -69,12 +72,12 @@ namespace DotNetNuke.Modules.UrlManagement
             }
         }
 
-        void cmdCancel_Click(object sender, EventArgs e)
+        private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
-        void cmdUpdate_Click(object sender, EventArgs e)
+        private void cmdUpdate_Click(object sender, EventArgs e)
         {
             if (!this.Page.IsValid)
             {

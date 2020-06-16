@@ -6,8 +6,6 @@ namespace DotNetNuke.Tests.Integration.Executers
 {
     public class PagesExecuter : WebApiExecuter
     {
-        #region Page Setting API action methods
-
         public PagesExecuter GetPageDetails(int pageId)
         {
             this.Responses.Add(this.Connector.GetContent(
@@ -18,11 +16,10 @@ namespace DotNetNuke.Tests.Integration.Executers
 
         public dynamic SavePageDetails(dynamic pageDetails)
         {
-            this.Responses.Add(this.Connector.PostJson("API/PersonaBar/Pages/SavePageDetails",
+            this.Responses.Add(this.Connector.PostJson(
+                "API/PersonaBar/Pages/SavePageDetails",
                 pageDetails));
             return this.GetLastDeserializeResponseMessage();
         }
-
-        #endregion
     }
 }

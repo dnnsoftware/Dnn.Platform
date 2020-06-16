@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Globalization;
-using System.Web.UI;
-
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Globalization;
+    using System.Web.UI;
+
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -29,11 +24,10 @@ namespace DotNetNuke.UI.WebControls
     {
         private readonly Type EnumType;
 
-		#region Constructors
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs an EnumEditControl
+        /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
+        /// Constructs an EnumEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public EnumEditControl()
@@ -42,7 +36,8 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs an EnumEditControl
+        /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
+        /// Constructs an EnumEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public EnumEditControl(string type)
@@ -50,16 +45,12 @@ namespace DotNetNuke.UI.WebControls
             this.SystemType = type;
             this.EnumType = Type.GetType(type);
         }
-		
-		#endregion
-
-		#region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -68,21 +59,18 @@ namespace DotNetNuke.UI.WebControls
                 var retValue = Convert.ToInt32(this.Value);
                 return retValue.ToString(CultureInfo.InvariantCulture);
             }
+
             set
             {
-                int setValue = Int32.Parse(value);
+                int setValue = int.Parse(value);
                 this.Value = setValue;
             }
         }
 
-		#endregion
-
-		#region Protected Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
@@ -91,23 +79,23 @@ namespace DotNetNuke.UI.WebControls
             int intOldValue = Convert.ToInt32(this.OldValue);
 
             var args = new PropertyEditorEventArgs(this.Name)
-                           {Value = Enum.ToObject(this.EnumType, intValue), OldValue = Enum.ToObject(this.EnumType, intOldValue)};
+                           { Value = Enum.ToObject(this.EnumType, intValue), OldValue = Enum.ToObject(this.EnumType, intOldValue) };
 
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            Int32 propValue = Convert.ToInt32(this.Value);
+            int propValue = Convert.ToInt32(this.Value);
             Array enumValues = Enum.GetValues(this.EnumType);
 
-            //Render the Select Tag
+            // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
@@ -120,34 +108,34 @@ namespace DotNetNuke.UI.WebControls
                 string enumName = Enum.GetName(this.EnumType, enumValue);
                 enumName = Localization.GetString(enumName, this.LocalResourceFile);
 
-                //Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, enumValue.ToString(CultureInfo.InvariantCulture));
 
                 if (enumValue == propValue)
                 {
-					//Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
-				
-                //Render Option Tag
+
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(enumName);
                 writer.RenderEndTag();
             }
-			
-            //Close Select Tag
+
+            // Close Select Tag
             writer.RenderEndTag();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            Int32 propValue = Convert.ToInt32(this.Value);
+            int propValue = Convert.ToInt32(this.Value);
             string enumValue = Enum.Format(this.EnumType, propValue, "G");
 
             this.ControlStyle.AddAttributesToRender(writer);
@@ -155,7 +143,5 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(enumValue);
             writer.RenderEndTag();
         }
-		
-		#endregion
     }
 }

@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Localization;
-using Moq;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DotNetNuke.Tests.Core.Common
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Localization;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class NavigationManagerTests
     {
@@ -30,7 +31,6 @@ namespace DotNetNuke.Tests.Core.Common
         [TestFixtureSetUp]
         public void Setup()
         {
-
             this._navigationManager = new NavigationManager(PortalControllerMock());
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());
@@ -55,12 +55,13 @@ namespace DotNetNuke.Tests.Core.Common
                         ActiveTab = new TabInfo
                         {
                             TabID = TabID
-                        }
+                        },
                     };
 
                     return portalSettings;
                 }
             }
+
             ITabController TabControllerMock()
             {
                 var mockTabController = new Mock<ITabController>();
@@ -71,11 +72,12 @@ namespace DotNetNuke.Tests.Core.Common
                     .Setup(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                     .Returns(new TabInfo
                     {
-                        CultureCode = "en-US"
+                        CultureCode = "en-US",
                     });
 
                 return mockTabController.Object;
             }
+
             ILocaleController LocaleControllerMock()
             {
                 var mockLocaleController = new Mock<ILocaleController>();
@@ -84,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Common
                     .Returns(new Dictionary<string, Locale>
                     {
                         { "en-US", new Locale() },
-                        { "TEST", new Locale() }
+                        { "TEST", new Locale() },
                     });
 
                 return mockLocaleController.Object;
@@ -164,7 +166,7 @@ namespace DotNetNuke.Tests.Core.Common
         [Ignore]
         public void NavigateUrl_ControlKey_AccessDenied()
         {
-            // TODO - We can't properly test this until we migrate 
+            // TODO - We can't properly test this until we migrate
             // Globals.AccessDeniedURL to an interface in the abstraction
             // project. The dependencies go very deep and make it very
             // difficult to properly test just the NavigationManager logic.
@@ -220,7 +222,9 @@ namespace DotNetNuke.Tests.Core.Common
         {
             string[] parameters = new string[count];
             for (int index = 0; index < count; index++)
+            {
                 parameters[index] = $"My-Parameter{index}";
+            }
 
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) +
@@ -308,14 +312,18 @@ namespace DotNetNuke.Tests.Core.Common
         {
             string[] parameters = new string[count];
             for (int index = 0; index < count; index++)
+            {
                 parameters[index] = $"My-Parameter{index}";
+            }
 
             var customTabId = 51;
             var expected = string.Format(DefaultURLPattern, customTabId) +
                 string.Format(ControlKeyPattern, controlKey);
 
             if (parameters.Length > 0)
+            {
                 expected += parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
+            }
 
             var actual = this._navigationManager.NavigateURL(customTabId, controlKey, parameters);
 

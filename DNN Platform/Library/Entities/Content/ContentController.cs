@@ -1,27 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-
-#endregion
-
 namespace DotNetNuke.Entities.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+
     public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
     {
         private readonly IDataService _dataService;
@@ -31,7 +27,8 @@ namespace DotNetNuke.Entities.Content
             return () => new ContentController();
         }
 
-        public ContentController() : this(Util.GetDataService())
+        public ContentController()
+            : this(Util.GetDataService())
         {
         }
 
@@ -40,31 +37,31 @@ namespace DotNetNuke.Entities.Content
             this._dataService = dataService;
         }
 
-	    public int AddContentItem(ContentItem contentItem)
+        public int AddContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var createdByUserId = currentUser.UserID;
-            if(contentItem.CreatedByUserID != currentUser.UserID)
+            if (contentItem.CreatedByUserID != currentUser.UserID)
             {
                 createdByUserId = contentItem.CreatedByUserID;
             }
-            
+
             contentItem.ContentItemId = this._dataService.AddContentItem(contentItem, createdByUserId);
             contentItem.CreatedByUserID = createdByUserId;
             contentItem.LastModifiedByUserID = currentUser.UserID;
 
             this.SaveMetadataDelta(contentItem);
 
-	        UpdateContentItemsCache(contentItem);
+            UpdateContentItemsCache(contentItem);
 
             return contentItem.ContentItemId;
         }
 
         public void DeleteContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
 
@@ -73,7 +70,7 @@ namespace DotNetNuke.Entities.Content
                 UniqueKey = contentItem.ContentItemId.ToString("D"),
                 ModuleId = contentItem.ModuleID,
                 TabId = contentItem.TabID,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             };
             DotNetNuke.Data.DataProvider.Instance().AddSearchDeletedItems(searrchDoc);
 
@@ -87,10 +84,10 @@ namespace DotNetNuke.Entities.Content
             var contentItem = this.GetContentItem(contentItemId);
             this.DeleteContentItem(contentItem);
         }
-        
+
         public ContentItem GetContentItem(int contentItemId)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             return CBO.GetCachedObject<ContentItem>(
@@ -105,38 +102,40 @@ namespace DotNetNuke.Entities.Content
 
         public IQueryable<ContentItem> GetContentItemsByTerm(string term)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNullOrEmpty("term", term);
 
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTerm(term));
         }
 
         public IQueryable<ContentItem> GetContentItemsByTerm(Term term)
-	    {
-	        return this.GetContentItemsByTerm(term.Name);
-	    }
+        {
+            return this.GetContentItemsByTerm(term.Name);
+        }
 
-	    public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
-	    {
+        public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
+        {
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByContentType(contentTypeId));
-	    }
+        }
 
         /// <summary>Get a list of content items by ContentType.</summary>
+/// <returns></returns>
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
         {
             return this.GetContentItemsByContentType(contentType.ContentTypeId);
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
+        public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
         {
             return this.GetContentItemsByTerms(terms.Select(t => t.Name).ToArray());
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
+        public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
         {
             var union = new List<ContentItem>();
 
-            union = terms.Aggregate(union,
+            union = terms.Aggregate(
+                union,
                 (current, term) =>
                     !current.Any()
                         ? this.GetContentItemsByTerm(term).ToList()
@@ -150,7 +149,7 @@ namespace DotNetNuke.Entities.Content
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTabId(tabId));
         }
 
-	    public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
+        public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
         {
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByVocabularyId(vocabularyId));
         }
@@ -167,10 +166,10 @@ namespace DotNetNuke.Entities.Content
 
         public void UpdateContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
-            
+
             AttachmentController.SerializeAttachmentMetadata(contentItem);
 
             this.SaveMetadataDelta(contentItem);
@@ -184,7 +183,7 @@ namespace DotNetNuke.Entities.Content
 
         public void AddMetaData(ContentItem contentItem, string name, string value)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
@@ -196,7 +195,7 @@ namespace DotNetNuke.Entities.Content
 
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
@@ -216,7 +215,7 @@ namespace DotNetNuke.Entities.Content
 
         public NameValueCollection GetMetaData(int contentItemId)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             var metadata = new NameValueCollection();
@@ -232,9 +231,9 @@ namespace DotNetNuke.Entities.Content
                 }
             }
 
-		    return metadata;
+            return metadata;
         }
-        
+
         private void SaveMetadataDelta(ContentItem contentItem)
         {
             var persisted = this.GetMetaData(contentItem.ContentItemId);
@@ -268,13 +267,13 @@ namespace DotNetNuke.Entities.Content
 
         private static void UpdateContentItemsCache(ContentItem contentItem, bool readdItem = true)
         {
-
             DataCache.RemoveCache(GetContentItemCacheKey(contentItem.ContentItemId)); // remove first to synch web-farm servers
             if (readdItem)
             {
-                CBO.GetCachedObject<ContentItem>(new CacheItemArgs(
+                CBO.GetCachedObject<ContentItem>(
+                    new CacheItemArgs(
                     GetContentItemCacheKey(contentItem.ContentItemId),
-                   DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
+                    DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority), c => contentItem);
             }
         }
 

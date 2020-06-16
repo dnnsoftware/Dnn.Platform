@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Library;
-using System.Net;
-using System.Net.Http;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using DotNetNuke.Services.Localization;
-
 namespace Dnn.PersonaBar.Prompt.Common
 {
+    using System.Net;
+    using System.Net.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using DotNetNuke.Services.Localization;
+
     public abstract class ControllerBase : PersonaBarApiController
     {
 

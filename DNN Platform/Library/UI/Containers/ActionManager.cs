@@ -1,81 +1,67 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionManager
+    /// Class    : ActionManager
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionManager is a helper class that provides common Action Behaviours that can
-    /// be used by any IActionControl implementation
+    /// be used by any IActionControl implementation.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class ActionManager
     {
-		#region Private Members
-
         private readonly PortalSettings PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
         private readonly HttpRequest Request = HttpContext.Current.Request;
         private readonly HttpResponse Response = HttpContext.Current.Response;
 
-		#endregion
-
-		#region Constructors
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ActionManager
+        /// Initializes a new instance of the <see cref="ActionManager"/> class.
+        /// Constructs a new ActionManager.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ActionManager(IActionControl actionControl)
         {
             this.ActionControl = actionControl;
         }
-		
-		#endregion
-
-		#region Public Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Action Control that is connected to this ActionManager instance
+        /// Gets or sets and sets the Action Control that is connected to this ActionManager instance.
         /// </summary>
-        /// <returns>An IActionControl object</returns>
+        /// <returns>An IActionControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IActionControl ActionControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleInstanceContext instance that is connected to this ActionManager 
-        /// instance
+        /// Gets the ModuleInstanceContext instance that is connected to this ActionManager
+        /// instance.
         /// </summary>
-        /// <returns>A ModuleInstanceContext object</returns>
+        /// <returns>A ModuleInstanceContext object.</returns>
         /// -----------------------------------------------------------------------------
         protected ModuleInstanceContext ModuleContext
         {
@@ -85,16 +71,12 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-		#endregion
-
-		#region Private Methods
-
         private void ClearCache(ModuleAction Command)
         {
-			//synchronize cache
+            // synchronize cache
             ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -102,25 +84,25 @@ namespace DotNetNuke.UI.Containers
         {
             var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), this.ModuleContext.TabId, true);
 
-            //Check if this is the owner instance of a shared module.
+            // Check if this is the owner instance of a shared module.
             var user = UserController.Instance.GetCurrentUserInfo();
             if (!module.IsShared)
             {
                 foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
                 {
-                    if(instance.IsShared)
+                    if (instance.IsShared)
                     {
-                        //HARD Delete Shared Instance
+                        // HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
+                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
             ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
-            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -176,7 +158,7 @@ namespace DotNetNuke.UI.Containers
             ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, Command.CommandArgument);
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -197,21 +179,19 @@ namespace DotNetNuke.UI.Containers
                     ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
                     break;
             }
+
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
-		#endregion
-
-		#region Public Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DisplayControl determines whether the associated Action control should be 
-        /// displayed
+        /// DisplayControl determines whether the associated Action control should be
+        /// displayed.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
@@ -220,30 +200,32 @@ namespace DotNetNuke.UI.Containers
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
                 {
-					//if has pending node then display control
+                    // if has pending node then display control
                     return true;
                 }
                 else if (objRootNode.DNNNodes.Count > 0)
                 {
-					//verify that at least one child is not a break
+                    // verify that at least one child is not a break
                     foreach (DNNNode childNode in objRootNode.DNNNodes)
                     {
                         if (!childNode.IsBreak)
                         {
-							//Found a child so make Visible
+                            // Found a child so make Visible
                             return true;
                         }
                     }
                 }
             }
+
             return false;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetAction gets the action associated with the commandName
+        /// GetAction gets the action associated with the commandName.
         /// </summary>
-        /// <param name="commandName">The command name</param>
+        /// <param name="commandName">The command name.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(string commandName)
         {
@@ -252,9 +234,10 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetAction gets the action associated with the id
+        /// GetAction gets the action associated with the id.
         /// </summary>
-        /// <param name="id">The Id</param>
+        /// <param name="id">The Id.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(int id)
         {
@@ -263,15 +246,15 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetClientScriptURL gets the client script to attach to the control's client 
-        /// side onclick event
+        /// GetClientScriptURL gets the client script to attach to the control's client
+        /// side onclick event.
         /// </summary>
-        /// <param name="action">The Action</param>
-        /// <param name="control">The Control</param>
+        /// <param name="action">The Action.</param>
+        /// <param name="control">The Control.</param>
         /// -----------------------------------------------------------------------------
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
-            if (!String.IsNullOrEmpty(action.ClientScript))
+            if (!string.IsNullOrEmpty(action.ClientScript))
             {
                 string Script = action.ClientScript;
                 int JSPos = Script.IndexOf("javascript:", StringComparison.InvariantCultureIgnoreCase);
@@ -279,6 +262,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     Script = Script.Substring(JSPos + 11);
                 }
+
                 string FormatScript = "javascript: return {0};";
                 control.Attributes.Add("onClick", string.Format(FormatScript, Script));
             }
@@ -286,9 +270,10 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IsVisible determines whether the action control is Visible
+        /// IsVisible determines whether the action control is Visible.
         /// </summary>
-        /// <param name="action">The Action</param>
+        /// <param name="action">The Action.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool IsVisible(ModuleAction action)
         {
@@ -308,31 +293,35 @@ namespace DotNetNuke.UI.Containers
             {
                 _IsVisible = false;
             }
+
             return _IsVisible;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessAction processes the action
+        /// ProcessAction processes the action.
         /// </summary>
-        /// <param name="id">The Id of the Action</param>
+        /// <param name="id">The Id of the Action.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(string id)
         {
             bool bProcessed = true;
             int nid = 0;
-            if (Int32.TryParse(id, out nid))
+            if (int.TryParse(id, out nid))
             {
                 bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
             }
+
             return bProcessed;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessAction processes the action
+        /// ProcessAction processes the action.
         /// </summary>
-        /// <param name="action">The Action</param>
+        /// <param name="action">The Action.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(ModuleAction action)
         {
@@ -379,8 +368,8 @@ namespace DotNetNuke.UI.Containers
                 case ModuleActionType.UnTranslateModule:
                     this.Translate(action);
                     break;
-                default: //custom action
-                    if (!String.IsNullOrEmpty(action.Url) && action.UseActionEvent == false)
+                default: // custom action
+                    if (!string.IsNullOrEmpty(action.Url) && action.UseActionEvent == false)
                     {
                         this.DoAction(action);
                     }
@@ -388,11 +377,11 @@ namespace DotNetNuke.UI.Containers
                     {
                         bProcessed = false;
                     }
+
                     break;
             }
+
             return bProcessed;
         }
-		
-		#endregion
     }
 }

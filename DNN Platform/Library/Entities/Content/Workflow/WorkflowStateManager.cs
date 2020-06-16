@@ -2,35 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class WorkflowStateManager : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
     {
-        #region Members
         private readonly DataProvider _dataProvider;
         private readonly IWorkflowRepository _workflowRepository = WorkflowRepository.Instance;
         private readonly IWorkflowStateRepository _workflowStateRepository = WorkflowStateRepository.Instance;
         private readonly IWorkflowStatePermissionsRepository _workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-        #endregion
 
-        #region Constructor
         public WorkflowStateManager()
         {
             this._dataProvider = DataProvider.Instance();
         }
-        #endregion
 
-        #region Public Methods
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             return this._workflowStateRepository.GetWorkflowStates(workflowId);
@@ -99,6 +95,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 throw new WorkflowDoesNotExistException();
             }
+
             this._workflowStateRepository.UpdateWorkflowState(state);
         }
 
@@ -122,7 +119,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             for (var i = 0; i < states.Length; i++)
             {
-                if (states[i].StateID != stateId) continue;
+                if (states[i].StateID != stateId)
+                {
+                    continue;
+                }
 
                 // First and Second workflow state cannot be moved down
                 if (i <= 1)
@@ -168,7 +168,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             for (var i = 0; i < states.Length; i++)
             {
-                if (states[i].StateID != stateId) continue;
+                if (states[i].StateID != stateId)
+                {
+                    continue;
+                }
 
                 // Last and Next to Last workflow state cannot be moved up
                 if (i >= states.Length - 2)
@@ -238,9 +241,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             return this._dataProvider.GetContentWorkflowStateUsageCount(stateId);
         }
-        #endregion
 
-        #region Private Methods
         private int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
         {
             int i = 0;
@@ -251,11 +252,13 @@ namespace DotNetNuke.Entities.Content.Workflow
                 {
                     return i;
                 }
+
                 i++;
             }
 
             return i;
         }
+
         private void MoveState(WorkflowState state, int targetIndex, int currentIndex)
         {
             if (currentIndex == targetIndex)
@@ -278,12 +281,10 @@ namespace DotNetNuke.Entities.Content.Workflow
                 }
             }
         }
-        #endregion
-        #region Service Locator
+
         protected override Func<IWorkflowStateManager> GetFactory()
         {
             return () => new WorkflowStateManager();
         }
-        #endregion
     }
 }

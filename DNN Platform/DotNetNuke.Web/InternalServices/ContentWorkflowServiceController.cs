@@ -2,35 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Content.Workflow.Dto;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Dto;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class ContentWorkflowServiceController : DnnApiController
     {
-        #region Members
         private readonly IWorkflowEngine _workflowEngine;
-        #endregion
 
-        #region Constructor
         public ContentWorkflowServiceController()
         {
             this._workflowEngine = WorkflowEngine.Instance;
         }
-        #endregion
 
-        #region Web Methods
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage Reject(NotificationDTO postData)
@@ -51,8 +47,8 @@ namespace DotNetNuke.Web.InternalServices
                                            {
                                                ContentItemId = int.Parse(parameters[0]),
                                                CurrentStateId = int.Parse(parameters[2]),
-                                               Message = new StateTransactionMessage (),
-                                               UserId = this.UserInfo.UserID
+                                               Message = new StateTransactionMessage(),
+                                               UserId = this.UserInfo.UserID,
                                            };
                     this._workflowEngine.DiscardState(stateTransiction);
 
@@ -88,7 +84,7 @@ namespace DotNetNuke.Web.InternalServices
                                                 ContentItemId = int.Parse(parameters[0]),
                                                 CurrentStateId = int.Parse(parameters[2]),
                                                 Message = new StateTransactionMessage(),
-                                                UserId = this.UserInfo.UserID
+                                                UserId = this.UserInfo.UserID,
                                             };
                     this._workflowEngine.CompleteState(stateTransiction);
 
@@ -101,7 +97,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
-
         }
 
         [Obsolete("Obsolted in Platform 7.4.0. Scheduled removal in v10.0.0.")]
@@ -117,7 +112,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     if (string.IsNullOrEmpty(notification.Context))
                     {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
                     var source = notification.Context;
@@ -142,7 +137,7 @@ namespace DotNetNuke.Web.InternalServices
                         return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                     }
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) }); 
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = sourceAction.GetAction(parameters) });
                 }
             }
             catch (Exception exc)
@@ -151,8 +146,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
-
         }
-        #endregion
     }
 }

@@ -1,25 +1,18 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Globalization;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+
     public partial class ViewProfileSettings : ModuleSettingsBase
     {
-        #region "Base Method Implementations"
-
         public override void LoadSettings()
         {
             try
@@ -29,10 +22,11 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 if (!this.Page.IsPostBack)
                 {
-                    if (!string.IsNullOrEmpty((string) this.TabModuleSettings["ProfileTemplate"]))
+                    if (!string.IsNullOrEmpty((string)this.TabModuleSettings["ProfileTemplate"]))
                     {
-                        this.txtTemplate.Text = (string) this.TabModuleSettings["ProfileTemplate"];
+                        this.txtTemplate.Text = (string)this.TabModuleSettings["ProfileTemplate"];
                     }
+
                     if (this.Settings.ContainsKey("IncludeButton"))
                     {
                         this.IncludeButton.Checked = Convert.ToBoolean(this.Settings["IncludeButton"]);
@@ -41,7 +35,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             catch (Exception exc)
             {
-                //Module failed to load
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
@@ -61,12 +55,10 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             catch (Exception exc)
             {
-                //Module failed to load
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
 
         protected void cmdLoadDefault_Click(object sender, EventArgs e)
         {

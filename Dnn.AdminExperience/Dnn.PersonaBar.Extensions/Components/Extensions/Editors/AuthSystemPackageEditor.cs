@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Installer.Packages;
-
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
+    using System;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Installer.Packages;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class AuthSystemPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthSystemPackageEditor));

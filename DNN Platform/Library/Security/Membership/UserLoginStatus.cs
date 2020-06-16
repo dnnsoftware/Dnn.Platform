@@ -12,6 +12,6 @@ namespace DotNetNuke.Security.Membership
         LOGIN_USERLOCKEDOUT = 3,
         LOGIN_USERNOTAPPROVED = 4,
         LOGIN_INSECUREADMINPASSWORD = 5,
-        LOGIN_INSECUREHOSTPASSWORD = 6
+        LOGIN_INSECUREHOSTPASSWORD = 6,
     }
 }

@@ -1,47 +1,42 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Web.Caching;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Mail;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Mail;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.UI.WebControls;
+
     public enum DisplayMode
     {
         All = 0,
         FirstLetter = 1,
-        None = 2
+        None = 2,
     }
 
     public enum UsersControl
     {
         Combo = 0,
-        TextBox = 1
+        TextBox = 1,
     }
 
     /// <summary>
@@ -55,18 +50,18 @@ namespace DotNetNuke.Entities.Modules
         private UserInfo _User;
 
         /// <summary>
-        /// Gets whether we are in Add User mode
+        /// Gets a value indicating whether gets whether we are in Add User mode.
         /// </summary>
         protected virtual bool AddUser
         {
             get
             {
-                return (this.UserId == Null.NullInteger);
+                return this.UserId == Null.NullInteger;
             }
         }
 
         /// <summary>
-        /// Gets whether the current user is an Administrator (or SuperUser)
+        /// Gets a value indicating whether gets whether the current user is an Administrator (or SuperUser).
         /// </summary>
         protected bool IsAdmin
         {
@@ -77,9 +72,11 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// gets whether this is the current user or admin
+        /// Gets a value indicating whether gets whether this is the current user or admin.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>gets whether this is the current user or admin</placeholder>
+        /// </value>
         /// <returns></returns>
         /// <remarks></remarks>
         protected bool IsUserOrAdmin
@@ -91,18 +88,18 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether this control is in the Host menu
+        /// Gets a value indicating whether gets whether this control is in the Host menu.
         /// </summary>
         protected bool IsHostTab
         {
             get
             {
-                return base.IsHostMenu;
+                return this.IsHostMenu;
             }
         }
 
         /// <summary>
-        /// Gets whether the control is being called form the User Accounts module
+        /// Gets a value indicating whether gets whether the control is being called form the User Accounts module.
         /// </summary>
         protected bool IsEdit
         {
@@ -117,12 +114,13 @@ namespace DotNetNuke.Entities.Modules
                         _IsEdit = true;
                     }
                 }
+
                 return _IsEdit;
             }
         }
 
         /// <summary>
-        /// Gets whether the current user is modifying their profile
+        /// Gets a value indicating whether gets whether the current user is modifying their profile.
         /// </summary>
         protected bool IsProfile
         {
@@ -133,7 +131,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     if (this.PortalSettings.UserTabId != -1)
                     {
-						//user defined tab
+                        // user defined tab
                         if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId)
                         {
                             _IsProfile = true;
@@ -141,7 +139,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-						//admin tab
+                        // admin tab
                         if (this.Request.QueryString["ctl"] != null)
                         {
                             string ctl = this.Request.QueryString["ctl"];
@@ -152,12 +150,13 @@ namespace DotNetNuke.Entities.Modules
                         }
                     }
                 }
+
                 return _IsProfile;
             }
         }
 
         /// <summary>
-        /// Gets whether an anonymous user is trying to register
+        /// Gets a value indicating whether gets whether an anonymous user is trying to register.
         /// </summary>
         protected bool IsRegister
         {
@@ -168,7 +167,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether the User is editing their own information
+        /// Gets a value indicating whether gets whether the User is editing their own information.
         /// </summary>
         protected bool IsUser
         {
@@ -179,7 +178,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets the PortalId to use for this control
+        /// Gets the PortalId to use for this control.
         /// </summary>
         protected int UserPortalID
         {
@@ -190,7 +189,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets and sets the User associated with this control
+        /// Gets or sets and sets the User associated with this control.
         /// </summary>
         public UserInfo User
         {
@@ -198,6 +197,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._User ?? (this._User = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
             }
+
             set
             {
                 this._User = value;
@@ -209,7 +209,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets and sets the UserId associated with this control
+        /// Gets or sets and sets the UserId associated with this control.
         /// </summary>
         public new int UserId
         {
@@ -221,8 +221,9 @@ namespace DotNetNuke.Entities.Modules
                     if (this.Request.QueryString["userid"] != null)
                     {
                         int userId;
+
                         // Use Int32.MaxValue as invalid UserId
-                        _UserId = Int32.TryParse(this.Request.QueryString["userid"], out userId) ? userId : Int32.MaxValue;
+                        _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
                         this.ViewState["UserId"] = _UserId;
                     }
                 }
@@ -230,8 +231,10 @@ namespace DotNetNuke.Entities.Modules
                 {
                     _UserId = Convert.ToInt32(this.ViewState["UserId"]);
                 }
+
                 return _UserId;
             }
+
             set
             {
                 this.ViewState["UserId"] = value;
@@ -239,10 +242,11 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a Setting for the Module
+        /// Gets a Setting for the Module.
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public static object GetSetting(int portalId, string settingKey)
         {
             Hashtable settings = UserController.GetUserSettings(portalId);
@@ -250,6 +254,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 settings = UserController.GetUserSettings(portalId, settings);
             }
+
             return settings[settingKey];
         }
 
@@ -257,7 +262,7 @@ namespace DotNetNuke.Entities.Modules
         {
             if (portalId == Null.NullInteger)
             {
-                HostController.Instance.Update(new ConfigurationSetting {Value = setting, Key = key});
+                HostController.Instance.Update(new ConfigurationSetting { Value = setting, Key = key });
             }
             else
             {
@@ -266,7 +271,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Updates the Settings for the Module
+        /// Updates the Settings for the Module.
         /// </summary>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
@@ -282,7 +287,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// InitialiseUser initialises a "new" user
+        /// InitialiseUser initialises a "new" user.
         /// </summary>
         private UserInfo InitialiseUser()
         {
@@ -296,7 +301,7 @@ namespace DotNetNuke.Entities.Modules
                 newUser.PortalID = this.PortalId;
             }
 
-            //Initialise the ProfileProperties Collection
+            // Initialise the ProfileProperties Collection
             string lc = new Localization().CurrentUICulture;
 
             newUser.Profile.InitialiseProfile(this.PortalId);
@@ -304,10 +309,10 @@ namespace DotNetNuke.Entities.Modules
 
             newUser.Profile.PreferredLocale = lc;
 
-            //Set default countr
+            // Set default countr
             string country = Null.NullString;
             country = this.LookupCountry();
-            if (!String.IsNullOrEmpty(country))
+            if (!string.IsNullOrEmpty(country))
             {
                 ListController listController = new ListController();
                 var listitem = listController.GetListEntryInfo("Country", country);
@@ -318,12 +323,14 @@ namespace DotNetNuke.Entities.Modules
 
                 newUser.Profile.Country = country;
             }
-            //Set AffiliateId
+
+            // Set AffiliateId
             int AffiliateId = Null.NullInteger;
             if (this.Request.Cookies["AffiliateId"] != null)
             {
                 AffiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
             }
+
             newUser.AffiliateID = AffiliateId;
             return newUser;
         }
@@ -337,47 +344,50 @@ namespace DotNetNuke.Entities.Modules
             _GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
             if (this.Page.Request.UserHostAddress == "127.0.0.1")
             {
-				//'The country cannot be detected because the user is local.
+                // 'The country cannot be detected because the user is local.
                 IsLocal = true;
-                //Set the IP address in case they didn't specify LocalhostCountryCode
+
+                // Set the IP address in case they didn't specify LocalhostCountryCode
                 IP = this.Page.Request.UserHostAddress;
             }
             else
             {
-				//Set the IP address so we can find the country
+                // Set the IP address so we can find the country
                 IP = this.Page.Request.UserHostAddress;
             }
-            //Check to see if we need to generate the Cache for the GeoIPData file
+
+            // Check to see if we need to generate the Cache for the GeoIPData file
             if (this.Context.Cache.Get("GeoIPData") == null && _CacheGeoIPData)
             {
-				//Store it as	well as	setting	a dependency on	the	file
+                // Store it as  well as setting a dependency on the file
                 this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(_GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(_GeoIPFile)));
             }
-			
-            //Check to see if the request is a localhost request
-            //and see if the LocalhostCountryCode is specified
+
+            // Check to see if the request is a localhost request
+            // and see if the LocalhostCountryCode is specified
             if (IsLocal)
             {
                 return Null.NullString;
             }
-			
-            //Either this is a remote request or it is a local
-            //request with no LocalhostCountryCode specified
+
+            // Either this is a remote request or it is a local
+            // request with no LocalhostCountryCode specified
             CountryLookup _CountryLookup;
 
-            //Check to see if we are using the Cached
-            //version of the GeoIPData file
+            // Check to see if we are using the Cached
+            // version of the GeoIPData file
             if (_CacheGeoIPData)
             {
-				//Yes, get it from cache
-                _CountryLookup = new CountryLookup((MemoryStream) this.Context.Cache.Get("GeoIPData"));
+                // Yes, get it from cache
+                _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
             }
             else
             {
-				//No, get it from file
+                // No, get it from file
                 _CountryLookup = new CountryLookup(this.Context.Server.MapPath(_GeoIPFile));
             }
-            //Get the country code based on the IP address
+
+            // Get the country code based on the IP address
             string country = Null.NullString;
             try
             {
@@ -387,15 +397,16 @@ namespace DotNetNuke.Entities.Modules
             {
                 Exceptions.LogException(ex);
             }
+
             return country;
         }
 
         /// <summary>
-        /// AddLocalizedModuleMessage adds a localized module message
+        /// AddLocalizedModuleMessage adds a localized module message.
         /// </summary>
-        /// <param name="message">The localized message</param>
-        /// <param name="type">The type of message</param>
-        /// <param name="display">A flag that determines whether the message should be displayed</param>
+        /// <param name="message">The localized message.</param>
+        /// <param name="type">The type of message.</param>
+        /// <param name="display">A flag that determines whether the message should be displayed.</param>
         protected void AddLocalizedModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             if (display)
@@ -405,11 +416,11 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// AddModuleMessage adds a module message
+        /// AddModuleMessage adds a module message.
         /// </summary>
-        /// <param name="message">The message</param>
-        /// <param name="type">The type of message</param>
-        /// <param name="display">A flag that determines whether the message should be displayed</param>
+        /// <param name="message">The message.</param>
+        /// <param name="type">The type of message.</param>
+        /// <param name="display">A flag that determines whether the message should be displayed.</param>
         protected void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             this.AddLocalizedModuleMessage(Localization.GetString(message, this.LocalResourceFile), type, display);
@@ -417,60 +428,62 @@ namespace DotNetNuke.Entities.Modules
 
         protected string CompleteUserCreation(UserCreateStatus createStatus, UserInfo newUser, bool notify, bool register)
         {
-            var strMessage = "";
+            var strMessage = string.Empty;
             var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
-				//send notification to portal administrator of new user registration
-				//check the receive notification setting first, but if register type is Private, we will always send the notification email.
-				//because the user need administrators to do the approve action so that he can continue use the website.
-				if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
-				{
-				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
-				    this.SendAdminNotification(newUser, this.PortalSettings);
-				}
+                // send notification to portal administrator of new user registration
+                // check the receive notification setting first, but if register type is Private, we will always send the notification email.
+                // because the user need administrators to do the approve action so that he can continue use the website.
+                if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
+                {
+                    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
+                    this.SendAdminNotification(newUser, this.PortalSettings);
+                }
 
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-                //complete registration
+                // complete registration
                 switch (this.PortalSettings.UserRegistration)
                 {
-                    case (int) Globals.PortalRegistrationType.PrivateRegistration:
+                    case (int)Globals.PortalRegistrationType.PrivateRegistration:
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, this.PortalSettings);
 
-                        //show a message that a portal administrator has to verify the user credentials
+                        // show a message that a portal administrator has to verify the user credentials
                         if (string.IsNullOrEmpty(strMessage))
                         {
                             strMessage += Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile);
                             message = ModuleMessage.ModuleMessageType.GreenSuccess;
                         }
+
                         break;
-                    case (int) Globals.PortalRegistrationType.PublicRegistration:
+                    case (int)Globals.PortalRegistrationType.PublicRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
-                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
+                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
                         break;
-                    case (int) Globals.PortalRegistrationType.VerifiedRegistration:
+                    case (int)Globals.PortalRegistrationType.VerifiedRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
-                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
+                        UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
                         break;
                 }
-                //store preferredlocale in cookie
+
+                // store preferredlocale in cookie
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
                 {
-                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, (!String.IsNullOrEmpty(strMessage)));
+                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !string.IsNullOrEmpty(strMessage));
                 }
                 else
                 {
-                    this.AddLocalizedModuleMessage(strMessage, message, (!String.IsNullOrEmpty(strMessage)));
+                    this.AddLocalizedModuleMessage(strMessage, message, !string.IsNullOrEmpty(strMessage));
                 }
             }
             else
             {
                 if (notify)
                 {
-					//Send Notification to User
-                    if (this.PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                    // Send Notification to User
+                    if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
                     }
@@ -480,11 +493,9 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
-           
+
             return strMessage;
         }
-
-        #region Private methods
 
         private void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
         {
@@ -497,7 +508,7 @@ namespace DotNetNuke.Entities.Modules
                 SenderUserID = portalSettings.AdministratorId,
                 Subject = this.GetNotificationSubject(locale, newUser, portalSettings),
                 Body = this.GetNotificationBody(locale, newUser, portalSettings),
-                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture),
             };
             var adminrole = RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
             var roles = new List<RoleInfo> { adminrole };
@@ -512,8 +523,8 @@ namespace DotNetNuke.Entities.Modules
 
         private string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
-            //This method could need a custom ArrayList in future notification types. Currently it is null
-            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);            
+            // This method could need a custom ArrayList in future notification types. Currently it is null
+            return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, string.Empty, portalSettings.AdministratorId);
         }
 
         private string GetNotificationSubject(string locale, UserInfo newUser, PortalSettings portalSettings)
@@ -521,7 +532,5 @@ namespace DotNetNuke.Entities.Modules
             const string text = "EMAIL_USER_REGISTRATION_ADMINISTRATOR_SUBJECT";
             return this.LocalizeNotificationText(text, locale, newUser, portalSettings);
         }
-
-        #endregion
     }
 }

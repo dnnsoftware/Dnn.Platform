@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Specialized;
-using System.Reflection;
-using System.Web;
-using System.Web.Hosting;
-using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
-
-using NUnit.Framework;
-
 namespace UnitTests.Subtext
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Hosting;
+
+    using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
+    using NUnit.Framework;
+
     ////[TestFixture]
     public class HttpSimulatorTests
     {
@@ -23,12 +23,15 @@ namespace UnitTests.Subtext
                 var physicalPath = context.Request.MapPath("/MyHandler.ashx");
                 var username = context.Request.Form["username"];
                 var id = context.Request.QueryString["id"];
-                if (context.Request.UrlReferrer == null) return;
+                if (context.Request.UrlReferrer == null)
+                {
+                    return;
+                }
+
                 var referer = context.Request.UrlReferrer.ToString();
 
-                //Imagine, if you will, a bunch of complex interesting
-                //and fascinating logic here.
-
+                // Imagine, if you will, a bunch of complex interesting
+                // and fascinating logic here.
                 context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
             }
 
@@ -38,27 +41,27 @@ namespace UnitTests.Subtext
             }
         }
 
-		////[Test]
-		public void CanGetSetSession()
-		{
-			using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
-			{
-				HttpContext.Current.Session["Test"] = "Success";
-				Assert.AreEqual("Success", HttpContext.Current.Session["Test"], "Was not able to retrieve session variable.");
-			}
-		}
+        ////[Test]
+        public void CanGetSetSession()
+        {
+            using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
+            {
+                HttpContext.Current.Session["Test"] = "Success";
+                Assert.AreEqual("Success", HttpContext.Current.Session["Test"], "Was not able to retrieve session variable.");
+            }
+        }
 
-		////[Test]
-		public void CanGetSetApplicationVariables()
-		{
-			using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
-			{
-				HttpContext.Current.Application["Test"] = "Success";
-				Assert.AreEqual("Success", HttpContext.Current.Application["Test"], "Was not able to retrieve application variable.");
-			}
-		}
+        ////[Test]
+        public void CanGetSetApplicationVariables()
+        {
+            using (new HttpSimulator("/", @"c:\inetpub\").SimulateRequest())
+            {
+                HttpContext.Current.Application["Test"] = "Success";
+                Assert.AreEqual("Success", HttpContext.Current.Application["Test"], "Was not able to retrieve application variable.");
+            }
+        }
 
-    	////[Test]
+        ////[Test]
         public void TestHttpHandlerWritesCorrectResponse()
         {
             using (var simulator = new HttpSimulator("/", @"c:\inetpub\"))
@@ -73,7 +76,7 @@ namespace UnitTests.Subtext
 
                 const string expected = @"c:\inetpub\MyHandler.ashx:phil:1234:http://example.com/1/";
                 Assert.AreEqual(expected, simulator.ResponseText, "The Expected Response is all wrong.");
-            } //HttpContext.Current is set to null again.
+            } // HttpContext.Current is set to null again.
         }
 
         ////[Test]
@@ -84,6 +87,7 @@ namespace UnitTests.Subtext
                 simulator.SimulateRequest();
                 Assert.IsNotNull(HttpContext.Current);
             }
+
             Assert.IsNull(HttpContext.Current);
         }
 
@@ -130,11 +134,15 @@ namespace UnitTests.Subtext
             var simulator = new HttpSimulator();
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param1=value1&param2=value2&param3=value3"));
             for (var i = 1; i <= 3; i++)
+            {
                 Assert.AreEqual("value" + i, HttpContext.Current.Request.QueryString["param" + i], "Could not find query string field 'param{0}'", i);
+            }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param1=new-value1&param2=new-value2&param3=new-value3&param4=new-value4"));
             for (var i = 1; i <= 4; i++)
+            {
                 Assert.AreEqual("new-value" + i, HttpContext.Current.Request.QueryString["param" + i], "Could not find query string field 'param{0}'", i);
+            }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?"));
             Assert.AreEqual(string.Empty, HttpContext.Current.Request.QueryString.ToString());
@@ -143,7 +151,7 @@ namespace UnitTests.Subtext
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"));
             Assert.AreEqual(string.Empty, HttpContext.Current.Request.QueryString.ToString());
             Assert.AreEqual(0, HttpContext.Current.Request.QueryString.Count);
-            
+
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param-name"));
             Assert.AreEqual("param-name", HttpContext.Current.Request.QueryString.ToString());
             Assert.AreEqual(1, HttpContext.Current.Request.QueryString.Count);
@@ -155,7 +163,7 @@ namespace UnitTests.Subtext
         {
             using (var simulator = new HttpSimulator())
             {
-                var form = new NameValueCollection {{"Test1", "Value1"}, {"Test2", "Value2"}};
+                var form = new NameValueCollection { { "Test1", "Value1" }, { "Test2", "Value2" } };
                 simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"), form);
 
                 Assert.AreEqual("Value1", HttpContext.Current.Request.Form["Test1"]);
@@ -209,7 +217,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedAppDomainAppPath, simulator.PhysicalApplicationPath);
         }
 
-        //[RowTest]
+        // [RowTest]
         ////[Row("http://localhost/AppPath/default.aspx", "/AppPath", "/AppPath/default.aspx")]
         ////[Row("http://localhost/AppPath/default.aspx", "/", "/AppPath/default.aspx")]
         public void CanGetLocalPathCorrectly(string url, string appPath, string expectedLocalPath)
@@ -220,7 +228,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedLocalPath, HttpContext.Current.Request.Url.LocalPath);
         }
 
-        //[RowTest]
+        // [RowTest]
         //////[Row("http://localhost:60653/Test.aspx", null, null, "localhost", 60653, "/", "/Test.aspx", @"c:\InetPub\wwwRoot\")]
         //////[Row("http://localhost:60653/Test.aspx", "/", @"c:\InetPub\wwwRoot\", "localhost", 60653, "/", "/Test.aspx", @"c:\InetPub\wwwRoot\")]
         //////[Row("http://localhost:60653/Test/Test.aspx", "/", @"c:\InetPub\wwwRoot\", "localhost", 60653, "/", "/Test/Test.aspx", @"c:\InetPub\wwwRoot\")]
@@ -238,7 +246,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedLocalPath, HttpContext.Current.Request.Url.LocalPath);
         }
 
-        //[RowTest]
+        // [RowTest]
         ////[Row("/", "/", @"c:\inetpub\wwwroot\")]
         ////[Row("/Test/Test.aspx", "/", @"c:\inetpub\wwwroot\Test\Test.aspx")]
         ////[Row("/Test/Blah/Test.aspx", "/", @"c:\inetpub\wwwroot\Test\Blah\Test.aspx")]
@@ -250,7 +258,7 @@ namespace UnitTests.Subtext
             var simulator = new HttpSimulator(appPath, @"c:\inetpub\wwwroot\");
             simulator.SimulateRequest(url);
 
-            //Create a virtual path object.
+            // Create a virtual path object.
             var vpath = ReflectionHelper.Instantiate("System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", new[] { typeof(string) }, virtualPath);
             Assert.IsNotNull(vpath);
 
@@ -265,18 +273,17 @@ namespace UnitTests.Subtext
             Console.WriteLine("vpath.VirtualPathString == '{0}'", vpathString);
 
             var mapping = ReflectionHelper.InvokeNonPublicMethod<string>(typeof(HostingEnvironment), "GetVirtualPathToFileMapping", vpath);
-            Console.WriteLine("GetVirtualPathToFileMapping: --->{0}<---", (mapping ?? "{NULL}"));
+            Console.WriteLine("GetVirtualPathToFileMapping: --->{0}<---", mapping ?? "{NULL}");
 
             var o = ReflectionHelper.GetPrivateInstanceFieldValue<object>("_configMapPath", environment);
             Console.WriteLine("_configMapPath: {0}", o ?? "{null}");
-
 
             var mappedPath = ReflectionHelper.InvokeNonPublicMethod<string>(environment, "MapPathActual", vpath, false);
             Console.WriteLine("MAPPED: " + mappedPath);
             Assert.AreEqual(expectedMapPath, HttpContext.Current.Request.MapPath(virtualPath));
         }
 
-        //[Test]
+        // [Test]
         public void CanInstantiateVirtualPath()
         {
             var virtualPathType = Type.GetType("System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", true);
@@ -284,7 +291,7 @@ namespace UnitTests.Subtext
             Assert.IsNotNull(constructor);
         }
 
-        //[Test]
+        // [Test]
         public void CanGetHostingEnvironment()
         {
             var environment = HttpSimulatorTester.CallGetEnvironment();
@@ -293,7 +300,7 @@ namespace UnitTests.Subtext
             Assert.IsNotNull(environment);
         }
 
-        //[RowTest]
+        // [RowTest]
         ////[Row("/", "/")]
         ////[Row("", "/")]
         ////[Row("/test", "/test")]
@@ -309,7 +316,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expected, HttpSimulatorTester.CallNormalizeSlashes(s));
         }
 
-        //[Test]
+        // [Test]
         public void CanStripTrailing()
         {
             Assert.AreEqual(@"c:\blah\blah2", HttpSimulatorTester.CallStripTrailingBackSlashes(@"c:\blah\blah2\"));

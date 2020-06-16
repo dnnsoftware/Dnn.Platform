@@ -1,22 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinInfo
-    /// 
+    /// Project  : DotNetNuke
+    /// Class    : SkinInfo
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///     Handles the Business Object for Skins
+    ///     Handles the Business Object for Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -36,6 +31,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinId;
             }
+
             set
             {
                 this._SkinId = value;
@@ -48,6 +44,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._PortalId;
             }
+
             set
             {
                 this._PortalId = value;
@@ -60,6 +57,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinRoot;
             }
+
             set
             {
                 this._SkinRoot = value;
@@ -72,6 +70,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinType;
             }
+
             set
             {
                 this._SkinType = value;
@@ -84,6 +83,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinSrc;
             }
+
             set
             {
                 this._SkinSrc = value;

@@ -1,31 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-
-using Calendar = DotNetNuke.Common.Utilities.Calendar;
-
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+
+    using Calendar = DotNetNuke.Common.Utilities.Calendar;
+
     public abstract class URLTrackingControl : UserControlBase
     {
-		#region "Private Members"
-		
         protected Label Label1;
         protected Label Label2;
         protected Label Label3;
@@ -33,10 +26,10 @@ namespace DotNetNuke.UI.UserControls
         protected Label Label5;
         protected Label Label6;
         protected Label Label7;
-        private string _FormattedURL = "";
+        private string _FormattedURL = string.Empty;
         private int _ModuleID = -2;
-        private string _TrackingURL = "";
-        private string _URL = "";
+        private string _TrackingURL = string.Empty;
+        private string _URL = string.Empty;
         private string _localResourceFile;
         protected LinkButton cmdDisplay;
         protected HyperLink cmdEndCalendar;
@@ -54,10 +47,6 @@ namespace DotNetNuke.UI.UserControls
         protected TextBox txtStartDate;
         protected CompareValidator valEndDate;
         protected CompareValidator valStartDate;
-		
-		#endregion
-
-		#region "Public Properties"
 
         public string FormattedURL
         {
@@ -65,6 +54,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._FormattedURL;
             }
+
             set
             {
                 this._FormattedURL = value;
@@ -77,6 +67,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._TrackingURL;
             }
+
             set
             {
                 this._TrackingURL = value;
@@ -89,6 +80,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._URL;
             }
+
             set
             {
                 this._URL = value;
@@ -104,11 +96,13 @@ namespace DotNetNuke.UI.UserControls
                 {
                     if (this.Request.QueryString["mid"] != null)
                     {
-                        Int32.TryParse(this.Request.QueryString["mid"], out moduleID);
+                        int.TryParse(this.Request.QueryString["mid"], out moduleID);
                     }
                 }
+
                 return moduleID;
             }
+
             set
             {
                 this._ModuleID = value;
@@ -120,7 +114,7 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLTrackingControl.ascx";
                 }
@@ -128,17 +122,15 @@ namespace DotNetNuke.UI.UserControls
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;
             }
         }
-		
-		#endregion
-
-		#region "Event Handlers"
 
         protected override void OnLoad(EventArgs e)
         {
@@ -148,18 +140,18 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				//this needs to execute always to the client script code is registred in InvokePopupCal
+                // this needs to execute always to the client script code is registred in InvokePopupCal
                 this.cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtStartDate);
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
                 {
-                    if (!String.IsNullOrEmpty(this._URL))
+                    if (!string.IsNullOrEmpty(this._URL))
                     {
-                        this.lblLogURL.Text = this.URL; //saved for loading Log grid
+                        this.lblLogURL.Text = this.URL; // saved for loading Log grid
                         TabType URLType = Globals.GetURLType(this._URL);
                         if (URLType == TabType.File && this._URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                         {
-                            //to handle legacy scenarios before the introduction of the FileServerHandler
+                            // to handle legacy scenarios before the introduction of the FileServerHandler
                             var fileName = Path.GetFileName(this._URL);
 
                             var folderPath = this._URL.Substring(0, this._URL.LastIndexOf(fileName));
@@ -169,11 +161,12 @@ namespace DotNetNuke.UI.UserControls
 
                             this.lblLogURL.Text = "FileID=" + file.FileId;
                         }
+
                         var objUrls = new UrlController();
                         UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID);
                         if (objUrlTracking != null)
                         {
-                            if (String.IsNullOrEmpty(this._FormattedURL))
+                            if (string.IsNullOrEmpty(this._FormattedURL))
                             {
                                 this.lblURL.Text = Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, false);
                                 if (!this.lblURL.Text.StartsWith("http") && !this.lblURL.Text.StartsWith("mailto"))
@@ -185,29 +178,33 @@ namespace DotNetNuke.UI.UserControls
                             {
                                 this.lblURL.Text = this._FormattedURL;
                             }
+
                             this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
 
                             if (objUrlTracking.TrackClicks)
                             {
                                 this.pnlTrack.Visible = true;
-                                if (String.IsNullOrEmpty(this._TrackingURL))
+                                if (string.IsNullOrEmpty(this._TrackingURL))
                                 {
                                     if (!this.URL.StartsWith("http"))
                                     {
                                         this.lblTrackingURL.Text = Globals.AddHTTP(this.Request.Url.Host);
                                     }
+
                                     this.lblTrackingURL.Text += Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, objUrlTracking.TrackClicks);
                                 }
                                 else
                                 {
                                     this.lblTrackingURL.Text = this._TrackingURL;
                                 }
+
                                 this.lblClicks.Text = objUrlTracking.Clicks.ToString();
                                 if (!Null.IsNull(objUrlTracking.LastClick))
                                 {
                                     this.lblLastClick.Text = objUrlTracking.LastClick.ToString();
                                 }
                             }
+
                             if (objUrlTracking.LogActivity)
                             {
                                 this.pnlLog.Visible = true;
@@ -223,7 +220,7 @@ namespace DotNetNuke.UI.UserControls
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -234,27 +231,28 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 string strStartDate = this.txtStartDate.Text;
-                if (!String.IsNullOrEmpty(strStartDate))
+                if (!string.IsNullOrEmpty(strStartDate))
                 {
                     strStartDate = strStartDate + " 00:00";
                 }
+
                 string strEndDate = this.txtEndDate.Text;
-                if (!String.IsNullOrEmpty(strEndDate))
+                if (!string.IsNullOrEmpty(strEndDate))
                 {
                     strEndDate = strEndDate + " 23:59";
                 }
+
                 var objUrls = new UrlController();
-                //localize datagrid
+
+                // localize datagrid
                 Localization.LocalizeDataGrid(ref this.grdLog, this.LocalResourceFile);
                 this.grdLog.DataSource = objUrls.GetUrlLog(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
                 this.grdLog.DataBind();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-		
-		#endregion
     }
 }

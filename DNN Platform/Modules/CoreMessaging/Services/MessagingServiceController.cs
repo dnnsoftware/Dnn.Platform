@@ -2,35 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Net;
-using System.Web;
-using System.Web.Http;
-using System.Net.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.CoreMessaging.ViewModels;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.Services.Social.Messaging.Internal;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.CoreMessaging.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.CoreMessaging.ViewModels;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.Services.Social.Messaging.Internal;
+    using DotNetNuke.Services.Social.Notifications;
+    using DotNetNuke.Web.Api;
+
     [SupportedModules("DotNetNuke.Modules.CoreMessaging")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DnnAuthorize]
     public class MessagingServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (MessagingServiceController));
-        #region Public Methods
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
 
         [HttpGet]
         public HttpResponseMessage Inbox(int afterMessageId, int numberOfRecords)
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 postData.Body = HttpUtility.UrlDecode(postData.Body);
                 var messageId = InternalMessagingController.Instance.ReplyMessage(postData.ConversationId, postData.Body, postData.FileIds);
-				var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
+                var message = this.ToExpandoObject(InternalMessagingController.Instance.GetMessage(messageId));
                 var portalId = PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID);
 
                 var totalNewThreads = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId);
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkArchived(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkUnArchived(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkRead(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkUnRead(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
             catch (Exception exc)
             {
@@ -226,13 +226,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var notificationsViewModel = new NotificationsViewModel
                 {
                     TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId),
-                    Notifications = new List<NotificationViewModel>(notificationsDomainModel.Count)
+                    Notifications = new List<NotificationViewModel>(notificationsDomainModel.Count),
                 };
 
                 foreach (var notification in notificationsDomainModel)
                 {
                     var user = UserController.Instance.GetUser(this.PortalSettings.PortalId, notification.SenderUserID);
-                    var displayName = (user != null ? user.DisplayName : "");
+                    var displayName = user != null ? user.DisplayName : string.Empty;
 
                     var notificationViewModel = new NotificationViewModel
                     {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         SenderAvatar = UserController.Instance.GetUserProfilePictureUrl(notification.SenderUserID, 64, 64),
                         SenderProfileUrl = Globals.UserProfileURL(notification.SenderUserID),
                         SenderDisplayName = displayName,
-                        Actions = new List<NotificationActionViewModel>()
+                        Actions = new List<NotificationActionViewModel>(),
                     };
 
                     var notificationType = NotificationsController.Instance.GetNotificationType(notification.NotificationTypeID);
@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                             Name = this.LocalizeActionString(notificationTypeAction.NameResourceKey, notificationType.DesktopModuleId),
                             Description = this.LocalizeActionString(notificationTypeAction.DescriptionResourceKey, notificationType.DesktopModuleId),
                             Confirm = this.LocalizeActionString(notificationTypeAction.ConfirmResourceKey, notificationType.DesktopModuleId),
-                            APICall = notificationTypeAction.APICall
+                            APICall = notificationTypeAction.APICall,
                         };
 
                         notificationViewModel.Actions.Add(notificationActionViewModel);
@@ -269,8 +269,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                         {
                             Name = Localization.GetString("Dismiss.Text"),
                             Description = Localization.GetString("DismissNotification.Text"),
-                            Confirm = "",
-                            APICall = "API/InternalServices/NotificationsService/Dismiss"
+                            Confirm = string.Empty,
+                            APICall = "API/InternalServices/NotificationsService/Dismiss",
                         });
                     }
 
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 var totalsViewModel = new TotalsViewModel
                 {
                     TotalUnreadMessages = InternalMessagingController.Instance.CountUnreadMessages(this.UserInfo.UserID, portalId),
-                    TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId)
+                    TotalNotifications = NotificationsController.Instance.CountNotifications(this.UserInfo.UserID, portalId),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, totalsViewModel);
@@ -369,9 +369,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
-        #endregion
-
-        #region DTO
 
         public class ConversationDTO
         {
@@ -381,16 +378,16 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         public class ReplyDTO : ConversationDTO
         {
             public string Body { get; set; }
+
             public IList<int> FileIds { get; set; }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private string LocalizeActionString(string key, int desktopModuleId)
         {
-            if (string.IsNullOrEmpty(key)) return "";
+            if (string.IsNullOrEmpty(key))
+            {
+                return string.Empty;
+            }
 
             string actionString;
 
@@ -398,7 +395,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, this.PortalSettings.PortalId);
 
-                var resourceFile = string.Format("~/DesktopModules/{0}/{1}/{2}",
+                var resourceFile = string.Format(
+                    "~/DesktopModules/{0}/{1}/{2}",
                     desktopModule.FolderName.Replace("\\", "/"),
                     Localization.LocalResourceDirectory,
                     Localization.LocalSharedResourceFile);
@@ -413,29 +411,28 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             return string.IsNullOrEmpty(actionString) ? key : actionString;
         }
 
-		private dynamic ToExpandoObject(Message message)
-		{
-			dynamic messageObj = new ExpandoObject();
-			messageObj.PortalID = message.PortalID;
-			messageObj.KeyID = message.KeyID;
-			messageObj.MessageID = message.MessageID;
-			messageObj.ConversationId = message.ConversationId;
-			messageObj.SenderUserID = message.SenderUserID;
-			messageObj.From = message.From;
-			messageObj.To = message.To;
-			messageObj.Subject = message.Subject;
-			messageObj.Body = message.Body;
-			messageObj.DisplayDate = message.DisplayDate;
-			messageObj.ReplyAllAllowed = message.ReplyAllAllowed;
-			//base entity properties
-			messageObj.CreatedByUserID = message.CreatedByUserID;
-			messageObj.CreatedOnDate = message.CreatedOnDate;
-			messageObj.LastModifiedByUserID = message.LastModifiedByUserID;
-			messageObj.LastModifiedOnDate = message.LastModifiedOnDate;
-			
-			return messageObj;
-		}
+        private dynamic ToExpandoObject(Message message)
+        {
+            dynamic messageObj = new ExpandoObject();
+            messageObj.PortalID = message.PortalID;
+            messageObj.KeyID = message.KeyID;
+            messageObj.MessageID = message.MessageID;
+            messageObj.ConversationId = message.ConversationId;
+            messageObj.SenderUserID = message.SenderUserID;
+            messageObj.From = message.From;
+            messageObj.To = message.To;
+            messageObj.Subject = message.Subject;
+            messageObj.Body = message.Body;
+            messageObj.DisplayDate = message.DisplayDate;
+            messageObj.ReplyAllAllowed = message.ReplyAllAllowed;
 
-        #endregion
+            // base entity properties
+            messageObj.CreatedByUserID = message.CreatedByUserID;
+            messageObj.CreatedOnDate = message.CreatedOnDate;
+            messageObj.LastModifiedByUserID = message.LastModifiedByUserID;
+            messageObj.LastModifiedOnDate = message.LastModifiedOnDate;
+
+            return messageObj;
+        }
     }
 }

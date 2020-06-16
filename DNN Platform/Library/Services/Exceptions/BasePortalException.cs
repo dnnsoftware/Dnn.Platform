@@ -1,55 +1,53 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Security.Permissions;
-using System.Web;
-using System.Xml.Serialization;
-
-using DotNetNuke.Application;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework.Providers;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Exceptions
 {
-	/// <summary>
-	/// Base Portal Exception.
-	/// </summary>
+    using System;
+    using System.Reflection;
+    using System.Runtime.Serialization;
+    using System.Security.Permissions;
+    using System.Web;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Instrumentation;
+
+    /// <summary>
+    /// Base Portal Exception.
+    /// </summary>
     public class BasePortalException : Exception
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (BasePortalException));
-	    private string m_InnerExceptionString;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
+        private string m_InnerExceptionString;
         private string m_Message;
-	    private string m_Source;
+        private string m_Source;
         private string m_StackTrace;
 
-	    //default constructor
-		public BasePortalException()
+        // default constructor
+        public BasePortalException()
         {
         }
 
-        //constructor with exception message
-		public BasePortalException(string message) : base(message)
-        {
-            this.InitializePrivateVariables();
-        }
-
-        //constructor with message and inner exception
-        public BasePortalException(string message, Exception inner) : base(message, inner)
+        // constructor with exception message
+        public BasePortalException(string message)
+            : base(message)
         {
             this.InitializePrivateVariables();
         }
 
-        protected BasePortalException(SerializationInfo info, StreamingContext context) : base(info, context)
+        // constructor with message and inner exception
+        public BasePortalException(string message, Exception inner)
+            : base(message, inner)
+        {
+            this.InitializePrivateVariables();
+        }
+
+        protected BasePortalException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             this.InitializePrivateVariables();
             this.AssemblyVersion = info.GetString("m_AssemblyVersion");
@@ -75,41 +73,41 @@ namespace DotNetNuke.Services.Exceptions
             this.m_Source = info.GetString("m_Source");
         }
 
-	    public string AssemblyVersion { get; private set; }
+        public string AssemblyVersion { get; private set; }
 
-	    public int PortalID { get; private set; }
+        public int PortalID { get; private set; }
 
-	    public string PortalName { get; private set; }
+        public string PortalName { get; private set; }
 
-	    public int UserID { get; private set; }
+        public int UserID { get; private set; }
 
-	    public string UserName { get; private set; }
+        public string UserName { get; private set; }
 
-	    public int ActiveTabID { get; private set; }
+        public int ActiveTabID { get; private set; }
 
-	    public string ActiveTabName { get; private set; }
+        public string ActiveTabName { get; private set; }
 
-	    public string RawURL { get; private set; }
+        public string RawURL { get; private set; }
 
-	    public string AbsoluteURL { get; private set; }
+        public string AbsoluteURL { get; private set; }
 
-	    public string AbsoluteURLReferrer { get; private set; }
+        public string AbsoluteURLReferrer { get; private set; }
 
-	    public string UserAgent { get; private set; }
+        public string UserAgent { get; private set; }
 
-	    public string DefaultDataProvider { get; private set; }
+        public string DefaultDataProvider { get; private set; }
 
-	    public string ExceptionGUID { get; private set; }
+        public string ExceptionGUID { get; private set; }
 
-	    public string FileName { get; private set; }
+        public string FileName { get; private set; }
 
-	    public int FileLineNumber { get; private set; }
+        public int FileLineNumber { get; private set; }
 
-	    public int FileColumnNumber { get; private set; }
+        public int FileColumnNumber { get; private set; }
 
-	    public string Method { get; private set; }
+        public string Method { get; private set; }
 
-	    [XmlIgnore]
+        [XmlIgnore]
         public new MethodBase TargetSite
         {
             get
@@ -120,8 +118,8 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitializePrivateVariables()
         {
-			//Try and get the Portal settings from context
-            //If an error occurs getting the context then set the variables to -1
+            // Try and get the Portal settings from context
+            // If an error occurs getting the context then set the variables to -1
             try
             {
                 var context = HttpContext.Current;
@@ -131,6 +129,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     innerException = innerException.InnerException;
                 }
+
                 var exceptionInfo = Exceptions.GetExceptionInfo(innerException);
 
                 this.AssemblyVersion = DotNetNukeContext.Current.Application.Version.ToString(3);
@@ -144,9 +143,9 @@ namespace DotNetNuke.Services.Exceptions
                 else
                 {
                     this.PortalID = -1;
-                    this.PortalName = "";
+                    this.PortalName = string.Empty;
                     this.ActiveTabID = -1;
-                    this.ActiveTabName = "";
+                    this.ActiveTabName = string.Empty;
                 }
 
                 var currentUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -155,11 +154,11 @@ namespace DotNetNuke.Services.Exceptions
                 if (this.UserID != -1)
                 {
                     currentUserInfo = UserController.GetUserById(this.PortalID, this.UserID);
-                    this.UserName = currentUserInfo != null ? currentUserInfo.Username : "";
+                    this.UserName = currentUserInfo != null ? currentUserInfo.Username : string.Empty;
                 }
                 else
                 {
-                    this.UserName = "";
+                    this.UserName = string.Empty;
                 }
 
                 if (context != null)
@@ -170,27 +169,28 @@ namespace DotNetNuke.Services.Exceptions
                     {
                         this.AbsoluteURLReferrer = HttpUtility.HtmlEncode(context.Request.UrlReferrer.AbsoluteUri);
                     }
-                    this.UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? "");
+
+                    this.UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? string.Empty);
                 }
                 else
                 {
-                    this.RawURL = "";
-                    this.AbsoluteURL = "";
-                    this.AbsoluteURLReferrer = "";
-                    this.UserAgent = "";
+                    this.RawURL = string.Empty;
+                    this.AbsoluteURL = string.Empty;
+                    this.AbsoluteURLReferrer = string.Empty;
+                    this.UserAgent = string.Empty;
                 }
+
                 try
                 {
                     ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
                     string strTypeName = ((Provider)objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
                     this.DefaultDataProvider = strTypeName;
-                    
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
 
-                    this.DefaultDataProvider = "";
+                    this.DefaultDataProvider = string.Empty;
                 }
 
                 this.ExceptionGUID = Guid.NewGuid().ToString();
@@ -204,10 +204,10 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 else
                 {
-                    this.FileName = "";
+                    this.FileName = string.Empty;
                     this.FileLineNumber = -1;
                     this.FileColumnNumber = -1;
-                    this.Method = "";
+                    this.Method = string.Empty;
                 }
 
                 try
@@ -218,8 +218,9 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.m_StackTrace = "";
+                    this.m_StackTrace = string.Empty;
                 }
+
                 try
                 {
                     this.m_Message = this.Message;
@@ -228,8 +229,9 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.m_Message = "";
+                    this.m_Message = string.Empty;
                 }
+
                 try
                 {
                     this.m_Source = this.Source;
@@ -238,7 +240,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     Logger.Error(exc);
 
-                    this.m_Source = "";
+                    this.m_Source = string.Empty;
                 }
             }
             catch (Exception exc)
@@ -247,27 +249,26 @@ namespace DotNetNuke.Services.Exceptions
                 this.UserID = -1;
                 this.AssemblyVersion = "-1";
                 this.ActiveTabID = -1;
-                this.ActiveTabName = "";
-                this.RawURL = "";
-                this.AbsoluteURL = "";
-                this.AbsoluteURLReferrer = "";
-                this.UserAgent = "";
-                this.DefaultDataProvider = "";
-                this.ExceptionGUID = "";
-                this.FileName = "";
+                this.ActiveTabName = string.Empty;
+                this.RawURL = string.Empty;
+                this.AbsoluteURL = string.Empty;
+                this.AbsoluteURLReferrer = string.Empty;
+                this.UserAgent = string.Empty;
+                this.DefaultDataProvider = string.Empty;
+                this.ExceptionGUID = string.Empty;
+                this.FileName = string.Empty;
                 this.FileLineNumber = -1;
                 this.FileColumnNumber = -1;
-                this.Method = "";
-                this.m_StackTrace = "";
-                this.m_Message = "";
-                this.m_Source = "";
+                this.Method = string.Empty;
+                this.m_StackTrace = string.Empty;
+                this.m_Message = string.Empty;
+                this.m_Source = string.Empty;
                 Logger.Error(exc);
-
             }
         }
 
-        //public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        //{
+        // public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        // {
         //    //Serialize this class' state and then call the base class GetObjectData
         //    info.AddValue("m_AssemblyVersion", AssemblyVersion, typeof (string));
         //    info.AddValue("m_PortalID", PortalID, typeof (Int32));
@@ -290,6 +291,6 @@ namespace DotNetNuke.Services.Exceptions
         //    info.AddValue("m_Message", m_Message, typeof (string));
         //    info.AddValue("m_Source", m_Source, typeof (string));
         //    base.GetObjectData(info, context);
-        //}
+        // }
     }
 }

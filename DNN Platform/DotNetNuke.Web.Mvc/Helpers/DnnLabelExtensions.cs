@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using System.Web.Mvc;
+
     public static class DnnLabelExtensions
     {
         public static MvcHtmlString Label<TModel>(this DnnHelper<TModel> dnnHelper, string expression, string labelText, string helpText)
@@ -26,12 +26,13 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             var htmlHelper = dnnHelper.HtmlHelper as HtmlHelper<TModel>;
 
-            return LabelHelper(htmlHelper,
-                               ModelMetadata.FromStringExpression(expression, htmlHelper.ViewData),
-                               expression,
-                               labelText,
-                               helpText,
-                               htmlAttributes);
+            return LabelHelper(
+                htmlHelper,
+                ModelMetadata.FromStringExpression(expression, htmlHelper.ViewData),
+                expression,
+                labelText,
+                helpText,
+                htmlAttributes);
         }
 
         public static MvcHtmlString LabelFor<TModel, TValue>(this DnnHelper<TModel> dnnHelper, Expression<Func<TModel, TValue>> expression)
@@ -78,12 +79,13 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             var htmlHelper = dnnHelper.HtmlHelper as HtmlHelper<TModel>;
 
-            return LabelHelper(htmlHelper,
-                               ModelMetadata.FromLambdaExpression(expression, dnnHelper.ViewData),
-                               ExpressionHelper.GetExpressionText(expression),
-                               labelText,
-                               helpText,
-                               htmlAttributes);
+            return LabelHelper(
+                htmlHelper,
+                ModelMetadata.FromLambdaExpression(expression, dnnHelper.ViewData),
+                ExpressionHelper.GetExpressionText(expression),
+                labelText,
+                helpText,
+                htmlAttributes);
         }
 
         internal static MvcHtmlString LabelHelper(HtmlHelper html, ModelMetadata metadata, string htmlFieldName, string labelText = null, string helpText = null, IDictionary<string, object> htmlAttributes = null)
@@ -97,7 +99,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public static MvcHtmlString LabelHelper(HtmlHelper html, string htmlFieldName, string labelText, string helpText = null, IDictionary<string, object> htmlAttributes = null)
         {
-            if (String.IsNullOrEmpty(labelText))
+            if (string.IsNullOrEmpty(labelText))
             {
                 return MvcHtmlString.Empty;
             }
@@ -145,7 +147,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
             toolTipTag.InnerHtml = toolTipContentTag.ToString();
 
             divTag.InnerHtml += toolTipTag.ToString();
-
 
             return new MvcHtmlString(divTag.ToString(TagRenderMode.Normal));
         }

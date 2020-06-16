@@ -2,17 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
-
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
+    using System;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+
     public class JsLibraryPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));

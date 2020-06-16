@@ -1,31 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Linq;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+
     /// <summary>
     /// TabController provides all operation to tabinfo.
     /// </summary>
@@ -113,7 +108,7 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 7.3. Use one of the alternate MoveTabxxx methods). Scheduled removal in v10.0.0.")]
         public void MoveTab(TabInfo tab, TabMoveType type)
         {
-            //Get the List of tabs with the same parent
+            // Get the List of tabs with the same parent
             IOrderedEnumerable<TabInfo> siblingTabs = this.GetSiblingTabs(tab).OrderBy(t => t.TabOrder);
             int tabIndex = GetIndexOfTab(tab, siblingTabs);
             switch (type)
@@ -137,6 +132,7 @@ namespace DotNetNuke.Entities.Tabs
                     this.MoveTabToParent(tab, siblingTabs.ElementAt(tabIndex - 1).TabID);
                     break;
             }
+
             this.ClearCache(tab.PortalID);
         }
     }

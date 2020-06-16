@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Linq;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Common;
+
     public abstract class AuthorizeAttributeBase : AuthorizationFilterAttribute
     {
         /// <summary>
-        /// Tests if the request passes the authorization requirements
+        /// Tests if the request passes the authorization requirements.
         /// </summary>
-        /// <param name="context">The auth filter context</param>
-        /// <returns>True when authorization is succesful</returns>
+        /// <param name="context">The auth filter context.</param>
+        /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required
+        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.
         /// </summary>
         /// <param name="actionContext"></param>
         /// <returns></returns>

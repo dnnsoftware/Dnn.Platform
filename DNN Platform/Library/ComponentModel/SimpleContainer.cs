@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.Collections.Internal;
-
-#endregion
-
 namespace DotNetNuke.ComponentModel
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Collections.Internal;
+
     public class SimpleContainer : AbstractContainer
     {
         private readonly string _name;
@@ -25,27 +20,22 @@ namespace DotNetNuke.ComponentModel
 
         private readonly SharedDictionary<Type, string> _registeredComponents = new SharedDictionary<Type, string>();
 
-        #region "Constructors"
-
         /// <summary>
-        ///   Initializes a new instance of the SimpleContainer class.
+        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
         /// </summary>
-        public SimpleContainer() : this(string.Format("Container_{0}", Guid.NewGuid()))
+        public SimpleContainer()
+            : this(string.Format("Container_{0}", Guid.NewGuid()))
         {
         }
 
         /// <summary>
-        ///   Initializes a new instance of the SimpleContainer class.
+        /// Initializes a new instance of the <see cref="SimpleContainer"/> class.
         /// </summary>
         /// <param name = "name"></param>
         public SimpleContainer(string name)
         {
             this._name = name;
         }
-
-        #endregion
-
-        #region "Private Methods"
 
         private void AddBuilder(Type contractType, IComponentBuilder builder)
         {
@@ -92,6 +82,7 @@ namespace DotNetNuke.ComponentModel
             {
                 component = builder.BuildComponent();
             }
+
             return component;
         }
 
@@ -138,8 +129,6 @@ namespace DotNetNuke.ComponentModel
                 this._registeredComponents[type] = name;
             }
         }
-
-        #endregion
 
         public override string Name
         {
@@ -192,6 +181,7 @@ namespace DotNetNuke.ComponentModel
 
                 component = this.GetComponent(builder);
             }
+
             return component;
         }
 
@@ -209,6 +199,7 @@ namespace DotNetNuke.ComponentModel
                     }
                 }
             }
+
             return components.ToArray();
         }
 
@@ -219,6 +210,7 @@ namespace DotNetNuke.ComponentModel
             {
                 settings = this._componentDependencies[name];
             }
+
             return settings;
         }
 
@@ -236,6 +228,7 @@ namespace DotNetNuke.ComponentModel
                     builder = new SingletonComponentBuilder(name, type);
                     break;
             }
+
             this.AddBuilder(contractType, builder);
 
             this.RegisterComponent(name, type);

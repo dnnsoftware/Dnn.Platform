@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
 namespace Dnn.PersonaBar.Library.Model
 {
+    using System;
+    using System.Data;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [DataContract]
     [Serializable]
     public class PersonaBarExtension : IHydratable
@@ -54,6 +55,9 @@ namespace Dnn.PersonaBar.Library.Model
             this.Enabled = Convert.ToBoolean(dr["Enabled"]);
         }
 
-        public int KeyID { get { return this.ExtensionId; } set { this.ExtensionId = value; } }
+        public int KeyID
+        {
+            get { return this.ExtensionId; } set { this.ExtensionId = value; }
+        }
     }
 }

@@ -1,31 +1,23 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Linq;
-using System.Threading;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Web.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.ControlPanel
 {
+    using System;
+    using System.Collections;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.UI;
     using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Web.UI.WebControls;
 
     public partial class SwitchSite : UserControl, IDnnRibbonBarTool
     {
-        #region Event Handlers
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -49,20 +41,20 @@ namespace DotNetNuke.UI.ControlPanel
         {
             try
             {
-                if ((!string.IsNullOrEmpty(this.SitesLst.SelectedValue)))
+                if (!string.IsNullOrEmpty(this.SitesLst.SelectedValue))
                 {
                     int selectedPortalID = int.Parse(this.SitesLst.SelectedValue);
                     var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
-                    if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
+                    if (portalAliases.Count > 0 && (portalAliases[0] != null))
                     {
-                        this.Response.Redirect(Globals.AddHTTP(((PortalAliasInfo) portalAliases[0]).HTTPAlias));
+                        this.Response.Redirect(Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias));
                     }
                 }
             }
-            catch(ThreadAbortException)
+            catch (ThreadAbortException)
             {
-              //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+              // Do nothing we are not logging ThreadAbortxceptions caused by redirects
             }
             catch (Exception ex)
             {
@@ -70,20 +62,18 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        #endregion
-
-        #region Properties
-
         public override bool Visible
         {
             get
             {
-                if ((PortalSettings.Current.UserId == Null.NullInteger))
+                if (PortalSettings.Current.UserId == Null.NullInteger)
                 {
                     return false;
                 }
+
                 return PortalSettings.Current.UserInfo.IsSuperUser && base.Visible;
             }
+
             set
             {
                 base.Visible = value;
@@ -96,15 +86,12 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickSwitchSite";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");
             }
         }
-
-        #endregion
-
-        #region Methods
 
         private void LoadPortalsList()
         {
@@ -118,10 +105,8 @@ namespace DotNetNuke.UI.ControlPanel
             this.SitesLst.DataValueField = "PortalID";
             this.SitesLst.DataBind();
 
-            //SitesLst.Items.Insert(0, new ListItem(string.Empty));
+            // SitesLst.Items.Insert(0, new ListItem(string.Empty));
             this.SitesLst.InsertItem(0, string.Empty, string.Empty);
         }
-
-        #endregion
     }
 }

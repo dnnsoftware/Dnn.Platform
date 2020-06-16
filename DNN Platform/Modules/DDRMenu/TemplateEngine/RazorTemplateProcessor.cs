@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.WebPages;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
-using DotNetNuke.Web.Razor;
-
 namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Dynamic;
+    using System.IO;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.WebPages;
+
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+    using DotNetNuke.Web.Razor;
+
     public class RazorTemplateProcessor : ITemplateProcessor
     {
         public bool LoadDefinition(TemplateDefinition baseDefinition)
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
-            if (!(string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath)))
+            if (! string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
             {
                 var resolver = new PathResolver(liveDefinition.Folder);
                 dynamic model = new ExpandoObject();
@@ -97,6 +98,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         result.AppendFormat("{0}:{1},", option.Name, option.Value);
                     }
                 }
+
                 if (options.Count > 0)
                 {
                     result.Remove(result.Length - 1, 1);

@@ -1,23 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-#endregion
-
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class SharedList<T> : IList<T>, IDisposable
     {
         private readonly List<T> _list = new List<T>();
         private ILockStrategy _lockStrategy;
 
-        public SharedList() : this(LockingStrategy.ReaderWriter)
+        public SharedList()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
@@ -26,7 +22,8 @@ namespace DotNetNuke.Collections.Internal
             this._lockStrategy = lockStrategy;
         }
 
-        public SharedList(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        public SharedList(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 
@@ -37,8 +34,6 @@ namespace DotNetNuke.Collections.Internal
                 return this._list;
             }
         }
-
-        #region IList<T> Members
 
         public void Add(T item)
         {
@@ -84,7 +79,7 @@ namespace DotNetNuke.Collections.Internal
             {
                 this.EnsureNotDisposed();
                 this.EnsureReadAccess();
-                return ((ICollection<T>) this._list).IsReadOnly;
+                return ((ICollection<T>)this._list).IsReadOnly;
             }
         }
 
@@ -124,6 +119,7 @@ namespace DotNetNuke.Collections.Internal
                 this.EnsureReadAccess();
                 return this._list[index];
             }
+
             set
             {
                 this.EnsureNotDisposed();
@@ -144,10 +140,6 @@ namespace DotNetNuke.Collections.Internal
             return this.GetEnumerator1();
         }
 
-        #endregion
-
-        #region "IDisposable Support"
-
         private bool _isDisposed;
 
         public void Dispose()
@@ -157,7 +149,6 @@ namespace DotNetNuke.Collections.Internal
         }
 
         // To detect redundant calls
-
         public void EnsureNotDisposed()
         {
             if (this._isDisposed)
@@ -179,6 +170,7 @@ namespace DotNetNuke.Collections.Internal
                 this._lockStrategy.Dispose();
                 this._lockStrategy = null;
             }
+
             this._isDisposed = true;
         }
 
@@ -186,8 +178,6 @@ namespace DotNetNuke.Collections.Internal
         {
             this.Dispose(false);
         }
-
-        #endregion
 
         public ISharedCollectionLock GetReadLock()
         {
@@ -223,7 +213,7 @@ namespace DotNetNuke.Collections.Internal
 
         private void EnsureReadAccess()
         {
-            if (!(this._lockStrategy.ThreadCanRead))
+            if (! this._lockStrategy.ThreadCanRead)
             {
                 throw new ReadLockRequiredException();
             }

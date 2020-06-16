@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Text;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Portals;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Users.Components.Dto;
-using Dnn.PersonaBar.Users.Components.Prompt.Models;
-
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.SqlClient;
+    using System.Text;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components.Dto;
+    using Dnn.PersonaBar.Users.Components.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
     public class SetUser : ConsoleCommandBase
     {

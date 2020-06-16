@@ -10,6 +10,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Services.Models
 
         public int DestinationFolderId { get; set; }
 
-        public bool Overwrite { get; set; }        
+        public bool Overwrite { get; set; }
     }
 }

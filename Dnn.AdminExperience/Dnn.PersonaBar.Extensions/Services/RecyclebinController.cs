@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Web.Api;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Recyclebin.Components;
-using Dnn.PersonaBar.Recyclebin.Components.Dto;
-using DotNetNuke.Entities.Users;
-
 namespace Dnn.PersonaBar.Recyclebin.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Recyclebin.Components;
+    using Dnn.PersonaBar.Recyclebin.Components.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class RecyclebinController : PersonaBarApiController
     {

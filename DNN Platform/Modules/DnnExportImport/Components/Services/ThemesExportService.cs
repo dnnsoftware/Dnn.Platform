@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common;
-using Dnn.ExportImport.Components.Common;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Dnn.ExportImport.Dto.Pages;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.UI.Skins;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Dto.Pages;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.UI.Skins;
+
     public class ThemesExportService : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesExportService));
@@ -34,15 +35,21 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckCancelled(exportJob)) return;
-            //Skip the export if all the folders have been processed already.
-            if (this.CheckPoint.Stage >= 1)
+            if (this.CheckCancelled(exportJob))
+            {
                 return;
+            }
+
+            // Skip the export if all the folders have been processed already.
+            if (this.CheckPoint.Stage >= 1)
+            {
+                return;
+            }
 
             this._exportImportJob = exportJob;
             this._portalSettings = new PortalSettings(exportJob.PortalId);
 
-            //Create Zip File to hold files
+            // Create Zip File to hold files
             var currentIndex = 0;
             var totalThemesExported = 0;
             try
@@ -52,13 +59,16 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (this.CheckPoint.Stage == 0)
                 {
-                    //export skin packages.
+                    // export skin packages.
                     var exportThemes = this.GetExportThemes();
                     var totalThemes = exportThemes.Count;
 
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalThemes : this.CheckPoint.TotalItems;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
 
                     using (var archive = CompressionUtil.OpenCreate(packagesZipFile))
                     {
@@ -73,14 +83,19 @@ namespace Dnn.ExportImport.Components.Services
                                     var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
                                     CompressionUtil.AddFileToArchive(archive, file, folderOffset);
                                 }
+
                                 totalThemesExported += 1;
                             }
 
                             this.CheckPoint.ProcessedItems++;
                             this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalThemes;
                             currentIndex++;
-                            //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
+
+                            // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                            {
+                                return;
+                            }
                         }
                     }
 
@@ -98,10 +113,16 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
-            //Skip the export if all the templates have been processed already.
-            if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
+            if (this.CheckCancelled(importJob))
+            {
                 return;
+            }
+
+            // Skip the export if all the templates have been processed already.
+            if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
+            {
+                return;
+            }
 
             this._exportImportJob = importJob;
 
@@ -115,7 +136,10 @@ namespace Dnn.ExportImport.Components.Services
                 this._importCount = exporeFiles.Length;
 
                 this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exporeFiles.Length : this.CheckPoint.TotalItems;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
 
                 if (this.CheckPoint.Stage == 0)
                 {
@@ -128,7 +152,6 @@ namespace Dnn.ExportImport.Components.Services
                                 var checkFolder = file.Replace(tempFolder + "\\", string.Empty).Split('\\')[0];
                                 var relativePath = file.Substring((tempFolder + "\\" + checkFolder + "\\").Length);
                                 string targetPath;
-
 
                                 if (checkFolder == "_default")
                                 {
@@ -166,6 +189,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Logger.Error(ex);
                             }
                         }
+
                         this.CheckPoint.Stage++;
                         this.CheckPoint.Completed = true;
                     }
@@ -193,7 +217,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var exportThemes = new List<string>();
 
-            //get site level themes
+            // get site level themes
             exportThemes.Add(this._portalSettings.DefaultPortalSkin);
             exportThemes.Add(this._portalSettings.DefaultPortalContainer);
 
@@ -210,7 +234,7 @@ namespace Dnn.ExportImport.Components.Services
             exportThemes.AddRange(this.LoadExportThemesForPages());
             exportThemes.AddRange(this.LoadExportContainersForModules());
 
-            //get the theme packages
+            // get the theme packages
             var themePackages = new List<string>();
             foreach (var theme in exportThemes)
             {

@@ -2,11 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Library.Prompt.Common;
-using DotNetNuke.Security.Roles;
-
 namespace Dnn.PersonaBar.Roles.Components.Prompt.Models
 {
+    using Dnn.PersonaBar.Library.Prompt.Common;
+    using DotNetNuke.Security.Roles;
+
     public class RoleModel : RoleModelBase
     {
         public string Description { get; set; }

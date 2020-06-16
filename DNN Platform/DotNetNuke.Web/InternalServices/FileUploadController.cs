@@ -2,41 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Net.Http.Headers;
-using System.Runtime.Serialization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common.Utils;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using ContentDisposition = System.Net.Mime.ContentDisposition;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-using System.Web;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Drawing;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Formatting;
+    using System.Net.Http.Headers;
+    using System.Runtime.Serialization;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+
+    using ContentDisposition = System.Net.Mime.ContentDisposition;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     [DnnAuthorize]
     public class FileUploadController : DnnApiController
     {
@@ -46,13 +48,16 @@ namespace DotNetNuke.Web.InternalServices
         public class FolderItemDTO
         {
             public int FolderId { get; set; }
+
             public string FileFilter { get; set; }
+
             public bool Required { get; set; }
         }
 
         public class SavedFileDTO
         {
             public string FileId { get; set; }
+
             public string FilePath { get; set; }
         }
 
@@ -60,7 +65,6 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage LoadFiles(FolderItemDTO folderItem)
         {
             int effectivePortalId = this.PortalSettings.PortalId;
-
 
             if (folderItem.FolderId <= 0)
             {
@@ -145,11 +149,11 @@ namespace DotNetNuke.Web.InternalServices
                             switch (name.ToUpper())
                             {
                                 case "\"FOLDER\"":
-                                    folder = item.ReadAsStringAsync().Result ?? "";
+                                    folder = item.ReadAsStringAsync().Result ?? string.Empty;
                                     break;
 
                                 case "\"FILTER\"":
-                                    filter = item.ReadAsStringAsync().Result ?? "";
+                                    filter = item.ReadAsStringAsync().Result ?? string.Empty;
                                     break;
 
                                 case "\"OVERWRITE\"":
@@ -165,17 +169,18 @@ namespace DotNetNuke.Web.InternalServices
                                     break;
 
                                 case "\"POSTFILE\"":
-                                    fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                    fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
                                     if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
                                     {
                                         fileName = Path.GetFileName(fileName);
                                     }
+
                                     stream = item.ReadAsStreamAsync().Result;
                                     break;
                             }
                         }
 
-                        var errorMessage = "";
+                        var errorMessage = string.Empty;
                         var alreadyExists = false;
                         if (!string.IsNullOrEmpty(fileName) && stream != null)
                         {
@@ -183,17 +188,15 @@ namespace DotNetNuke.Web.InternalServices
 
                             // The SynchronizationContext keeps the main thread context. Send method is synchronous
                             currentSynchronizationContext.Send(
-                                delegate
+                                state =>
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
-                                    }, null
-                                );
-
+                                    }, null);
                         }
 
-                        /* Response Content Type cannot be application/json 
-                         * because IE9 with iframe-transport manages the response 
-                         * as a file download 
+                        /* Response Content Type cannot be application/json
+                         * because IE9 with iframe-transport manages the response
+                         * as a file download
                          */
                         var mediaTypeFormatter = new JsonMediaTypeFormatter();
                         mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
@@ -205,7 +208,7 @@ namespace DotNetNuke.Web.InternalServices
                                 new
                                 {
                                     AlreadyExists = alreadyExists,
-                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage)
+                                    Message = string.Format(GetLocalizedString("ErrorMessage"), fileName, errorMessage),
                                 }, mediaTypeFormatter, "text/plain");
                         }
 
@@ -232,7 +235,7 @@ namespace DotNetNuke.Web.InternalServices
             var savedFileDto = new SavedFileDTO();
             try
             {
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
                 {
                     errorMessage = GetLocalizedString("ExtensionNotAllowed");
@@ -278,7 +281,7 @@ namespace DotNetNuke.Web.InternalServices
                     FileManager.Instance.DeleteFile(file);
                 }
 
-                errorMessage = "";
+                errorMessage = string.Empty;
                 savedFileDto.FileId = file.FileId.ToString(CultureInfo.InvariantCulture);
                 savedFileDto.FilePath = FileManager.Instance.GetUrl(file);
                 return savedFileDto;
@@ -338,12 +341,19 @@ namespace DotNetNuke.Web.InternalServices
         public class UploadByUrlDto
         {
             public string Url { get; set; }
+
             public string Folder { get; set; }
+
             public bool Overwrite { get; set; }
+
             public bool Unzip { get; set; }
+
             public string Filter { get; set; }
+
             public bool IsHostMenu { get; set; }
+
             public int PortalId { get; set; } = -1;
+
             public string ValidationCode { get; set; }
         }
 
@@ -404,13 +414,13 @@ namespace DotNetNuke.Web.InternalServices
                     extensionList = filter.Split(',').Select(i => i.Trim()).ToList();
                 }
 
-                var validateParams = new List<object>{ extensionList, portalId, userInfo.UserID};
+                var validateParams = new List<object> { extensionList, portalId, userInfo.UserID };
                 if (!ValidationUtils.ValidationCodeMatched(validateParams, validationCode))
                 {
                     throw new InvalidOperationException("Bad Request");
                 }
 
-                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", "");
+                var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
                 result.FileIconUrl = IconController.GetFileIconUrl(extension);
 
                 if (!string.IsNullOrEmpty(filter) && !filter.ToLowerInvariant().Contains(extension.ToLowerInvariant()))
@@ -466,6 +476,7 @@ namespace DotNetNuke.Web.InternalServices
                             : string.Empty;
                         result.Prompt = string.Format("{{\"invalidFiles\":[{0}], \"totalCount\": {1}}}", invalidFilesJson, filesCount);
                     }
+
                     result.FileId = file.FileId;
                 }
 
@@ -523,6 +534,7 @@ namespace DotNetNuke.Web.InternalServices
                     reader.Close();
                     reader.Dispose();
                 }
+
                 if (fileContent != null)
                 {
                     fileContent.Close();
@@ -550,9 +562,13 @@ namespace DotNetNuke.Web.InternalServices
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
+
             if (portalId > -1)
             {
-                if (!this.IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                if (!this.IsPortalIdValid(portalId))
+                {
+                    throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
             }
             else
             {
@@ -582,11 +598,11 @@ namespace DotNetNuke.Web.InternalServices
                         switch (name.ToUpper())
                         {
                             case "\"FOLDER\"":
-                                folder = item.ReadAsStringAsync().Result ?? "";
+                                folder = item.ReadAsStringAsync().Result ?? string.Empty;
                                 break;
 
                             case "\"FILTER\"":
-                                filter = item.ReadAsStringAsync().Result ?? "";
+                                filter = item.ReadAsStringAsync().Result ?? string.Empty;
                                 break;
 
                             case "\"OVERWRITE\"":
@@ -606,20 +622,23 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     int.TryParse(item.ReadAsStringAsync().Result, out portalId);
                                 }
+
                                 break;
                             case "\"VALIDATIONCODE\"":
-                                validationCode = item.ReadAsStringAsync().Result ?? "";
+                                validationCode = item.ReadAsStringAsync().Result ?? string.Empty;
                                 break;
                             case "\"POSTFILE\"":
-                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", "");
+                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
                                 if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
+
                                 if (Globals.FileEscapingRegex.Match(fileName).Success == false)
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }
+
                                 break;
                         }
                     }
@@ -628,20 +647,19 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         // The SynchronizationContext keeps the main thread context. Send method is synchronous
                         currentSynchronizationContext.Send(
-                            delegate
+                            state =>
                             {
                                 result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },
-                            null
-                        );
+                            null);
                     }
 
                     var mediaTypeFormatter = new JsonMediaTypeFormatter();
                     mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
 
-                    /* Response Content Type cannot be application/json 
-                     * because IE9 with iframe-transport manages the response 
-                     * as a file download 
+                    /* Response Content Type cannot be application/json
+                     * because IE9 with iframe-transport manages the response
+                     * as a file download
                      */
                     return this.Request.CreateResponse(
                         HttpStatusCode.OK,
@@ -689,7 +707,10 @@ namespace DotNetNuke.Web.InternalServices
                 var portalId = dto.PortalId;
                 if (portalId > -1)
                 {
-                    if (!this.IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                    if (!this.IsPortalIdValid(portalId))
+                    {
+                        throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                    }
                 }
                 else
                 {
@@ -699,9 +720,9 @@ namespace DotNetNuke.Web.InternalServices
                 result = UploadFile(responseStream, portalId, this.UserInfo, dto.Folder.ValueOrEmpty(), dto.Filter.ValueOrEmpty(),
                     fileName, dto.Overwrite, dto.IsHostMenu, dto.Unzip, dto.ValidationCode);
 
-                /* Response Content Type cannot be application/json 
-                    * because IE9 with iframe-transport manages the response 
-                    * as a file download 
+                /* Response Content Type cannot be application/json
+                    * because IE9 with iframe-transport manages the response
+                    * as a file download
                     */
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,
@@ -713,7 +734,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 result = new FileUploadDto
                 {
-                    Message = ex.Message
+                    Message = ex.Message,
                 };
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,
@@ -727,6 +748,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     response.Close();
                 }
+
                 if (responseStream != null)
                 {
                     responseStream.Close();
@@ -750,15 +772,16 @@ namespace DotNetNuke.Web.InternalServices
             Uri uri = new Uri(url);
             if (uri.Scheme == "http" || uri.Scheme == "https")
             {
-
                 if (!uri.Host.Contains("."))
                 {
                     return false;
                 }
+
                 if (uri.IsLoopback)
                 {
                     return false;
                 }
+
                 if (uri.PathAndQuery.Contains("#") || uri.PathAndQuery.Contains(":"))
                 {
                     return false;
@@ -766,7 +789,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
                 {
-                    //check nonroutable IP addresses
+                    // check nonroutable IP addresses
                     if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
                         NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
                         NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
@@ -777,6 +800,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 return true;
             }
+
             return false;
         }
 
@@ -793,15 +817,24 @@ namespace DotNetNuke.Web.InternalServices
 
         private bool IsPortalIdValid(int portalId)
         {
-            if (this.UserInfo.IsSuperUser) return true;
-            if (this.PortalSettings.PortalId == portalId) return true;
+            if (this.UserInfo.IsSuperUser)
+            {
+                return true;
+            }
+
+            if (this.PortalSettings.PortalId == portalId)
+            {
+                return true;
+            }
 
             var isAdminUser = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-            if (!isAdminUser) return false;
+            if (!isAdminUser)
+            {
+                return false;
+            }
 
             var mygroup = GetMyPortalGroup();
-            return (mygroup != null && mygroup.Any(p => p.PortalID == portalId));
+            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
         }
     }
-
 }

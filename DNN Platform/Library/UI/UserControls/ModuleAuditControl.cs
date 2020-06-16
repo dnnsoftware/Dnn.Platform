@@ -1,25 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     public abstract class ModuleAuditControl : UserControl
     {
         private const string MyFileName = "ModuleAuditControl.ascx";
@@ -29,23 +25,26 @@ namespace DotNetNuke.UI.UserControls
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
 
-        private string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         [Serializable]
-		private class EntityInfo
-		{
-			public int CreatedByUserID { get; set; }
-			public DateTime CreatedOnDate { get; set; }
-			public int LastModifiedByUserID { get; set; }
-			public DateTime LastModifiedOnDate { get; set; }
-		}
+        private class EntityInfo
+        {
+            public int CreatedByUserID { get; set; }
+
+            public DateTime CreatedOnDate { get; set; }
+
+            public int LastModifiedByUserID { get; set; }
+
+            public DateTime LastModifiedOnDate { get; set; }
+        }
 
         public ModuleAuditControl()
         {
-            this.LastModifiedDate = String.Empty;
-            this.LastModifiedByUser = String.Empty;
-            this.CreatedByUser = String.Empty;
-            this.CreatedDate = String.Empty;
+            this.LastModifiedDate = string.Empty;
+            this.LastModifiedByUser = string.Empty;
+            this.CreatedByUser = string.Empty;
+            this.CreatedDate = string.Empty;
         }
 
         public string CreatedDate { private get; set; }
@@ -56,31 +55,31 @@ namespace DotNetNuke.UI.UserControls
 
         public string LastModifiedDate { private get; set; }
 
-		public BaseEntityInfo Entity
-		{
-			set
-			{
-				if (value != null)
-				{
-					var entity = new EntityInfo();
-					entity.CreatedByUserID = value.CreatedByUserID;
-					entity.CreatedOnDate = value.CreatedOnDate;
-					entity.LastModifiedByUserID = value.LastModifiedByUserID;
-					entity.LastModifiedOnDate = value.LastModifiedOnDate;
+        public BaseEntityInfo Entity
+        {
+            set
+            {
+                if (value != null)
+                {
+                    var entity = new EntityInfo();
+                    entity.CreatedByUserID = value.CreatedByUserID;
+                    entity.CreatedOnDate = value.CreatedOnDate;
+                    entity.LastModifiedByUserID = value.LastModifiedByUserID;
+                    entity.LastModifiedOnDate = value.LastModifiedOnDate;
 
-					this.ViewState["Entity"] = entity;
-				}
-				else
-				{
-					this.ViewState["Entity"] = null;
-				}
-			}
-		}
+                    this.ViewState["Entity"] = entity;
+                }
+                else
+                {
+                    this.ViewState["Entity"] = null;
+                }
+            }
+        }
 
-	    private EntityInfo Model
-	    {
-		    get { return this.ViewState["Entity"] as EntityInfo; }
-	    }
+        private EntityInfo Model
+        {
+            get { return this.ViewState["Entity"] as EntityInfo; }
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -88,15 +87,15 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				if (this.Model != null)
+                if (this.Model != null)
                 {
-					this.CreatedByUser = this.Model.CreatedByUserID.ToString();
-					this.CreatedDate = this.Model.CreatedOnDate.ToString();
-					this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString();
-					this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
+                    this.CreatedByUser = this.Model.CreatedByUserID.ToString();
+                    this.CreatedDate = this.Model.CreatedOnDate.ToString();
+                    this.LastModifiedByUser = this.Model.LastModifiedByUserID.ToString();
+                    this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
                 }
 
-                //check to see if updated check is redundant
+                // check to see if updated check is redundant
                 var isCreatorAndUpdater = this.CreatedByUser == this.LastModifiedByUser &&
                     Globals.NumberMatchRegex.IsMatch(this.CreatedByUser) && Globals.NumberMatchRegex.IsMatch(this.LastModifiedByUser);
 
@@ -108,7 +107,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ShowUpdatedString(isCreatorAndUpdater);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -124,7 +123,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    //contains a UserID
+                    // contains a UserID
                     UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.CreatedByUser));
                     if (userInfo != null)
                     {
@@ -132,14 +131,14 @@ namespace DotNetNuke.UI.UserControls
                     }
                 }
             }
+
             string createdString = Localization.GetString("CreatedBy", Localization.GetResourceFile(this, MyFileName));
             this.lblCreatedBy.Text = string.Format(createdString, this.CreatedByUser, this.CreatedDate);
-
         }
 
         private void ShowUpdatedString(bool isCreatorAndUpdater)
         {
-            //check to see if audit contains update information
+            // check to see if audit contains update information
             if (string.IsNullOrEmpty(this.LastModifiedDate))
             {
                 return;
@@ -157,7 +156,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    //contains a UserID
+                    // contains a UserID
                     UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.LastModifiedByUser));
                     if (userInfo != null)
                     {

@@ -1,85 +1,61 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections.Generic;
-using System.Web.UI;
-
-using DotNetNuke.Framework;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Modules.NavigationProvider
 {
+    using System.Collections.Generic;
+    using System.Web.UI;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.WebControls;
+
     public abstract class NavigationProvider : UserControlBase
     {
-        #region Delegates
-
         public delegate void NodeClickEventHandler(NavigationEventArgs args);
 
         public delegate void PopulateOnDemandEventHandler(NavigationEventArgs args);
-
-        #endregion
-
-        #region Alignment enum
 
         public enum Alignment
         {
             Left,
             Right,
             Center,
-            Justify
+            Justify,
         }
-
-        #endregion
-
-        #region HoverAction enum
 
         public enum HoverAction
         {
             Expand,
-            None
+            None,
         }
-
-        #endregion
-
-        #region HoverDisplay enum
 
         public enum HoverDisplay
         {
             Highlight,
             Outset,
-            None
+            None,
         }
-
-        #endregion
-
-        #region Orientation enum
 
         public enum Orientation
         {
             Horizontal,
-            Vertical
+            Vertical,
         }
 
-        #endregion
-		
-		#region "Properties"
-
         public abstract Control NavigationControl { get; }
+
         public abstract string ControlID { get; set; }
+
         public abstract bool SupportsPopulateOnDemand { get; }
 
         public virtual string PathImage
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -89,8 +65,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -100,8 +77,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -111,8 +89,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -122,8 +101,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -133,8 +113,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -144,8 +125,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -155,8 +137,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -168,8 +151,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -179,8 +163,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -190,8 +175,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -201,8 +187,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -212,8 +199,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -223,8 +211,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -234,8 +223,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -245,8 +235,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -256,8 +247,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -267,8 +259,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -278,8 +271,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -289,8 +283,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -300,8 +295,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -311,8 +307,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -322,8 +319,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -333,8 +331,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -344,8 +343,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -355,8 +355,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -366,8 +367,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -377,8 +379,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -388,8 +391,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -399,8 +403,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -410,8 +415,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -421,8 +427,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -432,8 +439,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -443,8 +451,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -454,8 +463,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -465,8 +475,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -476,8 +487,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -489,6 +501,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return 25;
             }
+
             set
             {
             }
@@ -500,6 +513,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return 0;
             }
+
             set
             {
             }
@@ -511,6 +525,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return 25;
             }
+
             set
             {
             }
@@ -522,6 +537,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return 0;
             }
+
             set
             {
             }
@@ -531,8 +547,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -544,6 +561,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return 0;
             }
+
             set
             {
             }
@@ -555,6 +573,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return "False";
             }
+
             set
             {
             }
@@ -564,8 +583,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -575,8 +595,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -586,8 +607,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -599,6 +621,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return "'";
             }
+
             set
             {
             }
@@ -610,6 +633,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return -1;
             }
+
             set
             {
             }
@@ -619,8 +643,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -630,8 +655,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -643,6 +669,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return -1;
             }
+
             set
             {
             }
@@ -654,6 +681,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return Orientation.Horizontal;
             }
+
             set
             {
             }
@@ -665,6 +693,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return Alignment.Left;
             }
+
             set
             {
             }
@@ -676,6 +705,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return false.ToString();
             }
+
             set
             {
             }
@@ -687,6 +717,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return -1;
             }
+
             set
             {
             }
@@ -698,6 +729,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return HoverDisplay.Highlight;
             }
+
             set
             {
             }
@@ -709,6 +741,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return HoverAction.Expand;
             }
+
             set
             {
             }
@@ -720,6 +753,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return "False";
             }
+
             set
             {
             }
@@ -731,6 +765,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return true;
             }
+
             set
             {
             }
@@ -740,8 +775,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -751,8 +787,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -762,8 +799,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -773,8 +811,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -784,8 +823,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -795,8 +835,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -806,8 +847,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -817,8 +859,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -828,8 +871,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -839,8 +883,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -850,8 +895,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -861,8 +907,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -872,8 +919,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -883,8 +931,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -894,8 +943,9 @@ namespace DotNetNuke.Modules.NavigationProvider
         {
             get
             {
-                return "";
+                return string.Empty;
             }
+
             set
             {
             }
@@ -907,6 +957,7 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return false;
             }
+
             set
             {
             }
@@ -918,22 +969,19 @@ namespace DotNetNuke.Modules.NavigationProvider
             {
                 return null;
             }
+
             set
             {
             }
         }
-		
-		
-		#endregion
-		
-		#region "Methods"
 
         public event NodeClickEventHandler NodeClick;
+
         public event PopulateOnDemandEventHandler PopulateOnDemand;
 
         public static NavigationProvider Instance(string FriendlyName)
         {
-            return (NavigationProvider) Reflection.CreateObject("navigationControl", FriendlyName, "", "");
+            return (NavigationProvider)Reflection.CreateObject("navigationControl", FriendlyName, string.Empty, string.Empty);
         }
 
         public abstract void Initialize();
@@ -975,8 +1023,6 @@ namespace DotNetNuke.Modules.NavigationProvider
                 this.PopulateOnDemand(new NavigationEventArgs(strID, null));
             }
         }
-		
-		#endregion
     }
 
     public class NavigationEventArgs

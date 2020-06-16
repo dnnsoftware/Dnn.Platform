@@ -2,64 +2,80 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using DotNetNuke.Common;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Security
 {
-	public class RegistrationSettings
-	{
+    using System.Collections.Generic;
 
-		#region Properties
-		public bool RandomPassword { get; set; }
-		public int RedirectAfterRegistration { get; set; }
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
+    public class RegistrationSettings
+    {
+        public bool RandomPassword { get; set; }
+
+        public int RedirectAfterRegistration { get; set; }
+
         public int RedirectAfterLogout { get; set; }
+
         public int RedirectAfterLogin { get; set; }
+
         public string RegistrationFields { get; set; }
-		public string ExcludeTerms { get; set; }
-		public string ExcludeTermsRegex { get; set; }
-		public int RegistrationFormType { get; set; }
-		public bool RequirePasswordConfirm { get; set; }
-		public bool RequireUniqueDisplayName { get; set; }
-		public bool UseAuthProviders { get; set; }
-		public bool UseEmailAsUserName { get; set; }
-		public bool UseProfanityFilter { get; set; }
-		public bool RequireValidProfile { get; set; }
-		public bool RequireValidProfileAtLogin { get; set; }
-		public bool UseCaptcha { get; set; }
-		public string UserNameValidator { get; set; }
-		public string DisplayNameFormat { get; set; }
-		public string EmailValidator { get; set; }
-		#endregion
 
-		#region Constructors
+        public string ExcludeTerms { get; set; }
 
-		public RegistrationSettings()
-		{
-			this.RandomPassword = false;
-			this.RedirectAfterRegistration = -1;
+        public string ExcludeTermsRegex { get; set; }
+
+        public int RegistrationFormType { get; set; }
+
+        public bool RequirePasswordConfirm { get; set; }
+
+        public bool RequireUniqueDisplayName { get; set; }
+
+        public bool UseAuthProviders { get; set; }
+
+        public bool UseEmailAsUserName { get; set; }
+
+        public bool UseProfanityFilter { get; set; }
+
+        public bool RequireValidProfile { get; set; }
+
+        public bool RequireValidProfileAtLogin { get; set; }
+
+        public bool UseCaptcha { get; set; }
+
+        public string UserNameValidator { get; set; }
+
+        public string DisplayNameFormat { get; set; }
+
+        public string EmailValidator { get; set; }
+
+        public RegistrationSettings()
+        {
+            this.RandomPassword = false;
+            this.RedirectAfterRegistration = -1;
             this.RedirectAfterLogout = -1;
             this.RedirectAfterLogin = -1;
             this.RegistrationFields = string.Empty;
-			this.ExcludeTerms = string.Empty;
-			this.ExcludeTermsRegex = Null.NullString;
-			this.RegistrationFormType = 0;
-			this.RequirePasswordConfirm = true;
-			this.RequireUniqueDisplayName = false;
-			this.UseAuthProviders = false;
-			this.UseEmailAsUserName = false;
-			this.UseProfanityFilter = false;
-			this.RequireValidProfile = false;
-			this.RequireValidProfileAtLogin = true;
-			this.UseCaptcha = false;
-			this.UserNameValidator = Globals.glbUserNameRegEx;
-			this.DisplayNameFormat = string.Empty;
-			this.EmailValidator = Globals.glbEmailRegEx;
-		}
-		public RegistrationSettings(Dictionary<string, string> settings): this()
-		{
+            this.ExcludeTerms = string.Empty;
+            this.ExcludeTermsRegex = Null.NullString;
+            this.RegistrationFormType = 0;
+            this.RequirePasswordConfirm = true;
+            this.RequireUniqueDisplayName = false;
+            this.UseAuthProviders = false;
+            this.UseEmailAsUserName = false;
+            this.UseProfanityFilter = false;
+            this.RequireValidProfile = false;
+            this.RequireValidProfileAtLogin = true;
+            this.UseCaptcha = false;
+            this.UserNameValidator = Globals.glbUserNameRegEx;
+            this.DisplayNameFormat = string.Empty;
+            this.EmailValidator = Globals.glbEmailRegEx;
+        }
+
+        public RegistrationSettings(Dictionary<string, string> settings)
+            : this()
+        {
             this.RandomPassword = settings.GetValueOrDefault("Registration_RandomPassword", this.RandomPassword);
             this.RedirectAfterRegistration = settings.GetValueOrDefault("Redirect_AfterRegistration", this.RedirectAfterRegistration);
             this.RedirectAfterLogout = settings.GetValueOrDefault("Redirect_AfterLogout", this.RedirectAfterLogout);
@@ -79,9 +95,7 @@ namespace DotNetNuke.Security
             this.DisplayNameFormat = settings.GetValueOrDefault("Security_DisplayNameFormat", this.DisplayNameFormat);
             this.EmailValidator = settings.GetValueOrDefault("Security_EmailValidation", this.EmailValidator);
 
-			this.ExcludeTermsRegex = "^(?:(?!" + this.ExcludeTerms.Replace(" ", "").Replace(",", "|") + ").)*$\\r?\\n?";
-		}
-		#endregion
-
-	}
+            this.ExcludeTermsRegex = "^(?:(?!" + this.ExcludeTerms.Replace(" ", string.Empty).Replace(",", "|") + ").)*$\\r?\\n?";
+        }
+    }
 }

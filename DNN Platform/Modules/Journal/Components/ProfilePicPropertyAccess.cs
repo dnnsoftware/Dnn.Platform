@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Globalization;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Modules.Journal.Components
 {
-    public class ProfilePicPropertyAccess: IPropertyAccess
+    using System.Globalization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
+    public class ProfilePicPropertyAccess : IPropertyAccess
     {
         private readonly int _userId;
 
@@ -24,15 +25,17 @@ namespace DotNetNuke.Modules.Journal.Components
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
-
             if (propertyName.ToLowerInvariant() == "relativeurl")
             {
                 int size;
-                if (int.TryParse(format, out size)) {
+                if (int.TryParse(format, out size))
+                {
                     this.Size = size;
                 }
+
                 return UserController.Instance.GetUserProfilePictureUrl(this._userId, this.Size, this.Size);
             }
+
             propertyNotFound = true;
             return string.Empty;
         }

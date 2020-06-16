@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-
 namespace DotNetNuke.Modules.DigitalAssets.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.Linq;
+
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+
     public class Factory
     {
 #pragma warning disable 649
@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
 
         public Factory()
         {
-            ExtensionPointManager.ComposeParts(this);   
+            ExtensionPointManager.ComposeParts(this);
         }
 
         public IDigitalAssetsController DigitalAssetsController

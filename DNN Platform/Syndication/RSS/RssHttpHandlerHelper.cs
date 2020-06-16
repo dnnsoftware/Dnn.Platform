@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web;
-using System.Web.Security;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Web;
+    using System.Web.Security;
+
     /// <summary>
-    ///   Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string
+    ///   Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string.
     /// </summary>
     public class RssHttpHandlerHelper
     {
@@ -58,6 +53,7 @@ namespace DotNetNuke.Services.Syndication
             if (string.IsNullOrEmpty(ticket))
             {
                 userName = string.Empty;
+
                 // optional unencrypted channel name
                 channelName = request.QueryString["c"];
             }

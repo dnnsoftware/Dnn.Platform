@@ -1,33 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public class DnnButton : Button, ILocalizable
     {
         private bool _Localize = true;
-
-        #region "Constructors"
 
         public DnnButton()
         {
             this.CssClass = "CommandButton";
             this.DisabledCssClass = "CommandButtonDisabled";
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -39,6 +28,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["ConfirmMessage"] == null ? string.Empty : this.ViewState["ConfirmMessage"].ToString();
             }
+
             set
             {
                 this.ViewState["ConfirmMessage"] = value;
@@ -55,33 +45,31 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["DisabledCssClass"] == null ? string.Empty : this.ViewState["DisabledCssClass"].ToString();
             }
+
             set
             {
                 this.ViewState["DisabledCssClass"] = value;
             }
         }
 
-        #endregion
-
-        #region "Protected Methods"
-
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            if ((!this.Enabled))
+            if (!this.Enabled)
             {
                 this.CssClass = this.DisabledCssClass;
             }
 
-            if ((!string.IsNullOrEmpty(this.ConfirmMessage)))
+            if (!string.IsNullOrEmpty(this.ConfirmMessage))
             {
                 string msg = this.ConfirmMessage;
-                if ((this.Localize))
+                if (this.Localize)
                 {
                     msg = Utilities.GetLocalizedStringFromParent(this.ConfirmMessage, this);
                 }
-                //must be done before render
+
+                // must be done before render
                 this.OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
             }
         }
@@ -92,10 +80,6 @@ namespace DotNetNuke.Web.UI.WebControls
             base.Render(writer);
         }
 
-        #endregion
-
-        #region "ILocalizable Implementation"
-
         public bool Localize
         {
             get
@@ -104,8 +88,10 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return false;
                 }
+
                 return this._Localize;
             }
+
             set
             {
                 this._Localize = value;
@@ -116,26 +102,26 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((this.Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(this.ToolTip)))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
                     this.ToolTip = Utilities.GetLocalizedStringFromParent(this.ToolTip, this);
                 }
 
-                if ((!string.IsNullOrEmpty(this.Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     string unlocalizedText = this.Text;
                     this.Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
-                    if (String.IsNullOrEmpty(this.Text))
+                    if (string.IsNullOrEmpty(this.Text))
                     {
                         this.Text = unlocalizedText;
                     }
 
-                    if ((string.IsNullOrEmpty(this.ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
-                        if (String.IsNullOrEmpty(this.ToolTip))
+                        if (string.IsNullOrEmpty(this.ToolTip))
                         {
                             this.ToolTip = unlocalizedText;
                         }
@@ -143,7 +129,5 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
         }
-
-        #endregion
     }
 }

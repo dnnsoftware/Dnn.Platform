@@ -26,11 +26,11 @@
 namespace log4net.Util
 {
     /// <summary>
-    /// A class to hold the key and data for a property set in the config file
+    /// A class to hold the key and data for a property set in the config file.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A class to hold the key and data for a property set in the config file
+    /// A class to hold the key and data for a property set in the config file.
     /// </para>
     /// </remarks>
     public class PropertyEntry
@@ -39,10 +39,10 @@ namespace log4net.Util
         private object m_value = null;
 
         /// <summary>
-        /// Property Key
+        /// Gets or sets property Key.
         /// </summary>
         /// <value>
-        /// Property Key
+        /// Property Key.
         /// </value>
         /// <remarks>
         /// <para>
@@ -56,10 +56,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Property Value
+        /// Gets or sets property Value.
         /// </summary>
         /// <value>
-        /// Property Value
+        /// Property Value.
         /// </value>
         /// <remarks>
         /// <para>
@@ -73,9 +73,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Override <c>Object.ToString</c> to return sensible debug info
+        /// Override <c>Object.ToString</c> to return sensible debug info.
         /// </summary>
-        /// <returns>string info about this object</returns>
+        /// <returns>string info about this object.</returns>
         public override string ToString()
         {
             return "PropertyEntry(Key=" + this.m_key + ", Value=" + this.m_value + ")";

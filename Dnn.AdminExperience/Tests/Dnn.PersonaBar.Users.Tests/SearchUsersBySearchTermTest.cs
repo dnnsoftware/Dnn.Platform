@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Users.Components.Contracts;
-using Dnn.PersonaBar.Users.Components.Dto;
-using Dnn.PersonaBar.Users.Components.Helpers;
-using Moq;
-using NUnit.Framework;
-using System.Data;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using System.Data;
+
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Contracts;
+    using Dnn.PersonaBar.Users.Components.Dto;
+    using Dnn.PersonaBar.Users.Components.Helpers;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SearchUsersBySearchTermTest
     {
-
         private GetUsersContract usersContract;
         private UsersControllerTestable usersCtrl;
 
@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Users.Tests
                 SortColumn = "displayname",
                 SortAscending = true,
                 PortalId = 0,
-                Filter = UserFilters.All
+                Filter = UserFilters.All,
             };
 
             this.usersCtrl = new UsersControllerTestable();
@@ -60,21 +60,20 @@ namespace Dnn.PersonaBar.Users.Tests
             this.usersCtrl.GetUsers(this.usersContract, true, out totalRecords);
 
             Assert.AreEqual(expectedFilteredText, this.usersCtrl.LastSearch);
-
         }
 
         private class UsersControllerTestable : UsersController
         {
             private Mock<IDataReader> dataReader;
-            
+
             public string LastSearch { get; set; }
 
             protected override IDataReader CallGetUsersBySearchTerm(
                 GetUsersContract usersContract,
-                bool? includeAuthorized, 
-                bool? includeDeleted, 
+                bool? includeAuthorized,
+                bool? includeDeleted,
                 bool? includeSuperUsers,
-                bool? hasAgreedToTerms, 
+                bool? hasAgreedToTerms,
                 bool? requestsRemoval)
             {
                 this.LastSearch = SearchTextFilter.CleanWildcards(usersContract.SearchText);

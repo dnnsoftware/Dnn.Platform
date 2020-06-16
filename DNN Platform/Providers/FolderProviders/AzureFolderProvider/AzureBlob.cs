@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using Microsoft.WindowsAzure.Storage.Blob;
-
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
+    using System;
+
+    using Microsoft.WindowsAzure.Storage.Blob;
+
     [Serializable]
     public class AzureBlob
     {

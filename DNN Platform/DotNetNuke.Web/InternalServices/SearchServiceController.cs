@@ -2,32 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Http;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.InternalServices.Views.Search;
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Entities;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.InternalServices.Views.Search;
+
     [DnnAuthorize(StaticRoles = "Administrators")]
     public class SearchServiceController : DnnApiController
     {
@@ -36,16 +36,22 @@ namespace DotNetNuke.Web.InternalServices
         public class SynonymsGroupDto
         {
             public int Id { get; set; }
+
             public string Tags { get; set; }
+
             public int PortalId { get; set; }
+
             public string Culture { get; set; }
         }
 
         public class StopWordsDto
         {
             public int Id { get; set; }
+
             public string Words { get; set; }
+
             public int PortalId { get; set; }
+
             public string Culture { get; set; }
         }
 
@@ -55,15 +61,14 @@ namespace DotNetNuke.Web.InternalServices
             this.HtmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
         }
 
-        //this constructor is for unit tests
-        internal SearchServiceController(int htmlModuleDefitionId)//, TabController newtabController, ModuleController newmoduleController)
+        // this constructor is for unit tests
+        internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
         {
             this.HtmlModuleDefitionId = htmlModuleDefitionId;
-            //_tabController = newtabController;
-            //_moduleController = newmoduleController;
-        }
 
-        #region private methods
+            // _tabController = newtabController;
+            // _moduleController = newmoduleController;
+        }
 
         private int HtmlModuleDefitionId;
 
@@ -78,8 +83,6 @@ namespace DotNetNuke.Web.InternalServices
 
             return enableWildSearch;
         }
-
-        #region Loads Search portal ids, crawler ids and module def ids
 
         private const string ModuleInfosCacheKey = "ModuleInfos{0}";
         private const CacheItemPriority ModuleInfosCachePriority = CacheItemPriority.AboveNormal;
@@ -96,7 +99,7 @@ namespace DotNetNuke.Web.InternalServices
         private ModuleInfo GetSearchModule()
         {
             var arrModules = GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
-	        ModuleInfo findModule = null;
+            ModuleInfo findModule = null;
             if (arrModules.Count > 1)
             {
                 findModule = arrModules.Cast<ModuleInfo>().FirstOrDefault(searchModule => searchModule.CultureCode == this.PortalSettings.CultureCode);
@@ -162,13 +165,22 @@ namespace DotNetNuke.Web.InternalServices
                 list = Convert.ToString(settings["ScopeForPortals"]).Split('|').Select(s => Convert.ToInt32(s)).ToList();
             }
 
-            if (portalId == -1) portalId = this.PortalSettings.ActiveTab.PortalID;
-            if (portalId > -1 && !list.Contains(portalId)) list.Add(portalId);
+            if (portalId == -1)
+            {
+                portalId = this.PortalSettings.ActiveTab.PortalID;
+            }
 
-            //Add Host 
+            if (portalId > -1 && !list.Contains(portalId))
+            {
+                list.Add(portalId);
+            }
+
+            // Add Host
             var userInfo = this.UserInfo;
             if (userInfo.IsSuperUser)
+            {
                 list.Add(-1);
+            }
 
             return list;
         }
@@ -185,11 +197,17 @@ namespace DotNetNuke.Web.InternalServices
             // check content source in configured list or not
             foreach (var contentSource in searchContentSources)
             {
-                if (contentSource.IsPrivate) continue;
+                if (contentSource.IsPrivate)
+                {
+                    continue;
+                }
+
                 if (configuredList.Count > 0)
                 {
                     if (configuredList.Any(l => l.Contains(contentSource.LocalizedName))) // in configured list
+                    {
                         list.Add(contentSource.SearchTypeId);
+                    }
                 }
                 else
                 {
@@ -212,16 +230,24 @@ namespace DotNetNuke.Web.InternalServices
             // check content source in configured list or not
             foreach (var contentSource in searchContentSources)
             {
-                if (contentSource.IsPrivate) continue; ;
+                if (contentSource.IsPrivate)
+                {
+                    continue;
+                }
+
                 if (configuredList.Count > 0)
                 {
                     if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0) // in configured list
+                    {
                         list.Add(contentSource.ModuleDefinitionId);
+                    }
                 }
                 else
                 {
                     if (contentSource.ModuleDefinitionId > 0)
+                    {
                         list.Add(contentSource.ModuleDefinitionId);
+                    }
                 }
             }
 
@@ -249,9 +275,6 @@ namespace DotNetNuke.Web.InternalServices
             return sources;
         }
 
-        #endregion
-
-        #region view models for search results
         internal IEnumerable<GroupedDetailView> GetGroupedDetailViews(SearchQuery searchQuery, int userSearchTypeId,  out int totalHits, out bool more)
         {
             var searchResults = SearchController.Instance.SiteSearch(searchQuery);
@@ -260,10 +283,10 @@ namespace DotNetNuke.Web.InternalServices
 
             var groups = new List<GroupedDetailView>();
             var tabGroups = new Dictionary<string, IList<SearchResult>>();
-           
+
             foreach (var result in searchResults.Results)
             {
-                //var key = result.TabId + result.Url;
+                // var key = result.TabId + result.Url;
                 var key = result.Url;
                 if (!tabGroups.ContainsKey(key))
                 {
@@ -271,7 +294,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    //when the result is a user search type, we should only show one result
+                    // when the result is a user search type, we should only show one result
                     // and if duplicate, we should also reduce the totalHit number.
                     if (result.SearchTypeId != userSearchTypeId ||
                         tabGroups[key].All(r => r.Url != result.Url))
@@ -292,19 +315,21 @@ namespace DotNetNuke.Web.InternalServices
             {
                 var group = new GroupedDetailView();
 
-                //first entry
+                // first entry
                 var first = results[0];
                 group.Title = showFriendlyTitle ? this.GetFriendlyTitle(first) : first.Title;
                 group.DocumentUrl = first.Url;
 
-                //Find a different title for multiple entries with same url
+                // Find a different title for multiple entries with same url
                 if (results.Count > 1)
                 {
                     if (first.TabId > 0)
                     {
                         var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
+                        {
                             group.Title = showFriendlyTitle && !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
+                        }
                     }
                     else if (first.ModuleId > 0)
                     {
@@ -315,14 +340,17 @@ namespace DotNetNuke.Web.InternalServices
                         }
                     }
                 }
-                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.HtmlModuleDefitionId) //special handling for Html module
+                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
                 {
                     var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
                         group.Title = tabTitle;
                         if (first.Title != "Enter Title" && first.Title != "Text/HTML")
+                        {
                             group.Title += " > " + first.Title;
+                        }
+
                         first.Title = group.Title;
                     }
                 }
@@ -340,7 +368,7 @@ namespace DotNetNuke.Web.InternalServices
                         DisplayModifiedTime = result.DisplayModifiedTime,
                         Tags = result.Tags.ToList(),
                         AuthorProfileUrl = result.AuthorUserId > 0 ? Globals.UserProfileURL(result.AuthorUserId) : string.Empty,
-                        AuthorName = result.AuthorName
+                        AuthorName = result.AuthorName,
                     };
                     group.Results.Add(detail);
                 }
@@ -369,14 +397,14 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (var preview in previews)
             {
-                //if the document type is user, then try to add user pic into preview's custom attributes.
+                // if the document type is user, then try to add user pic into preview's custom attributes.
                 if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
                 {
                     var match = GroupedBasicViewRegex.Match(preview.DocumentUrl);
                     if (match.Success)
                     {
                         var userid = Convert.ToInt32(match.Groups[2].Value);
-                        var user = UserController.Instance.GetUserById(portalId, userid); 
+                        var user = UserController.Instance.GetUserById(portalId, userid);
                         if (user != null)
                         {
                             preview.Attributes.Add("Avatar", user.Profile.PhotoURL);
@@ -388,14 +416,16 @@ namespace DotNetNuke.Web.InternalServices
                 if (groupedResult != null)
                 {
                     if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
+                    {
                         groupedResult.Results.Add(new BasicView
                         {
                             Title = preview.Title.Contains("<") ? HttpUtility.HtmlEncode(preview.Title) : preview.Title,
                             Snippet = preview.Snippet,
                             Description = preview.Description,
                             DocumentUrl = preview.DocumentUrl,
-                            Attributes = preview.Attributes
+                            Attributes = preview.Attributes,
                         });
+                    }
                 }
                 else
                 {
@@ -429,20 +459,23 @@ namespace DotNetNuke.Web.InternalServices
                     DocumentTypeName = InternalSearchController.Instance.GetSearchDocumentTypeDisplayName(result),
                     DocumentUrl = result.Url,
                     Snippet = showSnippet ? result.Snippet : string.Empty,
-                    Description = showDescription ? description : string.Empty
+                    Description = showDescription ? description : string.Empty,
                 };
             });
         }
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
-            if (result.ModuleDefId > 0 && result.ModuleDefId == this.HtmlModuleDefitionId) //special handling for Html module
+            if (result.ModuleDefId > 0 && result.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
             {
                 var tabTitle = this.GetTabTitleFromModuleId(result.ModuleId);
                 if (!string.IsNullOrEmpty(tabTitle))
                 {
                     if (result.Title != "Enter Title" && result.Title != "Text/HTML")
+                    {
                         return tabTitle + " > " + result.Title;
+                    }
+
                     return tabTitle;
                 }
             }
@@ -476,10 +509,6 @@ namespace DotNetNuke.Web.InternalServices
             return string.Empty;
         }
 
-        #endregion
-
-        #endregion
-
         [HttpGet]
         [AllowAnonymous]
         public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
@@ -489,7 +518,7 @@ namespace DotNetNuke.Web.InternalServices
             var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
             var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
             var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
-            
+
             var contentSources = this.GetSearchContentSources(searchTypes);
             var settings = this.GetSearchModuleSettings();
             var searchTypeIds = GetSearchTypeIds(settings, contentSources);
@@ -516,7 +545,7 @@ namespace DotNetNuke.Web.InternalServices
                     TitleSnippetLength = 40,
                     BodySnippetLength = 100,
                     CultureCode = culture,
-                    WildCardSearch = forceWild > 0 
+                    WildCardSearch = forceWild > 0,
                 };
 
                 try
@@ -552,7 +581,7 @@ namespace DotNetNuke.Web.InternalServices
             var more = false;
             var totalHits = 0;
             var results = new List<GroupedDetailView>();
-            if (portalIds.Any() && searchTypeIds.Any() && 
+            if (portalIds.Any() && searchTypeIds.Any() &&
                 (!string.IsNullOrEmpty(cleanedKeywords) || tags.Any()))
             {
                 var query = new SearchQuery
@@ -566,11 +595,11 @@ namespace DotNetNuke.Web.InternalServices
                         EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
                         PageIndex = pageIndex,
                         PageSize = pageSize,
-                        SortField = (SortFields) sortOption,
+                        SortField = (SortFields)sortOption,
                         TitleSnippetLength = 120,
                         BodySnippetLength = 300,
                         CultureCode = culture,
-                        WildCardSearch = this.IsWildCardEnabledForModule()
+                        WildCardSearch = this.IsWildCardEnabledForModule(),
                     };
 
                 try
@@ -585,7 +614,7 @@ namespace DotNetNuke.Web.InternalServices
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { results, totalHits, more });
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SupportedModules("SearchAdmin")]
@@ -615,7 +644,6 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [SupportedModules("SearchAdmin")]
@@ -642,6 +670,5 @@ namespace DotNetNuke.Web.InternalServices
             SearchHelper.Instance.DeleteSearchStopWords(stopWords.Id, stopWords.PortalId, stopWords.Culture);
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
-
     }
 }

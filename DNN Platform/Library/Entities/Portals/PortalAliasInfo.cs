@@ -1,27 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Urls;
-
-#endregion
-
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Data;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Urls;
+
     [Serializable]
     public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable
     {
-        public PortalAliasInfo() {}
+        public PortalAliasInfo()
+        {
+        }
 
         public PortalAliasInfo(PortalAliasInfo alias)
         {
@@ -35,21 +32,21 @@ namespace DotNetNuke.Entities.Portals
             this.Skin = alias.Skin;
         }
 
-        #region Auto-Properties
-
         public string HTTPAlias { get; set; }
+
         public int PortalAliasID { get; set; }
+
         public int PortalID { get; set; }
+
         public bool IsPrimary { get; set; }
+
         public bool Redirect { get; set; }
 
         public BrowserTypes BrowserType { get; set; }
+
         public string CultureCode { get; set; }
+
         public string Skin { get; set; }
-
-        #endregion
-
-        #region IHydratable Members
 
         public int KeyID
         {
@@ -59,23 +56,19 @@ namespace DotNetNuke.Entities.Portals
 
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
             this.PortalAliasID = Null.SetNullInteger(dr["PortalAliasID"]);
             this.PortalID = Null.SetNullInteger(dr["PortalID"]);
             this.HTTPAlias = Null.SetNullString(dr["HTTPAlias"]);
             this.IsPrimary = Null.SetNullBoolean(dr["IsPrimary"]);
             var browserType = Null.SetNullString(dr["BrowserType"]);
-            this.BrowserType = String.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
+            this.BrowserType = string.IsNullOrEmpty(browserType) || browserType.Equals("normal", StringComparison.OrdinalIgnoreCase)
                               ? BrowserTypes.Normal
                               : BrowserTypes.Mobile;
             this.CultureCode = Null.SetNullString(dr["CultureCode"]);
             this.Skin = Null.SetNullString(dr["Skin"]);
         }
-
-        #endregion
-
-        #region IXmlSerializable Members
 
         public XmlSchema GetSchema()
         {
@@ -90,10 +83,12 @@ namespace DotNetNuke.Entities.Portals
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 switch (reader.Name)
                 {
                     case "portalAlias":
@@ -121,10 +116,11 @@ namespace DotNetNuke.Entities.Portals
                         this.IsPrimary = reader.ReadElementContentAsBoolean();
                         break;
                     default:
-                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }
+
                         break;
                 }
             }
@@ -132,10 +128,10 @@ namespace DotNetNuke.Entities.Portals
 
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("portalAlias");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("portalID", this.PortalID.ToString());
             writer.WriteElementString("portalAliasID", this.PortalAliasID.ToString());
             writer.WriteElementString("HTTPAlias", this.HTTPAlias);
@@ -144,11 +140,8 @@ namespace DotNetNuke.Entities.Portals
             writer.WriteElementString("browserType", this.BrowserType.ToString().ToLowerInvariant());
             writer.WriteElementString("primary", this.IsPrimary.ToString().ToLowerInvariant());
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
-
     }
 }

@@ -42,6 +42,6 @@ namespace DotNetNuke.Entities.Urls
         Diacritic_Characters,
         Module_Provider_Rewrite_Redirect,
         Module_Provider_Redirect,
-        Requested_SplashPage
+        Requested_SplashPage,
     }
 }

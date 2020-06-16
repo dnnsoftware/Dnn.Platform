@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Web;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.GeneratedImage.ImageQuantization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.UserRequest;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Diagnostics;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.GeneratedImage.ImageQuantization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.UserRequest;
+
     internal class ImageHandlerInternal
     {
         private static TimeSpan defaultClientCacheExpiration = new TimeSpan(0, 10, 0);
@@ -37,12 +38,14 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return this._clientCacheExpiration;
             }
+
             set
             {
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
                 }
+
                 this._clientCacheExpiration = value;
                 this.EnableClientCache = true;
             }
@@ -70,14 +73,14 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public int IPCountMax
         {
-            set { IPCount.MaxCount = value; }
             get { return IPCount.MaxCount; }
+            set { IPCount.MaxCount = value; }
         }
 
         public TimeSpan IpCountPurgeInterval
         {
-            set { IPCount.PurgeInterval = value; }
             get { return IPCount.PurgeInterval; }
+            set { IPCount.PurgeInterval = value; }
         }
 
         public bool EnableClientCache { get; set; }
@@ -162,12 +165,13 @@ namespace DotNetNuke.Services.GeneratedImage
                     {
                         LogUserID = PortalSettings.Current.UserId,
                         LogPortalID = PortalSettings.Current.PortalId,
-                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                        LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                     };
                     logInfo.AddProperty("DnnImageHandler", message);
                     logInfo.AddProperty("IP", ipAddress);
                     logController.AddLog(logInfo);
                 }
+
                 context.Response.StatusCode = 403;
                 context.Response.StatusDescription = message;
                 context.Response.End();
@@ -180,14 +184,16 @@ namespace DotNetNuke.Services.GeneratedImage
                 context.Request.UrlReferrer.Host.ToLowerInvariant() != context.Request.Url.Host.ToLowerInvariant())
             {
                 bool allowed = false;
-                string allowedDomains = "";
+                string allowedDomains = string.Empty;
                 foreach (string allowedDomain in this.AllowedDomains)
                 {
                     if (!string.IsNullOrEmpty(allowedDomain))
                     {
                         allowedDomains += allowedDomain + ",";
                         if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
+                        {
                             allowed = true;
+                        }
                     }
                 }
 
@@ -201,7 +207,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
@@ -224,6 +230,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new InvalidOperationException("The DnnImageHandler cannot return null.");
             }
+
             if (imageMethodData.IsEmptyImage)
             {
                 using (var imageOutputBuffer = new MemoryStream())
@@ -244,8 +251,11 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 int userId;
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
+                {
                     cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
+                }
             }
+
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
@@ -264,12 +274,13 @@ namespace DotNetNuke.Services.GeneratedImage
                         return;
                     }
                 }
+
                 cachePolicy.SetCacheability(HttpCacheability.Public);
                 cachePolicy.SetLastModified(this.DateTime_Now);
                 cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
                 cachePolicy.SetETag(cacheId);
             }
-            
+
             // Handle Server cache
             if (this.EnableServerCache)
             {
@@ -294,19 +305,20 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             LogUserID = PortalSettings.Current.UserId,
                             LogPortalID = PortalSettings.Current.PortalId,
-                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()
+                            LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString(),
                         };
                         logInfo.AddProperty("DnnImageHandler", message);
                         logInfo.AddProperty("IP", ipAddress);
                         logController.AddLog(logInfo);
                     }
+
                     context.Response.StatusCode = 429;
                     context.Response.StatusDescription = message;
                     context.Response.End();
                     return;
                 }
             }
-            
+
             if (imageMethodData.HttpStatusCode != null)
             {
                 context.Response.StatusCode = (int)imageMethodData.HttpStatusCode;
@@ -348,6 +360,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 builder.Append(key);
                 builder.Append(context.Request.QueryString.Get(key));
             }
+
             foreach (var tran in this.ImageTransforms)
             {
                 builder.Append(tran.UniqueString);
@@ -366,6 +379,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     sb.Append(b.ToString("X2"));
                 }
+
                 return sb.ToString();
             }
         }
@@ -380,6 +394,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     temp = tran.ProcessImage(temp);
                 }
+
                 return temp;
             }
             finally
@@ -388,17 +403,26 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        //Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
+        // Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
         private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
         {
             var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
             Dictionary<int, DateTime> userIds;
-            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
+            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId))
+            {
+                return false;
+            }
+
             this.ImageStore.ForcePurgeFromServerCache(cacheId);
             DateTime expiry;
-            //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
-            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration)) return true;
-            //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
+
+            // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
+            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration))
+            {
+                return true;
+            }
+
+            // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);
             return true;
@@ -428,7 +452,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     var eps = new EncoderParameters(1)
                     {
-                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) }
+                        Param = { [0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, this.ImageCompression) },
                     };
                     var ici = GetEncoderInfo(GetImageMimeType(this.ContentType));
                     image?.Save(outStream, ici, eps);
@@ -441,10 +465,10 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Returns the encoder for the specified mime type
+        /// Returns the encoder for the specified mime type.
         /// </summary>
-        /// <param name="mimeType">The mime type of the content</param>
-        /// <returns>ImageCodecInfo</returns>
+        /// <param name="mimeType">The mime type of the content.</param>
+        /// <returns>ImageCodecInfo.</returns>
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
         {
             var encoders = ImageCodecInfo.GetImageEncoders();

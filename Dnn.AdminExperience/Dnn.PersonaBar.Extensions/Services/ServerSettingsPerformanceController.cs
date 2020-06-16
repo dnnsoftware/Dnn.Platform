@@ -2,28 +2,30 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Servers.Components.PerformanceSettings;
-using Dnn.PersonaBar.Servers.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Client;
-using static System.Boolean;
-
 namespace Dnn.PersonaBar.Servers.Services
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Servers.Components.PerformanceSettings;
+    using Dnn.PersonaBar.Servers.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Client;
+
+    using static System.Boolean;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {

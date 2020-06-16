@@ -1,26 +1,21 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <remarks></remarks>
@@ -28,10 +23,8 @@ namespace DotNetNuke.UI.Containers
     public partial class Title : SkinObjectBase
     {
         private const string MyFileName = "Title.ascx";
-        #region "Public Members"
-        public string CssClass { get; set; }
 
-        #endregion
+        public string CssClass { get; set; }
 
         private bool CanEditModule()
         {
@@ -40,6 +33,7 @@ namespace DotNetNuke.UI.Containers
             {
                 canEdit = (this.PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
             }
+
             return canEdit;
         }
 
@@ -50,21 +44,22 @@ namespace DotNetNuke.UI.Containers
             this.titleLabel.UpdateLabel += this.UpdateTitle;
         }
 
-
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            //public attributes
-            if (!String.IsNullOrEmpty(this.CssClass))
+            // public attributes
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.titleLabel.CssClass = this.CssClass;
             }
+
             string moduleTitle = Null.NullString;
             if (this.ModuleControl != null)
             {
                 moduleTitle = Localization.LocalizeControlTitle(this.ModuleControl);
             }
+
             if (moduleTitle == Null.NullString)
             {
                 moduleTitle = " ";
@@ -79,7 +74,6 @@ namespace DotNetNuke.UI.Containers
                 this.titleLabel.EditEnabled = true;
                 this.titleToolbar.Visible = true;
             }
-
         }
 
         private void UpdateTitle(object source, DNNLabelEditEventArgs e)

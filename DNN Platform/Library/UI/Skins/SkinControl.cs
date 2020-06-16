@@ -1,44 +1,33 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.WebControls;
+
     public class SkinControl : UserControlBase
     {
-		#region "Private Members"	
-		
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
-        private string _Width = "";
+        private string _Width = string.Empty;
         private string _localResourceFile;
         private PortalInfo _objPortal;
         protected DropDownList cboSkin;
         protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
-		
-		#endregion
-
-		#region "Public Properties"
 
         public string DefaultKey
         {
@@ -46,6 +35,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._DefaultKey;
             }
+
             set
             {
                 this._DefaultKey = value;
@@ -58,6 +48,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
+
             set
             {
                 this._Width = value;
@@ -70,6 +61,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinRoot"]);
             }
+
             set
             {
                 this._SkinRoot = value;
@@ -86,9 +78,10 @@ namespace DotNetNuke.UI.Skins
                 }
                 else
                 {
-                    return "";
+                    return string.Empty;
                 }
             }
+
             set
             {
                 this._SkinSrc = value;
@@ -100,7 +93,7 @@ namespace DotNetNuke.UI.Skins
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/SkinControl.ascx";
                 }
@@ -108,17 +101,15 @@ namespace DotNetNuke.UI.Skins
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;
             }
         }
-		
-		#endregion
-
-		#region "Private Methods"
 
         private void LoadSkins()
         {
@@ -142,8 +133,7 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", ""));
-
+            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", string.Empty));
 
             // select current skin
             for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
@@ -155,52 +145,43 @@ namespace DotNetNuke.UI.Skins
                 }
             }
         }
-		
-		#endregion
-
-		#region "Event Handlers"
 
         /// <summary>
-		/// The Page_Load server event handler on this page is used
-        /// to populate the role information for the page
-		/// </summary>
-		protected override void OnLoad(EventArgs e)
+        /// The Page_Load server event handler on this page is used
+        /// to populate the role information for the page.
+        /// </summary>
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            #region Bind Handles
-
             this.optHost.CheckedChanged += this.optHost_CheckedChanged;
             this.optSite.CheckedChanged += this.optSite_CheckedChanged;
             this.cmdPreview.Click += this.cmdPreview_Click;
-
-            #endregion
-
             try
             {
-				if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(Int32.Parse(this.Request.QueryString["pid"]));
+                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
                     this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
+
                 if (!this.Page.IsPostBack)
                 {
-					//save persistent values
+                    // save persistent values
                     this.ViewState["SkinControlWidth"] = this._Width;
                     this.ViewState["SkinRoot"] = this._SkinRoot;
                     this.ViewState["SkinSrc"] = this._SkinSrc;
-					
-					//set width of control
-                    if (!String.IsNullOrEmpty(this._Width))
+
+                    // set width of control
+                    if (!string.IsNullOrEmpty(this._Width))
                     {
                         this.cboSkin.Width = Unit.Parse(this._Width);
                     }
-					
-					//set selected skin
-                    if (!String.IsNullOrEmpty(this._SkinSrc))
+
+                    // set selected skin
+                    if (!string.IsNullOrEmpty(this._SkinSrc))
                     {
                         switch (this._SkinSrc.Substring(0, 3))
                         {
@@ -216,7 +197,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-						//no skin selected, initialized to site skin if any exists
+                        // no skin selected, initialized to site skin if any exists
                         string strRoot = this._objPortal.HomeDirectoryMapPath + this.SkinRoot;
                         if (Directory.Exists(strRoot) && Directory.GetDirectories(strRoot).Length > 0)
                         {
@@ -224,10 +205,11 @@ namespace DotNetNuke.UI.Skins
                             this.optSite.Checked = true;
                         }
                     }
+
                     this.LoadSkins();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -245,11 +227,11 @@ namespace DotNetNuke.UI.Skins
 
         protected void cmdPreview_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(this.SkinSrc))
+            if (!string.IsNullOrEmpty(this.SkinSrc))
             {
                 string strType = this.SkinRoot.Substring(0, this.SkinRoot.Length - 1);
 
-                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", ""));
+                string strURL = Globals.ApplicationURL() + "&" + strType + "Src=" + Globals.QueryStringEncode(this.SkinSrc.Replace(".ascx", string.Empty));
 
                 if (this.SkinRoot == SkinController.RootContainer)
                 {
@@ -258,10 +240,9 @@ namespace DotNetNuke.UI.Skins
                         strURL += "&ModuleId=" + this.Request.QueryString["ModuleId"];
                     }
                 }
+
                 this.Response.Redirect(strURL, true);
             }
         }
-		
-		#endregion
     }
 }

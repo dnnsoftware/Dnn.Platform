@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel.Composition;
-
-using DotNetNuke.ExtensionPoints;
-
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.UserControls
 {
+    using System;
+    using System.ComponentModel.Composition;
+
+    using DotNetNuke.ExtensionPoints;
+
     [Export(typeof(IUserControlExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]
     [ExportMetadata("Name", "PreviewInfoPanelExtensionPoint")]
@@ -23,12 +23,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.UserControl
 
         public string Text
         {
-            get { return ""; }
+            get { return string.Empty; }
         }
 
         public string Icon
         {
-            get { return ""; }
+            get { return string.Empty; }
         }
 
         public int Order

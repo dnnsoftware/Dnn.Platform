@@ -1,16 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -18,20 +13,14 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNDataGrid control provides an Enhanced Data Grid, that supports other
-    /// column types
+    /// column types.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class DNNDataGrid : DataGrid
     {
-		#region "Events"
-
         public event DNNDataGridCheckedColumnEventHandler ItemCheckedChanged;
-
-		#endregion
-
-		#region "Private Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -46,23 +35,19 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-		#endregion
-
-		#region "Protected Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Called when the grid is Data Bound
+        /// Called when the grid is Data Bound.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataBinding(EventArgs e)
         {
             foreach (DataGridColumn column in this.Columns)
             {
-                if (ReferenceEquals(column.GetType(), typeof (CheckBoxColumn)))
+                if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
                 {
-					//Manage CheckBox column events
-                    var cbColumn = (CheckBoxColumn) column;
+                    // Manage CheckBox column events
+                    var cbColumn = (CheckBoxColumn)column;
                     cbColumn.CheckedChanged += this.OnItemCheckedChanged;
                 }
             }
@@ -77,7 +62,5 @@ namespace DotNetNuke.UI.WebControls
         {
             base.PrepareControlHierarchy();
         }
-		
-		#endregion
     }
 }

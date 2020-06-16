@@ -2,25 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Script.Serialization;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Connections;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-
 namespace Dnn.PersonaBar.Connectors.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Script.Serialization;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Connections;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(MenuName = "Dnn.Connectors")]
     public class ConnectorsController : PersonaBarApiController
     {

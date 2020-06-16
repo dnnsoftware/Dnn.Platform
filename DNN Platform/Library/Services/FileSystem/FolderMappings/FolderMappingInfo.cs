@@ -2,30 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.FileSystem.Internal;
-
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.FileSystem.Internal;
+
     /// <summary>
-    ///   Represents the FolderMapping object and holds the Properties of that object
+    ///   Represents the FolderMapping object and holds the Properties of that object.
     /// </summary>
     [Serializable]
     public class FolderMappingInfo : IHydratable
     {
         private Hashtable _folderMappingSettings;
 
-        #region "Public Properties"
-
         public int FolderMappingID { get; set; }
+
         public int PortalID { get; set; }
+
         public string MappingName { get; set; }
+
         public string FolderProviderType { get; set; }
+
         public int Priority { get; set; }
 
         public Hashtable FolderMappingSettings
@@ -43,11 +45,13 @@ namespace DotNetNuke.Services.FileSystem
                         this._folderMappingSettings = FolderMappingController.Instance.GetFolderMappingSettings(this.FolderMappingID);
                     }
                 }
+
                 return this._folderMappingSettings;
             }
         }
 
         private string _imageUrl;
+
         public string ImageUrl
         {
             get
@@ -56,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     this._imageUrl = FolderProvider.Instance(this.FolderProviderType).GetFolderProviderIconPath();
                 }
-                
+
                 return this._imageUrl;
             }
         }
@@ -73,22 +77,19 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if(this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
+                if (this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
                 {
                     return bool.Parse(this.FolderMappingSettings["SyncAllSubFolders"].ToString());
                 }
 
                 return true;
             }
+
             set
             {
                 this.FolderMappingSettings["SyncAllSubFolders"] = value;
             }
         }
-
-        #endregion
-
-        #region "Constructors"
 
         public FolderMappingInfo()
         {
@@ -104,14 +105,10 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderProviderType = folderProviderType;
         }
 
-        #endregion
-
-        #region "IHydratable Implementation"
-
         /// <summary>
-        ///   Fills a FolderInfo from a Data Reader
+        ///   Fills a FolderInfo from a Data Reader.
         /// </summary>
-        /// <param name = "dr">The Data Reader to use</param>
+        /// <param name = "dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
             this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
@@ -122,7 +119,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        ///   Gets and sets the Key ID
+        ///   Gets or sets and sets the Key ID.
         /// </summary>
         public int KeyID
         {
@@ -130,12 +127,11 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return this.FolderMappingID;
             }
+
             set
             {
                 this.FolderMappingID = value;
             }
         }
-
-        #endregion
     }
 }

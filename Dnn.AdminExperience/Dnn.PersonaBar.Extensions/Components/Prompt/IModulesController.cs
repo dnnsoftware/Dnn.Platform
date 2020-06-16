@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-
 namespace Dnn.PersonaBar.Prompt.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency", false)]
     public interface IModulesController
     {

@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Runtime.Serialization;
-using System.Threading;
-
 namespace DotNetNuke.Collections.Internal
 {
+    using System;
+    using System.Runtime.Serialization;
+    using System.Threading;
+
     [Serializable]
     public class ReaderWriterLockStrategy : IDisposable, ILockStrategy
     {
@@ -24,7 +24,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        // Implement this method to serialize data. The method is called 
+        // Implement this method to serialize data. The method is called
         // on serialization.
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -50,8 +50,6 @@ namespace DotNetNuke.Collections.Internal
             this._lock = new ReaderWriterLockSlim(this._lockRecursionPolicy);
         }
 
-        #region ILockStrategy Members
-
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
@@ -60,7 +58,7 @@ namespace DotNetNuke.Collections.Internal
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
-            if (this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsReadLockHeld || 
+            if ((this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsReadLockHeld) ||
                 this.Lock.TryEnterReadLock(timeout))
             {
                 return new ReaderWriterSlimLock(this.Lock);
@@ -79,7 +77,7 @@ namespace DotNetNuke.Collections.Internal
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
-            if (this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsWriteLockHeld || 
+            if ((this.Lock.RecursionPolicy == LockRecursionPolicy.NoRecursion && this.Lock.IsWriteLockHeld) ||
                 this.Lock.TryEnterWriteLock(timeout))
             {
                 return new ReaderWriterSlimLock(this.Lock);
@@ -116,10 +114,6 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        #endregion
-
-        #region "IDisposable Support"
-
         private bool _isDisposed;
 
         public void Dispose()
@@ -146,7 +140,7 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    //dispose managed state (managed objects).
+                    // dispose managed state (managed objects).
                 }
 
                 if (this._lock != null)
@@ -155,6 +149,7 @@ namespace DotNetNuke.Collections.Internal
                     this._lock = null;
                 }
             }
+
             this._isDisposed = true;
         }
 
@@ -165,7 +160,5 @@ namespace DotNetNuke.Collections.Internal
         }
 
         // This code added by Visual Basic to correctly implement the disposable pattern.
-
-        #endregion
     }
 }

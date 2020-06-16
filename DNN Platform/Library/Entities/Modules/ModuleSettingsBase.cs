@@ -1,19 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.ComponentModel;
-using DotNetNuke.Common;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.UI.Modules;
+
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
     {
         public Hashtable ModuleSettings
@@ -32,8 +28,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #region ISettingsControl Members
-
         public virtual void LoadSettings()
         {
         }
@@ -41,7 +35,5 @@ namespace DotNetNuke.Entities.Modules
         public virtual void UpdateSettings()
         {
         }
-
-        #endregion
     }
 }

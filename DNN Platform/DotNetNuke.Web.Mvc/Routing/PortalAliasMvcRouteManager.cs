@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Web.Mvc.Routing
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Entities.Portals;
+
     internal class PortalAliasMvcRouteManager : IPortalAliasMvcRouteManager
     {
         private List<int> _prefixCounts;
@@ -39,6 +40,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                     alias = alias.Remove(i, appPath.Length);
                 }
             }
+
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
@@ -46,10 +48,10 @@ namespace DotNetNuke.Web.Mvc.Routing
         {
             if (count == 0)
             {
-                return "";
+                return string.Empty;
             }
 
-            var prefix = "";
+            var prefix = string.Empty;
 
             for (var i = count - 1; i >= 0; i--)
             {
@@ -65,7 +67,11 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             var segments = portalAliasInfo.HTTPAlias.Split('/');
 
-            if (segments.Length <= 1) return allRouteValues;
+            if (segments.Length <= 1)
+            {
+                return allRouteValues;
+            }
+
             for (var i = 1; i < segments.Length; i++)
             {
                 var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
@@ -91,9 +97,13 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (this._prefixCounts != null) return this._prefixCounts;
-            //prefixCounts are required for each route that is mapped but they only change
-            //when a new portal is added so cache them until that time
+            if (this._prefixCounts != null)
+            {
+                return this._prefixCounts;
+            }
+
+            // prefixCounts are required for each route that is mapped but they only change
+            // when a new portal is added so cache them until that time
             var portals = PortalController.Instance.GetPortals();
             var segmentCounts1 = new List<int>();
 
@@ -111,6 +121,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             {
                 segmentCounts1.Add(count);
             }
+
             IEnumerable<int> segmentCounts = segmentCounts1;
             this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
 

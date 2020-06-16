@@ -1,21 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Packages
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.UI.Modules;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageEditorBase class provides a Base Classs for Package Editors
+    /// The PackageEditorBase class provides a Base Classs for Package Editors.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class PackageEditorBase : ModuleUserControlBase, IPackageEditor
@@ -24,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Packages
         private PackageInfo _Package;
         private int _PackageID = Null.NullInteger;
 
-        protected string DisplayMode => (this.Request.QueryString["Display"] ?? "").ToLowerInvariant();
+        protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected virtual string EditorID
         {
@@ -48,19 +43,18 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 if (this._Package == null)
                 {
-                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID); ;
+                    this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
                 }
+
                 return this._Package;
             }
         }
 
-        #region IPackageEditor Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Package ID
+        /// Gets or sets and sets the Package ID.
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int PackageID
         {
@@ -68,6 +62,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 return this._PackageID;
             }
+
             set
             {
                 this._PackageID = value;
@@ -76,9 +71,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Editor is in the Wizard
+        /// Gets or sets a value indicating whether gets and sets whether the Editor is in the Wizard.
         /// </summary>
-        /// <value>An Boolean</value>
+        /// <value>An Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool IsWizard
         {
@@ -86,6 +81,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 return this._IsWizard;
             }
+
             set
             {
                 this._IsWizard = value;
@@ -94,7 +90,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Used to Initialize the Control
+        /// Used to Initialize the Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public virtual void Initialize()
@@ -103,14 +99,12 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Used to Update the Package
+        /// Used to Update the Package.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public virtual void UpdatePackage()
         {
         }
-
-        #endregion
 
         protected override void OnInit(EventArgs e)
         {

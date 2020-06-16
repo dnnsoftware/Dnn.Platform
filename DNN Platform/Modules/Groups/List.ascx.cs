@@ -2,21 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework;
+    using Microsoft.Extensions.DependencyInjection;
+
     public partial class List : GroupsModuleBase
     {
         public INavigationManager _navigationManager { get; }
+
         public List()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -42,8 +45,7 @@ namespace DotNetNuke.Modules.Groups
                 this.ctlGroupList.SortDirection = this.GroupListSortDirection;
             }
 
-
-            if (!String.IsNullOrEmpty(this.GroupListTemplate))
+            if (!string.IsNullOrEmpty(this.GroupListTemplate))
             {
                 this.ctlGroupList.ItemTemplate = this.GroupListTemplate;
             }
@@ -52,14 +54,16 @@ namespace DotNetNuke.Modules.Groups
             {
                 this.txtFilter.Text = this.GroupListFilter;
             }
-
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            if(!this.Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
-            this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "", "filter=" + this.txtFilter.Text.Trim()));
+            this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, "filter=" + this.txtFilter.Text.Trim()));
         }
     }
 }

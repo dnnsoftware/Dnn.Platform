@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotNetNuke.Security;
-
 namespace DotNetNuke.Services.FileSystem.Internal.SecurityCheckers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using DotNetNuke.Security;
+
     public class SvgFileChecker : IFileSecurityChecker
     {
         public bool Validate(Stream fileContent)
@@ -33,7 +34,7 @@ namespace DotNetNuke.Services.FileSystem.Internal.SecurityCheckers
             }
             catch (Exception)
             {
-                //when there have exception occur, just return false as not validated, no need log the error.
+                // when there have exception occur, just return false as not validated, no need log the error.
             }
 
             return false;

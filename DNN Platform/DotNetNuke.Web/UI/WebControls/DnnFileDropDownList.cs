@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Common;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Common;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+
     [ToolboxData("<{0}:DnnFileDropDownList runat='server'></{0}:DnnFileDropDownList>")]
     public class DnnFileDropDownList : DnnDropDownList
     {
@@ -47,9 +47,10 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected Folder in the control, or selects the Folder in the control.
+        /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IFileInfo SelectedFile
         {
             get
@@ -57,6 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var fileId = this.SelectedItemValueAsInt;
                 return (fileId == Null.NullInteger) ? null : FileManager.Instance.GetFile(fileId);
             }
+
             set
             {
                 this.SelectedItem = (value != null) ? new ListItem() { Text = value.FileName, Value = value.FileId.ToString(CultureInfo.InvariantCulture) } : null;
@@ -69,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.Services.Parameters.ContainsKey("parentId") ? Convert.ToInt32(this.Services.Parameters["parentId"]) : Null.NullInteger;
             }
+
             set
             {
                 this.Services.Parameters["parentId"] = value.ToString();

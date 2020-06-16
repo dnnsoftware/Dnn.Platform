@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Security;
-using System.Web;
-
-using log4net;
-using log4net.Config;
-using log4net.Core;
-using log4net.Repository;
-using log4net.Util;
-
 namespace DotNetNuke.Instrumentation
 {
+    using System;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Security;
+    using System.Web;
+
+    using log4net;
+    using log4net.Config;
+    using log4net.Core;
+    using log4net.Repository;
+    using log4net.Util;
+
     public class LoggerSourceImpl : ILoggerSource
     {
         public ILog GetLogger(Type type)
@@ -29,7 +29,7 @@ namespace DotNetNuke.Instrumentation
             return new Logger(LogManager.GetLogger(name).Logger, null);
         }
 
-        class Logger : LoggerWrapperImpl, ILog
+        private class Logger : LoggerWrapperImpl, ILog
         {
             private static Level _levelTrace;
             private static Level _levelDebug;
@@ -37,16 +37,17 @@ namespace DotNetNuke.Instrumentation
             private static Level _levelWarn;
             private static Level _levelError;
             private static Level _levelFatal;
-            //add custom logging levels (below trace value of 20000)
+
+            // add custom logging levels (below trace value of 20000)
 //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
 //            internal static Level LevelLogError = new Level(10002, "LogError");
-
             private readonly Type _stackBoundary = typeof(DnnLogger);
             private const string ConfigFile = "DotNetNuke.log4net.config";
             private static bool _configured;
             private static readonly object ConfigLock = new object();
 
-            internal Logger(ILogger logger, Type type) : base(logger)
+            internal Logger(ILogger logger, Type type)
+                : base(logger)
             {
                 this._stackBoundary = type ?? typeof(Logger);
                 EnsureConfig();
@@ -73,9 +74,9 @@ namespace DotNetNuke.Instrumentation
                                 AddGlobalContext();
                                 XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
                             }
+
                             _configured = true;
                         }
-
                     }
                 }
             }
@@ -90,13 +91,13 @@ namespace DotNetNuke.Instrumentation
                 _levelWarn = levelMap.LookupWithDefault(Level.Warn);
                 _levelError = levelMap.LookupWithDefault(Level.Error);
                 _levelFatal = levelMap.LookupWithDefault(Level.Fatal);
-//                LevelLogError = levelMap.LookupWithDefault(LevelLogError);
+
+// LevelLogError = levelMap.LookupWithDefault(LevelLogError);
 //                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
 
                 //// Register custom logging levels with the default LoggerRepository
 //                LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
 //                LogManager.GetRepository().LevelMap.Add(LevelLogError);
-
             }
 
             private static void AddGlobalContext()
@@ -104,37 +105,63 @@ namespace DotNetNuke.Instrumentation
                 try
                 {
                     GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
-                    //bool isFullTrust = false;
-                    //try
-                    //{
+
+                    // bool isFullTrust = false;
+                    // try
+                    // {
                     //    CodeAccessPermission securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
                     //    securityTest.Demand();
                     //    isFullTrust = true;
-                    //}
-                    //catch
-                    //{
+                    // }
+                    // catch
+                    // {
                     //    //code access security error
                     //    isFullTrust = false;
-                    //}
-                    //if (isFullTrust)
-                    //{
+                    // }
+                    // if (isFullTrust)
+                    // {
                     //    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
-                    //}
+                    // }
                 }
+
 // ReSharper disable EmptyGeneralCatchClause
                 catch
+
 // ReSharper restore EmptyGeneralCatchClause
                 {
-                    //do nothing but just make sure no exception here.
+                    // do nothing but just make sure no exception here.
                 }
             }
 
-            public bool IsDebugEnabled { get { return this.Logger.IsEnabledFor(_levelDebug); } }
-            public bool IsInfoEnabled { get { return this.Logger.IsEnabledFor(_levelInfo); } }
-            public bool IsTraceEnabled { get { return this.Logger.IsEnabledFor(_levelTrace); } }
-            public bool IsWarnEnabled { get { return this.Logger.IsEnabledFor(_levelWarn); } }
-            public bool IsErrorEnabled { get { return this.Logger.IsEnabledFor(_levelError); } }
-            public bool IsFatalEnabled { get { return this.Logger.IsEnabledFor(_levelFatal); } }
+            public bool IsDebugEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelDebug); }
+            }
+
+            public bool IsInfoEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelInfo); }
+            }
+
+            public bool IsTraceEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelTrace); }
+            }
+
+            public bool IsWarnEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelWarn); }
+            }
+
+            public bool IsErrorEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelError); }
+            }
+
+            public bool IsFatalEnabled
+            {
+                get { return this.Logger.IsEnabledFor(_levelFatal); }
+            }
 
             public void Debug(object message)
             {

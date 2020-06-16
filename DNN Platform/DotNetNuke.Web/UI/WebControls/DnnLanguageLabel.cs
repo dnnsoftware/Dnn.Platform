@@ -1,38 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+
     public class DnnLanguageLabel : CompositeControl, ILocalizable
     {
-        #region Controls
-
         private Image _Flag;
 
         private Label _Label;
-
-        #endregion
 
         public DnnLanguageLabel()
         {
             this.Localize = true;
         }
-
-        #region Public Properties
 
         public CultureDropDownTypes DisplayType { get; set; }
 
@@ -40,17 +28,14 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (string) this.ViewState["Language"];
+                return (string)this.ViewState["Language"];
             }
+
             set
             {
                 this.ViewState["Language"] = value;
             }
         }
-
-        #endregion
-
-        #region Protected Methods
 
         protected override void OnInit(EventArgs e)
         {
@@ -61,15 +46,15 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   CreateChildControls overrides the Base class's method to correctly build the
-        ///   control based on the configuration
+        ///   control based on the configuration.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-            //First clear the controls collection
+            // First clear the controls collection
             this.Controls.Clear();
 
-            this._Flag = new Image {ViewStateMode = ViewStateMode.Disabled};
+            this._Flag = new Image { ViewStateMode = ViewStateMode.Disabled };
             this.Controls.Add(this._Flag);
 
             this.Controls.Add(new LiteralControl("&nbsp;"));
@@ -78,14 +63,13 @@ namespace DotNetNuke.Web.UI.WebControls
             this._Label.ViewStateMode = ViewStateMode.Disabled;
             this.Controls.Add(this._Label);
 
-            //Call base class's method
-
+            // Call base class's method
             base.CreateChildControls();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   OnPreRender runs just before the control is rendered
+        ///   OnPreRender runs just before the control is rendered.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -129,13 +113,10 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 localeName = Localization.GetLocaleName(this.Language, this.DisplayType);
             }
+
             this._Label.Text = localeName;
             this._Flag.AlternateText = localeName;
         }
-
-        #endregion
-
-        #region ILocalizable Implementation
 
         public bool Localize { get; set; }
 
@@ -144,7 +125,5 @@ namespace DotNetNuke.Web.UI.WebControls
         public virtual void LocalizeStrings()
         {
         }
-
-        #endregion
     }
 }

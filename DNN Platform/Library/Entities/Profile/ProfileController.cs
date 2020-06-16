@@ -1,31 +1,27 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text.RegularExpressions;
-using System.Web;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Profile;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Log.EventLog;
-
-#endregion
-
 namespace DotNetNuke.Entities.Profile
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Profile;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Log.EventLog;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Profile
@@ -33,7 +29,7 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileController class provides Business Layer methods for profiles and
-    /// for profile property Definitions
+    /// for profile property Definitions.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -41,16 +37,9 @@ namespace DotNetNuke.Entities.Profile
     public class ProfileController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
-
-        #region Private Members
-
         private static readonly DataProvider _dataProvider = DataProvider.Instance();
         private static readonly ProfileProvider _profileProvider = ProfileProvider.Instance();
         private static int _orderCounter;
-
-        #endregion
-
-        #region Private Methdods
 
         private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
         {
@@ -65,7 +54,7 @@ namespace DotNetNuke.Entities.Profile
             var propertyDefinition = new ProfilePropertyDefinition(portalId)
             {
                 DataType = typeInfo.EntryID,
-                DefaultValue = "",
+                DefaultValue = string.Empty,
                 ModuleDefId = Null.NullInteger,
                 PropertyCategory = category,
                 PropertyName = name,
@@ -73,7 +62,7 @@ namespace DotNetNuke.Entities.Profile
                 ViewOrder = viewOrder,
                 Visible = true,
                 Length = length,
-                DefaultVisibility = defaultVisibility
+                DefaultVisibility = defaultVisibility,
             };
             AddPropertyDefinition(propertyDefinition);
         }
@@ -93,6 +82,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return definition;
         }
 
@@ -100,7 +90,7 @@ namespace DotNetNuke.Entities.Profile
         {
             ProfilePropertyDefinition definition = null;
 
-            //read datareader
+            // read datareader
             bool canContinue = true;
             if (checkForOpenDataReader)
             {
@@ -110,6 +100,7 @@ namespace DotNetNuke.Entities.Profile
                     canContinue = true;
                 }
             }
+
             if (canContinue)
             {
                 int portalid = 0;
@@ -126,6 +117,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     definition.ReadOnly = Convert.ToBoolean(Null.SetNull(dr["ReadOnly"], definition.ReadOnly));
                 }
+
                 definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required));
                 definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
                 definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
@@ -133,10 +125,11 @@ namespace DotNetNuke.Entities.Profile
                 definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
                 definition.ProfileVisibility = new ProfileVisibility
                 {
-                    VisibilityMode = definition.DefaultVisibility
+                    VisibilityMode = definition.DefaultVisibility,
                 };
                 definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
             }
+
             return definition;
         }
 
@@ -147,9 +140,10 @@ namespace DotNetNuke.Entities.Profile
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     ProfilePropertyDefinition definition = FillPropertyDefinitionInfo(dr, false);
-                    //add to collection
+
+                    // add to collection
                     arr.Add(definition);
                 }
             }
@@ -159,9 +153,10 @@ namespace DotNetNuke.Entities.Profile
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return arr;
         }
 
@@ -172,37 +167,34 @@ namespace DotNetNuke.Entities.Profile
 
         private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(int portalId)
         {
-            //Get the Cache Key
+            // Get the Cache Key
             string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
 
-            //Try fetching the List from the Cache
+            // Try fetching the List from the Cache
             var definitions = (List<ProfilePropertyDefinition>)DataCache.GetCache(key);
             if (definitions == null)
             {
-                //definitions caching settings
-                Int32 timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
+                // definitions caching settings
+                int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
 
-                //Get the List from the database
+                // Get the List from the database
                 definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));
 
-                //Cache the List
+                // Cache the List
                 if (timeOut > 0)
                 {
                     DataCache.SetCache(key, definitions, TimeSpan.FromMinutes(timeOut));
                 }
             }
+
             return definitions;
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds the default property definitions for a portal
+        /// Adds the default property definitions for a portal.
         /// </summary>
-        /// <param name="portalId">Id of the Portal</param>
+        /// <param name="portalId">Id of the Portal.</param>
         /// -----------------------------------------------------------------------------
         public static void AddDefaultDefinitions(int portalId)
         {
@@ -234,7 +226,7 @@ namespace DotNetNuke.Entities.Profile
             AddDefaultDefinition(portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Preferences", "Photo", "Image", 0, UserVisibilityMode.AllUsers, dataTypes);
 
-            //6.0 requires the old TimeZone property to be marked as Deleted
+            // 6.0 requires the old TimeZone property to be marked as Deleted
             ProfilePropertyDefinition pdf = GetPropertyDefinitionByName(portalId, "TimeZone");
             if (pdf != null)
             {
@@ -244,10 +236,10 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a Property Defintion to the Data Store
+        /// Adds a Property Defintion to the Data Store.
         /// </summary>
-        /// <param name="definition">An ProfilePropertyDefinition object</param>
-        /// <returns>The Id of the definition (or if negative the errorcode of the error)</returns>
+        /// <param name="definition">An ProfilePropertyDefinition object.</param>
+        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
         /// -----------------------------------------------------------------------------
         public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
         {
@@ -256,21 +248,23 @@ namespace DotNetNuke.Entities.Profile
             {
                 definition.Visible = true;
             }
-            int intDefinition = _dataProvider.AddPropertyDefinition(portalId,
-                                                               definition.ModuleDefId,
-                                                               definition.DataType,
-                                                               definition.DefaultValue,
-                                                               definition.PropertyCategory,
-                                                               definition.PropertyName,
-                                                               definition.ReadOnly,
-                                                               definition.Required,
-                                                               definition.ValidationExpression,
-                                                               definition.ViewOrder,
-                                                               definition.Visible,
-                                                               definition.Length,
-                                                               (int)definition.DefaultVisibility,
-                                                               UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+
+            int intDefinition = _dataProvider.AddPropertyDefinition(
+                portalId,
+                definition.ModuleDefId,
+                definition.DataType,
+                definition.DefaultValue,
+                definition.PropertyCategory,
+                definition.PropertyName,
+                definition.ReadOnly,
+                definition.Required,
+                definition.ValidationExpression,
+                definition.ViewOrder,
+                definition.Visible,
+                definition.Length,
+                (int)definition.DefaultVisibility,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
@@ -278,9 +272,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears the Profile Definitions Cache
+        /// Clears the Profile Definitions Cache.
         /// </summary>
-        /// <param name="portalId">Id of the Portal</param>
+        /// <param name="portalId">Id of the Portal.</param>
         /// -----------------------------------------------------------------------------
         public static void ClearProfileDefinitionCache(int portalId)
         {
@@ -289,21 +283,21 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes a Property Defintion from the Data Store
+        /// Deletes a Property Defintion from the Data Store.
         /// </summary>
-        /// <param name="definition">The ProfilePropertyDefinition object to delete</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
         /// -----------------------------------------------------------------------------
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
             _dataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clear profiles of all users by portal Id
+        /// Clear profiles of all users by portal Id.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
@@ -314,11 +308,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Property Defintion from the Data Store by id
+        /// Gets a Property Defintion from the Data Store by id.
         /// </summary>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve</param>
+        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
         /// <param name="portalId">Portal Id.</param>
-        /// <returns>The ProfilePropertyDefinition object</returns>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId, int portalId)
         {
@@ -333,21 +327,23 @@ namespace DotNetNuke.Entities.Profile
                     break;
                 }
             }
+
             if (!bFound)
             {
-                //Try Database
+                // Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinition(definitionId));
             }
+
             return definition;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Property Defintion from the Data Store by name
+        /// Gets a Property Defintion from the Data Store by name.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve</param>
-        /// <returns>The ProfilePropertyDefinition object</returns>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinition GetPropertyDefinitionByName(int portalId, string name)
         {
@@ -364,21 +360,23 @@ namespace DotNetNuke.Entities.Profile
                     break;
                 }
             }
+
             if (!bFound)
             {
-                //Try Database
+                // Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinitionByName(portalId, name));
             }
+
             return definition;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by category
+        /// Gets a collection of Property Defintions from the Data Store by category.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <param name="category">The category of the Property Defintions to retrieve</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="category">The category of the Property Defintions to retrieve.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(int portalId, string category)
         {
@@ -392,15 +390,16 @@ namespace DotNetNuke.Entities.Profile
                     definitions.Add(definition);
                 }
             }
+
             return definitions;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by portal
+        /// Gets a collection of Property Defintions from the Data Store by portal.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId)
         {
@@ -409,11 +408,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by portal
+        /// Gets a collection of Property Defintions from the Data Store by portal.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
+        /// <param name="portalId">The id of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone)
         {
@@ -422,12 +421,12 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by portal
+        /// Gets a collection of Property Defintions from the Data Store by portal.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
+        /// <param name="portalId">The id of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone, bool includeDeleted)
         {
@@ -441,12 +440,13 @@ namespace DotNetNuke.Entities.Profile
                     definitions.Add(clone ? definition.Clone() : definition);
                 }
             }
+
             return definitions;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Profile Information for the User
+        /// Gets the Profile Information for the User.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
@@ -462,40 +462,41 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Property Defintion in the Data Store
+        /// Updates a Property Defintion in the Data Store.
         /// </summary>
-        /// <param name="definition">The ProfilePropertyDefinition object to update</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
         /// -----------------------------------------------------------------------------
         public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
         {
-
             if (definition.Required)
             {
                 definition.Visible = true;
             }
-            _dataProvider.UpdatePropertyDefinition(definition.PropertyDefinitionId,
-                                              definition.DataType,
-                                              definition.DefaultValue,
-                                              definition.PropertyCategory,
-                                              definition.PropertyName,
-                                              definition.ReadOnly,
-                                              definition.Required,
-                                              definition.ValidationExpression,
-                                              definition.ViewOrder,
-                                              definition.Visible,
-                                              definition.Length,
-                                              (int)definition.DefaultVisibility,
-                                              UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
+
+            _dataProvider.UpdatePropertyDefinition(
+                definition.PropertyDefinitionId,
+                definition.DataType,
+                definition.DefaultValue,
+                definition.PropertyCategory,
+                definition.PropertyName,
+                definition.ReadOnly,
+                definition.Required,
+                definition.ValidationExpression,
+                definition.ViewOrder,
+                definition.Visible,
+                definition.Length,
+                (int)definition.DefaultVisibility,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
             ClearProfileDefinitionCache(definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a User's Profile
+        /// Updates a User's Profile.
         /// </summary>
-        /// <param name="user">The use to update</param>
+        /// <param name="user">The use to update.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -514,20 +515,20 @@ namespace DotNetNuke.Entities.Profile
 
             _profileProvider.UpdateUserProfile(user);
 
-            //Remove the UserInfo from the Cache, as it has been modified
+            // Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
 
-            //Raise Profile updated event
+            // Raise Profile updated event
             EventManager.Instance.OnProfileUpdated(new ProfileEventArgs { User = user, OldProfile = oldUser.Profile });
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a User's Profile
+        /// Updates a User's Profile.
         /// </summary>
-        /// <param name="user">The use to update</param>
-        /// <param name="profileProperties">The collection of profile properties</param>
-        /// <returns>The updated User</returns>
+        /// <param name="user">The use to update.</param>
+        /// <param name="profileProperties">The collection of profile properties.</param>
+        /// <returns>The updated User.</returns>
         /// -----------------------------------------------------------------------------
         public static UserInfo UpdateUserProfile(UserInfo user, ProfilePropertyDefinitionCollection profileProperties)
         {
@@ -535,7 +536,8 @@ namespace DotNetNuke.Entities.Profile
             user.PortalID = portalId;
 
             var photoChanged = Null.NullBoolean;
-            //Iterate through the Definitions
+
+            // Iterate through the Definitions
             if (profileProperties != null)
             {
                 foreach (ProfilePropertyDefinition propertyDefinition in profileProperties)
@@ -553,7 +555,7 @@ namespace DotNetNuke.Entities.Profile
                     }
                 }
 
-                //if user's photo changed, then create different size thumbnails of profile pictures.
+                // if user's photo changed, then create different size thumbnails of profile pictures.
                 if (photoChanged)
                 {
                     try
@@ -567,11 +569,11 @@ namespace DotNetNuke.Entities.Profile
                     {
                         Logger.Error(ex);
                     }
-
                 }
 
                 UserController.UpdateUser(portalId, user);
             }
+
             return user;
         }
 
@@ -605,10 +607,11 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Validates the Profile properties for the User (determines if all required properties
-        /// have been set)
+        /// have been set).
         /// </summary>
         /// <param name="portalId">The Id of the portal.</param>
         /// <param name="objProfile">The profile.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool ValidateProfile(int portalId, UserProfile objProfile)
         {
@@ -622,6 +625,7 @@ namespace DotNetNuke.Entities.Profile
                     break;
                 }
             }
+
             return isValid;
         }
 
@@ -631,7 +635,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="searchString">The search string.</param>
-        /// <returns>List of matching values</returns>
+        /// <returns>List of matching values.</returns>
         public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
         {
             var res = new List<string> { };
@@ -641,6 +645,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return res;
             }
+
             using (
                 IDataReader ir = Data.DataProvider.Instance()
                     .SearchProfilePropertyValues(portalId, propertyName, searchString))
@@ -650,19 +655,14 @@ namespace DotNetNuke.Entities.Profile
                     res.Add(Convert.ToString(ir[0]));
                 }
             }
+
             return res;
         }
-
-        #endregion
-
-        #region Obsolete Methods
 
         [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
         {
             return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
         }
-
-        #endregion
     }
 }

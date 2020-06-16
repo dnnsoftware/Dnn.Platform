@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      IEditorInfoAdapter
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The IEditorInfoAdapter control provides an Adapter Interface for datasources 
+    /// The IEditorInfoAdapter control provides an Adapter Interface for datasources.
     /// </summary>
     /// <remarks>
     /// </remarks>

@@ -2,22 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Services.Models;
-using DotNetNuke.Security;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.DigitalAssets.Services
 {
-    [SupportedModules("DotNetNuke.Modules.DigitalAssets")]    
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Services.Models;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Api;
+
+    [SupportedModules("DotNetNuke.Modules.DigitalAssets")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DamExceptionFilter]
     public class ContentServiceController : DnnApiController
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage SearchFolderContent(SearchFolderContentRequest r)
         {
             var moduleId = this.Request.FindModuleId();
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage DeleteItems(DeleteItemsRequest request)
         {
             var notDeletedItems = this.DigitalAssetsController.DeleteItems(request.Items);
@@ -75,23 +75,22 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage RenameFile(RenameFileRequest request)
         {
-	        try
-	        {
-		        var itemViewModel = this.DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
-		        return this.Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
-	        }
-	        catch (FileAlreadyExistsException ex)
-	        {
-				return this.Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
-	        }
-            
+            try
+            {
+                var itemViewModel = this.DigitalAssetsController.RenameFile(request.FileId, request.NewFileName);
+                return this.Request.CreateResponse(HttpStatusCode.OK, itemViewModel);
+            }
+            catch (FileAlreadyExistsException ex)
+            {
+                return this.Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            }
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage CopyFile(CopyMoveItemRequest request)
         {
             var copyFileResponse = this.DigitalAssetsController.CopyFile(request.ItemId, request.DestinationFolderId, request.Overwrite);
@@ -99,7 +98,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage MoveFile(CopyMoveItemRequest request)
         {
             var copyMoveFileResponse = this.DigitalAssetsController.MoveFile(request.ItemId, request.DestinationFolderId, request.Overwrite);
@@ -107,7 +106,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage MoveFolder(CopyMoveItemRequest request)
         {
             var copyMoveFolderResponse = this.DigitalAssetsController.MoveFolder(request.ItemId, request.DestinationFolderId, request.Overwrite);
@@ -124,7 +123,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage RenameFolder(RenameFolderRequest request)
         {
             this.DigitalAssetsController.RenameFolder(request.FolderId, request.NewFolderName);
@@ -132,7 +131,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage CreateNewFolder(CreateNewFolderRequest request)
         {
             var folder = this.DigitalAssetsController.CreateFolder(request.FolderName, request.ParentFolderId,
@@ -145,11 +144,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
         public HttpResponseMessage SynchronizeFolder(SynchronizeFolderRequest request)
         {
             this.DigitalAssetsController.SyncFolderContent(request.FolderId, request.Recursive);
-            return this.Request.CreateResponse(HttpStatusCode.OK, "Success");            
+            return this.Request.CreateResponse(HttpStatusCode.OK, "Success");
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public HttpResponseMessage UnzipFile(UnzipFileRequest request)
         {
             var model = this.DigitalAssetsController.UnzipFile(request.FileId, request.Overwrite);

@@ -1,17 +1,12 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Framework;
-
-#endregion
-
 namespace DotNetNuke.ComponentModel
 {
+    using System;
+
+    using DotNetNuke.Framework;
+
     internal class SingletonComponentBuilder : IComponentBuilder
     {
         private readonly string _Name;
@@ -19,17 +14,15 @@ namespace DotNetNuke.ComponentModel
         private object _Instance;
 
         /// <summary>
-        /// Initializes a new instance of the SingletonComponentBuilder class.
+        /// Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.
         /// </summary>
-        /// <param name="name">The name of the component</param>
-        /// <param name="type">The type of the component</param>
+        /// <param name="name">The name of the component.</param>
+        /// <param name="type">The type of the component.</param>
         public SingletonComponentBuilder(string name, Type type)
         {
             this._Name = name;
             this._Type = type;
         }
-
-        #region IComponentBuilder Members
 
         public object BuildComponent()
         {
@@ -37,6 +30,7 @@ namespace DotNetNuke.ComponentModel
             {
                 this.CreateInstance();
             }
+
             return this._Instance;
         }
 
@@ -47,8 +41,6 @@ namespace DotNetNuke.ComponentModel
                 return this._Name;
             }
         }
-
-        #endregion
 
         private void CreateInstance()
         {

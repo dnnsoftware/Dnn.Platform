@@ -1,21 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Specialized;
-using DotNetNuke.Authentication.Facebook.Components;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Authentication.Facebook
 {
+    using System;
+    using System.Collections.Specialized;
+
+    using DotNetNuke.Authentication.Facebook.Components;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins.Controls;
+
     public partial class Login : OAuthLoginBase
     {
         protected override string AuthSystemApplicationName
@@ -42,8 +38,8 @@ namespace DotNetNuke.Authentication.Facebook
 
             this.OAuthClient = new FacebookClient(this.PortalId, this.Mode);
 
-            this.loginItem.Visible = (this.Mode == AuthMode.Login);
-            this.registerItem.Visible = (this.Mode == AuthMode.Register);
+            this.loginItem.Visible = this.Mode == AuthMode.Login;
+            this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
         protected override void AddCustomProperties(NameValueCollection properties)
@@ -51,7 +47,8 @@ namespace DotNetNuke.Authentication.Facebook
             base.AddCustomProperties(properties);
 
             var facebookUserData = this.OAuthClient.GetCurrentUser<FacebookUserData>();
-            if (facebookUserData.Link != null) {
+            if (facebookUserData.Link != null)
+            {
                 properties.Add("Facebook", facebookUserData.Link.ToString());
             }
         }
@@ -62,7 +59,6 @@ namespace DotNetNuke.Authentication.Facebook
             if (result == AuthorisationResult.Denied)
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                
             }
         }
     }

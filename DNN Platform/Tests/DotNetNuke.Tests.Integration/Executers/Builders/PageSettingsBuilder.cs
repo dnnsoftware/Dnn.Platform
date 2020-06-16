@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Tests.Integration.Executers.Dto;
-using NTestDataBuilder;
-
 namespace DotNetNuke.Tests.Integration.Executers.Builders
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Tests.Integration.Executers.Dto;
+    using NTestDataBuilder;
+
     public class PageSettingsBuilder : TestDataBuilder<PageSettings, PageSettingsBuilder>
     {
         public PageSettingsBuilder()
         {
             this.WithTabId(0);
-            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-",""));
+            this.WithName("RB" + Guid.NewGuid().ToString().Replace("-", string.Empty));
             this.WithPageType(string.Empty);
             this.WithUrl(string.Empty);
             this.WithPermission(new TabPermissions());
@@ -61,7 +62,7 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
             this.Set(x => x.Description, description);
             return this;
         }
-        
+
         public PageSettingsBuilder WithUrl(string url)
         {
             this.Set(x => x.Url, url);
@@ -99,22 +100,22 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
             var pageSettings = new PageSettings
             {
                 ApplyWorkflowToChildren = false,
-                created = "",
+                created = string.Empty,
                 customUrlEnabled = true,
                 hasChild = false,
-                Hierarchy = "",
+                Hierarchy = string.Empty,
                 IncludeInMenu = true,
                 isCopy = false,
                 isWorkflowCompleted = true,
                 isWorkflowPropagationAvailable = false,
                 keywords = this.GetOrDefault(p => p.keywords),
-                localizedName = "",
+                localizedName = string.Empty,
                 Name = name,
                 pageType = this.GetOrDefault(p => p.pageType),
                 tabId = this.GetOrDefault(p => p.tabId),
-                tags = "",
-                thumbnail = "",
-                title = "",
+                tags = string.Empty,
+                thumbnail = string.Empty,
+                title = string.Empty,
                 trackLinks = false,
                 type = 0,
                 workflowId = this.GetOrDefault(p => p.workflowId),
@@ -125,7 +126,7 @@ namespace DotNetNuke.Tests.Integration.Executers.Builders
                 permissions = this.GetOrDefault(p => p.permissions),
                 templateTabId = this.GetOrDefault(p => p.templateTabId),
                 modules = this.GetOrDefault(p => p.modules),
-                isSecure = this.GetOrDefault(p => p.isSecure)
+                isSecure = this.GetOrDefault(p => p.isSecure),
             };
             return pageSettings;
         }

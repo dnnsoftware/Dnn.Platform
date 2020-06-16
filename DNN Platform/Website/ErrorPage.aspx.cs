@@ -1,38 +1,36 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Services.FileSystem;
-
-#endregion
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.Exceptions
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.FileSystem;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : ErrorPage
-    /// 
+    /// Project  : DotNetNuke
+    /// Class    : ErrorPage
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Trapped errors are redirected to this universal error page, resulting in a 
+    /// Trapped errors are redirected to this universal error page, resulting in a
     /// graceful display.
     /// </summary>
     /// <remarks>
     /// 'get the last server error
     /// 'process this error using the Exception Management Application Block
     /// 'add to a placeholder and place on page
-    /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly
+    /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly.
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
@@ -43,12 +41,12 @@ namespace DotNetNuke.Services.Exceptions
 
             string errorMessage = HttpUtility.HtmlEncode(this.Request.QueryString["error"]);
             string errorMessage2 = HttpUtility.HtmlEncode(this.Request.QueryString["error2"]);
-            string localizedMessage = Localization.Localization.GetString(status + ".Error", Localization.Localization.GlobalResourceFile);
+            string localizedMessage = Localization.GetString(status + ".Error", Localization.GlobalResourceFile);
             if (localizedMessage != null)
             {
                 localizedMessage = localizedMessage.Replace("src=\"images/403-3.gif\"", "src=\"" + this.ResolveUrl("~/images/403-3.gif") + "\"");
 
-                if (!string.IsNullOrEmpty(errorMessage2) && ( (errorMode=="Off") || ( (errorMode=="RemoteOnly") && (this.Request.IsLocal) ) ))
+                if (!string.IsNullOrEmpty(errorMessage2) && ((errorMode == "Off") || ((errorMode == "RemoteOnly") && this.Request.IsLocal)))
                 {
                     this.ErrorPlaceHolder.Controls.Add(new LiteralControl(string.Format(localizedMessage, errorMessage2)));
                 }
@@ -59,7 +57,7 @@ namespace DotNetNuke.Services.Exceptions
             }
 
             int statusCode;
-            Int32.TryParse(status, out statusCode);
+            int.TryParse(status, out statusCode);
 
             if (statusCode > -1)
             {
@@ -79,7 +77,7 @@ namespace DotNetNuke.Services.Exceptions
             base.OnLoad(e);
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings != null && !String.IsNullOrEmpty(portalSettings.LogoFile))
+            if (portalSettings != null && !string.IsNullOrEmpty(portalSettings.LogoFile))
             {
                 IFileInfo fileInfo = FileManager.Instance.GetFile(portalSettings.PortalId, portalSettings.LogoFile);
                 if (fileInfo != null)
@@ -87,12 +85,14 @@ namespace DotNetNuke.Services.Exceptions
                     this.headerImage.ImageUrl = FileManager.Instance.GetUrl(fileInfo);
                 }
             }
+
             this.headerImage.Visible = !string.IsNullOrEmpty(this.headerImage.ImageUrl);
 
             string localizedMessage;
             var security = PortalSecurity.Instance;
-            var status = security.InputFilter(this.Request.QueryString["status"],
-                                                    PortalSecurity.FilterFlag.NoScripting |
+            var status = security.InputFilter(
+                this.Request.QueryString["status"],
+                PortalSecurity.FilterFlag.NoScripting |
                                                     PortalSecurity.FilterFlag.NoMarkup);
             if (!string.IsNullOrEmpty(status))
             {
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Exceptions
             }
             else
             {
-                //get the last server error
+                // get the last server error
                 var exc = this.Server.GetLastError();
                 try
                 {
@@ -112,21 +112,22 @@ namespace DotNetNuke.Services.Exceptions
                     {
                         var lex = new PageLoadException(exc.Message, exc);
                         Exceptions.LogException(lex);
-                        localizedMessage = Localization.Localization.GetString("Error.Text", Localization.Localization.GlobalResourceFile);
+                        localizedMessage = Localization.GetString("Error.Text", Localization.GlobalResourceFile);
                         this.ErrorPlaceHolder.Controls.Add(new ErrorContainer(portalSettings, localizedMessage, lex).Container);
                     }
                 }
                 catch
                 {
-                    //No exception was found...you shouldn't end up here
-                    //unless you go to this aspx page URL directly
-                    localizedMessage = Localization.Localization.GetString("UnhandledError.Text", Localization.Localization.GlobalResourceFile);
+                    // No exception was found...you shouldn't end up here
+                    // unless you go to this aspx page URL directly
+                    localizedMessage = Localization.GetString("UnhandledError.Text", Localization.GlobalResourceFile);
                     this.ErrorPlaceHolder.Controls.Add(new LiteralControl(localizedMessage));
                 }
 
                 this.Response.StatusCode = 500;
             }
-            localizedMessage = Localization.Localization.GetString("Return.Text", Localization.Localization.GlobalResourceFile);
+
+            localizedMessage = Localization.GetString("Return.Text", Localization.GlobalResourceFile);
 
             this.hypReturn.Text = localizedMessage;
         }

@@ -2,10 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.Search.Internals;
+namespace DotNetNuke.Modules.Journal.Components
+{
+    using DotNetNuke.Services.Search.Internals;
 
-namespace DotNetNuke.Modules.Journal.Components {
-    public class Constants {
+    public class Constants
+    {
         internal const string SharedResourcesPath = "~/DesktopModules/Journal/App_LocalResources/SharedResources.resx";
         internal const string DefaultPageSize = "Journal_PageSize";
         internal const string AllowFiles = "Journal_AllowFiles";

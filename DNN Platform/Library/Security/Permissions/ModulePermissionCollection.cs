@@ -1,29 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : ModulePermissionCollection
+    /// Class    : ModulePermissionCollection
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
-    /// objects
+    /// objects.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -69,8 +64,9 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (ModulePermissionInfo) this.List[index];
+                return (ModulePermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;
@@ -100,6 +96,7 @@ namespace DotNetNuke.Security.Permissions
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
                     id = this.Add(value);
@@ -131,6 +128,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             this.InnerList.Sort(new CompareModulePermissions());
             objModulePermissionCollection.InnerList.Sort(new CompareModulePermissions());
             for (int i = 0; i <= this.Count - 1; i++)
@@ -140,6 +138,7 @@ namespace DotNetNuke.Security.Permissions
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -173,6 +172,7 @@ namespace DotNetNuke.Security.Permissions
                     this.List.RemoveAt(idx);
                     break;
                 }
+
                 idx++;
             }
         }
@@ -184,6 +184,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 list.Add(permission);
             }
+
             return list;
         }
 

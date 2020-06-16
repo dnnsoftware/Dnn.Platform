@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web.Http;
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Security;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.DigitalAssets.Services
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Security;
+    using DotNetNuke.Web.Api;
+
     [SupportedModules("DotNetNuke.Modules.DigitalAssets")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [DamExceptionFilter]
@@ -42,6 +42,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Services
             result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue(forceDownload ? "attachment" : "inline");
             result.Content.Headers.ContentDisposition.FileName = fileName;
             return result;
-        }             
+        }
     }
 }

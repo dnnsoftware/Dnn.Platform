@@ -2,18 +2,18 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Portals;
-using Dnn.PersonaBar.Library.Helper;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Pages.Components.Security;
-using Dnn.PersonaBar.Pages.Components.Prompt.Commands;
-
 namespace Dnn.PersonaBar.Pages.Tests
 {
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Pages.Components.Prompt.Commands;
+    using Dnn.PersonaBar.Pages.Components.Security;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetPageUnitTests
     {
@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommand_ShouldSuccessResponse()
         {
-            // Arrange         
+            // Arrange
             this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
 
             this.SetupCommand();
@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommandForNonExistingTab_ShouldErrorResponse()
         {
-            // Arrange            
+            // Arrange
             this._tab = null;
 
             this._tabControllerMock.Setup(t => t.GetTab(this._tabId, this._testPortalId)).Returns(this._tab);
@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         [Test]
         public void Run_GetPageWithValidCommandForRequestedPortalNotAllowed_ShouldErrorResponse()
         {
-            // Arrange            
+            // Arrange
             this._contentVerifierMock.Setup(c => c.IsContentExistsForRequestedPortal(this._testPortalId, this._portalSettings, false)).Returns(false);
 
             this.SetupCommand();

@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:EditPagePanelExtensionControl runat=server></{0}:EditPagePanelExtensionControl>")]
     public class EditPagePanelExtensionControl : DefaultExtensionControl
@@ -21,20 +21,19 @@ namespace DotNetNuke.ExtensionPoints
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
             editPanel.Controls.Add(control);
             this.Controls.Add(editPanel);
-            
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             var extensionPointManager = new ExtensionPointManager();
-            
-            if (!String.IsNullOrEmpty(this.Name))
+
+            if (!string.IsNullOrEmpty(this.Name))
             {
                 var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(this.Module, this.Name);
                 if (extension != null)
                 {
-                    this.LoadControl(extension);                    
+                    this.LoadControl(extension);
                 }
             }
             else
@@ -43,7 +42,7 @@ namespace DotNetNuke.ExtensionPoints
                 {
                     if (extension != null)
                     {
-                        this.LoadControl(extension);                        
+                        this.LoadControl(extension);
                     }
                 }
             }
@@ -110,14 +109,14 @@ namespace DotNetNuke.ExtensionPoints
     public class PanelEditPagePanelExtensionControl : WebControl
     {
         public string PanelId { get; set; }
+
         public string Text { get; set; }
 
         protected override void RenderContents(HtmlTextWriter op)
         {
-
-            op.Write(@"<div class="""+this.CssClass+@""">
-	<h2 id="""+this.PanelId+@""" class=""dnnFormSectionHead"">
-<a href="" class=""dnnLabelExpanded"">"+this.Text+@"</a>
+            op.Write(@"<div class=""" + this.CssClass + @""">
+	<h2 id=""" + this.PanelId + @""" class=""dnnFormSectionHead"">
+<a href="" class=""dnnLabelExpanded"">" + this.Text + @"</a>
 </h2>
 	<fieldset>");
             base.RenderContents(op);

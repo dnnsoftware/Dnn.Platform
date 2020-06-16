@@ -1,25 +1,22 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.Groups.Components;
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Abstractions;
-
-#endregion
-
 namespace DotNetNuke.Modules.Groups
 {
+    using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.Groups.Components;
+    using DotNetNuke.Security.Permissions;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class GroupsModuleBase : PortalModuleBase
     {
         protected INavigationManager NavigationManager { get; }
+
         public GroupsModuleBase()
         {
             this.NavigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -29,10 +26,9 @@ namespace DotNetNuke.Modules.Groups
         {
             Setup = 0,
             List = 1,
-            View = 2
+            View = 2,
         }
 
-        #region Public Properties
         public GroupMode LoadView
         {
             get
@@ -50,9 +46,11 @@ namespace DotNetNuke.Modules.Groups
                             break;
                     }
                 }
+
                 return mode;
             }
         }
+
         public int GroupId
         {
             get
@@ -62,28 +60,34 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return groupId;
                 }
+
                 if (int.TryParse(this.Request.QueryString["GroupId"], out groupId))
                 {
                     return groupId;
                 }
+
                 return -1;
             }
         }
+
         public int DefaultRoleGroupId
         {
             get
             {
-	            var roleGroupId = Null.NullInteger;
+                var roleGroupId = Null.NullInteger;
                 if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting))
                 {
                     int id;
                     if (int.TryParse(this.Settings[Constants.DefaultRoleGroupSetting].ToString(), out id))
+                    {
                         roleGroupId = id;
+                    }
                 }
 
                 return roleGroupId; // -2 is for "< All Roles >"
             }
         }
+
         public int GroupListTabId
         {
             get
@@ -92,9 +96,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Convert.ToInt32(this.Settings[Constants.GroupListPage].ToString());
                 }
+
                 return this.TabId;
             }
         }
+
         public int GroupViewTabId
         {
             get
@@ -103,9 +109,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Convert.ToInt32(this.Settings[Constants.GroupViewPage].ToString());
                 }
+
                 return this.TabId;
             }
         }
+
         public string GroupViewTemplate
         {
             get
@@ -118,9 +126,11 @@ namespace DotNetNuke.Modules.Groups
                         template = this.Settings[Constants.GroupViewTemplate].ToString();
                     }
                 }
+
                 return template;
             }
         }
+
         public string GroupListTemplate
         {
             get
@@ -133,9 +143,11 @@ namespace DotNetNuke.Modules.Groups
                         template = this.Settings[Constants.GroupListTemplate].ToString();
                     }
                 }
+
                 return template;
             }
         }
+
         public string DefaultGroupMode
         {
             get
@@ -144,9 +156,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return this.Settings[Constants.DefautlGroupViewMode].ToString();
                 }
-                return "";
+
+                return string.Empty;
             }
         }
+
         public bool GroupModerationEnabled
         {
             get
@@ -155,9 +169,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Convert.ToBoolean(this.Settings[Constants.GroupModerationEnabled].ToString());
                 }
+
                 return false;
             }
         }
+
         public bool CanCreate
         {
             get
@@ -168,8 +184,10 @@ namespace DotNetNuke.Modules.Groups
                     {
                         return true;
                     }
+
                     return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "CREATEGROUP");
                 }
+
                 return false;
             }
         }
@@ -193,9 +211,11 @@ namespace DotNetNuke.Modules.Groups
                         return Convert.ToInt32(this.Settings[Constants.GroupListPageSize].ToString());
                     }
                 }
+
                 return 20;
             }
         }
+
         public bool GroupListSearchEnabled
         {
             get
@@ -213,20 +233,23 @@ namespace DotNetNuke.Modules.Groups
                 return enableSearch;
             }
         }
+
         public string GroupListSortField
         {
             get
             {
-                return this.Settings.ContainsKey(Constants.GroupListSortField) ? this.Settings[Constants.GroupListSortField].ToString() : "";
+                return this.Settings.ContainsKey(Constants.GroupListSortField) ? this.Settings[Constants.GroupListSortField].ToString() : string.Empty;
             }
         }
+
         public string GroupListSortDirection
         {
             get
             {
-                return this.Settings.ContainsKey(Constants.GroupListSortDirection) ? this.Settings[Constants.GroupListSortDirection].ToString() : "";
+                return this.Settings.ContainsKey(Constants.GroupListSortDirection) ? this.Settings[Constants.GroupListSortDirection].ToString() : string.Empty;
             }
         }
+
         public bool GroupListUserGroupsOnly
         {
             get
@@ -245,24 +268,19 @@ namespace DotNetNuke.Modules.Groups
             }
         }
 
-
-        #endregion
-
-        #region Public Methods
         public string GetCreateUrl()
         {
-            return this.ModuleContext.EditUrl("Create"); //.NavigateUrl(GroupCreateTabId,"",true,null);
+            return this.ModuleContext.EditUrl("Create"); // .NavigateUrl(GroupCreateTabId,"",true,null);
         }
 
         public string GetClearFilterUrl()
         {
-            return this.NavigationManager.NavigateURL(this.TabId, "");
+            return this.NavigationManager.NavigateURL(this.TabId, string.Empty);
         }
 
         public string GetEditUrl()
         {
             return this.ModuleContext.EditUrl("GroupId", this.GroupId.ToString("D"), "Edit");
         }
-        #endregion
     }
 }

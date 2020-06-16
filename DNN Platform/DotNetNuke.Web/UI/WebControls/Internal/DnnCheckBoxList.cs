@@ -1,23 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls.Internal
 {
-    ///<remarks>
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+
+    /// <remarks>
     /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
     /// </remarks>
     public class DnnCheckBoxList : CheckBoxList
@@ -29,13 +25,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         private string _initValue;
+
         public override string SelectedValue
         {
             get
             {
                 return base.SelectedValue;
-
             }
+
             set
             {
                 if (this.RequiresDataBinding)

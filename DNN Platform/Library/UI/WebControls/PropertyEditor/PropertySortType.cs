@@ -18,6 +18,6 @@ namespace DotNetNuke.UI.WebControls
         None = 0,
         Alphabetical,
         Category,
-        SortOrderAttribute
+        SortOrderAttribute,
     }
 }

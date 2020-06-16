@@ -1,28 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.UI.Skins;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.UI.Skins;
+
     public class DnnFormSkinsItem : DnnFormItemBase
     {
-        //private DropDownList _containerCombo;
+        // private DropDownList _containerCombo;
         private DnnComboBox _containerCombo;
         private object _containerValue;
-        //private DropDownList _skinCombo;
+
+        // private DropDownList _skinCombo;
         private DnnComboBox _skinCombo;
         private object _skinValue;
 
@@ -59,6 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     skins.Add(skin.Key, skin.Value);
                 }
             }
+
             return skins;
         }
 
@@ -72,9 +69,9 @@ namespace DotNetNuke.Web.UI.WebControls
             skinLabel.CssClass += "dnnFormSkinLabel";
             panel.Controls.Add(skinLabel);
 
-            //_skinCombo = new DropDownList { ID = ID + "_SkinComboBox" };
+            // _skinCombo = new DropDownList { ID = ID + "_SkinComboBox" };
             this._skinCombo = new DnnComboBox { ID = this.ID + "_SkinComboBox" };
-            this._skinCombo.CssClass += "dnnFormSkinInput"; 
+            this._skinCombo.CssClass += "dnnFormSkinInput";
             this._skinCombo.SelectedIndexChanged += this.SkinIndexChanged;
             panel.Controls.Add(this._skinCombo);
 
@@ -84,7 +81,7 @@ namespace DotNetNuke.Web.UI.WebControls
             containerLabel.CssClass += "dnnFormSkinLabel";
             panel.Controls.Add(containerLabel);
 
-            //_containerCombo = new DropDownList { ID = ID + "_ContainerComboBox" };
+            // _containerCombo = new DropDownList { ID = ID + "_ContainerComboBox" };
             this._containerCombo = new DnnComboBox { ID = this.ID + "_ContainerComboBox" };
             this._containerCombo.CssClass += "dnnFormSkinInput";
             this._containerCombo.SelectedIndexChanged += this.ContainerIndexChanged;
@@ -101,7 +98,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.DataBindInternal(this.ContainerDataField, ref this._containerValue);
 
-            this.Value = new Pair {First = this._skinValue, Second = this._containerValue};
+            this.Value = new Pair { First = this._skinValue, Second = this._containerValue };
         }
 
         protected override void LoadControlState(object state)

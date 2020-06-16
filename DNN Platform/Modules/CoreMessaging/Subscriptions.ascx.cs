@@ -2,38 +2,39 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.CoreMessaging
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
-        #region Public Properties
         public ModuleInstanceContext ModuleContext { get; set; }
 
         public ModuleInfo ModuleConfiguration
         {
             get { return this.ModuleContext != null ? this.ModuleContext.Configuration : null; }
+
             set
             {
                 this.ModuleContext.Configuration = value;
@@ -42,18 +43,10 @@ namespace DotNetNuke.Modules.CoreMessaging
 
         public string LocalResourceFile { get; set; }
 
-        #endregion
-
-        #region Protected Methods
-
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
         }
-
-        #endregion
-
-        #region Public Methods
 
         public string GetSettingsAsJson()
         {
@@ -72,10 +65,6 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             return settings.ToJson();
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -96,10 +85,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        #endregion
-
-        #region Private methods
-
         /// <summary>
         /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
         /// values that are automatically retrieved by Social Library such as portalId and moduleId.
@@ -109,22 +94,21 @@ namespace DotNetNuke.Modules.CoreMessaging
             var portalSettings = PortalSettings.Current;
             var userPreferenceController = UserPreferencesController.Instance;
             var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
-            UserPreference userPreference=null;
+            UserPreference userPreference = null;
             if (user != null)
             {
                 userPreference = userPreferenceController.GetUserPreference(user);
             }
-           
 
             const int notifyFrequency = 2;
             const int messageFrequency = 0;
-            
+
             return new Hashtable
                    {
                        { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
                        { "pageSize", 25 },
                        { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
-                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }                
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency },
                    };
         }
 
@@ -185,9 +169,9 @@ namespace DotNetNuke.Modules.CoreMessaging
                        { "usePopup", usePopup },
                        { "returnUrl", HttpContext.Current.Request.UrlReferrer },
                        { "uniqueId", uniqueId },
-                    };
+                   };
         }
-        
+
         private static string GetHistoryNavigationKey(string moduleName)
         {
             return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));
@@ -220,7 +204,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             return new Dictionary<string, string>
                 {
                     { "ExceptionTitle", Localization.GetString("ExceptionTitle", SharedResources) },
-                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) }
+                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) },
                 };
         }
 
@@ -241,7 +225,5 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             return returnUrl;
         }
-
-        #endregion
     }
 }

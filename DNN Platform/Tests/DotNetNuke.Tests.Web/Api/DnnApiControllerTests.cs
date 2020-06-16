@@ -2,23 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Hosting;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Internal;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Web.Api;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Hosting;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Internal;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Web.Api;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnApiControllerTests
     {
-        internal class DnnApiControllerHelper : DnnApiController {}
+        internal class DnnApiControllerHelper : DnnApiController
+        {
+        }
 
         [TearDown]
         public void TearDown()
@@ -29,7 +32,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void GetsModuleInfoViaTheTabModuleInfoProviders()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -38,12 +41,12 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            var controller = new DnnApiControllerHelper {Request = request};
+            var controller = new DnnApiControllerHelper { Request = request };
 
-            //Act
+            // Act
             var result = controller.ActiveModule;
 
-            //Assert
+            // Assert
             Assert.AreEqual(expectedModule, result);
             provider.Verify(x => x.TryFindModuleInfo(request, out expectedModule), Times.Once());
         }
@@ -51,23 +54,23 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void GetsPortalSettingsViaTestablePortalController()
         {
-            //Arrange
+            // Arrange
             var controller = new DnnApiControllerHelper();
             var mockPortalController = new Mock<IPortalController>();
             var expectedPortalSettings = new PortalSettings();
             mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
             PortalController.SetTestableInstance(mockPortalController.Object);
 
-            //Act
+            // Act
             var result = controller.PortalSettings;
 
-            //Assert
+            // Assert
             mockPortalController.Verify(x => x.GetCurrentPortalSettings(), Times.Once());
             Assert.AreEqual(expectedPortalSettings, result);
         }
 
-        //A test that would be nice to run, but I see not good way to test the source of the 
-        //userinfo
+        // A test that would be nice to run, but I see not good way to test the source of the
+        // userinfo
 //        [Test]
 //        public void UserInfoComesFromPortalSettings()
 //        {
@@ -75,7 +78,7 @@ namespace DotNetNuke.Tests.Web.Api
 //            var controller = new DnnApiControllerHelper();
 //            var mockPortalController = new Mock<IPortalController>();
 //            var expectedPortalSettings = new PortalSettings();
-              //expectedPortalSettings.UserInfo = ??????
+              // expectedPortalSettings.UserInfo = ??????
 //            mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
 //            TestablePortalController.SetTestableInstance(mockPortalController.Object);
 //

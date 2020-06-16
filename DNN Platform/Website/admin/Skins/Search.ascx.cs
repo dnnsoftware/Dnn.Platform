@@ -2,34 +2,33 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections;
-using Globals = DotNetNuke.Common.Globals;
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Collections;
 
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
 
     public partial class Search : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Search()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Members
 
         private const string MyFileName = "Search.ascx";
         private bool _showSite = true;
@@ -43,19 +42,15 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _webToolTip;
         private string _webURL;
 
-        #endregion
-
-        #region Public Members
-
         /// <summary>
-        /// Gets or sets the CSS class for the option buttons and search button
+        /// Gets or sets the CSS class for the option buttons and search button.
         /// </summary>
         /// <remarks>If you are using the DropDownList option then you can style the search
         /// elements without requiring a custom CssClass.</remarks>
         public string CssClass { get; set; }
 
         /// <summary>
-        /// Gets or sets the visibility setting for the radio button corresponding to site based searchs.
+        /// Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to site based searchs.
         /// </summary>
         /// <remarks>Set this value to false to hide the "Site" radio button.  This setting has no effect
         /// if UseDropDownList is true.</remarks>
@@ -65,6 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._showSite;
             }
+
             set
             {
                 this._showSite = value;
@@ -72,7 +68,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// Gets or sets the visibility setting for the radio button corresponding to web based searchs.
+        /// Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to web based searchs.
         /// </summary>
         /// <remarks>Set this value to false to hide the "Web" radio button.  This setting has no effect
         /// if UseDropDownList is true.</remarks>
@@ -82,6 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._showWeb;
             }
+
             set
             {
                 this._showWeb = value;
@@ -103,8 +100,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return IconController.IconURL("DnnSearch");
                 }
+
                 return this._siteIconURL;
             }
+
             set
             {
                 this._siteIconURL = value;
@@ -157,8 +156,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Site", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._siteText;
             }
+
             set
             {
                 this._siteText = value;
@@ -179,8 +180,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Site.ToolTip", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._siteToolTip;
             }
+
             set
             {
                 this._siteToolTip = value;
@@ -203,8 +206,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("URL", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._siteURL;
             }
+
             set
             {
                 this._siteURL = value;
@@ -249,8 +254,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return IconController.IconURL("GoogleSearch");
                 }
+
                 return this._webIconURL;
             }
+
             set
             {
                 this._webIconURL = value;
@@ -271,8 +278,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Web", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._webText;
             }
+
             set
             {
                 this._webText = value;
@@ -293,8 +302,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Web.ToolTip", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._webToolTip;
             }
+
             set
             {
                 this._webToolTip = value;
@@ -318,8 +329,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("URL", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._webURL;
             }
+
             set
             {
                 this._webURL = value;
@@ -327,30 +340,30 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// minium chars required to trigger auto search
+        /// Gets or sets minium chars required to trigger auto search.
         /// </summary>
         public int MinCharRequired { get; set; }
 
         /// <summary>
-        /// The millisecond to delay trigger auto search
+        /// Gets or sets the millisecond to delay trigger auto search.
         /// </summary>
         public int AutoSearchDelayInMilliSecond { get; set; }
 
         private bool _enableWildSearch = true;
+
         /// <summary>
-        /// Disable the wild search
+        /// Gets or sets a value indicating whether disable the wild search.
         /// </summary>
-        public bool EnableWildSearch { get { return this._enableWildSearch; } set { this._enableWildSearch = value; } }
+        public bool EnableWildSearch
+        {
+            get { return this._enableWildSearch; } set { this._enableWildSearch = value; }
+        }
 
         protected int PortalId { get; set; }
 
         protected string SearchType { get; set; }
 
         protected string CultureCode { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private int GetSearchTabId()
         {
@@ -394,6 +407,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return;
             }
+
             string strURL;
             if (!string.IsNullOrEmpty(searchText))
             {
@@ -422,6 +436,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 this.Response.Redirect(this._navigationManager.NavigateURL(searchTabId) + "&Search=" + this.Server.UrlEncode(searchText));
                             }
                         }
+
                         break;
                     case "W":
                         // web
@@ -429,9 +444,10 @@ namespace DotNetNuke.UI.Skins.Controls
                         if (!string.IsNullOrEmpty(strURL))
                         {
                             strURL = strURL.Replace("[TEXT]", this.Server.UrlEncode(searchText));
-                            strURL = strURL.Replace("[DOMAIN]", "");
+                            strURL = strURL.Replace("[DOMAIN]", string.Empty);
                             UrlUtils.OpenNewWindow(this.Page, this.GetType(), strURL);
                         }
+
                         break;
                 }
             }
@@ -448,10 +464,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         /// <summary>
         /// Handles the Load event of the Page control.
         /// </summary>
@@ -464,15 +476,22 @@ namespace DotNetNuke.UI.Skins.Controls
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Search/SearchSkinObjectPreview.js");
 
-
             this.cmdSearch.Click += this.CmdSearchClick;
             this.cmdSearchNew.Click += this.CmdSearchNewClick;
 
-            if (this.MinCharRequired == 0) this.MinCharRequired = 2;
-            if (this.AutoSearchDelayInMilliSecond == 0) this.AutoSearchDelayInMilliSecond = 400;
+            if (this.MinCharRequired == 0)
+            {
+                this.MinCharRequired = 2;
+            }
+
+            if (this.AutoSearchDelayInMilliSecond == 0)
+            {
+                this.AutoSearchDelayInMilliSecond = 400;
+            }
+
             this.PortalId = this.PortalSettings.ActiveTab.IsSuperTab ? this.PortalSettings.PortalId : -1;
 
-            if (!String.IsNullOrEmpty(this.Submit))
+            if (!string.IsNullOrEmpty(this.Submit))
             {
                 if (this.Submit.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
@@ -484,9 +503,10 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.Submit = Localization.GetString("Search", Localization.GetResourceFile(this, MyFileName));
             }
+
             this.cmdSearch.Text = this.Submit;
             this.cmdSearchNew.Text = this.Submit;
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.WebRadioButton.CssClass = this.CssClass;
                 this.SiteRadioButton.CssClass = this.CssClass;
@@ -511,6 +531,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.SearchType = "W";
                 }
             }
+
             this.ExecuteSearch(this.txtSearch.Text.Trim(), this.SearchType);
         }
 
@@ -541,17 +562,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (this.UseDropDownList)
             {
-                //Client Variables will survive a postback so there is no reason to register them.
+                // Client Variables will survive a postback so there is no reason to register them.
                 if (!this.Page.IsPostBack)
                 {
-
                     this.downArrow.AlternateText = Localization.GetString("DropDownGlyph.AltText", Localization.GetResourceFile(this, MyFileName));
                     this.downArrow.ToolTip = this.downArrow.AlternateText;
 
                     ClientAPI.RegisterClientVariable(this.Page, "SearchIconWebUrl", string.Format("url({0})", this.ResolveUrl(this.WebIconURL)), true);
                     ClientAPI.RegisterClientVariable(this.Page, "SearchIconSiteUrl", string.Format("url({0})", this.ResolveUrl(this.SiteIconURL)), true);
 
-                    //We are going to use a dnn client variable to store which search option (web/site) is selected.
+                    // We are going to use a dnn client variable to store which search option (web/site) is selected.
                     ClientAPI.RegisterClientVariable(this.Page, "SearchIconSelected", "S", true);
                     this.SearchType = "S";
                 }
@@ -573,6 +593,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.WebRadioButton.Text = this.WebText;
                     this.WebRadioButton.ToolTip = this.WebToolTip;
                 }
+
                 if (this.SiteRadioButton.Visible)
                 {
                     this.SiteRadioButton.Checked = true;
@@ -585,7 +606,5 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.txtSearch.Attributes.Add("placeholder", this.PlaceHolderText);
             }
         }
-
-        #endregion
     }
 }

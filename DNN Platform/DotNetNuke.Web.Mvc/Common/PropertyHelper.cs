@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Web.Mvc.Common
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.Common;
+
     internal class PropertyHelper
     {
         private static readonly MethodInfo CallPropertyGetterByReferenceOpenGenericMethod = typeof(PropertyHelper).GetMethod("CallPropertyGetterByReference", BindingFlags.NonPublic | BindingFlags.Static);
@@ -57,9 +58,10 @@ namespace DotNetNuke.Web.Mvc.Common
             return GetProperties(instance, CreateInstance, ReflectionCache);
         }
 
-        protected static PropertyHelper[] GetProperties(object instance,
-                                                Func<PropertyInfo, PropertyHelper> createPropertyHelper,
-                                                ConcurrentDictionary<Type, PropertyHelper[]> cache)
+        protected static PropertyHelper[] GetProperties(
+            object instance,
+            Func<PropertyInfo, PropertyHelper> createPropertyHelper,
+            ConcurrentDictionary<Type, PropertyHelper[]> cache)
         {
             // Using an array rather than IEnumerable, as this will be called on the hot path numerous times.
             PropertyHelper[] helpers;
@@ -92,8 +94,7 @@ namespace DotNetNuke.Web.Mvc.Common
 
         public object GetValue(object instance)
         {
-            //Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
-
+            // Contract.Assert(_valueGetter != null, "Must call Initialize before using this object");
             return this._valueGetter(instance);
         }
 

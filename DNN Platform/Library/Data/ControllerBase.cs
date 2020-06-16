@@ -2,22 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Common;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Data
 {
-    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf> where TSelf : ServiceLocator<TContract, TSelf>, new() where TEntity : class
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Framework;
+
+    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf>
+        where TSelf : ServiceLocator<TContract, TSelf>, new()
+        where TEntity : class
     {
         protected readonly IDataContext DataContext;
 
-        protected ControllerBase() { }
+        protected ControllerBase()
+        {
+        }
 
         protected ControllerBase(IDataContext dataContext)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataContext", dataContext);
 
             this.DataContext = dataContext;
@@ -25,7 +30,7 @@ namespace DotNetNuke.Data
 
         public void Add(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
             using (this.DataContext)
@@ -38,10 +43,10 @@ namespace DotNetNuke.Data
 
         public void Delete(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), string.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 
@@ -64,7 +69,6 @@ namespace DotNetNuke.Data
             }
 
             return entities;
-
         }
 
         public IEnumerable<TEntity> Get()
@@ -95,10 +99,10 @@ namespace DotNetNuke.Data
 
         public void Update(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), string.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 

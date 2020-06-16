@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Entities.Modules;
-
 namespace Dnn.ExportImport.Components.Entities
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     [TableName("ExportImportCheckpoints")]
     [PrimaryKey("CheckpointId")]
@@ -18,12 +19,19 @@ namespace Dnn.ExportImport.Components.Entities
         private double _progress;
 
         public int CheckpointId { get; set; }
+
         public int JobId { get; set; }
+
         public string AssemblyName { get; set; }
+
         public string Category { get; set; }
+
         public int Stage { get; set; } // all stages start from 0 and increase
+
         public string StageData { get; set; } // discretionary data
+
         public DateTime StartDate { get; set; }
+
         public DateTime LastUpdateDate { get; set; }
 
         public bool Completed { get; set; }
@@ -31,15 +39,24 @@ namespace Dnn.ExportImport.Components.Entities
         public double Progress
         {
             get { return this._progress; }
+
             set
             {
-                if (value < 0) value = 0;
-                else if (value > 100) value = 100;
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                else if (value > 100)
+                {
+                    value = 100;
+                }
+
                 this._progress = value;
             }
         }
 
         public int TotalItems { get; set; }
+
         public int ProcessedItems { get; set; }
 
         public int KeyID

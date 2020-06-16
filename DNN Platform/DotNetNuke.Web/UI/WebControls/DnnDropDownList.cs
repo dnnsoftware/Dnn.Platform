@@ -2,25 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.Serialization;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Runtime.Serialization;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
 
     [DataContract]
     public class DnnDropDownListState
@@ -32,8 +31,6 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnDropDownList runat='server'></{0}:DnnDropDownList>")]
     public class DnnDropDownList : Panel, INamingContainer
     {
-        #region Private Fields
-
         private static readonly object EventSelectionChanged = new object();
 
         private readonly Lazy<DnnDropDownListOptions> _options =
@@ -41,10 +38,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
         private HtmlAnchor _selectedValue;
-
-        #endregion
-
-        #region Protected Properties
 
         internal DnnDropDownListOptions Options
         {
@@ -78,15 +71,12 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("UseUndefinedItem", false);
             }
+
             set
             {
                 this.ViewState.SetValue("UseUndefinedItem", value, false);
             }
         }
-
-        #endregion
-
-        #region Events
 
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
@@ -97,15 +87,12 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Events.AddHandler(EventSelectionChanged, value);
             }
+
             remove
             {
                 this.Events.RemoveHandler(EventSelectionChanged, value);
             }
         }
-
-        #endregion
-
-        #region Public Properties
 
         public override ControlCollection Controls
         {
@@ -117,7 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected item in the control, or selects the item in the control.
+        /// Gets or sets the selected item in the control, or selects the item in the control.
         /// </summary>
         public ListItem SelectedItem
         {
@@ -127,8 +114,10 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return new ListItem { Text = this.StateControl.TypedValue.SelectedItem.Value, Value = this.StateControl.TypedValue.SelectedItem.Key };
                 }
+
                 return null;
             }
+
             set
             {
                 this.StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
@@ -136,10 +125,11 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// When this method returns, contains the 32-bit signed integer value equivalent to the number contained in
+        /// Gets when this method returns, contains the 32-bit signed integer value equivalent to the number contained in
         /// SelectedItem.Value, if the conversion succeeded, or Null.NullInteger if the conversion failed.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int SelectedItemValueAsInt
         {
             get
@@ -147,16 +137,17 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (this.SelectedItem != null && !string.IsNullOrEmpty(this.SelectedItem.Value))
                 {
                     int valueAsInt;
-                    var parsed = Int32.TryParse(this.SelectedItem.Value, out valueAsInt);
+                    var parsed = int.TryParse(this.SelectedItem.Value, out valueAsInt);
                     return parsed ? valueAsInt : Null.NullInteger;
                 }
+
                 return Null.NullInteger;
             }
         }
 
         /// <summary>
-        /// SelectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
-        /// Always displayed as first option in the list
+        /// Gets or sets selectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
+        /// Always displayed as first option in the list.
         /// </summary>
         public ListItem UndefinedItem
         {
@@ -164,6 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.FirstItem;
             }
+
             set
             {
                 this.FirstItem = value;
@@ -172,7 +164,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Item to be displayed as first item
+        /// Gets or sets item to be displayed as first item.
         /// </summary>
         public ListItem FirstItem
         {
@@ -180,6 +172,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return (this.Options.ItemList.FirstItem == null) ? null : new ListItem(this.Options.ItemList.FirstItem.Value, this.Options.ItemList.FirstItem.Key);
             }
+
             set
             {
                 this.Options.ItemList.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
@@ -196,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// DropDownList Caption when no Item is selected.
+        /// Sets dropDownList Caption when no Item is selected.
         /// </summary>
         public string SelectItemDefaultText
         {
@@ -224,6 +217,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("AutoPostBack", false);
             }
+
             set
             {
                 this.ViewState.SetValue("AutoPostBack", value, false);
@@ -239,6 +233,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("CausesValidation", false);
             }
+
             set
             {
                 this.ViewState.SetValue("CausesValidation", value, false);
@@ -254,6 +249,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("ValidationGroup", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("ValidationGroup", value, string.Empty);
@@ -261,7 +257,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
+        /// Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
         /// </summary>
         public List<string> OnClientSelectionChanged
         {
@@ -272,7 +268,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// When the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
+        /// Gets or sets when the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
         /// we need expand its parent nodes to make it selected.
         /// </summary>
         public string ExpandPath
@@ -281,15 +277,12 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return ClientAPI.GetClientVariable(this.Page, this.ClientID + "_expandPath");
             }
+
             set
             {
                 ClientAPI.RegisterClientVariable(this.Page, this.ClientID + "_expandPath", value, true);
             }
         }
-
-        #endregion
-
-        #region Event Handlers
 
         protected override void CreateChildControls()
         {
@@ -306,13 +299,12 @@ namespace DotNetNuke.Web.UI.WebControls
             this._stateControl = new DnnGenericHiddenField<DnnDropDownListState> { ID = "state" };
             this._stateControl.ValueChanged += (sender, args) => this.OnSelectionChanged(EventArgs.Empty);
             this.Controls.Add(this._stateControl);
-
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.StateControl.Value = ""; // for state persistence (stateControl)
+            this.StateControl.Value = string.Empty; // for state persistence (stateControl)
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
@@ -334,12 +326,9 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return;
             }
+
             eventHandler(this, e);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static string LocalizeString(string key)
         {
@@ -353,6 +342,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css", FileOrder.Css.ResourceCss);
             }
+
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.extensions.js");
@@ -376,17 +366,20 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.Attributes.Remove("onchange");
                 }
             }
+
             var options = new PostBackOptions(this, string.Empty);
             if (this.CausesValidation)
             {
                 options.PerformValidation = true;
                 options.ValidationGroup = this.ValidationGroup;
             }
+
             if (this.Page.Form != null)
             {
                 options.AutoPostBack = true;
                 options.TrackFocus = true;
             }
+
             return script.Append(this.Page.ClientScript.GetPostBackEventReference(options), "; ");
         }
 
@@ -401,7 +394,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.Options.InitialState = new DnnDropDownListState
             {
-                SelectedItem = this.StateControl.TypedValue != null ? this.StateControl.TypedValue.SelectedItem : null
+                SelectedItem = this.StateControl.TypedValue != null ? this.StateControl.TypedValue.SelectedItem : null,
             };
 
             this.SelectedValue.InnerText = (this.SelectedItem != null) ? this.SelectedItem.Text : this.Options.SelectItemDefaultText;
@@ -430,9 +423,5 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), this.ClientID + "DnnDropDownList", script, true);
             }
         }
-
-        #endregion
-
     }
-
 }

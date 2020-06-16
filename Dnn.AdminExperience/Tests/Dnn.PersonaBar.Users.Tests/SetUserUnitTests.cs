@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Users;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SetUserUnitTests : CommandTests<SetUser>
     {
@@ -35,7 +35,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_UserIdNull_ReturnErrorResponse()
         {
-            // Arrange          
+            // Arrange
             UserInfo userInfo;
             this.errorResultModel = new ConsoleErrorResultModel();
             this._userValidatorMock

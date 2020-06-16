@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-
 namespace DotNetNuke.Tests.Urls
 {
+    using System;
+    using System.Collections.Generic;
+
     public static class Extensions
     {
         public static string GetValue(this Dictionary<string, string> dic, string key)
         {
-            return GetValue(dic, key, String.Empty);
+            return GetValue(dic, key, string.Empty);
         }
 
         public static string GetValue(this Dictionary<string, string> dic, string key, string defaultValue)
@@ -21,8 +21,8 @@ namespace DotNetNuke.Tests.Urls
             {
                 returnValue = dic[key];
             }
+
             return returnValue;
         }
-
     }
 }

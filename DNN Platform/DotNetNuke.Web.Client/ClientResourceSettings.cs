@@ -40,15 +40,15 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public Boolean IsOverridingDefaultSettingsEnabled()
+        public bool IsOverridingDefaultSettingsEnabled()
         {
             var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
             var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
@@ -66,12 +66,16 @@ namespace DotNetNuke.Web.Client
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
             if (portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
                 return portalVersion.Value;
+            }
 
             // otherwise return the host setting
             var hostVersion = GetIntegerSetting(HostSettingsDictionaryKey, VersionKey);
             if (hostVersion.HasValue)
+            {
                 return hostVersion.Value;
+            }
 
             // otherwise tell the calling method that nothing is set
             return null;
@@ -105,12 +109,16 @@ namespace DotNetNuke.Web.Client
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
             if (portalEnabled.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
                 return portalEnabled.Value;
+            }
 
             // otherwise return the host setting
             var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
             if (hostEnabled.HasValue)
+            {
                 return hostEnabled.Value;
+            }
 
             // otherwise tell the calling method that nothing is set
             return null;
@@ -124,6 +132,7 @@ namespace DotNetNuke.Web.Client
             {
                 return result;
             }
+
             return null;
         }
 
@@ -138,6 +147,7 @@ namespace DotNetNuke.Web.Client
                     return version;
                 }
             }
+
             return null;
         }
 
@@ -148,7 +158,9 @@ namespace DotNetNuke.Web.Client
             if (settings == null)
             {
                 if (dictionaryKey == HostSettingsDictionaryKey)
+                {
                     return GetHostSettingThroughReflection(settingKey);
+                }
 
                 return GetPortalSettingThroughReflection(settingKey);
             }
@@ -182,8 +194,9 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return null;
         }
 
@@ -201,8 +214,9 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return null;
         }
 
@@ -222,8 +236,9 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return null;
         }
 
@@ -264,23 +279,27 @@ namespace DotNetNuke.Web.Client
             /// The application need update to a higher version.
             /// </summary>
             Upgrade,
+
             /// <summary>
             /// The application need to install itself.
             /// </summary>
             Install,
+
             /// <summary>
             /// The application is normal running.
             /// </summary>
             None,
+
             /// <summary>
             /// The application occur error when running.
             /// </summary>
             Error,
+
             /// <summary>
             /// The application status is unknown,
             /// </summary>
             /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown
+            Unknown,
         }
     }
 }

@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using DNN.Integration.Test.Framework.Helpers;
-using DNN.Integration.Test.Framework.Scripts;
-
 namespace DNN.Integration.Test.Framework.Controllers
 {
+    using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text;
+
+    using DNN.Integration.Test.Framework.Helpers;
+    using DNN.Integration.Test.Framework.Scripts;
+
     public static class UserController
     {
         private static readonly string UserToCopy = AppConfigHelper.HostUserName;
@@ -25,43 +26,44 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string CreateFriendsMarker = @"'$[CreateFriends]'";
         private const string CreateFollowersMarker = @"'$[CreateFollowers]'";
 
-
         /// <summary>
-        /// Creates a new user with Registered User Role and with the same password as the host user
+        /// Creates a new user with Registered User Role and with the same password as the host user.
         /// </summary>
-        /// <param name="firstName">First name of the user</param>
-        /// <param name="lastName">Last name of the user</param>
-        /// <param name="portalId">PortalID to create the user under</param>
-        /// <returns>Id of the created user</returns>
-        /// <remarks>Username created is firstname.lastname</remarks>
-        public static int CreateRegisteredUser(string firstName = IntegrationConstants.RuFirstName,
+        /// <param name="firstName">First name of the user.</param>
+        /// <param name="lastName">Last name of the user.</param>
+        /// <param name="portalId">PortalID to create the user under.</param>
+        /// <returns>Id of the created user.</returns>
+        /// <remarks>Username created is firstname.lastname.</remarks>
+        public static int CreateRegisteredUser(
+            string firstName = IntegrationConstants.RuFirstName,
             string lastName = IntegrationConstants.RuLastName, int portalId = 0)
         {
-            return CreateUser(new CreateUserParams {FirstName = firstName, LastName = lastName, PortalId = portalId});
+            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId });
         }
 
         /// <summary>
-        /// Creates a new SuperUser and with the same password as the host user
+        /// Creates a new SuperUser and with the same password as the host user.
         /// </summary>
-        /// <param name="firstName">First name of the user</param>
-        /// <param name="lastName">Last name of the user</param>
-        /// <param name="portalId">PortalID to create the user under</param>
-        /// <returns>Id of the created user</returns>
-        /// <remarks>Username created is firstname.lastname</remarks>
+        /// <param name="firstName">First name of the user.</param>
+        /// <param name="lastName">Last name of the user.</param>
+        /// <param name="portalId">PortalID to create the user under.</param>
+        /// <returns>Id of the created user.</returns>
+        /// <remarks>Username created is firstname.lastname.</remarks>
         public static int CreateSuperUser(string firstName, string lastName, int portalId = 0)
         {
-            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, SuperUser = true});
+            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, SuperUser = true });
         }
 
         /// <summary>
-        /// Creates a new user with Administrator Role and with the same password as the host user
+        /// Creates a new user with Administrator Role and with the same password as the host user.
         /// </summary>
-        /// <param name="firstName">First name of the administrator user</param>
-        /// <param name="lastName">Last name of the administrator user</param>
-        /// <param name="portalId">PortalID to create the user under</param>
-        /// <returns>Id of the created user</returns>
-        /// <remarks>Username created is firstname.lastname</remarks>
-        public static int CreateAdministratorUser(string firstName = IntegrationConstants.AdminFirstName,
+        /// <param name="firstName">First name of the administrator user.</param>
+        /// <param name="lastName">Last name of the administrator user.</param>
+        /// <param name="portalId">PortalID to create the user under.</param>
+        /// <returns>Id of the created user.</returns>
+        /// <remarks>Username created is firstname.lastname.</remarks>
+        public static int CreateAdministratorUser(
+            string firstName = IntegrationConstants.AdminFirstName,
             string lastName = IntegrationConstants.AdminLastName, int portalId = 0)
         {
             return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, Role = "Administrators" });
@@ -80,10 +82,12 @@ namespace DNN.Integration.Test.Framework.Controllers
             var username = parms.FirstName + "." + parms.LastName;
             var uid = GetUserId(username);
             if (uid > 0)
+            {
                 return uid;
+            }
 
-            //create role if not present
-            RoleController.CreateRoleIfNotPresent(parms.Role);  
+            // create role if not present
+            RoleController.CreateRoleIfNotPresent(parms.Role);
 
             var fileContent = SqlScripts.SingleUserCreation;
             var masterScript = new StringBuilder(fileContent)
@@ -100,7 +104,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .Replace(IsSuperUserMarker, parms.SuperUser ? "1" : "0")
                 .Replace(CreateFriendsMarker, parms.AutoCreateFriends ? "1" : "0")
                 .Replace(CreateFollowersMarker, parms.AutoCreateFollowersAndFollowings ? "1" : "0")
-                .Replace(RoleMarker, string.IsNullOrEmpty(parms.Role) ? "" : parms.Role);
+                .Replace(RoleMarker, string.IsNullOrEmpty(parms.Role) ? string.Empty : parms.Role);
             DatabaseHelper.ExecuteQuery(script.ToString());
             return GetUserId(username);
         }
@@ -112,7 +116,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture))
                 .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
                 .ToString();
-          
+
             DatabaseHelper.ExecuteQuery(script);
         }
 
@@ -133,11 +137,17 @@ namespace DNN.Integration.Test.Framework.Controllers
         public class CreateUserParams
         {
             public string FirstName { get; set; }
-            public string LastName{ get; set; }
-            public int PortalId{ get; set; }
-            public bool SuperUser{ get; set; }
+
+            public string LastName { get; set; }
+
+            public int PortalId { get; set; }
+
+            public bool SuperUser { get; set; }
+
             public string Role { get; set; }
+
             public bool AutoCreateFriends { get; set; }
+
             public bool AutoCreateFollowersAndFollowings { get; set; }
         }
     }

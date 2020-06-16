@@ -2,11 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Portals;
-using System.Linq;
-
 namespace Dnn.PersonaBar.Prompt.Common
 {
+    using System.Linq;
+
+    using DotNetNuke.Entities.Portals;
+
     class PortalHelper
     {
         internal static bool IsRequestForSiteGroup(int portalId, int portalIdSiteGroup)

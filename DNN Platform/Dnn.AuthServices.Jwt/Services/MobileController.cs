@@ -2,27 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Net.Http.Headers;
-using System.Web.Http;
-using Dnn.AuthServices.Jwt.Components.Common.Controllers;
-using Dnn.AuthServices.Jwt.Components.Entity;
-using DotNetNuke.Web.Api;
-using Newtonsoft.Json;
-
 namespace Dnn.AuthServices.Jwt.Services
 {
+    using System.Net.Http.Headers;
+    using System.Web.Http;
+
+    using Dnn.AuthServices.Jwt.Components.Common.Controllers;
+    using Dnn.AuthServices.Jwt.Components.Entity;
+    using DotNetNuke.Web.Api;
+    using Newtonsoft.Json;
+
     [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {
-        #region API methods
-
         /// <summary>
         /// Clients that used JWT login should use this API call to logout and invalidate the tokens.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IHttpActionResult Logout()
         {
-            return JwtController.Instance.LogoutUser(this.Request) ? (IHttpActionResult)this.Ok(new { success = true}) : this.Unauthorized();
+            return JwtController.Instance.LogoutUser(this.Request) ? (IHttpActionResult)this.Ok(new { success = true }) : this.Unauthorized();
         }
 
         /// <summary>
@@ -32,6 +32,7 @@ namespace Dnn.AuthServices.Jwt.Services
         /// </summary>
         /// <remarks>AllowAnonymous attribute must stay in this call even though the
         /// DnnAuthorize attribute is present at a class level.</remarks>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
@@ -49,6 +50,7 @@ namespace Dnn.AuthServices.Jwt.Services
         /// AllowAnonymous attribute must stay in this call even though the
         /// DnnAuthorize attribute is present at a class level.
         /// </remarks>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult ExtendToken(RenewalDto rtoken)
@@ -56,10 +58,6 @@ namespace Dnn.AuthServices.Jwt.Services
             var result = JwtController.Instance.RenewToken(this.Request, rtoken.RenewalToken);
             return this.ReplyWith(result);
         }
-
-        #endregion
-
-        #region helpers
 
         private IHttpActionResult ReplyWith(LoginResultData result)
         {
@@ -70,16 +68,12 @@ namespace Dnn.AuthServices.Jwt.Services
 
             if (!string.IsNullOrEmpty(result.Error))
             {
-                //HACK: this will return the scheme with the error message as a challenge; non-standard method
+                // HACK: this will return the scheme with the error message as a challenge; non-standard method
                 return this.Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
             }
 
             return this.Ok(result);
         }
-
-        #endregion
-
-        #region Testing APIs
 
         // Test API Method 1
         [HttpGet]
@@ -107,7 +101,5 @@ namespace Dnn.AuthServices.Jwt.Services
             [JsonProperty("text")]
             public string Text;
         }
-
-        #endregion
     }
 }

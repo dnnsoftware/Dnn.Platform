@@ -1,16 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
 namespace DotNetNuke.Services.Search
 {
+    using System;
+    using System.Collections;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.DataStore
@@ -25,17 +20,16 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Deprecated in DNN 7.1.  No longer used in the Search infrastructure.. Scheduled removal in v10.0.0.")]
     public class SearchCriteriaCollection : CollectionBase
     {
-		#region Constructors
-
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class.
         /// </summary>
-
         public SearchCriteriaCollection()
         {
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> with which to initialize the collection.</param>
@@ -45,6 +39,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the specified array of <see cref="SearchCriteria">SearchCriteria</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchCriteria">SearchCriteria</see> objects with which to initialize the collection. </param>
@@ -54,14 +49,16 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
         /// </summary>
-        /// <param name="value">A criteria string with which to initialize the collection</param>
+        /// <param name="value">A criteria string with which to initialize the collection.</param>
         public SearchCriteriaCollection(string value)
         {
-            //split search criteria into words
+            // split search criteria into words
             string[] words = value.Split(' ');
-            //Add all criteria without modifiers
+
+            // Add all criteria without modifiers
             foreach (string word in words)
             {
                 var criterion = new SearchCriteria();
@@ -73,7 +70,8 @@ namespace DotNetNuke.Services.Search
                     this.Add(criterion);
                 }
             }
-            //Add all mandatory criteria
+
+            // Add all mandatory criteria
             foreach (string word in words)
             {
                 var criterion = new SearchCriteria();
@@ -85,7 +83,8 @@ namespace DotNetNuke.Services.Search
                     this.Add(criterion);
                 }
             }
-            //Add all excluded criteria
+
+            // Add all excluded criteria
             foreach (string word in words)
             {
                 var criterion = new SearchCriteria();
@@ -98,10 +97,6 @@ namespace DotNetNuke.Services.Search
                 }
             }
         }
-		
-		#endregion
-
-		#region Properties
 
         /// <summary>
         /// Gets the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> at the specified index in the collection.
@@ -113,22 +108,20 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchCriteria) this.List[index];
+                return (SearchCriteria)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;
             }
         }
-		
-		#endregion
-
-		#region Public Methods
 
         /// <summary>
         /// Add an element of the specified <see cref="SearchCriteria">SearchCriteria</see> to the end of the collection.
         /// </summary>
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to add to the collection.</param>
+        /// <returns></returns>
         public int Add(SearchCriteria value)
         {
             return this.List.Add(value);
@@ -147,7 +140,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Add an element of the specified <see cref="SearchCriteria">SearchCriteria</see> to the collection at the designated index.
         /// </summary>
-        /// <param name="index">An <see cref="System.Int32">Integer</see> to indicate the location to add the object to the collection.</param>
+        /// <param name="index">An <see cref="int">Integer</see> to indicate the location to add the object to the collection.</param>
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to add to the collection.</param>
         public void Insert(int index, SearchCriteria value)
         {
@@ -193,7 +186,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                this.Add((SearchCriteria) value.List[i]);
+                this.Add((SearchCriteria)value.List[i]);
             }
         }
 
@@ -210,14 +203,12 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.
         /// </summary>
-        /// <returns>Array of type SearchCriteria</returns>
+        /// <returns>Array of type SearchCriteria.</returns>
         public SearchCriteria[] ToArray()
         {
             var arr = new SearchCriteria[this.Count];
             this.CopyTo(arr, 0);
             return arr;
         }
-		
-		#endregion
     }
 }

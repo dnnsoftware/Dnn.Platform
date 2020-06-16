@@ -2,24 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Principal;
-using System.Threading;
-using System.Threading.Tasks;
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Web.Api.Auth
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Security.Principal;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using DotNetNuke.Instrumentation;
+
     public abstract class AuthMessageHandlerBase : DelegatingHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthMessageHandlerBase));
 
         public abstract string AuthScheme { get; }
+
         public virtual bool BypassAntiForgeryToken => false;
+
         public bool DefaultInclude { get; }
+
         public bool ForceSsl { get; }
 
         protected AuthMessageHandlerBase(bool includeByDefault, bool forceSsl)
@@ -31,9 +35,9 @@ namespace DotNetNuke.Web.Api.Auth
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var response = this.OnInboundRequest(request, cancellationToken);
-            if(response != null)
+            if (response != null)
             {
-                response.RequestMessage = response.RequestMessage ?? request; //if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
+                response.RequestMessage = response.RequestMessage ?? request; // if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
                 return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
             }
 
@@ -41,22 +45,22 @@ namespace DotNetNuke.Web.Api.Auth
         }
 
         /// <summary>
-        /// A chance to process inbound requests
+        /// A chance to process inbound requests.
         /// </summary>
-        /// <param name="request">the request message</param>
-        /// <param name="cancellationToken">a cancellationtoken</param>
-        /// <returns>null normally, if a response is returned all inbound processing is terminated and the resposne is returned</returns>
+        /// <param name="request">the request message.</param>
+        /// <param name="cancellationToken">a cancellationtoken.</param>
+        /// <returns>null normally, if a response is returned all inbound processing is terminated and the resposne is returned.</returns>
         public virtual HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return null;
         }
 
         /// <summary>
-        /// A change to process outbound responses
+        /// A change to process outbound responses.
         /// </summary>
-        /// <param name="response">The response message</param>
-        /// <param name="cancellationToken">a cancellationtoken</param>
-        /// <returns>the responsemessage</returns>
+        /// <param name="response">The response message.</param>
+        /// <param name="cancellationToken">a cancellationtoken.</param>
+        /// <returns>the responsemessage.</returns>
         public virtual HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             return response;
@@ -86,6 +90,7 @@ namespace DotNetNuke.Web.Api.Auth
             {
                 value = values.FirstOrDefault();
             }
+
             return !string.IsNullOrEmpty(value) &&
                    value.Equals("XmlHttpRequest", StringComparison.InvariantCultureIgnoreCase);
         }

@@ -1,67 +1,58 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.Common;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.FileManager
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.Common;
+    using Microsoft.Extensions.DependencyInjection;
+
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : WebUpload
+    /// Project  : DotNetNuke
+    /// Class    : WebUpload
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Supplies the functionality for uploading files to the Portal
+    /// Supplies the functionality for uploading files to the Portal.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class WebUpload : PortalModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (WebUpload));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
         private readonly INavigationManager _navigationManager;
+
         public WebUpload()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-		#region "Members"
 
         private string _DestinationFolder;
         private UploadType _FileType;
         private string _FileTypeName;
         private string _RootFolder;
         private string _UploadRoles;
-
-		#endregion
-
-		#region "Public Properties"
 
         public string DestinationFolder
         {
@@ -70,11 +61,12 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 if (this._DestinationFolder == null)
                 {
                     this._DestinationFolder = string.Empty;
-                    if ((this.Request.QueryString["dest"] != null))
+                    if (this.Request.QueryString["dest"] != null)
                     {
                         this._DestinationFolder = Globals.QueryStringDecode(this.Request.QueryString["dest"]);
                     }
                 }
+
                 return PathUtils.Instance.RemoveTrailingSlash(this._DestinationFolder.Replace("\\", "/"));
             }
         }
@@ -84,16 +76,17 @@ namespace DotNetNuke.Modules.Admin.FileManager
             get
             {
                 this._FileType = UploadType.File;
-                if ((this.Request.QueryString["ftype"] != null))
+                if (this.Request.QueryString["ftype"] != null)
                 {
-					//The select statement ensures that the parameter can be converted to UploadType
+                    // The select statement ensures that the parameter can be converted to UploadType
                     switch (this.Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
-                            this._FileType = (UploadType) Enum.Parse(typeof (UploadType), this.Request.QueryString["ftype"]);
+                            this._FileType = (UploadType)Enum.Parse(typeof(UploadType), this.Request.QueryString["ftype"]);
                             break;
                     }
                 }
+
                 return this._FileType;
             }
         }
@@ -106,6 +99,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     this._FileTypeName = Localization.GetString(this.FileType.ToString(), this.LocalResourceFile);
                 }
+
                 return this._FileTypeName;
             }
         }
@@ -140,6 +134,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                         this._RootFolder = this.PortalSettings.HomeDirectoryMapPath;
                     }
                 }
+
                 return this._RootFolder;
             }
         }
@@ -157,17 +152,14 @@ namespace DotNetNuke.Modules.Admin.FileManager
                         this._UploadRoles = Convert.ToString(this.Settings["uploadroles"]);
                     }
                 }
+
                 return this._UploadRoles;
             }
         }
 
-		#endregion
-
-		#region "Private Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine checks the Access Security
+        /// This routine checks the Access Security.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -194,13 +186,13 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
             var folders = FolderManager.Instance.GetFolders(this.FolderPortalID, "ADD", user.UserID);
             this.ddlFolders.Services.Parameters.Add("permission", "ADD");
-            if (!String.IsNullOrEmpty(this.DestinationFolder))
+            if (!string.IsNullOrEmpty(this.DestinationFolder))
             {
                 this.ddlFolders.SelectedFolder = folders.SingleOrDefault(f => f.FolderPath == this.DestinationFolder);
             }
             else
             {
-                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == "");
+                var rootFolder = folders.SingleOrDefault(f => f.FolderPath == string.Empty);
                 if (rootFolder != null)
                 {
                     this.ddlFolders.SelectedItem = new ListItem() { Text = DynamicSharedConstants.RootFolder, Value = rootFolder.FolderID.ToString() };
@@ -208,16 +200,13 @@ namespace DotNetNuke.Modules.Admin.FileManager
             }
         }
 
-		#endregion
-
-		#region "Public Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine determines the Return Url
+        /// This routine determines the Return Url.
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string ReturnURL()
         {
@@ -227,6 +216,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             {
                 TabID = int.Parse(this.Request.Params["rtab"]);
             }
+
             return this._navigationManager.NavigateURL(TabID);
         }
 
@@ -234,13 +224,13 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             base.OnInit(e);
 
-            //Customise the Control Title
+            // Customise the Control Title
             this.ModuleConfiguration.ModuleTitle = Localization.GetString("UploadType" + this.FileType, this.LocalResourceFile);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Page_Load runs when the page loads
+        /// The Page_Load runs when the page loads.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -258,11 +248,11 @@ namespace DotNetNuke.Modules.Admin.FileManager
             {
                 this.CheckSecurity();
 
-                //Get localized Strings
+                // Get localized Strings
                 string strHost = Localization.GetString("HostRoot", this.LocalResourceFile);
                 string strPortal = Localization.GetString("PortalRoot", this.LocalResourceFile);
 
-                this.maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), (Config.GetMaxUploadSize()/(1024 *1024)));
+                this.maxSizeWarningLabel.Text = string.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), Config.GetMaxUploadSize() / (1024 * 1024));
 
                 if (!this.Page.IsPostBack)
                 {
@@ -283,12 +273,14 @@ namespace DotNetNuke.Modules.Admin.FileManager
                             this.lblRootType.Text = strPortal + ":";
                             this.lblRootFolder.Text = this.RootFolder;
                         }
+
                         this.LoadFolders();
                     }
+
                     this.chkUnzip.Checked = false;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -296,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The cmdAdd_Click runs when the Add Button is clicked
+        /// The cmdAdd_Click runs when the Add Button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -308,18 +300,18 @@ namespace DotNetNuke.Modules.Admin.FileManager
             try
             {
                 this.CheckSecurity();
-                var strMessage = "";
+                var strMessage = string.Empty;
 
                 var postedFile = this.cmdBrowse.PostedFile;
 
-                //Get localized Strings
+                // Get localized Strings
                 Localization.GetString("InvalidExt", this.LocalResourceFile);
                 var strFileName = Path.GetFileName(postedFile.FileName);
-                if (!String.IsNullOrEmpty(postedFile.FileName))
+                if (!string.IsNullOrEmpty(postedFile.FileName))
                 {
                     switch (this.FileType)
                     {
-                        case UploadType.File: //content files
+                        case UploadType.File: // content files
                             try
                             {
                                 var folder = FolderManager.Instance.GetFolder(this.ddlFolders.SelectedItemValueAsInt);
@@ -350,6 +342,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                                 Logger.Error(exc);
                                 strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), strFileName);
                             }
+
                             break;
                     }
                 }
@@ -357,20 +350,21 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     strMessage = Localization.GetString("NoFile", this.LocalResourceFile);
                 }
+
                 if (this.phPaLogs.Controls.Count > 0)
                 {
                     this.tblLogs.Visible = true;
                 }
-                else if (String.IsNullOrEmpty(strMessage))
+                else if (string.IsNullOrEmpty(strMessage))
                 {
-                    Skin.AddModuleMessage(this, String.Format(Localization.GetString("FileUploadSuccess", this.LocalResourceFile), strFileName), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    Skin.AddModuleMessage(this, string.Format(Localization.GetString("FileUploadSuccess", this.LocalResourceFile), strFileName), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
                 else
                 {
                     this.lblMessage.Text = strMessage;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -378,18 +372,16 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The cmdReturn_Click runs when the Return Button is clicked
+        /// The cmdReturn_Click runs when the Return Button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdReturn_Click(Object sender, EventArgs e)
+        private void cmdReturn_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this.ReturnURL(), true);
         }
-
-		#endregion
     }
 }

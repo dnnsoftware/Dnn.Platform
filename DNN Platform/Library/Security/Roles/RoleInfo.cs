@@ -1,39 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles.Internal;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Tokens;
-using System.Web;
-
-#endregion
-
 namespace DotNetNuke.Security.Roles
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles.Internal;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Tokens;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Security.Roles
     /// Class:      RoleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The RoleInfo class provides the Entity Layer Role object
+    /// The RoleInfo class provides the Entity Layer Role object.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -51,26 +46,25 @@ namespace DotNetNuke.Security.Roles
             this.IsSystemRole = false;
         }
 
-        #region Public Properties
         /// <summary>
-        /// Gets whether this role is a system role
+        /// Gets or sets a value indicating whether gets whether this role is a system role.
         /// </summary>
         /// <value>A boolean representing whether this is a system role such as Administrators, Registered Users etc.</value>
         public bool IsSystemRole { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether users are automatically assigned to the role
+        /// Gets or sets a value indicating whether gets and sets whether users are automatically assigned to the role.
         /// </summary>
-        /// <value>A boolean (True/False)</value>
+        /// <value>A boolean (True/False).</value>
         /// -----------------------------------------------------------------------------
         public bool AutoAssignment { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Billing Frequency for the role
+        /// Gets or sets and sets the Billing Frequency for the role.
         /// </summary>
-        /// <value>A String representing the Billing Frequency of the Role<br/>
+        /// <value>A String representing the Billing Frequency of the Role.<br/>
         /// <ul>
         /// <list>N - None</list>
         /// <list>O - One time fee</list>
@@ -85,76 +79,76 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the length of the billing period
+        /// Gets or sets and sets the length of the billing period.
         /// </summary>
-        /// <value>An integer representing the length of the billing period</value>
+        /// <value>An integer representing the length of the billing period.</value>
         /// -----------------------------------------------------------------------------
         public int BillingPeriod { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an sets the Description of the Role
+        /// Gets or sets an sets the Description of the Role.
         /// </summary>
-        /// <value>A string representing the description of the role</value>
+        /// <value>A string representing the description of the role.</value>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Icon File for the role
+        /// Gets or sets and sets the Icon File for the role.
         /// </summary>
-        /// <value>A string representing the Icon File for the role</value>
+        /// <value>A string representing the Icon File for the role.</value>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the role is public
+        /// Gets or sets a value indicating whether gets and sets whether the role is public.
         /// </summary>
-        /// <value>A boolean (True/False)</value>
+        /// <value>A boolean (True/False).</value>
         /// -----------------------------------------------------------------------------
         public bool IsPublic { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Portal Id for the Role
+        /// Gets or sets and sets the Portal Id for the Role.
         /// </summary>
-        /// <value>An Integer representing the Id of the Portal</value>
+        /// <value>An Integer representing the Id of the Portal.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int PortalID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role Id
+        /// Gets or sets and sets the Role Id.
         /// </summary>
-        /// <value>An Integer representing the Id of the Role</value>
+        /// <value>An Integer representing the Id of the Role.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int RoleID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the RoleGroup Id
+        /// Gets or sets and sets the RoleGroup Id.
         /// </summary>
-        /// <value>An Integer representing the Id of the RoleGroup</value>
+        /// <value>An Integer representing the Id of the RoleGroup.</value>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int RoleGroupID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role Name
+        /// Gets or sets and sets the Role Name.
         /// </summary>
-        /// <value>A string representing the name of the role</value>
+        /// <value>A string representing the name of the role.</value>
         /// -----------------------------------------------------------------------------
         public string RoleName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Role Type
+        /// Gets the Role Type.
         /// </summary>
-        /// <value>A enum representing the type of the role</value>
+        /// <value>A enum representing the type of the role.</value>
         /// -----------------------------------------------------------------------------
         public RoleType RoleType
         {
@@ -165,38 +159,39 @@ namespace DotNetNuke.Security.Roles
                     this.GetRoleType();
                     this._RoleTypeSet = true;
                 }
+
                 return this._RoleType;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the RSVP Code for the role
+        /// Gets or sets and sets the RSVP Code for the role.
         /// </summary>
-        /// <value>A string representing the RSVP Code for the role</value>
+        /// <value>A string representing the RSVP Code for the role.</value>
         /// -----------------------------------------------------------------------------
         public string RSVPCode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the role is a security role and can be used in Permission
+        /// Gets or sets and sets whether the role is a security role and can be used in Permission
         /// Grids etc.
         /// </summary>
-        /// <value>A SecurityMode enum</value>
+        /// <value>A SecurityMode enum.</value>
         /// -----------------------------------------------------------------------------
         public SecurityMode SecurityMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the fee for the role
+        /// Gets or sets and sets the fee for the role.
         /// </summary>
-        /// <value>A single number representing the fee for the role</value>
+        /// <value>A single number representing the fee for the role.</value>
         /// -----------------------------------------------------------------------------
         public float ServiceFee { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the role settings
+        /// Gets the role settings.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
@@ -213,25 +208,25 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the status for the role
+        /// Gets or sets and sets the status for the role.
         /// </summary>
-        /// <value>An enumerated value Pending, Disabled, Approved</value>
+        /// <value>An enumerated value Pending, Disabled, Approved.</value>
         /// -----------------------------------------------------------------------------
         public RoleStatus Status { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the trial fee for the role
+        /// Gets or sets and sets the trial fee for the role.
         /// </summary>
-        /// <value>A single number representing the trial fee for the role</value>
+        /// <value>A single number representing the trial fee for the role.</value>
         /// -----------------------------------------------------------------------------
         public float TrialFee { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Trial Frequency for the role
+        /// Gets or sets and sets the Trial Frequency for the role.
         /// </summary>
-        /// <value>A String representing the Trial Frequency of the Role<br/>
+        /// <value>A String representing the Trial Frequency of the Role.<br/>
         /// <ul>
         /// <list>N - None</list>
         /// <list>O - One time fee</list>
@@ -246,17 +241,17 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the length of the trial period
+        /// Gets or sets and sets the length of the trial period.
         /// </summary>
-        /// <value>An integer representing the length of the trial period</value>
+        /// <value>An integer representing the length of the trial period.</value>
         /// -----------------------------------------------------------------------------
         public int TrialPeriod { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the number of users in the role
+        /// Gets the number of users in the role.
         /// </summary>
-        /// <value>An integer representing the number of users</value>
+        /// <value>An integer representing the number of users.</value>
         /// -----------------------------------------------------------------------------
         public int UserCount { get; private set; }
 
@@ -266,25 +261,22 @@ namespace DotNetNuke.Security.Roles
             {
                 string photoURL = Globals.ApplicationPath + "/images/sample-group-profile.jpg";
 
-                if ((this.IconFile != null))
+                if (this.IconFile != null)
                 {
                     if (!string.IsNullOrEmpty(this.IconFile))
                     {
                         IFileInfo fileInfo =
                             FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
-                        if ((fileInfo != null))
+                        if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
                         }
                     }
                 }
+
                 return photoURL;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void GetRoleType()
         {
@@ -307,15 +299,11 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
-
-        #region IHydratable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a RoleInfo from a Data Reader
+        /// Fills a RoleInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
@@ -335,7 +323,7 @@ namespace DotNetNuke.Security.Roles
             this.RSVPCode = Null.SetNullString(dr["RSVPCode"]);
             this.IconFile = Null.SetNullString(dr["IconFile"]);
 
-            //New properties may not be present if called before 6.2 Upgrade has been executed
+            // New properties may not be present if called before 6.2 Upgrade has been executed
             try
             {
                 int mode = Null.SetNullInteger(dr["SecurityMode"]);
@@ -352,7 +340,6 @@ namespace DotNetNuke.Security.Roles
                         break;
                 }
 
-
                 int status = Null.SetNullInteger(dr["Status"]);
                 switch (status)
                 {
@@ -366,7 +353,8 @@ namespace DotNetNuke.Security.Roles
                         this.Status = RoleStatus.Approved;
                         break;
                 }
-                //check for values only relevant to UserRoles
+
+                // check for values only relevant to UserRoles
                 var schema = dr.GetSchemaTable();
                 if (schema != null)
                 {
@@ -374,39 +362,33 @@ namespace DotNetNuke.Security.Roles
                     {
                         this.UserCount = Null.SetNullInteger(dr["UserCount"]);
                     }
+
                     if (schema.Select("ColumnName = 'IsSystemRole'").Length > 0)
                     {
                         this.IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
                     }
                 }
-
-
             }
             catch (IndexOutOfRangeException)
             {
-                //do nothing
+                // do nothing
             }
 
-
-            //Fill base class fields
+            // Fill base class fields
             this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {
             get { return this.RoleID; }
             set { this.RoleID = value; }
         }
-
-        #endregion
-
-        #region IPropertyAccess Members
 
         public CacheLevel Cacheability
         {
@@ -425,6 +407,7 @@ namespace DotNetNuke.Security.Roles
             {
                 OutputFormat = format;
             }
+
             string propName = propertyName.ToLowerInvariant();
             switch (propName)
             {
@@ -485,14 +468,11 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        #endregion
-
-        #region IXmlSerializable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the RoleInfo
+        /// Gets an XmlSchema for the RoleInfo.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -501,13 +481,13 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a RoleInfo from an XmlReader
+        /// Reads a RoleInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
-            //Set status to approved by default
+            // Set status to approved by default
             this.Status = RoleStatus.Approved;
 
             while (reader.Read())
@@ -516,10 +496,12 @@ namespace DotNetNuke.Security.Roles
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 if (reader.NodeType == XmlNodeType.Element)
                 {
                     switch (reader.Name.ToLowerInvariant())
@@ -538,6 +520,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.BillingFrequency = "N";
                             }
+
                             break;
                         case "billingperiod":
                             this.BillingPeriod = reader.ReadElementContentAsInt();
@@ -548,6 +531,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.ServiceFee = 0;
                             }
+
                             break;
                         case "trialfrequency":
                             this.TrialFrequency = reader.ReadElementContentAsString();
@@ -555,6 +539,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.TrialFrequency = "N";
                             }
+
                             break;
                         case "trialperiod":
                             this.TrialPeriod = reader.ReadElementContentAsInt();
@@ -565,6 +550,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.TrialFee = 0;
                             }
+
                             break;
                         case "ispublic":
                             this.IsPublic = reader.ReadElementContentAsBoolean();
@@ -600,6 +586,7 @@ namespace DotNetNuke.Security.Roles
                                     this._RoleType = RoleType.None;
                                     break;
                             }
+
                             this._RoleTypeSet = true;
                             break;
                         case "securitymode":
@@ -615,6 +602,7 @@ namespace DotNetNuke.Security.Roles
                                     this.SecurityMode = SecurityMode.Both;
                                     break;
                             }
+
                             break;
                         case "status":
                             switch (reader.ReadElementContentAsString())
@@ -629,12 +617,14 @@ namespace DotNetNuke.Security.Roles
                                     this.Status = RoleStatus.Approved;
                                     break;
                             }
+
                             break;
                         default:
-                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }
@@ -643,16 +633,16 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a RoleInfo to an XmlWriter
+        /// Writes a RoleInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("role");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("rolename", this.RoleName);
             writer.WriteElementString("description", this.Description);
             writer.WriteElementString("billingfrequency", this.BillingFrequency);
@@ -697,6 +687,7 @@ namespace DotNetNuke.Security.Roles
                     writer.WriteElementString("securitymode", "both");
                     break;
             }
+
             switch (this.Status)
             {
                 case RoleStatus.Pending:
@@ -710,11 +701,9 @@ namespace DotNetNuke.Security.Roles
                     break;
             }
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
-
-        #endregion
 
         private string GetString(string keyName, string defaultValue)
         {
@@ -722,6 +711,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return defaultValue;
             }
+
             if (this.Settings.ContainsKey(keyName))
             {
                 return this.Settings[keyName];
@@ -732,11 +722,12 @@ namespace DotNetNuke.Security.Roles
 
         private string FormatUrl(string url)
         {
-            if (url.StartsWith("/") && HttpContext.Current != null) 
+            if (url.StartsWith("/") && HttpContext.Current != null)
             {
-                //server absolute path
+                // server absolute path
                 return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
             }
+
             return url;
         }
     }

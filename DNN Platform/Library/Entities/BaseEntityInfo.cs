@@ -1,25 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-
-#endregion
-
 namespace DotNetNuke.Entities
 {
+    using System;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Users;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities
-    /// Class	 : BaseEntityInfo
+    /// Class    : BaseEntityInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// BaseEntityInfo provides auditing fields for Core tables.
@@ -36,46 +31,50 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the CreatedByUserID
+        /// Gets the CreatedByUserID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public int CreatedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the CreatedOnDate
+        /// Gets the CreatedOnDate.
         /// </summary>
-        /// <returns>A DateTime</returns>
+        /// <returns>A DateTime.</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public DateTime CreatedOnDate { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the LastModifiedByUserID
+        /// Gets the LastModifiedByUserID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public int LastModifiedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the LastModifiedOnDate
+        /// Gets the LastModifiedOnDate.
         /// </summary>
-        /// <returns>A DateTime</returns>
+        /// <returns>A DateTime.</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public DateTime LastModifiedOnDate { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserInfo object associated with this user
+        /// Gets the UserInfo object associated with this user.
         /// </summary>
-		/// <param name="portalId">The PortalID associated with the desired user</param>
-        /// <returns>A UserInfo object</returns>
+        /// <param name="portalId">The PortalID associated with the desired user.</param>
+        /// <returns>A UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public UserInfo CreatedByUser(int portalId)
         {
@@ -84,15 +83,16 @@ namespace DotNetNuke.Entities
                 UserInfo user = UserController.GetUserById(portalId, this.CreatedByUserID);
                 return user;
             }
+
             return null;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserInfo object associated with this user
+        /// Gets the UserInfo object associated with this user.
         /// </summary>
-		/// <param name="portalId">The PortalID associated with the desired user</param>
-        /// <returns>A UserInfo object</returns>
+        /// <param name="portalId">The PortalID associated with the desired user.</param>
+        /// <returns>A UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public UserInfo LastModifiedByUser(int portalId)
         {
@@ -101,14 +101,15 @@ namespace DotNetNuke.Entities
                 UserInfo user = UserController.GetUserById(portalId, this.LastModifiedByUserID);
                 return user;
             }
+
             return null;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a BaseEntityInfo from a Data Reader
+        /// Fills a BaseEntityInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void FillInternal(IDataReader dr)
         {
@@ -118,18 +119,18 @@ namespace DotNetNuke.Entities
             this.LastModifiedOnDate = Null.SetNullDateTime(dr["LastModifiedOnDate"]);
         }
 
-		protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
-		{
-			clonedItem.CreatedByUserID = originalItem.CreatedByUserID;
-			clonedItem.CreatedOnDate = originalItem.CreatedOnDate;
-			clonedItem.LastModifiedByUserID = originalItem.LastModifiedByUserID;
-			clonedItem.LastModifiedOnDate = originalItem.LastModifiedOnDate;
-		}
+        protected void CloneBaseProperties(BaseEntityInfo clonedItem, BaseEntityInfo originalItem)
+        {
+            clonedItem.CreatedByUserID = originalItem.CreatedByUserID;
+            clonedItem.CreatedOnDate = originalItem.CreatedOnDate;
+            clonedItem.LastModifiedByUserID = originalItem.LastModifiedByUserID;
+            clonedItem.LastModifiedOnDate = originalItem.LastModifiedOnDate;
+        }
 
         /// <summary>
-        /// method used by cbo to fill readonly properties ignored by HydrateObject reflection
+        /// method used by cbo to fill readonly properties ignored by HydrateObject reflection.
         /// </summary>
-        /// <param name="dr">the data reader to use</param>
+        /// <param name="dr">the data reader to use.</param>
         /// <remarks></remarks>
         internal void FillBaseProperties(IDataReader dr)
         {

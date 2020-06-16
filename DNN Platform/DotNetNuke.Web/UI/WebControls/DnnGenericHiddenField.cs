@@ -2,27 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Specialized;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-
-
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGenericHiddenField<T> : HiddenField where T : class, new()
-    {
+    using System.Collections.Specialized;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common.Utilities;
+
+    public class DnnGenericHiddenField<T> : HiddenField
+        where T : class, new()
+    {
         private T _typedValue = null;
 
         private bool _isValueSerialized = false;
+
         public T TypedValue
         {
             get
             {
                 return this._typedValue;
             }
+
             set
             {
                 this._typedValue = value;
@@ -62,6 +63,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.SetTypedValue();
             }
+
             return controlsStateChanged;
         }
 
@@ -95,6 +97,5 @@ namespace DotNetNuke.Web.UI.WebControls
             this.EnsureValue();
             base.RenderControl(writer);
         }
-
     }
 }

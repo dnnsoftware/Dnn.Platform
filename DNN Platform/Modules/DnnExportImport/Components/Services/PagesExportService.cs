@@ -2,43 +2,44 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Controllers;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Engines;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Providers;
-using Dnn.ExportImport.Dto.Pages;
-using Dnn.ExportImport.Dto.Workflow;
-using Dnn.ExportImport.Repository;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Workflow;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
-using Util = Dnn.ExportImport.Components.Common.Util;
-using InstallerUtil = DotNetNuke.Services.Installer.Util;
-using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
-
 // ReSharper disable SuggestBaseTypeForParameter
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Controllers;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Engines;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Dto.Pages;
+    using Dnn.ExportImport.Dto.Workflow;
+    using Dnn.ExportImport.Repository;
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
+    using InstallerUtil = DotNetNuke.Services.Installer.Util;
+    using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
+    using Util = Dnn.ExportImport.Components.Common.Util;
+
     /// <summary>
     /// Service to export/import pages/tabs.
     /// </summary>
@@ -73,8 +74,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
 
             var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.CheckedWithAllChildren);
             if (checkedPages.Any())
@@ -95,8 +103,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
 
             this._exportImportJob = importJob;
             this._importDto = importDto;
@@ -118,8 +133,6 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
         }
 
-        #region import methods
-
         private void ProcessImportPages()
         {
             this._dataProvider = DataProvider.Instance();
@@ -134,9 +147,13 @@ namespace Dnn.ExportImport.Components.Services
             var exportedTabs = this.Repository.GetItems<ExportTab>(x => x.IsSystem == (this.Category == Constants.Category_Templates))
                 .OrderBy(t => t.Level).ThenBy(t => t.ParentId).ThenBy(t => t.TabOrder).ToList();
 
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportedTabs.Count : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < this._totals.LastProcessedId);
 
             var index = 0;
@@ -144,20 +161,30 @@ namespace Dnn.ExportImport.Components.Services
             this._importContentList.Clear();
             foreach (var otherTab in exportedTabs)
             {
-                if (this.CheckCancelled(this._exportImportJob)) break;
-                if (this._totals.LastProcessedId > index) continue; // this is the exported DB row ID; not the TabID
+                if (this.CheckCancelled(this._exportImportJob))
+                {
+                    break;
+                }
+
+                if (this._totals.LastProcessedId > index)
+                {
+                    continue; // this is the exported DB row ID; not the TabID
+                }
 
                 this.ProcessImportPage(otherTab, exportedTabs, localTabs, referenceTabs);
 
                 this.CheckPoint.ProcessedItems++;
                 this.CheckPoint.Progress += progressStep;
-                if (this.CheckPointStageCallback(this)) break;
+                if (this.CheckPointStageCallback(this))
+                {
+                    break;
+                }
 
                 this._totals.LastProcessedId = index++;
                 this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
             }
 
-            //repair pages which linked to other pages
+            // repair pages which linked to other pages
             this.RepairReferenceTabs(referenceTabs, localTabs, exportedTabs);
 
             this._searchedParentTabs.Clear();
@@ -185,7 +212,11 @@ namespace Dnn.ExportImport.Components.Services
                         this.Result.AddLogEntry("Ignored Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                         break;
                     case CollisionResolution.Overwrite:
-                        if (!this.IsTabPublished(localTab)) return;
+                        if (!this.IsTabPublished(localTab))
+                        {
+                            return;
+                        }
+
                         SetTabData(localTab, otherTab);
                         localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                         var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
@@ -196,8 +227,10 @@ namespace Dnn.ExportImport.Components.Services
                                 this.Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                                 return;
                             }
+
                             this.CheckForPartialImportedTabs(otherTab);
                         }
+
                         var tabType = Globals.GetURLType(otherTab.Url);
                         if (tabType == TabType.Tab && !referenceTabs.Contains(localTab.TabID))
                         {
@@ -207,12 +240,14 @@ namespace Dnn.ExportImport.Components.Services
                         // this is not saved when adding the tab; so set it explicitly
                         localTab.IsVisible = otherTab.IsVisible;
                         EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
-                        //Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
+
+                        // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                         if (localTab.UniqueId != otherTab.UniqueId && !DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                         {
                             localTab.UniqueId = otherTab.UniqueId;
                             this.UpdateTabUniqueId(localTab.TabID, localTab.UniqueId);
                         }
+
                         try
                         {
                             localTab.TabPermissions.Clear(); // without this the UpdateTab() could fail
@@ -221,6 +256,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 localTab.Url = otherTab.Url;
                             }
+
                             this.SetPartialImportSettings(otherTab, localTab);
                             this._tabController.UpdateTab(localTab);
 
@@ -269,6 +305,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         localTab.Url = otherTab.Url;
                     }
+
                     localTab.UniqueId = Guid.NewGuid();
                     this.SetPartialImportSettings(otherTab, localTab);
                     otherTab.LocalId = localTab.TabID = this._tabController.AddTab(localTab, false);
@@ -296,8 +333,9 @@ namespace Dnn.ExportImport.Components.Services
                 // this is not saved upon updating the tab
                 localTab.IsVisible = otherTab.IsVisible;
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
-                //_tabController.UpdateTab(localTab); // to clear cache
-                //Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
+
+                // _tabController.UpdateTab(localTab); // to clear cache
+                // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                 if (!DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                 {
                     localTab.UniqueId = otherTab.UniqueId;
@@ -310,6 +348,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.AddTabRelatedItems(localTab, otherTab, true);
                 this.TriggerImportEvent(localTab);
             }
+
             var portalSettings = new PortalSettings(portalId);
 
             if (otherTab.IsDeleted)
@@ -324,6 +363,7 @@ namespace Dnn.ExportImport.Components.Services
                     this.RestoreTab(tab, portalSettings);
                 }
             }
+
             this.UpdateParentInPartialImportTabs(localTab, otherTab, portalId, exportedTabs, localTabs);
         }
 
@@ -369,7 +409,6 @@ namespace Dnn.ExportImport.Components.Services
             // 3. Find corresponding id of local default lang tab
             // 4. Take UniqueId of local default lang tab and set it for the page we are going to create/update
             // 5. Use fallback value if something from above scenario does not work
-
             if (exportedTab.DefaultLanguageGuid == Null.NullGuid)
             {
                 return;
@@ -388,6 +427,7 @@ namespace Dnn.ExportImport.Components.Services
                     return;
                 }
             }
+
             localTab.DefaultLanguageGuid = exportedTab.DefaultLanguageGuid ?? Null.NullGuid;
         }
 
@@ -395,7 +435,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             try
             {
-                //update tab with import flag, to trigger update event handler.
+                // update tab with import flag, to trigger update event handler.
                 if (localTab.TabSettings.ContainsKey("TabImported"))
                 {
                     localTab.TabSettings["TabImported"] = "Y";
@@ -404,6 +444,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     localTab.TabSettings.Add("TabImported", "Y");
                 }
+
                 this._tabController.UpdateTab(localTab);
                 TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
@@ -455,6 +496,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 goto case CollisionResolution.Ignore;
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored tab setting", other.SettingName);
@@ -470,7 +512,11 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
-            if (!this._exportDto.IncludePermissions) return 0;
+            if (!this._exportDto.IncludePermissions)
+            {
+                return 0;
+            }
+
             var noRole = Convert.ToInt32(Globals.glbRoleNothing);
             var count = 0;
             var tabPermissions = this.Repository.GetRelatedItems<ExportTabPermission>(otherTab.Id).ToList();
@@ -502,15 +548,14 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (isUpdate)
                 {
-                    //UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
-                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                    // UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
+                    // Result.AddLogEntry("Updated tab permission", other.PermissionKey);
                 }
                 else
                 {
                     var permissionId = DataProvider.Instance().GetPermissionId(other.PermissionCode, other.PermissionKey, other.PermissionName);
                     if (permissionId != null)
                     {
-
                         local = new TabPermissionInfo
                         {
                             TabID = localTab.TabID,
@@ -522,39 +567,47 @@ namespace Dnn.ExportImport.Components.Services
                             PermissionKey = other.PermissionKey,
                             PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
-                            PermissionID = permissionId.Value
+                            PermissionID = permissionId.Value,
                         };
                         if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                         {
                             if (userId == null)
                             {
-                                this.Result.AddLogEntry("Couldn't add tab permission; User is undefined!",
+                                this.Result.AddLogEntry(
+                                    "Couldn't add tab permission; User is undefined!",
                                     $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                                 continue;
                             }
+
                             local.UserID = userId.Value;
                         }
+
                         if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                         {
                             if (roleId == null)
                             {
-                                this.Result.AddLogEntry("Couldn't add tab permission; Role is undefined!",
+                                this.Result.AddLogEntry(
+                                    "Couldn't add tab permission; Role is undefined!",
                                     $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                                 continue;
                             }
+
                             local.RoleID = roleId.Value;
                         }
+
                         localTab.TabPermissions.Add(local, true);
-                        //UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
-                        //var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        //var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        //UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
+
+                        // UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
+                        // var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        // var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        // UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
                         this.Result.AddLogEntry("Added tab permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
                     else
                     {
-                        this.Result.AddLogEntry("Couldn't add tab permission; Permission is undefined!",
+                        this.Result.AddLogEntry(
+                            "Couldn't add tab permission; Permission is undefined!",
                             $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                     }
                 }
@@ -592,6 +645,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 this.Result.AddLogEntry("EXCEPTION updating tab, Tab ID=" + local.TabId, ex.Message, ReportLevel.Error);
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored tab url", other.Url);
@@ -663,12 +717,16 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
-                if (otherModule == null) continue; // must not happen
+                if (otherModule == null)
+                {
+                    continue; // must not happen
+                }
 
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(other.FriendlyName);
                 if (moduleDefinition == null)
                 {
-                    this.Result.AddLogEntry("Error adding tab module, ModuleDef=" + other.FriendlyName,
+                    this.Result.AddLogEntry(
+                        "Error adding tab module, ModuleDef=" + other.FriendlyName,
                         "The modue definition is not present in the system", ReportLevel.Error);
                     continue; // the module is not installed, therefore ignore it
                 }
@@ -705,7 +763,8 @@ namespace Dnn.ExportImport.Components.Services
                         Header = other.Header,
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
-                        //UniqueId = other.UniqueId,
+
+                        // UniqueId = other.UniqueId,
                         UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -715,13 +774,13 @@ namespace Dnn.ExportImport.Components.Services
                         IsShareableViewOnly = other.IsShareableViewOnly,
                         StartDate = otherModule.StartDate.GetValueOrDefault(DateTime.MinValue),
                         EndDate = otherModule.EndDate.GetValueOrDefault(DateTime.MinValue),
-                        PortalID = this._exportImportJob.PortalId
+                        PortalID = this._exportImportJob.PortalId,
                     };
 
-                    //Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
+                    // Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
                     try
                     {
-                        //this will create up to 2 records:  Module (if it is not already there) and TabModule
+                        // this will create up to 2 records:  Module (if it is not already there) and TabModule
                         otherModule.LocalId = this._moduleController.AddModule(local);
                         other.LocalId = local.TabModuleID;
                         this.Repository.UpdateItem(otherModule);
@@ -804,7 +863,8 @@ namespace Dnn.ExportImport.Components.Services
                                     Header = other.Header,
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
-                                    //UniqueId = other.UniqueId,
+
+                                    // UniqueId = other.UniqueId,
                                     UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -812,10 +872,10 @@ namespace Dnn.ExportImport.Components.Services
                                     InheritViewPermissions = other.InheritViewPermissions,
                                     IsShareable = other.IsShareable,
                                     IsShareableViewOnly = other.IsShareableViewOnly,
-                                    PortalID = this._exportImportJob.PortalId
+                                    PortalID = this._exportImportJob.PortalId,
                                 };
 
-                                //this will create up to 2 records:  Module (if it is not already there) and TabModule
+                                // this will create up to 2 records:  Module (if it is not already there) and TabModule
                                 otherModule.LocalId = this._moduleController.AddModule(local);
                                 other.LocalId = local.TabModuleID;
                                 this.Repository.UpdateItem(otherModule);
@@ -826,9 +886,13 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     local.IsDeleted = other.IsDeleted;
                                     if (other.IsDeleted)
+                                    {
                                         this._moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    }
                                     else
+                                    {
                                         this._moduleController.RestoreModule(local);
+                                    }
                                 }
                             }
                             else
@@ -954,17 +1018,18 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         Logger.Error(new Exception($"Delete TabModule Failed: {moduleId}", ex));
                     }
+
                     this.Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);
                 }
             }
 
             return count;
         }
-        
+
         /*
-            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted. 
+            Update Modules.IsDeleted with ExportModule.IsDeleted and not ExportTabModule.IsDeleted.
             ExportTabModule.IsDeleted may different from ExportModule.IsDeleted when Module is deleted.
-            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after 
+            Change ModuleInfo.IsDeleted to ExportModule.IsDeleted and reverting to ExportMabModule.IsDeleted after
             updating Modules.
         */
         private void UpdateModuleWithIsDeletedHandling(ExportTabModule exportTabModule, ExportModule exportModule, ModuleInfo importModule)
@@ -1085,6 +1150,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 goto case CollisionResolution.Ignore;
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored module setting", other.SettingName);
@@ -1114,7 +1180,6 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (permissionId != null)
                 {
-
                     var local = new ModulePermissionInfo
                     {
                         ModuleID = localModule.ModuleID,
@@ -1125,18 +1190,25 @@ namespace Dnn.ExportImport.Components.Services
                         PermissionKey = other.PermissionKey,
                         PermissionName = other.PermissionName,
                         AllowAccess = other.AllowAccess,
-                        PermissionID = permissionId.Value
+                        PermissionID = permissionId.Value,
                     };
                     if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                     {
                         if (userId == null)
+                        {
                             continue;
+                        }
+
                         local.UserID = userId.Value;
                     }
+
                     if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                     {
                         if (roleId == null)
+                        {
                             continue;
+                        }
+
                         local.RoleID = roleId.Value;
                     }
 
@@ -1173,7 +1245,7 @@ namespace Dnn.ExportImport.Components.Services
                             var controller = businessController as IPortable;
                             if (controller != null)
                             {
-                                //Note: there is no chek whether the content exists or not to manage conflict resolution
+                                // Note: there is no chek whether the content exists or not to manage conflict resolution
                                 if (isNew || this._importDto.CollisionResolution == CollisionResolution.Overwrite)
                                 {
                                     var restoreCount = 0;
@@ -1204,7 +1276,8 @@ namespace Dnn.ExportImport.Components.Services
                                                 catch (Exception ex)
                                                 {
                                                     this.Result.AddLogEntry("Error importing module data, Module ID=" + localModule.ModuleID, ex.Message, ReportLevel.Error);
-                                                    Logger.ErrorFormat("ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
+                                                    Logger.ErrorFormat(
+                                                        "ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
                                                         localModule.ModuleID, ex, Environment.NewLine, moduleContent.XmlContent);
                                                 }
                                             }
@@ -1227,6 +1300,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return 0;
         }
 
@@ -1245,7 +1319,8 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        private void DisableVersioning(int tabId,
+        private void DisableVersioning(
+            int tabId,
             out bool versionEnabledPortalLevel,
             out bool versionEnabledTabLevel,
             out bool workflowEnabledPortalLevel,
@@ -1263,7 +1338,8 @@ namespace Dnn.ExportImport.Components.Services
             workflowSettings.SetWorkflowEnabled(portalId, tabId, false);
         }
 
-        private void RestoreVersioning(int tabId,
+        private void RestoreVersioning(
+            int tabId,
             bool versionEnabledPortalLevel,
             bool versionEnabledTabLevel,
             bool workflowEnabledPortalLevel,
@@ -1282,7 +1358,7 @@ namespace Dnn.ExportImport.Components.Services
             var tabModuleSettings = this.Repository.GetRelatedItems<ExportTabModuleSetting>(otherTabModule.Id).ToList();
             foreach (var other in tabModuleSettings)
             {
-                var localValue = isNew ? "" : Convert.ToString(localTabModule.TabModuleSettings[other.SettingName]);
+                var localValue = isNew ? string.Empty : Convert.ToString(localTabModule.TabModuleSettings[other.SettingName]);
                 if (string.IsNullOrEmpty(localValue))
                 {
                     // the next will clear the cache
@@ -1314,6 +1390,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 goto case CollisionResolution.Ignore;
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored module setting", other.SettingName);
@@ -1343,7 +1420,9 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         var localTab = localTabs.FirstOrDefault(t => t.TabID == otherParent.LocalId);
                         if (localTab != null)
+                        {
                             return localTab.TabID;
+                        }
                     }
                 }
                 else if (exportedTab.TabPath.HasValue())
@@ -1356,7 +1435,9 @@ namespace Dnn.ExportImport.Components.Services
                             path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
                             && IsSameCulture(t.CultureCode, exportedTab.CultureCode));
                         if (localTab != null)
+                        {
                             return localTab.TabID;
+                        }
                     }
                 }
             }
@@ -1382,7 +1463,8 @@ namespace Dnn.ExportImport.Components.Services
             localTab.Title = otherTab.Title;
             localTab.Description = otherTab.Description;
             localTab.KeyWords = otherTab.KeyWords;
-            //localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
+
+            // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
             localTab.Url = otherTab.Url;
             localTab.SkinSrc = otherTab.SkinSrc;
             localTab.ContainerSrc = otherTab.ContainerSrc;
@@ -1395,7 +1477,8 @@ namespace Dnn.ExportImport.Components.Services
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
-            //localTab.UniqueId = otherTab.UniqueId;
+
+            // localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
             localTab.Level = otherTab.Level;
@@ -1411,7 +1494,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var tabId in referenceTabs)
             {
                 var localTab = localTabs.FirstOrDefault(t => t.TabID == tabId);
-                if (localTab != null && Int32.TryParse(localTab.Url, out int urlTabId))
+                if (localTab != null && int.TryParse(localTab.Url, out int urlTabId))
                 {
                     var exportTab = exportTabs.FirstOrDefault(t => t.TabId == urlTabId);
                     if (exportTab != null && exportTab.LocalId.HasValue)
@@ -1422,8 +1505,6 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
         }
-
-        #region Methods for updating CreatedBy and ModifiedBy of various tables
 
         private void UpdateTabChangers(int tabId, int createdBy, int modifiedBy)
         {
@@ -1481,13 +1562,6 @@ namespace Dnn.ExportImport.Components.Services
             this._dataProvider.UpdateUniqueId("TabModules", "TabModuleID", tabModuleId, uniqueId);
         }
 
-
-        #endregion
-
-        #endregion
-
-        #region export methods
-
         private void ProcessExportPages()
         {
             var selectedPages = this._exportDto.Pages;
@@ -1502,31 +1576,43 @@ namespace Dnn.ExportImport.Components.Services
             var isAllIncluded =
                 selectedPages.Any(p => p.TabId == -1 && p.CheckedState == TriCheckedState.CheckedWithAllChildren);
 
-            var allTabs = EntitiesController.Instance.GetPortalTabs(portalId,
-                    this._exportDto.IncludeDeletions, this.IncludeSystem, toDate, fromDate) // ordered by TabID
+            var allTabs = EntitiesController.Instance.GetPortalTabs(
+                portalId,
+                this._exportDto.IncludeDeletions, this.IncludeSystem, toDate, fromDate) // ordered by TabID
                 .OrderBy(tab => tab.TabPath).ToArray();
 
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? allTabs.Length : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var progressStep = 100.0 / allTabs.Length;
 
             this.CheckPoint.TotalItems = this.IncludeSystem || isAllIncluded
                 ? allTabs.Length
                 : allTabs.Count(otherPg => IsTabIncluded(otherPg, allTabs, selectedPages));
 
-            //Note: We assume no new tabs were added while running; otherwise, some tabs might get skipped.
+            // Note: We assume no new tabs were added while running; otherwise, some tabs might get skipped.
             for (var index = 0; index < allTabs.Length; index++)
             {
-                if (this.CheckCancelled(this._exportImportJob)) break;
+                if (this.CheckCancelled(this._exportImportJob))
+                {
+                    break;
+                }
 
                 var otherPg = allTabs.ElementAt(index);
-                if (this._totals.LastProcessedId > index) continue;
+                if (this._totals.LastProcessedId > index)
+                {
+                    continue;
+                }
 
                 if (this.IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = this._tabController.GetTab(otherPg.TabID, portalId);
-                    //Do not export tab which has never been published.
+
+                    // Do not export tab which has never been published.
                     if (tab.HasBeenPublished)
                     {
                         var exportPage = this.SaveExportPage(tab);
@@ -1550,13 +1636,17 @@ namespace Dnn.ExportImport.Components.Services
                             this.ExportTabModuleSettings(exportPage, this._exportDto.IncludeDeletions, toDate, fromDate);
                         this._totals.TotalTabs++;
                     }
+
                     this._totals.LastProcessedId = index;
                 }
 
                 this.CheckPoint.Progress += progressStep;
                 this.CheckPoint.ProcessedItems++;
                 this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
-                if (this.CheckPointStageCallback(this)) break;
+                if (this.CheckPointStageCallback(this))
+                {
+                    break;
+                }
             }
 
             this.ReportExportTotals();
@@ -1567,17 +1657,26 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, toDate, fromDate);
             if (tabSettings.Count > 0)
+            {
                 this.Repository.CreateItems(tabSettings, exportPage.Id);
+            }
+
             return tabSettings.Count;
         }
 
         private int ExportTabPermissions(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            if (!this._exportDto.IncludePermissions) return 0;
+            if (!this._exportDto.IncludePermissions)
+            {
+                return 0;
+            }
 
             var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, toDate, fromDate);
             if (tabPermissions.Count > 0)
+            {
                 this.Repository.CreateItems(tabPermissions, exportPage.Id);
+            }
+
             return tabPermissions.Count;
         }
 
@@ -1585,7 +1684,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, toDate, fromDate);
             if (tabUrls.Count > 0)
+            {
                 this.Repository.CreateItems(tabUrls, exportPage.Id);
+            }
+
             return tabUrls.Count;
         }
 
@@ -1593,7 +1695,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModules.Count > 0)
+            {
                 this.Repository.CreateItems(tabModules, exportPage.Id);
+            }
+
             return tabModules.Count;
         }
 
@@ -1601,7 +1706,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModuleSettings.Count > 0)
+            {
                 this.Repository.CreateItems(tabModuleSettings, exportPage.Id);
+            }
+
             return tabModuleSettings.Count;
         }
 
@@ -1651,12 +1759,13 @@ namespace Dnn.ExportImport.Components.Services
                         var offset = Path.GetDirectoryName(filePath)?.Length + 1;
                         CompressionUtil.AddFileToArchive(filePath, packageZipFile, offset.GetValueOrDefault(0));
 
-                        this.Repository.CreateItem(new ExportPackage
+                        this.Repository.CreateItem(
+                            new ExportPackage
                         {
                             PackageName = package.Name,
                             Version = package.Version,
                             PackageType = package.PackageType,
-                            PackageFileName = InstallerUtil.GetPackageBackupName(package)
+                            PackageFileName = InstallerUtil.GetPackageBackupName(package),
                         }, null);
 
                         this._exportedModuleDefinitions.Add(exportModule.ModuleDefID);
@@ -1667,9 +1776,9 @@ namespace Dnn.ExportImport.Components.Services
                         Logger.Error(ex);
                         return 0;
                     }
-
                 }
             }
+
             return 0;
         }
 
@@ -1677,7 +1786,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var moduleSettings = EntitiesController.Instance.GetModuleSettings(exportModule.ModuleID, toDate, fromDate);
             if (moduleSettings.Count > 0)
+            {
                 this.Repository.CreateItems(moduleSettings, exportModule.Id);
+            }
+
             return moduleSettings.Count;
         }
 
@@ -1685,13 +1797,17 @@ namespace Dnn.ExportImport.Components.Services
         {
             var modulePermission = EntitiesController.Instance.GetModulePermissions(exportModule.ModuleID, toDate, fromDate);
             if (modulePermission.Count > 0)
+            {
                 this.Repository.CreateItems(modulePermission, exportModule.Id);
+            }
+
             return modulePermission.Count;
         }
 
         // Note: until now there is no use of time range for content
         // ReSharper disable UnusedParameter.Local
         private int ExportPortableContent(ExportTab exportPage, ExportModule exportModule, DateTime toDate, DateTime? fromDat)
+
         // ReSharper enable UnusedParameter.Local
         {
             // check if module's contnt was exported before
@@ -1709,7 +1825,8 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             try
                             {
-                                var businessController = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass,
+                                var businessController = Reflection.CreateObject(
+                                    module.DesktopModule.BusinessControllerClass,
                                     module.DesktopModule.BusinessControllerClass);
                                 var controller = businessController as IPortable;
                                 var content = controller?.ExportModule(module.ModuleID);
@@ -1739,6 +1856,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return 0;
         }
 
@@ -1783,16 +1901,12 @@ namespace Dnn.ExportImport.Components.Services
                 TabPath = tab.TabPath,
                 HasBeenPublished = tab.HasBeenPublished,
                 IsSystem = tab.IsSystem,
-                StateID = tab.StateID
+                StateID = tab.StateID,
             };
             this.Repository.CreateItem(exportPage, null);
             this.Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
             return exportPage;
         }
-
-        #endregion
-
-        #region helper methods
 
         private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
         {
@@ -1837,6 +1951,7 @@ namespace Dnn.ExportImport.Components.Services
                     items.ForEach(item => item.IsRestored = false);
                     repository.UpdateItems(items);
                 }
+
                 toSkip += batchSize;
                 totalCount -= batchSize;
             }
@@ -1868,12 +1983,12 @@ namespace Dnn.ExportImport.Components.Services
 
         private void UpdateTotalProcessedPackages()
         {
-            //HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
+            // HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
             var packagesCheckpoint = EntitiesController.Instance.GetJobChekpoints(this._exportImportJob.JobId).FirstOrDefault(
                 cp => cp.Category == Constants.Category_Packages);
             if (packagesCheckpoint != null)
             {
-                //Note: if restart of job occurs, these will report wrong values
+                // Note: if restart of job occurs, these will report wrong values
                 packagesCheckpoint.TotalItems += this._totals.TotalPackages;
                 packagesCheckpoint.ProcessedItems += this._totals.TotalPackages;
                 EntitiesController.Instance.UpdateJobChekpoint(packagesCheckpoint);
@@ -1884,22 +1999,46 @@ namespace Dnn.ExportImport.Components.Services
         {
             var exportWorkflowState = this.Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedStateId);
             var stateId = exportWorkflowState?.LocalId ?? Null.NullInteger;
-            if (stateId <= 0) return stateId;
+            if (stateId <= 0)
+            {
+                return stateId;
+            }
+
             var state = WorkflowStateManager.Instance.GetWorkflowState(stateId);
-            if (state == null) return -1;
+            if (state == null)
+            {
+                return -1;
+            }
+
             var workflow = WorkflowManager.Instance.GetWorkflow(state.WorkflowID);
-            if (workflow == null) return -1;
+            if (workflow == null)
+            {
+                return -1;
+            }
+
             return workflow.FirstState.StateID;
         }
 
         private bool IsTabPublished(TabInfo tab)
         {
             var stateId = tab.StateID;
-            if (stateId <= 0) return true;
+            if (stateId <= 0)
+            {
+                return true;
+            }
+
             var state = WorkflowStateManager.Instance.GetWorkflowState(stateId);
-            if (state == null) return true;
+            if (state == null)
+            {
+                return true;
+            }
+
             var workflow = WorkflowManager.Instance.GetWorkflow(state.WorkflowID);
-            if (workflow == null) return true;
+            if (workflow == null)
+            {
+                return true;
+            }
+
             return workflow.LastState.StateID == stateId;
         }
 
@@ -1965,6 +2104,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return isParentPresent;
         }
 
@@ -2058,10 +2198,6 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        #endregion
-
-        #region private classes
-
         [JsonObject]
         private class ProgressTotals
         {
@@ -2070,17 +2206,25 @@ namespace Dnn.ExportImport.Components.Services
             public int LastProcessedId { get; set; }
 
             public int TotalTabs { get; set; }
+
             public int TotalTabSettings { get; set; }
+
             public int TotalTabPermissions { get; set; }
+
             public int TotalTabUrls { get; set; }
 
             public int TotalModules { get; set; }
+
             public int TotalModulePermissions { get; set; }
+
             public int TotalModuleSettings { get; set; }
+
             public int TotalContents { get; set; }
+
             public int TotalPackages { get; set; }
 
             public int TotalTabModules { get; set; }
+
             public int TotalTabModuleSettings { get; set; }
         }
 
@@ -2090,6 +2234,5 @@ namespace Dnn.ExportImport.Components.Services
 
             public int LocalModuleId { get; set; }
         }
-        #endregion
     }
 }

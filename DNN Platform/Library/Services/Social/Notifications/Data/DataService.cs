@@ -2,30 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-
 namespace DotNetNuke.Services.Social.Notifications.Data
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+
     internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
         private readonly DataProvider _provider = DataProvider.Instance();
         private const string Prefix = "CoreMessaging_";
 
-        #region Private Methods
-
         private static string GetFullyQualifiedName(string procedureName)
         {
             return Prefix + procedureName;
         }
-
-        #endregion
-
-        #region NotificationTypes CRUD
 
         public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask)
         {
@@ -46,10 +40,6 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         {
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeByName"), name);
         }
-
-        #endregion
-
-        #region NotificationTypeActions CRUD
 
         public int AddNotificationTypeAction(int notificationTypeId, string nameResourceKey, string descriptionResourceKey, string confirmResourceKey, string apiCall, int createdByUserId)
         {
@@ -76,25 +66,22 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeActions"), notificationTypeId);
         }
 
-        #endregion
-
-        #region Notifications Public Methods
-
         public int SendNotification(Notification notification, int portalId)
         {
             var createdByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
-            return this._provider.ExecuteScalar<int>(GetFullyQualifiedName("SendNotification"),
-                                                notification.NotificationTypeID,
-                                                portalId,
-                                                notification.To,
-                                                notification.From,
-                                                notification.Subject,
-                                                notification.Body,
-                                                notification.SenderUserID,
-                                                createdByUserId,
-                                                this._provider.GetNull(notification.ExpirationDate),
-                                                notification.IncludeDismissAction,
-                                                notification.Context);
+            return this._provider.ExecuteScalar<int>(
+                GetFullyQualifiedName("SendNotification"),
+                notification.NotificationTypeID,
+                portalId,
+                notification.To,
+                notification.From,
+                notification.Subject,
+                notification.Body,
+                notification.SenderUserID,
+                createdByUserId,
+                this._provider.GetNull(notification.ExpirationDate),
+                notification.IncludeDismissAction,
+                notification.Context);
         }
 
         public void DeleteNotification(int notificationId)
@@ -127,42 +114,36 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             return this._provider.ExecuteReader(GetFullyQualifiedName("GetNotificationByContext"), notificationTypeId, context);
         }
 
-        #endregion
+        public bool IsToastPending(int notificationId)
+        {
+            return this._provider.ExecuteScalar<bool>(
+                GetFullyQualifiedName("IsToastPending"),
+                notificationId);
+        }
 
-		#region Toast
+        /// <summary>
+        /// Mark a Toast ready for sending.
+        /// </summary>
+        /// <param name="notificationId">The notification Id. </param>
+        /// <param name="userId">The Recipient User Id. </param>
+        public void MarkReadyForToast(int notificationId, int userId)
+        {
+            this._provider.ExecuteNonQuery(GetFullyQualifiedName("MarkReadyForToast"), notificationId, userId);
+        }
 
-		public bool IsToastPending(int notificationId)
-		{
-			return this._provider.ExecuteScalar<bool>(GetFullyQualifiedName("IsToastPending"),
-												notificationId);
-		}
-
-		/// <summary>
-		/// Mark a Toast ready for sending
-		/// </summary>
-		/// <param name="notificationId">The notification Id </param>
-		/// <param name="userId">The Recipient User Id </param>
-		public void MarkReadyForToast(int notificationId, int userId)
-		{
-			this._provider.ExecuteNonQuery(GetFullyQualifiedName("MarkReadyForToast"), notificationId, userId);
-		}
-
-		/// <summary>
-		/// Mark Toast being already sent
-		/// </summary>
-		/// <param name="notificationId">The notification Id </param>
-		/// <param name="userId">The Recipient User Id </param>
-		public void MarkToastSent(int notificationId, int userId)
-		{
+        /// <summary>
+        /// Mark Toast being already sent.
+        /// </summary>
+        /// <param name="notificationId">The notification Id. </param>
+        /// <param name="userId">The Recipient User Id. </param>
+        public void MarkToastSent(int notificationId, int userId)
+        {
             this._provider.ExecuteNonQuery(GetFullyQualifiedName("MarkToastSent"), notificationId, userId);
-		}
+        }
 
-		public IDataReader GetToasts(int userId, int portalId)
-		{
-			return this._provider.ExecuteReader(GetFullyQualifiedName("GetToasts"), userId, portalId);
-		}
-
-		#endregion
-
+        public IDataReader GetToasts(int userId, int portalId)
+        {
+            return this._provider.ExecuteReader(GetFullyQualifiedName("GetToasts"), userId, portalId);
+        }
     }
 }

@@ -1,52 +1,41 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionBase
+    /// Class    : ActionBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionBase is an abstract base control for Action objects that inherit from UserControl.
     /// </summary>
     /// <remarks>
-    /// ActionBase inherits from UserControl, and implements the IActionControl Interface
+    /// ActionBase inherits from UserControl, and implements the IActionControl Interface.
     /// </remarks>
     public abstract class ActionBase : UserControl, IActionControl
     {
-		#region "Private Members"
-		
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
         protected bool m_supportsIcons = true;
-		
-		#endregion
-
-		#region Protected Properties
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Actions Collection
+        /// Gets the Actions Collection.
         /// </summary>
-        /// <returns>A ModuleActionCollection</returns>
+        /// <returns>A ModuleActionCollection.</returns>
         protected ModuleActionCollection Actions
         {
             get
@@ -57,9 +46,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionRoot
+        /// Gets the ActionRoot.
         /// </summary>
-        /// <returns>A ModuleActionCollection</returns>
+        /// <returns>A ModuleActionCollection.</returns>
         protected ModuleAction ActionRoot
         {
             get
@@ -68,15 +57,16 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionRoot = new ModuleAction(this.ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
                 }
+
                 return this._ActionRoot;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleContext
+        /// Gets the ModuleContext.
         /// </summary>
-        /// <returns>A ModuleInstanceContext</returns>
+        /// <returns>A ModuleInstanceContext.</returns>
         protected ModuleInstanceContext ModuleContext
         {
             get
@@ -87,9 +77,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PortalSettings
+        /// Gets the PortalSettings.
         /// </summary>
-        /// <returns>A PortalSettings object</returns>
+        /// <returns>A PortalSettings object.</returns>
         protected PortalSettings PortalSettings
         {
             get
@@ -97,10 +87,6 @@ namespace DotNetNuke.UI.Containers
                 return this.ModuleControl.ModuleContext.PortalSettings;
             }
         }
-		
-		#endregion
-
-		#region Public Properties
 
         public bool EditMode
         {
@@ -117,18 +103,14 @@ namespace DotNetNuke.UI.Containers
                 return this.m_supportsIcons;
             }
         }
-		
-		#endregion
-
-        #region IActionControl Members
 
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         public ActionManager ActionManager
         {
             get
@@ -137,25 +119,23 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionManager = new ActionManager(this);
                 }
+
                 return this._ActionManager;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An IModuleControl object.</returns>
         public IModuleControl ModuleControl { get; set; }
-
-        #endregion
-		
-		#region Protected Methods
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DisplayControl determines whether the control should be displayed
+        /// DisplayControl determines whether the control should be displayed.
         /// </summary>
+        /// <returns></returns>
         protected bool DisplayControl(DNNNodeCollection objNodes)
         {
             return this.ActionManager.DisplayControl(objNodes);
@@ -163,7 +143,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event for this control
+        /// OnAction raises the Action Event for this control.
         /// </summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
@@ -175,12 +155,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessAction processes the action event
+        /// ProcessAction processes the action event.
         /// </summary>
         protected void ProcessAction(string ActionID)
         {
             int output;
-            if (Int32.TryParse(ActionID, out output))
+            if (int.TryParse(ActionID, out output))
             {
                 ModuleAction action = this.Actions.GetActionByID(output);
                 if (action != null)
@@ -195,7 +175,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the class is loaded
+        /// Page_Load runs when the class is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -215,10 +195,7 @@ namespace DotNetNuke.UI.Containers
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
 
-			base.OnLoad(e);
+            base.OnLoad(e);
         }
-		
-		
-		#endregion
     }
 }

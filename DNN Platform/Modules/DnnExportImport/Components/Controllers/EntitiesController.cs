@@ -2,23 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Interfaces;
-using Dnn.ExportImport.Components.Providers;
-using Dnn.ExportImport.Components.Scheduler;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using Dnn.ExportImport.Dto.Pages;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Scheduling;
-
 namespace Dnn.ExportImport.Components.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Interfaces;
+    using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Components.Scheduler;
+    using Dnn.ExportImport.Dto.Pages;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Scheduling;
+
     public class EntitiesController : ServiceLocator<IEntitiesController, EntitiesController>, IEntitiesController
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
@@ -36,7 +37,8 @@ namespace Dnn.ExportImport.Components.Controllers
         public ExportImportJob GetJobById(int jobId)
         {
             var job = CBO.Instance.FillObject<ExportImportJob>(this._dataProvider.GetJobById(jobId));
-            //System.Diagnostics.Trace.WriteLine($"xxxxxxxxx job id={job?.JobId} IsCancelled={job?.IsCancelled} xxxxxxxxx");
+
+            // System.Diagnostics.Trace.WriteLine($"xxxxxxxxx job id={job?.JobId} IsCancelled={job?.IsCancelled} xxxxxxxxx");
             return job;
         }
 
@@ -194,7 +196,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private string GetSchedulerTypeFullName()
         {
-            var type = typeof (ExportImportScheduler);
+            var type = typeof(ExportImportScheduler);
             return $"{type.FullName}, {type.Assembly.GetName().Name}";
         }
     }

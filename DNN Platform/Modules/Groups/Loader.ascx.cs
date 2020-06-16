@@ -2,19 +2,24 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.Modules.Groups.Components;
+namespace DotNetNuke.Modules.Groups
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
-namespace DotNetNuke.Modules.Groups {
-    public partial class Loader : GroupsModuleBase {
-        protected void Page_Load(object sender, EventArgs e) {
+    using DotNetNuke.Modules.Groups.Components;
+
+    public partial class Loader : GroupsModuleBase
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
             string path = Constants.ModulePath;
-            switch (this.LoadView) {
+            switch (this.LoadView)
+            {
                 case GroupMode.Setup:
                     path += "Setup.ascx";
                     break;
@@ -25,6 +30,7 @@ namespace DotNetNuke.Modules.Groups {
                     path += "GroupView.ascx";
                     break;
             }
+
             GroupsModuleBase ctl = new GroupsModuleBase();
             ctl = (GroupsModuleBase)this.LoadControl(path);
             ctl.ModuleConfiguration = this.ModuleConfiguration;

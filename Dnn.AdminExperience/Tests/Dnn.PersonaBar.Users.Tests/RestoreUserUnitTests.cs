@@ -2,23 +2,26 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Recyclebin.Components;
-using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Recyclebin.Components;
+    using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
+    using Dnn.PersonaBar.Users.Components;
+    using DotNetNuke.Entities.Users;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class RestoreUserUnitTests : CommandTests<RestoreUser>
     {
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IRecyclebinController> _recyclebinControllerMock;
 
-        protected override string CommandName { get { return "Restore-User"; } }
+        protected override string CommandName
+        {
+            get { return "Restore-User"; }
+        }
 
         protected override RestoreUser CreateCommand()
         {
@@ -35,7 +38,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreValidUserId_ReturnSuccessResponse()
         {
-            // Arrange    
+            // Arrange
             var userId = 2;
             UserInfo userInfo = this.GetUser(userId, true);
             this._userValidatorMock
@@ -54,7 +57,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RecycleBinControllerRestoringError_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             var userId = 2;
             UserInfo userInfo = this.GetUser(userId, true);
             this._userValidatorMock
@@ -73,7 +76,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreNotDeletedUser_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             var userId = 2;
             UserInfo userinfo = this.GetUser(userId, false);
             this._userValidatorMock
@@ -90,7 +93,7 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_RestoreNullUserId_ReturnErrorResponse()
         {
-            // Arrange        
+            // Arrange
             this.errorResultModel = new ConsoleErrorResultModel();
 
             UserInfo userinfo;

@@ -2,22 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+
     public class JavaScriptFileInstaller : FileInstaller
     {
- 		#region Protected Properties
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("jsfiles")
+        /// Gets the name of the Collection Node ("jsfiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -29,9 +27,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("jsfile")
+        /// Gets the name of the Item Node ("jsfile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -41,15 +39,11 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-		#endregion  
- 
-        #region Public Properties
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -59,29 +53,20 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-
-        #endregion
-
-        #region Protected Methods
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadCustomManifest method reads the custom manifest items (that subclasses
-        /// of FileInstaller may need)
+        /// of FileInstaller may need).
         /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
             XPathNavigator libraryNav = nav.SelectSingleNode("libraryFolderName");
             if (libraryNav != null)
             {
-                this.BasePath = String.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(this.Package.Version, "00", 3, "_"));
+                this.BasePath = string.Format("Resources\\Libraries\\{0}\\{1}", libraryNav.Value, Globals.FormatVersion(this.Package.Version, "00", 3, "_"));
             }
         }
-
-
-        #endregion
-
     }
 }

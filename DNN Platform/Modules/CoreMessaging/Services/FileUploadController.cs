@@ -2,24 +2,25 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using Newtonsoft.Json;
-
 namespace DotNetNuke.Modules.CoreMessaging.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using Newtonsoft.Json;
+
     public class FileUploadController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileUploadController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private readonly IFileManager _fileManager = FileManager.Instance;
         private readonly IFolderManager _folderManager = FolderManager.Instance;
 
@@ -31,7 +32,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             var statuses = new List<FilesStatus>();
             try
             {
-                //todo can we eliminate the HttpContext here
+                // todo can we eliminate the HttpContext here
                 this.UploadWholeFile(HttpContextSource.Current, statuses);
             }
             catch (Exception exc)
@@ -44,10 +45,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
         private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
         {
-            //return json but label it as plain text
+            // return json but label it as plain text
             return new HttpResponseMessage
             {
-                Content = new StringContent(JsonConvert.SerializeObject(statuses))
+                Content = new StringContent(JsonConvert.SerializeObject(statuses)),
             };
         }
 
@@ -57,7 +58,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             for (var i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
-                if (file == null) continue;
+                if (file == null)
+                {
+                    continue;
+                }
 
                 var fileName = Path.GetFileName(file.FileName);
 
@@ -65,13 +69,14 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 {
                     var userFolder = this._folderManager.GetUserFolder(this.UserInfo);
 
-                    //todo: deal with the case where the exact file name already exists.
+                    // todo: deal with the case where the exact file name already exists.
                     var fileInfo = this._fileManager.AddFile(userFolder, fileName, file.InputStream, true);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))
                     {
                         fileIcon = Entities.Icons.IconController.IconURL("File", "32x32");
                     }
+
                     statuses.Add(new FilesStatus
                     {
                         success = true,
@@ -92,7 +97,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         success = false,
                         name = fileName,
-                        message = "File type not allowed."
+                        message = "File type not allowed.",
                     });
                 }
             }

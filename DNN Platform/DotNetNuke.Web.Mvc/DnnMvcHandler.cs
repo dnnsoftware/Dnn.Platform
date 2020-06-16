@@ -2,22 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using System.Web.SessionState;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.HttpModules.Membership;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework.ActionFilters;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
-
 namespace DotNetNuke.Web.Mvc
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+    using System.Web.SessionState;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.HttpModules.Membership;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+
     public class DnnMvcHandler : IHttpHandler, IRequiresSessionState
     {
         public DnnMvcHandler(RequestContext requestContext)
@@ -42,8 +43,10 @@ namespace DotNetNuke.Web.Mvc
                 {
                     this._controllerBuilder = ControllerBuilder.Current;
                 }
+
                 return this._controllerBuilder;
             }
+
             set { this._controllerBuilder = value; }
         }
 
@@ -78,6 +81,7 @@ namespace DotNetNuke.Web.Mvc
             try
             {
                 var moduleExecutionEngine = this.GetModuleExecutionEngine();
+
                 // Check if the controller supports IDnnController
                 var moduleResult =
                     moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
@@ -89,8 +93,6 @@ namespace DotNetNuke.Web.Mvc
             }
         }
 
-        #region DNN Mvc Methods
-
         private IModuleExecutionEngine GetModuleExecutionEngine()
         {
             var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
@@ -100,13 +102,14 @@ namespace DotNetNuke.Web.Mvc
                 moduleExecutionEngine = new ModuleExecutionEngine();
                 ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
             }
+
             return moduleExecutionEngine;
         }
 
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
         {
             var moduleInfo = httpContext.Request.FindModuleInfo();
-            var moduleContext = new ModuleInstanceContext() {Configuration = moduleInfo };
+            var moduleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(moduleInfo.DesktopModuleID, moduleInfo.PortalID);
             var moduleRequestContext = new ModuleRequestContext
             {
@@ -130,7 +133,5 @@ namespace DotNetNuke.Web.Mvc
 
             moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
         }
-
-        #endregion
     }
 }

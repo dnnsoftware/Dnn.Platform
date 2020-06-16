@@ -2,31 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Settings;
-using Moq;
-using NUnit.Framework;
-using System.Globalization;
-
 namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Settings;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ModuleSettingsTests : BaseSettingsTests
     {
         public class ModulesSettings
         {
             [ModuleSetting(Prefix = SettingNamePrefix)]
-            public string StringProperty { get; set; } = "";
+            public string StringProperty { get; set; } = string.Empty;
 
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public int IntegerProperty { get; set; }
 
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public double DoubleProperty { get; set; }
-            
+
             [ModuleSetting(Prefix = SettingNamePrefix)]
             public bool BooleanProperty { get; set; }
 
@@ -43,7 +44,9 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             public ComplexType ComplexProperty { get; set; } = new ComplexType(20, 25);
         }
 
-        public class ModulesSettingsRepository : SettingsRepository<ModulesSettings> { }
+        public class ModulesSettingsRepository : SettingsRepository<ModulesSettings>
+        {
+        }
 
         [Test]
         [TestCaseSource(nameof(SettingsCases))]
@@ -109,10 +112,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
-        private void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, 
+        private void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new ModulesSettings
             {
@@ -138,17 +141,17 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new ModulesSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void SaveSettings_UpdatesCache()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new ModulesSettings();
 
@@ -156,26 +159,26 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new ModulesSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
-        
+
         [Test]
         public void GetSettings_CallsGetCachedObject()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
 
             this.MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new ModulesSettings());
             var settingsRepository = new ModulesSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
@@ -246,7 +249,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         public void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var moduleSettings = new Hashtable
                                  {
@@ -264,10 +267,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new ModulesSettingsRepository();
 
-            //Act
+            // Act
             var settings = settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             Assert.AreEqual(stringValue, settings.StringProperty, "The retrieved string property value is not equal to the stored one");
             Assert.AreEqual(integerValue, settings.IntegerProperty, "The retrieved integer property value is not equal to the stored one");
             Assert.AreEqual(doubleValue, settings.DoubleProperty, "The retrieved double property value is not equal to the stored one");

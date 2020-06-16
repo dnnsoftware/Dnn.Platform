@@ -1,21 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Log.EventLog;
-using System;
-using System.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Users
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Log.EventLog;
+
     public partial class DataConsent : UserModuleBase
     {
         public string DeleteMeConfirmString
@@ -31,20 +27,19 @@ namespace DotNetNuke.Modules.Admin.Users
                     case PortalSettings.UserDeleteAction.HardDelete:
                         return this.LocalizeString("HardDelete.Confirm");
                 }
-                return "";
+
+                return string.Empty;
             }
         }
 
-        #region Delegate and event
-
         public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
+
         public event DataConsentEventHandler DataConsentCompleted;
+
         public void OnDataConsentComplete(DataConsentEventArgs e)
         {
             this.DataConsentCompleted?.Invoke(this, e);
         }
-
-        #endregion
 
         protected override void OnLoad(EventArgs e)
         {
@@ -59,9 +54,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.cmdSubmit.Enabled = false;
                 this.pnlNoAgreement.Visible = false;
             }
+
             this.chkAgree.Attributes.Add("onclick", string.Format("document.getElementById('{0}').disabled = !this.checked;", this.cmdSubmit.ClientID));
             this.cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", this.DeleteMeConfirmString));
         }
+
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Cancelled));
@@ -97,6 +94,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     success = UserController.RemoveUser(this.User);
                     break;
             }
+
             if (success)
             {
                 PortalSecurity.Instance.SignOut();
@@ -108,20 +106,19 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        #region DataConsentEventArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DataConsentEventArgs class provides a customised EventArgs class for
-        /// the DataConsent Event
+        /// the DataConsent Event.
         /// </summary>
         public class DataConsentEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new DataConsentEventArgs
+            /// Initializes a new instance of the <see cref="DataConsentEventArgs"/> class.
+            /// Constructs a new DataConsentEventArgs.
             /// </summary>
-            /// <param name="status">The Data Consent Status</param>
+            /// <param name="status">The Data Consent Status.</param>
             public DataConsentEventArgs(DataConsentStatus status)
             {
                 this.Status = status;
@@ -129,7 +126,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Update Status
+            /// Gets or sets and sets the Update Status.
             /// </summary>
             public DataConsentStatus Status { get; set; }
         }
@@ -139,10 +136,7 @@ namespace DotNetNuke.Modules.Admin.Users
             Consented,
             Cancelled,
             RemovedAccount,
-            FailedToRemoveAccount
+            FailedToRemoveAccount,
         }
-
-        #endregion
-
     }
 }

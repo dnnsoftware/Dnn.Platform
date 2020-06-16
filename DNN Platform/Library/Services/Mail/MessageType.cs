@@ -17,6 +17,6 @@ namespace DotNetNuke.Services.Mail
         PasswordUpdated,
         PasswordReminderUserIsNotApproved,
         UserAuthorized,
-        UserUnAuthorized
+        UserUnAuthorized,
     }
 }

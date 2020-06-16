@@ -2,57 +2,56 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Portals.Internal;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Controllers.Portal
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Portals.Internal;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PortalControllerTests
     {
         private Mock<IPortalTemplateIO> _mockPortalTemplateIO;
         private const string HostMapPath = @"C:\path";
-        
+
         private const string DefaultName = "Default";
         private static readonly string DefaultPath = MakePath(DefaultName);
         private static readonly string DefaultDePath = MakePath(DefaultName, "de-DE");
         private const string DefaultDeName = "Rückstellungs-Web site";
-        const string DefaultDeDescription = "A new german description";
+        private const string DefaultDeDescription = "A new german description";
         private static readonly Dictionary<string, string> DefaultExpectationsDe = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", DefaultDeName },
-                                                                                        {"TemplateFilePath", DefaultPath},
-                                                                                        {"LanguageFilePath", DefaultDePath},
-                                                                                        {"CultureCode", "de-DE"},
-                                                                                        {"Description", DefaultDeDescription}
+                                                                                        { "Name", DefaultDeName },
+                                                                                        { "TemplateFilePath", DefaultPath },
+                                                                                        { "LanguageFilePath", DefaultDePath },
+                                                                                        { "CultureCode", "de-DE" },
+                                                                                        { "Description", DefaultDeDescription },
                                                                                     };
 
         private static readonly string DefaultUsPath = MakePath(DefaultName, "en-US");
         private static readonly Dictionary<string, string> DefaultExpectationsUs = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", DefaultName },
-                                                                                        {"TemplateFilePath", DefaultPath},
-                                                                                        {"LanguageFilePath", DefaultUsPath},
-                                                                                        {"CultureCode", "en-US"},
+                                                                                        { "Name", DefaultName },
+                                                                                        { "TemplateFilePath", DefaultPath },
+                                                                                        { "LanguageFilePath", DefaultUsPath },
+                                                                                        { "CultureCode", "en-US" },
                                                                                     };
 
         private const string StaticName = "Static";
-        readonly static string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
+        private static readonly string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
         private static readonly string StaticPath = MakePath(StaticName);
-        const string StaticDescription = "An description from a template file";
+        private const string StaticDescription = "An description from a template file";
         private static readonly Dictionary<string, string> StaticExpectations = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", StaticName},
-                                                                                        {"TemplateFilePath", StaticPath},
-                                                                                        {"Description", StaticDescription},
-                                                                                        {"CultureCode", CultureCode}
+                                                                                        { "Name", StaticName },
+                                                                                        { "TemplateFilePath", StaticPath },
+                                                                                        { "Description", StaticDescription },
+                                                                                        { "CultureCode", CultureCode },
                                                                                     };
 
         private const string AlternateName = "Alternate";
@@ -61,10 +60,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private const string AlternateDeName = "Alternate in German";
         private static readonly Dictionary<string, string> AlternateExpectationsDe = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", AlternateDeName },
-                                                                                        {"TemplateFilePath", AlternatePath},
-                                                                                        {"LanguageFilePath", AlternateDePath},
-                                                                                        {"CultureCode", "de-DE"},
+                                                                                        { "Name", AlternateDeName },
+                                                                                        { "TemplateFilePath", AlternatePath },
+                                                                                        { "LanguageFilePath", AlternateDePath },
+                                                                                        { "CultureCode", "de-DE" },
                                                                                     };
 
         private const string ResourceName = "Resource";
@@ -72,10 +71,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private static readonly string ResourceFilePath = ResourcePath + ".resources";
         private static readonly Dictionary<string, string> ResourceExpectations = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", ResourceName},
-                                                                                        {"TemplateFilePath", ResourcePath},
-                                                                                        {"ResourceFilePath", ResourceFilePath},
-                                                                                        {"CultureCode", CultureCode}
+                                                                                        { "Name", ResourceName },
+                                                                                        { "TemplateFilePath", ResourcePath },
+                                                                                        { "ResourceFilePath", ResourceFilePath },
+                                                                                        { "CultureCode", CultureCode },
                                                                                     };
 
         [SetUp]
@@ -90,53 +89,51 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             PortalTemplateIO.ClearInstance();
         }
-        
+
         [Test]
         public void NoTemplatesReturnsEmptyList()
         {
-            //Arrange
-            
+            // Arrange
 
-            //Act
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(0, templates.Count);
         }
 
         [Test]
         public void LanguageFileWithoutATemplateIsIgnored()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath));
 
-            //Act
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(0, templates.Count);
         }
 
         [Test]
         public void TemplatesWithNoLanguageFilesAreLoaded()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(StaticPath));
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(StaticPath)).Returns(this.CreateTemplateFileReader(StaticDescription));
-            
-            //Act
+
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, templates.Count);
             AssertTemplateInfo(StaticExpectations, templates[0]);
         }
 
-
         [Test]
         public void TemplateWith2Languages()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(DefaultPath));
             this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath, DefaultUsPath));
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "de-DE")).Returns(DefaultDePath);
@@ -144,10 +141,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "en-US")).Returns(DefaultUsPath);
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(DefaultUsPath)).Returns(this.CreateLanguageFileReader(DefaultName));
 
-            //Act
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(2, templates.Count);
             AssertTemplateInfo(DefaultExpectationsDe, templates[0]);
             AssertTemplateInfo(DefaultExpectationsUs, templates[1]);
@@ -156,9 +153,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [Test]
         public void TwoTemplatesAssortedLanguages()
         {
-            //Arrange
-            this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns( this.ToEnumerable(DefaultPath, AlternatePath) );
-            this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath, DefaultUsPath, AlternateDePath ));
+            // Arrange
+            this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(DefaultPath, AlternatePath));
+            this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath, DefaultUsPath, AlternateDePath));
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "de-DE")).Returns(DefaultDePath);
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(DefaultDePath)).Returns(this.CreateLanguageFileReader(DefaultDeName, DefaultDeDescription));
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "en-US")).Returns(DefaultUsPath);
@@ -166,10 +163,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(AlternatePath, "de-DE")).Returns(AlternateDePath);
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(AlternateDePath)).Returns(this.CreateLanguageFileReader(AlternateDeName));
 
-            //Act
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(3, templates.Count);
             AssertTemplateInfo(DefaultExpectationsDe, templates[0]);
             AssertTemplateInfo(DefaultExpectationsUs, templates[1]);
@@ -179,14 +176,14 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [Test]
         public void ResourceFileIsLocatedWhenPresent()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(ResourcePath));
             this._mockPortalTemplateIO.Setup(x => x.GetResourceFilePath(ResourcePath)).Returns(ResourceFilePath);
 
-            //Act
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, templates.Count);
             AssertTemplateInfo(ResourceExpectations, templates[0]);
         }
@@ -194,16 +191,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [Test]
         public void SingleTemplateAndLanguage()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(DefaultPath));
             this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath));
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "de-DE")).Returns(DefaultDePath);
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(DefaultDePath)).Returns(this.CreateLanguageFileReader(DefaultDeName, DefaultDeDescription));
 
-            //Act
+            // Act
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, templates.Count);
             AssertTemplateInfo(DefaultExpectationsDe, templates[0]);
         }
@@ -211,46 +208,46 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         [Test]
         public void ATemplateCanBeLoadedDirectly()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(DefaultPath));
             this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath));
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "de-DE")).Returns(DefaultDePath);
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(DefaultDePath)).Returns(this.CreateLanguageFileReader(DefaultDeName, DefaultDeDescription));
 
-            //Act
+            // Act
             var template = PortalController.Instance.GetPortalTemplate(DefaultPath, "de-DE");
 
-            //Assert
+            // Assert
             AssertTemplateInfo(DefaultExpectationsDe, template);
         }
 
         [Test]
         public void GetPortalTemplateReturnsNullIfCultureDoesNotMatch()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(DefaultPath));
             this._mockPortalTemplateIO.Setup(x => x.EnumerateLanguageFiles()).Returns(this.ToEnumerable(DefaultDePath));
             this._mockPortalTemplateIO.Setup(x => x.GetLanguageFilePath(DefaultPath, "de-DE")).Returns(DefaultDePath);
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(DefaultDePath)).Returns(this.CreateLanguageFileReader(DefaultDeName, DefaultDeDescription));
 
-            //Act
+            // Act
             var template = PortalController.Instance.GetPortalTemplate(DefaultPath, "de");
 
-            //Assert
+            // Assert
             Assert.IsNull(template);
         }
 
         [Test]
         public void GetPortalTemplateCanReturnAStaticTemplate()
         {
-            //Arrange
+            // Arrange
             this._mockPortalTemplateIO.Setup(x => x.EnumerateTemplates()).Returns(this.ToEnumerable(StaticPath));
             this._mockPortalTemplateIO.Setup(x => x.OpenTextReader(StaticPath)).Returns(this.CreateTemplateFileReader(StaticDescription));
 
-            //Act
+            // Act
             var template = PortalController.Instance.GetPortalTemplate(StaticPath, CultureCode);
 
-            //Assert
+            // Assert
             AssertTemplateInfo(StaticExpectations, template);
         }
 
@@ -261,21 +258,22 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
         private TextReader CreateLanguageFileReader(string name, string description)
         {
-            if(description != null)
+            if (description != null)
             {
                 description = string.Format("<data name=\"PortalDescription.Text\" xml:space=\"preserve\"><value>{0}</value></data>", description);
             }
+
             var xml = string.Format("<root><data name=\"LocalizedTemplateName.Text\" xml:space=\"preserve\"><value>{0}</value></data>{1}</root>", name, description);
             return new StringReader(xml);
         }
 
-        TextReader CreateTemplateFileReader(string description)
+        private TextReader CreateTemplateFileReader(string description)
         {
             var xml = string.Format("<portal><description>{0}</description></portal>", description);
             return new StringReader(xml);
         }
 
-        private static void AssertTemplateInfo(Dictionary<string, string> expectations , PortalController.PortalTemplateInfo templateInfo)
+        private static void AssertTemplateInfo(Dictionary<string, string> expectations, PortalController.PortalTemplateInfo templateInfo)
         {
             AssertTemplateField(expectations, "Name", templateInfo.Name);
             AssertTemplateField(expectations, "TemplateFilePath", templateInfo.TemplateFilePath);
@@ -289,7 +287,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             string expected;
             expectations.TryGetValue(key, out expected);
-            if(string.IsNullOrEmpty(expected))
+            if (string.IsNullOrEmpty(expected))
             {
                 Assert.IsNullOrEmpty(value, string.Format("Checking value of " + key));
             }

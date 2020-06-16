@@ -1,8 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
+/* Unmerged change from project 'DotNetNuke.ModulePipeline (net472)'
+Before:
 // See the LICENSE file in the project root for more information
 
-using System;
+using 
+After:
+// See the LICENSE file in the project root for more information
+
+
+#if NET472
+using 
+*/
+// See the LICENSE file in the project root for more information
+
+#if NET472
+using System.Web.UI;
+
+#endif
+
+namespace DotNetNuke.ModulePipeline
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+
+    using 
+/* Unmerged change from project 'DotNetNuke.ModulePipeline(net472)'
+Before:
 using System.IO;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Instrumentation;
@@ -12,24 +38,38 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Razor;
 using System.Collections.Generic;
 using DotNetNuke.Web.Mvc;
+After:
+using System.Collections.Generic;
+using System.IO;
 
-#if NET472
-using System.Web.UI;
-#endif
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Localization;
+using DotNetNuke.UI.Modules;
+using DotNetNuke.Web.Modules.Html5;
+using DotNetNuke.Web.Mvc;
+using DotNetNuke.Web.Razor;
+*/
+DotNetNuke.Entities.Modules;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Modules.Html5;
+    using DotNetNuke.Web.Mvc;
+    using DotNetNuke.Web.Razor;
 
-namespace DotNetNuke.ModulePipeline
-{
     /// <summary>
     /// The Module Pipeline that determines which Module pattern
     /// to invoke based on the input module type.
     /// </summary>
     public class ModuleControlPipeline
+
         // MULTI-TARGETTING PIPELINE
         // -------------------------
         // This file multi-targets .NET Framework and .NET Standard,
         // which is needed as DNN migrates to .NET Core. The 'NET472'
         // pre-processor directives are to fully support Legacy DNN.
-        // As the Pipeline is upgraded to be more complaint with 
+        // As the Pipeline is upgraded to be more complaint with
         // .NET Standard 2.0 use the apprioprate pre-processor directives.
 #if NET472
         : IModuleControlPipeline
@@ -37,6 +77,7 @@ namespace DotNetNuke.ModulePipeline
     {
         private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private Dictionary<string, IModuleControlFactory> _controlFactories;
+
         public ModuleControlPipeline(
             WebFormsModuleControlFactory webforms,
             Html5ModuleControlFactory html5,
@@ -66,7 +107,9 @@ namespace DotNetNuke.ModulePipeline
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
@@ -91,14 +134,20 @@ namespace DotNetNuke.ModulePipeline
             }
 
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             return control;
         }
 
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
 
@@ -122,14 +171,19 @@ namespace DotNetNuke.ModulePipeline
             }
 
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             return control;
         }
 
         public Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
@@ -158,7 +212,10 @@ namespace DotNetNuke.ModulePipeline
             }
 
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             return control;
         }
 

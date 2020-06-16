@@ -1,22 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Runtime.Serialization;
-
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
 namespace DotNetNuke.Authentication.Twitter.Components
 {
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Services.Authentication.OAuth;
+
     [DataContract]
     public class TwitterUserData : UserData
     {
-        #region Overrides
-
         public override string DisplayName
         {
             get { return this.ScreenName; }
@@ -40,8 +33,6 @@ namespace DotNetNuke.Authentication.Twitter.Components
             get { return this.Url; }
             set { }
         }
-
-        #endregion
 
         [DataMember(Name = "screen_name")]
         public string ScreenName { get; set; }

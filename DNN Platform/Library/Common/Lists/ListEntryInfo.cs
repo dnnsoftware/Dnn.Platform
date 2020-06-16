@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
 namespace DotNetNuke.Common.Lists
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+
     [Serializable]
     public class ListEntryInfo
     {
@@ -40,6 +35,7 @@ namespace DotNetNuke.Common.Lists
                 {
                     _Key += ".";
                 }
+
                 return _Key + this.ListName + ":" + this.Value;
             }
         }
@@ -57,12 +53,13 @@ namespace DotNetNuke.Common.Lists
         public string Value { get; set; }
 
         private string _Text = Null.NullString;
+
         /// <summary>
-        /// Localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file 
+        /// Gets or sets localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file
         /// "App_GlobalResources/List_[ListName]". If not found the original (database) value is used.
         /// </summary>
         /// <value>
-        /// Localized text value
+        /// Localized text value.
         /// </value>
         public string Text
         {
@@ -85,11 +82,17 @@ namespace DotNetNuke.Common.Lists
                 }
                 catch
                 {
-                    //ignore
+                    // ignore
                 }
-                if (string.IsNullOrEmpty(res)) { res = this._Text; };
+
+                if (string.IsNullOrEmpty(res))
+                {
+                    res = this._Text;
+                }
+
                 return res;
             }
+
             set
             {
                 this._Text = value;
@@ -128,18 +131,18 @@ namespace DotNetNuke.Common.Lists
 
         public bool SystemList { get; set; }
 
-	    internal string ResourceFileRoot
-	    {
-		    get
-		    {
-				var listName = this.ListName.Replace(":", ".");
-				if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
-				{
-					listName = Globals.CleanFileName(listName);
-				}
+        internal string ResourceFileRoot
+        {
+            get
+            {
+                var listName = this.ListName.Replace(":", ".");
+                if (listName.IndexOfAny(Path.GetInvalidFileNameChars()) > -1)
+                {
+                    listName = Globals.CleanFileName(listName);
+                }
 
-				return "~/App_GlobalResources/List_" + listName + ".resx";
-		    }
-	    }
+                return "~/App_GlobalResources/List_" + listName + ".resx";
+            }
+        }
     }
 }

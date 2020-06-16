@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Data;
-
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Data;
+
+    using global::PetaPoco;
+
     public static class PetaPocoExt
     {
         public static IDataReader ExecuteReader(this Database database, string sql, params object[] args)
@@ -30,10 +30,11 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     throw;
                 }
+
                 reader = null;
             }
-            return reader;
 
+            return reader;
         }
     }
 }

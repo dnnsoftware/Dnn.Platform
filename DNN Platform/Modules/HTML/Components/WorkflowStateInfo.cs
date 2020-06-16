@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Modules.Html
     /// Project:    DotNetNuke
     /// Class:      WorkflowStateInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of a WorkflowState object
+    ///   Defines an instance of a WorkflowState object.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -21,7 +21,6 @@ namespace DotNetNuke.Modules.Html
     public class WorkflowStateInfo
     {
         // local property declarations
-
         private bool _IsActive = true;
 
         // public properties
@@ -49,6 +48,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._IsActive;
             }
+
             set
             {
                 this._IsActive = value;

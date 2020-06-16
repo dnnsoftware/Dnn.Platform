@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.ComponentModel;
-using System.Globalization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Globalization;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+
     [ToolboxData("<{0}:DnnPortalPageDropDownList runat='server'></{0}:DnnPortalPageDropDownList>")]
     public class DnnPortalPageDropDownList : DnnDropDownList
     {
@@ -41,9 +41,10 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected Page in the control, or selects the Page in the control.
+        /// Gets or sets the selected Page in the control, or selects the Page in the control.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public TabInfo SelectedPage
         {
             get
@@ -51,11 +52,11 @@ namespace DotNetNuke.Web.UI.WebControls
                 var pageId = this.SelectedItemValueAsInt;
                 return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this._portalId.Value, false);
             }
+
             set
             {
                 this.SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
-
     }
 }

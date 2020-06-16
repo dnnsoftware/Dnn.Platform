@@ -1,28 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using Globals = DotNetNuke.Common.Globals;
-using DotNetNuke.Abstractions;
-
-#endregion
-
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Modules.Admin.Modules
+
 // ReSharper restore CheckNamespace
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>
     /// The ModuleSettingsPage PortalModuleBase is used to edit the settings for a
@@ -33,12 +29,11 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ModulePermissions : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ModulePermissions()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Private Members
 
         private int _moduleId = -1;
         private ModuleInfo _module;
@@ -56,22 +51,18 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        #endregion
-
-        #region Event Handlers
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            //get ModuleId
-            if ((this.Request.QueryString["ModuleId"] != null))
+            // get ModuleId
+            if (this.Request.QueryString["ModuleId"] != null)
             {
-                this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
+                this._moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
             }
 
-            //Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, String.Empty, this.Module))
+            // Verify that the current user has access to edit this module
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, string.Empty, this.Module))
             {
                 this.Response.Redirect(Globals.AccessDeniedURL(), true);
             }
@@ -116,7 +107,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     ModulePermissionController.SaveModulePermissions(this.Module);
 
-                    //Navigate back to admin page
+                    // Navigate back to admin page
                     this.Response.Redirect(this.ReturnURL, true);
                 }
             }
@@ -125,8 +116,5 @@ namespace DotNetNuke.Modules.Admin.Modules
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

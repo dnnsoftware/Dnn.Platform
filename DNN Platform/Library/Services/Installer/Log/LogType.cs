@@ -10,6 +10,6 @@ namespace DotNetNuke.Services.Installer.Log
         Warning,
         Failure,
         StartJob,
-        EndJob
+        EndJob,
     }
 }

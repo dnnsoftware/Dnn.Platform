@@ -2,19 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-
-using DotNetNuke.Services.FileSystem.Internal;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System.Collections.Generic;
+
+    using DotNetNuke.Services.FileSystem.Internal;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DefaultFolderProvidersTests
     {
-        #region GetDefaultProviders Tests
-
         [Test]
         public void GetDefaultProviders_Should_Return_3_Valid_Providers()
         {
@@ -24,7 +21,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedValues, defaultProviders);
         }
-
-        #endregion
     }
 }

@@ -2,20 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Users.Components.Prompt.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using Dnn.PersonaBar.Roles.Components;
-
 namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Roles.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+
+    using Constants = Dnn.PersonaBar.Users.Components.Constants;
+
     [ConsoleCommand("add-roles", Constants.UsersCategory, "Prompt_AddRoles_Description")]
     public class AddRoles : ConsoleCommandBase
     {

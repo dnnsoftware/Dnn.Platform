@@ -1,44 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.UserControls
 {
+    using System;
+    using System.Collections;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     public abstract class DualListControl : UserControlBase
     {
-		#region "Private Members"
         protected Label Label1;
         protected Label Label2;
         private string MyFileName = "DualListControl.ascx";
         private ArrayList _Assigned;
         private ArrayList _Available;
-        private string _DataTextField = "";
-        private string _DataValueField = "";
+        private string _DataTextField = string.Empty;
+        private string _DataValueField = string.Empty;
         private bool _Enabled = true;
-        private string _ListBoxHeight = "";
-        private string _ListBoxWidth = "";
+        private string _ListBoxHeight = string.Empty;
+        private string _ListBoxWidth = string.Empty;
         protected LinkButton cmdAdd;
         protected LinkButton cmdAddAll;
         protected LinkButton cmdRemove;
         protected LinkButton cmdRemoveAll;
         protected ListBox lstAssigned;
         protected ListBox lstAvailable;
-		
-		#endregion
-		
-		#region "Public Properties"
 
         public string ListBoxWidth
         {
@@ -46,6 +36,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxWidth"]);
             }
+
             set
             {
                 this._ListBoxWidth = value;
@@ -58,6 +49,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxHeight"]);
             }
+
             set
             {
                 this._ListBoxHeight = value;
@@ -73,8 +65,10 @@ namespace DotNetNuke.UI.UserControls
                 {
                     objList.Add(objListItem);
                 }
+
                 return objList;
             }
+
             set
             {
                 this._Available = value;
@@ -90,8 +84,10 @@ namespace DotNetNuke.UI.UserControls
                 {
                     objList.Add(objListItem);
                 }
+
                 return objList;
             }
+
             set
             {
                 this._Assigned = value;
@@ -121,13 +117,9 @@ namespace DotNetNuke.UI.UserControls
                 this._Enabled = value;
             }
         }
-		
-		#endregion
-		
-		#region "Protected Event Handlers"
 
-        /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
-		protected override void OnLoad(EventArgs e)
+        /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page.</summary>
+        protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
@@ -138,7 +130,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                //Localization
+                // Localization
                 this.Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.MyFileName));
                 this.Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.MyFileName));
                 this.cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, this.MyFileName));
@@ -148,42 +140,43 @@ namespace DotNetNuke.UI.UserControls
 
                 if (!this.Page.IsPostBack)
                 {
-					//set dimensions of control
-                    if (!String.IsNullOrEmpty(this._ListBoxWidth))
+                    // set dimensions of control
+                    if (!string.IsNullOrEmpty(this._ListBoxWidth))
                     {
                         this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
                         this.lstAssigned.Width = Unit.Parse(this._ListBoxWidth);
                     }
-                    if (!String.IsNullOrEmpty(this._ListBoxHeight))
+
+                    if (!string.IsNullOrEmpty(this._ListBoxHeight))
                     {
                         this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
                         this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);
                     }
-					
-                    //load available
+
+                    // load available
                     this.lstAvailable.DataTextField = this._DataTextField;
                     this.lstAvailable.DataValueField = this._DataValueField;
                     this.lstAvailable.DataSource = this._Available;
                     this.lstAvailable.DataBind();
                     this.Sort(this.lstAvailable);
 
-                    //load selected
+                    // load selected
                     this.lstAssigned.DataTextField = this._DataTextField;
                     this.lstAssigned.DataValueField = this._DataValueField;
                     this.lstAssigned.DataSource = this._Assigned;
                     this.lstAssigned.DataBind();
                     this.Sort(this.lstAssigned);
 
-                    //set enabled
+                    // set enabled
                     this.lstAvailable.Enabled = this._Enabled;
                     this.lstAssigned.Enabled = this._Enabled;
 
-                    //save persistent values
+                    // save persistent values
                     this.ViewState[this.ClientID + "_ListBoxWidth"] = this._ListBoxWidth;
                     this.ViewState[this.ClientID + "_ListBoxHeight"] = this._ListBoxHeight;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -196,6 +189,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 objList.Add(objListItem);
             }
+
             foreach (ListItem objListItem in objList)
             {
                 if (objListItem.Selected)
@@ -204,6 +198,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lstAssigned.Items.Add(objListItem);
                 }
             }
+
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAssigned);
@@ -216,6 +211,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 objList.Add(objListItem);
             }
+
             foreach (ListItem objListItem in objList)
             {
                 if (objListItem.Selected)
@@ -224,6 +220,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lstAvailable.Items.Add(objListItem);
                 }
             }
+
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAvailable);
@@ -235,6 +232,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.lstAssigned.Items.Add(objListItem);
             }
+
             this.lstAvailable.Items.Clear();
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
@@ -247,15 +245,12 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.lstAvailable.Items.Add(objListItem);
             }
+
             this.lstAssigned.Items.Clear();
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAvailable);
         }
-		
-		#endregion
-		
-		#region "Private Methods"
 
         private void Sort(ListBox ctlListBox)
         {
@@ -264,6 +259,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 arrListItems.Add(objListItem);
             }
+
             arrListItems.Sort(new ListItemComparer());
             ctlListBox.Items.Clear();
             foreach (ListItem objListItem in arrListItems)
@@ -271,22 +267,16 @@ namespace DotNetNuke.UI.UserControls
                 ctlListBox.Items.Add(objListItem);
             }
         }
-		
-		#endregion
     }
 
     public class ListItemComparer : IComparer
     {
-        #region IComparer Members
-
         public int Compare(object x, object y)
         {
-            var a = (ListItem) x;
-            var b = (ListItem) y;
+            var a = (ListItem)x;
+            var b = (ListItem)y;
             var c = new CaseInsensitiveComparer();
             return c.Compare(a.Text, b.Text);
         }
-
-        #endregion
     }
 }

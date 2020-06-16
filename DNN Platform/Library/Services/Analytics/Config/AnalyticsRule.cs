@@ -1,15 +1,10 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-#endregion
-
 namespace DotNetNuke.Services.Analytics.Config
 {
+    using System;
+
     [Serializable]
     public class AnalyticsRule
     {
@@ -23,6 +18,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._roleId;
             }
+
             set
             {
                 this._roleId = value;
@@ -35,6 +31,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._tabId;
             }
+
             set
             {
                 this._tabId = value;
@@ -47,6 +44,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._label;
             }
+
             set
             {
                 this._label = value;

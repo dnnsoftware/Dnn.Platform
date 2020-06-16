@@ -8,6 +8,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
     {
         Denied,
         Authorized,
-        RequestingCode
+        RequestingCode,
     }
 }

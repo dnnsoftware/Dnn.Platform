@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Dnn.PersonaBar.Library.Helper;
-
 namespace Dnn.PersonaBar.Library.DTO
 {
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Library.Helper;
+
     [DataContract]
     public abstract class Permissions
     {
@@ -19,10 +20,12 @@ namespace Dnn.PersonaBar.Library.DTO
 
         [DataMember(Name = "userPermissions")]
         public IList<UserPermission> UserPermissions { get; set; }
+
         protected abstract void LoadPermissionDefinitions();
 
-        protected Permissions() : this(false)
-        {            
+        protected Permissions()
+            : this(false)
+        {
         }
 
         protected Permissions(bool needDefinitions)

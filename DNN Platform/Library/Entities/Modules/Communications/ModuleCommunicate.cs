@@ -1,18 +1,13 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules.Communications
 {
+    using System.Web.UI;
+
     /// <summary>
-    /// Specifies communications between modules. 
-    /// There are listeners and communicators
+    /// Specifies communications between modules.
+    /// There are listeners and communicators.
     /// </summary>
     public class ModuleCommunicate
     {
@@ -48,23 +43,22 @@ namespace DotNetNuke.Entities.Modules.Communications
             }
         }
 
-
         /// <summary>
         /// Loads the communicator.
         /// </summary>
         /// <param name="ctrl">The control.</param>
         public void LoadCommunicator(Control ctrl)
         {
-            // Check and see if the module implements IModuleCommunicator 
+            // Check and see if the module implements IModuleCommunicator
             if (ctrl is IModuleCommunicator)
             {
-                this.Add((IModuleCommunicator) ctrl);
+                this.Add((IModuleCommunicator)ctrl);
             }
 
-            // Check and see if the module implements IModuleListener 
+            // Check and see if the module implements IModuleListener
             if (ctrl is IModuleListener)
             {
-                this.Add((IModuleListener) ctrl);
+                this.Add((IModuleListener)ctrl);
             }
         }
 
@@ -77,7 +71,6 @@ namespace DotNetNuke.Entities.Modules.Communications
             {
                 item.ModuleCommunication += this._ModuleListeners[i].OnModuleCommunication;
             }
-
 
             return returnData;
         }

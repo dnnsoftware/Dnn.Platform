@@ -2,14 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Runtime.Serialization;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users.Membership;
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users.Membership;
+
     [DataContract]
     public class DnnPaswordStrengthOptions
     {
@@ -58,22 +58,22 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "criteriaValidationExpression")]
         public string CriteriaValidationExpressionText;
 
-		[DataMember(Name = "passwordRulesHeadText")]
-		public string PasswordRulesHeadText;
+        [DataMember(Name = "passwordRulesHeadText")]
+        public string PasswordRulesHeadText;
 
         public DnnPaswordStrengthOptions()
         {
             // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
             this.MinLengthText = Utilities.GetLocalizedString("PasswordStrengthMinLength");
             this.WeakText = Utilities.GetLocalizedString("PasswordStrengthWeak");
-            this.FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
-            this.StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
+            this.FairText = Utilities.GetLocalizedString("PasswordStrengthFair");
+            this.StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong");
 
             this.CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
             this.CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
             this.CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
-            
-			this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+
+            this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
 
             this.WeakColor = "#ed1e24";
             this.FairColor = "#f6d50a";
@@ -84,13 +84,13 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// To avoid fetching data from the database in constructor, the OnSerializing method is consumed
+        /// To avoid fetching data from the database in constructor, the OnSerializing method is consumed.
         /// </summary>
         /// <param name="context"></param>
         [OnSerializing]
         public void OnSerializing(StreamingContext context)
         {
-            int portalId = (PortalController.Instance.GetCurrentPortalSettings()) != null ? (PortalController.Instance.GetCurrentPortalSettings().PortalId) : -1;
+            int portalId = PortalController.Instance.GetCurrentPortalSettings() != null ? PortalController.Instance.GetCurrentPortalSettings().PortalId : -1;
             var settings = new MembershipPasswordSettings(portalId);
 
             this.MinLength = settings.MinPasswordLength;

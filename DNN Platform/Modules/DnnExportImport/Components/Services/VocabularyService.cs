@@ -2,20 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.ExportImport.Components.Common;
-using Dnn.ExportImport.Components.Dto;
-using Dnn.ExportImport.Components.Entities;
-using Dnn.ExportImport.Components.Providers;
-using Dnn.ExportImport.Dto.Taxonomy;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using Util = DotNetNuke.Entities.Content.Common.Util;
-
 namespace Dnn.ExportImport.Components.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.ExportImport.Components.Common;
+    using Dnn.ExportImport.Components.Dto;
+    using Dnn.ExportImport.Components.Entities;
+    using Dnn.ExportImport.Components.Providers;
+    using Dnn.ExportImport.Dto.Taxonomy;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Taxonomy;
+
+    using Util = DotNetNuke.Entities.Content.Common.Util;
+
     public class VocabularyService : BasePortableService
     {
         public override string Category => Constants.Category_Vocabularies;
@@ -26,8 +28,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
 
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
@@ -40,7 +49,8 @@ namespace Dnn.ExportImport.Components.Services
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
-                    //Update the total items count in the check points. This should be updated only once.
+
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? scopeTypes.Count : this.CheckPoint.TotalItems;
                     if (this.CheckPoint.TotalItems == scopeTypes.Count)
                     {
@@ -49,22 +59,33 @@ namespace Dnn.ExportImport.Components.Services
                         taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
                         this.CheckPoint.TotalItems += taxonomyTerms.Count + taxonomyVocabularies.Count;
                     }
+
                     this.CheckPointStageCallback(this);
 
                     this.Repository.CreateItems(scopeTypes);
-                    //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-                    //CheckPoint.ProcessedItems += scopeTypes.Count;
+
+                    // Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                    // CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
+
                 this.CheckPoint.Progress = 25;
 
-                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                if (taxonomyVocabularies == null)
+                {
+                    taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                }
+
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     if (vocabularyTypes == null)
+                    {
                         vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                    }
+
                     this.Repository.CreateItems(vocabularyTypes);
-                    //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-                    //CheckPoint.ProcessedItems += vocabularyTypes.Count;
+
+                    // Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+                    // CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 }
 
                 this.Repository.CreateItems(taxonomyTerms);
@@ -72,9 +93,16 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress = 75;
                 this.CheckPoint.ProcessedItems += taxonomyTerms.Count;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
 
-                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                if (taxonomyVocabularies == null)
+                {
+                    taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                }
+
                 this.Repository.CreateItems(taxonomyVocabularies);
                 this.Result.AddSummary("Exported Terms", taxonomyVocabularies.Count.ToString());
                 this.CheckPoint.Progress = 100;
@@ -97,19 +125,27 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
 
-            //Update the total items count in the check points. This should be updated only once.
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
+
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
             if (this.CheckPoint.Stage == 0)
             {
                 var otherScopeTypes = this.Repository.GetAllItems<TaxonomyScopeType>().ToList();
-                //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
-                //CheckPoint.Progress = 10;
 
-                //var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
-                //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
+                // the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
+                // CheckPoint.Progress = 10;
+
+                // var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
+                // the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
                 this.CheckPoint.Progress = 20;
 
                 var otherVocabularies = this.Repository.GetAllItems<TaxonomyVocabulary>().ToList();
@@ -197,15 +233,19 @@ namespace Dnn.ExportImport.Components.Services
                     changed = true;
                 }
             }
+
             if (changed)
+            {
                 DataCache.ClearCache(DataCache.VocabularyCacheKey);
+            }
         }
 
         private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto,
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            //var vocabularyController = new VocabularyController();
+
+            // var vocabularyController = new VocabularyController();
             var localTaxonomyTerms = GetTaxonomyTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null);
             foreach (var other in otherTaxonomyTerms)
             {
@@ -244,6 +284,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
                             }
+
                             DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
                             this.Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;
@@ -261,7 +302,6 @@ namespace Dnn.ExportImport.Components.Services
                         ParentTermId = parent?.LocalId,
                         Weight = other.Weight,
                     };
-
 
                     other.LocalId = isHierarchical
                         ? dataService.AddHeirarchicalTerm(term, createdBy)

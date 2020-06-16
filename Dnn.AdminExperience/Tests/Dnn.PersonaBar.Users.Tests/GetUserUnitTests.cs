@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using Moq;
-using NUnit.Framework;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-using DotNetNuke.Entities.Users;
-using Dnn.PersonaBar.Library.Prompt.Models;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Users;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class GetUserUnitTests : CommandTests<GetUser>
     {
@@ -20,7 +20,10 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUserValidator> _userValidatorMock;
         private Mock<IUserControllerWrapper> _userControllerWrapperMock;
 
-        protected override string CommandName { get { return "Get-User"; } }
+        protected override string CommandName
+        {
+            get { return "Get-User"; }
+        }
 
         protected override void ChildSetup()
         {
@@ -57,14 +60,14 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
                 .Returns(this.errorResultModel);
 
-            // Act 
+            // Act
             var result = this.RunCommand("--email", "user1@g.com");
 
             // Assert
             Assert.IsFalse(result.IsError);
         }
 
-        [TestCase()]
+        [TestCase]
         public void Run_GetUserByUserNameWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange
@@ -85,7 +88,7 @@ namespace Dnn.PersonaBar.Users.Tests
                 .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
                 .Returns(this.errorResultModel);
 
-            // Act 
+            // Act
             var result = this.RunCommand("--username", "user1");
 
             // Assert
@@ -95,12 +98,12 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_GetUserWithValidCommand_ShouldSuccessResponse()
         {
-            // Arrange            
+            // Arrange
             this._userValidatorMock
              .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
              .Returns(this.errorResultModel);
 
-            // Act 
+            // Act
             var result = this.RunCommand(this._userId.ToString());
 
             // Assert
@@ -110,14 +113,14 @@ namespace Dnn.PersonaBar.Users.Tests
         [Test]
         public void Run_GetUserWithValidCommand_ShouldErrorResponse()
         {
-            // Arrange            
+            // Arrange
             this.errorResultModel = new ConsoleErrorResultModel();
 
             this._userValidatorMock
                 .Setup(u => u.ValidateUser(this._userId, this.portalSettings, null, out this._userInfo))
                 .Returns(this.errorResultModel);
 
-            // Act 
+            // Act
             var result = this.RunCommand(this._userId.ToString());
 
             // Assert

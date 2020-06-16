@@ -2,20 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Services.Localization.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+
     internal class LocalizationImpl : ILocalization
     {
         public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
         {
-            if(cultureCodes == null)
+            if (cultureCodes == null)
             {
                 throw new ArgumentException("cultureCodes cannot be null");
             }
@@ -26,29 +27,30 @@ namespace DotNetNuke.Services.Localization.Internal
             }
 
             var values = cultureCodes.ToList();
-            
+
             foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? new string[0])
             {
                 string lang = langHeader;
-                //strip any ;q=xx
+
+                // strip any ;q=xx
                 lang = lang.Split(';')[0];
 
-                //check for exact match e.g. de-DE == de-DE
+                // check for exact match e.g. de-DE == de-DE
                 if (lang.Contains('-'))
                 {
                     var match = values.FirstOrDefault(x => x == lang);
-                    if(match != null)
+                    if (match != null)
                     {
                         return match;
                     }
                 }
 
-                //only keep the initial language value
+                // only keep the initial language value
                 if (lang.Length > 1)
                 {
                     lang = lang.Substring(0, 2);
 
-                    //check for language match e.g. en-GB == en-US because en == en
+                    // check for language match e.g. en-GB == en-US because en == en
                     var match = values.FirstOrDefault(x => x.StartsWith(lang));
                     if (match != null)
                     {

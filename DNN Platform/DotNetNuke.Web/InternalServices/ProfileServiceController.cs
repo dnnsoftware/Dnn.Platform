@@ -1,29 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Services.Registration;
-
-#endregion
-
 namespace DotNetNuke.Web.InternalServices
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Registration;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class ProfileServiceController : DnnApiController
     {
@@ -31,10 +27,10 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage Search(string q)
         {
             var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.PortalSettings.PortalId), q);
-            return this.Request.CreateResponse(HttpStatusCode.OK,
-                        results.OrderBy(sr => sr)
-                        .Select(field => new { id = field, name = field })
-                    );
+            return this.Request.CreateResponse(
+                HttpStatusCode.OK,
+                results.OrderBy(sr => sr)
+                        .Select(field => new { id = field, name = field }));
         }
 
         [HttpPost]
@@ -43,35 +39,36 @@ namespace DotNetNuke.Web.InternalServices
         {
             bool modified;
 
-            //Clean Url
+            // Clean Url
             var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId));
             var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out modified);
 
-
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, 
-                    new {
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
+                    new
+                    {
                             Result = "warning",
                             Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
                             Message = Localization.GetString("ProfileUrlCleaned", Localization.SharedResourceFile),
-                            SuggestedUrl = cleanUrl
+                            SuggestedUrl = cleanUrl,
                         });
             }
 
-            //Validate for uniqueness
+            // Validate for uniqueness
             var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified);
-
 
             if (modified)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK,
-                                              new
+                return this.Request.CreateResponse(
+                    HttpStatusCode.OK,
+                    new
                                                   {
                                                       Result = "warning",
                                                       Title = Localization.GetString("DuplicateUrlWarningTitle", Localization.SharedResourceFile),
                                                       Message = Localization.GetString("ProfileUrlNotUnique", Localization.SharedResourceFile),
-                                                      SuggestedUrl = uniqueUrl
+                                                      SuggestedUrl = uniqueUrl,
                                                   });
             }
 
@@ -81,10 +78,10 @@ namespace DotNetNuke.Web.InternalServices
 
             DataCache.RemoveCache(string.Format(CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
 
-            //Url is clean and validated so we can update the User
+            // Url is clean and validated so we can update the User
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
-        
+
         public class VanityUrlDTO
         {
             public string Url { get; set; }
@@ -99,6 +96,5 @@ namespace DotNetNuke.Web.InternalServices
             int portalId = int.Parse(HttpContext.Current.Request.Params["PortalId"]);
             return this.Request.CreateResponse(HttpStatusCode.OK, Entities.Profile.ProfileController.SearchProfilePropertyValues(portalId, propertyName, searchString));
         }
-
     }
 }

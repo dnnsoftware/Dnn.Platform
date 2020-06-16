@@ -2,23 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using DotNetNuke.Providers.FolderProviders.AzureFolderProvider;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Web.Api;
-using Microsoft.WindowsAzure.Storage;
-
 namespace Dnn.AzureConnector.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+
+    using DotNetNuke.Providers.FolderProviders.AzureFolderProvider;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Web.Api;
+    using Microsoft.WindowsAzure.Storage;
+
     [DnnAuthorize]
     public class ServicesController : DnnApiController
     {
-        #region API
-
         [HttpGet]
         public HttpResponseMessage GetAllContainers(int id)
         {
@@ -53,7 +52,5 @@ namespace Dnn.AzureConnector.Services
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, Components.AzureConnector.FindAzureFolderMappingStatic(this.PortalSettings.PortalId).FolderMappingID);
         }
-
-        #endregion
     }
 }

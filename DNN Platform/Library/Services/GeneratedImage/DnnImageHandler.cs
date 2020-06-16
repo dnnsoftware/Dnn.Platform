@@ -2,37 +2,40 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.GeneratedImage.FilterTransform;
-using DotNetNuke.Services.GeneratedImage.StartTransform;
-using DotNetNuke.Services.Localization.Internal;
-using Assembly = System.Reflection.Assembly;
-
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.GeneratedImage.FilterTransform;
+    using DotNetNuke.Services.GeneratedImage.StartTransform;
+    using DotNetNuke.Services.Localization.Internal;
+
+    using Assembly = System.Reflection.Assembly;
+
     public class DnnImageHandler : ImageHandler
     {
         /// <summary>
-        /// While list of server folders where the system allow the dnn image handler to 
-        /// read to serve image files from it and its subfolders
+        /// While list of server folders where the system allow the dnn image handler to
+        /// read to serve image files from it and its subfolders.
         /// </summary>
-        private static readonly string[] WhiteListFolderPaths = {
+        private static readonly string[] WhiteListFolderPaths =
+        {
             Globals.DesktopModulePath,
             Globals.ImagePath,
-            Globals.ApplicationPath + "/Portals/"
+            Globals.ApplicationPath + "/Portals/",
         };
 
         private static bool IsAllowedFilePathImage(string filePath)
@@ -56,6 +59,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 normalizeFilePath = "/" + normalizeFilePath;
             }
+
             return normalizeFilePath;
         }
 
@@ -123,10 +127,10 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             this.SetupCulture();
 
-            //which type of image should be generated ?
+            // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
-            // We need to determine the output format		
+            // We need to determine the output format
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
@@ -139,12 +143,12 @@ namespace DotNetNuke.Services.GeneratedImage
             // Do we have a resizemode defined ?
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
 
-            // Maximum sizes 
+            // Maximum sizes
             int maxWidth = string.IsNullOrEmpty(parameters["MaxWidth"]) ? 0 : Convert.ToInt32(parameters["MaxWidth"]);
             int maxHeight = string.IsNullOrEmpty(parameters["MaxHeight"]) ? 0 : Convert.ToInt32(parameters["MaxHeight"]);
 
             // Any text ?
-            string text = string.IsNullOrEmpty(parameters["text"]) ? "" : parameters["text"];
+            string text = string.IsNullOrEmpty(parameters["text"]) ? string.Empty : parameters["text"];
 
             // Default Image
             this._defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
@@ -168,9 +172,10 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             uid = -1;
                         }
+
                         var uppTrans = new UserProfilePicTransform
                         {
-                            UserID = uid
+                            UserID = uid,
                         };
 
                         IFileInfo photoFile;
@@ -185,15 +190,29 @@ namespace DotNetNuke.Services.GeneratedImage
                         var placeHolderTrans = new PlaceholderTransform();
                         int width, height;
                         if (TryParseDimension(parameters["w"], out width))
+                        {
                             placeHolderTrans.Width = width;
+                        }
+
                         if (TryParseDimension(parameters["h"], out height))
+                        {
                             placeHolderTrans.Height = height;
+                        }
+
                         if (!string.IsNullOrEmpty(parameters["Color"]))
+                        {
                             placeHolderTrans.Color = color;
+                        }
+
                         if (!string.IsNullOrEmpty(parameters["Text"]))
+                        {
                             placeHolderTrans.Text = text;
+                        }
+
                         if (!string.IsNullOrEmpty(parameters["BackColor"]))
+                        {
                             placeHolderTrans.BackColor = backColor;
+                        }
 
                         this.ImageTransforms.Add(placeHolderTrans);
                         break;
@@ -208,23 +227,26 @@ namespace DotNetNuke.Services.GeneratedImage
                             {
                                 return this.GetEmptyImageInfo();
                             }
+
                             var folder = FolderManager.Instance.GetFolder(file.FolderId);
                             if (!secureFileTrans.DoesHaveReadFolderPermission(folder))
                             {
                                 return this.GetEmptyImageInfo();
                             }
+
                             this.ContentType = GetImageFormat(file.Extension);
                             secureFileTrans.SecureFile = file;
                             secureFileTrans.EmptyImage = this.EmptyImage;
                             this.ImageTransforms.Add(secureFileTrans);
                         }
+
                         break;
 
                     case "file":
                         var imgFile = string.Empty;
                         var imgUrl = string.Empty;
 
-                        // Lets determine the 2 types of Image Source: Single file, file url  
+                        // Lets determine the 2 types of Image Source: Single file, file url
                         var filePath = parameters["File"];
                         if (!string.IsNullOrEmpty(filePath))
                         {
@@ -234,11 +256,13 @@ namespace DotNetNuke.Services.GeneratedImage
                             {
                                 return this.GetEmptyImageInfo();
                             }
+
                             imgFile = fullFilePath;
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
                             var url = parameters["Url"];
+
                             // allow only site resources when using the url parameter
                             if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
                             {
@@ -261,9 +285,11 @@ namespace DotNetNuke.Services.GeneratedImage
                                 string[] parts = parameters["Url"].Split('.');
                                 extension = parts[parts.Length - 1].ToLowerInvariant();
                             }
+
                             this.ContentType = GetImageFormat(extension);
                         }
-                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl};
+
+                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl };
                         this.ImageTransforms.Add(imageFileTrans);
                         break;
 
@@ -302,10 +328,12 @@ namespace DotNetNuke.Services.GeneratedImage
                                                 pi.SetValue(imageTransform, parameters[key], null);
                                                 break;
                                         }
+
                                         break;
                                 }
                             }
                         }
+
                         this.ImageTransforms.Add(imageTransform);
                         break;
                 }
@@ -324,7 +352,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 TryParseDimension(parameters["w"], out width);
                 TryParseDimension(parameters["h"], out height);
 
-                var size = string.IsNullOrEmpty(parameters["size"]) ? "" : parameters["size"];
+                var size = string.IsNullOrEmpty(parameters["size"]) ? string.Empty : parameters["size"];
 
                 switch (size)
                 {
@@ -357,7 +385,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (mode == "profilepic")
                 {
                     resizeMode = ImageResizeMode.FitSquare;
-                    if (width>0 && height>0 && width != height)
+                    if (width > 0 && height > 0 && width != height)
                     {
                         resizeMode = ImageResizeMode.Fill;
                     }
@@ -373,7 +401,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         Height = height,
                         MaxWidth = maxWidth,
                         MaxHeight = maxHeight,
-                        Border = border
+                        Border = border,
                     };
                     this.ImageTransforms.Add(resizeTrans);
                 }
@@ -429,14 +457,13 @@ namespace DotNetNuke.Services.GeneratedImage
                 this.ImageTransforms.Add(invertTrans);
             }
 
-            // Rotate / Flip 
+            // Rotate / Flip
             if (!string.IsNullOrEmpty(parameters["RotateFlip"]))
             {
                 var rotateFlipTrans = new ImageRotateFlipTransform();
                 var rotateFlipType = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), parameters["RotateFlip"]);
                 rotateFlipTrans.RotateFlip = rotateFlipType;
                 this.ImageTransforms.Add(rotateFlipTrans);
-
             }
 
             // We start the chain with an empty image
@@ -452,7 +479,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             return new ImageInfo(this.EmptyImage)
             {
-                IsEmptyImage = true
+                IsEmptyImage = true,
             };
         }
 
@@ -477,6 +504,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 dimension = 0;
                 return false;
             }
+
             return true;
         }
 
@@ -535,7 +563,10 @@ namespace DotNetNuke.Services.GeneratedImage
         private void SetupCulture()
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null) return;
+            if (settings == null)
+            {
+                return;
+            }
 
             var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
             if (pageLocale != null)

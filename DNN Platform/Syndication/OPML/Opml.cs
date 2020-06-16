@@ -1,24 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Xml;
+
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
-    ///   Class for managing an OPML feed
+    ///   Class for managing an OPML feed.
     /// </summary>
     public class Opml
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Opml));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
         private DateTime _dateCreated = DateTime.MinValue;
         private DateTime _dateModified = DateTime.MinValue;
         private string _docs = string.Empty;
@@ -47,6 +42,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._utcExpiry;
             }
+
             set
             {
                 this._utcExpiry = value;
@@ -59,6 +55,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._title;
             }
+
             set
             {
                 this._title = value;
@@ -71,6 +68,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._dateCreated;
             }
+
             set
             {
                 this._dateCreated = value;
@@ -83,6 +81,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._dateModified;
             }
+
             set
             {
                 this._dateModified = value;
@@ -95,6 +94,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._ownerName;
             }
+
             set
             {
                 this._ownerName = value;
@@ -107,6 +107,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._ownerEmail;
             }
+
             set
             {
                 this._ownerEmail = value;
@@ -119,6 +120,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._ownerId;
             }
+
             set
             {
                 this._ownerId = value;
@@ -131,6 +133,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._docs;
             }
+
             set
             {
                 this._docs = value;
@@ -143,6 +146,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._expansionState;
             }
+
             set
             {
                 this._expansionState = value;
@@ -155,6 +159,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._vertScrollState;
             }
+
             set
             {
                 this._vertScrollState = value;
@@ -167,6 +172,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowTop;
             }
+
             set
             {
                 this._windowTop = value;
@@ -179,6 +185,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowLeft;
             }
+
             set
             {
                 this._windowLeft = value;
@@ -191,6 +198,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowBottom;
             }
+
             set
             {
                 this._windowBottom = value;
@@ -203,6 +211,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowRight;
             }
+
             set
             {
                 this._windowRight = value;
@@ -215,6 +224,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._outlines;
             }
+
             set
             {
                 this._outlines = value;
@@ -254,7 +264,7 @@ namespace DotNetNuke.Services.Syndication
             opml.SetAttribute("version", "2.0");
             this.opmlDoc.AppendChild(opml);
 
-            // create head    
+            // create head
             XmlElement head = this.opmlDoc.CreateElement("head");
             opml.AppendChild(head);
 
@@ -337,7 +347,7 @@ namespace DotNetNuke.Services.Syndication
 
         public static Opml LoadFromUrl(Uri uri)
         {
-            return (OpmlDownloadManager.GetOpmlFeed(uri));
+            return OpmlDownloadManager.GetOpmlFeed(uri);
         }
 
         public static Opml LoadFromFile(string path)
@@ -347,11 +357,11 @@ namespace DotNetNuke.Services.Syndication
                 var opmlDoc = new XmlDocument { XmlResolver = null };
                 opmlDoc.Load(path);
 
-                return (LoadFromXml(opmlDoc));
+                return LoadFromXml(opmlDoc);
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
         }
 
@@ -453,7 +463,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
         }
 
@@ -463,35 +473,35 @@ namespace DotNetNuke.Services.Syndication
 
             newOutline.Text = ParseElement(node, "text");
             newOutline.Type = ParseElement(node, "type");
-            newOutline.IsComment = (ParseElement(node, "isComment") == "true" ? true : false);
-            newOutline.IsBreakpoint = (ParseElement(node, "isBreakpoint") == "true" ? true : false);
+            newOutline.IsComment = ParseElement(node, "isComment") == "true" ? true : false;
+            newOutline.IsBreakpoint = ParseElement(node, "isBreakpoint") == "true" ? true : false;
             try
             {
                 newOutline.Created = DateTime.Parse(ParseElement(node, "created"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             newOutline.Category = ParseElement(node, "category");
             try
             {
                 newOutline.XmlUrl = new Uri(ParseElement(node, "xmlUrl"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             try
             {
                 newOutline.HtmlUrl = new Uri(ParseElement(node, "htmlUrl"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             newOutline.Language = ParseElement(node, "language");
             newOutline.Title = ParseElement(node, "title");
@@ -500,10 +510,10 @@ namespace DotNetNuke.Services.Syndication
             {
                 newOutline.Url = new Uri(ParseElement(node, "url"));
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
 
             newOutline.Description = ParseElement(node, "description");
 
@@ -521,7 +531,7 @@ namespace DotNetNuke.Services.Syndication
         private static string ParseElement(XmlElement node, string attribute)
         {
             string attrValue = node.GetAttribute(attribute);
-            return (!String.IsNullOrEmpty(attrValue) ? attrValue : string.Empty);
+            return !string.IsNullOrEmpty(attrValue) ? attrValue : string.Empty;
         }
     }
 }

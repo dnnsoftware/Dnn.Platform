@@ -2,31 +2,32 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web.UI;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.ExtensionPoints;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
-using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
-using DotNetNuke.Modules.DigitalAssets.Services;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.UI.Skins.Controls;
-using DotNetNuke.Web.UI;
-
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.ExtensionPoints;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers.Models;
+    using DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint;
+    using DotNetNuke.Modules.DigitalAssets.Services;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Web.UI;
+
     public partial class FolderProperties : PortalModuleBase
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
 
-        private readonly IDigitalAssetsController controller = (new Factory()).DigitalAssetsController;
+        private readonly IDigitalAssetsController controller = new Factory().DigitalAssetsController;
         private FolderViewModel folderViewModel;
         private bool isRootFolder;
         private Control folderFieldsControl;
@@ -81,6 +82,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         {
                             throw new Exception("Invalid group folder");
                         }
+
                         break;
 
                     case DigitalAssestsMode.User:
@@ -94,7 +96,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 this.isRootFolder = rootFolder.FolderID == folderId;
                 this.folderViewModel = this.isRootFolder ? rootFolder : this.controller.GetFolder(folderId);
-                
+
                 // Setup controls
                 this.CancelButton.Click += this.OnCancelClick;
                 this.SaveButton.Click += this.OnSaveClick;
@@ -117,7 +119,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                             ItemID = this.folderViewModel.FolderID,
                             IsFolder = true,
                             PortalID = this.folderViewModel.PortalID,
-                            ItemName = this.folderViewModel.FolderName
+                            ItemName = this.folderViewModel.FolderName,
                         });
                     }
                 }
@@ -143,7 +145,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this.Page.CloseClientDialog(true);
             }
             catch (ThreadAbortException)
-            {                
+            {
             }
             catch (DotNetNukeException dnnex)
             {

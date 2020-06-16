@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
-    class SubscriptionTypeBuilder
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
+    internal class SubscriptionTypeBuilder
     {
         private int subscriptionTypeId;
         private string subscriptionName;
@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
                            SubscriptionTypeId = this.subscriptionTypeId,
                            SubscriptionName = this.subscriptionName,
                            DesktopModuleId = this.desktopModuleId,
-                           FriendlyName = this.friendlyName
+                           FriendlyName = this.friendlyName,
                        };
         }
     }

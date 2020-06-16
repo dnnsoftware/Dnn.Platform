@@ -1,20 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.HtmlControls;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common;
+
     public partial class Styles : SkinObjectBase
     {
         private bool _useSkinPath = true;
@@ -33,6 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._useSkinPath;
             }
+
             set
             {
                 this._useSkinPath = value;
@@ -49,31 +45,33 @@ namespace DotNetNuke.UI.Skins.Controls
 
         protected void AddStyleSheet()
         {
-            //Find the placeholder control
+            // Find the placeholder control
             Control objCSS = this.Page.FindControl("CSS");
             if (objCSS != null)
             {
-                //First see if we have already added the <LINK> control
+                // First see if we have already added the <LINK> control
                 Control objCtrl = this.Page.Header.FindControl(this.ID);
                 if (objCtrl == null)
                 {
                     string skinpath = string.Empty;
                     if (this.UseSkinPath)
                     {
-                        skinpath = ((Skin) this.Parent).SkinPath;
+                        skinpath = ((Skin)this.Parent).SkinPath;
                     }
+
                     var objLink = new HtmlLink();
                     objLink.ID = Globals.CreateValidID(this.Name);
                     objLink.Attributes["rel"] = "stylesheet";
                     objLink.Attributes["type"] = "text/css";
                     objLink.Href = skinpath + this.StyleSheet;
-                    if (this.Media != "")
+                    if (this.Media != string.Empty)
                     {
-                        objLink.Attributes["media"] = this.Media; //NWS: add support for "media" attribute
+                        objLink.Attributes["media"] = this.Media; // NWS: add support for "media" attribute
                     }
+
                     if (this.IsFirst)
                     {
-						//Find the first HtmlLink
+                        // Find the first HtmlLink
                         int iLink;
                         for (iLink = 0; iLink <= objCSS.Controls.Count - 1; iLink++)
                         {
@@ -82,6 +80,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 break;
                             }
                         }
+
                         this.AddLink(objCSS, iLink, objLink);
                     }
                     else
@@ -119,8 +118,8 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 else
                 {
-					//Since we want to add at a specific location, we do this in reverse order
-                    //this allows us to use the same insertion point
+                    // Since we want to add at a specific location, we do this in reverse order
+                    // this allows us to use the same insertion point
                     cssRoot.Controls.AddAt(InsertAt, closeif);
                     cssRoot.Controls.AddAt(InsertAt, link);
                     cssRoot.Controls.AddAt(InsertAt, openif);

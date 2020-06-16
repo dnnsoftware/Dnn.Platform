@@ -2,13 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.UI.Modules;
-
 namespace DotNetNuke.ExtensionPoints
 {
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.UI.Modules;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:DefaultExtensionControl runat=server></{0}:DefaultExtensionControl>")]
     public class DefaultExtensionControl : WebControl
@@ -22,6 +23,7 @@ namespace DotNetNuke.ExtensionPoints
                 var s = (string)this.ViewState["Module"];
                 return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["Module"] = value;
@@ -37,6 +39,7 @@ namespace DotNetNuke.ExtensionPoints
                 var s = (string)this.ViewState["Group"];
                 return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["Group"] = value;
@@ -52,6 +55,7 @@ namespace DotNetNuke.ExtensionPoints
                 var s = (string)this.ViewState["Name"];
                 return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["Name"] = value;

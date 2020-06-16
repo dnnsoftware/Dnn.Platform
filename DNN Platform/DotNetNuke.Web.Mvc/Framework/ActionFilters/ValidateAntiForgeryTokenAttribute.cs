@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Mvc;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Web.Mvc.Common;
-
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
-  public  class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Web.Mvc.Common;
+
+  public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
     {
         public virtual bool IsAuthenticated(HttpContextBase httpContext)
         {
@@ -24,12 +25,12 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 {
                     var headers = httpContext.Request.Headers;
                     var form = httpContext.Request.Form;
-                    //Try to fetch the token from Headers. (Used with Dnn service framework.). 
-                    //If not found then fetch it from form fields. (Would be used with standard MVC call).
+
+                    // Try to fetch the token from Headers. (Used with Dnn service framework.).
+                    // If not found then fetch it from form fields. (Would be used with standard MVC call).
                     var token = headers.AllKeys.Contains("RequestVerificationToken") ? headers.GetValues("RequestVerificationToken").FirstOrDefault()
                         : (
-                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault(): null
-                        );
+                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault() : null);
 
                     var cookieValue = this.GetAntiForgeryCookieValue(httpContext);
                     if (token != null)
@@ -68,7 +69,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 }
             }
 
-            return "";
+            return string.Empty;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -77,6 +78,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             {
                 return false;
             }
+
             return true;
         }
     }

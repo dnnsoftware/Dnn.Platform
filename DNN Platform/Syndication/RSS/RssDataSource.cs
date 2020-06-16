@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Collections;
-using System.ComponentModel;
-using System.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Services.Syndication
 {
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Web.UI;
+
     /// <summary>
-    ///   RSS data source control implementation, including the designer
+    ///   RSS data source control implementation, including the designer.
     /// </summary>
     [DefaultProperty("Url")]
     public class RssDataSource : DataSourceControl
@@ -73,7 +68,8 @@ namespace DotNetNuke.Services.Syndication
     {
         private readonly RssDataSource _owner;
 
-        internal RssDataSourceView(RssDataSource owner, string viewName) : base(owner, viewName)
+        internal RssDataSourceView(RssDataSource owner, string viewName)
+            : base(owner, viewName)
         {
             this._owner = owner;
         }

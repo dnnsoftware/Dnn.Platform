@@ -1,24 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
-
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
 namespace DotNetNuke.Authentication.LiveConnect.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Services.Authentication.OAuth;
+
     [DataContract]
     public class LiveUserData : UserData
     {
-        #region Overrides
-
         public override string FirstName
         {
             get { return this.LiveFirstName; }
@@ -30,8 +23,6 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
             get { return this.LiveLastName; }
             set { }
         }
-
-        #endregion
 
         [DataMember(Name = "link")]
         public Uri Link { get; set; }

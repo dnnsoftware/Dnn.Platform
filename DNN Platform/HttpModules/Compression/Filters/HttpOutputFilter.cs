@@ -1,16 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-
-#endregion
-
 namespace DotNetNuke.HttpModules.Compression
 {
+    using System;
+    using System.IO;
+
     public abstract class HttpOutputFilter : Stream
     {
         private readonly Stream _sink;
@@ -66,6 +61,7 @@ namespace DotNetNuke.HttpModules.Compression
             {
                 throw new NotSupportedException();
             }
+
             set
             {
                 throw new NotSupportedException();

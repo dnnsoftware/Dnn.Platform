@@ -2,20 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.Tokens;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Services.Tokens
 {
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.Tokens;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class TokenReplaceTests
     {
@@ -55,14 +55,14 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("This is just plain text")]
         public void TextInputIsReturnedUnModified(string sourceText)
         {
-            //Arrange
+            // Arrange
             var tokenReplace = new TokenReplace(Scope.DefaultSettings, PortalSettings.Current.DefaultLanguage,
                 PortalSettings.Current, UserController.Instance.GetUser(1, 1), 1);
 
-            //Act
+            // Act
             var outputText = tokenReplace.ReplaceEnvironmentTokens(sourceText);
 
-            //Assert
+            // Assert
             Assert.AreEqual(outputText, sourceText);
         }
 
@@ -72,14 +72,14 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("[JavaScript:{ jsname: \"Knockout\" }] [JavaScript:{ path: \"~/DesktopModules/Dnn/ContactList/ClientScripts/contacts.js\"}]")]
         public void ObjectInputIsReturnedBlank(string sourceText)
         {
-            //Arrange
+            // Arrange
             var tokenReplace = new TokenReplace(Scope.DefaultSettings, PortalSettings.Current.DefaultLanguage,
                 PortalSettings.Current, UserController.Instance.GetUser(1, 1), 1);
 
-            //Act
+            // Act
             var outputText = tokenReplace.ReplaceEnvironmentTokens(sourceText);
 
-            //Assert
+            // Assert
             Assert.AreEqual(outputText.Trim(), string.Empty);
         }
 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var portalSettings = new PortalSettings
             {
                 AdministratorRoleName = Utilities.Constants.RoleName_Administrators,
-                ActiveTab = new TabInfo { ModuleID = 1, TabID = 1 }
+                ActiveTab = new TabInfo { ModuleID = 1, TabID = 1 },
             };
 
             this._portalController.Setup(pc => pc.GetCurrentPortalSettings()).Returns(portalSettings);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var moduleInfo = new ModuleInfo
             {
                 ModuleID = 1,
-                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId
+                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId,
             };
 
             this._moduleController.Setup(mc => mc.GetModule(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             {
                 UserID = 1,
                 Username = "admin",
-                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId
+                PortalID = this._portalController.Object.GetCurrentPortalSettings().PortalId,
             };
             this._userController.Setup(uc => uc.GetUser(It.IsAny<int>(), It.IsAny<int>())).Returns(userInfo);
         }

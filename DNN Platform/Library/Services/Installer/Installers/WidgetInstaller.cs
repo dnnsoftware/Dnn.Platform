@@ -1,20 +1,15 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.IO;
-
-using DotNetNuke.Common;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System.IO;
+
+    using DotNetNuke.Common;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The WidgetInstaller installs Widget Components to a DotNetNuke site
+    /// The WidgetInstaller installs Widget Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -23,9 +18,9 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("widgetFiles")
+        /// Gets the name of the Collection Node ("widgetFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -37,9 +32,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("widgetFiles")
+        /// Gets the name of the Item Node ("widgetFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -51,9 +46,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PhysicalBasePath for the widget files
+        /// Gets the PhysicalBasePath for the widget files.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
@@ -66,9 +61,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {

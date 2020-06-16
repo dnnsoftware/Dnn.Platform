@@ -1,34 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.IO;
-
-using DotNetNuke.Common.Utilities.Internal;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Common.Utilities.Internal;
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
-    ///   Verifies the abililty to create and delete files and folders
+    ///   Verifies the abililty to create and delete files and folders.
     /// </summary>
     /// <remarks>
     ///   This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.
     /// </remarks>
     public class FileSystemPermissionVerifier
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileSystemPermissionVerifier));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
         private readonly string _basePath;
 
-	    private int _retryTimes = 30;
+        private int _retryTimes = 30;
 
         /// <summary>
-        /// Base path need to verify permission.
+        /// Gets base path need to verify permission.
         /// </summary>
         public string BasePath
         {
@@ -40,18 +35,18 @@ namespace DotNetNuke.Common.Utilities
 
         public FileSystemPermissionVerifier(string basePath)
         {
-			this._basePath = basePath;
+            this._basePath = basePath;
         }
 
-		public FileSystemPermissionVerifier(string basePath, int retryTimes) : this(basePath)
-		{
-
-			this._retryTimes = retryTimes;
-		}
+        public FileSystemPermissionVerifier(string basePath, int retryTimes)
+            : this(basePath)
+        {
+            this._retryTimes = retryTimes;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFileCreate checks whether a file can be created
+        ///   VerifyFileCreate checks whether a file can be created.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFileCreate()
@@ -59,7 +54,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
             bool verified = true;
 
-            //Attempt to create the File
+            // Attempt to create the File
             try
             {
                 this.Try(() => FileCreateAction(verifyPath), "Creating verification file");
@@ -80,15 +75,15 @@ namespace DotNetNuke.Common.Utilities
                 File.Delete(verifyPath);
             }
 
-            using(File.Create(verifyPath))
+            using (File.Create(verifyPath))
             {
-                //do nothing just let it close
+                // do nothing just let it close
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFileDelete checks whether a file can be deleted
+        ///   VerifyFileDelete checks whether a file can be deleted.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFileDelete()
@@ -96,7 +91,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
             bool verified = true;
 
-            //Attempt to delete the File
+            // Attempt to delete the File
             try
             {
                 this.Try(() => File.Delete(verifyPath), "Deleting verification file");
@@ -112,7 +107,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFolderCreate checks whether a folder can be created
+        ///   VerifyFolderCreate checks whether a folder can be created.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderCreate()
@@ -120,10 +115,10 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify");
             bool verified = true;
 
-            //Attempt to create the Directory
+            // Attempt to create the Directory
             try
             {
-				this.Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
+                this.Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
             }
             catch (Exception exc)
             {
@@ -146,7 +141,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFolderDelete checks whether a folder can be deleted
+        ///   VerifyFolderDelete checks whether a folder can be deleted.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderDelete()
@@ -154,7 +149,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify");
             bool verified = true;
 
-            //Attempt to delete the Directory
+            // Attempt to delete the Directory
             try
             {
                 this.Try(() => Directory.Delete(verifyPath, true), "Deleting verification folder");
@@ -180,9 +175,9 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-		private void Try(Action action, string description)
-		{
-			new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
-		}
+        private void Try(Action action, string description)
+        {
+            new RetryableAction(action, description, this._retryTimes, TimeSpan.FromSeconds(1)).TryIt();
+        }
     }
 }

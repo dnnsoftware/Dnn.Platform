@@ -1,24 +1,19 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using Telerik.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using Telerik.Web.UI;
+
     public class DnnFormNumericTextBoxItem : DnnFormItemBase
     {
-        //private DnnNumericTextBox _textBox;
+        // private DnnNumericTextBox _textBox;
         private TextBox _textBox;
 
         public DnnFormNumericTextBoxItem()
@@ -44,17 +39,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            //_textBox = new DnnNumericTextBox {EmptyMessage = LocalizeString(ResourceKey + ".Hint"), ID = ID + "_TextBox", Width = TextBoxWidth };
+            // _textBox = new DnnNumericTextBox {EmptyMessage = LocalizeString(ResourceKey + ".Hint"), ID = ID + "_TextBox", Width = TextBoxWidth };
             this._textBox = new TextBox();
             this._textBox.CssClass = "DnnNumericTextBox";
-            //_textBox.Style.Add("float", "none");
-            //_textBox.EmptyMessageStyle.CssClass += "dnnformHint";
-            //_textBox.Type = Type;
-            //_textBox.NumberFormat.DecimalDigits = DecimalDigits;
-            //_textBox.ShowSpinButtons = ShowSpinButtons;
+
+            // _textBox.Style.Add("float", "none");
+            // _textBox.EmptyMessageStyle.CssClass += "dnnformHint";
+            // _textBox.Type = Type;
+            // _textBox.NumberFormat.DecimalDigits = DecimalDigits;
+            // _textBox.ShowSpinButtons = ShowSpinButtons;
             this._textBox.TextChanged += this.TextChanged;
 
-            //Load from ControlState
+            // Load from ControlState
             this._textBox.Text = Convert.ToString(this.Value);
 
             container.Controls.Add(this._textBox);

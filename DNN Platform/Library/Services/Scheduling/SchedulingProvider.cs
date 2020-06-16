@@ -1,29 +1,26 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using Microsoft.VisualBasic;
-using Globals = DotNetNuke.Common.Globals;
-
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
+    using Microsoft.VisualBasic;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     // ReSharper disable InconsistentNaming
     public enum EventName
     {
-        //do not add APPLICATION_END
-        //it will not reliably complete
-        APPLICATION_START
+        // do not add APPLICATION_END
+        // it will not reliably complete
+        APPLICATION_START,
     }
 
     public enum ScheduleSource
@@ -32,7 +29,7 @@ namespace DotNetNuke.Services.Scheduling
         STARTED_FROM_SCHEDULE_CHANGE,
         STARTED_FROM_EVENT,
         STARTED_FROM_TIMER,
-        STARTED_FROM_BEGIN_REQUEST
+        STARTED_FROM_BEGIN_REQUEST,
     }
 
     public enum ScheduleStatus
@@ -44,18 +41,19 @@ namespace DotNetNuke.Services.Scheduling
         RUNNING_REQUEST_SCHEDULE,
         WAITING_FOR_REQUEST,
         SHUTTING_DOWN,
-        STOPPED
+        STOPPED,
     }
 
     public enum SchedulerMode
     {
         DISABLED = 0,
         TIMER_METHOD = 1,
-        REQUEST_METHOD = 2
+        REQUEST_METHOD = 2,
     }
+
     // ReSharper restore InconsistentNaming
 
-    //set up our delegates so we can track and react to events of the scheduler clients
+    // set up our delegates so we can track and react to events of the scheduler clients
     public delegate void WorkStarted(SchedulerClient objSchedulerClient);
 
     public delegate void WorkProgressing(SchedulerClient objSchedulerClient);
@@ -77,7 +75,7 @@ namespace DotNetNuke.Services.Scheduling
 
                 string str;
                 bool dbg;
- 
+
                 if (settings.TryGetValue("debug", out str) && bool.TryParse(str, out dbg))
                 {
                     Debug = dbg;
@@ -88,15 +86,16 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     value = 1;
                 }
+
                 MaxThreads = value;
 
-                //if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
-                //{
+                // if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                // {
                 //    value = 60;
-                //}
+                // }
                 if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
                 {
-                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)*60;
+                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
                 }
                 else
                 {
@@ -118,7 +117,7 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         /// <summary>
-        /// The number of seconds since application start where no timer-initiated
+        /// Gets the number of seconds since application start where no timer-initiated
         /// schedulers are allowed to run before. This safeguards against ovelapped
         /// application re-starts. See "Disable Ovelapped Recycling" under Recycling
         /// of IIS Manager Application Pool's Advanced Settings.
@@ -154,6 +153,7 @@ namespace DotNetNuke.Services.Scheduling
                 return DataCache.GetCache("ScheduleLastPolled") != null
                     ? (DateTime)DataCache.GetCache("ScheduleLastPolled") : DateTime.MinValue;
             }
+
             set
             {
                 var nextScheduledTask = Instance().GetNextScheduledTask(ServerController.GetExecutingServerName());
@@ -183,7 +183,6 @@ namespace DotNetNuke.Services.Scheduling
         {
             return ComponentFactory.GetComponent<SchedulingProvider>();
         }
-
 
         public abstract void Start();
 
@@ -231,19 +230,20 @@ namespace DotNetNuke.Services.Scheduling
 
         public abstract void UpdateSchedule(ScheduleItem scheduleItem);
 
-        public abstract void UpdateScheduleWithoutExecution (ScheduleItem scheduleItem);
+        public abstract void UpdateScheduleWithoutExecution(ScheduleItem scheduleItem);
 
         public abstract void DeleteSchedule(ScheduleItem scheduleItem);
 
         public virtual void RunScheduleItemNow(ScheduleItem scheduleItem)
         {
-            //Do Nothing
+            // Do Nothing
         }
+
         public virtual void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
-            //Do Nothing
+            // Do Nothing
         }
-        public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
 
+        public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
     }
 }

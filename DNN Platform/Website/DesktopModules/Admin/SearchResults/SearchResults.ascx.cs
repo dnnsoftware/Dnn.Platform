@@ -1,28 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
 namespace DotNetNuke.Modules.SearchResults
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;
@@ -47,7 +43,7 @@ namespace DotNetNuke.Modules.SearchResults
             get { return this.Request.QueryString["Scope"] ?? string.Empty; }
         }
 
-        protected string [] SearchScope
+        protected string[] SearchScope
         {
             get
             {
@@ -71,7 +67,7 @@ namespace DotNetNuke.Modules.SearchResults
                 }
 
                 int pageIndex;
-                if (Int32.TryParse(this.Request.QueryString["Page"], out pageIndex))
+                if (int.TryParse(this.Request.QueryString["Page"], out pageIndex))
                 {
                     return pageIndex;
                 }
@@ -90,7 +86,7 @@ namespace DotNetNuke.Modules.SearchResults
                 }
 
                 int pageSize;
-                if (Int32.TryParse(this.Request.QueryString["Size"], out pageSize))
+                if (int.TryParse(this.Request.QueryString["Size"], out pageSize))
                 {
                     return pageSize;
                 }
@@ -109,7 +105,7 @@ namespace DotNetNuke.Modules.SearchResults
                 }
 
                 int sortOption;
-                if (Int32.TryParse(this.Request.QueryString["Sort"], out sortOption))
+                if (int.TryParse(this.Request.QueryString["Sort"], out sortOption))
                 {
                     return sortOption;
                 }
@@ -128,7 +124,8 @@ namespace DotNetNuke.Modules.SearchResults
                 {
                     return "checked=\"true\"";
                 }
-                return "";
+
+                return string.Empty;
             }
         }
 
@@ -163,7 +160,10 @@ namespace DotNetNuke.Modules.SearchResults
                     if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
                     {
                         List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
-                        foreach (string l in list) this._searchPortalIds.Add(Convert.ToInt32(l));
+                        foreach (string l in list)
+                        {
+                            this._searchPortalIds.Add(Convert.ToInt32(l));
+                        }
                     }
                     else
                     {
@@ -189,7 +189,11 @@ namespace DotNetNuke.Modules.SearchResults
                             InternalSearchController.Instance.GetSearchContentSourceList(portalId);
                         foreach (SearchContentSource src in crawlerList)
                         {
-                            if (src.IsPrivate) continue;
+                            if (src.IsPrivate)
+                            {
+                                continue;
+                            }
+
                             if (list.All(r => r.LocalizedName != src.LocalizedName))
                             {
                                 list.Add(src);
@@ -223,8 +227,6 @@ namespace DotNetNuke.Modules.SearchResults
                 return this._searchContentSources;
             }
         }
-
-        #region localized string
 
         private const string MyFileName = "SearchResults.ascx";
 
@@ -272,7 +274,6 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get { return Localization.GetSafeJSString("Comments", Localization.GetResourceFile(this, MyFileName)); }
         }
-
 
         protected string RelevanceText
         {
@@ -334,8 +335,6 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string CultureCode { get; set; }
 
-        #endregion
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -350,11 +349,12 @@ namespace DotNetNuke.Modules.SearchResults
 
             foreach (string o in this.SearchContentSources)
             {
-                var item = new ListItem(o, o) {Selected = this.CheckedScopeItem(o)};
+                var item = new ListItem(o, o) { Selected = this.CheckedScopeItem(o) };
                 this.SearchScopeList.Items.Add(item);
             }
 
-            this.SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString("AllFeaturesSelected",
+            this.SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString(
+                "AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
 
             var pageSizeItem = this.ResultsPerPageList.FindItemByValue(this.PageSize.ToString());

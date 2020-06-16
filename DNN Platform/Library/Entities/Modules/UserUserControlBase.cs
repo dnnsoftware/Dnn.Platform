@@ -1,22 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-
-#endregion
-
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
+    /// Project  :  DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  UserUserControlBase
+    /// Class    :  UserUserControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserUserControlBase class defines a custom base class for the User Control.
@@ -26,33 +21,41 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class UserUserControlBase : UserModuleBase
     {
-        #region Delegates
         public delegate void UserCreatedEventHandler(object sender, UserCreatedEventArgs e);
+
         public delegate void UserDeletedEventHandler(object sender, UserDeletedEventArgs e);
+
         public delegate void UserRestoredEventHandler(object sender, UserRestoredEventArgs e);
+
         public delegate void UserRemovedEventHandler(object sender, UserRemovedEventArgs e);
+
         public delegate void UserUpdateErrorEventHandler(object sender, UserUpdateErrorArgs e);
-        #endregion
 
-        #region "Events"
         public event UserCreatedEventHandler UserCreated;
-        public event UserCreatedEventHandler UserCreateCompleted;
-        public event UserDeletedEventHandler UserDeleted;
-        public event UserUpdateErrorEventHandler UserDeleteError;
-        public event UserRestoredEventHandler UserRestored;
-        public event UserUpdateErrorEventHandler UserRestoreError;
-        public event UserRemovedEventHandler UserRemoved;
-        public event UserUpdateErrorEventHandler UserRemoveError;
-        public event EventHandler UserUpdated;
-        public event EventHandler UserUpdateCompleted;
-        public event UserUpdateErrorEventHandler UserUpdateError;
-        #endregion
 
-        #region "Event Methods"
+        public event UserCreatedEventHandler UserCreateCompleted;
+
+        public event UserDeletedEventHandler UserDeleted;
+
+        public event UserUpdateErrorEventHandler UserDeleteError;
+
+        public event UserRestoredEventHandler UserRestored;
+
+        public event UserUpdateErrorEventHandler UserRestoreError;
+
+        public event UserRemovedEventHandler UserRemoved;
+
+        public event UserUpdateErrorEventHandler UserRemoveError;
+
+        public event EventHandler UserUpdated;
+
+        public event EventHandler UserUpdateCompleted;
+
+        public event UserUpdateErrorEventHandler UserUpdateError;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserCreateCompleted Event
+        /// Raises the UserCreateCompleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserCreateCompleted(UserCreatedEventArgs e)
@@ -65,7 +68,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserCreated Event
+        /// Raises the UserCreated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserCreated(UserCreatedEventArgs e)
@@ -78,7 +81,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserDeleted Event
+        /// Raises the UserDeleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserDeleted(UserDeletedEventArgs e)
@@ -91,7 +94,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserDeleteError Event
+        /// Raises the UserDeleteError Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserDeleteError(UserUpdateErrorArgs e)
@@ -136,7 +139,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserUpdated Event
+        /// Raises the UserUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdated(EventArgs e)
@@ -149,7 +152,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserUpdated Event
+        /// Raises the UserUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateCompleted(EventArgs e)
@@ -162,7 +165,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the UserUpdateError Event
+        /// Raises the UserUpdateError Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnUserUpdateError(UserUpdateErrorArgs e)
@@ -173,46 +176,34 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
-
-        #region "Properties"
-
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
-
-        #endregion
-
-        #region Nested type: BaseUserEventArgs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The BaseUserEventArgs class provides a base for User EventArgs classes
+        /// The BaseUserEventArgs class provides a base for User EventArgs classes.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Id of the User
+            /// Gets or sets and sets the Id of the User.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public int UserId { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Id of the User
+            /// Gets or sets and sets the Id of the User.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string UserName { get; set; }
         }
 
-        #endregion
-
-        #region Nested type: UserCreatedEventArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserCreatedEventArgs class provides a customised EventArgs class for
-        /// the UserCreated Event
+        /// the UserCreated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class UserCreatedEventArgs
@@ -221,9 +212,10 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new UserCreatedEventArgs
+            /// Initializes a new instance of the <see cref="UserCreatedEventArgs"/> class.
+            /// Constructs a new UserCreatedEventArgs.
             /// </summary>
-            /// <param name="newUser">The newly Created User</param>
+            /// <param name="newUser">The newly Created User.</param>
             /// -----------------------------------------------------------------------------
             public UserCreatedEventArgs(UserInfo newUser)
             {
@@ -232,7 +224,7 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Create Status
+            /// Gets or sets and sets the Create Status.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public UserCreateStatus CreateStatus
@@ -241,6 +233,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     return this._createStatus;
                 }
+
                 set
                 {
                     this._createStatus = value;
@@ -249,37 +242,34 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the New User
+            /// Gets or sets and sets the New User.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public UserInfo NewUser { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets a flag whether to Notify the new User of the Creation
+            /// Gets or sets a value indicating whether gets and sets a flag whether to Notify the new User of the Creation.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public bool Notify { get; set; }
         }
 
-        #endregion
-
-        #region Nested type: UserDeletedEventArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserDeletedEventArgs class provides a customised EventArgs class for
-        /// the UserDeleted Event
+        /// the UserDeleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class UserDeletedEventArgs : BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new UserDeletedEventArgs
+            /// Initializes a new instance of the <see cref="UserDeletedEventArgs"/> class.
+            /// Constructs a new UserDeletedEventArgs.
             /// </summary>
-            /// <param name="id">The Id of the User</param>
-            /// <param name="name">The user name of the User</param>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
             /// -----------------------------------------------------------------------------
             public UserDeletedEventArgs(int id, string name)
             {
@@ -288,25 +278,22 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
-
-        #region Nested type: UserRestoredEventArgs
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The UserRestoredEventArgs class provides a customised EventArgs class for
-		/// the UserRestored Event
-		/// </summary>
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UserRestoredEventArgs class provides a customised EventArgs class for
+        /// the UserRestored Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
         public class UserRestoredEventArgs : BaseUserEventArgs
         {
-			/// -----------------------------------------------------------------------------
-			/// <summary>
-			/// Constructs a new UserRestoredEventArgs
-			/// </summary>
-			/// <param name="id">The Id of the User</param>
-			/// <param name="name">The user name of the User</param>
-			/// -----------------------------------------------------------------------------
+            /// -----------------------------------------------------------------------------
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserRestoredEventArgs"/> class.
+            /// Constructs a new UserRestoredEventArgs.
+            /// </summary>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
+            /// -----------------------------------------------------------------------------
             public UserRestoredEventArgs(int id, string name)
             {
                 this.UserId = id;
@@ -314,53 +301,45 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        #endregion
-
-        #region Nested type: UserRemovedEventArgs
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// The UserRemovedEventArgs class provides a customised EventArgs class for
-		/// the UserRemoved Event
-		/// </summary>
-		/// -----------------------------------------------------------------------------
-
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UserRemovedEventArgs class provides a customised EventArgs class for
+        /// the UserRemoved Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
         public class UserRemovedEventArgs : BaseUserEventArgs
         {
-			/// -----------------------------------------------------------------------------
-			/// <summary>
-			/// Constructs a new UserRemovedEventArgs
-			/// </summary>
-			/// <param name="id">The Id of the User</param>
-			/// <param name="name">The user name of the User</param>
-			/// -----------------------------------------------------------------------------
-			public UserRemovedEventArgs(int id, string name)
+            /// -----------------------------------------------------------------------------
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UserRemovedEventArgs"/> class.
+            /// Constructs a new UserRemovedEventArgs.
+            /// </summary>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
+            /// -----------------------------------------------------------------------------
+            public UserRemovedEventArgs(int id, string name)
             {
                 this.UserId = id;
                 this.UserName = name;
             }
         }
 
-
-        #endregion
-
-        #region Nested type: UserUpdateErrorArgs
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UserUpdateErrorArgs class provides a customised EventArgs class for
-        /// the UserUpdateError Event
+        /// the UserUpdateError Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class UserUpdateErrorArgs : BaseUserEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new UserUpdateErrorArgs
+            /// Initializes a new instance of the <see cref="UserUpdateErrorArgs"/> class.
+            /// Constructs a new UserUpdateErrorArgs.
             /// </summary>
-            /// <param name="id">The Id of the User</param>
-            /// <param name="name">The user name of the User</param>
-            /// <param name="message">The error message</param>
+            /// <param name="id">The Id of the User.</param>
+            /// <param name="name">The user name of the User.</param>
+            /// <param name="message">The error message.</param>
             /// -----------------------------------------------------------------------------
             public UserUpdateErrorArgs(int id, string name, string message)
             {
@@ -371,12 +350,10 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the error message
+            /// Gets or sets and sets the error message.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string Message { get; set; }
         }
-
-        #endregion
     }
 }

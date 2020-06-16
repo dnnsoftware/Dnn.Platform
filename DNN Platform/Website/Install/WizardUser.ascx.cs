@@ -1,21 +1,16 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Security.Membership;
-
-#endregion
-
 namespace DotNetNuke.Services.Install
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Security.Membership;
+
     public partial class WizardUser : UserControl
     {
         public string FirstName
@@ -24,6 +19,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtFirstName.Text;
             }
+
             set
             {
                 this.txtFirstName.Text = value;
@@ -36,6 +32,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtLastName.Text;
             }
+
             set
             {
                 this.txtLastName.Text = value;
@@ -48,6 +45,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtUserName.Text;
             }
+
             set
             {
                 this.txtUserName.Text = value;
@@ -60,6 +58,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtPassword.Text;
             }
+
             set
             {
                 this.txtPassword.Text = value;
@@ -72,6 +71,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtConfirm.Text;
             }
+
             set
             {
                 this.txtConfirm.Text = value;
@@ -84,6 +84,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtEmail.Text;
             }
+
             set
             {
                 this.txtEmail.Text = value;
@@ -96,6 +97,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblFirstName.Text;
             }
+
             set
             {
                 this.lblFirstName.Text = value;
@@ -108,6 +110,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblLastName.Text;
             }
+
             set
             {
                 this.lblLastName.Text = value;
@@ -120,6 +123,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblUserName.Text;
             }
+
             set
             {
                 this.lblUserName.Text = value;
@@ -132,6 +136,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblPassword.Text;
             }
+
             set
             {
                 this.lblPassword.Text = value;
@@ -144,6 +149,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblConfirm.Text;
             }
+
             set
             {
                 this.lblConfirm.Text = value;
@@ -156,6 +162,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblEmail.Text;
             }
+
             set
             {
                 this.lblEmail.Text = value;
@@ -189,56 +196,57 @@ namespace DotNetNuke.Services.Install
             {
                 strErrorMessage = "InValidEmail";
             }
+
             return strErrorMessage;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-		/// OnLoad runs just before the page is rendered
+        /// OnLoad runs just before the page is rendered.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
-			base.OnLoad(e);
+            base.OnLoad(e);
 
-			if(this.IsPostBack)
-			{
-				if(!string.IsNullOrEmpty(this.txtPassword.Text))
-				{
-					this.ViewState["Password"] = this.txtPassword.Text;
-				}
-				else if(this.ViewState["Password"] != null)
-				{
-					this.txtPassword.Text = this.ViewState["Password"].ToString();
-				}
+            if (this.IsPostBack)
+            {
+                if (!string.IsNullOrEmpty(this.txtPassword.Text))
+                {
+                    this.ViewState["Password"] = this.txtPassword.Text;
+                }
+                else if (this.ViewState["Password"] != null)
+                {
+                    this.txtPassword.Text = this.ViewState["Password"].ToString();
+                }
 
-				if (!string.IsNullOrEmpty(this.txtConfirm.Text))
-				{
-					this.ViewState["Confirm"] = this.txtConfirm.Text;
-				}
-				else if (this.ViewState["Confirm"] != null)
-				{
-					this.txtConfirm.Text = this.ViewState["Confirm"].ToString();
-				}
-			}
+                if (!string.IsNullOrEmpty(this.txtConfirm.Text))
+                {
+                    this.ViewState["Confirm"] = this.txtConfirm.Text;
+                }
+                else if (this.ViewState["Confirm"] != null)
+                {
+                    this.txtConfirm.Text = this.ViewState["Confirm"].ToString();
+                }
+            }
         }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// OnLoad runs just before the page is rendered
-		/// </summary>
-		/// <remarks>
-		/// </remarks>
-		/// -----------------------------------------------------------------------------
-		protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs just before the page is rendered.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
 
-			//Make sure that the password is not cleared on pastback
-			this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
-			this.txtPassword.Attributes["value"] = this.txtPassword.Text;
-		}
+            // Make sure that the password is not cleared on pastback
+            this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
+            this.txtPassword.Attributes["value"] = this.txtPassword.Text;
+        }
     }
 }

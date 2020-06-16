@@ -2,17 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Installer.Packages;
-
 namespace DotNetNuke.Services.Installer.Dependencies
 {
+    using System;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Installer.Packages;
+
     public class ManagedPackageDependency : DependencyBase, IManagedPackageDependency
     {
-
         public override string ErrorMessage
         {
             get
@@ -27,14 +26,16 @@ namespace DotNetNuke.Services.Installer.Dependencies
             {
                 bool _IsValid = true;
 
-                //Get Package from DataStore
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, 
-                                                (p) => p.Name.Equals(this.PackageDependency.PackageName, StringComparison.OrdinalIgnoreCase)
+                // Get Package from DataStore
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(
+                    Null.NullInteger,
+                    (p) => p.Name.Equals(this.PackageDependency.PackageName, StringComparison.OrdinalIgnoreCase)
                                                                 && p.Version >= this.PackageDependency.Version);
                 if (package == null)
                 {
                     _IsValid = false;
                 }
+
                 return _IsValid;
             }
         }
@@ -44,14 +45,10 @@ namespace DotNetNuke.Services.Installer.Dependencies
             this.PackageDependency = new PackageDependencyInfo
             {
                 PackageName = dependencyNav.Value,
-                Version = new Version(Util.ReadAttribute(dependencyNav, "version"))
+                Version = new Version(Util.ReadAttribute(dependencyNav, "version")),
             };
         }
 
-        #region IManagedPackageDependency Implementation
-
         public PackageDependencyInfo PackageDependency { get; set; }
-
-        #endregion
     }
 }

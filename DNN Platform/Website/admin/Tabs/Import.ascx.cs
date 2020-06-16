@@ -1,33 +1,28 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI.WebControls;
-using System.Xml;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.UI.Skins.Controls;
-
-#endregion
-
 namespace DotNetNuke.Modules.Admin.Tabs
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.Skins.Controls;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class Import : PortalModuleBase
     {
@@ -48,6 +43,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 {
                     this._tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
                 }
+
                 return this._tab;
             }
         }
@@ -77,16 +73,16 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
                 if (folder != null)
                 {
-                    //var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
+                    // var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
                     var files = Globals.GetFileList(this.PortalId, "page.template", false, folder.FolderPath);
                     foreach (FileItem file in files)
                     {
-                        this.cboTemplate.AddItem(file.Text.Replace(".page.template", ""), file.Value);
+                        this.cboTemplate.AddItem(file.Text.Replace(".page.template", string.Empty), file.Value);
                     }
+
                     this.cboTemplate.InsertItem(0, "<" + Localization.GetString("None_Specified") + ">", "None_Specified");
                     this.cboTemplate.SelectedIndex = 0;
                 }
-
             }
         }
 
@@ -104,10 +100,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private void DisplayNewRows()
         {
-            this.divTabName.Visible = (this.optMode.SelectedIndex == 0);
-            this.divParentTab.Visible = (this.optMode.SelectedIndex == 0);
-            this.divInsertPositionRow.Visible = (this.optMode.SelectedIndex == 0);
-            this.divInsertPositionRow.Visible = (this.optMode.SelectedIndex == 0);
+            this.divTabName.Visible = this.optMode.SelectedIndex == 0;
+            this.divParentTab.Visible = this.optMode.SelectedIndex == 0;
+            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
+            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
         }
 
         protected override void OnInit(EventArgs e)
@@ -138,7 +134,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     var folders = FolderManager.Instance.GetFolders(this.UserInfo, "BROWSE, ADD");
                     var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
-                    if (templateFolder != null) this.cboFolders.SelectedFolder = templateFolder;
+                    if (templateFolder != null)
+                    {
+                        this.cboFolders.SelectedFolder = templateFolder;
+                    }
 
                     this.BindFiles();
                     this.BindTabControls();
@@ -165,14 +164,23 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SpecifyFile", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
+
                 if (this.optMode.SelectedIndex == -1)
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SpecifyMode", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
-                if (this.cboFolders.SelectedItem == null) return;
+
+                if (this.cboFolders.SelectedItem == null)
+                {
+                    return;
+                }
+
                 var selectedFolder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-                if (selectedFolder == null) return;
+                if (selectedFolder == null)
+                {
+                    return;
+                }
 
                 var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
                 var xmlDoc = new XmlDocument { XmlResolver = null };
@@ -187,6 +195,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 {
                     tabNodes.AddRange(selectSingleNode.ChildNodes.Cast<XmlNode>());
                 }
+
                 if (tabNodes.Count == 0)
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoTabsInTemplate", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
@@ -196,7 +205,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 TabInfo objTab;
                 if (this.optMode.SelectedValue == "ADD")
                 {
-                    //Check for invalid
+                    // Check for invalid
                     string invalidType;
                     if (!TabController.IsValidTabName(this.txtTabName.Text, out invalidType))
                     {
@@ -205,17 +214,18 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         return;
                     }
 
-                    //New Tab
+                    // New Tab
                     objTab = new TabInfo { PortalID = this.PortalId, TabName = this.txtTabName.Text, IsVisible = true };
                     var parentId = this.cboParentTab.SelectedItemValueAsInt;
                     if (parentId != Null.NullInteger)
                     {
                         objTab.ParentId = parentId;
                     }
+
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
                     var tabId = TabController.GetTabByTabPath(objTab.PortalID, objTab.TabPath, Null.NullString);
 
-                    //Check if tab exists
+                    // Check if tab exists
                     if (tabId != Null.NullInteger)
                     {
                         TabInfo existingTab = TabController.Instance.GetTab(tabId, this.PortalId, false);
@@ -227,10 +237,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         {
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("TabExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                         }
+
                         return;
                     }
 
-                    var positionTabId = Int32.Parse(this.cboPositionTab.SelectedItem.Value);
+                    var positionTabId = int.Parse(this.cboPositionTab.SelectedItem.Value);
 
                     if (this.rbInsertPosition.SelectedValue == "After" && positionTabId > Null.NullInteger)
                     {
@@ -244,12 +255,14 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         objTab.TabID = TabController.Instance.AddTab(objTab);
                     }
-                    EventLogController.Instance.AddLog(objTab, this.PortalSettings, this.UserId, "", EventLogController.EventLogType.TAB_CREATED);
+
+                    EventLogController.Instance.AddLog(objTab, this.PortalSettings, this.UserId, string.Empty, EventLogController.EventLogType.TAB_CREATED);
 
                     objTab = TabController.DeserializeTab(tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 
                     var exceptions = string.Empty;
-                    //Create second tabs onwards. For firs tab, we like to use tab details from text box, for rest it'll come from template
+
+                    // Create second tabs onwards. For firs tab, we like to use tab details from text box, for rest it'll come from template
                     for (var tab = 1; tab < tabNodes.Count; tab++)
                     {
                         try
@@ -262,6 +275,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             exceptions += string.Format("Template Tab # {0}. Error {1}<br/>", tab + 1, ex.Message);
                         }
                     }
+
                     if (!string.IsNullOrEmpty(exceptions))
                     {
                         UI.Skins.Skin.AddModuleMessage(this, exceptions, ModuleMessage.ModuleMessageType.RedError);
@@ -270,9 +284,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
                 else
                 {
-                    //Replace Existing Tab
+                    // Replace Existing Tab
                     objTab = TabController.DeserializeTab(tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
                 }
+
                 switch (this.optRedirect.SelectedValue)
                 {
                     case "VIEW":
@@ -294,7 +309,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             this.BindBeforeAfterTabControls();
         }
 
-        protected void OnTemplateIndexChanged(Object sender, EventArgs e)
+        protected void OnTemplateIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -306,7 +321,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         xmldoc.Load(fileContent);
                         var node = xmldoc.SelectSingleNode("//portal/description");
-                        if (node != null && !String.IsNullOrEmpty(node.InnerXml))
+                        if (node != null && !string.IsNullOrEmpty(node.InnerXml))
                         {
                             this.lblTemplateDescription.Visible = true;
                             this.lblTemplateDescription.Text = this.Server.HtmlDecode(node.InnerXml);
@@ -333,6 +348,5 @@ namespace DotNetNuke.Modules.Admin.Tabs
         {
             this.DisplayNewRows();
         }
-
     }
 }

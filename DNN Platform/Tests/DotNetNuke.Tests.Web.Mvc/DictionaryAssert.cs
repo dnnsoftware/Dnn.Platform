@@ -2,12 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Web.Routing;
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Web.Mvc
 {
+    using System.Collections.Generic;
+    using System.Web.Routing;
+
+    using NUnit.Framework;
+
     public static class DictionaryAssert
     {
         public static void ContainsEntries(object expected, IDictionary<string, object> actual)

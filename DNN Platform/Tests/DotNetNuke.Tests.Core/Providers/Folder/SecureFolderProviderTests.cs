@@ -2,27 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.FileSystem.Internal;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Core.Providers.Folder
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class SecureFolderProviderTests
     {
-        #region Private Variables
-
         private SecureFolderProvider _sfp;
         private Mock<IFolderInfo> _folderInfo;
         private Mock<IFileInfo> _fileInfo;
@@ -31,10 +27,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFolderManager> _folderManager;
         private Mock<IFileManager> _fileManager;
         private Mock<IPathUtils> _pathUtils;
-
-        #endregion
-
-        #region Setup
 
         [SetUp]
         public void Setup()
@@ -60,10 +52,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             MockComponentProvider.ResetContainer();
         }
-
-        #endregion
-
-        #region AddFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -91,10 +79,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             this._sfp.AddFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, null);
         }
-
-        #endregion
-
-        #region DeleteFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -126,10 +110,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Never());
         }
-
-        #endregion
-
-        #region FileExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -178,10 +158,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsFalse(result);
         }
-
-        #endregion
-
-        #region FolderExists
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -239,10 +215,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsFalse(result);
         }
 
-        #endregion
-
-        #region GetFileAttributes
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileAttributes_Throws_On_Null_File()
@@ -285,10 +257,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsNull(result);
         }
-
-        #endregion
-
-        #region GetFiles
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -336,10 +304,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             CollectionAssert.AreEqual(expectedValues, files);
         }
 
-        #endregion
-
-        #region GetFileContent
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetFileStream_Throws_On_Null_Folder()
@@ -385,6 +349,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 {
                     ms.Write(buffer, 0, read);
                 }
+
                 resultBytes = ms.ToArray();
             }
 
@@ -403,10 +368,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.IsNull(result);
         }
 
-        #endregion
-
-        #region GetFolderProviderIconPath
-
         [Test]
         public void GetImageUrl_Calls_IconControllerWrapper_IconURL()
         {
@@ -417,10 +378,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             iconControllerWrapper.Verify(icw => icw.IconURL("FolderSecure", "32x32"), Times.Once());
         }
-
-        #endregion
-
-        #region GetLastModificationTime
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -467,10 +424,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             Assert.AreEqual(expectedDate, result);
         }
 
-        #endregion
-
-        #region GetSubFolders
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetSubFolders_Throws_On_Null_FolderMapping()
@@ -508,9 +461,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
-            var subFolders = new[] {
+            var subFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderPath,
-                Constants.FOLDER_OtherValidSubFolderPath
+                Constants.FOLDER_OtherValidSubFolderPath,
             };
 
             this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
@@ -523,9 +477,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Returns_Valid_SubFolders_When_Folder_Is_Not_Empty()
         {
-            var expectedSubFolders = new[] {
+            var expectedSubFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderRelativePath,
-                Constants.FOLDER_OtherValidSubFolderRelativePath
+                Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
 
             var folderMapping = new FolderMappingInfo { PortalID = Constants.CONTENT_ValidPortalId };
@@ -534,9 +489,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
-            var subFolders = new[] {
+            var subFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderPath,
-                Constants.FOLDER_OtherValidSubFolderPath
+                Constants.FOLDER_OtherValidSubFolderPath,
             };
 
             this._directoryWrapper.Setup(dw => dw.GetDirectories(Constants.FOLDER_ValidFolderPath)).Returns(subFolders);
@@ -545,10 +501,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             CollectionAssert.AreEqual(expectedSubFolders, result);
         }
-
-        #endregion
-
-        #region IsInSync
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -582,10 +534,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsTrue(result);
         }
-
-        #endregion
-
-        #region RenameFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -628,10 +576,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._fileWrapper.Verify(fw => fw.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Never());
         }
 
-        #endregion
-
-        #region SetFileAttributes
-
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void SetFileAttributes_Throws_On_Null_File()
@@ -651,10 +595,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._fileWrapper.Verify(fw => fw.SetAttributes(Constants.FOLDER_ValidSecureFilePath, validFileAttributes), Times.Once());
         }
 
-        #endregion
-
-        #region SupportsFileAttributes
-
         [Test]
         public void SupportsFileAttributes_Returns_True()
         {
@@ -662,10 +602,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             Assert.IsTrue(result);
         }
-
-        #endregion
-
-        #region UpdateFile
 
         [Test]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -721,7 +657,5 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._fileWrapper.Verify(fw => fw.Create(Constants.FOLDER_ValidSecureFilePath), Times.Once());
         }
-
-        #endregion
     }
 }

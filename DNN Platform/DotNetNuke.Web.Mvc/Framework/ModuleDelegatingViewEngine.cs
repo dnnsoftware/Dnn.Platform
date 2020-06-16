@@ -2,15 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
-
 namespace DotNetNuke.Web.Mvc.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+
     /// <summary>
     /// A View Engine that will delegate to whatever ViewEngine(s) the module application defines.
     /// </summary>
@@ -58,7 +59,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             var controller = controllerContext.Controller as IDnnController;
             if (controller == null || controller.ViewEngineCollectionEx == null)
+            {
                 return new ViewEngineResult(new string[0]);
+            }
 
             var result = engineRequest(controller.ViewEngineCollectionEx);
 
@@ -77,6 +80,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             {
                 return controllerContext.HttpContext.GetModuleRequestResult();
             }
+
             return null;
         }
     }

@@ -2,19 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using Moq;
-using NUnit.Framework;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using Dnn.PersonaBar.Roles.Components;
-using Dnn.PersonaBar.Users.Components;
-using Dnn.PersonaBar.Users.Components.Prompt.Commands;
-using Dnn.PersonaBar.Library.Prompt.Models;
-
 namespace Dnn.PersonaBar.Users.Tests
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Roles.Components;
+    using Dnn.PersonaBar.Users.Components;
+    using Dnn.PersonaBar.Users.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class AddRolesUnitTests : CommandTests<AddRoles>
     {
@@ -22,7 +23,10 @@ namespace Dnn.PersonaBar.Users.Tests
         private Mock<IUsersController> _usersControllerMock;
         private Mock<IRolesController> _rolesControllerMock;
 
-        protected override string CommandName { get { return "Add-roles"; } }
+        protected override string CommandName
+        {
+            get { return "Add-roles"; }
+        }
 
         protected override void ChildSetup()
         {
@@ -50,13 +54,12 @@ namespace Dnn.PersonaBar.Users.Tests
                             RoleID = 1,
                             PortalID = this.testPortalId,
                             IsPublic = true
-                        }
-                    }
-                );
+                        },
+                    });
 
             var total = 1;
             this._usersControllerMock
-                .Setup(u => u.GetUserRoles(userInfo, "", out total, -1, -1))
+                .Setup(u => u.GetUserRoles(userInfo, string.Empty, out total, -1, -1))
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(
@@ -66,9 +69,8 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             RoleName = "Tester"
-                        }
-                    }
-                );
+                        },
+                    });
 
             this._rolesControllerMock
                 .Setup(r => r.GetRolesByNames(this.portalSettings, It.IsAny<int>(), It.IsAny<IList<string>>()))
@@ -120,13 +122,12 @@ namespace Dnn.PersonaBar.Users.Tests
                             RoleID = 1,
                             PortalID = this.testPortalId,
                             IsPublic = true
-                        }
-                    }
-                );
+                        },
+                    });
 
             var total = 1;
             this._usersControllerMock
-                .Setup(u => u.GetUserRoles(userInfo, "", out total, -1, -1))
+                .Setup(u => u.GetUserRoles(userInfo, string.Empty, out total, -1, -1))
                 .Returns(userInfoList);
 
             var rolesList = new List<RoleInfo>(
@@ -136,9 +137,8 @@ namespace Dnn.PersonaBar.Users.Tests
                         {
                             RoleID = 1,
                             RoleName = "Tester"
-                        }
-                    }
-                );
+                        },
+                    });
 
             this._rolesControllerMock
                 .Setup(r => r.GetRolesByNames(this.portalSettings, -1, It.IsAny<IList<string>>()))

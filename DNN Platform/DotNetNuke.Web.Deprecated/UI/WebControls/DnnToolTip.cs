@@ -1,18 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Web.UI;
-using DotNetNuke.Web.UI;
-using Telerik.Web.UI;
-
-#endregion
-
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Web.UI;
+    using Telerik.Web.UI;
+
    public class DnnToolTip : RadToolTip, ILocalizable
    {
       private bool _localize = true;
@@ -25,17 +21,18 @@ namespace DotNetNuke.Web.UI.WebControls
 
       public string ResourceKey { get; set; }
 
-#region ILocalizable Implementation
       public bool Localize
       {
          get
          {
-            if (base.DesignMode)
+            if (this.DesignMode)
             {
                return false;
             }
+
             return this._localize;
          }
+
          set
          {
             this._localize = value;
@@ -46,24 +43,23 @@ namespace DotNetNuke.Web.UI.WebControls
 
       public virtual void LocalizeStrings()
       {
-         if ((this.Localize) && (!(String.IsNullOrEmpty(this.ResourceKey))))
+         if (this.Localize && (! string.IsNullOrEmpty(this.ResourceKey)))
          {
-            if (!(String.IsNullOrEmpty(base.ManualCloseButtonText)))
+            if (! string.IsNullOrEmpty(this.ManualCloseButtonText))
             {
-               base.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
+               this.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(string.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
             }
 
-            if (!(String.IsNullOrEmpty(base.Text)))
+            if (! string.IsNullOrEmpty(this.Text))
             {
-               base.Text = Utilities.GetLocalizedStringFromParent(String.Format("{0}.Text", this.ResourceKey), this);
+               this.Text = Utilities.GetLocalizedStringFromParent(string.Format("{0}.Text", this.ResourceKey), this);
             }
 
-            if (!(String.IsNullOrEmpty(base.ToolTip)))
+            if (! string.IsNullOrEmpty(this.ToolTip))
             {
-               base.ToolTip = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ToolTip", this.ResourceKey), this);
+               this.ToolTip = Utilities.GetLocalizedStringFromParent(string.Format("{0}.ToolTip", this.ResourceKey), this);
             }
          }
       }
-#endregion
-   }
+    }
 }

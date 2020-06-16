@@ -4,16 +4,16 @@
 
 namespace DotNetNuke.Entities.Tabs
 {
-    ///-----------------------------------------------------------------------------
-    /// Project		: DotNetNuke
-    /// Class		: TabMoveType
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
+    /// Project     : DotNetNuke
+    /// Class       : TabMoveType
+    /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Identifies common tab move types
+    /// Identifies common tab move types.
     /// </summary>
     /// <remarks>
     /// </remarks>
-    ///-----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     public enum TabMoveType
     {
         Up,
@@ -21,6 +21,6 @@ namespace DotNetNuke.Entities.Tabs
         Top,
         Bottom,
         Promote,
-        Demote
+        Demote,
     }
 }

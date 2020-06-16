@@ -1,42 +1,31 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Xml.XPath;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Authentication;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Installers
 {
+    using System;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Authentication;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationInstaller installs Authentication Service Components to a DotNetNuke site
+    /// The AuthenticationInstaller installs Authentication Service Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class AuthenticationInstaller : ComponentInstallerBase
     {
-		#region "Private Properties"
-
         private AuthenticationInfo AuthSystem;
         private AuthenticationInfo TempAuthSystem;
 
-		#endregion
-
-		#region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -45,11 +34,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return "ashx, aspx, ascx, vb, cs, resx, css, js, resources, config, vbproj, csproj, sln, htm, html";
             }
         }
-		
-		#endregion
-
-		#region "Private Methods"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -66,6 +50,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     AuthenticationController.DeleteAuthentication(authSystem);
                 }
+
                 this.Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
             }
             catch (Exception ex)
@@ -73,17 +58,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Log.AddFailure(ex);
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
-
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Authentication systems this is not neccessary</remarks>
+        /// <remarks>In the case of Authentication systems this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -91,7 +71,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the authentication component
+        /// The Install method installs the authentication component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -99,12 +79,12 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bAdd = Null.NullBoolean;
             try
             {
-				//Attempt to get the Authentication Service
+                // Attempt to get the Authentication Service
                 this.TempAuthSystem = AuthenticationController.GetAuthenticationServiceByType(this.AuthSystem.AuthenticationType);
 
                 if (this.TempAuthSystem == null)
                 {
-					//Enable by default
+                    // Enable by default
                     this.AuthSystem.IsEnabled = true;
                     bAdd = true;
                 }
@@ -113,23 +93,24 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.AuthSystem.AuthenticationID = this.TempAuthSystem.AuthenticationID;
                     this.AuthSystem.IsEnabled = this.TempAuthSystem.IsEnabled;
                 }
+
                 this.AuthSystem.PackageID = this.Package.PackageID;
                 if (bAdd)
                 {
-                    //Add new service
+                    // Add new service
                     AuthenticationController.AddAuthentication(this.AuthSystem);
                 }
                 else
                 {
-					//Update service
+                    // Update service
                     AuthenticationController.UpdateAuthentication(this.AuthSystem);
                 }
+
                 this.Completed = true;
                 this.Log.AddInfo(string.Format(Util.AUTHENTICATION_Registered, this.AuthSystem.AuthenticationType));
             }
             catch (Exception ex)
             {
-            
                 this.Log.AddFailure(ex);
             }
         }
@@ -143,16 +124,16 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.AuthSystem = new AuthenticationInfo();
 
-            //Get the type
+            // Get the type
             this.AuthSystem.AuthenticationType = Util.ReadElement(manifestNav, "authenticationService/type", this.Log, Util.AUTHENTICATION_TypeMissing);
 
-            //Get the SettingsSrc
+            // Get the SettingsSrc
             this.AuthSystem.SettingsControlSrc = Util.ReadElement(manifestNav, "authenticationService/settingsControlSrc", this.Log, Util.AUTHENTICATION_SettingsSrcMissing);
 
-            //Get the LoginSrc
+            // Get the LoginSrc
             this.AuthSystem.LoginControlSrc = Util.ReadElement(manifestNav, "authenticationService/loginControlSrc", this.Log, Util.AUTHENTICATION_LoginSrcMissing);
 
-            //Get the LogoffSrc
+            // Get the LogoffSrc
             this.AuthSystem.LogoffControlSrc = Util.ReadElement(manifestNav, "authenticationService/logoffControlSrc");
 
             if (this.Log.Valid)
@@ -163,35 +144,33 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method undoes the installation of the component in the event 
-        /// that one of the other components fails
+        /// The Rollback method undoes the installation of the component in the event
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//If Temp Auth System exists then we need to update the DataStore with this 
+            // If Temp Auth System exists then we need to update the DataStore with this
             if (this.TempAuthSystem == null)
             {
-				//No Temp Auth System - Delete newly added system
+                // No Temp Auth System - Delete newly added system
                 this.DeleteAuthentiation();
             }
             else
             {
-				//Temp Auth System - Rollback to Temp
+                // Temp Auth System - Rollback to Temp
                 AuthenticationController.UpdateAuthentication(this.TempAuthSystem);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the authentication component
+        /// The UnInstall method uninstalls the authentication component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
             this.DeleteAuthentiation();
         }
-		
-		#endregion
     }
 }

@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using NUnit.Framework;
-
 namespace DotNetNuke.Tests.Data
 {
+    using NUnit.Framework;
+
     public class DataAssert
     {
         public static void IsFieldValueEqual<T>(T expectedValue, string databaseName, string tableName, string field, string primaryKeyField, int id)

@@ -2,21 +2,22 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Library.Attributes;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Web.Api;
-
 namespace Dnn.PersonaBar.UI.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Attributes;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Web.Api;
+
     public class ServiceRouteMapper : IServiceRouteMapper
     {
         public void RegisterRoutes(IMapRoute routeManager)
         {
-            //get all persona bar services from persona bar modules.
+            // get all persona bar services from persona bar modules.
             var services = this.FindPersonaBarServices();
 
             if (services.Count > 0)

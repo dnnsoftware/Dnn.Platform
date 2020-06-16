@@ -2,34 +2,29 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using DotNetNuke.Common;
-using PetaPoco;
-
 namespace DotNetNuke.Data.PetaPoco
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+
+    using DotNetNuke.Common;
+    using global::PetaPoco;
+
     [CLSCompliant(false)]
     public class PetaPocoDataContext : IDataContext
     {
-        #region Private Members
-
         private readonly Database _database;
         private readonly IMapper _mapper;
 
-        #endregion
-
-        #region Constructors
-
         public PetaPocoDataContext()
-            : this(ConfigurationManager.ConnectionStrings[0].Name, String.Empty)
+            : this(ConfigurationManager.ConnectionStrings[0].Name, string.Empty)
         {
         }
 
         public PetaPocoDataContext(string connectionStringName)
-            : this(connectionStringName, String.Empty, new Dictionary<Type, IMapper>())
+            : this(connectionStringName, string.Empty, new Dictionary<Type, IMapper>())
         {
         }
 
@@ -48,13 +43,9 @@ namespace DotNetNuke.Data.PetaPoco
             this.FluentMappers = mappers;
         }
 
-        #endregion
-
         public Dictionary<Type, IMapper> FluentMappers { get; private set; }
 
         public string TablePrefix { get; private set; }
-
-        #region Implementation of IDataContext
 
         public void BeginTransaction()
         {
@@ -114,12 +105,13 @@ namespace DotNetNuke.Data.PetaPoco
             return this._database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
-        public IRepository<T> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>()
+            where T : class
         {
             PetaPocoRepository<T> rep = null;
 
-            //Determine whether to use a Fluent Mapper
-            if (this.FluentMappers.ContainsKey(typeof (T)))
+            // Determine whether to use a Fluent Mapper
+            if (this.FluentMappers.ContainsKey(typeof(T)))
             {
                 var fluentMapper = this.FluentMappers[typeof(T)] as FluentMapper<T>;
                 if (fluentMapper != null)
@@ -141,15 +133,9 @@ namespace DotNetNuke.Data.PetaPoco
             this._database.AbortTransaction();
         }
 
-        #endregion
-
-        #region Implementation of IDisposable
-
         public void Dispose()
         {
             this._database.Dispose();
         }
-
-        #endregion
     }
 }

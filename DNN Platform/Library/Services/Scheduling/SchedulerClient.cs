@@ -1,22 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Threading;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Scheduling
 {
-	/// <summary>
-	/// This class is inherited by any class that wants to run tasks in the scheduler.
-	/// </summary>
+    using System;
+    using System.Threading;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
+    /// <summary>
+    /// This class is inherited by any class that wants to run tasks in the scheduler.
+    /// </summary>
     public abstract class SchedulerClient
     {
         public SchedulerClient()
@@ -44,8 +39,11 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         public event WorkStarted ProcessStarted;
+
         public event WorkProgressing ProcessProgressing;
+
         public event WorkCompleted ProcessCompleted;
+
         public event WorkErrored ProcessErrored;
 
         public void Started()
@@ -81,11 +79,11 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         /// '''''''''''''''''''''''''''''''''''''''''''''''''''
-		/// <summary>
+        /// <summary>
         /// This is the sub that kicks off the actual
-        /// work within the SchedulerClient's subclass
-		/// </summary>
-		/// '''''''''''''''''''''''''''''''''''''''''''''''''''
-		public abstract void DoWork();
+        /// work within the SchedulerClient's subclass.
+        /// </summary>
+        /// '''''''''''''''''''''''''''''''''''''''''''''''''''
+        public abstract void DoWork();
     }
 }

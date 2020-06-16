@@ -2,14 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Collections.Generic;
-using System.Net;
-using Dnn.PersonaBar.Roles.Services.DTO;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
-
 namespace Dnn.PersonaBar.Roles.Components
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using Dnn.PersonaBar.Roles.Services.DTO;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security.Roles;
+
     public interface IRolesController
     {
         bool SaveRole(PortalSettings portalSettings, RoleDto roleDto, bool assignExistUsers, out KeyValuePair<HttpStatusCode, string> message);

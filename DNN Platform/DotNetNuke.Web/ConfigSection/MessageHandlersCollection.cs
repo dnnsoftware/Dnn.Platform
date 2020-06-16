@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System.Configuration;
-
 namespace DotNetNuke.Web.ConfigSection
 {
+    using System.Configuration;
+
     public class MessageHandlersCollection : ConfigurationElementCollection
     {
         public MessageHandlerEntry this[int index]
@@ -14,12 +14,14 @@ namespace DotNetNuke.Web.ConfigSection
             {
                 return this.BaseGet(index) as MessageHandlerEntry;
             }
+
             set
             {
                 if (this.BaseGet(index) != null)
                 {
                     this.BaseRemoveAt(index);
                 }
+
                 this.BaseAdd(index, value);
             }
         }

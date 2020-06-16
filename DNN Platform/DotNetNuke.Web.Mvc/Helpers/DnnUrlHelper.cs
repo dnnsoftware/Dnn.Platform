@@ -2,25 +2,27 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Routing;
-
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Routing;
+
     public class DnnUrlHelper
     {
         private readonly ViewContext _viewContext;
 
         private readonly IDnnController _controller;
-        public DnnUrlHelper(ViewContext viewContext) 
-            : this(viewContext , RouteTable.Routes)
+
+        public DnnUrlHelper(ViewContext viewContext)
+            : this(viewContext, RouteTable.Routes)
         {
         }
 
@@ -39,7 +41,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
             Requires.NotNull("viewContext", viewContext);
 
             this.UrlHelper = new UrlHelper(viewContext.RequestContext, routeCollection);
-            
+
             this._viewContext = viewContext;
 
             this._controller = viewContext.Controller as IDnnController;
@@ -64,7 +66,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Converts a virtual (relative) path to an application absolute path.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// The application absolute path.
         /// </returns>
@@ -77,7 +79,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Returns a value that indicates whether the URL is local.
         /// </summary>
-        /// 
+        ///
         /// <returns>
         /// true if the URL is local; otherwise, false.
         /// </returns>

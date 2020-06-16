@@ -1,35 +1,29 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
-    /// The Language skinobject allows the visitor to select the language of the page
+    /// The Language skinobject allows the visitor to select the language of the page.
     /// </summary>
     /// <remarks></remarks>
     public partial class Language : SkinObjectBase
     {
-		#region Private Members
-
         private const string MyFileName = "Language.ascx";
         private string _SelectedItemTemplate;
         private string _alternateTemplate;
@@ -42,10 +36,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private LanguageTokenReplace _localTokenReplace;
         private string _separatorTemplate;
         private bool _showMenu = true;
-		
-		#endregion
-
-		#region Public Properties
 
         public string AlternateTemplate
         {
@@ -55,8 +45,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._alternateTemplate = Localization.GetString("AlternateTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._alternateTemplate;
             }
+
             set
             {
                 this._alternateTemplate = value;
@@ -71,8 +63,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._commonFooterTemplate = Localization.GetString("CommonFooterTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._commonFooterTemplate;
             }
+
             set
             {
                 this._commonFooterTemplate = value;
@@ -87,8 +81,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._commonHeaderTemplate = Localization.GetString("CommonHeaderTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._commonHeaderTemplate;
             }
+
             set
             {
                 this._commonHeaderTemplate = value;
@@ -105,8 +101,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._footerTemplate = Localization.GetString("FooterTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._footerTemplate;
             }
+
             set
             {
                 this._footerTemplate = value;
@@ -121,8 +119,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._headerTemplate = Localization.GetString("HeaderTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._headerTemplate;
             }
+
             set
             {
                 this._headerTemplate = value;
@@ -137,8 +137,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._itemTemplate = Localization.GetString("ItemTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._itemTemplate;
             }
+
             set
             {
                 this._itemTemplate = value;
@@ -153,8 +155,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._SelectedItemTemplate = Localization.GetString("SelectedItemTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._SelectedItemTemplate;
             }
+
             set
             {
                 this._SelectedItemTemplate = value;
@@ -169,8 +173,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._separatorTemplate = Localization.GetString("SeparatorTemplate.Default", this.LocalResourceFile, this.TemplateCulture);
                 }
+
                 return this._separatorTemplate;
             }
+
             set
             {
                 this._separatorTemplate = value;
@@ -185,11 +191,13 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if ((this._showMenu == false) && (this.ShowLinks == false))
                 {
-					//this is to make sure that at least one type of selector will be visible if multiple languages are enabled
+                    // this is to make sure that at least one type of selector will be visible if multiple languages are enabled
                     this._showMenu = true;
                 }
+
                 return this._showMenu;
             }
+
             set
             {
                 this._showMenu = value;
@@ -197,10 +205,6 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         public bool UseCurrentCultureForTemplate { get; set;  }
-
-		#endregion
-
-		#region Protected Properties
 
         protected string CurrentCulture
         {
@@ -214,11 +218,10 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return (this.UseCurrentCultureForTemplate) ? this.CurrentCulture : "en-US";
+                return this.UseCurrentCultureForTemplate ? this.CurrentCulture : "en-US";
             }
         }
 
-        
         protected string LocalResourceFile
         {
             get
@@ -227,6 +230,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this._localResourceFile = Localization.GetResourceFile(this, MyFileName);
                 }
+
                 return this._localResourceFile;
             }
         }
@@ -237,15 +241,12 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (this._localTokenReplace == null)
                 {
-                    this._localTokenReplace = new LanguageTokenReplace {resourceFile = this.LocalResourceFile};
+                    this._localTokenReplace = new LanguageTokenReplace { resourceFile = this.LocalResourceFile };
                 }
+
                 return this._localTokenReplace;
             }
         }
-
-		#endregion
-
-		#region Private Methods
 
         private string parseTemplate(string template, string locale)
         {
@@ -254,22 +255,23 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (!string.IsNullOrEmpty(locale))
                 {
-					//for non data items use locale
+                    // for non data items use locale
                     this.LocalTokenReplace.Language = locale;
                 }
                 else
                 {
-					//for non data items use page culture
+                    // for non data items use page culture
                     this.LocalTokenReplace.Language = this.CurrentCulture;
                 }
-				
-				//perform token replacements
+
+                // perform token replacements
                 strReturnValue = this.LocalTokenReplace.ReplaceEnvironmentTokens(strReturnValue);
             }
             catch (Exception ex)
             {
                 Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
             }
+
             return strReturnValue;
         }
 
@@ -283,6 +285,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.litCommonHeaderTemplate.Text = this.parseTemplate(this.CommonHeaderTemplate, this.CurrentCulture);
             }
+
             if (string.IsNullOrEmpty(this.CommonFooterTemplate))
             {
                 this.litCommonFooterTemplate.Visible = false;
@@ -293,22 +296,18 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-		private bool LocaleIsAvailable(Locale locale)
-		{
-			var tab = this.PortalSettings.ActiveTab;
-			if (tab.DefaultLanguageTab != null)
-			{
-				tab = tab.DefaultLanguageTab;
-			}
+        private bool LocaleIsAvailable(Locale locale)
+        {
+            var tab = this.PortalSettings.ActiveTab;
+            if (tab.DefaultLanguageTab != null)
+            {
+                tab = tab.DefaultLanguageTab;
+            }
 
             var localizedTab = TabController.Instance.GetTabByCulture(tab.TabID, tab.PortalID, locale);
 
             return localizedTab != null && !localizedTab.IsDeleted && TabPermissionController.CanViewPage(localizedTab);
         }
-
-		#endregion
-
-		#region Event Handlers
 
         protected override void OnLoad(EventArgs e)
         {
@@ -320,7 +319,7 @@ namespace DotNetNuke.UI.Skins.Controls
             try
             {
                 var locales = new Dictionary<string, Locale>();
-                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentCulture, "", false);
+                IEnumerable<ListItem> cultureListItems = DotNetNuke.Services.Localization.Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, this.CurrentCulture, string.Empty, false);
                 foreach (Locale loc in LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).Values)
                 {
                     string defaultRoles = PortalController.GetPortalSetting(string.Format("DefaultTranslatorRoles-{0}", loc.Code), this.PortalSettings.PortalId, "Administrators");
@@ -338,6 +337,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
                 }
+
                 if (this.ShowLinks)
                 {
                     if (locales.Count > 1)
@@ -350,15 +350,17 @@ namespace DotNetNuke.UI.Skins.Controls
                         this.rptLanguages.Visible = false;
                     }
                 }
+
                 if (this.ShowMenu)
                 {
-                    if (!String.IsNullOrEmpty(this.CssClass))
+                    if (!string.IsNullOrEmpty(this.CssClass))
                     {
                         this.selectCulture.CssClass = this.CssClass;
                     }
+
                     if (!this.IsPostBack)
                     {
-                        //select the default item
+                        // select the default item
                         if (this.CurrentCulture != null)
                         {
                             ListItem item = this.selectCulture.Items.FindByValue(this.CurrentCulture);
@@ -369,7 +371,8 @@ namespace DotNetNuke.UI.Skins.Controls
                             }
                         }
                     }
-                    //only show language selector if more than one language
+
+                    // only show language selector if more than one language
                     if (this.selectCulture.Items.Count <= 1)
                     {
                         this.selectCulture.Visible = false;
@@ -379,6 +382,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.selectCulture.Visible = false;
                 }
+
                 this.handleCommonTemplates();
             }
             catch (Exception ex)
@@ -389,15 +393,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private void selectCulture_SelectedIndexChanged(object sender, EventArgs e)
         {
-			//Redirect to same page to update all controls for newly selected culture
+            // Redirect to same page to update all controls for newly selected culture
             this.LocalTokenReplace.Language = this.selectCulture.SelectedItem.Value;
-            //DNN-6170 ensure skin value is culture specific in case of  static localization
+
+            // DNN-6170 ensure skin value is culture specific in case of  static localization
             DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, this.PortalSettings.PortalId, Null.NullString));
             this.Response.Redirect(this.LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));
         }
 
         /// <summary>
-        /// Binds data to repeater. a template is used to render the items
+        /// Binds data to repeater. a template is used to render the items.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -408,8 +413,8 @@ namespace DotNetNuke.UI.Skins.Controls
                 var litTemplate = e.Item.FindControl("litItemTemplate") as Literal;
                 if (litTemplate != null)
                 {
-					//load proper template for this Item
-                    string strTemplate = "";
+                    // load proper template for this Item
+                    string strTemplate = string.Empty;
                     switch (e.Item.ItemType)
                     {
                         case ListItemType.Item:
@@ -424,6 +429,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             {
                                 strTemplate = this.ItemTemplate;
                             }
+
                             break;
                         case ListItemType.Header:
                             strTemplate = this.HeaderTemplate;
@@ -435,6 +441,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             strTemplate = this.SeparatorTemplate;
                             break;
                     }
+
                     if (string.IsNullOrEmpty(strTemplate))
                     {
                         litTemplate.Visible = false;
@@ -450,12 +457,13 @@ namespace DotNetNuke.UI.Skins.Controls
                                 {
                                     strTemplate = this.SelectedItemTemplate;
                                 }
+
                                 litTemplate.Text = this.parseTemplate(strTemplate, locale.Code);
                             }
                         }
                         else
                         {
-							//for non data items use page culture
+                            // for non data items use page culture
                             litTemplate.Text = this.parseTemplate(strTemplate, this.CurrentCulture);
                         }
                     }
@@ -466,7 +474,5 @@ namespace DotNetNuke.UI.Skins.Controls
                 Exceptions.ProcessPageLoadException(ex, this.Request.RawUrl);
             }
         }
-		
-		#endregion
     }
 }

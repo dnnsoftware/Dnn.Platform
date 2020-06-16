@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.ExportImport.Dto.Users
 {
+    using System;
+
     public class ExportUserProfile : BasicExportImportDto
     {
         public int ProfileId { get; set; }
@@ -17,9 +17,13 @@ namespace Dnn.ExportImport.Dto.Users
         public string PropertyName { get; set; }
 
         public string PropertyValue { get; set; }
+
         public string PropertyText { get; set; }
+
         public int Visibility { get; set; }
+
         public DateTime LastUpdatedDate { get; set; }
+
         public string ExtendedVisibility { get; set; }
     }
 }

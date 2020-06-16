@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// Serialize the property value into a string.
         /// </summary>
         /// <param name="value">The value of the associated settings property.</param>
-        /// <returns>String</returns>
+        /// <returns>String.</returns>
         string Serialize(T value);
 
         /// <summary>

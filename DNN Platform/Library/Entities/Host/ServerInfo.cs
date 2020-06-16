@@ -1,24 +1,20 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Data;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
 namespace DotNetNuke.Entities.Host
 {
+    using System;
+    using System.Data;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class ServerInfo : IHydratable
     {
-        public ServerInfo() : this(DateTime.Now, DateTime.Now)
+        public ServerInfo()
+            : this(DateTime.Now, DateTime.Now)
         {
         }
 
@@ -26,7 +22,7 @@ namespace DotNetNuke.Entities.Host
         {
             this.IISAppName = Globals.IISAppName;
             this.ServerName = Globals.ServerName;
-            this.ServerGroup = String.Empty;
+            this.ServerGroup = string.Empty;
             this.CreatedDate = created;
             this.LastActivityDate = lastactivity;
             this.Enabled = true;
@@ -52,13 +48,11 @@ namespace DotNetNuke.Entities.Host
 
         public string UniqueId { get; set; }
 
-        #region IHydratable Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ServerInfo from a Data Reader
+        /// Fills a ServerInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -77,10 +71,12 @@ namespace DotNetNuke.Entities.Host
                 {
                     this.PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
                 }
+
                 if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
                 {
                     this.ServerGroup = Null.SetNullString(dr["ServerGroup"]);
                 }
+
                 if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
                 {
                     this.UniqueId = Null.SetNullString(dr["UniqueId"]);
@@ -90,9 +86,9 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -100,12 +96,11 @@ namespace DotNetNuke.Entities.Host
             {
                 return this.ServerID;
             }
+
             set
             {
                 this.ServerID = value;
             }
         }
-
-        #endregion
     }
 }

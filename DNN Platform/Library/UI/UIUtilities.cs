@@ -2,33 +2,34 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.IO;
-using System.Web;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.ControlPanels;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Skins;
-
 namespace DotNetNuke.UI
 {
+    using System;
+    using System.IO;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.ControlPanels;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Skins;
+
     public class UIUtilities
     {
         internal static string GetControlKey()
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            string key = "";
+            string key = string.Empty;
             if (request.QueryString["ctl"] != null)
             {
                 key = request.QueryString["ctl"];
             }
+
             return key;
         }
 
@@ -39,11 +40,12 @@ namespace DotNetNuke.UI
             int moduleId = -1;
             if (request.QueryString["mid"] != null)
             {
-                Int32.TryParse(request.QueryString["mid"], out moduleId);
+                int.TryParse(request.QueryString["mid"], out moduleId);
             }
+
             if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
             {
-                Int32.TryParse(request.QueryString["moduleid"], out moduleId);
+                int.TryParse(request.QueryString["moduleid"], out moduleId);
             }
 
             return moduleId;
@@ -53,11 +55,12 @@ namespace DotNetNuke.UI
         {
             HttpRequest request = HttpContext.Current.Request;
 
-            var renderMode = "";
+            var renderMode = string.Empty;
             if (request.QueryString["render"] != null)
             {
                 renderMode = request.QueryString["render"];
             }
+
             return renderMode;
         }
 
@@ -77,7 +80,7 @@ namespace DotNetNuke.UI
 
             if (slaveModule == null)
             {
-                slaveModule = (new ModuleInfo {ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true});
+                slaveModule = new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true };
             }
 
             if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
@@ -87,16 +90,16 @@ namespace DotNetNuke.UI
 
             if (request.QueryString["dnnprintmode"] != "true")
             {
-                slaveModule.ModuleTitle = "";
+                slaveModule.ModuleTitle = string.Empty;
             }
 
-            slaveModule.Header = "";
-            slaveModule.Footer = "";
+            slaveModule.Header = string.Empty;
+            slaveModule.Footer = string.Empty;
             slaveModule.StartDate = DateTime.MinValue;
             slaveModule.EndDate = DateTime.MaxValue;
             slaveModule.Visibility = VisibilityState.None;
-            slaveModule.Color = "";
-            slaveModule.Border = "";
+            slaveModule.Color = string.Empty;
+            slaveModule.Border = string.Empty;
             slaveModule.DisplayTitle = true;
             slaveModule.DisplayPrint = false;
             slaveModule.DisplaySyndicate = false;
@@ -108,8 +111,8 @@ namespace DotNetNuke.UI
         {
             var key = GetControlKey();
             var moduleId = GetModuleId(key);
-            
-            ModuleInfo slaveModule =  GetSlaveModule(moduleId, key, tabId);
+
+            ModuleInfo slaveModule = GetSlaveModule(moduleId, key, tabId);
             if (slaveModule != null)
             {
                 var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??
@@ -132,7 +135,7 @@ namespace DotNetNuke.UI
             {
                 isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));
 
-                if (!isLegacyUi && !String.IsNullOrEmpty(key))
+                if (!isLegacyUi && !string.IsNullOrEmpty(key))
                 {
                     var slaveModule = GetSlaveModule(moduleId, key, settings.ActiveTab.TabID);
                     if (slaveModule != null)
@@ -167,7 +170,7 @@ namespace DotNetNuke.UI
                 if (ctrl is UserControl)
                 {
                     resourceFileName = string.Format("{0}/{1}/{2}.ascx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
-                    if ((File.Exists(ctrl.Page.Server.MapPath(resourceFileName))))
+                    if (File.Exists(ctrl.Page.Server.MapPath(resourceFileName)))
                     {
                         break;
                     }

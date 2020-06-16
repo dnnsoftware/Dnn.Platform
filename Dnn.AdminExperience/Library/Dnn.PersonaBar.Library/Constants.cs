@@ -2,10 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.PersonaBar.Library
 {
+    using System;
+
     public static class Constants
     {
         public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Prompt/App_LocalResources/Prompt.resx";
@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Library
         public static readonly TimeSpan TwelveHours = TimeSpan.FromHours(12);
         public static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
         public static readonly TimeSpan OneWeek = TimeSpan.FromDays(7);
-        
+
         public const string AdminsRoleName = "Administrators";
     }
 }

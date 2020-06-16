@@ -1,19 +1,14 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Net;
-using System.Security;
-using System.Security.Permissions;
-using System.Web;
-
-#endregion
-
 namespace DotNetNuke.Framework
 {
+    using System;
+    using System.Net;
+    using System.Security;
+    using System.Security.Permissions;
+    using System.Web;
+
     public class SecurityPolicy
     {
         public const string ReflectionPermission = "ReflectionPermission";
@@ -30,23 +25,27 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                string strPermissions = "";
+                string strPermissions = string.Empty;
                 if (HasReflectionPermission())
                 {
                     strPermissions += ", " + ReflectionPermission;
                 }
+
                 if (HasWebPermission())
                 {
                     strPermissions += ", " + WebPermission;
                 }
+
                 if (HasAspNetHostingPermission())
                 {
                     strPermissions += ", " + AspNetHostingPermission;
                 }
-                if (!String.IsNullOrEmpty(strPermissions))
+
+                if (!string.IsNullOrEmpty(strPermissions))
                 {
                     strPermissions = strPermissions.Substring(2);
                 }
+
                 return strPermissions;
             }
         }
@@ -55,7 +54,7 @@ namespace DotNetNuke.Framework
         {
             if (!m_Initialized)
             {
-                //test RelectionPermission
+                // test RelectionPermission
                 CodeAccessPermission securityTest;
                 try
                 {
@@ -65,11 +64,11 @@ namespace DotNetNuke.Framework
                 }
                 catch
                 {
-                    //code access security error
+                    // code access security error
                     m_ReflectionPermission = false;
                 }
-				
-                //test WebPermission
+
+                // test WebPermission
                 try
                 {
                     securityTest = new WebPermission(PermissionState.Unrestricted);
@@ -78,11 +77,11 @@ namespace DotNetNuke.Framework
                 }
                 catch
                 {
-                    //code access security error
+                    // code access security error
                     m_WebPermission = false;
                 }
-				
-                //test WebHosting Permission (Full Trust)
+
+                // test WebHosting Permission (Full Trust)
                 try
                 {
                     securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
@@ -91,12 +90,13 @@ namespace DotNetNuke.Framework
                 }
                 catch
                 {
-                    //code access security error
+                    // code access security error
                     m_AspNetHostingPermission = false;
                 }
+
                 m_Initialized = true;
 
-                //Test for Unmanaged Code permission
+                // Test for Unmanaged Code permission
                 try
                 {
                     securityTest = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);
@@ -137,11 +137,11 @@ namespace DotNetNuke.Framework
         public static bool HasPermissions(string permissions, ref string permission)
         {
             bool _HasPermission = true;
-            if (!String.IsNullOrEmpty(permissions))
+            if (!string.IsNullOrEmpty(permissions))
             {
                 foreach (string per in (permissions + ";").Split(Convert.ToChar(";")))
                 {
-                    if (!String.IsNullOrEmpty(per.Trim()))
+                    if (!string.IsNullOrEmpty(per.Trim()))
                     {
                         permission = per;
                         switch (permission)
@@ -151,29 +151,34 @@ namespace DotNetNuke.Framework
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                             case ReflectionPermission:
                                 if (HasReflectionPermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                             case UnManagedCodePermission:
                                 if (HasUnManagedCodePermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                             case WebPermission:
                                 if (HasWebPermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                         }
                     }
                 }
             }
+
             return _HasPermission;
         }
 

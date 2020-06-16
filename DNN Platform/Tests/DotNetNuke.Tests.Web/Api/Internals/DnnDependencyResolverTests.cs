@@ -2,16 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Services.DependencyInjection;
-using DotNetNuke.Web.Api.Internal;
-using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Web.Http.Dependencies;
-
 namespace DotNetNuke.Tests.Web.Api.Internals
 {
+    using System;
+    using System.Linq;
+    using System.Web.Http.Dependencies;
+
+    using DotNetNuke.Services.DependencyInjection;
+    using DotNetNuke.Web.Api.Internal;
+    using Microsoft.Extensions.DependencyInjection;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnDependencyResolverTests
     {
@@ -35,7 +36,9 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             this._dependencyResolver = null;
 
             if (this._serviceProvider is IDisposable disposable)
+            {
                 disposable.Dispose();
+            }
 
             this._serviceProvider = null;
         }
@@ -107,8 +110,13 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Assert.AreEqual(expected.GetType(), actual[0].GetType());
         }
 
-        private interface ITestService { }
-        private class TestService : ITestService { }
+        private interface ITestService
+        {
+        }
+
+        private class TestService : ITestService
+        {
+        }
 
         private class FakeScopeAccessor : IScopeAccessor
         {

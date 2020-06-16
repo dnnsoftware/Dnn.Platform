@@ -2,16 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.DependencyInjection;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.Modules.Html5;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DotNetNuke
 {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.DependencyInjection;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.Modules.Html5;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Startup : IDnnStartup
     {
         public void ConfigureServices(IServiceCollection services)

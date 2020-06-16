@@ -1,30 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI.HtmlControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
 namespace DotNetNuke.Services.Installer.Log
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.HtmlControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Logger class provides an Installer Log
+    /// The Logger class provides an Installer Log.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class Logger
     {
-    	private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof (Logger));
+        private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof(Logger));
         private readonly IList<LogEntry> _logs;
         private string _errorClass;
         private bool _hasWarnings;
@@ -35,27 +30,29 @@ namespace DotNetNuke.Services.Installer.Log
         public Logger()
         {
             this._logs = new List<LogEntry>();
-            
+
             this._valid = true;
             this._hasWarnings = Null.NullBoolean;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Css Class used for Error Log Entries
+        /// Gets or sets and sets the Css Class used for Error Log Entries.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ErrorClass
         {
             get
             {
-                if (String.IsNullOrEmpty(this._errorClass))
+                if (string.IsNullOrEmpty(this._errorClass))
                 {
                     this._errorClass = "NormalRed";
                 }
+
                 return this._errorClass;
             }
+
             set
             {
                 this._errorClass = value;
@@ -72,20 +69,22 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Css Class used for Log Entries that should be highlighted
+        /// Gets or sets and sets the Css Class used for Log Entries that should be highlighted.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string HighlightClass
         {
             get
             {
-                if (String.IsNullOrEmpty(this._highlightClass))
+                if (string.IsNullOrEmpty(this._highlightClass))
                 {
                     this._highlightClass = "NormalBold";
                 }
+
                 return this._highlightClass;
             }
+
             set
             {
                 this._highlightClass = value;
@@ -94,9 +93,9 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a List of Log Entries
+        /// Gets a List of Log Entries.
         /// </summary>
-        /// <value>A List of LogEntrys</value>
+        /// <value>A List of LogEntrys.</value>
         /// -----------------------------------------------------------------------------
         public IList<LogEntry> Logs
         {
@@ -108,20 +107,22 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Css Class used for normal Log Entries
+        /// Gets or sets and sets the Css Class used for normal Log Entries.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string NormalClass
         {
             get
             {
-                if (String.IsNullOrEmpty(this._normalClass))
+                if (string.IsNullOrEmpty(this._normalClass))
                 {
                     this._normalClass = "Normal";
                 }
+
                 return this._normalClass;
             }
+
             set
             {
                 this._normalClass = value;
@@ -130,9 +131,9 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Flag that indicates whether the Installation was Valid
+        /// Gets a value indicating whether gets a Flag that indicates whether the Installation was Valid.
         /// </summary>
-        /// <value>A List of LogEntrys</value>
+        /// <value>A List of LogEntrys.</value>
         /// -----------------------------------------------------------------------------
         public bool Valid
         {
@@ -144,10 +145,10 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The AddFailure method adds a new LogEntry of type Failure to the Logs collection
+        /// The AddFailure method adds a new LogEntry of type Failure to the Logs collection.
         /// </summary>
-        /// <remarks>This method also sets the Valid flag to false</remarks>
-        /// <param name="failure">The description of the LogEntry</param>
+        /// <remarks>This method also sets the Valid flag to false.</remarks>
+        /// <param name="failure">The description of the LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public void AddFailure(string failure)
         {
@@ -158,40 +159,40 @@ namespace DotNetNuke.Services.Installer.Log
 
         public void AddFailure(Exception ex)
         {
-            this.AddFailure((Util.EXCEPTION + ex));
+            this.AddFailure(Util.EXCEPTION + ex);
             Exceptions.Exceptions.LogException(ex);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The AddInfo method adds a new LogEntry of type Info to the Logs collection
+        /// The AddInfo method adds a new LogEntry of type Info to the Logs collection.
         /// </summary>
-        /// <param name="info">The description of the LogEntry</param>
+        /// <param name="info">The description of the LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public void AddInfo(string info)
-        {            
+        {
             this._logs.Add(new LogEntry(LogType.Info, info));
-			DnnLogger.Info(info);
+            DnnLogger.Info(info);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The AddWarning method adds a new LogEntry of type Warning to the Logs collection
+        /// The AddWarning method adds a new LogEntry of type Warning to the Logs collection.
         /// </summary>
-        /// <param name="warning">The description of the LogEntry</param>
+        /// <param name="warning">The description of the LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public void AddWarning(string warning)
         {
             this._logs.Add(new LogEntry(LogType.Warning, warning));
-			DnnLogger.Warn(warning);
+            DnnLogger.Warn(warning);
             this._hasWarnings = true;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The EndJob method adds a new LogEntry of type EndJob to the Logs collection
+        /// The EndJob method adds a new LogEntry of type EndJob to the Logs collection.
         /// </summary>
-        /// <param name="job">The description of the LogEntry</param>
+        /// <param name="job">The description of the LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public void EndJob(string job)
         {
@@ -201,8 +202,9 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetLogsTable formats log entries in an HtmlTable
+        /// GetLogsTable formats log entries in an HtmlTable.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public HtmlTable GetLogsTable()
         {
@@ -233,14 +235,16 @@ namespace DotNetNuke.Services.Installer.Log
                         tdDescription.Attributes.Add("class", this.NormalClass);
                         break;
                 }
+
                 arrayTable.Rows.Add(tr);
                 if (entry.Type == LogType.EndJob)
                 {
                     var spaceTR = new HtmlTableRow();
-                    spaceTR.Cells.Add(new HtmlTableCell {ColSpan = 2, InnerHtml = "&nbsp;"});
+                    spaceTR.Cells.Add(new HtmlTableCell { ColSpan = 2, InnerHtml = "&nbsp;" });
                     arrayTable.Rows.Add(spaceTR);
                 }
             }
+
             return arrayTable;
         }
 
@@ -251,9 +255,9 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The StartJob method adds a new LogEntry of type StartJob to the Logs collection
+        /// The StartJob method adds a new LogEntry of type StartJob to the Logs collection.
         /// </summary>
-        /// <param name="job">The description of the LogEntry</param>
+        /// <param name="job">The description of the LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public void StartJob(string job)
         {

@@ -2,17 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-
 namespace Dnn.PersonaBar.Library.Prompt.Attributes
 {
+    using System;
+
     [AttributeUsage(AttributeTargets.Class)]
 #pragma warning disable CS3015 // Type has no accessible constructors which use only CLS-compliant types
     public class ConsoleCommandAttribute : Attribute
 #pragma warning restore CS3015 // Type has no accessible constructors which use only CLS-compliant types
     {
         public string Name { get; set; }
+
         public string Category { get; set; }
+
         public string Description { get; set; }
 
         public ConsoleCommandAttribute(string name, string category, string description)

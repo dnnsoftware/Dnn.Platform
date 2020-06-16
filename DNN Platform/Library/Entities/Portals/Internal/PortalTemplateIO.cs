@@ -2,25 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities.Internal;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Entities.Portals.Internal
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities.Internal;
+    using DotNetNuke.Framework;
+
     public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
         protected override Func<IPortalTemplateIO> GetFactory()
         {
             return () => new PortalTemplateIO();
         }
-
-        #region IPortalTemplateIO Members
 
         public IEnumerable<string> EnumerateTemplates()
         {
@@ -57,7 +55,7 @@ namespace DotNetNuke.Entities.Portals.Internal
         public TextReader OpenTextReader(string filePath)
         {
             StreamReader reader = null;
-            
+
             var retryable = new RetryableAction(
                 () => reader = new StreamReader(File.Open(filePath, FileMode.Open)),
                 filePath, 10, TimeSpan.FromMilliseconds(50), 2);
@@ -70,7 +68,5 @@ namespace DotNetNuke.Entities.Portals.Internal
         {
             return File.Exists(path) ? path : string.Empty;
         }
-
-        #endregion
     }
 }
