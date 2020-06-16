@@ -680,9 +680,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         /// Gets profile property localization.
         /// </summary>
         /// <param name="portalId"></param>
+        /// <param name="cultureCode"></param>
         /// <param name="propertyName"></param>
         /// <param name="propertyCategory"></param>
-        /// <param name="cultureCode"></param>
         /// <returns>profile property.</returns>
         [HttpGet]
         [DnnAuthorize(StaticRoles = Constants.AdminsRoleName)]

@@ -14,9 +14,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
         string GetTabUrl(TabInfo tab);
 
-        /// <summary>
-        /// Returns true if tab has children, false otherwise.
-        /// </summary>
+        /// <summary>Gets a value indicating whether the given <paramref name="tabInfo"/> has children.</summary>
         /// <param name="tabInfo">Tab info object.</param>
         /// <returns>Returns true if tab has children, false otherwise.</returns>
         bool TabHasChildren(TabInfo tabInfo);

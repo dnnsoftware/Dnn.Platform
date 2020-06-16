@@ -22,11 +22,8 @@ namespace Dnn.PersonaBar.Users.Components.Contracts
         public bool Authorize { get; set; }
         public bool Notify { get; set; }
         public bool RandomPassword { get; set; }
-        /// <summary>
-        /// When set to true, whatever registration mode is set, it will always add user
-        /// Please check below issue for this property
-        /// https://dnntracker.atlassian.net/browse/SOCIAL-3158.
-        /// </summary>
+        
+        /// <summary>Gets of sets a value indicating whether, whatever registration mode is set, it will always add user.</summary>
         [IgnoreDataMember]
         public bool IgnoreRegistrationMode { get; set; }
     }
