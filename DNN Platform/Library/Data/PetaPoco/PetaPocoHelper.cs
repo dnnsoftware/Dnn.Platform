@@ -15,9 +15,9 @@ namespace DotNetNuke.Data.PetaPoco
 
     public static class PetaPocoHelper
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
-
         private const string SqlProviderName = "System.Data.SqlClient";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
         {

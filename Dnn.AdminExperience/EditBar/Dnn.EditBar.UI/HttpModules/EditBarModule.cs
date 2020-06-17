@@ -48,13 +48,13 @@ namespace Dnn.EditBar.UI.HttpModules
             }
         }
 
+        public void Dispose()
+        {
+        }
+
         private void ApplicationStart()
         {
             DotNetNukeContext.Current.SkinEventListeners.Add(new SkinEventListener(SkinEventType.OnSkinInit, this.OnSkinInit));
-        }
-
-        public void Dispose()
-        {
         }
 
         private void OnSkinInit(object sender, SkinEventArgs e)

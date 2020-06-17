@@ -10,22 +10,6 @@ namespace DotNetNuke.Entities.Portals
     public class PortalAliasCollection : DictionaryBase
     {
         /// <summary>
-        /// Gets or sets the value associated with the specified key.
-        /// </summary>
-        public PortalAliasInfo this[string key]
-        {
-            get
-            {
-                return (PortalAliasInfo)this.Dictionary[key];
-            }
-
-            set
-            {
-                this.Dictionary[key] = value;
-            }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.
         /// </summary>
         public bool HasKeys
@@ -49,6 +33,22 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 return this.Dictionary.Values;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value associated with the specified key.
+        /// </summary>
+        public PortalAliasInfo this[string key]
+        {
+            get
+            {
+                return (PortalAliasInfo)this.Dictionary[key];
+            }
+
+            set
+            {
+                this.Dictionary[key] = value;
             }
         }
 

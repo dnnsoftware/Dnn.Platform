@@ -37,15 +37,15 @@ namespace DotNetNuke.Services.Messaging.Data
         private bool _allowReply;
         private bool _skipInbox;
 
+        private Guid _EmailSchedulerInstance;
+        private DateTime _EmailSentDate;
+
         public Message()
         {
             this.Conversation = Guid.Empty;
             this.Status = MessageStatusType.Draft;
             this.MessageDate = DateTime.Now;
         }
-
-        private Guid _EmailSchedulerInstance;
-        private DateTime _EmailSentDate;
 
         public string FromUserName
         {
@@ -284,6 +284,19 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
+        public int KeyID
+        {
+            get
+            {
+                return this.MessageID;
+            }
+
+            set
+            {
+                this.MessageID = value;
+            }
+        }
+
         public Message GetReplyMessage()
         {
             var message = new Message();
@@ -326,19 +339,6 @@ namespace DotNetNuke.Services.Messaging.Data
             this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
             // 'Conversation = New Guid(g)
-        }
-
-        public int KeyID
-        {
-            get
-            {
-                return this.MessageID;
-            }
-
-            set
-            {
-                this.MessageID = value;
-            }
         }
     }
 }

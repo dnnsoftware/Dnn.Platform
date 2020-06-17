@@ -32,6 +32,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string ScriptPrefix = "JSL.";
         private const string LegacyPrefix = "LEGACY.";
 
+        private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
+        private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
+
+        protected JavaScript()
+        {
+        }
+
         /// <summary>
         ///     checks whether the script file is a known javascript library.
         /// </summary>
@@ -150,8 +157,15 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        protected JavaScript()
+        public static string JQueryUIFile(bool getMinFile)
         {
+            string jfile = jQueryUIDebugFile;
+            if (getMinFile)
+            {
+                jfile = jQueryUIMinFile;
+            }
+
+            return jfile;
         }
 
         private static void RequestHighestVersionLibraryRegistration(string jsname)
@@ -548,20 +562,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
             }
 #pragma warning restore 618
-        }
-
-        private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
-        private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
-
-        public static string JQueryUIFile(bool getMinFile)
-        {
-            string jfile = jQueryUIDebugFile;
-            if (getMinFile)
-            {
-                jfile = jQueryUIMinFile;
-            }
-
-            return jfile;
         }
 
         public static string GetJQueryScriptReference()

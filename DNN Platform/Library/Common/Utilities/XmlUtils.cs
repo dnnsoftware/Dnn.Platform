@@ -602,7 +602,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="conformance">Conformance Level.</param>
         /// <returns>An XmlWriterSettings.</returns>
-       /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         public static XmlWriterSettings GetXmlWriterSettings(ConformanceLevel conformance)
         {
             var settings = new XmlWriterSettings();

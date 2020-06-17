@@ -15,6 +15,11 @@ namespace DotNetNuke.Services.Connections
 
     public sealed class DynamicJsonConverter : JavaScriptConverter
     {
+        public override IEnumerable<Type> SupportedTypes
+        {
+            get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
+        }
+
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
             if (dictionary == null)
@@ -28,11 +33,6 @@ namespace DotNetNuke.Services.Connections
         public override IDictionary<string, object> Serialize(object obj, JavaScriptSerializer serializer)
         {
             throw new NotImplementedException();
-        }
-
-        public override IEnumerable<Type> SupportedTypes
-        {
-            get { return new ReadOnlyCollection<Type>(new List<Type>(new[] { typeof(object) })); }
         }
 
         private sealed class DynamicJsonObject : DynamicObject
@@ -54,6 +54,37 @@ namespace DotNetNuke.Services.Connections
                 var sb = new StringBuilder("{");
                 this.ToString(sb);
                 return sb.ToString();
+            }
+
+            public override bool TryGetMember(GetMemberBinder binder, out object result)
+            {
+                if (!this._dictionary.TryGetValue(binder.Name, out result))
+                {
+                    // return null to avoid exception.  caller can check for null this way...
+                    result = null;
+                    return true;
+                }
+
+                result = WrapResultObject(result);
+                return true;
+            }
+
+            public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
+            {
+                if (indexes.Length == 1 && indexes[0] != null)
+                {
+                    if (!this._dictionary.TryGetValue(indexes[0].ToString(), out result))
+                    {
+                        // return null to avoid exception.  caller can check for null this way...
+                        result = null;
+                        return true;
+                    }
+
+                    result = WrapResultObject(result);
+                    return true;
+                }
+
+                return base.TryGetIndex(binder, indexes, out result);
             }
 
             private void ToString(StringBuilder sb)
@@ -113,37 +144,6 @@ namespace DotNetNuke.Services.Connections
                 }
 
                 sb.Append("}");
-            }
-
-            public override bool TryGetMember(GetMemberBinder binder, out object result)
-            {
-                if (!this._dictionary.TryGetValue(binder.Name, out result))
-                {
-                    // return null to avoid exception.  caller can check for null this way...
-                    result = null;
-                    return true;
-                }
-
-                result = WrapResultObject(result);
-                return true;
-            }
-
-            public override bool TryGetIndex(GetIndexBinder binder, object[] indexes, out object result)
-            {
-                if (indexes.Length == 1 && indexes[0] != null)
-                {
-                    if (!this._dictionary.TryGetValue(indexes[0].ToString(), out result))
-                    {
-                        // return null to avoid exception.  caller can check for null this way...
-                        result = null;
-                        return true;
-                    }
-
-                    result = WrapResultObject(result);
-                    return true;
-                }
-
-                return base.TryGetIndex(binder, indexes, out result);
             }
 
             private static object WrapResultObject(object result)

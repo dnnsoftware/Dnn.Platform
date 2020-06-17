@@ -21,25 +21,24 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
     [TestFixture]
     public class JwtAuthTest : IntegrationTestBase
     {
+        public const string ExtendTokenQuery = "/API/JwtAuth/mobile/extendtoken";
+
+        private const string LoginQuery = "/API/JwtAuth/mobile/login";
+        private const string LogoutQuery = "/API/JwtAuth/mobile/logout";
+        private const string TestGetQuery = "/API/JwtAuth/mobile/testget";
+        private const string TestPostQuery = "/API/JwtAuth/mobile/testpost";
+        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
+        private static readonly Encoding TextEncoder = Encoding.UTF8;
         private readonly string _hostName;
         private readonly string _hostPass;
         private readonly HttpClient _httpClient;
-
-        private static readonly Encoding TextEncoder = Encoding.UTF8;
 #if DEBUG
         // for degugging and setting breakpoints
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(300);
 #else
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 #endif
-
-        private const string LoginQuery = "/API/JwtAuth/mobile/login";
-        private const string LogoutQuery = "/API/JwtAuth/mobile/logout";
-        public const string ExtendTokenQuery = "/API/JwtAuth/mobile/extendtoken";
-        private const string TestGetQuery = "/API/JwtAuth/mobile/testget";
-        private const string TestPostQuery = "/API/JwtAuth/mobile/testpost";
-        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
 
         public JwtAuthTest()
         {
@@ -398,6 +397,18 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
+        private static string DecodeBase64(string b64Str)
+        {
+            // fix Base64 string padding
+            var mod = b64Str.Length % 4;
+            if (mod != 0)
+            {
+                b64Str += new string('=', 4 - mod);
+            }
+
+            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
+        }
+
         // template to help in copy/paste of new test methods
         /*
         [Test]
@@ -450,18 +461,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         private void SetMonikerHeader(string monikerValue)
         {
             this._httpClient.DefaultRequestHeaders.Add("X-DNN-MONIKER", monikerValue);
-        }
-
-        private static string DecodeBase64(string b64Str)
-        {
-            // fix Base64 string padding
-            var mod = b64Str.Length % 4;
-            if (mod != 0)
-            {
-                b64Str += new string('=', 4 - mod);
-            }
-
-            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 
         [JsonObject]

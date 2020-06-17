@@ -18,6 +18,11 @@ namespace DotNetNuke.Services.FileSystem
     public interface IFolderManager
     {
         /// <summary>
+        /// Gets the alias name of the personal User Folder.
+        /// </summary>
+        string MyFolderName { get; }
+
+        /// <summary>
         /// Adds read permissions for all users to the specified folder.
         /// </summary>
         /// <param name="folder">The folder to add the permission to.</param>
@@ -205,11 +210,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="permissions">The permissions the folders have to met.</param>
         /// <returns>The list of folders the specified user has the provided permissions.</returns>
         IEnumerable<IFolderInfo> GetFolders(UserInfo user, string permissions);
-
-        /// <summary>
-        /// Gets the alias name of the personal User Folder.
-        /// </summary>
-        string MyFolderName { get; }
 
         /// <summary>
         /// Moves the specified folder and its contents to a new location.

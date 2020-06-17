@@ -21,6 +21,9 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class Actions : ActionBase
     {
+        private DDRMenuNavigationProvider navProvider;
+        private Dictionary<int, ModuleAction> actions;
+
         public string PathSystemScript { get; set; }
 
         public string MenuStyle { get; set; }
@@ -32,9 +35,6 @@ namespace DotNetNuke.Web.DDRMenu
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<TemplateArgument> TemplateArguments { get; set; }
-
-        private DDRMenuNavigationProvider navProvider;
-        private Dictionary<int, ModuleAction> actions;
 
         protected override void OnInit(EventArgs e)
         {

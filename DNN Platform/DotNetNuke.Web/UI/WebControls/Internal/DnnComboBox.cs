@@ -75,6 +75,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
+        public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
+
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -83,7 +85,22 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        public DnnComboBoxOption Options { get; set; } = new DnnComboBoxOption();
+        public override void DataBind()
+        {
+            if (!string.IsNullOrEmpty(this._initValue))
+            {
+                this.DataBind(this._initValue);
+            }
+            else
+            {
+                base.DataBind();
+            }
+        }
+
+        public void AddItem(string text, string value)
+        {
+            this.Items.Add(new ListItem(text, value));
+        }
 
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -137,23 +154,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.RegisterRequestResources();
 
             base.OnPreRender(e);
-        }
-
-        public override void DataBind()
-        {
-            if (!string.IsNullOrEmpty(this._initValue))
-            {
-                this.DataBind(this._initValue);
-            }
-            else
-            {
-                base.DataBind();
-            }
-        }
-
-        public void AddItem(string text, string value)
-        {
-            this.Items.Add(new ListItem(text, value));
         }
 
         public void InsertItem(int index, string text, string value)

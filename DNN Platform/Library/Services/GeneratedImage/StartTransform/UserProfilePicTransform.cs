@@ -20,6 +20,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class UserProfilePicTransform : ImageTransform
     {
+        public UserProfilePicTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+        }
+
         /// <summary>
         /// Gets or sets the UserID of the profile pic.
         /// </summary>
@@ -34,14 +42,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets a value indicating whether is reusable.
         /// </summary>
         public bool IsReusable => false;
-
-        public UserProfilePicTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-        }
 
         /// <summary>
         /// Processes an input image returning the user profile picture.

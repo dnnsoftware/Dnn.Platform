@@ -73,7 +73,7 @@ namespace DotNetNuke.ComponentModel
                 try
                 {
                     type = BuildManager.GetType(provider.Type, false, true);
-                 }
+                }
                 catch (TypeLoadException)
                 {
                     if (this._defaultProvider != null)

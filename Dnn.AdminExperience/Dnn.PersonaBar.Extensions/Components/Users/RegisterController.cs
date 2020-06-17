@@ -30,14 +30,23 @@ namespace Dnn.PersonaBar.Users.Components
 
     internal class RegisterController : ServiceLocator<IRegisterController, RegisterController>, IRegisterController
     {
-        #region Overrides of ServiceLocator
-
-        protected override Func<IRegisterController> GetFactory()
+        public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
         {
-            return () => new RegisterController();
-        }
+            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
+            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
+            var notification = new Notification
+            {
+                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
+                IncludeDismissAction = newUser.Membership.Approved,
+                SenderUserID = portalSettings.AdministratorId,
+                Subject = GetNotificationSubject(locale, newUser, portalSettings),
+                Body = GetNotificationBody(locale, newUser, portalSettings),
+                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
+            };
 
-        #endregion
+            notification.Body = Utilities.FixDoublEntityEncoding(notification.Body);
+            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());
+        }
 
         //NOTE - While making modifications in this method, developer must refer to call tree in Register.ascx.cs.
         //Especially Validate and CreateUser methods. Register class inherits from UserModuleBase, which also contains bunch of logic.
@@ -51,9 +60,9 @@ namespace Dnn.PersonaBar.Users.Components
 
             Requires.NotNullOrEmpty("email", email);
 
-            var disallowRegistration = !registerationDetails.IgnoreRegistrationMode && 
-                                   ((portalSettings.UserRegistration == (int) Globals.PortalRegistrationType.NoRegistration) ||
-                                   (portalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PrivateRegistration));
+            var disallowRegistration = !registerationDetails.IgnoreRegistrationMode &&
+                                   ((portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration) ||
+                                   (portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration));
 
             if (disallowRegistration)
             {
@@ -76,7 +85,7 @@ namespace Dnn.PersonaBar.Users.Components
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
-            
+
             var valid = UserController.Instance.IsValidUserName(username);
 
             if (!valid)
@@ -218,8 +227,8 @@ namespace Dnn.PersonaBar.Users.Components
             if (!string.IsNullOrEmpty(displaynameFormat)) newUser.UpdateDisplayName(displaynameFormat);
 
             //membership is approved only for public registration
-            newUser.Membership.Approved = 
-                (registerationDetails.IgnoreRegistrationMode || 
+            newUser.Membership.Approved =
+                (registerationDetails.IgnoreRegistrationMode ||
                 portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration) && registerationDetails.Authorize;
             newUser.Membership.PasswordQuestion = registerationDetails.Question;
             newUser.Membership.PasswordAnswer = registerationDetails.Answer;
@@ -237,23 +246,28 @@ namespace Dnn.PersonaBar.Users.Components
                 throw new Exception(UserController.GetUserCreateStatus(createStatus));
             }
 
-//            if (registerationDetails.IgnoreRegistrationMode)
-//            {
-//                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
-//                return UserBasicDto.FromUserInfo(newUser);
-//            }
+            //            if (registerationDetails.IgnoreRegistrationMode)
+            //            {
+            //                Mail.SendMail(newUser, MessageType.UserRegistrationPublic, portalSettings);
+            //                return UserBasicDto.FromUserInfo(newUser);
+            //            }
 
             //send notification to portal administrator of new user registration
             //check the receive notification setting first, but if register type is Private, we will always send the notification email.
             //because the user need administrators to do the approve action so that he can continue use the website.
-            if (!registerationDetails.IgnoreRegistrationMode && 
-                    (portalSettings.EnableRegisterNotification || portalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PrivateRegistration))
+            if (!registerationDetails.IgnoreRegistrationMode &&
+                    (portalSettings.EnableRegisterNotification || portalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration))
             {
                 Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, portalSettings);
                 SendAdminNotification(newUser, portalSettings);
-            }            
+            }
 
             return UserBasicDto.FromUserInfo(newUser);
+        }
+
+        protected override Func<IRegisterController> GetFactory()
+        {
+            return () => new RegisterController();
         }
 
         private static void SendAdminNotification(UserInfo newUser, PortalSettings portalSettings)
@@ -262,24 +276,6 @@ namespace Dnn.PersonaBar.Users.Components
             var adminrole = roleController.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId);
             var roles = new List<RoleInfo> { adminrole };
             SendNewUserNotifications(newUser, portalSettings, roles);
-        }
-
-        public static void SendNewUserNotifications(UserInfo newUser, PortalSettings portalSettings, List<RoleInfo> roles)
-        {
-            var notificationType = newUser.Membership.Approved ? "NewUserRegistration" : "NewUnauthorizedUserRegistration";
-            var locale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId).Code;
-            var notification = new Notification
-            {
-                NotificationTypeID = NotificationsController.Instance.GetNotificationType(notificationType).NotificationTypeId,
-                IncludeDismissAction = newUser.Membership.Approved,
-                SenderUserID = portalSettings.AdministratorId,
-                Subject = GetNotificationSubject(locale, newUser, portalSettings),
-                Body = GetNotificationBody(locale, newUser, portalSettings),
-                Context = newUser.UserID.ToString(CultureInfo.InvariantCulture)
-            };
-
-            notification.Body = Utilities.FixDoublEntityEncoding(notification.Body);
-            NotificationsController.Instance.SendNotification(notification, portalSettings.PortalId, roles, new List<UserInfo>());            
         }
 
         private static string GetNotificationBody(string locale, UserInfo newUser, PortalSettings portalSettings)
@@ -307,7 +303,7 @@ namespace Dnn.PersonaBar.Users.Components
 
         private string GetStringSetting(Hashtable settings, string settingKey)
         {
-            return settings[settingKey] == null ? string.Empty :  settings[settingKey].ToString();
+            return settings[settingKey] == null ? string.Empty : settings[settingKey].ToString();
         }
 
         private string GetExcludeTermsRegex(Hashtable settings)

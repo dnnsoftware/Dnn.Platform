@@ -26,12 +26,6 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     public class TabPermissionController
     {
-        private static void ClearPermissionCache(int tabId)
-        {
-            var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
-            DataCache.ClearTabPermissionsCache(objTab.PortalID);
-        }
-
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 
         /// <summary>
@@ -51,6 +45,12 @@ namespace DotNetNuke.Security.Permissions
         public static bool CanAddContentToPage()
         {
             return CanAddContentToPage(TabController.CurrentPage);
+        }
+
+        private static void ClearPermissionCache(int tabId)
+        {
+            var objTab = TabController.Instance.GetTab(tabId, Null.NullInteger, false);
+            DataCache.ClearTabPermissionsCache(objTab.PortalID);
         }
 
         /// <summary>

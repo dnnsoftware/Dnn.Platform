@@ -13,6 +13,12 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchDocument : SearchDocumentToDelete
     {
+        public SearchDocument()
+        {
+            this.Tags = new string[0];
+            this.IsActive = true;
+        }
+
         /// <summary>
         /// Gets or sets content's Title.
         /// </summary>
@@ -69,12 +75,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// Gets or sets tags can be specified as additional information.
         /// </summary>
         public IEnumerable<string> Tags { get; set; }
-
-        public SearchDocument()
-        {
-            this.Tags = new string[0];
-            this.IsActive = true;
-        }
 
         public override string ToString()
         {

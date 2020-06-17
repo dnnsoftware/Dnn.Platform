@@ -13,6 +13,34 @@ namespace DotNetNuke.Entities.Users.Membership
 
     public class MembershipPasswordSettings
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MembershipPasswordSettings"/> class.
+        /// Initialiser for MembershipPasswordSettings provider object.
+        /// </summary>
+        public MembershipPasswordSettings(int portalId)
+        {
+            // portalId not used currently - left in place for potential site specific settings
+            this.PortalId = portalId;
+
+            if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
+            {
+                this.EnableBannedList = Host.Host.EnableBannedList;
+                this.EnableStrengthMeter = Host.Host.EnableStrengthMeter;
+                this.EnableIPChecking = Host.Host.EnableIPChecking;
+                this.EnablePasswordHistory = Host.Host.EnablePasswordHistory;
+
+                this.ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
+                this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
+            }
+            else // setup default values during install process.
+            {
+                this.EnableStrengthMeter = true;
+                this.EnableBannedList = true;
+                this.EnablePasswordHistory = true;
+            }
+        }
+
         public bool EnableBannedList { get; set; }
 
         public bool EnableStrengthMeter { get; set; }
@@ -74,34 +102,6 @@ namespace DotNetNuke.Entities.Users.Membership
         public string ValidationExpression
         {
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MembershipPasswordSettings"/> class.
-        /// Initialiser for MembershipPasswordSettings provider object.
-        /// </summary>
-        public MembershipPasswordSettings(int portalId)
-        {
-            // portalId not used currently - left in place for potential site specific settings
-            this.PortalId = portalId;
-
-            if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
-            {
-                this.EnableBannedList = Host.Host.EnableBannedList;
-                this.EnableStrengthMeter = Host.Host.EnableStrengthMeter;
-                this.EnableIPChecking = Host.Host.EnableIPChecking;
-                this.EnablePasswordHistory = Host.Host.EnablePasswordHistory;
-
-                this.ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
-                this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
-                this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
-            }
-            else // setup default values during install process.
-            {
-                this.EnableStrengthMeter = true;
-                this.EnableBannedList = true;
-                this.EnablePasswordHistory = true;
-            }
         }
 
         public int PortalId { get; set; }

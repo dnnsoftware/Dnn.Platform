@@ -43,11 +43,11 @@ namespace Dnn.PersonaBar.Pages.Services
     [DnnExceptionFilter]
     public class PagesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
         private const string LocalResourceFile = Library.Constants.PersonaBarRelativePath + "Modules/Dnn.Pages/App_LocalResources/Pages.resx";
-        protected INavigationManager NavigationManager { get; }
-
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
         private readonly IPagesController _pagesController;
+
+        protected INavigationManager NavigationManager { get; }
         private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
         private readonly ITemplateController _templateController;
@@ -74,7 +74,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         /// GET: api/Pages/GetPageDetails
         /// <summary>
-        /// Get detail of a page
+        /// Get detail of a page.
         /// </summary>
         /// <param name="pageId"></param>
         /// <returns></returns>
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         /// GET: api/Pages/GetCustomUrls
         /// <summary>
-        /// Get custom Urls of a page
+        /// Get custom Urls of a page.
         /// </summary>
         /// <param name="pageId"></param>
         /// <returns></returns>
@@ -359,7 +359,7 @@ namespace Dnn.PersonaBar.Pages.Services
         }
 
         [HttpPost]
-        public HttpResponseMessage EditModeForPage([FromUri]int id)
+        public HttpResponseMessage EditModeForPage([FromUri] int id)
         {
             if (!TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(id, this.PortalId)))
             {
@@ -534,10 +534,8 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        #region -------------------------------- LOCALIZATION API METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-        #endregion
 
         // POST /api/personabar/pages/MakePageNeutral?tabId=123
         [HttpPost]
@@ -783,7 +781,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         // GET /api/personabar/pages/GetContentLocalizationEnabled
         /// <summary>
-        /// Gets ContentLocalizationEnabled 
+        /// Gets ContentLocalizationEnabled. 
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -806,7 +804,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
         // GET /api/personabar/pages/GetCachedItemCount
         /// <summary>
-        /// Gets GetCachedItemCount 
+        /// Gets GetCachedItemCount. 
         /// </summary>
         /// <returns></returns>
         [HttpGet]
@@ -831,7 +829,7 @@ namespace Dnn.PersonaBar.Pages.Services
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = "Dnn.Pages", Permission = "Edit")]
-        public HttpResponseMessage ClearCache([FromUri]string cacheProvider, [FromUri]int pageId)
+        public HttpResponseMessage ClearCache([FromUri] string cacheProvider, [FromUri] int pageId)
         {
             try
             {
@@ -850,14 +848,28 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
-        #region -------------------------------- PRIVATE METHODS SEPARATOR --------------------------------
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
-        #endregion
 
         private static string LocalizeString(string key)
         {
             return DotNetNuke.Services.Localization.Localization.GetString(key, LocalResourceFile);
+        }
+
+        private static void EnableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            var tabVersionSettings = TabVersionSettings.Instance;
+            var tabWorkflowSettings = TabWorkflowSettings.Instance;
+
+            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID))
+            {
+                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, true);
+            }
+
+            if (tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
+            {
+                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, true);
+            }
         }
 
         //private bool IsDefaultLanguage(string cultureCode)
@@ -1221,22 +1233,6 @@ namespace Dnn.PersonaBar.Pages.Services
                         this._tabController.UpdateTranslationStatus(tabInfo, true);
                     }
                 }
-            }
-        }
-
-        private static void EnableTabVersioningAndWorkflow(TabInfo tab)
-        {
-            var tabVersionSettings = TabVersionSettings.Instance;
-            var tabWorkflowSettings = TabWorkflowSettings.Instance;
-
-            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID))
-            {
-                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, true);
-            }
-
-            if (tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
-            {
-                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, true);
             }
         }
 

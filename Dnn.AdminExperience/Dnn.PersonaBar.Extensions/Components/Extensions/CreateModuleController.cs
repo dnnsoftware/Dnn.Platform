@@ -26,16 +26,11 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public class CreateModuleController : ServiceLocator<ICreateModuleController, CreateModuleController>, ICreateModuleController
     {
-        protected INavigationManager NavigationManager { get; }
         public CreateModuleController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        protected override Func<ICreateModuleController> GetFactory()
-        {
-            return () => new CreateModuleController();
-        }
+        protected INavigationManager NavigationManager { get; }
 
         /// <summary>
         /// create new module.
@@ -63,6 +58,17 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             return packageId;
+        }
+
+        protected override Func<ICreateModuleController> GetFactory()
+        {
+            return () => new CreateModuleController();
+        }
+
+        private static bool InvalidFilename(string fileName)
+        {
+            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
+            return invalidFilenameChars.IsMatch(fileName);
         }
 
         private int CreateNewModule(CreateModuleDto createModuleDto, out string newPageUrl, out string errorMessage)
@@ -331,12 +337,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
             return string.Empty;
-        }
-
-        private static bool InvalidFilename(string fileName)
-        {
-            var invalidFilenameChars = RegexUtils.GetCachedRegex("[" + Regex.Escape(new string(Path.GetInvalidFileNameChars())) + "]");
-            return invalidFilenameChars.IsMatch(fileName);
         }
 
         private string CreateControl(CreateModuleDto createModuleDto)

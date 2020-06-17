@@ -16,9 +16,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     [ConsoleCommand("set-mode", Constants.GeneralCategory, "Prompt_SetMode_Description")]
     public class SetMode : IConsoleCommand
     {
-        public string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
         private const string FlagMode = "mode";
+        public string LocalResourceFile => Constants.LocalResourcesFile;
 
         public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", this.LocalResourceFile);
 

@@ -35,11 +35,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             this._contentVerifier = contentVerifier;
         }
 
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
-        }
-
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -167,22 +162,27 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
+        }
+
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
 
             if (module != null)
             {
-                    try
-                    {
-                        ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
-                        ModuleController.Instance.ClearCache(pageId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
-                    }
+                try
+                {
+                    ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
+                    ModuleController.Instance.ClearCache(pageId);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
+                }
             }
         }
 

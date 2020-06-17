@@ -12,6 +12,63 @@ namespace DotNetNuke.Collections.Internal
     {
         private readonly SharedList<T> _list = new SharedList<T>();
 
+        /// <summary>
+        /// Gets access to the underlying SharedList.
+        /// <remarks>
+        /// Allows locking to be explicitly managed for the sake of effeciency
+        /// </remarks>
+        /// </summary>
+        public SharedList<T> SharedList
+        {
+            get
+            {
+                return this._list;
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return this.DoInReadLock(() => this._list.Count);
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                return this.DoInReadLock(() => this._list[index]);
+            }
+
+            set
+            {
+                this.DoInWriteLock(() => this._list[index] = value);
+            }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            // disposal of enumerator will release read lock
+            // TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
+            // if using RWLS
+            var readLock = this._list.GetReadLock();
+            return new NaiveLockingEnumerator(this._list.GetEnumerator(), readLock);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
         // TODO is no recursion the correct policy
         private void DoInReadLock(Action action)
         {
@@ -47,34 +104,6 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <summary>
-        /// Gets access to the underlying SharedList.
-        /// <remarks>
-        /// Allows locking to be explicitly managed for the sake of effeciency
-        /// </remarks>
-        /// </summary>
-        public SharedList<T> SharedList
-        {
-            get
-            {
-                return this._list;
-            }
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            // disposal of enumerator will release read lock
-            // TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
-            // if using RWLS
-            var readLock = this._list.GetReadLock();
-            return new NaiveLockingEnumerator(this._list.GetEnumerator(), readLock);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
         public void Add(T item)
         {
             this.DoInWriteLock(() => this._list.Add(item));
@@ -100,22 +129,6 @@ namespace DotNetNuke.Collections.Internal
             return this.DoInWriteLock(() => this._list.Remove(item));
         }
 
-        public int Count
-        {
-            get
-            {
-                return this.DoInReadLock(() => this._list.Count);
-            }
-        }
-
-        public bool IsReadOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
-
         public int IndexOf(T item)
         {
             return this.DoInReadLock(() => this._list.IndexOf(item));
@@ -131,19 +144,6 @@ namespace DotNetNuke.Collections.Internal
             this.DoInWriteLock(() => this._list.RemoveAt(index));
         }
 
-        public T this[int index]
-        {
-            get
-            {
-                return this.DoInReadLock(() => this._list[index]);
-            }
-
-            set
-            {
-                this.DoInWriteLock(() => this._list[index] = value);
-            }
-        }
-
         public class NaiveLockingEnumerator : IEnumerator<T>
         {
             private readonly IEnumerator<T> _enumerator;
@@ -156,14 +156,9 @@ namespace DotNetNuke.Collections.Internal
                 this._readLock = readLock;
             }
 
-            public bool MoveNext()
+            ~NaiveLockingEnumerator()
             {
-                return this._enumerator.MoveNext();
-            }
-
-            public void Reset()
-            {
-                this._enumerator.Reset();
+                this.Dispose(false);
             }
 
             public T Current
@@ -180,6 +175,16 @@ namespace DotNetNuke.Collections.Internal
                 {
                     return this.Current;
                 }
+            }
+
+            public bool MoveNext()
+            {
+                return this._enumerator.MoveNext();
+            }
+
+            public void Reset()
+            {
+                this._enumerator.Reset();
             }
 
             public void Dispose()
@@ -203,11 +208,6 @@ namespace DotNetNuke.Collections.Internal
                     // dispose unmanaged resrources here
                     this._isDisposed = true;
                 }
-            }
-
-            ~NaiveLockingEnumerator()
-            {
-                this.Dispose(false);
             }
         }
     }

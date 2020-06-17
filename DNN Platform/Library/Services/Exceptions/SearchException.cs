@@ -7,7 +7,7 @@ namespace DotNetNuke.Services.Exceptions
 
     using DotNetNuke.Services.Search;
 
-    #pragma warning disable 0618
+#pragma warning disable 0618
     public class SearchException : BasePortalException
     {
         private readonly SearchItemInfo m_SearchItem;
@@ -31,5 +31,5 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
     }
-    #pragma warning restore 0618
+#pragma warning restore 0618
 }

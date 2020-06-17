@@ -26,48 +26,16 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnFilePickerUploader : UserControl, IFilePickerUploader
     {
+        protected DnnFileDropDownList FilesComboBox;
+        protected DnnFolderDropDownList FoldersComboBox;
         private const string MyFileName = "filepickeruploader.ascx";
         private int? _portalId = null;
 
         private string _fileFilter;
         private string _folderPath = string.Empty;
         private bool _folderPathSet = false;
-        protected DnnFileDropDownList FilesComboBox;
-        protected DnnFolderDropDownList FoldersComboBox;
         protected Label FoldersLabel;
         protected DnnFileUpload FileUploadControl;
-
-        protected string FolderLabel
-        {
-            get
-            {
-                return Localization.GetString("Folder", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        protected string FileLabel
-        {
-            get
-            {
-                return Localization.GetString("File", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        protected string UploadFileLabel
-        {
-            get
-            {
-                return Localization.GetString("UploadFile", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        protected string DropFileLabel
-        {
-            get
-            {
-                return Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
 
         public bool UsePersonalFolder { get; set; }
 
@@ -105,6 +73,38 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     this.LoadFolders();
                 }
+            }
+        }
+
+        protected string FolderLabel
+        {
+            get
+            {
+                return Localization.GetString("Folder", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        protected string FileLabel
+        {
+            get
+            {
+                return Localization.GetString("File", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        protected string UploadFileLabel
+        {
+            get
+            {
+                return Localization.GetString("UploadFile", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        protected string DropFileLabel
+        {
+            get
+            {
+                return Localization.GetString("DropFile", Localization.GetResourceFile(this, MyFileName));
             }
         }
 
@@ -224,18 +224,18 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (this.FoldersComboBox.SelectedFolder.FolderID == userFolder.FolderID)
                 {
                     this.FoldersComboBox.SelectedItem = new ListItem
-                                                   {
-                                                       Text = FolderManager.Instance.MyFolderName,
-                                                       Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
-                                                   };
+                    {
+                        Text = FolderManager.Instance.MyFolderName,
+                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
+                    };
                 }
                 else if (this.UsePersonalFolder) // if UserPersonalFolder is true, make sure the file is under the user folder.
                 {
                     this.FoldersComboBox.SelectedItem = new ListItem
-                                                    {
-                                                        Text = FolderManager.Instance.MyFolderName,
-                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
-                                                    };
+                    {
+                        Text = FolderManager.Instance.MyFolderName,
+                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture),
+                    };
 
                     this.FilesComboBox.SelectedFile = null;
                 }
@@ -250,9 +250,9 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.FoldersComboBox.SelectedItem.Value, this.FoldersComboBox.SelectedItem.Text);
 
                 this.FileUploadControl.Options.FolderPicker.InitialState = new DnnDropDownListState
-                                                                          {
-                                                                              SelectedItem = selectedItem,
-                                                                          };
+                {
+                    SelectedItem = selectedItem,
+                };
                 this.FileUploadControl.Options.FolderPath = this.FoldersComboBox.SelectedFolder.FolderPath;
             }
 

@@ -32,6 +32,14 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
+        public static void RegisterInstance(TContract instance)
+        {
+            if (ComponentFactory.GetComponent<TContract>() == null)
+            {
+                ComponentFactory.RegisterComponentInstance<TContract>(instance);
+            }
+        }
+
         /// <summary>
         /// Registers an instance to use for the Singleton.
         /// </summary>
@@ -51,14 +59,6 @@ namespace DotNetNuke.ComponentModel
         {
             _useTestable = false;
             _testableInstance = default(TContract);
-        }
-
-        public static void RegisterInstance(TContract instance)
-        {
-            if (ComponentFactory.GetComponent<TContract>() == null)
-            {
-                ComponentFactory.RegisterComponentInstance<TContract>(instance);
-            }
         }
     }
 }

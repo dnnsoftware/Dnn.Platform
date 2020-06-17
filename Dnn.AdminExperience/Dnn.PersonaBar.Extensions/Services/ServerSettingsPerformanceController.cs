@@ -35,10 +35,10 @@ namespace Dnn.PersonaBar.Servers.Services
 
         /// GET: api/Servers/GetPerformanceSettings
         /// <summary>
-        /// Gets performance settings
+        /// Gets performance settings.
         /// </summary>
         /// <param></param>
-        /// <returns>performance settings</returns>
+        /// <returns>performance settings.</returns>
         [HttpGet]
         public HttpResponseMessage GetPerformanceSettings()
         {
@@ -86,6 +86,31 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
+        /// POST: api/Servers/IncrementPortalVersion
+        /// <summary>
+        /// Increment portal resources management version.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage IncrementPortalVersion()
+        {
+            try
+            {
+                var portalId = PortalSettings.Current.PortalId;
+                PortalController.IncrementCrmVersion(portalId);
+                PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
+                PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "p", false);
+                DataCache.ClearCache();
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         private int GetPortalVersion(int portalId)
         {
             var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
@@ -102,34 +127,9 @@ namespace Dnn.PersonaBar.Servers.Services
             return version;
         }
 
-        /// POST: api/Servers/IncrementPortalVersion
-        /// <summary>
-        /// Increment portal resources management version
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage IncrementPortalVersion()
-        {
-            try
-            { 
-                var portalId = PortalSettings.Current.PortalId;
-                PortalController.IncrementCrmVersion(portalId);
-                PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
-                PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "p", false);
-                DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
         /// POST: api/Servers/IncrementHostVersion
         /// <summary>
-        /// Increment host resources management version
+        /// Increment host resources management version.
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -150,11 +150,11 @@ namespace Dnn.PersonaBar.Servers.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-}
+        }
 
         /// POST: api/Servers/UpdatePerformanceSettings
         /// <summary>
-        /// Updates performance settings
+        /// Updates performance settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>

@@ -21,26 +21,12 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class LanguageServiceController : DnnApiController
     {
-        protected INavigationManager NavigationManager { get; }
-
         public LanguageServiceController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
 
-        public class PageDto
-        {
-            public string Name { get; set; }
-
-            public string ViewUrl { get; set; }
-
-            public string EditUrl { get; set; }
-        }
-
-        private bool IsDefaultLanguage(string code)
-        {
-            return code == this.PortalSettings.DefaultLanguage;
-        }
+        protected INavigationManager NavigationManager { get; }
 
         [HttpGet]
         public HttpResponseMessage GetNonTranslatedPages(string languageCode)
@@ -65,6 +51,20 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, pages);
+        }
+
+        private bool IsDefaultLanguage(string code)
+        {
+            return code == this.PortalSettings.DefaultLanguage;
+        }
+
+        public class PageDto
+        {
+            public string Name { get; set; }
+
+            public string ViewUrl { get; set; }
+
+            public string EditUrl { get; set; }
         }
     }
 }

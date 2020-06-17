@@ -23,6 +23,14 @@ namespace DotNetNuke.Web.Validators
             this._Errors = errors;
         }
 
+        public static ValidationResult Successful
+        {
+            get
+            {
+                return new ValidationResult();
+            }
+        }
+
         public IEnumerable<ValidationError> Errors
         {
             get
@@ -36,14 +44,6 @@ namespace DotNetNuke.Web.Validators
             get
             {
                 return this._Errors.Count() == 0;
-            }
-        }
-
-        public static ValidationResult Successful
-        {
-            get
-            {
-                return new ValidationResult();
             }
         }
 

@@ -31,16 +31,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
-
-        #region Fields
-
         private readonly ITabController _tabController;
         private readonly ITabVersionSettings _tabVersionSettings;
         private readonly ITabChangeSettings _tabChangeSettings;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
         private readonly IModuleController _moduleController;
-
-        #endregion
 
         public RecyclebinController()
         {
@@ -51,26 +46,16 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             this._tabChangeSettings = TabChangeSettings.Instance;
         }
 
-        #region Properties
-
         private static PortalSettings PortalSettings => PortalSettings.Current;
-
-        #endregion
-
-        #region ServiceLocator
-
-        protected override Func<IRecyclebinController> GetFactory()
-        {
-            return () => new RecyclebinController();
-        }
-
-        #endregion
-
-        #region Public Methods
 
         public string LocalizeString(string key)
         {
             return Localization.GetString(key, Constants.LocalResourcesFile);
+        }
+
+        protected override Func<IRecyclebinController> GetFactory()
+        {
+            return () => new RecyclebinController();
         }
 
         public void DeleteTabs(IEnumerable<PageItem> tabs, StringBuilder errors, bool deleteDescendants = false)
@@ -135,6 +120,49 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             modules?.ForEach(mod => this.HardDeleteModule(mod, errors));
         }
 
+        public bool RestoreTab(TabInfo tab, out string resultmessage)
+        {
+            var changeControlStateForTab = this._tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            {
+                this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
+                this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+            }
+
+            var success = true;
+            resultmessage = null;
+
+            //if parent of the page is deleted, then can't restore - parent should be restored first
+            var totalRecords = 0;
+            var deletedTabs = this.GetDeletedTabs(out totalRecords);
+            if (!Null.IsNull(tab.ParentId) && deletedTabs.Any(t => t.TabID == tab.ParentId))
+            {
+                resultmessage = string.Format(this.LocalizeString("Service_RestoreTabError"), tab.TabName);
+                success = false;
+            }
+            else
+            {
+                this._tabController.RestoreTab(tab, PortalSettings);
+
+                //restore modules in this tab
+                var tabdeletedModules = this.GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
+
+                foreach (var m in tabdeletedModules)
+                {
+                    success = this.RestoreModule(m.ModuleID, m.TabID, out resultmessage);
+                }
+
+                if (changeControlStateForTab.IsChangeControlEnabledForTab)
+                {
+                    this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID,
+                        changeControlStateForTab.IsVersioningEnabledForTab);
+                    this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
+                        changeControlStateForTab.IsWorkflowEnabledForTab);
+                }
+            }
+            return success;
+        }
+
         private void HardDeleteTab(TabInfo tab, bool deleteDescendants, StringBuilder errors)
         {
             if (TabPermissionController.CanDeletePage(tab) && tab.IsDeleted)
@@ -192,49 +220,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                 Logger.Error(exc);
             }
             //hard-delete Tab Module Instance
-        }
-
-        public bool RestoreTab(TabInfo tab, out string resultmessage)
-        {
-            var changeControlStateForTab = this._tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
-            {
-                this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
-                this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
-            }
-
-            var success = true;
-            resultmessage = null;
-
-            //if parent of the page is deleted, then can't restore - parent should be restored first
-            var totalRecords = 0;
-            var deletedTabs = this.GetDeletedTabs(out totalRecords);
-            if (!Null.IsNull(tab.ParentId) && deletedTabs.Any(t => t.TabID == tab.ParentId))
-            {
-                resultmessage = string.Format(this.LocalizeString("Service_RestoreTabError"), tab.TabName);
-                success = false;
-            }
-            else
-            {
-                this._tabController.RestoreTab(tab, PortalSettings);
-
-                //restore modules in this tab
-                var tabdeletedModules = this.GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
-
-                foreach (var m in tabdeletedModules)
-                {
-                    success = this.RestoreModule(m.ModuleID, m.TabID, out resultmessage);
-                }
-
-                if (changeControlStateForTab.IsChangeControlEnabledForTab)
-                {
-                    this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID,
-                        changeControlStateForTab.IsVersioningEnabledForTab);
-                    this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
-                        changeControlStateForTab.IsWorkflowEnabledForTab);
-                }
-            }
-            return success;
         }
 
         public bool RestoreModule(int moduleId, int tabId, out string errorMessage)
@@ -348,7 +333,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         }
 
         /// <summary>
-        /// Checks if the current user has enough rights to manage the provided user or not
+        /// Checks if the current user has enough rights to manage the provided user or not.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -363,6 +348,5 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             return false;
         }
-        #endregion        
     }
 }

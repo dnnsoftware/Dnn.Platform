@@ -32,6 +32,94 @@ namespace DotNetNuke.Common.Utilities
 
         private const string objectMapCacheKey = "ObjectMap_";
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// CloneObject clones an object.
+        /// </summary>
+        /// <param name="objObject">The Object to Clone.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static object CloneObject(object objObject)
+        {
+            try
+            {
+                Type objType = objObject.GetType();
+                object objNewObject = Activator.CreateInstance(objType);
+
+                // get cached object mapping for type
+                ObjectMappingInfo objMappingInfo = GetObjectMapping(objType);
+                foreach (KeyValuePair<string, PropertyInfo> kvp in objMappingInfo.Properties)
+                {
+                    PropertyInfo objProperty = kvp.Value;
+                    if (objProperty.CanWrite)
+                    {
+                        // Check if property is ICloneable
+                        var objPropertyClone = objProperty.GetValue(objObject, null) as ICloneable;
+                        if (objPropertyClone == null)
+                        {
+                            objProperty.SetValue(objNewObject, objProperty.GetValue(objObject, null), null);
+                        }
+                        else
+                        {
+                            objProperty.SetValue(objNewObject, objPropertyClone.Clone(), null);
+                        }
+
+                        // Check if Property is IEnumerable
+                        var enumerable = objProperty.GetValue(objObject, null) as IEnumerable;
+                        if (enumerable != null)
+                        {
+                            var list = objProperty.GetValue(objNewObject, null) as IList;
+                            if (list != null)
+                            {
+                                foreach (object obj in enumerable)
+                                {
+                                    list.Add(CloneObject(obj));
+                                }
+                            }
+
+                            var dic = objProperty.GetValue(objNewObject, null) as IDictionary;
+                            if (dic != null)
+                            {
+                                foreach (DictionaryEntry de in enumerable)
+                                {
+                                    dic.Add(de.Key, CloneObject(de.Value));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return objNewObject;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+                return null;
+            }
+        }
+
+        public static void CloseDataReader(IDataReader dr, bool closeReader)
+        {
+            // close datareader
+            if (dr != null && closeReader)
+            {
+                using (dr)
+                {
+                    dr.Close();
+                }
+            }
+        }
+
+        List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
+        {
+            return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
+        }
+
+        TObject ICBO.FillObject<TObject>(IDataReader dr)
+        {
+            return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
+        }
+
         protected override Func<ICBO> GetFactory()
         {
             return () => new CBO();
@@ -344,31 +432,31 @@ namespace DotNetNuke.Common.Utilities
         }
 
         private static object ChangeType(object obj, Type type)
-         {
-             Type u = Nullable.GetUnderlyingType(type);
+        {
+            Type u = Nullable.GetUnderlyingType(type);
 
-             if (u != null)
-             {
-                 if (obj == null)
-                 {
-                     return GetDefault(type);
-                 }
+            if (u != null)
+            {
+                if (obj == null)
+                {
+                    return GetDefault(type);
+                }
 
-                 return Convert.ChangeType(obj, u);
-             }
+                return Convert.ChangeType(obj, u);
+            }
 
-             return Convert.ChangeType(obj, type);
-         }
+            return Convert.ChangeType(obj, type);
+        }
 
         private static object GetDefault(Type type)
-         {
-             if (type.IsValueType)
-             {
-                 return Activator.CreateInstance(type);
-             }
+        {
+            if (type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
 
-             return null;
-         }
+            return null;
+        }
 
         private static string GetColumnName(PropertyInfo objProperty)
         {
@@ -435,97 +523,9 @@ namespace DotNetNuke.Common.Utilities
             return tableName;
         }
 
-        List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
-        {
-            return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
-        }
-
-        TObject ICBO.FillObject<TObject>(IDataReader dr)
-        {
-            return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
-        }
-
         TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CloneObject clones an object.
-        /// </summary>
-        /// <param name="objObject">The Object to Clone.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static object CloneObject(object objObject)
-        {
-            try
-            {
-                Type objType = objObject.GetType();
-                object objNewObject = Activator.CreateInstance(objType);
-
-                // get cached object mapping for type
-                ObjectMappingInfo objMappingInfo = GetObjectMapping(objType);
-                foreach (KeyValuePair<string, PropertyInfo> kvp in objMappingInfo.Properties)
-                {
-                    PropertyInfo objProperty = kvp.Value;
-                    if (objProperty.CanWrite)
-                    {
-                        // Check if property is ICloneable
-                        var objPropertyClone = objProperty.GetValue(objObject, null) as ICloneable;
-                        if (objPropertyClone == null)
-                        {
-                            objProperty.SetValue(objNewObject, objProperty.GetValue(objObject, null), null);
-                        }
-                        else
-                        {
-                            objProperty.SetValue(objNewObject, objPropertyClone.Clone(), null);
-                        }
-
-                        // Check if Property is IEnumerable
-                        var enumerable = objProperty.GetValue(objObject, null) as IEnumerable;
-                        if (enumerable != null)
-                        {
-                            var list = objProperty.GetValue(objNewObject, null) as IList;
-                            if (list != null)
-                            {
-                                foreach (object obj in enumerable)
-                                {
-                                    list.Add(CloneObject(obj));
-                                }
-                            }
-
-                            var dic = objProperty.GetValue(objNewObject, null) as IDictionary;
-                            if (dic != null)
-                            {
-                                foreach (DictionaryEntry de in enumerable)
-                                {
-                                    dic.Add(de.Key, CloneObject(de.Value));
-                                }
-                            }
-                        }
-                    }
-                }
-
-                return objNewObject;
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-                return null;
-            }
-        }
-
-        public static void CloseDataReader(IDataReader dr, bool closeReader)
-        {
-            // close datareader
-            if (dr != null && closeReader)
-            {
-                using (dr)
-                {
-                    dr.Close();
-                }
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -876,7 +876,7 @@ namespace DotNetNuke.Common.Utilities
 
                     nodeSettingValue = nodeSetting.AppendChild(document.CreateElement("settingvalue"));
                     nodeSettingValue.InnerText = dictionary[sKey].ToString();
-        }
+                }
             }
             else
             {

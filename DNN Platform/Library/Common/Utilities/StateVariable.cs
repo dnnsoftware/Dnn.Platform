@@ -51,34 +51,6 @@ namespace DotNetNuke.Common.Utilities
             this._initializer = initializer;
         }
 
-        private object GetInitializedInternalValue()
-        {
-            var value = this[this._key];
-            if (value == null && this._initializer != null)
-            {
-                value = this._initializer();
-                this[this._key] = value;
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// Get/sets the value in associated dictionary/map.
-        /// </summary>
-        /// <param name="key">Value key.</param>
-        /// <value></value>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        protected abstract object this[string key] { get; set; }
-
-        /// <summary>
-        /// Removes the value in associated dictionary according.
-        /// </summary>
-        /// <param name="key">Value key.</param>
-        /// <remarks></remarks>
-        protected abstract void Remove(string key);
-
         /// <summary>
         /// Gets a value indicating whether indicates wether there is a value present or not.
         /// </summary>
@@ -130,6 +102,34 @@ namespace DotNetNuke.Common.Utilities
 
                 return (T)returnedValue;
             }
+        }
+
+        /// <summary>
+        /// Get/sets the value in associated dictionary/map.
+        /// </summary>
+        /// <param name="key">Value key.</param>
+        /// <value></value>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        protected abstract object this[string key] { get; set; }
+
+        /// <summary>
+        /// Removes the value in associated dictionary according.
+        /// </summary>
+        /// <param name="key">Value key.</param>
+        /// <remarks></remarks>
+        protected abstract void Remove(string key);
+
+        private object GetInitializedInternalValue()
+        {
+            var value = this[this._key];
+            if (value == null && this._initializer != null)
+            {
+                value = this._initializer();
+                this[this._key] = value;
+            }
+
+            return value;
         }
 
         /// <summary>

@@ -19,6 +19,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class SecureFileTransform : ImageTransform
     {
+        public SecureFileTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+        }
+
         /// <summary>
         /// Gets or sets set IFileInfo object of given FileId.
         /// </summary>
@@ -33,14 +41,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
-
-        public SecureFileTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-        }
 
         /// <summary>
         /// Processes an input image returing a secure file image.
@@ -64,23 +64,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
             }
         }
 
-        private Image GetSecureFileExtensionIconImage()
-        {
-            var extensionImageAbsolutePath = Globals.ApplicationMapPath + "\\" +
-                       PortalSettings.Current.DefaultIconLocation.Replace("/", "\\") + "\\" +
-                       "Ext" + this.SecureFile.Extension + "_32x32_Standard.png";
-
-            if (!File.Exists(extensionImageAbsolutePath))
-            {
-                return this.EmptyImage;
-            }
-
-            using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
-            {
-                return this.CopyImage(stream);
-            }
-        }
-
         /// <summary>
         /// Checks if the current user have READ permission on a given folder.
         /// </summary>
@@ -100,6 +83,23 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
             var imageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO" };
             return imageExtensions.Contains(extension.ToUpper());
+        }
+
+        private Image GetSecureFileExtensionIconImage()
+        {
+            var extensionImageAbsolutePath = Globals.ApplicationMapPath + "\\" +
+                       PortalSettings.Current.DefaultIconLocation.Replace("/", "\\") + "\\" +
+                       "Ext" + this.SecureFile.Extension + "_32x32_Standard.png";
+
+            if (!File.Exists(extensionImageAbsolutePath))
+            {
+                return this.EmptyImage;
+            }
+
+            using (var stream = new FileStream(extensionImageAbsolutePath, FileMode.Open))
+            {
+                return this.CopyImage(stream);
+            }
         }
     }
 }

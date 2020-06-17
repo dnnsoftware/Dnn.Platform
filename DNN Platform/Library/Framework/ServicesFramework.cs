@@ -14,11 +14,6 @@ namespace DotNetNuke.Framework
     /// </summary>
     public class ServicesFramework : ServiceLocator<IServicesFramework, ServicesFramework>
     {
-        protected override Func<IServicesFramework> GetFactory()
-        {
-            return () => new ServicesFrameworkImpl();
-        }
-
         public static string GetServiceFrameworkRoot()
         {
             var portalSettings = PortalSettings.Current;
@@ -43,6 +38,11 @@ namespace DotNetNuke.Framework
             }
 
             return path;
+        }
+
+        protected override Func<IServicesFramework> GetFactory()
+        {
+            return () => new ServicesFrameworkImpl();
         }
     }
 }

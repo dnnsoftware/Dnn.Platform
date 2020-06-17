@@ -16,6 +16,19 @@ namespace DotNetNuke.Web.UI.WebControls
         private RadMultiPage _TelerikPages;
         private RadTabStrip _TelerikTabs;
 
+        public DnnTabCollection Tabs
+        {
+            get
+            {
+                if (this._Tabs == null)
+                {
+                    this._Tabs = new DnnTabCollection(this);
+                }
+
+                return this._Tabs;
+            }
+        }
+
         private RadTabStrip TelerikTabs
         {
             get
@@ -39,19 +52,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 return this._TelerikPages;
-            }
-        }
-
-        public DnnTabCollection Tabs
-        {
-            get
-            {
-                if (this._Tabs == null)
-                {
-                    this._Tabs = new DnnTabCollection(this);
-                }
-
-                return this._Tabs;
             }
         }
 

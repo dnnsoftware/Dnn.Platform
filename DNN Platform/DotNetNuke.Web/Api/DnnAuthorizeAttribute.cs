@@ -14,6 +14,10 @@ namespace DotNetNuke.Web.Api
 
     public sealed class DnnAuthorizeAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
+        private static readonly List<string> DefaultAuthTypes = new List<string>();
+
+        private static readonly string[] EmptyArray = new string[0];
+
         private string _staticRoles;
         private string[] _staticRolesSplit = new string[0];
 
@@ -22,16 +26,6 @@ namespace DotNetNuke.Web.Api
 
         private string _authTypes;
         private string[] _authTypesSplit = new string[0];
-
-        private static readonly List<string> DefaultAuthTypes = new List<string>();
-
-        internal static void AppendToDefaultAuthTypes(string authType)
-        {
-            if (!string.IsNullOrEmpty(authType))
-            {
-                DefaultAuthTypes.Add(authType.Trim());
-            }
-        }
 
         /// <summary>
         /// Gets or sets the authorized roles (separated by comma).
@@ -72,6 +66,14 @@ namespace DotNetNuke.Web.Api
             {
                 this._authTypes = value;
                 this._authTypesSplit = SplitString(this._authTypes);
+            }
+        }
+
+        internal static void AppendToDefaultAuthTypes(string authType)
+        {
+            if (!string.IsNullOrEmpty(authType))
+            {
+                DefaultAuthTypes.Add(authType.Trim());
             }
         }
 
@@ -118,8 +120,6 @@ namespace DotNetNuke.Web.Api
 
             return true;
         }
-
-        private static readonly string[] EmptyArray = new string[0];
 
         private static string[] SplitString(string original)
         {

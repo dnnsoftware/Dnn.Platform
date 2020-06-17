@@ -33,6 +33,7 @@ namespace Dnn.PersonaBar.Prompt.Services
         private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
         private int _portalId = -1;
+        private PortalSettings _portalSettings;
         private new int PortalId
         {
             get
@@ -48,7 +49,6 @@ namespace Dnn.PersonaBar.Prompt.Services
                 this._portalId = value;
             }
         }
-        private PortalSettings _portalSettings;
         private new PortalSettings PortalSettings
         {
             get
@@ -82,14 +82,6 @@ namespace Dnn.PersonaBar.Prompt.Services
             this.SetupPortalSettings(portalId);
 
             return this.Cmd(command);
-        }
-
-        private void SetupPortalSettings(int portalId)
-        {
-            this.PortalSettings = new PortalSettings(portalId);
-            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            this.PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
-            this.PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(this.PortalSettings.DefaultPortalAlias);
         }
 
         [ValidateAntiForgeryToken]
@@ -148,6 +140,37 @@ namespace Dnn.PersonaBar.Prompt.Services
                 Logger.Error(ex);
                 return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
+        }
+
+        public void RegisterRoutes(IMapRoute mapRouteManager)
+        {
+            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
+        }
+
+        private static string FilterCommand(string command)
+        {
+            var blackList = BlackList;
+            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (promptBlackList.Length > 0)
+            {
+                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+            }
+            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
+                        .Where(lowerKey => args.Any(arg => arg.Replace("-", "") == lowerKey)))
+            {
+                args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
+            }
+            return string.Join(" ", args);
+        }
+
+        private void SetupPortalSettings(int portalId)
+        {
+            this.PortalSettings = new PortalSettings(portalId);
+            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            this.PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            this.PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(this.PortalSettings.DefaultPortalAlias);
         }
 
         /// <summary>
@@ -229,29 +252,6 @@ namespace Dnn.PersonaBar.Prompt.Services
         private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
-        }
-
-        private static string FilterCommand(string command)
-        {
-            var blackList = BlackList;
-            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
-                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (promptBlackList.Length > 0)
-            {
-                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
-            }
-            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
-            foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
-                        .Where(lowerKey => args.Any(arg => arg.Replace("-", "") == lowerKey)))
-            {
-                args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
-            }
-            return string.Join(" ", args);
-        }
-
-        public void RegisterRoutes(IMapRoute mapRouteManager)
-        {
-            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
         }
     }
 }

@@ -470,20 +470,20 @@ namespace log4net.Appender
         /// <param name="millisecondsTimeout">The maximum time to wait for logging events to be flushed.</param>
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public override bool Flush(int millisecondsTimeout)
-            {
-                // Nothing to do if ImmediateFlush is true
-                if (this.m_immediateFlush)
+        {
+            // Nothing to do if ImmediateFlush is true
+            if (this.m_immediateFlush)
             {
                 return true;
             }
 
             // lock(this) will block any Appends while the buffer is flushed.
             lock (this)
-                {
-                    this.m_qtw.Flush();
-                }
-
-                return true;
+            {
+                this.m_qtw.Flush();
             }
+
+            return true;
+        }
     }
 }

@@ -23,13 +23,6 @@ namespace DotNetNuke.Modules.Groups
 
     public partial class Setup : GroupsModuleBase
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            this.btnGo.Visible = this.Request.IsAuthenticated;
-            this.btnGo.Enabled = this.Request.IsAuthenticated;
-            this.btnGo.Click += this.btGo_Click;
-        }
-
         public void btGo_Click(object sender, EventArgs e)
         {
             // Setup Child Page - Main View/Activity
@@ -71,6 +64,13 @@ namespace DotNetNuke.Modules.Groups
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
 
             this.Response.Redirect(this.Request.RawUrl);
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            this.btnGo.Visible = this.Request.IsAuthenticated;
+            this.btnGo.Enabled = this.Request.IsAuthenticated;
+            this.btnGo.Click += this.btGo_Click;
         }
 
         private TabInfo CreatePage(TabInfo tab, int portalId, int parentTabId, string tabName, bool includeInMenu)

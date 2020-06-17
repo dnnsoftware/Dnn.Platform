@@ -19,8 +19,6 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     [ConsoleCommand("get-page", Constants.PagesCategory, "Prompt_GetPage_Description")]
     public class GetPage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourceFile;
-
         [FlagParameter("name", "Prompt_GetPage_FlagName", "String")]
         private const string FlagName = "name";
         [FlagParameter("id", "Prompt_GetPage_FlagId", "Integer")]
@@ -28,18 +26,19 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
         [FlagParameter("parentid", "Prompt_GetPage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 
+        public override string LocalResourceFile => Constants.LocalResourceFile;
         private readonly ITabController _tabController;
         private readonly ISecurityService _securityService;
         private readonly IContentVerifier _contentVerifier;
-
-        private int PageId { get; set; } = -1;
-        private string PageName { get; set; }
-        private int ParentId { get; set; } = -1;
 
         public GetPage() :
             this(TabController.Instance, SecurityService.Instance, new ContentVerifier())
         {
         }
+
+        private int PageId { get; set; } = -1;
+        private string PageName { get; set; }
+        private int ParentId { get; set; } = -1;
 
         public GetPage(
             ITabController tabController,

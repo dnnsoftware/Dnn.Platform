@@ -55,32 +55,6 @@ namespace DotNetNuke.Instrumentation
             }
         }
 
-        private static void EnsureConfig()
-        {
-            if (!_configured)
-            {
-                lock (ConfigLock)
-                {
-                    if (!_configured)
-                    {
-                        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
-                        var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
-                        if (!File.Exists(configPath) && File.Exists(originalPath))
-                        {
-                            File.Copy(originalPath, configPath);
-                        }
-
-                        if (File.Exists(configPath))
-                        {
-                            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
-                        }
-
-                        _configured = true;
-                    }
-                }
-            }
-        }
-
         /// <summary>
         ///   Standard method to use on method entry.
         /// </summary>
@@ -109,6 +83,32 @@ namespace DotNetNuke.Instrumentation
                 }
 
                 Logger.TraceFormat("Method [{0}] Returned [{1}]", CallingFrame.GetMethod().Name, returnObject);
+            }
+        }
+
+        private static void EnsureConfig()
+        {
+            if (!_configured)
+            {
+                lock (ConfigLock)
+                {
+                    if (!_configured)
+                    {
+                        var configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFile);
+                        var originalPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config\\" + ConfigFile);
+                        if (!File.Exists(configPath) && File.Exists(originalPath))
+                        {
+                            File.Copy(originalPath, configPath);
+                        }
+
+                        if (File.Exists(configPath))
+                        {
+                            XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
+                        }
+
+                        _configured = true;
+                    }
+                }
             }
         }
 

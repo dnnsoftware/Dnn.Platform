@@ -49,6 +49,16 @@ namespace DotNetNuke.Tests.Content.Mocks
             }
         }
 
+        internal static IDataReader CreateEmptyContentItemReader()
+        {
+            return CreateContentItemTable().CreateDataReader();
+        }
+
+        internal static IDataReader CreateEmptyContentTypeReader()
+        {
+            return CreateContentTypeTable().CreateDataReader();
+        }
+
         private static void AddBaseEntityColumns(DataTable table)
         {
             table.Columns.Add("CreatedByUserID", typeof(int));
@@ -204,16 +214,6 @@ namespace DotNetNuke.Tests.Content.Mocks
             }
 
             return getMock;
-        }
-
-        internal static IDataReader CreateEmptyContentItemReader()
-        {
-            return CreateContentItemTable().CreateDataReader();
-        }
-
-        internal static IDataReader CreateEmptyContentTypeReader()
-        {
-            return CreateContentTypeTable().CreateDataReader();
         }
 
         internal static IDataReader CreateEmptyScopeTypeReader()

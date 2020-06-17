@@ -21,6 +21,13 @@ namespace DotNetNuke.Tests.Web.InternalServices
     [TestFixture]
     public class TabVersionControllerTests
     {
+        private const int UserID = 1;
+        private const int TabID = 99;
+
+        private Mock<ICBO> _mockCBO;
+        private Mock<IUserController> _mockUserController;
+        private Mock<IHostController> _mockHostController;
+
         private class TabVersionControllerTestable : TabVersionController
         {
         }
@@ -43,13 +50,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 yield return new TestCaseData("SE Asia Standard Time", new DateTime(2018, 08, 15, 19, 0, 0));
             }
         }
-
-        private Mock<ICBO> _mockCBO;
-        private Mock<IUserController> _mockUserController;
-        private Mock<IHostController> _mockHostController;
-
-        private const int UserID = 1;
-        private const int TabID = 99;
 
         // Assuming 12:00 Aug 15, 2018 server local time
         private readonly DateTime ServerCreateOnDate = new DateTime(2018, 08, 15, 12, 0, 0, DateTimeKind.Unspecified);

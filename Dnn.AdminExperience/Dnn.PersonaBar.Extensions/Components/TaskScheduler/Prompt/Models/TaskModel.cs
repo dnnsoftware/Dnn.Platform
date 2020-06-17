@@ -8,20 +8,19 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
     using DotNetNuke.Services.Scheduling;
 
     /// <summary>
-    /// Represents a DNN ScheduleItem
+    /// Represents a DNN ScheduleItem.
     /// </summary>
     public class TaskModel : TaskModelBase
     {
+        public TaskModel()
+        {
+        }
+
         public string TypeName { get; set; }
         public bool CatchUp { get; set; }
         public string Created { get; set; }
         public string StartDate { get; set; }
-
-        #region Constructors
-        public TaskModel()
-        {
-        }
-        public TaskModel(ScheduleItem item):base(item)
+        public TaskModel(ScheduleItem item) : base(item)
         {
             this.NextStart = item.NextStart.ToPromptLongDateString();
             this.CatchUp = item.CatchUpEnabled;
@@ -29,6 +28,5 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
             this.StartDate = item.ScheduleStartDate.ToPromptLongDateString();
             this.TypeName = item.TypeFullName;
         }
-        #endregion
     }
 }

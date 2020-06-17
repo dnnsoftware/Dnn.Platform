@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnInit(e);
 
-            if (! string.IsNullOrEmpty(this._html5File))
+            if (!string.IsNullOrEmpty(this._html5File))
             {
                 // Check if css file exists
                 var cssFile = Path.ChangeExtension(this._html5File, ".css");
@@ -60,6 +60,24 @@ namespace DotNetNuke.UI.Modules.Html5
             ServicesFramework.Instance.RequestAjaxScriptSupport();
         }
 
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (!string.IsNullOrEmpty(this._html5File))
+            {
+                this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(this._fileContent)));
+            }
+        }
+
+        private static string GetFileContentInternal(string filepath)
+        {
+            using (var reader = new StreamReader(filepath))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
         private string GetFileContent(string filepath)
         {
             var cacheKey = string.Format(DataCache.SpaModulesContentHtmlFileCacheKey, filepath);
@@ -81,24 +99,6 @@ namespace DotNetNuke.UI.Modules.Html5
                 DataCache.SpaModulesHtmlFileTimeOut,
                 DataCache.SpaModulesHtmlFileCachePriority),
                 c => File.Exists(this.Page.Server.MapPath(filepath)));
-        }
-
-        private static string GetFileContentInternal(string filepath)
-        {
-            using (var reader = new StreamReader(filepath))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (! string.IsNullOrEmpty(this._html5File))
-            {
-                this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(this._fileContent)));
-            }
         }
     }
 }

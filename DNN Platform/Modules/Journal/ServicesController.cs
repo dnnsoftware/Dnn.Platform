@@ -32,62 +32,13 @@ namespace DotNetNuke.Modules.Journal
     [SupportedModules("Journal")]
     public class ServicesController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
-
         private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
         private const string MentionIdentityChar = "@";
 
         private static readonly string[] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
-
-        public class CreateDTO
-        {
-            public string Text { get; set; }
-
-            public int ProfileId { get; set; }
-
-            public string JournalType { get; set; }
-
-            public string ItemData { get; set; }
-
-            public string SecuritySet { get; set; }
-
-            public int GroupId { get; set; }
-
-            public IList<MentionDTO> Mentions { get; set; }
-        }
-
-        public class MentionDTO
-        {
-            public string DisplayName { get; set; }
-
-            public int UserId { get; set; }
-        }
-
-        private static bool IsImageFile(string relativePath)
-        {
-            if (relativePath == null)
-            {
-                return false;
-            }
-
-            if (relativePath.Contains("?"))
-            {
-                relativePath = relativePath.Substring(
-                    0,
-                    relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
-            }
-
-            var extension = relativePath.Substring(relativePath.LastIndexOf(
-                ".",
-                StringComparison.Ordinal) + 1).ToLowerInvariant();
-            return AcceptedFileExtensions.Contains(extension);
-        }
-
-        private static bool IsAllowedLink(string url)
-        {
-            return !string.IsNullOrEmpty(url) && !url.Contains("//");
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -116,6 +67,132 @@ namespace DotNetNuke.Modules.Journal
                 this.SendMentionNotifications(mentionedUsers, journalItem, originalSummary);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, journalItem);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage Delete(JournalIdDTO postData)
+        {
+            try
+            {
+                var jc = JournalController.Instance;
+                var ji = jc.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+
+                if (ji == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
+                }
+
+                if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                {
+                    jc.DeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        private static bool IsImageFile(string relativePath)
+        {
+            if (relativePath == null)
+            {
+                return false;
+            }
+
+            if (relativePath.Contains("?"))
+            {
+                relativePath = relativePath.Substring(
+                    0,
+                    relativePath.IndexOf("?", StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            var extension = relativePath.Substring(relativePath.LastIndexOf(
+                ".",
+                StringComparison.Ordinal) + 1).ToLowerInvariant();
+            return AcceptedFileExtensions.Contains(extension);
+        }
+
+        private static bool IsAllowedLink(string url)
+        {
+            return !string.IsNullOrEmpty(url) && !url.Contains("//");
+        }
+
+        public class CreateDTO
+        {
+            public string Text { get; set; }
+
+            public int ProfileId { get; set; }
+
+            public string JournalType { get; set; }
+
+            public string ItemData { get; set; }
+
+            public string SecuritySet { get; set; }
+
+            public int GroupId { get; set; }
+
+            public IList<MentionDTO> Mentions { get; set; }
+        }
+
+        public class MentionDTO
+        {
+            public string DisplayName { get; set; }
+
+            public int UserId { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize(DenyRoles = "Unverified Users")]
+        public HttpResponseMessage SoftDelete(JournalIdDTO postData)
+        {
+            try
+            {
+                var jc = JournalController.Instance;
+                var ji = jc.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
+
+                if (ji == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
+                }
+
+                if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                {
+                    jc.SoftDeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                }
+
+                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [DnnAuthorize]
+        public HttpResponseMessage PreviewUrl(PreviewDTO postData)
+        {
+            try
+            {
+                var link = Utilities.GetLinkData(postData.Url);
+                return this.Request.CreateResponse(HttpStatusCode.OK, link);
             }
             catch (Exception exc)
             {
@@ -258,99 +335,6 @@ namespace DotNetNuke.Modules.Journal
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage Delete(JournalIdDTO postData)
-        {
-            try
-            {
-                var jc = JournalController.Instance;
-                var ji = jc.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
-
-                if (ji == null)
-                {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
-                }
-
-                if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
-                {
-                    jc.DeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                }
-
-                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize(DenyRoles = "Unverified Users")]
-        public HttpResponseMessage SoftDelete(JournalIdDTO postData)
-        {
-            try
-            {
-                var jc = JournalController.Instance;
-                var ji = jc.GetJournalItem(this.ActiveModule.OwnerPortalID, this.UserInfo.UserID, postData.JournalId);
-
-                if (ji == null)
-                {
-                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "invalid request");
-                }
-
-                if (ji.UserId == this.UserInfo.UserID || ji.ProfileId == this.UserInfo.UserID || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
-                {
-                    jc.SoftDeleteJournalItem(this.PortalSettings.PortalId, this.UserInfo.UserID, postData.JournalId);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                }
-
-                return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "access denied");
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        public class PreviewDTO
-        {
-            public string Url { get; set; }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [DnnAuthorize]
-        public HttpResponseMessage PreviewUrl(PreviewDTO postData)
-        {
-            try
-            {
-                var link = Utilities.GetLinkData(postData.Url);
-                return this.Request.CreateResponse(HttpStatusCode.OK, link);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        public class GetListForProfileDTO
-        {
-            public int ProfileId { get; set; }
-
-            public int GroupId { get; set; }
-
-            public int RowIndex { get; set; }
-
-            public int MaxRows { get; set; }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public HttpResponseMessage GetListForProfile(GetListForProfileDTO postData)
         {
             try
@@ -387,15 +371,6 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        public class CommentSaveDTO
-        {
-            public int JournalId { get; set; }
-
-            public string Comment { get; set; }
-
-            public IList<MentionDTO> Mentions { get; set; }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
@@ -427,11 +402,20 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        public class CommentDeleteDTO
+        public class PreviewDTO
         {
-            public int JournalId { get; set; }
+            public string Url { get; set; }
+        }
 
-            public int CommentId { get; set; }
+        public class GetListForProfileDTO
+        {
+            public int ProfileId { get; set; }
+
+            public int GroupId { get; set; }
+
+            public int RowIndex { get; set; }
+
+            public int MaxRows { get; set; }
         }
 
         [HttpPost]
@@ -469,17 +453,6 @@ namespace DotNetNuke.Modules.Journal
             }
         }
 
-        public class SuggestDTO
-        {
-            public string displayName { get; set; }
-
-            public int userId { get; set; }
-
-            public string avatar { get; set; }
-
-            public string key { get; set; }
-        }
-
         [HttpGet]
         [DnnAuthorize(DenyRoles = "Unverified Users")]
         public HttpResponseMessage GetSuggestions(string keyword)
@@ -501,12 +474,12 @@ namespace DotNetNuke.Modules.Journal
                         && findedUsers.All(s => s.userId != targetUser.UserID))
                     {
                         findedUsers.Add(new SuggestDTO
-                                            {
-                                                displayName = targetUser.DisplayName.Replace(" ", "-"),
-                                                userId = targetUser.UserID,
-                                                avatar = targetUser.Profile.PhotoURL,
-                                                key = keyword,
-                                            });
+                        {
+                            displayName = targetUser.DisplayName.Replace(" ", "-"),
+                            userId = targetUser.UserID,
+                            avatar = targetUser.Profile.PhotoURL,
+                            key = keyword,
+                        });
                     }
                 }
 
@@ -579,6 +552,33 @@ namespace DotNetNuke.Modules.Journal
 
                 Services.Social.Notifications.NotificationsController.Instance.SendNotification(notification, this.PortalSettings.PortalId, null, new List<UserInfo> { mentionUser });
             }
+        }
+
+        public class CommentSaveDTO
+        {
+            public int JournalId { get; set; }
+
+            public string Comment { get; set; }
+
+            public IList<MentionDTO> Mentions { get; set; }
+        }
+
+        public class CommentDeleteDTO
+        {
+            public int JournalId { get; set; }
+
+            public int CommentId { get; set; }
+        }
+
+        public class SuggestDTO
+        {
+            public string displayName { get; set; }
+
+            public int userId { get; set; }
+
+            public string avatar { get; set; }
+
+            public string key { get; set; }
         }
 
         private bool IsCurrentUserFile(IFileInfo file)

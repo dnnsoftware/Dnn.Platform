@@ -22,15 +22,15 @@ namespace Dnn.AzureConnector.Components
 
     public class AzureConnector : IConnector
     {
-        private static readonly DataProvider dataProvider = DataProvider.Instance();
         private const string DefaultDisplayName = "Azure Storage";
+        private static readonly DataProvider dataProvider = DataProvider.Instance();
+
+        private string _displayName;
 
         public string Name
         {
             get { return "Azure"; }
         }
-
-        private string _displayName;
 
         public string DisplayName
         {
@@ -235,6 +235,45 @@ namespace Dnn.AzureConnector.Components
             }
         }
 
+        internal static FolderMappingInfo FindAzureFolderMappingStatic(int portalId, int? folderMappingId = null,
+            bool autoCreate = true)
+        {
+            var folderMappings = FolderMappingController.Instance.GetFolderMappings(portalId)
+                .Where(f => f.FolderProviderType == Constants.FolderProviderType);
+
+            if (folderMappingId != null)
+            {
+                return folderMappings.FirstOrDefault(x => x.FolderMappingID == folderMappingId);
+            }
+
+            if (!folderMappings.Any() && autoCreate)
+            {
+                return CreateAzureFolderMappingStatic(portalId);
+            }
+
+            return folderMappings.FirstOrDefault();
+        }
+
+        private static FolderMappingInfo CreateAzureFolderMappingStatic(int portalId, string mappingName = "")
+        {
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = portalId,
+                MappingName =
+                    string.IsNullOrEmpty(mappingName)
+                        ? $"{DefaultDisplayName}_{DateTime.Now.Ticks}"
+                        : mappingName,
+                FolderProviderType = Constants.FolderProviderType,
+            };
+            folderMapping.FolderMappingID = FolderMappingController.Instance.AddFolderMapping(folderMapping);
+            return folderMapping;
+        }
+
+        private static void DeleteAzureFolderMapping(int portalId, int folderMappingId)
+        {
+            FolderMappingController.Instance.DeleteFolderMapping(portalId, folderMappingId);
+        }
+
         private bool Validation(string azureAccountName, string azureAccountKey, string azureContainerName)
         {
             try
@@ -342,25 +381,6 @@ namespace Dnn.AzureConnector.Components
             return settings[name].ToString();
         }
 
-        internal static FolderMappingInfo FindAzureFolderMappingStatic(int portalId, int? folderMappingId = null,
-            bool autoCreate = true)
-        {
-            var folderMappings = FolderMappingController.Instance.GetFolderMappings(portalId)
-                .Where(f => f.FolderProviderType == Constants.FolderProviderType);
-
-            if (folderMappingId != null)
-            {
-                return folderMappings.FirstOrDefault(x => x.FolderMappingID == folderMappingId);
-            }
-
-            if (!folderMappings.Any() && autoCreate)
-            {
-                return CreateAzureFolderMappingStatic(portalId);
-            }
-
-            return folderMappings.FirstOrDefault();
-        }
-
         private FolderMappingInfo FindAzureFolderMapping(int portalId, bool autoCreate = true, bool checkId = false)
         {
             var folderMappings = FolderMappingController.Instance.GetFolderMappings(portalId)
@@ -407,26 +427,6 @@ namespace Dnn.AzureConnector.Components
             var folderMapping = CreateAzureFolderMappingStatic(portalId, mappingName);
             this.Id = folderMapping.FolderMappingID.ToString();
             return folderMapping;
-        }
-
-        private static FolderMappingInfo CreateAzureFolderMappingStatic(int portalId, string mappingName = "")
-        {
-            var folderMapping = new FolderMappingInfo
-            {
-                PortalID = portalId,
-                MappingName =
-                    string.IsNullOrEmpty(mappingName)
-                        ? $"{DefaultDisplayName}_{DateTime.Now.Ticks}"
-                        : mappingName,
-                FolderProviderType = Constants.FolderProviderType,
-            };
-            folderMapping.FolderMappingID = FolderMappingController.Instance.AddFolderMapping(folderMapping);
-            return folderMapping;
-        }
-
-        private static void DeleteAzureFolderMapping(int portalId, int folderMappingId)
-        {
-            FolderMappingController.Instance.DeleteFolderMapping(portalId, folderMappingId);
         }
 
         private static void DeleteAzureFolderMapping(int portalId)

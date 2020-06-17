@@ -144,23 +144,6 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a RoleGroupInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.RoleGroupID = Null.SetNullInteger(dr["RoleGroupId"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.RoleGroupName = Null.SetNullString(dr["RoleGroupName"]);
-            this.Description = Null.SetNullString(dr["Description"]);
-
-            // Fill base class fields
-            this.FillInternal(dr);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -176,6 +159,23 @@ namespace DotNetNuke.Security.Roles
             {
                 this.RoleGroupID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a RoleGroupInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.RoleGroupID = Null.SetNullInteger(dr["RoleGroupId"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.RoleGroupName = Null.SetNullString(dr["RoleGroupName"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+
+            // Fill base class fields
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------

@@ -24,13 +24,13 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     {
         private readonly INavigationManager _navigationManager;
 
+        private AuthenticationInfo _AuthSystem;
+        private AuthenticationSettingsBase _SettingsControl;
+
         public AuthenticationEditor()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private AuthenticationInfo _AuthSystem;
-        private AuthenticationSettingsBase _SettingsControl;
 
         protected AuthenticationInfo AuthSystem
         {
@@ -63,6 +63,40 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
 
                 return this._SettingsControl;
+            }
+        }
+
+        public override void Initialize()
+        {
+            this.pnlSettings.Visible = !this.IsSuperTab;
+            if (this.IsSuperTab)
+            {
+                this.lblHelp.Text = Localization.GetString("HostHelp", this.LocalResourceFile);
+            }
+            else
+            {
+                if (this.SettingsControl == null)
+                {
+                    this.lblHelp.Text = Localization.GetString("NoSettings", this.LocalResourceFile);
+                }
+                else
+                {
+                    this.lblHelp.Text = Localization.GetString("AdminHelp", this.LocalResourceFile);
+                }
+            }
+
+            this.BindAuthentication();
+        }
+
+        public override void UpdatePackage()
+        {
+            if (this.authenticationForm.IsValid)
+            {
+                var authInfo = this.authenticationForm.DataSource as AuthenticationInfo;
+                if (authInfo != null)
+                {
+                    AuthenticationController.UpdateAuthentication(authInfo);
+                }
             }
         }
 
@@ -101,40 +135,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 else
                 {
                     this.cmdUpdate.Visible = false;
-                }
-            }
-        }
-
-        public override void Initialize()
-        {
-            this.pnlSettings.Visible = !this.IsSuperTab;
-            if (this.IsSuperTab)
-            {
-                this.lblHelp.Text = Localization.GetString("HostHelp", this.LocalResourceFile);
-            }
-            else
-            {
-                if (this.SettingsControl == null)
-                {
-                    this.lblHelp.Text = Localization.GetString("NoSettings", this.LocalResourceFile);
-                }
-                else
-                {
-                    this.lblHelp.Text = Localization.GetString("AdminHelp", this.LocalResourceFile);
-                }
-            }
-
-            this.BindAuthentication();
-        }
-
-        public override void UpdatePackage()
-        {
-            if (this.authenticationForm.IsValid)
-            {
-                var authInfo = this.authenticationForm.DataSource as AuthenticationInfo;
-                if (authInfo != null)
-                {
-                    AuthenticationController.UpdateAuthentication(authInfo);
                 }
             }
         }

@@ -42,6 +42,21 @@ namespace DotNetNuke.Collections
             this.CommonConstruct(items, totalCount, pageIndex, pageSize);
         }
 
+        /// <summary>
+        ///   Gets a value indicating whether gets a boolean indicating if there is a next page available.
+        /// </summary>
+        public bool HasNextPage { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether gets a boolean indicating if there is a previous page available.
+        /// </summary>
+        public bool HasPreviousPage { get; private set; }
+
+        /// <summary>
+        ///   Gets a value indicating whether gets a boolean indicating if this is the first page.
+        /// </summary>
+        public bool IsFirstPage { get; private set; }
+
         private void CommonConstruct(IEnumerable<T> items, int totalCount, int pageIndex, int pageSize)
         {
             this.PageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -76,21 +91,6 @@ namespace DotNetNuke.Collections
             this.IsFirstPage = this.PageIndex <= 0;
             this.IsLastPage = this.PageIndex >= (this.PageCount - 1);
         }
-
-        /// <summary>
-        ///   Gets a value indicating whether gets a boolean indicating if there is a next page available.
-        /// </summary>
-        public bool HasNextPage { get; private set; }
-
-        /// <summary>
-        ///   Gets a value indicating whether gets a boolean indicating if there is a previous page available.
-        /// </summary>
-        public bool HasPreviousPage { get; private set; }
-
-        /// <summary>
-        ///   Gets a value indicating whether gets a boolean indicating if this is the first page.
-        /// </summary>
-        public bool IsFirstPage { get; private set; }
 
         /// <summary>
         ///   Gets a value indicating whether gets a boolean indicating if this is the last page.

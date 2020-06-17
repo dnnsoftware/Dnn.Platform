@@ -364,13 +364,13 @@ namespace DotNetNuke.Entities.Users.Social
             }
 
             var userRelationship = new UserRelationship
-                                       {
-                                           UserRelationshipId = Null.NullInteger,
-                                           UserId = initiatingUser.UserID,
-                                           RelatedUserId = targetUser.UserID,
-                                           RelationshipId = relationship.RelationshipId,
-                                           Status = status,
-                                       };
+            {
+                UserRelationshipId = Null.NullInteger,
+                UserId = initiatingUser.UserID,
+                RelatedUserId = targetUser.UserID,
+                RelationshipId = relationship.RelationshipId,
+                Status = status,
+            };
 
             this.SaveUserRelationship(userRelationship);
 
@@ -520,17 +520,17 @@ namespace DotNetNuke.Entities.Users.Social
             if (this.GetFriendsRelationshipByPortal(portalId) == null)
             {
                 var friendRelationship = new Relationship
-                                             {
-                                                 RelationshipId = Null.NullInteger,
-                                                 Name = DefaultRelationshipTypes.Friends.ToString(),
-                                                 Description = DefaultRelationshipTypes.Friends.ToString(),
-                                                 PortalId = portalId,
-                                                 UserId = Null.NullInteger,
-                                                 DefaultResponse = RelationshipStatus.None,
+                {
+                    RelationshipId = Null.NullInteger,
+                    Name = DefaultRelationshipTypes.Friends.ToString(),
+                    Description = DefaultRelationshipTypes.Friends.ToString(),
+                    PortalId = portalId,
+                    UserId = Null.NullInteger,
+                    DefaultResponse = RelationshipStatus.None,
 
-                                                 // default response is None
-                                                 RelationshipTypeId = (int)DefaultRelationshipTypes.Friends,
-                                             };
+                    // default response is None
+                    RelationshipTypeId = (int)DefaultRelationshipTypes.Friends,
+                };
                 this.SaveRelationship(friendRelationship);
             }
 
@@ -538,24 +538,24 @@ namespace DotNetNuke.Entities.Users.Social
             if (this.GetFollowersRelationshipByPortal(portalId) == null)
             {
                 var followerRelationship = new Relationship
-                                               {
-                                                   RelationshipId = Null.NullInteger,
-                                                   Name = DefaultRelationshipTypes.Followers.ToString(),
-                                                   Description = DefaultRelationshipTypes.Followers.ToString(),
-                                                   PortalId = portalId,
-                                                   UserId = Null.NullInteger,
-                                                   DefaultResponse = RelationshipStatus.Accepted,
+                {
+                    RelationshipId = Null.NullInteger,
+                    Name = DefaultRelationshipTypes.Followers.ToString(),
+                    Description = DefaultRelationshipTypes.Followers.ToString(),
+                    PortalId = portalId,
+                    UserId = Null.NullInteger,
+                    DefaultResponse = RelationshipStatus.Accepted,
 
-                                                   // default response is Accepted
-                                                   RelationshipTypeId = (int)DefaultRelationshipTypes.Followers,
-                                               };
+                    // default response is Accepted
+                    RelationshipTypeId = (int)DefaultRelationshipTypes.Followers,
+                };
                 this.SaveRelationship(followerRelationship);
             }
         }
 
         public Relationship GetFriendsRelationshipByPortal(int portalId)
         {
-           return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends);
+            return this.GetRelationshipsByPortalId(portalId).FirstOrDefault(re => re.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends);
         }
 
         public Relationship GetFollowersRelationshipByPortal(int portalId)

@@ -37,9 +37,18 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        private void Page_Load(object sender, EventArgs e)
+        public void BindDropDown()
         {
-            this.cmdGo.Attributes.Add("onclick", "if (cmdGo_OnClick(dnn.dom.getById('" + this.Control.NavigationControl.ClientID + "')) == false) return false;");
+            DNNNodeCollection objNodes;
+            objNodes = Navigation.GetActionNodes(this.ActionRoot, this);
+            foreach (DNNNode objNode in objNodes)
+            {
+                this.ProcessNodes(objNode);
+            }
+
+            this.Control.Bind(objNodes);
+
+            this.Visible = this.DisplayControl(objNodes);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -58,6 +67,20 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.m_objControl = NavigationProvider.Instance(this.ProviderName);
+            this.Control.ControlID = "ctl" + this.ID;
+            this.Control.Initialize();
+            this.spActions.Controls.Add(this.Control.NavigationControl);
+        }
+
+        private void Page_Load(object sender, EventArgs e)
+        {
+            this.cmdGo.Attributes.Add("onclick", "if (cmdGo_OnClick(dnn.dom.getById('" + this.Control.NavigationControl.ClientID + "')) == false) return false;");
+        }
+
         private void cmdGo_Click(object sender, ImageClickEventArgs e)
         {
             try
@@ -74,20 +97,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        public void BindDropDown()
-        {
-            DNNNodeCollection objNodes;
-            objNodes = Navigation.GetActionNodes(this.ActionRoot, this);
-            foreach (DNNNode objNode in objNodes)
-            {
-                this.ProcessNodes(objNode);
-            }
-
-            this.Control.Bind(objNodes);
-
-            this.Visible = this.DisplayControl(objNodes);
-        }
-
         private void ProcessNodes(DNNNode objParent)
         {
             if (!string.IsNullOrEmpty(objParent.JSFunction))
@@ -101,15 +110,6 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessNodes(objNode);
             }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            this.m_objControl = NavigationProvider.Instance(this.ProviderName);
-            this.Control.ControlID = "ctl" + this.ID;
-            this.Control.Initialize();
-            this.spActions.Controls.Add(this.Control.NavigationControl);
         }
     }
 }

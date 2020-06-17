@@ -20,12 +20,6 @@ namespace DotNetNuke.Modules.Journal
             base.OnInit(e);
         }
 
-        private void InitializeComponent()
-        {
-            this.Load += new System.EventHandler(this.Page_Load);
-            this.btnUp.Click += new System.EventHandler(this.btnUp_Upload);
-        }
-
         protected void Page_Load(object sender, EventArgs e)
         {
         }
@@ -66,6 +60,12 @@ namespace DotNetNuke.Modules.Journal
             {
                 this.litOut.Text = message;
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.Load += new System.EventHandler(this.Page_Load);
+            this.btnUp.Click += new System.EventHandler(this.btnUp_Upload);
         }
     }
 }

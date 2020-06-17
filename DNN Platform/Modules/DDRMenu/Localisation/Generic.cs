@@ -55,12 +55,12 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                             }
                         }
 
-// ReSharper disable EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                         catch
                         {
                         }
 
-// ReSharper restore EmptyGeneralCatchClause
+                        // ReSharper restore EmptyGeneralCatchClause
                     }
                 }
 

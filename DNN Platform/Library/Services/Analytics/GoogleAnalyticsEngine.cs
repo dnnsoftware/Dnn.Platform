@@ -94,16 +94,16 @@ namespace DotNetNuke.Services.Analytics
                     switch (setting.SettingName.ToLowerInvariant())
                     {
                         case "anonymizeip":
-                        {
-                            bool.TryParse(setting.SettingValue, out anonymize);
-                            break;
-                        }
+                            {
+                                bool.TryParse(setting.SettingValue, out anonymize);
+                                break;
+                            }
 
                         case "trackinguser":
-                        {
-                            bool.TryParse(setting.SettingValue, out trackingUserId);
-                            break;
-                        }
+                            {
+                                bool.TryParse(setting.SettingValue, out trackingUserId);
+                                break;
+                            }
                     }
                 }
 

@@ -20,6 +20,52 @@ namespace DotNetNuke.UI
 
     public class UIUtilities
     {
+        public static ModuleInfo GetSlaveModule(int tabId)
+        {
+            var key = GetControlKey();
+            var moduleId = GetModuleId(key);
+
+            ModuleInfo slaveModule = GetSlaveModule(moduleId, key, tabId);
+            if (slaveModule != null)
+            {
+                var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??
+                                    ModuleControlController.GetModuleControlByControlKey(key, Null.NullInteger);
+                if (moduleControl != null)
+                {
+                    slaveModule.ModuleControlId = moduleControl.ModuleControlID;
+                }
+            }
+
+            return slaveModule;
+        }
+
+        public static bool IsLegacyUI(int moduleId, string key, int portalId)
+        {
+            var request = HttpContext.Current.Request;
+            var isLegacyUi = true;
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            if (settings != null)
+            {
+                isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));
+
+                if (!isLegacyUi && !string.IsNullOrEmpty(key))
+                {
+                    var slaveModule = GetSlaveModule(moduleId, key, settings.ActiveTab.TabID);
+                    if (slaveModule != null)
+                    {
+                        var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??
+                                            ModuleControlController.GetModuleControlByControlKey(key, Null.NullInteger);
+                        if (moduleControl != null)
+                        {
+                            isLegacyUi = !moduleControl.SupportsPopUps;
+                        }
+                    }
+                }
+            }
+
+            return isLegacyUi;
+        }
+
         internal static string GetControlKey()
         {
             HttpRequest request = HttpContext.Current.Request;
@@ -105,52 +151,6 @@ namespace DotNetNuke.UI
             slaveModule.DisplaySyndicate = false;
 
             return slaveModule;
-        }
-
-        public static ModuleInfo GetSlaveModule(int tabId)
-        {
-            var key = GetControlKey();
-            var moduleId = GetModuleId(key);
-
-            ModuleInfo slaveModule = GetSlaveModule(moduleId, key, tabId);
-            if (slaveModule != null)
-            {
-                var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??
-                                    ModuleControlController.GetModuleControlByControlKey(key, Null.NullInteger);
-                if (moduleControl != null)
-                {
-                    slaveModule.ModuleControlId = moduleControl.ModuleControlID;
-                }
-            }
-
-            return slaveModule;
-        }
-
-        public static bool IsLegacyUI(int moduleId, string key, int portalId)
-        {
-            var request = HttpContext.Current.Request;
-            var isLegacyUi = true;
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings != null)
-            {
-                isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));
-
-                if (!isLegacyUi && !string.IsNullOrEmpty(key))
-                {
-                    var slaveModule = GetSlaveModule(moduleId, key, settings.ActiveTab.TabID);
-                    if (slaveModule != null)
-                    {
-                        var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??
-                                            ModuleControlController.GetModuleControlByControlKey(key, Null.NullInteger);
-                        if (moduleControl != null)
-                        {
-                            isLegacyUi = !moduleControl.SupportsPopUps;
-                        }
-                    }
-                }
-            }
-
-            return isLegacyUi;
         }
 
         public static bool IsLegacyUI(int portalId)

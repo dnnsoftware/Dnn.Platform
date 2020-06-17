@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "editContentUrl")]
         public string EditContentUrl { get; set; }
 
-        [DataMember(Name="editSettingUrl")]
+        [DataMember(Name = "editSettingUrl")]
         public string EditSettingUrl { get; set; }
 
         [DataMember(Name = "includedInCopy")]

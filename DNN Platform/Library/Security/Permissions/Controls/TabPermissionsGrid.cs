@@ -25,29 +25,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         private int _TabID = -1;
         private TabPermissionCollection _TabPermissions;
 
-        protected override bool IsFullControl(PermissionInfo permissionInfo)
-        {
-            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
-        }
-
-        protected override bool IsViewPermisison(PermissionInfo permissionInfo)
-        {
-            return permissionInfo.PermissionKey == "VIEW";
-        }
-
-        protected override List<PermissionInfoBase> PermissionsList
-        {
-            get
-            {
-                if (this._PermissionsList == null && this._TabPermissions != null)
-                {
-                    this._PermissionsList = this._TabPermissions.ToList();
-                }
-
-                return this._PermissionsList;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Permissions Collection.
@@ -87,6 +64,60 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
+        protected override List<PermissionInfoBase> PermissionsList
+        {
+            get
+            {
+                if (this._PermissionsList == null && this._TabPermissions != null)
+                {
+                    this._PermissionsList = this._TabPermissions.ToList();
+                }
+
+                return this._PermissionsList;
+            }
+        }
+
+        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
+        }
+
+        protected override bool IsViewPermisison(PermissionInfo permissionInfo)
+        {
+            return permissionInfo.PermissionKey == "VIEW";
+        }
+
+        public override void DataBind()
+        {
+            this.GetTabPermissions();
+            base.DataBind();
+        }
+
+        public override void GenerateDataGrid()
+        {
+        }
+
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
+        }
+
+        protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
+        {
+            var objPermission = new TabPermissionInfo(permission);
+            objPermission.TabID = this.TabID;
+            objPermission.RoleID = roleId;
+            objPermission.RoleName = roleName;
+            objPermission.AllowAccess = allowAccess;
+            objPermission.UserID = userId;
+            objPermission.DisplayName = displayName;
+            this._TabPermissions.Add(objPermission, true);
+
+            // Clear Permission List
+            this._PermissionsList = null;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the TabPermissions from the Data Store.
@@ -96,12 +127,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             this._TabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
             this._PermissionsList = null;
-        }
-
-        public override void DataBind()
-        {
-            this.GetTabPermissions();
-            base.DataBind();
         }
 
         /// -----------------------------------------------------------------------------
@@ -151,27 +176,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         private bool IsImplicitRole(int portalId, int roleId)
         {
             return TabPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
-        }
-
-        protected override void CreateChildControls()
-        {
-            base.CreateChildControls();
-            this.rolePermissionsGrid.ItemDataBound += this.rolePermissionsGrid_ItemDataBound;
-        }
-
-        protected override void AddPermission(PermissionInfo permission, int roleId, string roleName, int userId, string displayName, bool allowAccess)
-        {
-            var objPermission = new TabPermissionInfo(permission);
-            objPermission.TabID = this.TabID;
-            objPermission.RoleID = roleId;
-            objPermission.RoleName = roleName;
-            objPermission.AllowAccess = allowAccess;
-            objPermission.UserID = userId;
-            objPermission.DisplayName = displayName;
-            this._TabPermissions.Add(objPermission, true);
-
-            // Clear Permission List
-            this._PermissionsList = null;
         }
 
         /// -----------------------------------------------------------------------------
@@ -392,10 +396,6 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
-        }
-
-        public override void GenerateDataGrid()
-        {
         }
     }
 }

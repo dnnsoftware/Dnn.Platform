@@ -127,7 +127,7 @@ namespace log4net.Layout.Pattern
             }
         }
 
-                /// <summary>
+        /// <summary>
         /// Returns the Name of the method.
         /// </summary>
         /// <param name="method"></param>

@@ -49,11 +49,11 @@ namespace DotNetNuke.Services.Search.Internals
         internal const string DateTimeFormat = "yyyyMMddHHmmssfff";
         internal const string ReindexDateTimeFormat = "yyyy-MM-dd HH:mm:ss.fff";
 
-        internal static Version LuceneVersion = Version.LUCENE_30;
-
         // Field Boost Settings - they are scaled down by 10.
         internal const int DefaultSearchTitleBoost = 50;
         internal const int DefaultSearchTagBoost = 40;
+
+        internal static Version LuceneVersion = Version.LUCENE_30;
         internal const int DefaultSearchKeywordBoost = 35;
         internal const int DefaultSearchDescriptionBoost = 20;
         internal const int DefaultSearchAuthorBoost = 15;
@@ -69,6 +69,10 @@ namespace DotNetNuke.Services.Search.Internals
         // If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
         internal const int DefaultDocumentBoostScale = 1000;
 
+        // search index tokenizers word lengths
+        internal const int MinimumMinLen = 1;
+        internal const int DefaultMinLen = 3;
+
         internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
 
         internal static readonly string[] KeyWordSearchFields =
@@ -83,10 +87,6 @@ namespace DotNetNuke.Services.Search.Internals
                                                                 KeywordsPrefixTag + CommentsTag,
                                                                 KeywordsPrefixTag + AuthorNameTag,
         };
-
-        // search index tokenizers word lengths
-        internal const int MinimumMinLen = 1;
-        internal const int DefaultMinLen = 3;
         internal const int MaximumMinLen = 10;
 
         internal const int MinimumMaxLen = 10;

@@ -22,10 +22,10 @@ namespace Dnn.ExportImport.Components.Scheduler
     /// </summary>
     public class ExportImportScheduler : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
-
         private const int EmergencyScheduleFrequency = 120;
         private const int DefaultScheduleFrequency = 1;
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
         private const string EmergencyScheduleFrequencyUnit = "m";
         private const string DefaultScheduleFrequencyUnit = "d";
 

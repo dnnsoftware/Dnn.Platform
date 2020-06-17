@@ -272,10 +272,10 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName,
-                            };
+            {
+                Age = Constants.PETAPOCO_InsertDogAge,
+                Name = Constants.PETAPOCO_InsertDogName,
+            };
 
             // Act
             repository.Insert(dog);
@@ -298,10 +298,10 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName,
-                            };
+            {
+                Age = Constants.PETAPOCO_InsertDogAge,
+                Name = Constants.PETAPOCO_InsertDogName,
+            };
 
             // Act
             repository.Insert(dog);
@@ -324,10 +324,10 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName,
-                            };
+            {
+                Age = Constants.PETAPOCO_InsertDogAge,
+                Name = Constants.PETAPOCO_InsertDogName,
+            };
 
             // Act
             repository.Insert(dog);
@@ -383,11 +383,11 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_DeleteDogId,
-                                Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_DeleteDogId,
+                Age = Constants.PETAPOCO_DeleteDogAge,
+                Name = Constants.PETAPOCO_DeleteDogName,
+            };
 
             // Act
             repository.Delete(dog);
@@ -410,11 +410,11 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_DeleteDogId,
-                                Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_DeleteDogId,
+                Age = Constants.PETAPOCO_DeleteDogAge,
+                Name = Constants.PETAPOCO_DeleteDogName,
+            };
 
             // Act
             repository.Delete(dog);
@@ -471,11 +471,11 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_InvalidDogId,
-                                Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_InvalidDogId,
+                Age = Constants.PETAPOCO_DeleteDogAge,
+                Name = Constants.PETAPOCO_DeleteDogName,
+            };
 
             // Act
             repository.Delete(dog);
@@ -701,11 +701,11 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_UpdateDogId,
-                                Age = Constants.PETAPOCO_UpdateDogAge,
-                                Name = Constants.PETAPOCO_UpdateDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_UpdateDogId,
+                Age = Constants.PETAPOCO_UpdateDogAge,
+                Name = Constants.PETAPOCO_UpdateDogName,
+            };
 
             // Act
             repository.Update(dog);
@@ -728,11 +728,11 @@ namespace DotNetNuke.Tests.Data
 
             var repository = new PetaPocoRepository<Dog>(db, mapper);
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_UpdateDogId,
-                                Age = Constants.PETAPOCO_UpdateDogAge,
-                                Name = Constants.PETAPOCO_UpdateDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_UpdateDogId,
+                Age = Constants.PETAPOCO_UpdateDogAge,
+                Name = Constants.PETAPOCO_UpdateDogName,
+            };
 
             // Act
             repository.Update(dog);

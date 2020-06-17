@@ -27,35 +27,6 @@ namespace DotNetNuke.Services.FileSystem
         private string _providerName;
 
         /// <summary>
-        ///   Get the list of all the folder providers.
-        /// </summary>
-        /// <returns></returns>
-        public static Dictionary<string, FolderProvider> GetProviderList()
-        {
-            var providerList = ComponentFactory.GetComponents<FolderProvider>();
-
-            foreach (var key in providerList.Keys)
-            {
-                providerList[key]._providerName = key;
-            }
-
-            return providerList;
-        }
-
-        /// <summary>
-        ///   Gets an instance of a specific FolderProvider of a given name.
-        /// </summary>
-        /// <returns></returns>
-        public static FolderProvider Instance(string friendlyName)
-        {
-            var provider = ComponentFactory.GetComponent<FolderProvider>(friendlyName);
-
-            provider._providerName = friendlyName;
-
-            return provider;
-        }
-
-        /// <summary>
         /// Gets a value indicating whether gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
         /// </summary>
         /// <remarks>
@@ -96,6 +67,35 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
+        ///   Get the list of all the folder providers.
+        /// </summary>
+        /// <returns></returns>
+        public static Dictionary<string, FolderProvider> GetProviderList()
+        {
+            var providerList = ComponentFactory.GetComponents<FolderProvider>();
+
+            foreach (var key in providerList.Keys)
+            {
+                providerList[key]._providerName = key;
+            }
+
+            return providerList;
+        }
+
+        /// <summary>
+        ///   Gets an instance of a specific FolderProvider of a given name.
+        /// </summary>
+        /// <returns></returns>
+        public static FolderProvider Instance(string friendlyName)
+        {
+            var provider = ComponentFactory.GetComponent<FolderProvider>(friendlyName);
+
+            provider._providerName = friendlyName;
+
+            return provider;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the provider supports the MoveFile method.  If a provider supports the MoveFile method, the
         /// folder manager does nt have to implement move by copying the file and then deleting the original.
         /// </summary>
@@ -111,47 +111,6 @@ namespace DotNetNuke.Services.FileSystem
         public virtual bool SupportsMoveFolder
         {
             get { return false; }
-        }
-
-        private static void AddFolderAndMoveFiles(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
-        {
-            var folderProvider = Instance(folderMapping.FolderProviderType);
-
-            if (!folderProvider.FolderExists(newFolderPath, folderMapping))
-            {
-                folderProvider.AddFolder(newFolderPath, folderMapping);
-            }
-
-            var folder = new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID };
-            var newFolder = new FolderInfo { FolderPath = newFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID };
-
-            MoveFiles(folder, newFolder, folderMapping);
-        }
-
-        private static void MoveFiles(IFolderInfo folder, IFolderInfo newFolder, FolderMappingInfo folderMapping)
-        {
-            var folderProvider = Instance(folderMapping.FolderProviderType);
-            var files = folderProvider.GetFiles(folder);
-
-            foreach (var file in files)
-            {
-                using (var fileContent = folderProvider.GetFileStream(folder, file))
-                {
-                    if (!fileContent.CanSeek)
-                    {
-                        using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
-                        {
-                            folderProvider.AddFile(newFolder, file, seekableStream);
-                        }
-                    }
-                    else
-                    {
-                        folderProvider.AddFile(newFolder, file, fileContent);
-                    }
-                }
-
-                folderProvider.DeleteFile(new FileInfo { FileName = file, Folder = folder.FolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID });
-            }
         }
 
         public virtual void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
@@ -193,6 +152,47 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     this.AddFile(destinationFolder, fileName, fileContent);
                 }
+            }
+        }
+
+        private static void AddFolderAndMoveFiles(string folderPath, string newFolderPath, FolderMappingInfo folderMapping)
+        {
+            var folderProvider = Instance(folderMapping.FolderProviderType);
+
+            if (!folderProvider.FolderExists(newFolderPath, folderMapping))
+            {
+                folderProvider.AddFolder(newFolderPath, folderMapping);
+            }
+
+            var folder = new FolderInfo { FolderPath = folderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID };
+            var newFolder = new FolderInfo { FolderPath = newFolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalID = folderMapping.PortalID };
+
+            MoveFiles(folder, newFolder, folderMapping);
+        }
+
+        private static void MoveFiles(IFolderInfo folder, IFolderInfo newFolder, FolderMappingInfo folderMapping)
+        {
+            var folderProvider = Instance(folderMapping.FolderProviderType);
+            var files = folderProvider.GetFiles(folder);
+
+            foreach (var file in files)
+            {
+                using (var fileContent = folderProvider.GetFileStream(folder, file))
+                {
+                    if (!fileContent.CanSeek)
+                    {
+                        using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
+                        {
+                            folderProvider.AddFile(newFolder, file, seekableStream);
+                        }
+                    }
+                    else
+                    {
+                        folderProvider.AddFile(newFolder, file, fileContent);
+                    }
+                }
+
+                folderProvider.DeleteFile(new FileInfo { FileName = file, Folder = folder.FolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID });
             }
         }
 

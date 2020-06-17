@@ -17,6 +17,8 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class DDRMenuNavigationProvider : NavigationProvider
     {
+        private DDRMenuControl menuControl;
+
         public override Alignment ControlAlignment { get; set; }
 
         public override bool IndicateChildren { get; set; }
@@ -171,8 +173,6 @@ namespace DotNetNuke.Web.DDRMenu
 
         public override List<CustomAttribute> CustomAttributes { get; set; }
 
-        private DDRMenuControl menuControl;
-
         public override Control NavigationControl
         {
             get { return this.menuControl; }
@@ -263,18 +263,18 @@ namespace DotNetNuke.Web.DDRMenu
             this.menuControl.RootNode = new MenuNode(objNodes);
             this.menuControl.SkipLocalisation = !localise;
             this.menuControl.MenuSettings = new Settings
-                                       {
-                                        MenuStyle = this.GetCustomAttribute("MenuStyle") ?? this.MenuStyle ?? "DNNMenu",
-                                        NodeXmlPath = this.GetCustomAttribute("NodeXmlPath"),
-                                        NodeSelector = this.GetCustomAttribute("NodeSelector"),
-                                        IncludeContext = Convert.ToBoolean(this.GetCustomAttribute("IncludeContext") ?? "false"),
-                                        IncludeHidden = Convert.ToBoolean(this.GetCustomAttribute("IncludeHidden") ?? "false"),
-                                        IncludeNodes = this.GetCustomAttribute("IncludeNodes"),
-                                        ExcludeNodes = this.GetCustomAttribute("ExcludeNodes"),
-                                        NodeManipulator = this.GetCustomAttribute("NodeManipulator"),
-                                        ClientOptions = clientOptions,
-                                        TemplateArguments = this.TemplateArguments,
-                                       };
+            {
+                MenuStyle = this.GetCustomAttribute("MenuStyle") ?? this.MenuStyle ?? "DNNMenu",
+                NodeXmlPath = this.GetCustomAttribute("NodeXmlPath"),
+                NodeSelector = this.GetCustomAttribute("NodeSelector"),
+                IncludeContext = Convert.ToBoolean(this.GetCustomAttribute("IncludeContext") ?? "false"),
+                IncludeHidden = Convert.ToBoolean(this.GetCustomAttribute("IncludeHidden") ?? "false"),
+                IncludeNodes = this.GetCustomAttribute("IncludeNodes"),
+                ExcludeNodes = this.GetCustomAttribute("ExcludeNodes"),
+                NodeManipulator = this.GetCustomAttribute("NodeManipulator"),
+                ClientOptions = clientOptions,
+                TemplateArguments = this.TemplateArguments,
+            };
         }
 
         private string GetCustomAttribute(string attributeName)

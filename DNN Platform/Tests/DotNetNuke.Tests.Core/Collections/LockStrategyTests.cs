@@ -13,8 +13,6 @@ namespace DotNetNuke.Tests.Core.Collections
 
     public abstract class LockStrategyTests
     {
-        internal abstract ILockStrategy GetLockStrategy();
-
         [Test]
         public void DoubleDisposeAllowed()
         {
@@ -41,6 +39,8 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
         }
+
+        internal abstract ILockStrategy GetLockStrategy();
 
         [Test]
         [ExpectedException(typeof(LockRecursionException))]

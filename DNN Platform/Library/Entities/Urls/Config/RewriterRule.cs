@@ -11,13 +11,13 @@ namespace DotNetNuke.Entities.Urls.Config
     [Serializable]
     public class RewriterRule
     {
-       [NonSerialized]
-       private Regex _matchRx;
+        [NonSerialized]
+        private Regex _matchRx;
 
-       private string _lookFor;
-       private string _sendTo;
+        private string _lookFor;
+        private string _sendTo;
 
-       public string LookFor
+        public string LookFor
         {
             get
             {
@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Urls.Config
             }
         }
 
-       public string SendTo
+        public string SendTo
         {
             get
             {
@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Urls.Config
 
         // HACK: we cache this in the first call assuming applicationPath never changes during the whole lifetime of the application
         // also don't worry about locking; the worst case this will be created more than once
-       public Regex GetRuleRegex(string applicationPath)
+        public Regex GetRuleRegex(string applicationPath)
         {
             return this._matchRx ?? (this._matchRx =
                 RegexUtils.GetCachedRegex(

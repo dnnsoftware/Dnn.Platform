@@ -25,6 +25,18 @@ namespace DotNetNuke.Services.Syndication
         private RssChannelType _channel;
         private HttpContext _context;
 
+        public event InitEventHandler Init;
+
+        public event PreRenderEventHandler PreRender;
+
+        bool IHttpHandler.IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         protected RssChannelType Channel
         {
             get
@@ -61,18 +73,6 @@ namespace DotNetNuke.Services.Syndication
             this.Render(new XmlTextWriter(this.Context.Response.OutputStream, null));
         }
 
-        bool IHttpHandler.IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        public event InitEventHandler Init;
-
-        public event PreRenderEventHandler PreRender;
-
         /// <summary>
         ///   Triggers the Init event.
         /// </summary>
@@ -95,6 +95,16 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        protected virtual void PopulateChannel(string channelName, string userName)
+        {
+        }
+
+        protected virtual void Render(XmlTextWriter writer)
+        {
+            XmlDocument doc = this._channel.SaveAsXml();
+            doc.Save(writer);
+        }
+
         private void InternalInit(HttpContext context)
         {
             this._context = context;
@@ -104,16 +114,6 @@ namespace DotNetNuke.Services.Syndication
             this._channel.SetDefaults();
 
             this.Context.Response.ContentType = "text/xml";
-        }
-
-        protected virtual void PopulateChannel(string channelName, string userName)
-        {
-        }
-
-        protected virtual void Render(XmlTextWriter writer)
-        {
-            XmlDocument doc = this._channel.SaveAsXml();
-            doc.Save(writer);
         }
     }
 }

@@ -33,75 +33,6 @@ namespace DotNetNuke.Entities.Users
             this.user = user;
         }
 
-        private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
-        {
-            bool isAdmin = false;
-
-            if (accessingUser != null)
-            {
-                // Is Super User?
-                isAdmin = accessingUser.IsSuperUser;
-
-                if (!isAdmin && targetUser.PortalID != -1)
-                {
-                    // Is Administrator
-                    var administratorRoleName = portalSettings != null
-                        ? portalSettings.AdministratorRoleName
-                        : PortalController.Instance.GetPortal(targetUser.PortalID).AdministratorRoleName;
-
-                    isAdmin = accessingUser.IsInRole(administratorRoleName);
-                }
-            }
-
-            return isAdmin;
-        }
-
-        private static bool IsMember(UserInfo accessingUser)
-        {
-            return accessingUser != null && accessingUser.UserID != -1;
-        }
-
-        private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
-        {
-            return accessingUser != null && accessingUser.UserID == targetUser.UserID;
-        }
-
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
-        {
-            if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
-            {
-                var profile = this.user.Profile;
-                var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
-                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
-
-                if (property != null)
-                {
-                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                    if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))
-                    {
-                        switch (property.PropertyName.ToLowerInvariant())
-                        {
-                            case "photo":
-                                return this.user.Profile.PhotoURL;
-                            case "country":
-                                return this.user.Profile.Country;
-                            case "region":
-                                return this.user.Profile.Region;
-                            default:
-                                return GetRichValue(property, format, formatProvider);
-                        }
-                    }
-                }
-
-                propertyNotFound = true;
-                return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
-                    ? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
-            }
-
-            propertyNotFound = true;
-            return string.Empty;
-        }
-
         public CacheLevel Cacheability
         {
             get
@@ -235,6 +166,75 @@ namespace DotNetNuke.Entities.Users
             }
 
             return result;
+        }
+
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
+        {
+            if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
+            {
+                var profile = this.user.Profile;
+                var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
+                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
+
+                if (property != null)
+                {
+                    var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))
+                    {
+                        switch (property.PropertyName.ToLowerInvariant())
+                        {
+                            case "photo":
+                                return this.user.Profile.PhotoURL;
+                            case "country":
+                                return this.user.Profile.Country;
+                            case "region":
+                                return this.user.Profile.Region;
+                            default:
+                                return GetRichValue(property, format, formatProvider);
+                        }
+                    }
+                }
+
+                propertyNotFound = true;
+                return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
+                    ? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
+            }
+
+            propertyNotFound = true;
+            return string.Empty;
+        }
+
+        private static bool IsAdminUser(PortalSettings portalSettings, UserInfo accessingUser, UserInfo targetUser)
+        {
+            bool isAdmin = false;
+
+            if (accessingUser != null)
+            {
+                // Is Super User?
+                isAdmin = accessingUser.IsSuperUser;
+
+                if (!isAdmin && targetUser.PortalID != -1)
+                {
+                    // Is Administrator
+                    var administratorRoleName = portalSettings != null
+                        ? portalSettings.AdministratorRoleName
+                        : PortalController.Instance.GetPortal(targetUser.PortalID).AdministratorRoleName;
+
+                    isAdmin = accessingUser.IsInRole(administratorRoleName);
+                }
+            }
+
+            return isAdmin;
+        }
+
+        private static bool IsMember(UserInfo accessingUser)
+        {
+            return accessingUser != null && accessingUser.UserID != -1;
+        }
+
+        private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
+        {
+            return accessingUser != null && accessingUser.UserID == targetUser.UserID;
         }
 
         public static string DisplayDataType(ProfilePropertyDefinition definition)

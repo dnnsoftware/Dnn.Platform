@@ -17,6 +17,30 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class TabModuleSettingsTests : BaseSettingsTests
     {
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ar-JO")]
+        public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ca-ES")]
+        public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("zh-CN")]
+        public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
         public class MyTabModuleSettings
         {
             [TabModuleSetting(Prefix = SettingNamePrefix)]
@@ -46,30 +70,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         public class MyTabModuleSettingsRepository : SettingsRepository<MyTabModuleSettings>
         {
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SettingsCases))]
-        [SetCulture("ar-JO")]
-        public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SettingsCases))]
-        [SetCulture("ca-ES")]
-        public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SettingsCases))]
-        [SetCulture("zh-CN")]
-        public void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
         [Test]
@@ -112,41 +112,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
-        private void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            // Arrange
-            var moduleInfo = GetModuleInfo;
-            var settings = new MyTabModuleSettings
-            {
-                StringProperty = stringValue,
-                IntegerProperty = integerValue,
-                DoubleProperty = doubleValue,
-                BooleanProperty = booleanValue,
-                DateTimeProperty = datetimeValue,
-                TimeSpanProperty = timeSpanValue,
-                EnumProperty = enumValue,
-                ComplexProperty = complexValue,
-            };
-
-            this.MockTabModuleSettings(moduleInfo, new Hashtable());
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "StringProperty", stringValue));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "IntegerProperty", integerValue.ToString()));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture)));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString()));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture)));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture)));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "EnumProperty", enumValue.ToString()));
-            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}"));
-
-            var settingsRepository = new MyTabModuleSettingsRepository();
-
-            // Act
-            settingsRepository.SaveSettings(moduleInfo, settings);
-
-            // Assert
-            this.MockRepository.VerifyAll();
-        }
-
         [Test]
         public void SaveSettings_UpdatesCache()
         {
@@ -177,6 +142,41 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             // Act
             settingsRepository.GetSettings(moduleInfo);
+
+            // Assert
+            this.MockRepository.VerifyAll();
+        }
+
+        private void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            // Arrange
+            var moduleInfo = GetModuleInfo;
+            var settings = new MyTabModuleSettings
+            {
+                StringProperty = stringValue,
+                IntegerProperty = integerValue,
+                DoubleProperty = doubleValue,
+                BooleanProperty = booleanValue,
+                DateTimeProperty = datetimeValue,
+                TimeSpanProperty = timeSpanValue,
+                EnumProperty = enumValue,
+                ComplexProperty = complexValue,
+            };
+
+            this.MockTabModuleSettings(moduleInfo, new Hashtable());
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "StringProperty", stringValue));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "IntegerProperty", integerValue.ToString()));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "DoubleProperty", doubleValue.ToString(CultureInfo.InvariantCulture)));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "BooleanProperty", booleanValue.ToString()));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "DateTimeProperty", datetimeValue.ToString("o", CultureInfo.InvariantCulture)));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "TimeSpanProperty", timeSpanValue.ToString("c", CultureInfo.InvariantCulture)));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "EnumProperty", enumValue.ToString()));
+            this.MockModuleController.Setup(mc => mc.UpdateTabModuleSetting(TabModuleId, SettingNamePrefix + "ComplexProperty", $"{complexValue.X} | {complexValue.Y}"));
+
+            var settingsRepository = new MyTabModuleSettingsRepository();
+
+            // Act
+            settingsRepository.SaveSettings(moduleInfo, settings);
 
             // Assert
             this.MockRepository.VerifyAll();

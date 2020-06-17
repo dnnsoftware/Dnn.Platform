@@ -517,6 +517,34 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public override int KeyID
+        {
+            get
+            {
+                return this.ModuleID;
+            }
+
+            set
+            {
+                this.ModuleID = value;
+            }
+        }
+
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Fills a ModuleInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -609,26 +637,6 @@ namespace DotNetNuke.Entities.Modules
             catch (Exception exc)
             {
                 Logger.Error(exc);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public override int KeyID
-        {
-            get
-            {
-                return this.ModuleID;
-            }
-
-            set
-            {
-                this.ModuleID = value;
             }
         }
 
@@ -945,64 +953,56 @@ namespace DotNetNuke.Entities.Modules
             return result;
         }
 
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
-        }
-
         public ModuleInfo Clone()
         {
             var objModuleInfo = new ModuleInfo
-                                    {
-                                        PortalID = this.PortalID,
-                                        OwnerPortalID = this.OwnerPortalID,
-                                        TabID = this.TabID,
-                                        TabModuleID = this.TabModuleID,
-                                        ModuleID = this.ModuleID,
-                                        ModuleOrder = this.ModuleOrder,
-                                        PaneName = this.PaneName,
-                                        ModuleTitle = this.ModuleTitle,
-                                        CacheTime = this.CacheTime,
-                                        CacheMethod = this.CacheMethod,
-                                        Alignment = this.Alignment,
-                                        Color = this.Color,
-                                        Border = this.Border,
-                                        IconFile = this.IconFile,
-                                        AllTabs = this.AllTabs,
-                                        Visibility = this.Visibility,
-                                        IsDeleted = this.IsDeleted,
-                                        Header = this.Header,
-                                        Footer = this.Footer,
-                                        StartDate = this.StartDate,
-                                        EndDate = this.EndDate,
-                                        ContainerSrc = this.ContainerSrc,
-                                        DisplayTitle = this.DisplayTitle,
-                                        DisplayPrint = this.DisplayPrint,
-                                        DisplaySyndicate = this.DisplaySyndicate,
-                                        IsWebSlice = this.IsWebSlice,
-                                        WebSliceTitle = this.WebSliceTitle,
-                                        WebSliceExpiryDate = this.WebSliceExpiryDate,
-                                        WebSliceTTL = this.WebSliceTTL,
-                                        InheritViewPermissions = this.InheritViewPermissions,
-                                        IsShareable = this.IsShareable,
-                                        IsShareableViewOnly = this.IsShareableViewOnly,
-                                        DesktopModuleID = this.DesktopModuleID,
-                                        ModuleDefID = this.ModuleDefID,
-                                        ModuleControlId = this.ModuleControlId,
-                                        ContainerPath = this.ContainerPath,
-                                        PaneModuleIndex = this.PaneModuleIndex,
-                                        PaneModuleCount = this.PaneModuleCount,
-                                        IsDefaultModule = this.IsDefaultModule,
-                                        AllModules = this.AllModules,
-                                        UniqueId = Guid.NewGuid(),
-                                        VersionGuid = Guid.NewGuid(),
-                                        DefaultLanguageGuid = this.DefaultLanguageGuid,
-                                        LocalizedVersionGuid = this.LocalizedVersionGuid,
-                                        CultureCode = this.CultureCode,
-                                    };
+            {
+                PortalID = this.PortalID,
+                OwnerPortalID = this.OwnerPortalID,
+                TabID = this.TabID,
+                TabModuleID = this.TabModuleID,
+                ModuleID = this.ModuleID,
+                ModuleOrder = this.ModuleOrder,
+                PaneName = this.PaneName,
+                ModuleTitle = this.ModuleTitle,
+                CacheTime = this.CacheTime,
+                CacheMethod = this.CacheMethod,
+                Alignment = this.Alignment,
+                Color = this.Color,
+                Border = this.Border,
+                IconFile = this.IconFile,
+                AllTabs = this.AllTabs,
+                Visibility = this.Visibility,
+                IsDeleted = this.IsDeleted,
+                Header = this.Header,
+                Footer = this.Footer,
+                StartDate = this.StartDate,
+                EndDate = this.EndDate,
+                ContainerSrc = this.ContainerSrc,
+                DisplayTitle = this.DisplayTitle,
+                DisplayPrint = this.DisplayPrint,
+                DisplaySyndicate = this.DisplaySyndicate,
+                IsWebSlice = this.IsWebSlice,
+                WebSliceTitle = this.WebSliceTitle,
+                WebSliceExpiryDate = this.WebSliceExpiryDate,
+                WebSliceTTL = this.WebSliceTTL,
+                InheritViewPermissions = this.InheritViewPermissions,
+                IsShareable = this.IsShareable,
+                IsShareableViewOnly = this.IsShareableViewOnly,
+                DesktopModuleID = this.DesktopModuleID,
+                ModuleDefID = this.ModuleDefID,
+                ModuleControlId = this.ModuleControlId,
+                ContainerPath = this.ContainerPath,
+                PaneModuleIndex = this.PaneModuleIndex,
+                PaneModuleCount = this.PaneModuleCount,
+                IsDefaultModule = this.IsDefaultModule,
+                AllModules = this.AllModules,
+                UniqueId = Guid.NewGuid(),
+                VersionGuid = Guid.NewGuid(),
+                DefaultLanguageGuid = this.DefaultLanguageGuid,
+                LocalizedVersionGuid = this.LocalizedVersionGuid,
+                CultureCode = this.CultureCode,
+            };
 
             // localized properties
             this.Clone(objModuleInfo, this);

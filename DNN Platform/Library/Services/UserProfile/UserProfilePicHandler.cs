@@ -21,6 +21,14 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static object _locker = new object();
 
+        public bool IsReusable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public void ProcessRequest(HttpContext context)
         {
             this.SetupCulture();
@@ -232,14 +240,6 @@ namespace DotNetNuke.Services.UserProfile
             if (pageLocale != null)
             {
                 TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
-            }
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
             }
         }
     }

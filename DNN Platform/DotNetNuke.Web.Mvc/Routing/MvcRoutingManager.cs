@@ -94,11 +94,43 @@ namespace DotNetNuke.Web.Mvc.Routing
             Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
         }
 
+        internal static bool IsValidServiceRouteMapper(Type t)
+        {
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IMvcRouteMapper).IsAssignableFrom(t);
+        }
+
         private static bool IsTracingEnabled()
         {
             var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
 
             return !string.IsNullOrEmpty(configValue) && Convert.ToBoolean(configValue);
+        }
+
+        private static void RegisterSystemRoutes()
+        {
+            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+        }
+
+        private static Route MapRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
+        {
+            var route = new Route(url, new DnnMvcRouteHandler())
+            {
+                Defaults = CreateRouteValueDictionaryUncached(defaults),
+                Constraints = CreateRouteValueDictionaryUncached(constraints),
+            };
+            if (route.DataTokens == null)
+            {
+                route.DataTokens = new RouteValueDictionary();
+            }
+
+            ConstraintValidation.Validate(route);
+            if ((namespaces != null) && (namespaces.Length > 0))
+            {
+                route.SetNameSpaces(namespaces);
+            }
+
+            route.SetName(name);
+            return route;
         }
 
         private void LocateServicesAndMapRoutes()
@@ -124,11 +156,6 @@ namespace DotNetNuke.Web.Mvc.Routing
         private void ClearCachedRouteData()
         {
             this._portalAliasMvcRouteManager.ClearCachedData();
-        }
-
-        private static void RegisterSystemRoutes()
-        {
-            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private IEnumerable<IMvcRouteMapper> GetServiceRouteMappers()
@@ -159,33 +186,6 @@ namespace DotNetNuke.Web.Mvc.Routing
         private IEnumerable<Type> GetAllServiceRouteMapperTypes()
         {
             return this.TypeLocator.GetAllMatchingTypes(IsValidServiceRouteMapper);
-        }
-
-        internal static bool IsValidServiceRouteMapper(Type t)
-        {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IMvcRouteMapper).IsAssignableFrom(t);
-        }
-
-        private static Route MapRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
-        {
-            var route = new Route(url, new DnnMvcRouteHandler())
-            {
-                Defaults = CreateRouteValueDictionaryUncached(defaults),
-                Constraints = CreateRouteValueDictionaryUncached(constraints),
-            };
-            if (route.DataTokens == null)
-            {
-                route.DataTokens = new RouteValueDictionary();
-            }
-
-            ConstraintValidation.Validate(route);
-            if ((namespaces != null) && (namespaces.Length > 0))
-            {
-                route.SetNameSpaces(namespaces);
-            }
-
-            route.SetName(name);
-            return route;
         }
 
         private static RouteValueDictionary CreateRouteValueDictionaryUncached(object values)

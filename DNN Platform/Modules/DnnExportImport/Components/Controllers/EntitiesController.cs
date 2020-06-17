@@ -24,11 +24,6 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
 
-        protected override Func<IEntitiesController> GetFactory()
-        {
-            return () => new EntitiesController();
-        }
-
         public ExportImportJob GetFirstActiveJob()
         {
             return CBO.Instance.FillObject<ExportImportJob>(this._dataProvider.GetFirstActiveJob());
@@ -40,6 +35,11 @@ namespace Dnn.ExportImport.Components.Controllers
 
             // System.Diagnostics.Trace.WriteLine($"xxxxxxxxx job id={job?.JobId} IsCancelled={job?.IsCancelled} xxxxxxxxx");
             return job;
+        }
+
+        protected override Func<IEntitiesController> GetFactory()
+        {
+            return () => new EntitiesController();
         }
 
         public IList<ExportImportJobLog> GetJobSummaryLog(int jobId)

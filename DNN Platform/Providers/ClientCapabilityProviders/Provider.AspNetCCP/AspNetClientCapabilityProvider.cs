@@ -27,6 +27,16 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
         private static IDictionary<string, int> _highPiorityCapabilityValues;
 
+        private static IDictionary<string, string> _dummyProperies;
+
+        /// <summary>
+        /// Gets a value indicating whether indicates whether tablet detection is supported in the available data set.
+        /// </summary>
+        public override bool SupportsTabletDetection
+        {
+            get { return false; }
+        }
+
         private static IQueryable<IClientCapability> AllCapabilities
         {
             get
@@ -105,8 +115,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        private static IDictionary<string, string> _dummyProperies;
-
         private static IDictionary<string, string> DummyProperties
         {
             get
@@ -124,6 +132,18 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                            { "SupportsFlash", "false" },
                        });
             }
+        }
+
+        public static HttpBrowserCapabilities GetHttpBrowserCapabilities(NameValueCollection headers, string userAgent)
+        {
+            var factory = new BrowserCapabilitiesFactory();
+            var browserCaps = new HttpBrowserCapabilities();
+            var hashtable = new Hashtable(180, StringComparer.OrdinalIgnoreCase);
+            hashtable[string.Empty] = userAgent;
+            browserCaps.Capabilities = hashtable;
+            factory.ConfigureBrowserCapabilities(headers, browserCaps);
+            factory.ConfigureCustomCapabilities(headers, browserCaps);
+            return browserCaps;
         }
 
         /// <summary>
@@ -172,26 +192,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         public override IQueryable<IClientCapability> GetAllClientCapabilities()
         {
             return AllCapabilities;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether indicates whether tablet detection is supported in the available data set.
-        /// </summary>
-        public override bool SupportsTabletDetection
-        {
-            get { return false; }
-        }
-
-        public static HttpBrowserCapabilities GetHttpBrowserCapabilities(NameValueCollection headers, string userAgent)
-        {
-            var factory = new BrowserCapabilitiesFactory();
-            var browserCaps = new HttpBrowserCapabilities();
-            var hashtable = new Hashtable(180, StringComparer.OrdinalIgnoreCase);
-            hashtable[string.Empty] = userAgent;
-            browserCaps.Capabilities = hashtable;
-            factory.ConfigureBrowserCapabilities(headers, browserCaps);
-            factory.ConfigureCustomCapabilities(headers, browserCaps);
-            return browserCaps;
         }
     }
 }

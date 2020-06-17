@@ -11,6 +11,14 @@ namespace DotNetNuke.Services.ClientCapability
 
     public abstract class ClientCapabilityProvider : IClientCapabilityProvider
     {
+        public static IClientCapability CurrentClientCapability
+        {
+            get
+            {
+                return Instance().GetClientCapability(HttpContext.Current.Request);
+            }
+        }
+
         /// <summary>
         /// Gets a value indicating whether support detect the device whether is a tablet.
         /// </summary>
@@ -20,6 +28,11 @@ namespace DotNetNuke.Services.ClientCapability
             {
                 return true;
             }
+        }
+
+        public static ClientCapabilityProvider Instance()
+        {
+            return ComponentFactory.GetComponent<ClientCapabilityProvider>();
         }
 
         /// <summary>
@@ -61,19 +74,6 @@ namespace DotNetNuke.Services.ClientCapability
             clientCapability.FacebookRequest = FacebookRequestController.GetFacebookDetailsFromRequest(httpRequest);
 
             return clientCapability;
-        }
-
-        public static ClientCapabilityProvider Instance()
-        {
-            return ComponentFactory.GetComponent<ClientCapabilityProvider>();
-        }
-
-        public static IClientCapability CurrentClientCapability
-        {
-            get
-            {
-                return Instance().GetClientCapability(HttpContext.Current.Request);
-            }
         }
     }
 }

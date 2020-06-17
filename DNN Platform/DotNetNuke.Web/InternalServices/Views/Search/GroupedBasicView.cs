@@ -11,16 +11,6 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     /// </summary>
     public class GroupedBasicView
     {
-        /// <summary>
-        /// Gets or sets type of Search Document.
-        /// </summary>
-        public string DocumentTypeName { get; set; }
-
-        /// <summary>
-        /// Gets or sets results of the Search.
-        /// </summary>
-        public List<BasicView> Results { get; set; }
-
         public GroupedBasicView()
         {
         }
@@ -40,5 +30,15 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
                 },
             };
         }
+
+        /// <summary>
+        /// Gets or sets type of Search Document.
+        /// </summary>
+        public string DocumentTypeName { get; set; }
+
+        /// <summary>
+        /// Gets or sets results of the Search.
+        /// </summary>
+        public List<BasicView> Results { get; set; }
     }
 }

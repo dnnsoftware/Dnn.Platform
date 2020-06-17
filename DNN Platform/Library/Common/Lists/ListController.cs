@@ -23,6 +23,55 @@ namespace DotNetNuke.Common.Lists
     {
         public readonly string[] NonLocalizedLists = { "ContentTypes", "Processor", "DataType", "ProfanityFilter", "BannedPasswords" };
 
+        /// <summary>
+        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be
+        /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
+        /// </summary>
+        /// <param name="listEntry">The list entry.</param>
+        /// <returns></returns>
+        public int AddListEntry(ListEntryInfo listEntry)
+        {
+            bool enableSortOrder = listEntry.SortOrder > 0;
+            this.ClearListCache(listEntry.PortalID);
+            int entryId = DataProvider.Instance().AddListEntry(
+                listEntry.ListName,
+                listEntry.Value,
+                listEntry.TextNonLocalized,
+                listEntry.ParentID,
+                listEntry.Level,
+                enableSortOrder,
+                listEntry.DefinitionID,
+                listEntry.Description,
+                listEntry.PortalID,
+                listEntry.SystemList,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+
+            if (entryId != Null.NullInteger)
+            {
+                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_CREATED);
+            }
+
+            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !this.NonLocalizedLists.Contains(listEntry.ListName))
+            {
+                if (string.IsNullOrEmpty(listEntry.ParentKey))
+                {
+                    LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                }
+                else
+                {
+                    LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
+                }
+            }
+
+            this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
+            return entryId;
+        }
+
+        public void DeleteList(string listName, string parentKey)
+        {
+            this.DeleteList(listName, parentKey, Null.NullInteger);
+        }
+
         private void ClearListCache(int portalId)
         {
             DataCache.ClearListsCache(portalId);
@@ -117,55 +166,6 @@ namespace DotNetNuke.Common.Lists
                 DataCache.ListsCacheTimeOut,
                 DataCache.ListsCachePriority),
                 c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
-        }
-
-        /// <summary>
-        /// Adds a new list entry to the database. If the current thread locale is not "en-US" then the text value will also be
-        /// persisted to a resource file under App_GlobalResources using the list's name and the value as key.
-        /// </summary>
-        /// <param name="listEntry">The list entry.</param>
-        /// <returns></returns>
-        public int AddListEntry(ListEntryInfo listEntry)
-        {
-            bool enableSortOrder = listEntry.SortOrder > 0;
-            this.ClearListCache(listEntry.PortalID);
-            int entryId = DataProvider.Instance().AddListEntry(
-                listEntry.ListName,
-                listEntry.Value,
-                listEntry.TextNonLocalized,
-                listEntry.ParentID,
-                listEntry.Level,
-                enableSortOrder,
-                listEntry.DefinitionID,
-                listEntry.Description,
-                listEntry.PortalID,
-                listEntry.SystemList,
-                UserController.Instance.GetCurrentUserInfo().UserID);
-
-            if (entryId != Null.NullInteger)
-            {
-                EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_CREATED);
-            }
-
-            if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !this.NonLocalizedLists.Contains(listEntry.ListName))
-            {
-                if (string.IsNullOrEmpty(listEntry.ParentKey))
-                {
-                    LocalizationProvider.Instance.SaveString(listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
-                }
-                else
-                {
-                    LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
-                }
-            }
-
-            this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
-            return entryId;
-        }
-
-        public void DeleteList(string listName, string parentKey)
-        {
-            this.DeleteList(listName, parentKey, Null.NullInteger);
         }
 
         public void DeleteList(string listName, string parentKey, int portalId)
@@ -270,14 +270,6 @@ namespace DotNetNuke.Common.Lists
             return ListEntryInfoItemsToDictionary(this.GetListEntryInfoItems(listName, parentKey, portalId));
         }
 
-        private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
-        {
-            var dict = new Dictionary<string, ListEntryInfo>();
-            items.ToList().ForEach(x => dict.Add(x.Key, x));
-
-            return dict;
-        }
-
         public ListInfo GetListInfo(string listName)
         {
             return this.GetListInfo(listName, string.Empty);
@@ -286,6 +278,14 @@ namespace DotNetNuke.Common.Lists
         public ListInfo GetListInfo(string listName, string parentKey)
         {
             return this.GetListInfo(listName, parentKey, -1);
+        }
+
+        private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
+        {
+            var dict = new Dictionary<string, ListEntryInfo>();
+            items.ToList().ForEach(x => dict.Add(x.Key, x));
+
+            return dict;
         }
 
         public ListInfo GetListInfo(string listName, string parentKey, int portalId)

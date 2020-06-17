@@ -55,6 +55,8 @@ namespace DotNetNuke.Entities.Portals
         private int _pages = Null.NullInteger;
         private string _registeredRoleName;
 
+        private int _users;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PortalInfo"/> class.
         /// Create new Portalinfo instance.
@@ -314,7 +316,7 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("hostspace")]
         public int HostSpace { get; set; }
 
-         /// <summary>
+        /// <summary>
         /// Gets or sets keywords (separated by ,) for this portal.
         /// </summary>
         /// <value>Keywords seperated by .</value>
@@ -598,8 +600,6 @@ namespace DotNetNuke.Entities.Portals
         [XmlElement("usertabid")]
         public int UserTabId { get; set; }
 
-        private int _users;
-
         /// <summary>
         /// Gets or sets actual number of actual users for this portal.
         /// </summary>
@@ -757,6 +757,24 @@ namespace DotNetNuke.Entities.Portals
         public int TimeZoneOffset { get; set; }
 
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>KeyId of the IHydratable.Key.</returns>
+        /// <remarks><seealso cref="Fill"></seealso></remarks>
+        public int KeyID
+        {
+            get
+            {
+                return this.PortalID;
+            }
+
+            set
+            {
+                this.PortalID = value;
+            }
+        }
+
+        /// <summary>
         /// Fills a PortalInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -855,24 +873,6 @@ namespace DotNetNuke.Entities.Portals
 
             this.Users = Null.NullInteger;
             this.Pages = Null.NullInteger;
-        }
-
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>KeyId of the IHydratable.Key.</returns>
-        /// <remarks><seealso cref="Fill"></seealso></remarks>
-        public int KeyID
-        {
-            get
-            {
-                return this.PortalID;
-            }
-
-            set
-            {
-                this.PortalID = value;
-            }
         }
     }
 }

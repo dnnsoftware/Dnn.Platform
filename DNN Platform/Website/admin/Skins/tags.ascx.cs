@@ -12,8 +12,8 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public partial class Tags : SkinObjectBase
     {
-        private readonly INavigationManager _navigationManager;
         private const string MyFileName = "Tags.ascx";
+        private readonly INavigationManager _navigationManager;
         private string _AddImageUrl = IconController.IconURL("Add");
         private bool _AllowTagging = true;
         private string _CancelImageUrl = IconController.IconURL("Lt");

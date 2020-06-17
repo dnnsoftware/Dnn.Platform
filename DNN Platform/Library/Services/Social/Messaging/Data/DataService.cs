@@ -378,12 +378,12 @@ namespace DotNetNuke.Services.Social.Messaging.Data
                     }
 
                     var attachment = new MessageFileView
-                                         {
-                                             Name = file.FileName,
-                                             Size = file.Size.ToString(CultureInfo.InvariantCulture),
-                                             Url = FileManager.Instance.GetUrl(file),
-                                             FileId = fileId,
-                                         };
+                    {
+                        Name = file.FileName,
+                        Size = file.Size.ToString(CultureInfo.InvariantCulture),
+                        Url = FileManager.Instance.GetUrl(file),
+                        FileId = fileId,
+                    };
 
                     attachments.Add(attachment);
                 }

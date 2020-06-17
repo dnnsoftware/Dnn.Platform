@@ -370,18 +370,6 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
         }
 
-        public class ConversationDTO
-        {
-            public int ConversationId { get; set; }
-        }
-
-        public class ReplyDTO : ConversationDTO
-        {
-            public string Body { get; set; }
-
-            public IList<int> FileIds { get; set; }
-        }
-
         private string LocalizeActionString(string key, int desktopModuleId)
         {
             if (string.IsNullOrEmpty(key))
@@ -433,6 +421,18 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             messageObj.LastModifiedOnDate = message.LastModifiedOnDate;
 
             return messageObj;
+        }
+
+        public class ConversationDTO
+        {
+            public int ConversationId { get; set; }
+        }
+
+        public class ReplyDTO : ConversationDTO
+        {
+            public string Body { get; set; }
+
+            public IList<int> FileIds { get; set; }
         }
     }
 }

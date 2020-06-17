@@ -7,7 +7,7 @@
 	</div>
     <div class="dnnFormItem">
         <dnn:Label ID="plTemplate" runat="server" ControlName="txtTemplate" />
-        <asp:TextBox ID="txtTemplate" Columns="60" TextMode="MultiLine" Rows="25" MaxLength="2000" runat="server" Width="300px" />
+        <asp:TextBox ID="txtTemplate" Columns="60" TextMode="MultiLine" Rows="25" runat="server" Width="300px" />
         <asp:LinkButton ID="cmdLoadDefault" runat="server" CausesValidation="False" CssClass="dnnSecondaryAction" resourcekey="LoadDefault" />
     </div>
 </div>

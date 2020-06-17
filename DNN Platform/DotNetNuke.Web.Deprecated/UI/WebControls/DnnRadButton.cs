@@ -11,21 +11,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnRadButton : RadButton
     {
-         private bool _Localize = true;
+        private bool _Localize = true;
 
-         protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
-        }
-
-         protected override void Render(HtmlTextWriter writer)
-        {
-            this.LocalizeStrings();
-            base.Render(writer);
-        }
-
-         public bool Localize
+        public bool Localize
         {
             get
             {
@@ -43,9 +31,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-         public string LocalResourceFile { get; set; }
+        public string LocalResourceFile { get; set; }
 
-         public virtual void LocalizeStrings()
+        public virtual void LocalizeStrings()
         {
             if (this.Localize)
             {
@@ -64,6 +52,18 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
             }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
         }
     }
 }

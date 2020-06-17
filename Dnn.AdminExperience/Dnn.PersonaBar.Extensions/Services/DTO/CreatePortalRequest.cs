@@ -1,21 +1,17 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Runtime.Serialization;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-#endregion
-
 namespace Dnn.PersonaBar.Sites.Services.Dto
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
     public class CreatePortalRequest
     {
         public string SiteTemplate { get; set; }
@@ -27,7 +23,7 @@ namespace Dnn.PersonaBar.Sites.Services.Dto
         public string SiteDescription { get; set; }
 
         public string SiteKeywords { get; set; }
-        
+
         public bool IsChildSite { get; set; }
 
         public string HomeDirectory { get; set; }

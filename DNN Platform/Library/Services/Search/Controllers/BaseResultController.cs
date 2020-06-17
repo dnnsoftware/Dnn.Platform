@@ -16,6 +16,11 @@ namespace DotNetNuke.Services.Search.Controllers
     public abstract class BaseResultController
     {
         /// <summary>
+        /// Gets the localized search type name.
+        /// </summary>
+        public virtual string LocalizedSearchTypeName => string.Empty;
+
+        /// <summary>
         /// Does the user in the Context have View Permission on the Document.
         /// </summary>
         /// <param name="searchResult">Search Result.</param>
@@ -29,10 +34,5 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <returns>Url.</returns>
         /// <remarks>The Query Strings in the Document (if present) should be appended while returning the Url.</remarks>
         public abstract string GetDocUrl(SearchResult searchResult);
-
-        /// <summary>
-        /// Gets the localized search type name.
-        /// </summary>
-        public virtual string LocalizedSearchTypeName => string.Empty;
     }
 }

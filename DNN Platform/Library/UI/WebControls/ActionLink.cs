@@ -48,20 +48,6 @@ namespace DotNetNuke.UI.WebControls
 
         public IModuleControl ModuleControl { get; set; }
 
-        private bool IsVisible(SecurityAccessLevel security)
-        {
-            bool isVisible = false;
-            if (ModulePermissionController.HasModuleAccess(security, Null.NullString, this.ModuleControl.ModuleContext.Configuration))
-            {
-                if ((this.RequireEditMode != true || this.ModuleControl.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
-                {
-                    isVisible = true;
-                }
-            }
-
-            return isVisible;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateChildControls builds the control tree.
@@ -101,6 +87,20 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.Visible = false;
             }
+        }
+
+        private bool IsVisible(SecurityAccessLevel security)
+        {
+            bool isVisible = false;
+            if (ModulePermissionController.HasModuleAccess(security, Null.NullString, this.ModuleControl.ModuleContext.Configuration))
+            {
+                if ((this.RequireEditMode != true || this.ModuleControl.ModuleContext.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (security == SecurityAccessLevel.Anonymous || security == SecurityAccessLevel.View))
+                {
+                    isVisible = true;
+                }
+            }
+
+            return isVisible;
         }
     }
 }

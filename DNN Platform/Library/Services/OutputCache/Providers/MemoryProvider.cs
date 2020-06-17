@@ -43,14 +43,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        private string GetCacheKey(string CacheKey)
+        public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
         {
-            if (string.IsNullOrEmpty(CacheKey))
-            {
-                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
-            }
+            return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
+        }
 
-            return string.Concat(cachePrefix, CacheKey);
+        public override int GetItemCount(int tabId)
+        {
+            return GetCacheKeys(tabId).Count();
         }
 
         internal static List<string> GetCacheKeys()
@@ -83,14 +83,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return keys;
         }
 
-        public override string GenerateCacheKey(int tabId, System.Collections.Specialized.StringCollection includeVaryByKeys, System.Collections.Specialized.StringCollection excludeVaryByKeys, SortedDictionary<string, string> varyBy)
+        private string GetCacheKey(string CacheKey)
         {
-            return this.GetCacheKey(base.GenerateCacheKey(tabId, includeVaryByKeys, excludeVaryByKeys, varyBy));
-        }
+            if (string.IsNullOrEmpty(CacheKey))
+            {
+                throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
+            }
 
-        public override int GetItemCount(int tabId)
-        {
-            return GetCacheKeys(tabId).Count();
+            return string.Concat(cachePrefix, CacheKey);
         }
 
         public override byte[] GetOutput(int tabId, string cacheKey)

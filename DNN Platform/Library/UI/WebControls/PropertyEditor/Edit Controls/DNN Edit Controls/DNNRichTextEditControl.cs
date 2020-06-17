@@ -60,6 +60,20 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            var dataChanged = false;
+            var presentValue = this.StringValue;
+            var postedValue = this.EditorText;
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
+
+            return dataChanged;
+        }
+
         protected override void CreateChildControls()
         {
             if (this.EditMode == PropertyEditorMode.Edit)
@@ -91,12 +105,12 @@ namespace DotNetNuke.UI.WebControls
                 else
                 {
                     this._defaultTextEditor = new TextBox
-                                         {
-                                             ID = this.ID + "edit",
-                                             Width = this.ControlStyle.Width.IsEmpty ? new Unit(300) : this.ControlStyle.Width,
-                                             Height = this.ControlStyle.Height.IsEmpty ? new Unit(250) : this.ControlStyle.Height,
-                                             TextMode = TextBoxMode.MultiLine,
-                                         };
+                    {
+                        ID = this.ID + "edit",
+                        Width = this.ControlStyle.Width.IsEmpty ? new Unit(300) : this.ControlStyle.Width,
+                        Height = this.ControlStyle.Height.IsEmpty ? new Unit(250) : this.ControlStyle.Height,
+                        TextMode = TextBoxMode.MultiLine,
+                    };
                     this._defaultTextEditor.Attributes.Add("aria-label", "editor");
                 }
 
@@ -108,31 +122,12 @@ namespace DotNetNuke.UI.WebControls
             base.CreateChildControls();
         }
 
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            var dataChanged = false;
-            var presentValue = this.StringValue;
-            var postedValue = this.EditorText;
-            if (!presentValue.Equals(postedValue))
-            {
-                this.Value = postedValue;
-                dataChanged = true;
-            }
-
-            return dataChanged;
-        }
-
         protected override void OnDataChanged(EventArgs e)
         {
             var strValue = this.RemoveBaseTags(Convert.ToString(this.Value));
             var strOldValue = this.RemoveBaseTags(Convert.ToString(this.OldValue));
             var args = new PropertyEditorEventArgs(this.Name) { Value = this.Page.Server.HtmlEncode(strValue), OldValue = this.Page.Server.HtmlEncode(strOldValue), StringValue = this.Page.Server.HtmlEncode(this.RemoveBaseTags(this.StringValue)) };
             this.OnValueChanged(args);
-        }
-
-        private string RemoveBaseTags(string strInput)
-        {
-            return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
         protected override void OnInit(EventArgs e)
@@ -153,6 +148,11 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.Page.RegisterRequiresPostBack(this);
             }
+        }
+
+        private string RemoveBaseTags(string strInput)
+        {
+            return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
         protected override void RenderEditMode(HtmlTextWriter writer)

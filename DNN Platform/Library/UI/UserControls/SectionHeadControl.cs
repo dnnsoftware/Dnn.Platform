@@ -23,13 +23,13 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public class SectionHeadControl : UserControl
     {
+        protected ImageButton imgIcon;
+        protected Label lblTitle;
         private bool _includeRule;
         private bool _isExpanded = true;
         private string _javaScript = "__dnn_SectionMaxMin";
         private string _maxImageUrl = "images/plus.gif";
         private string _minImageUrl = "images/minus.gif";
-        protected ImageButton imgIcon;
-        protected Label lblTitle;
         protected Panel pnlRule;
 
         /// -----------------------------------------------------------------------------
@@ -163,26 +163,26 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the
- /// title text.
- /// </summary>
- /// <value>A string representing the ResourceKey.</value>
- /// <remarks>
- /// </remarks>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the
+        /// title text.
+        /// </summary>
+        /// <value>A string representing the ResourceKey.</value>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public string ResourceKey { get; set; }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the Section is the Id of the DHTML object  that contains the xection content
- /// title text.
- /// </summary>
- /// <value>A string representing the Section.</value>
- /// <remarks>
- /// </remarks>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Section is the Id of the DHTML object  that contains the xection content
+        /// title text.
+        /// </summary>
+        /// <value>A string representing the Section.</value>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
         public string Section { get; set; }
 
         /// -----------------------------------------------------------------------------

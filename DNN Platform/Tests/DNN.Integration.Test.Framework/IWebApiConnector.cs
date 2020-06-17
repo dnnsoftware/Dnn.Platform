@@ -19,13 +19,15 @@ namespace DNN.Integration.Test.Framework
 
         CookieContainer SessionCookies { get; }
 
-        DateTime LoggedInAtTime { get;  }
+        DateTime LoggedInAtTime { get; }
 
         TimeSpan Timeout { get; set; }
 
         Uri Domain { get; }
 
         string UserAgentValue { get; set; }
+
+        bool AvoidCaching { get; set; }
 
         void Logout();
 
@@ -53,7 +55,5 @@ namespace DNN.Integration.Test.Framework
         HttpResponseMessage GetContent(
             string relativeUrl,
             Dictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool autoRedirect = true);
-
-        bool AvoidCaching { get; set; }
     }
 }

@@ -37,9 +37,9 @@ namespace DotNetNuke.Entities.Profile
         private int _moduleDefId = Null.NullInteger;
         private int _portalId;
         private ProfileVisibility _profileVisibility = new ProfileVisibility
-                                                            {
-                                                                VisibilityMode = UserVisibilityMode.AdminOnly,
-                                                            };
+        {
+            VisibilityMode = UserVisibilityMode.AdminOnly,
+        };
 
         private string _propertyCategory;
         private string _propertyName;
@@ -477,45 +477,6 @@ namespace DotNetNuke.Entities.Profile
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Clears the IsDirty Flag.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public void ClearIsDirty()
-        {
-            this.IsDirty = false;
-        }
-
-        /// <summary>
-        /// Clone a ProfilePropertyDefinition.
-        /// </summary>
-        /// <returns>A ProfilePropertyDefinition.</returns>
-        public ProfilePropertyDefinition Clone()
-        {
-            var clone = new ProfilePropertyDefinition(this.PortalId)
-                            {
-                                DataType = this.DataType,
-                                DefaultValue = this.DefaultValue,
-                                Length = this.Length,
-                                ModuleDefId = this.ModuleDefId,
-                                PropertyCategory = this.PropertyCategory,
-                                PropertyDefinitionId = this.PropertyDefinitionId,
-                                PropertyName = this.PropertyName,
-                                PropertyValue = this.PropertyValue,
-                                ReadOnly = this.ReadOnly,
-                                Required = this.Required,
-                                ValidationExpression = this.ValidationExpression,
-                                ViewOrder = this.ViewOrder,
-                                DefaultVisibility = this.DefaultVisibility,
-                                ProfileVisibility = this.ProfileVisibility.Clone(),
-                                Visible = this.Visible,
-                                Deleted = this.Deleted,
-                            };
-            clone.ClearIsDirty();
-            return clone;
-        }
-
         [Obsolete("Deprecated in 6.2 as profile visibility has been extended, keep for compatible with upgrade.. Scheduled removal in v10.0.0.")]
         [Browsable(false)]
         [XmlIgnore]
@@ -535,6 +496,45 @@ namespace DotNetNuke.Entities.Profile
 
                 this.ProfileVisibility.VisibilityMode = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Clears the IsDirty Flag.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void ClearIsDirty()
+        {
+            this.IsDirty = false;
+        }
+
+        /// <summary>
+        /// Clone a ProfilePropertyDefinition.
+        /// </summary>
+        /// <returns>A ProfilePropertyDefinition.</returns>
+        public ProfilePropertyDefinition Clone()
+        {
+            var clone = new ProfilePropertyDefinition(this.PortalId)
+            {
+                DataType = this.DataType,
+                DefaultValue = this.DefaultValue,
+                Length = this.Length,
+                ModuleDefId = this.ModuleDefId,
+                PropertyCategory = this.PropertyCategory,
+                PropertyDefinitionId = this.PropertyDefinitionId,
+                PropertyName = this.PropertyName,
+                PropertyValue = this.PropertyValue,
+                ReadOnly = this.ReadOnly,
+                Required = this.Required,
+                ValidationExpression = this.ValidationExpression,
+                ViewOrder = this.ViewOrder,
+                DefaultVisibility = this.DefaultVisibility,
+                ProfileVisibility = this.ProfileVisibility.Clone(),
+                Visible = this.Visible,
+                Deleted = this.Deleted,
+            };
+            clone.ClearIsDirty();
+            return clone;
         }
     }
 }

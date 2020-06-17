@@ -35,36 +35,6 @@ namespace DotNetNuke.Services.Exceptions
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page
     {
-        private void ManageError(string status)
-        {
-            string errorMode = Config.GetCustomErrorMode();
-
-            string errorMessage = HttpUtility.HtmlEncode(this.Request.QueryString["error"]);
-            string errorMessage2 = HttpUtility.HtmlEncode(this.Request.QueryString["error2"]);
-            string localizedMessage = Localization.GetString(status + ".Error", Localization.GlobalResourceFile);
-            if (localizedMessage != null)
-            {
-                localizedMessage = localizedMessage.Replace("src=\"images/403-3.gif\"", "src=\"" + this.ResolveUrl("~/images/403-3.gif") + "\"");
-
-                if (!string.IsNullOrEmpty(errorMessage2) && ((errorMode == "Off") || ((errorMode == "RemoteOnly") && this.Request.IsLocal)))
-                {
-                    this.ErrorPlaceHolder.Controls.Add(new LiteralControl(string.Format(localizedMessage, errorMessage2)));
-                }
-                else
-                {
-                    this.ErrorPlaceHolder.Controls.Add(new LiteralControl(string.Format(localizedMessage, errorMessage)));
-                }
-            }
-
-            int statusCode;
-            int.TryParse(status, out statusCode);
-
-            if (statusCode > -1)
-            {
-                this.Response.StatusCode = statusCode;
-            }
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -130,6 +100,36 @@ namespace DotNetNuke.Services.Exceptions
             localizedMessage = Localization.GetString("Return.Text", Localization.GlobalResourceFile);
 
             this.hypReturn.Text = localizedMessage;
+        }
+
+        private void ManageError(string status)
+        {
+            string errorMode = Config.GetCustomErrorMode();
+
+            string errorMessage = HttpUtility.HtmlEncode(this.Request.QueryString["error"]);
+            string errorMessage2 = HttpUtility.HtmlEncode(this.Request.QueryString["error2"]);
+            string localizedMessage = Localization.GetString(status + ".Error", Localization.GlobalResourceFile);
+            if (localizedMessage != null)
+            {
+                localizedMessage = localizedMessage.Replace("src=\"images/403-3.gif\"", "src=\"" + this.ResolveUrl("~/images/403-3.gif") + "\"");
+
+                if (!string.IsNullOrEmpty(errorMessage2) && ((errorMode == "Off") || ((errorMode == "RemoteOnly") && this.Request.IsLocal)))
+                {
+                    this.ErrorPlaceHolder.Controls.Add(new LiteralControl(string.Format(localizedMessage, errorMessage2)));
+                }
+                else
+                {
+                    this.ErrorPlaceHolder.Controls.Add(new LiteralControl(string.Format(localizedMessage, errorMessage)));
+                }
+            }
+
+            int statusCode;
+            int.TryParse(status, out statusCode);
+
+            if (statusCode > -1)
+            {
+                this.Response.StatusCode = statusCode;
+            }
         }
     }
 }

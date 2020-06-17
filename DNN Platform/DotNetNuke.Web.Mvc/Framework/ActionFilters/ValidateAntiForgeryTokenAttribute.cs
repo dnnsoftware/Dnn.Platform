@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Mvc.Common;
 
-  public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
+    public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
     {
         public virtual bool IsAuthenticated(HttpContextBase httpContext)
         {

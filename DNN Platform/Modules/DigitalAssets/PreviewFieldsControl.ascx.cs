@@ -13,6 +13,8 @@ namespace DotNetNuke.Modules.DigitalAssets
 
     public partial class PreviewFieldsControl : UserControl
     {
+        public List<Field> Fields { get; set; }
+
         public void GenerateFieldsTable()
         {
             this.FieldsTable.Rows.Clear();
@@ -24,7 +26,5 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this.FieldsTable.Rows.Add(rowField);
             }
         }
-
-        public List<Field> Fields { get; set; }
     }
 }

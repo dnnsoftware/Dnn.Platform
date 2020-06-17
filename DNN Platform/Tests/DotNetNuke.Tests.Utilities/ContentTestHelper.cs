@@ -47,13 +47,13 @@ namespace DotNetNuke.Tests.Utilities
         public static Vocabulary CreateValidVocabulary()
         {
             Vocabulary vocabulary = new Vocabulary
-                                        {
-                                            Name = Constants.VOCABULARY_ValidName,
-                                            Type = Constants.VOCABULARY_ValidType,
-                                            ScopeTypeId = Constants.VOCABULARY_ValidScopeTypeId,
-                                            ScopeId = Constants.VOCABULARY_ValidScopeId,
-                                            Weight = Constants.VOCABULARY_ValidWeight,
-                                        };
+            {
+                Name = Constants.VOCABULARY_ValidName,
+                Type = Constants.VOCABULARY_ValidType,
+                ScopeTypeId = Constants.VOCABULARY_ValidScopeTypeId,
+                ScopeId = Constants.VOCABULARY_ValidScopeId,
+                Weight = Constants.VOCABULARY_ValidWeight,
+            };
 
             return vocabulary;
         }

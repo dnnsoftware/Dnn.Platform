@@ -43,6 +43,27 @@ namespace DotNetNuke.Services.EventQueue
     /// </example>
     public class EventQueueController
     {
+        /// <summary>
+        /// Gets the messages.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <returns>event message collection.</returns>
+        public static EventMessageCollection GetMessages(string eventName)
+        {
+            return FillMessageCollection(DataProvider.Instance().GetEventMessages(eventName));
+        }
+
+        /// <summary>
+        /// Gets the messages.
+        /// </summary>
+        /// <param name="eventName">Name of the event.</param>
+        /// <param name="subscriberId">The subscriber id.</param>
+        /// <returns></returns>
+        public static EventMessageCollection GetMessages(string eventName, string subscriberId)
+        {
+            return FillMessageCollection(DataProvider.Instance().GetEventMessagesBySubscriber(eventName, subscriberId));
+        }
+
         private static EventMessage FillMessage(IDataReader dr, bool CheckForOpenDataReader)
         {
             EventMessage message;
@@ -129,27 +150,6 @@ namespace DotNetNuke.Services.EventQueue
             }
 
             return subscribers;
-        }
-
-        /// <summary>
-        /// Gets the messages.
-        /// </summary>
-        /// <param name="eventName">Name of the event.</param>
-        /// <returns>event message collection.</returns>
-        public static EventMessageCollection GetMessages(string eventName)
-        {
-            return FillMessageCollection(DataProvider.Instance().GetEventMessages(eventName));
-        }
-
-        /// <summary>
-        /// Gets the messages.
-        /// </summary>
-        /// <param name="eventName">Name of the event.</param>
-        /// <param name="subscriberId">The subscriber id.</param>
-        /// <returns></returns>
-        public static EventMessageCollection GetMessages(string eventName, string subscriberId)
-        {
-            return FillMessageCollection(DataProvider.Instance().GetEventMessagesBySubscriber(eventName, subscriberId));
         }
 
         /// <summary>

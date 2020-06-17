@@ -156,15 +156,15 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         public void Constructor_Calls_PortalSettingsController_LoadPortal_When_Passed_Portal()
         {
             // Arrange
-             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
+            var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
-             var portal = this.CreatePortal(ValidPortalId);
+            var portal = this.CreatePortal(ValidPortalId);
 
             // Act
-             var settings = new PortalSettings(ValidTabId, portal);
+            var settings = new PortalSettings(ValidTabId, portal);
 
             // Assert
-             mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings));
+            mockPortalSettingsController.Verify(c => c.LoadPortal(portal, settings));
         }
 
         [Test]

@@ -23,14 +23,14 @@ namespace Dnn.PersonaBar.Library.Permissions
 
     public class MenuPermissionController
     {
+        private const string PersonaBarMenuPermissionsCacheKey = "PersonaBarMenuPermissions{0}";
+        private const string PersonaBarPermissionsCacheKey = "PersonaBarPermissions";
+
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(MenuPermissionController));
 
         private static readonly IDataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
         private static readonly object DefaultPermissionLocker = new object();
-
-        private const string PersonaBarMenuPermissionsCacheKey = "PersonaBarMenuPermissions{0}";
-        private const string PersonaBarPermissionsCacheKey = "PersonaBarPermissions";
         private const string PermissionInitializedKey = "PersonaBarMenuPermissionsInitialized";
 
         private const string ViewPermissionKey = "VIEW";

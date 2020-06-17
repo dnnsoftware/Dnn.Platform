@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.WebControls
             int intOldValue = Convert.ToInt32(this.OldValue);
 
             var args = new PropertyEditorEventArgs(this.Name)
-                           { Value = Enum.ToObject(this.EnumType, intValue), OldValue = Enum.ToObject(this.EnumType, intOldValue) };
+            { Value = Enum.ToObject(this.EnumType, intValue), OldValue = Enum.ToObject(this.EnumType, intOldValue) };
 
             this.OnValueChanged(args);
         }

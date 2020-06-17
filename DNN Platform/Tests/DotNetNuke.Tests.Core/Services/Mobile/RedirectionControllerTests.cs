@@ -35,6 +35,9 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
     [TestFixture]
     public class RedirectionControllerTests
     {
+        public const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
+        public const string wp7UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0) Asus;Galaxy6";
+
         private Mock<DataProvider> _dataProvider;
         private RedirectionController _redirectionController;
         private Mock<ClientCapabilityProvider> _clientCapabilityProvider;
@@ -42,9 +45,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
         private DataTable _dtRedirections;
         private DataTable _dtRules;
-
-        public const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
-        public const string wp7UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows Phone OS 7.0; Trident/3.1; IEMobile/7.0) Asus;Galaxy6";
         public const string msIE8UserAgent = "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3; Creative AutoUpdate v1.40.02)";
         public const string msIE9UserAgent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)";
         public const string msIE10UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
@@ -134,15 +134,6 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             ComponentFactory.Container = null;
         }
 
-        private void SetupContianer()
-        {
-            var navigationManagerMock = new Mock<INavigationManager>();
-            navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => this.NavigateUrl(x));
-            var containerMock = new Mock<IServiceProvider>();
-            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
-            Globals.DependencyProvider = containerMock.Object;
-        }
-
         [Test]
         public void RedirectionController_Save_Valid_Redirection()
         {
@@ -178,6 +169,15 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
             var getRe = this._redirectionController.GetRedirectionsByPortal(Portal0)[0];
             Assert.AreEqual(2, getRe.MatchRules.Count);
+        }
+
+        private void SetupContianer()
+        {
+            var navigationManagerMock = new Mock<INavigationManager>();
+            navigationManagerMock.Setup(x => x.NavigateURL(It.IsAny<int>())).Returns<int>(x => this.NavigateUrl(x));
+            var containerMock = new Mock<IServiceProvider>();
+            containerMock.Setup(x => x.GetService(typeof(INavigationManager))).Returns(navigationManagerMock.Object);
+            Globals.DependencyProvider = containerMock.Object;
         }
 
         [Test]

@@ -21,9 +21,9 @@ namespace DotNetNuke.Services.Sitemap
 
     public class CoreSitemapProvider : SitemapProvider
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreSitemapProvider));
         private bool includeHiddenPages;
         private float minPagePriority;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreSitemapProvider));
 
         private bool useLevelBasedPagePriority;
 
@@ -89,6 +89,78 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             return urls;
+        }
+
+        public virtual bool IsTabPublic(TabPermissionCollection objTabPermissions)
+        {
+            string roles = objTabPermissions.ToString("VIEW");
+            bool hasPublicRole = false;
+
+            if (roles != null)
+            {
+                // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                foreach (string role in roles.Split(new[] { ';' }))
+                {
+                    if (!string.IsNullOrEmpty(role))
+                    {
+                        // Deny permission
+                        if (role.StartsWith("!"))
+                        {
+                            string denyRole = role.Replace("!", string.Empty);
+                            if (denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName)
+                            {
+                                hasPublicRole = false;
+                                break;
+                            }
+
+                            // Grant permission
+                        }
+                        else
+                        {
+                            if (role == Globals.glbRoleUnauthUserName || role == Globals.glbRoleAllUsersName)
+                            {
+                                hasPublicRole = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return hasPublicRole;
+        }
+
+        /// <summary>
+        ///   When page level priority is used, the priority for each page will be computed from
+        ///   the hierarchy level of the page.
+        ///   Top level pages will have a value of 1, second level 0.9, third level 0.8, ...
+        /// </summary>
+        /// <param name = "objTab">The page being indexed.</param>
+        /// <returns>The priority assigned to the page.</returns>
+        /// <remarks>
+        /// </remarks>
+        protected float GetPriority(TabInfo objTab)
+        {
+            float priority = objTab.SiteMapPriority;
+
+            if (this.useLevelBasedPagePriority)
+            {
+                if (objTab.Level >= 9)
+                {
+                    priority = 0.1F;
+                }
+                else
+                {
+                    priority = Convert.ToSingle(1 - (objTab.Level * 0.1));
+                }
+
+                if (priority < this.minPagePriority)
+                {
+                    priority = this.minPagePriority;
+                }
+            }
+
+            return priority;
         }
 
         /// <summary>
@@ -164,78 +236,6 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             return pageUrl;
-        }
-
-        /// <summary>
-        ///   When page level priority is used, the priority for each page will be computed from
-        ///   the hierarchy level of the page.
-        ///   Top level pages will have a value of 1, second level 0.9, third level 0.8, ...
-        /// </summary>
-        /// <param name = "objTab">The page being indexed.</param>
-        /// <returns>The priority assigned to the page.</returns>
-        /// <remarks>
-        /// </remarks>
-        protected float GetPriority(TabInfo objTab)
-        {
-            float priority = objTab.SiteMapPriority;
-
-            if (this.useLevelBasedPagePriority)
-            {
-                if (objTab.Level >= 9)
-                {
-                    priority = 0.1F;
-                }
-                else
-                {
-                    priority = Convert.ToSingle(1 - (objTab.Level * 0.1));
-                }
-
-                if (priority < this.minPagePriority)
-                {
-                    priority = this.minPagePriority;
-                }
-            }
-
-            return priority;
-        }
-
-        public virtual bool IsTabPublic(TabPermissionCollection objTabPermissions)
-        {
-            string roles = objTabPermissions.ToString("VIEW");
-            bool hasPublicRole = false;
-
-            if (roles != null)
-            {
-                // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-                foreach (string role in roles.Split(new[] { ';' }))
-                {
-                    if (!string.IsNullOrEmpty(role))
-                    {
-                        // Deny permission
-                        if (role.StartsWith("!"))
-                        {
-                            string denyRole = role.Replace("!", string.Empty);
-                            if (denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName)
-                            {
-                                hasPublicRole = false;
-                                break;
-                            }
-
-                            // Grant permission
-                        }
-                        else
-                        {
-                            if (role == Globals.glbRoleUnauthUserName || role == Globals.glbRoleAllUsersName)
-                            {
-                                hasPublicRole = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return hasPublicRole;
         }
     }
 }

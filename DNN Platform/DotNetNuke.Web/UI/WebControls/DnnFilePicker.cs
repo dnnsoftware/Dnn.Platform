@@ -28,6 +28,10 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
 
+        private Panel _pnlContainer;
+        private Panel _pnlLeftDiv;
+        private Panel _pnlFolder;
+
         /// <summary>
         ///   Represents a possible mode for the File Control.
         /// </summary>
@@ -48,10 +52,6 @@ namespace DotNetNuke.Web.UI.WebControls
             /// </summary>
             Preview,
         }
-
-        private Panel _pnlContainer;
-        private Panel _pnlLeftDiv;
-        private Panel _pnlFolder;
         private Label _lblFolder;
         private DropDownList _cboFolders;
         private Panel _pnlFile;
@@ -70,26 +70,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool _localize = true;
         private int _maxHeight = 100;
         private int _maxWidth = 135;
-
-        /// <summary>
-        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        protected bool IsHost
-        {
-            get
-            {
-                var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-
-                // if not host tab but current edit user is a host user, then return true
-                if (!isHost && this.User != null && this.User.IsSuperUser)
-                {
-                    isHost = true;
-                }
-
-                return isHost;
-            }
-        }
 
         public int MaxHeight
         {
@@ -114,6 +94,67 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this._maxWidth = value;
+            }
+        }
+
+        /// <summary>
+        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        protected bool IsHost
+        {
+            get
+            {
+                var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+
+                // if not host tab but current edit user is a host user, then return true
+                if (!isHost && this.User != null && this.User.IsSuperUser)
+                {
+                    isHost = true;
+                }
+
+                return isHost;
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the class to be used for the Labels.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to 'CommandButton'.
+        /// </remarks>
+        /// <value>A String.</value>
+        public string CommandCssClass
+        {
+            get
+            {
+                var cssClass = Convert.ToString(this.ViewState["CommandCssClass"]);
+                return string.IsNullOrEmpty(cssClass) ? "dnnSecondaryAction" : cssClass;
+            }
+
+            set
+            {
+                this.ViewState["CommandCssClass"] = value;
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the file Filter to use.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to ''.
+        /// </remarks>
+        /// <value>a comma seperated list of file extenstions no wildcards or periods e.g. "jpg,png,gif".</value>
+        public string FileFilter
+        {
+            get
+            {
+                return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : string.Empty;
+            }
+
+            set
+            {
+                this.ViewState["FileFilter"] = value;
             }
         }
 
@@ -182,47 +223,6 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets the class to be used for the Labels.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to 'CommandButton'.
-        /// </remarks>
-        /// <value>A String.</value>
-        public string CommandCssClass
-        {
-            get
-            {
-                var cssClass = Convert.ToString(this.ViewState["CommandCssClass"]);
-                return string.IsNullOrEmpty(cssClass) ? "dnnSecondaryAction" : cssClass;
-            }
-
-            set
-            {
-                this.ViewState["CommandCssClass"] = value;
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets the file Filter to use.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to ''.
-        /// </remarks>
-        /// <value>a comma seperated list of file extenstions no wildcards or periods e.g. "jpg,png,gif".</value>
-        public string FileFilter
-        {
-            get
-            {
-                return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : string.Empty;
-            }
-
-            set
-            {
-                this.ViewState["FileFilter"] = value;
             }
         }
 
@@ -389,6 +389,63 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public UserInfo User { get; set; }
 
+        public bool Localize
+        {
+            get
+            {
+                return this._localize;
+            }
+
+            set
+            {
+                this._localize = value;
+            }
+        }
+
+        public string LocalResourceFile { get; set; }
+
+        public virtual void LocalizeStrings()
+        {
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
+            this.EnsureChildControls();
+        }
+
+        /// <summary>
+        ///   CreateChildControls overrides the Base class's method to correctly build the
+        ///   control based on the configuration.
+        /// </summary>
+        protected override void CreateChildControls()
+        {
+            // First clear the controls collection
+            this.Controls.Clear();
+
+            this._pnlContainer = new Panel { CssClass = "dnnFilePicker" };
+
+            this._pnlLeftDiv = new Panel { CssClass = "dnnLeft" };
+
+            this.AddFolderArea();
+            this.AddFileAndUploadArea();
+            this.AddButtonArea();
+            this.AddMessageRow();
+
+            this._pnlContainer.Controls.Add(this._pnlLeftDiv);
+
+            this._pnlRightDiv = new Panel { CssClass = "dnnLeft" };
+
+            this.GeneratePreviewImage();
+
+            this._pnlContainer.Controls.Add(this._pnlRightDiv);
+
+            this.Controls.Add(this._pnlContainer);
+
+            base.CreateChildControls();
+        }
+
         /// <summary>
         ///   AddButton adds a button to the Command Row.
         /// </summary>
@@ -545,13 +602,13 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (FolderInfo folder in folders)
                 {
                     var folderItem = new ListItem
-                                         {
-                                             Text =
+                    {
+                        Text =
                                                  folder.FolderPath == Null.NullString
                                                      ? Utilities.GetLocalizedString("PortalRoot")
                                                      : folder.DisplayPath,
-                                             Value = folder.FolderPath,
-                                         };
+                        Value = folder.FolderPath,
+                    };
                     this._cboFolders.Items.Add(folderItem);
                 }
             }
@@ -632,44 +689,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._pnlRightDiv.Controls.Add(imageHolderPanel);
                 this._pnlRightDiv.Visible = true;
             }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            this.LocalResourceFile = Utilities.GetLocalResourceFile(this);
-            this.EnsureChildControls();
-        }
-
-        /// <summary>
-        ///   CreateChildControls overrides the Base class's method to correctly build the
-        ///   control based on the configuration.
-        /// </summary>
-        protected override void CreateChildControls()
-        {
-            // First clear the controls collection
-            this.Controls.Clear();
-
-            this._pnlContainer = new Panel { CssClass = "dnnFilePicker" };
-
-            this._pnlLeftDiv = new Panel { CssClass = "dnnLeft" };
-
-            this.AddFolderArea();
-            this.AddFileAndUploadArea();
-            this.AddButtonArea();
-            this.AddMessageRow();
-
-            this._pnlContainer.Controls.Add(this._pnlLeftDiv);
-
-            this._pnlRightDiv = new Panel { CssClass = "dnnLeft" };
-
-            this.GeneratePreviewImage();
-
-            this._pnlContainer.Controls.Add(this._pnlRightDiv);
-
-            this.Controls.Add(this._pnlContainer);
-
-            base.CreateChildControls();
         }
 
         /// <summary>
@@ -866,25 +885,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private void UploadFile(object sender, EventArgs e)
         {
             this.Mode = FileControlMode.UpLoadFile;
-        }
-
-        public bool Localize
-        {
-            get
-            {
-                return this._localize;
-            }
-
-            set
-            {
-                this._localize = value;
-            }
-        }
-
-        public string LocalResourceFile { get; set; }
-
-        public virtual void LocalizeStrings()
-        {
         }
     }
 }

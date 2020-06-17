@@ -62,6 +62,11 @@ namespace DotNetNuke.Services.FileSystem.Internal
             this.DeleteContentItem(file.ContentItemID);
         }
 
+        protected override Func<IFileDeletionController> GetFactory()
+        {
+            return () => new FileDeletionController();
+        }
+
         private void DeleteContentItem(int contentItemId)
         {
             if (contentItemId == Null.NullInteger)
@@ -70,11 +75,6 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
 
             Util.GetContentController().DeleteContentItem(contentItemId);
-        }
-
-        protected override Func<IFileDeletionController> GetFactory()
-        {
-            return () => new FileDeletionController();
         }
     }
 }

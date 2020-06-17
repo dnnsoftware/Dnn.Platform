@@ -47,6 +47,31 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the current Page No.
+        /// </summary>
+        public int PageNo
+        {
+            get
+            {
+                int _PageNo = 0;
+                if (this.ViewState["PageNo"] != null && !this.IsPostBack)
+                {
+                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
+                }
+
+                return _PageNo;
+            }
+
+            set
+            {
+                this.ViewState["PageNo"] = value;
+            }
+        }
+
+        public bool ShowVanityUrl { get; private set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets a value indicating whether gets whether to display the Manage Services tab.
         /// </summary>
         protected bool DisplayServices
@@ -147,28 +172,75 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the current Page No.
+        /// Page_Init runs when the control is initialised.
         /// </summary>
-        public int PageNo
+        /// <remarks>
+        /// </remarks>
+        protected override void OnInit(EventArgs e)
         {
-            get
-            {
-                int _PageNo = 0;
-                if (this.ViewState["PageNo"] != null && !this.IsPostBack)
-                {
-                    _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
-                }
+            base.OnInit(e);
 
-                return _PageNo;
-            }
+            this.cmdDelete.Click += this.cmdDelete_Click;
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
 
-            set
+            this.ctlServices.SubscriptionUpdated += this.SubscriptionUpdated;
+            this.ctlProfile.ProfileUpdateCompleted += this.ProfileUpdateCompleted;
+            this.ctlPassword.PasswordUpdated += this.PasswordUpdated;
+            this.ctlPassword.PasswordQuestionAnswerUpdated += this.PasswordQuestionAnswerUpdated;
+
+            this.email.ValidationExpression = this.PortalSettings.Registration.EmailValidator;
+
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(CommonJs.Knockout);
+
+            // Set the Membership Control Properties
+            this.ctlMembership.ID = "Membership";
+            this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlMembership.UserId = this.UserId;
+
+            // Set the Password Control Properties
+            this.ctlPassword.ID = "Password";
+            this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlPassword.UserId = this.UserId;
+
+            // Set the Profile Control Properties
+            this.ctlProfile.ID = "Profile";
+            this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlProfile.UserId = this.UserId;
+
+            // Set the Services Control Properties
+            this.ctlServices.ID = "MemberServices";
+            this.ctlServices.ModuleConfiguration = this.ModuleConfiguration;
+            this.ctlServices.UserId = this.UserId;
+
+            // Define DisplayName filed Enabled Property:
+            object setting = GetSetting(this.UserPortalID, "Security_DisplayNameFormat");
+            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
             {
-                this.ViewState["PageNo"] = value;
+                this.displayName.Enabled = false;
             }
         }
 
-        public bool ShowVanityUrl { get; private set; }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            try
+            {
+                // Bind the User information to the controls
+                this.BindData();
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
         private void BindData()
         {
@@ -345,78 +417,6 @@ namespace DotNetNuke.Modules.Admin.Users
             if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
             {
                 this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.cmdDelete.Click += this.cmdDelete_Click;
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-
-            this.ctlServices.SubscriptionUpdated += this.SubscriptionUpdated;
-            this.ctlProfile.ProfileUpdateCompleted += this.ProfileUpdateCompleted;
-            this.ctlPassword.PasswordUpdated += this.PasswordUpdated;
-            this.ctlPassword.PasswordQuestionAnswerUpdated += this.PasswordQuestionAnswerUpdated;
-
-            this.email.ValidationExpression = this.PortalSettings.Registration.EmailValidator;
-
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.Knockout);
-
-            // Set the Membership Control Properties
-            this.ctlMembership.ID = "Membership";
-            this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlMembership.UserId = this.UserId;
-
-            // Set the Password Control Properties
-            this.ctlPassword.ID = "Password";
-            this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlPassword.UserId = this.UserId;
-
-            // Set the Profile Control Properties
-            this.ctlProfile.ID = "Profile";
-            this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlProfile.UserId = this.UserId;
-
-            // Set the Services Control Properties
-            this.ctlServices.ID = "MemberServices";
-            this.ctlServices.ModuleConfiguration = this.ModuleConfiguration;
-            this.ctlServices.UserId = this.UserId;
-
-            // Define DisplayName filed Enabled Property:
-            object setting = GetSetting(this.UserPortalID, "Security_DisplayNameFormat");
-            if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
-            {
-                this.displayName.Enabled = false;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            try
-            {
-                // Bind the User information to the controls
-                this.BindData();
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 

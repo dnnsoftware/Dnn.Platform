@@ -24,11 +24,6 @@ namespace DotNetNuke.Modules.Journal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationServicesController));
 
-        public class NotificationDTO
-        {
-            public int NotificationId { get; set; }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage ViewJournal(NotificationDTO postData)
@@ -60,6 +55,11 @@ namespace DotNetNuke.Modules.Journal
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");
+        }
+
+        public class NotificationDTO
+        {
+            public int NotificationId { get; set; }
         }
     }
 }

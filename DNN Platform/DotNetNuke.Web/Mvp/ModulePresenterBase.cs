@@ -44,6 +44,10 @@ namespace DotNetNuke.Web.Mvp
             view.Load += this.LoadInternal;
         }
 
+        public bool AutoDataBind { get; set; }
+
+        public ModuleInfo ModuleInfo { get; set; }
+
         protected internal virtual bool AllowAnonymousAccess
         {
             get
@@ -59,10 +63,6 @@ namespace DotNetNuke.Web.Mvp
                 return true;
             }
         }
-
-        public bool AutoDataBind { get; set; }
-
-        public ModuleInfo ModuleInfo { get; set; }
 
         public bool IsEditable { get; set; }
 
@@ -86,18 +86,14 @@ namespace DotNetNuke.Web.Mvp
 
         public Validator Validator { get; set; }
 
-        private void InitializeInternal(object sender, EventArgs e)
+        public virtual void RestoreState(StateBag stateBag)
         {
-            this.LoadFromContext();
-            this.OnInit();
+            AttributeBasedViewStateSerializer.DeSerialize(this, stateBag);
         }
 
-        private void LoadInternal(object sender, EventArgs e)
+        public virtual void SaveState(StateBag stateBag)
         {
-            if (this.CheckAuthPolicy())
-            {
-                this.OnLoad();
-            }
+            AttributeBasedViewStateSerializer.Serialize(this, stateBag);
         }
 
         protected internal virtual bool CheckAuthPolicy()
@@ -134,6 +130,20 @@ namespace DotNetNuke.Web.Mvp
 
                 this.TabId = this.ModuleContext.TabId;
                 this.UserId = this.ModuleContext.PortalSettings.UserInfo.UserID;
+            }
+        }
+
+        private void InitializeInternal(object sender, EventArgs e)
+        {
+            this.LoadFromContext();
+            this.OnInit();
+        }
+
+        private void LoadInternal(object sender, EventArgs e)
+        {
+            if (this.CheckAuthPolicy())
+            {
+                this.OnLoad();
             }
         }
 
@@ -217,16 +227,6 @@ namespace DotNetNuke.Web.Mvp
 
                 this.View.ShowMessage(messageHeader, message, messageType);
             }
-        }
-
-        public virtual void RestoreState(StateBag stateBag)
-        {
-            AttributeBasedViewStateSerializer.DeSerialize(this, stateBag);
-        }
-
-        public virtual void SaveState(StateBag stateBag)
-        {
-            AttributeBasedViewStateSerializer.Serialize(this, stateBag);
         }
     }
 }

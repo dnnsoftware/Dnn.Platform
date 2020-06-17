@@ -13,6 +13,11 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// -----------------------------------------------------------------------------
     public class PortalConfig
     {
+        public PortalConfig()
+        {
+            this.PortAliases = new List<string>();
+        }
+
         public string PortalName { get; set; }
 
         public string AdminFirstName { get; set; }
@@ -36,10 +41,5 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
         public string HomeDirectory { get; set; }
 
         public IList<string> PortAliases { get; set; }
-
-        public PortalConfig()
-        {
-            this.PortAliases = new List<string>();
-        }
     }
 }

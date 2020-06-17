@@ -14,8 +14,6 @@ namespace DNN.Integration.Test.Framework
 
     public abstract class IntegrationTestBase
     {
-        public static string ConnectionString { get; }
-
         // public static string DatabaseName { get; }
         static IntegrationTestBase()
         {
@@ -32,6 +30,17 @@ namespace DNN.Integration.Test.Framework
             // SchedulerController.DisableAppStartDelay(false);
         }
 
+        public static string ConnectionString { get; }
+
+        public static void LogText(string text)
+        {
+            // Don't write anything to console when we run in TeamCity
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+            {
+                Console.WriteLine(text);
+            }
+        }
+
         [TestFixtureSetUp]
         public virtual void TestFixtureSetUp()
         {
@@ -46,15 +55,6 @@ namespace DNN.Integration.Test.Framework
         {
             var builder = new System.Data.Common.DbConnectionStringBuilder { ConnectionString = connectionString };
             return builder["Database"] as string;
-        }
-
-        public static void LogText(string text)
-        {
-            // Don't write anything to console when we run in TeamCity
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
-            {
-                Console.WriteLine(text);
-            }
         }
     }
 }

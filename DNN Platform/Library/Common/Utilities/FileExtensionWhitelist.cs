@@ -24,6 +24,18 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
+        /// Gets the list of extensions in the whitelist.
+        /// </summary>
+        /// <remarks>All extensions are lowercase and prefixed with a '.'.</remarks>
+        public IEnumerable<string> AllowedExtensions
+        {
+            get
+            {
+                return this._extensions;
+            }
+        }
+
+        /// <summary>
         /// Returns a string suitale for display to an end user.
         /// </summary>
         /// <returns>A String of the whitelist extensions formatted for display to an end user.</returns>
@@ -42,18 +54,6 @@ namespace DotNetNuke.Common.Utilities
         {
             IEnumerable<string> allExtensions = this.CombineLists(additionalExtensions);
             return "*" + string.Join(", *", allExtensions.ToArray());
-        }
-
-        /// <summary>
-        /// Gets the list of extensions in the whitelist.
-        /// </summary>
-        /// <remarks>All extensions are lowercase and prefixed with a '.'.</remarks>
-        public IEnumerable<string> AllowedExtensions
-        {
-            get
-            {
-                return this._extensions;
-            }
         }
 
         /// <summary>
@@ -119,6 +119,12 @@ namespace DotNetNuke.Common.Utilities
             return EscapedString.Combine(leadingDotRemoved);
         }
 
+        public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
+        {
+            var filter = parentList._extensions;
+            return new FileExtensionWhitelist(string.Join(",", this._extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
+        }
+
         private IEnumerable<string> CombineLists(IEnumerable<string> additionalExtensions)
         {
             if (additionalExtensions == null)
@@ -140,12 +146,6 @@ namespace DotNetNuke.Common.Utilities
         private IEnumerable<string> NormalizeExtensions(IEnumerable<string> additionalExtensions)
         {
             return additionalExtensions.Select(ext => (ext.StartsWith(".") ? ext : "." + ext).ToLowerInvariant());
-        }
-
-        public FileExtensionWhitelist RestrictBy(FileExtensionWhitelist parentList)
-        {
-            var filter = parentList._extensions;
-            return new FileExtensionWhitelist(string.Join(",", this._extensions.Where(x => filter.Contains(x)).Select(s => s.Substring(1))));
         }
     }
 }

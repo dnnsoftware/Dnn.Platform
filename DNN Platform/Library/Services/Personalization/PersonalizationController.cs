@@ -38,10 +38,10 @@ namespace DotNetNuke.Services.Personalization
             string profileData = Null.NullString;
             if (userId > Null.NullInteger)
             {
-               var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
-               profileData = CBO.GetCachedObject<string>(
-                    new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
-                    DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
+                var cacheKey = string.Format(DataCache.UserPersonalizationCacheKey, portalId, userId);
+                profileData = CBO.GetCachedObject<string>(
+                     new CacheItemArgs(cacheKey, DataCache.UserPersonalizationCacheTimeout,
+                     DataCache.UserPersonalizationCachePriority, portalId, userId), GetCachedUserPersonalizationCallback);
             }
             else
             {
@@ -66,6 +66,18 @@ namespace DotNetNuke.Services.Personalization
             personalization.Profile = string.IsNullOrEmpty(profileData)
                 ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
             return personalization;
+        }
+
+        public void SaveProfile(PersonalizationInfo personalization)
+        {
+            this.SaveProfile(personalization, personalization.UserId, personalization.PortalId);
+        }
+
+        // default implementation relies on HTTPContext
+        public void SaveProfile(HttpContext httpContext, int userId, int portalId)
+        {
+            var objPersonalization = (PersonalizationInfo)httpContext.Items["Personalization"];
+            this.SaveProfile(objPersonalization, userId, portalId);
         }
 
         private static object GetCachedUserPersonalizationCallback(CacheItemArgs cacheItemArgs)
@@ -96,18 +108,6 @@ namespace DotNetNuke.Services.Personalization
             }
 
             return returnValue;
-        }
-
-        public void SaveProfile(PersonalizationInfo personalization)
-        {
-            this.SaveProfile(personalization, personalization.UserId, personalization.PortalId);
-        }
-
-        // default implementation relies on HTTPContext
-        public void SaveProfile(HttpContext httpContext, int userId, int portalId)
-        {
-            var objPersonalization = (PersonalizationInfo)httpContext.Items["Personalization"];
-            this.SaveProfile(objPersonalization, userId, portalId);
         }
 
         // override allows for manipulation of PersonalizationInfo outside of HTTPContext

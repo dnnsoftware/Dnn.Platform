@@ -29,15 +29,15 @@ namespace DotNetNuke.Modules.Admin.Security
 
     public partial class PasswordReset : UserModuleBase
     {
+        private const int RedirectTimeout = 3000;
+
         private readonly INavigationManager _navigationManager;
+        private string _ipAddress;
 
         public PasswordReset()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private const int RedirectTimeout = 3000;
-        private string _ipAddress;
 
         private string ResetToken
         {
@@ -106,26 +106,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        private void LoadUserInfo()
-        {
-            var user = UserController.GetUserByPasswordResetToken(this.PortalId, this.ResetToken);
-
-            if (user == null || user.PasswordResetExpiration < DateTime.Now)
-            {
-                this.divPassword.Visible = false;
-                this.resetMessages.Visible = true;
-                this.lblHelp.Text = Localization.GetString("ResetLinkExpired", this.LocalResourceFile);
-                return;
-            }
-
-            this.txtUsername.Text = user.Username;
-            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
-            {
-                this.lblQuestion.Text = user.Membership.PasswordQuestion;
-                this.divQA.Visible = true;
-            }
-        }
-
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -170,6 +150,88 @@ namespace DotNetNuke.Modules.Admin.Security
             else
             {
                 this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", script, true);
+            }
+        }
+
+        protected void RedirectAfterLogin()
+        {
+            var redirectURL = string.Empty;
+
+            var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
+
+            if (Convert.ToInt32(setting) == Null.NullInteger)
+            {
+                if (this.Request.QueryString["returnurl"] != null)
+                {
+                    // return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
+
+                    // clean the return url to avoid possible XSS attack.
+                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
+                }
+
+                if (this.Request.Cookies["returnurl"] != null)
+                {
+                    // return to the url passed to signin
+                    redirectURL = HttpUtility.UrlDecode(this.Request.Cookies["returnurl"].Value);
+
+                    // clean the return url to avoid possible XSS attack.
+                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
+                }
+
+                if (string.IsNullOrEmpty(redirectURL))
+                {
+                    if (this.PortalSettings.RegisterTabId != -1 && this.PortalSettings.HomeTabId != -1)
+                    {
+                        // redirect to portal home page specified
+                        redirectURL = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
+                    }
+                    else
+                    {
+                        // redirect to current page
+                        redirectURL = this._navigationManager.NavigateURL();
+                    }
+                }
+            }
+            else // redirect to after login page
+            {
+                redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
+            }
+
+            this.AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
+            this.resetMessages.Visible = this.divPassword.Visible = false;
+            this.lblHelp.Text = this.lblInfo.Text = string.Empty;
+
+            // redirect page after 5 seconds
+            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
+            if (ScriptManager.GetCurrent(this.Page) != null)
+            {
+                // respect MS AJAX
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ChangePasswordSuccessful", script, true);
+            }
+            else
+            {
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ChangePasswordSuccessful", script, true);
+            }
+        }
+
+        private void LoadUserInfo()
+        {
+            var user = UserController.GetUserByPasswordResetToken(this.PortalId, this.ResetToken);
+
+            if (user == null || user.PasswordResetExpiration < DateTime.Now)
+            {
+                this.divPassword.Visible = false;
+                this.resetMessages.Visible = true;
+                this.lblHelp.Text = Localization.GetString("ResetLinkExpired", this.LocalResourceFile);
+                return;
+            }
+
+            this.txtUsername.Text = user.Username;
+            if (MembershipProviderConfig.RequiresQuestionAndAnswer)
+            {
+                this.lblQuestion.Text = user.Membership.PasswordQuestion;
+                this.divQA.Visible = true;
             }
         }
 
@@ -260,68 +322,6 @@ namespace DotNetNuke.Modules.Admin.Security
                     UserController.UserLogin(this.PortalSettings.PortalId, username, this.txtPassword.Text, string.Empty, string.Empty, string.Empty, ref loginStatus, false);
                     this.RedirectAfterLogin();
                 }
-            }
-        }
-
-        protected void RedirectAfterLogin()
-        {
-            var redirectURL = string.Empty;
-
-            var setting = GetSetting(this.PortalId, "Redirect_AfterLogin");
-
-            if (Convert.ToInt32(setting) == Null.NullInteger)
-            {
-                if (this.Request.QueryString["returnurl"] != null)
-                {
-                    // return to the url passed to signin
-                    redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
-
-                    // clean the return url to avoid possible XSS attack.
-                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
-                }
-
-                if (this.Request.Cookies["returnurl"] != null)
-                {
-                    // return to the url passed to signin
-                    redirectURL = HttpUtility.UrlDecode(this.Request.Cookies["returnurl"].Value);
-
-                    // clean the return url to avoid possible XSS attack.
-                    redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
-                }
-
-                if (string.IsNullOrEmpty(redirectURL))
-                {
-                    if (this.PortalSettings.RegisterTabId != -1 && this.PortalSettings.HomeTabId != -1)
-                    {
-                        // redirect to portal home page specified
-                        redirectURL = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
-                    }
-                    else
-                    {
-                        // redirect to current page
-                        redirectURL = this._navigationManager.NavigateURL();
-                    }
-                }
-            }
-            else // redirect to after login page
-            {
-                redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
-            }
-
-            this.AddModuleMessage("ChangeSuccessful", ModuleMessage.ModuleMessageType.GreenSuccess, true);
-            this.resetMessages.Visible = this.divPassword.Visible = false;
-            this.lblHelp.Text = this.lblInfo.Text = string.Empty;
-
-            // redirect page after 5 seconds
-            var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
-            if (ScriptManager.GetCurrent(this.Page) != null)
-            {
-                // respect MS AJAX
-                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "ChangePasswordSuccessful", script, true);
-            }
-            else
-            {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ChangePasswordSuccessful", script, true);
             }
         }
 

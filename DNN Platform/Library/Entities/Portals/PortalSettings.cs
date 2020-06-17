@@ -27,6 +27,23 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
     {
+        public PortalSettings()
+        {
+            this.Registration = new RegistrationSettings();
+        }
+
+        public PortalSettings(int portalId)
+            : this(Null.NullInteger, portalId)
+        {
+        }
+
+        public PortalSettings(int tabId, int portalId)
+        {
+            this.PortalId = portalId;
+            var portal = PortalController.Instance.GetPortal(portalId);
+            this.BuildPortalSettings(tabId, portal);
+        }
+
         public enum ControlPanelPermission
         {
             TabEditor,
@@ -53,23 +70,6 @@ namespace DotNetNuke.Entities.Portals
             Manual = 1,
             DelayedHardDelete = 2,
             HardDelete = 3,
-        }
-
-        public PortalSettings()
-        {
-            this.Registration = new RegistrationSettings();
-        }
-
-        public PortalSettings(int portalId)
-            : this(Null.NullInteger, portalId)
-        {
-        }
-
-        public PortalSettings(int tabId, int portalId)
-        {
-            this.PortalId = portalId;
-            var portal = PortalController.Instance.GetPortal(portalId);
-            this.BuildPortalSettings(tabId, portal);
         }
 
         /// -----------------------------------------------------------------------------
@@ -106,6 +106,20 @@ namespace DotNetNuke.Entities.Portals
             this.BuildPortalSettings(tabId, portal);
         }
 
+        public static PortalSettings Current
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
+        public TabInfo ActiveTab { get; set; }
+
+        public int AdministratorId { get; set; }
+
+        public int AdministratorRoleId { get; set; }
+
         private void BuildPortalSettings(int tabId, PortalInfo portal)
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
@@ -132,12 +146,6 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
         }
-
-        public TabInfo ActiveTab { get; set; }
-
-        public int AdministratorId { get; set; }
-
-        public int AdministratorRoleId { get; set; }
 
         public string AdministratorRoleName { get; set; }
 
@@ -435,14 +443,6 @@ namespace DotNetNuke.Entities.Portals
             {
                 var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
                 return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
-            }
-        }
-
-        public static PortalSettings Current
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 

@@ -16,10 +16,10 @@ namespace DotNetNuke.Web.Api
 
     public sealed class StandardTabAndModuleInfoProvider : ITabAndModuleInfoProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
-
         private const string ModuleIdKey = "ModuleId";
         private const string TabIdKey = "TabId";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
         private const string MonikerQueryKey = "Moniker";
         private const string MonikerHeaderKey = "X-DNN-MONIKER";
         private const string MonikerSettingsKey = "Moniker";
@@ -27,6 +27,28 @@ namespace DotNetNuke.Web.Api
         public bool TryFindTabId(HttpRequestMessage request, out int tabId)
         {
             return TryFindTabId(request, out tabId, true);
+        }
+
+        public bool TryFindModuleId(HttpRequestMessage request, out int moduleId)
+        {
+            return TryFindModuleId(request, out moduleId, true);
+        }
+
+        public bool TryFindModuleInfo(HttpRequestMessage request, out ModuleInfo moduleInfo)
+        {
+            int tabId, moduleId;
+            if (TryFindTabId(request, out tabId, false) && TryFindModuleId(request, out moduleId, false))
+            {
+                moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+                if (moduleInfo != null && moduleInfo.IsDeleted)
+                {
+                    moduleInfo = null;
+                }
+
+                return moduleInfo != null;
+            }
+
+            return TryFindByMoniker(request, out moduleInfo);
         }
 
         private static bool TryFindTabId(HttpRequestMessage request, out int tabId, bool tryMoniker)
@@ -50,11 +72,6 @@ namespace DotNetNuke.Web.Api
             return false;
         }
 
-        public bool TryFindModuleId(HttpRequestMessage request, out int moduleId)
-        {
-            return TryFindModuleId(request, out moduleId, true);
-        }
-
         private static bool TryFindModuleId(HttpRequestMessage request, out int moduleId, bool tryMoniker)
         {
             moduleId = FindInt(request, ModuleIdKey);
@@ -74,23 +91,6 @@ namespace DotNetNuke.Web.Api
             }
 
             return false;
-        }
-
-        public bool TryFindModuleInfo(HttpRequestMessage request, out ModuleInfo moduleInfo)
-        {
-            int tabId, moduleId;
-            if (TryFindTabId(request, out tabId, false) && TryFindModuleId(request, out moduleId, false))
-            {
-                moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
-                if (moduleInfo != null && moduleInfo.IsDeleted)
-                {
-                    moduleInfo = null;
-                }
-
-                return moduleInfo != null;
-            }
-
-            return TryFindByMoniker(request, out moduleInfo);
         }
 
         private static int FindInt(HttpRequestMessage requestMessage, string key)

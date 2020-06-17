@@ -18,6 +18,29 @@ namespace DotNetNuke.Web.DDRMenu
     [XmlRoot("root", Namespace = "")]
     public class MenuNode : IXmlSerializable
     {
+        private List<MenuNode> _Children;
+
+        public MenuNode()
+        {
+        }
+
+        public MenuNode(DNNNodeCollection dnnNodes)
+        {
+            this.Children = ConvertDNNNodeCollection(dnnNodes, this);
+        }
+
+        public MenuNode(List<MenuNode> nodes)
+        {
+            this.Children = nodes;
+            this.Children.ForEach(c => c.Parent = this);
+        }
+
+        public int TabId { get; set; }
+
+        public string Text { get; set; }
+
+        public string Title { get; set; }
+
         public static List<MenuNode> ConvertDNNNodeCollection(DNNNodeCollection dnnNodes, MenuNode parent)
         {
             var result = new List<MenuNode>();
@@ -28,12 +51,6 @@ namespace DotNetNuke.Web.DDRMenu
 
             return result;
         }
-
-        public int TabId { get; set; }
-
-        public string Text { get; set; }
-
-        public string Title { get; set; }
 
         public string Url { get; set; }
 
@@ -85,29 +102,13 @@ namespace DotNetNuke.Web.DDRMenu
 
         public string Description { get; set; }
 
-        private List<MenuNode> _Children;
-
         public List<MenuNode> Children
         {
-            get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; }
+            get { return this._Children ?? (this._Children = new List<MenuNode>()); }
+            set { this._Children = value; }
         }
 
         public MenuNode Parent { get; set; }
-
-        public MenuNode()
-        {
-        }
-
-        public MenuNode(DNNNodeCollection dnnNodes)
-        {
-            this.Children = ConvertDNNNodeCollection(dnnNodes, this);
-        }
-
-        public MenuNode(List<MenuNode> nodes)
-        {
-            this.Children = nodes;
-            this.Children.ForEach(c => c.Parent = this);
-        }
 
         public MenuNode(DNNNode dnnNode, MenuNode parent)
         {
@@ -220,50 +221,9 @@ namespace DotNetNuke.Web.DDRMenu
             return null;
         }
 
-        internal void RemoveAll(List<MenuNode> filteredNodes)
-        {
-            this.Children.RemoveAll(filteredNodes.Contains);
-            foreach (var child in this.Children)
-            {
-                child.RemoveAll(filteredNodes);
-            }
-        }
-
         public bool HasChildren()
         {
             return this.Children.Count > 0;
-        }
-
-        internal void ApplyContext(string defaultImagePath)
-        {
-            this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);
-            this.LargeImage = this.ApplyContextToImagePath(this.LargeImage, defaultImagePath);
-
-            if (this.Url != null && this.Url.StartsWith("postback:"))
-            {
-                var postbackControl = DNNContext.Current.HostControl;
-                this.Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, this.Url.Substring(9));
-            }
-
-            this.Children.ForEach(c => c.ApplyContext(defaultImagePath));
-        }
-
-        private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
-        {
-            var result = imagePath;
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    result = Globals.ResolveUrl(result);
-                }
-                else if (!(result.Contains("://") || result.StartsWith("/")))
-                {
-                    result = defaultImagePath + result;
-                }
-            }
-
-            return result;
         }
 
         public XmlSchema GetSchema()
@@ -321,8 +281,8 @@ namespace DotNetNuke.Web.DDRMenu
                             this.Target = reader.Value;
                             break;
 
-                        // default:
-                        //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
+                            // default:
+                            //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
                     }
                 }
                 while (reader.MoveToNextAttribute());
@@ -363,6 +323,47 @@ namespace DotNetNuke.Web.DDRMenu
                         return;
                 }
             }
+        }
+
+        internal void RemoveAll(List<MenuNode> filteredNodes)
+        {
+            this.Children.RemoveAll(filteredNodes.Contains);
+            foreach (var child in this.Children)
+            {
+                child.RemoveAll(filteredNodes);
+            }
+        }
+
+        internal void ApplyContext(string defaultImagePath)
+        {
+            this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);
+            this.LargeImage = this.ApplyContextToImagePath(this.LargeImage, defaultImagePath);
+
+            if (this.Url != null && this.Url.StartsWith("postback:"))
+            {
+                var postbackControl = DNNContext.Current.HostControl;
+                this.Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, this.Url.Substring(9));
+            }
+
+            this.Children.ForEach(c => c.ApplyContext(defaultImagePath));
+        }
+
+        private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
+        {
+            var result = imagePath;
+            if (!string.IsNullOrEmpty(result))
+            {
+                if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    result = Globals.ResolveUrl(result);
+                }
+                else if (!(result.Contains("://") || result.StartsWith("/")))
+                {
+                    result = defaultImagePath + result;
+                }
+            }
+
+            return result;
         }
 
         public void WriteXml(XmlWriter writer)

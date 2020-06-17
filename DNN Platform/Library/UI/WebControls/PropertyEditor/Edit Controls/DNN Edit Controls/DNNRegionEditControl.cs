@@ -2,7 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
-{       using System;
+{
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.UI;
@@ -18,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
-/// -----------------------------------------------------------------------------
+    /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      DNNRegionEditControl
@@ -33,48 +34,27 @@ namespace DotNetNuke.UI.WebControls
     {
         private DropDownList _Regions;
 
-        private DropDownList Regions
-        {
-            get
-            {
-                if (this._Regions == null)
-                {
-                    this._Regions = new DropDownList();
-                }
-
-                return this._Regions;
-            }
-        }
-
         private TextBox _Region;
-
-        private TextBox Region
-        {
-            get
-            {
-                if (this._Region == null)
-                {
-                    this._Region = new TextBox();
-                }
-
-                return this._Region;
-            }
-        }
 
         private HtmlInputHidden _InitialValue;
 
-        private HtmlInputHidden RegionCode
-        {
-            get
-            {
-                if (this._InitialValue == null)
-                {
-                    this._InitialValue = new HtmlInputHidden();
-                }
+        private List<ListEntryInfo> _listEntries;
 
-                return this._InitialValue;
-            }
+        public DNNRegionEditControl()
+        {
+            this.Init += this.DnnRegionControl_Init;
         }
+
+        public DNNRegionEditControl(string type)
+        {
+            this.Init += this.DnnRegionControl_Init;
+            this.SystemType = type;
+        }
+
+        /// <summary>
+        /// Gets or sets the parent key of the List to display.
+        /// </summary>
+        public string ParentKey { get; set; }
 
         protected override string StringValue
         {
@@ -97,12 +77,44 @@ namespace DotNetNuke.UI.WebControls
             get { return Convert.ToString(this.OldValue); }
         }
 
-        /// <summary>
-        /// Gets or sets the parent key of the List to display.
-        /// </summary>
-        public string ParentKey { get; set; }
+        private DropDownList Regions
+        {
+            get
+            {
+                if (this._Regions == null)
+                {
+                    this._Regions = new DropDownList();
+                }
 
-        private List<ListEntryInfo> _listEntries;
+                return this._Regions;
+            }
+        }
+
+        private TextBox Region
+        {
+            get
+            {
+                if (this._Region == null)
+                {
+                    this._Region = new TextBox();
+                }
+
+                return this._Region;
+            }
+        }
+
+        private HtmlInputHidden RegionCode
+        {
+            get
+            {
+                if (this._InitialValue == null)
+                {
+                    this._InitialValue = new HtmlInputHidden();
+                }
+
+                return this._InitialValue;
+            }
+        }
 
         /// <summary>
         /// Gets the ListEntryInfo objects associated witht the control.
@@ -129,15 +141,18 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public DNNRegionEditControl()
+        public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
-            this.Init += this.DnnRegionControl_Init;
-        }
+            bool dataChanged = false;
+            string presentValue = this.StringValue;
+            string postedValue = postCollection[postDataKey + "_value"];
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
 
-        public DNNRegionEditControl(string type)
-        {
-            this.Init += this.DnnRegionControl_Init;
-            this.SystemType = type;
+            return dataChanged;
         }
 
         /// -----------------------------------------------------------------------------
@@ -191,20 +206,6 @@ namespace DotNetNuke.UI.WebControls
             this.RegionCode.ID = this.ID + "_value";
             this.RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
             this.Controls.Add(this.RegionCode);
-        }
-
-        public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
-        {
-            bool dataChanged = false;
-            string presentValue = this.StringValue;
-            string postedValue = postCollection[postDataKey + "_value"];
-            if (!presentValue.Equals(postedValue))
-            {
-                this.Value = postedValue;
-                dataChanged = true;
-            }
-
-            return dataChanged;
         }
 
         protected override void OnPreRender(System.EventArgs e)

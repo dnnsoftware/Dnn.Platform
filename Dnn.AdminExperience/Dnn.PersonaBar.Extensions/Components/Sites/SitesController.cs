@@ -1,58 +1,55 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-
-
-#endregion
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Web;
-using System.Web.UI.WebControls;
-using System.Xml;
-using Dnn.PersonaBar.Library.Controllers;
-using Dnn.PersonaBar.Library.DTO.Tabs;
-using Dnn.PersonaBar.Sites.Components.Dto;
-using Dnn.PersonaBar.Sites.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Profile;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Mail;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-
 namespace Dnn.PersonaBar.Sites.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Library.DTO.Tabs;
+    using Dnn.PersonaBar.Sites.Components.Dto;
+    using Dnn.PersonaBar.Sites.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Mail;
+    using ICSharpCode.SharpZipLib;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class SitesController
     {
+        internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
         private readonly TabsController _tabsController = new TabsController();
-        internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
+
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
         private CultureDropDownTypes DisplayType { get; set; }
 
@@ -77,8 +74,6 @@ namespace Dnn.PersonaBar.Sites.Components
 #endif
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
-
-        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
         public IList<HttpAliasDto> FormatPortalAliases(int portalId)
         {
@@ -146,7 +141,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
 
                 text = string.Format("{0} - {1}", template.Name, Localization.GetLocaleName(template.CultureCode, this.DisplayType));
-                
+
                 value = string.Format("{0}|{1}|{2}", fileName, template.CultureCode, this.GetThumbnail(fileName));
             }
 
@@ -279,54 +274,6 @@ namespace Dnn.PersonaBar.Sites.Components
 
             success = true;
             return string.Format(Localization.GetString("ExportedMessage", this.LocalResourcesFile), filename);
-        }
-
-        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
-            IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
-        {
-            if (tabsCollection == null)
-            {
-                var tab = this._tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
-                tabsCollection = tab.ChildTabs;
-                tab.ChildTabs = null;
-                tab.HasChildren = false;
-                tabsCollection.Add(tab);
-            }
-            var selectedTabs = userSelection as List<TabDto> ?? userSelection.ToList();
-            foreach (var tab in tabsCollection)
-            {
-                if (selectedTabs.Exists(x => x.TabId == tab.TabId))
-                {
-                    var existingTab = selectedTabs.First(x => x.TabId == tab.TabId);
-                    tab.CheckedState = existingTab.CheckedState;
-                    if (string.IsNullOrEmpty(Convert.ToString(existingTab.Name)))
-                    {
-                        selectedTabs.Remove(existingTab);
-                        selectedTabs.Add(tab);
-                    }
-                }
-                else
-                {
-                    selectedTabs.Add(tab);
-                }
-
-                if (tab.HasChildren)
-                {
-                    var checkedState = NodeCheckedState.UnChecked;
-                    if (tab.CheckedState == NodeCheckedState.Checked)
-                    {
-                        checkedState = NodeCheckedState.Checked;
-                    }
-
-                    var descendants = this._tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
-                        isMultiLanguage).ToList();
-                    descendants.ForEach(x => { x.CheckedState = checkedState; });
-
-                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
-                        descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
-                }
-            }
-            return selectedTabs;
         }
 
         public int CreatePortal(List<string> errors, string domainName, string serverPath, string siteTemplate, string siteName, string siteAlias,
@@ -525,7 +472,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     var objPortal = PortalController.Instance.GetPortal(intPortalId);
                     var newSettings = new PortalSettings
                     {
-                        PortalAlias = new PortalAliasInfo {HTTPAlias = strPortalAlias},
+                        PortalAlias = new PortalAliasInfo { HTTPAlias = strPortalAlias },
                         PortalId = intPortalId,
                         DefaultLanguage = objPortal.DefaultLanguage
                     };
@@ -575,6 +522,54 @@ namespace Dnn.PersonaBar.Sites.Components
             }
 
             return intPortalId;
+        }
+
+        private IEnumerable<TabDto> GetTabsToExport(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage,
+            IEnumerable<TabDto> userSelection, IList<TabDto> tabsCollection)
+        {
+            if (tabsCollection == null)
+            {
+                var tab = this._tabsController.GetPortalTabs(userInfo, portalId, cultureCode, isMultiLanguage);
+                tabsCollection = tab.ChildTabs;
+                tab.ChildTabs = null;
+                tab.HasChildren = false;
+                tabsCollection.Add(tab);
+            }
+            var selectedTabs = userSelection as List<TabDto> ?? userSelection.ToList();
+            foreach (var tab in tabsCollection)
+            {
+                if (selectedTabs.Exists(x => x.TabId == tab.TabId))
+                {
+                    var existingTab = selectedTabs.First(x => x.TabId == tab.TabId);
+                    tab.CheckedState = existingTab.CheckedState;
+                    if (string.IsNullOrEmpty(Convert.ToString(existingTab.Name)))
+                    {
+                        selectedTabs.Remove(existingTab);
+                        selectedTabs.Add(tab);
+                    }
+                }
+                else
+                {
+                    selectedTabs.Add(tab);
+                }
+
+                if (tab.HasChildren)
+                {
+                    var checkedState = NodeCheckedState.UnChecked;
+                    if (tab.CheckedState == NodeCheckedState.Checked)
+                    {
+                        checkedState = NodeCheckedState.Checked;
+                    }
+
+                    var descendants = this._tabsController.GetTabsDescendants(portalId, Convert.ToInt32(tab.TabId), cultureCode,
+                        isMultiLanguage).ToList();
+                    descendants.ForEach(x => { x.CheckedState = checkedState; });
+
+                    selectedTabs.AddRange(this.GetTabsToExport(userInfo, portalId, cultureCode, isMultiLanguage, selectedTabs,
+                        descendants).Where(x => !selectedTabs.Exists(y => y.TabId == x.TabId)));
+                }
+            }
+            return selectedTabs;
         }
 
         private TabCollection GetExportableTabs(TabCollection tabs)
@@ -844,7 +839,7 @@ namespace Dnn.PersonaBar.Sites.Components
             //End Portal Settings
             writer.WriteEndElement();
         }
-        
+
         private void SerializeEnabledLocales(XmlWriter writer, PortalInfo portal, bool isMultilanguage, IEnumerable<string> locales)
         {
             var enabledLocales = LocaleController.Instance.GetLocales(portal.PortalID);
@@ -949,7 +944,7 @@ namespace Dnn.PersonaBar.Sites.Components
             writer.WriteStartElement("files");
             foreach (var fileInfo in folderManager.GetFiles(objFolder))
             {
-                var objFile = (FileInfo) fileInfo;
+                var objFile = (FileInfo)fileInfo;
                 //verify that the file exists on the file system
                 var filePath = objportal.HomeDirectoryMapPath + folderPath + this.GetActualFileName(objFile);
                 if (File.Exists(filePath))
@@ -962,7 +957,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     writer.WriteElementString("height", objFile.Height.ToString(CultureInfo.InvariantCulture));
                     writer.WriteElementString("size", objFile.Size.ToString(CultureInfo.InvariantCulture));
                     writer.WriteElementString("width", objFile.Width.ToString(CultureInfo.InvariantCulture));
-                    
+
                     writer.WriteEndElement();
 
                     FileSystemUtils.AddToZip(ref zipFile, filePath, this.GetActualFileName(objFile), folderPath);
@@ -1074,7 +1069,7 @@ namespace Dnn.PersonaBar.Sites.Components
         private void SerializeTabs(XmlWriter writer, PortalInfo portal, Hashtable tabs, TabCollection tabCollection, IEnumerable<TabDto> pages, bool chkContent)
         {
             pages = pages.ToList();
-            foreach (var tab in tabCollection.Values.OrderBy(x=>x.Level))
+            foreach (var tab in tabCollection.Values.OrderBy(x => x.Level))
             {
                 //if not deleted
                 if (!tab.IsDeleted)

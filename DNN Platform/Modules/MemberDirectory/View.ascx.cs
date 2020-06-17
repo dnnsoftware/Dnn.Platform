@@ -20,6 +20,34 @@ namespace DotNetNuke.Modules.MemberDirectory
 
     public partial class View : ProfileModuleUserControlBase
     {
+        public override bool DisplayModule
+        {
+            get
+            {
+                return !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
+            }
+        }
+
+        public string ProfileResourceFile
+        {
+            get { return "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx"; }
+        }
+
+        protected string AlternateItemTemplate
+        {
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
+        }
+
+        protected bool DisablePaging
+        {
+            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
+        }
+
+        protected string DisplaySearch
+        {
+            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
@@ -36,21 +64,6 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.loadMore.Visible = !this.DisablePaging;
 
             base.OnInit(e);
-        }
-
-        protected string AlternateItemTemplate
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "AlternateItemTemplate", Settings.DefaultAlternateItemTemplate); }
-        }
-
-        protected bool DisablePaging
-        {
-            get { return bool.Parse(this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisablePaging", "false")); }
-        }
-
-        protected string DisplaySearch
-        {
-            get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "DisplaySearch", "Both"); }
         }
 
         protected bool EnablePopUp
@@ -93,19 +106,6 @@ namespace DotNetNuke.Modules.MemberDirectory
         protected string PopUpTemplate
         {
             get { return this.GetSetting(this.ModuleContext.Configuration.TabModuleSettings, "PopUpTemplate", Settings.DefaultPopUpTemplate); }
-        }
-
-        public override bool DisplayModule
-        {
-            get
-            {
-                return !(this.ProfileUserId == this.ModuleContext.PortalSettings.UserId && this.FilterBy == "User") && this.ModuleContext.PortalSettings.UserId > -1;
-            }
-        }
-
-        public string ProfileResourceFile
-        {
-            get { return "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx"; }
         }
 
         protected string ProfileUrlUserToken

@@ -16,6 +16,79 @@ namespace DotNetNuke.Entities.Urls
     internal static class CustomUrlDictController
     {
         /// <summary>
+        /// returns a tabId indexed dictionary of Friendly Urls.
+        /// </summary>
+        /// <param name="portalId"></param>
+        /// <param name="forceRebuild"></param>
+        /// <param name="bypassCache"></param>
+        /// <param name="settings"></param>
+        /// <param name="customAliasForTabs"></param>
+        /// <param name="parentTraceId"></param>
+        /// <returns></returns>
+        internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(
+            int portalId,
+            bool forceRebuild,
+            bool bypassCache,
+            FriendlyUrlSettings settings,
+            out SharedDictionary<string, string> customAliasForTabs,
+            Guid parentTraceId)
+        {
+            SharedDictionary<int, SharedDictionary<string, string>> urlDict;
+
+            // this contains a list of all tabs for all the portals that have been retrieved
+            ConcurrentBag<int> urlPortals; // this contains a list of the portals that have been retrieved
+
+            // get the objects from the cache
+            var cc = new CacheController();
+            cc.GetFriendlyUrlIndexFromCache(out urlDict, out urlPortals, out customAliasForTabs);
+
+            if (urlDict != null && forceRebuild == false && bypassCache == false)
+            {
+                if (urlPortals == null)
+
+                // no portals retrieved from cache, but was a dictionary.  Bit weird, but we'll run with it
+                {
+                    urlPortals = new ConcurrentBag<int>();
+                }
+
+                // check to see if this portal has been included in the dict
+                if (urlPortals.Contains(portalId) == false)
+                {
+                    // ok, there is a url dictionary, but this portal isn't in it, so
+                    // put it in and get the urls for this portal
+                    // this call appends extra portals to the list
+                    urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
+                    urlPortals.Add(portalId);
+
+                    cc.StoreFriendlyUrlIndexInCache(
+                        urlDict,
+                        urlPortals,
+                        customAliasForTabs, settings,
+                        "Portal Id " + portalId.ToString() + " added to index.");
+                }
+            }
+            else // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache
+            {
+                // rebuild the dictionary for this portal
+                urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
+                urlPortals = new ConcurrentBag<int> { portalId }; // always rebuild the portal list
+                if (bypassCache == false) // if we are to cache this item (byPassCache = false)
+                {
+                    // cache these items
+                    string reason = forceRebuild ? "Force Rebuild of Index" : "Index not in cache";
+                    cc.StoreFriendlyUrlIndexInCache(urlDict, urlPortals, customAliasForTabs, settings, reason);
+                }
+            }
+
+            return urlDict;
+        }
+
+        internal static void InvalidateDictionary()
+        {
+            CacheController.FlushPageIndexFromCache();
+        }
+
+        /// <summary>
         /// Returns a list of tab and redirects from the database, for the specified portal
         /// Assumes that the dictionary should have any existing items replaced if the portalid is specified
         /// and the portal tabs already exist in the dictionary.
@@ -138,79 +211,6 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// returns a tabId indexed dictionary of Friendly Urls.
-        /// </summary>
-        /// <param name="portalId"></param>
-        /// <param name="forceRebuild"></param>
-        /// <param name="bypassCache"></param>
-        /// <param name="settings"></param>
-        /// <param name="customAliasForTabs"></param>
-        /// <param name="parentTraceId"></param>
-        /// <returns></returns>
-        internal static SharedDictionary<int, SharedDictionary<string, string>> FetchCustomUrlDictionary(
-            int portalId,
-            bool forceRebuild,
-            bool bypassCache,
-            FriendlyUrlSettings settings,
-            out SharedDictionary<string, string> customAliasForTabs,
-            Guid parentTraceId)
-        {
-            SharedDictionary<int, SharedDictionary<string, string>> urlDict;
-
-            // this contains a list of all tabs for all the portals that have been retrieved
-            ConcurrentBag<int> urlPortals; // this contains a list of the portals that have been retrieved
-
-            // get the objects from the cache
-            var cc = new CacheController();
-            cc.GetFriendlyUrlIndexFromCache(out urlDict, out urlPortals, out customAliasForTabs);
-
-            if (urlDict != null && forceRebuild == false && bypassCache == false)
-            {
-                if (urlPortals == null)
-
-                // no portals retrieved from cache, but was a dictionary.  Bit weird, but we'll run with it
-                {
-                    urlPortals = new ConcurrentBag<int>();
-                }
-
-                // check to see if this portal has been included in the dict
-                if (urlPortals.Contains(portalId) == false)
-                {
-                    // ok, there is a url dictionary, but this portal isn't in it, so
-                    // put it in and get the urls for this portal
-                    // this call appends extra portals to the list
-                    urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
-                    urlPortals.Add(portalId);
-
-                    cc.StoreFriendlyUrlIndexInCache(
-                        urlDict,
-                        urlPortals,
-                        customAliasForTabs, settings,
-                        "Portal Id " + portalId.ToString() + " added to index.");
-                }
-            }
-            else // either values are null (Not in cache) or we want to force the rebuild, or we want to bypass the cache
-            {
-                // rebuild the dictionary for this portal
-                urlDict = BuildUrlDictionary(urlDict, portalId, settings, ref customAliasForTabs);
-                urlPortals = new ConcurrentBag<int> { portalId }; // always rebuild the portal list
-                if (bypassCache == false) // if we are to cache this item (byPassCache = false)
-                {
-                    // cache these items
-                    string reason = forceRebuild ? "Force Rebuild of Index" : "Index not in cache";
-                    cc.StoreFriendlyUrlIndexInCache(urlDict, urlPortals, customAliasForTabs, settings, reason);
-                }
-            }
-
-            return urlDict;
-        }
-
-        internal static void InvalidateDictionary()
-        {
-            CacheController.FlushPageIndexFromCache();
         }
     }
 }

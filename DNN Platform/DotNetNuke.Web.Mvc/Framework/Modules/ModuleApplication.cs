@@ -20,27 +20,27 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
     public class ModuleApplication
     {
+        internal static readonly string MvcVersion = GetMvcVersionString();
+
         protected const string ControllerMasterFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedMasterFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         protected const string ControllerViewFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedViewFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
         protected const string ControllerPartialFormat = "~/DesktopModules/MVC/{0}/Views/{{1}}/{{0}}.cshtml";
         protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
-
-        public RequestContext RequestContext { get; private set; }
-
-        internal static readonly string MvcVersion = GetMvcVersionString();
         private const string MvcVersionHeaderName = "X-AspNetMvc-Version";
-
-        private static bool DisableMvcResponseHeader { get; set; }
+        private readonly object _lock = new object();
 
         private bool _initialized;
-        private readonly object _lock = new object();
 
         public ModuleApplication()
             : this(null, false)
         {
         }
+
+        public RequestContext RequestContext { get; private set; }
+
+        private static bool DisableMvcResponseHeader { get; set; }
 
         public ModuleApplication(bool disableMvcResponseHeader)
             : this(null, disableMvcResponseHeader)
@@ -72,27 +72,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
-
-        protected void EnsureInitialized()
-        {
-            // Double-check lock to wait for initialization
-            // TODO: Is there a better (preferably using events and waits) way to do this?
-            if (this._initialized)
-            {
-                return;
-            }
-
-            lock (this._lock)
-            {
-                if (this._initialized)
-                {
-                    return;
-                }
-
-                this.Init();
-                this._initialized = true;
-            }
-        }
 
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
@@ -149,13 +128,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 // Return the final result
                 return new ModuleRequestResult
-                                {
-                                    ActionResult = result,
-                                    ControllerContext = moduleController.ControllerContext,
-                                    ModuleActions = moduleController.ModuleActions,
-                                    ModuleContext = context.ModuleContext,
-                                    ModuleApplication = this,
-                                };
+                {
+                    ActionResult = result,
+                    ControllerContext = moduleController.ControllerContext,
+                    ModuleActions = moduleController.ModuleActions,
+                    ModuleContext = context.ModuleContext,
+                    ModuleApplication = this,
+                };
             }
             finally
             {
@@ -180,17 +159,32 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             };
 
             this.ViewEngines.Add(new RazorViewEngine
-                                    {
-                                        MasterLocationFormats = masterFormats,
-                                        ViewLocationFormats = viewFormats,
-                                        PartialViewLocationFormats = viewFormats,
-                                    });
+            {
+                MasterLocationFormats = masterFormats,
+                ViewLocationFormats = viewFormats,
+                PartialViewLocationFormats = viewFormats,
+            });
         }
 
-        protected static string NormalizeFolderPath(string path)
+        protected void EnsureInitialized()
         {
-            // Remove leading and trailing slashes
-            return !string.IsNullOrEmpty(path) ? path.Trim('/') : path;
+            // Double-check lock to wait for initialization
+            // TODO: Is there a better (preferably using events and waits) way to do this?
+            if (this._initialized)
+            {
+                return;
+            }
+
+            lock (this._lock)
+            {
+                if (this._initialized)
+                {
+                    return;
+                }
+
+                this.Init();
+                this._initialized = true;
+            }
         }
 
         protected internal virtual void AddVersionHeader(HttpContextBase httpContext)
@@ -201,12 +195,10 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             }
         }
 
-        private void RemoveOptionalRoutingParameters()
+        protected static string NormalizeFolderPath(string path)
         {
-            var rvd = this.RequestContext.RouteData.Values;
-
-            // Ensure delegate is stateless
-            rvd.RemoveFromDictionary((entry) => entry.Value == UrlParameter.Optional);
+            // Remove leading and trailing slashes
+            return !string.IsNullOrEmpty(path) ? path.Trim('/') : path;
         }
 
         private static string GetMvcVersionString()
@@ -215,6 +207,14 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             // This code originally used Assembly.GetName(), but that requires FileIOPermission, which isn't granted in
             // medium trust. However, Assembly.FullName *is* accessible in medium trust.
             return new AssemblyName(typeof(MvcHandler).Assembly.FullName).Version.ToString(2);
+        }
+
+        private void RemoveOptionalRoutingParameters()
+        {
+            var rvd = this.RequestContext.RouteData.Values;
+
+            // Ensure delegate is stateless
+            rvd.RemoveFromDictionary((entry) => entry.Value == UrlParameter.Optional);
         }
     }
 }

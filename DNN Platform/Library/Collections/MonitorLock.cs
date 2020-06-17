@@ -9,13 +9,13 @@ namespace DotNetNuke.Collections.Internal
     {
         private ExclusiveLockStrategy _lockStrategy;
 
+        // To detect redundant calls
+        private bool _isDisposed;
+
         public MonitorLock(ExclusiveLockStrategy lockStrategy)
         {
             this._lockStrategy = lockStrategy;
         }
-
-        // To detect redundant calls
-        private bool _isDisposed;
 
         public void Dispose()
         {

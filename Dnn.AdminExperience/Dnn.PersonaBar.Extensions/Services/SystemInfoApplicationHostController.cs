@@ -22,6 +22,15 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoApplicationHostController));
 
+        public static string FirstCharToUpper(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+        }
+
         [HttpGet]
         public HttpResponseMessage GetApplicationInfo()
         {
@@ -30,19 +39,19 @@ namespace Dnn.PersonaBar.Servers.Services
                 var friendlyUrlProvider = this.GetProviderConfiguration("friendlyUrl");
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
-                   product = DotNetNukeContext.Current.Application.Description,
-                   version = DotNetNukeContext.Current.Application.Version.ToString(3),
-                   guid = DotNetNuke.Entities.Host.Host.GUID,
-                   htmlEditorProvider = this.GetProviderConfiguration("htmlEditor"),
-                   dataProvider = this.GetProviderConfiguration("data"),
-                   cachingProvider = this.GetProviderConfiguration("caching"),
-                   loggingProvider = this.GetProviderConfiguration("logging"),
-                   friendlyUrlProvider,
-                   friendlyUrlsEnabled = DotNetNuke.Entities.Host.Host.UseFriendlyUrls.ToString(),
-                   friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
-                   schedulerMode = DotNetNuke.Entities.Host.Host.SchedulerMode.ToString(),
-                   webFarmEnabled = DotNetNuke.Services.Cache.CachingProvider.Instance().IsWebFarm().ToString(),
-                   casPermissions = SecurityPolicy.Permissions
+                    product = DotNetNukeContext.Current.Application.Description,
+                    version = DotNetNukeContext.Current.Application.Version.ToString(3),
+                    guid = DotNetNuke.Entities.Host.Host.GUID,
+                    htmlEditorProvider = this.GetProviderConfiguration("htmlEditor"),
+                    dataProvider = this.GetProviderConfiguration("data"),
+                    cachingProvider = this.GetProviderConfiguration("caching"),
+                    loggingProvider = this.GetProviderConfiguration("logging"),
+                    friendlyUrlProvider,
+                    friendlyUrlsEnabled = DotNetNuke.Entities.Host.Host.UseFriendlyUrls.ToString(),
+                    friendlyUrlType = GetFriendlyUrlType(friendlyUrlProvider),
+                    schedulerMode = DotNetNuke.Entities.Host.Host.SchedulerMode.ToString(),
+                    webFarmEnabled = DotNetNuke.Services.Cache.CachingProvider.Instance().IsWebFarm().ToString(),
+                    casPermissions = SecurityPolicy.Permissions
                 });
             }
             catch (Exception exc)
@@ -52,25 +61,16 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private string GetProviderConfiguration(string providerName)
-        {
-            return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
-        }
-
         private static string GetFriendlyUrlType(string friendlyUrlProvider)
         {
-            var urlProvider = (Provider) ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[friendlyUrlProvider];
+            var urlProvider = (Provider)ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[friendlyUrlProvider];
             var urlFormat = urlProvider.Attributes["urlformat"];
             return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : FirstCharToUpper(urlFormat);
         }
 
-        public static string FirstCharToUpper(string input)
+        private string GetProviderConfiguration(string providerName)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return input;
-            }
-            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+            return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
         }
 
     }

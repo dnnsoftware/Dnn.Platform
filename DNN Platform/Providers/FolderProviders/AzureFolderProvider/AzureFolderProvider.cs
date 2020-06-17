@@ -51,6 +51,117 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             get { return "Azure_ListObjects_{0}"; }
         }
 
+        /// <remarks>
+        /// Azure Storage doesn't support folders, so we create a file in order for the folder to not be deleted during future synchronizations.
+        /// The file has an extension not allowed by host. This way the file won't be added during synchronizations.
+        /// </remarks>
+        public override void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
+        {
+            Requires.NotNull("folderPath", folderPath);
+            Requires.NotNull("folderMapping", folderMapping);
+
+            this.UpdateFileInternal(new MemoryStream(), folderMapping, mappedPath + Constants.PlaceHolderFileName);
+        }
+
+        /// <summary>
+        /// Gets the direct Url to the file.
+        /// </summary>
+        /// <returns></returns>
+        public override string GetFileUrl(IFileInfo file)
+        {
+            Requires.NotNull("file", file);
+
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
+            var directLink = string.IsNullOrEmpty(GetSetting(folderMapping, Constants.DirectLink)) || GetSetting(folderMapping, Constants.DirectLink).ToLowerInvariant() == "true";
+
+            if (directLink)
+            {
+                var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                var uri = folder.MappedPath + file.FileName;
+
+                var container = this.GetContainer(folderMapping);
+                var blob = container.GetBlobReference(uri);
+                var absuri = blob.Uri.AbsoluteUri;
+                var customDomain = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.CustomDomain);
+
+                if (!string.IsNullOrEmpty(customDomain))
+                {
+                    var customUri = new UriBuilder(customDomain).Uri;
+                    absuri =
+                        new UriBuilder(blob.Uri.AbsoluteUri) { Host = customUri.Host, Scheme = customUri.Scheme, Port = customUri.Port }
+                            .Uri.AbsoluteUri;
+                }
+
+                const string groupPolicyIdentifier = "DNNFileManagerPolicy";
+
+                var permissions = container.GetPermissions();
+
+                SharedAccessBlobPolicy policy;
+
+                permissions.SharedAccessPolicies.TryGetValue(groupPolicyIdentifier, out policy);
+
+                if (policy == null)
+                {
+                    policy = new SharedAccessBlobPolicy { Permissions = SharedAccessBlobPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100) };
+
+                    permissions.SharedAccessPolicies.Add(groupPolicyIdentifier, policy);
+                }
+                else
+                {
+                    policy.Permissions = SharedAccessBlobPermissions.Read;
+                    policy.SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100);
+                }
+
+                /*
+                 * Workaround for CONTENT-3662
+                 * The Azure Client Storage api has issue when used with Italian Thread.Culture or eventually other cultures
+                 * (see this article for further information https://connect.microsoft.com/VisualStudio/feedback/details/760974/windows-azure-sdk-cloudblobcontainer-setpermissions-permissions-as-microsoft-windowsazure-storageclient-blobcontainerpermissions-error).
+                 * This code changes the thread culture to en-US
+                 */
+                var currentCulture = Thread.CurrentThread.CurrentCulture;
+                if (currentCulture.Name != "en-US")
+                {
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
+                }
+
+                container.SetPermissions(permissions);
+
+                var signature = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy(), groupPolicyIdentifier);
+
+                // Reset original Thread Culture
+                if (currentCulture.Name != "en-US")
+                {
+                    Thread.CurrentThread.CurrentCulture = currentCulture;
+                }
+
+                return absuri + signature;
+            }
+
+            return FileLinkClickController.Instance.GetFileLinkClick(file);
+        }
+
+        protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
+        {
+            var container = this.GetContainer(folderMapping);
+
+            var sourceBlob = container.GetBlobReference(sourceUri);
+            var newBlob = container.GetBlobReference(newUri);
+
+            newBlob.StartCopy(sourceBlob.Uri);
+
+            this.ClearCache(folderMapping.FolderMappingID);
+        }
+
+        protected override void DeleteFileInternal(FolderMappingInfo folderMapping, string uri)
+        {
+            var container = this.GetContainer(folderMapping);
+            var blob = container.GetBlobReference(uri);
+
+            blob.DeleteIfExists();
+
+            this.ClearCache(folderMapping.FolderMappingID);
+        }
+
         private static void CheckSettings(FolderMappingInfo folderMapping)
         {
             var settings = folderMapping.FolderMappingSettings;
@@ -77,28 +188,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             var csa = new CloudStorageAccount(sc, useHttps);
             var blobClient = csa.CreateCloudBlobClient();
             return blobClient.GetContainerReference(container);
-        }
-
-        protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
-        {
-            var container = this.GetContainer(folderMapping);
-
-            var sourceBlob = container.GetBlobReference(sourceUri);
-            var newBlob = container.GetBlobReference(newUri);
-
-            newBlob.StartCopy(sourceBlob.Uri);
-
-            this.ClearCache(folderMapping.FolderMappingID);
-        }
-
-        protected override void DeleteFileInternal(FolderMappingInfo folderMapping, string uri)
-        {
-            var container = this.GetContainer(folderMapping);
-            var blob = container.GetBlobReference(uri);
-
-            blob.DeleteIfExists();
-
-            this.ClearCache(folderMapping.FolderMappingID);
         }
 
         protected override void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder)
@@ -199,95 +288,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             blob.SetProperties();
 
             this.ClearCache(folderMapping.FolderMappingID);
-        }
-
-        /// <remarks>
-        /// Azure Storage doesn't support folders, so we create a file in order for the folder to not be deleted during future synchronizations.
-        /// The file has an extension not allowed by host. This way the file won't be added during synchronizations.
-        /// </remarks>
-        public override void AddFolder(string folderPath, FolderMappingInfo folderMapping, string mappedPath)
-        {
-            Requires.NotNull("folderPath", folderPath);
-            Requires.NotNull("folderMapping", folderMapping);
-
-            this.UpdateFileInternal(new MemoryStream(), folderMapping, mappedPath + Constants.PlaceHolderFileName);
-        }
-
-        /// <summary>
-        /// Gets the direct Url to the file.
-        /// </summary>
-        /// <returns></returns>
-        public override string GetFileUrl(IFileInfo file)
-        {
-            Requires.NotNull("file", file);
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            var directLink = string.IsNullOrEmpty(GetSetting(folderMapping, Constants.DirectLink)) || GetSetting(folderMapping, Constants.DirectLink).ToLowerInvariant() == "true";
-
-            if (directLink)
-            {
-                var folder = FolderManager.Instance.GetFolder(file.FolderId);
-                var uri = folder.MappedPath + file.FileName;
-
-                var container = this.GetContainer(folderMapping);
-                var blob = container.GetBlobReference(uri);
-                var absuri = blob.Uri.AbsoluteUri;
-                var customDomain = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.CustomDomain);
-
-                if (!string.IsNullOrEmpty(customDomain))
-                {
-                    var customUri = new UriBuilder(customDomain).Uri;
-                    absuri =
-                        new UriBuilder(blob.Uri.AbsoluteUri) { Host = customUri.Host, Scheme = customUri.Scheme, Port = customUri.Port }
-                            .Uri.AbsoluteUri;
-                }
-
-                const string groupPolicyIdentifier = "DNNFileManagerPolicy";
-
-                var permissions = container.GetPermissions();
-
-                SharedAccessBlobPolicy policy;
-
-                permissions.SharedAccessPolicies.TryGetValue(groupPolicyIdentifier, out policy);
-
-                if (policy == null)
-                {
-                    policy = new SharedAccessBlobPolicy { Permissions = SharedAccessBlobPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100) };
-
-                    permissions.SharedAccessPolicies.Add(groupPolicyIdentifier, policy);
-                }
-                else
-                {
-                    policy.Permissions = SharedAccessBlobPermissions.Read;
-                    policy.SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100);
-                }
-
-                /*
-                 * Workaround for CONTENT-3662
-                 * The Azure Client Storage api has issue when used with Italian Thread.Culture or eventually other cultures
-                 * (see this article for further information https://connect.microsoft.com/VisualStudio/feedback/details/760974/windows-azure-sdk-cloudblobcontainer-setpermissions-permissions-as-microsoft-windowsazure-storageclient-blobcontainerpermissions-error).
-                 * This code changes the thread culture to en-US
-                 */
-                var currentCulture = Thread.CurrentThread.CurrentCulture;
-                if (currentCulture.Name != "en-US")
-                {
-                    Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("en-US");
-                }
-
-                container.SetPermissions(permissions);
-
-                var signature = blob.GetSharedAccessSignature(new SharedAccessBlobPolicy(), groupPolicyIdentifier);
-
-                // Reset original Thread Culture
-                if (currentCulture.Name != "en-US")
-                {
-                    Thread.CurrentThread.CurrentCulture = currentCulture;
-                }
-
-                return absuri + signature;
-            }
-
-            return FileLinkClickController.Instance.GetFileLinkClick(file);
         }
 
         /// <summary>

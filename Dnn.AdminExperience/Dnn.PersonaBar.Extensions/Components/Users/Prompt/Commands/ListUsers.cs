@@ -20,10 +20,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("list-users", Constants.UsersCategory, "Prompt_ListUsers_Description")]
     public class ListUsers : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("email", "Prompt_ListUsers_FlagEmail", "String")]
         private const string FlagEmail = "email";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("username", "Prompt_ListUsers_FlagUsername", "String")]
         private const string FlagUsername = "username";
         [FlagParameter("role", "Prompt_ListUsers_FlagRole", "String")]
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
             this.Role = this.GetFlagValue(FlagRole, "Role", string.Empty);

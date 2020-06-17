@@ -62,6 +62,27 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        private static string GetModifiedTime(DateTime dateTime)
+        {
+            return string.Format("{0:MMM} {0:dd}, {0:yyyy} at {0:t}", dateTime);
+        }
+
+        private static string GetTypeName(IFileInfo file)
+        {
+            return file.ContentType == null
+                       ? string.Empty
+                       : (file.ContentType.StartsWith("image/")
+                            ? file.ContentType.Replace("image/", string.Empty)
+                            : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
+        }
+
+        private static bool IsImageFile(string relativePath)
+        {
+            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff" };
+            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1).ToLowerInvariant();
+            return acceptedExtensions.Contains(extension);
+        }
+
         // ReSharper disable LoopCanBeConvertedToQuery
         private List<Item> GetChildren(IFolderInfo folder, ICollection<string> extensions)
         {
@@ -105,11 +126,6 @@ namespace DotNetNuke.Web.InternalServices
             return everything;
         }
 
-        private static string GetModifiedTime(DateTime dateTime)
-        {
-            return string.Format("{0:MMM} {0:dd}, {0:yyyy} at {0:t}", dateTime);
-        }
-
         // ReSharper restore LoopCanBeConvertedToQuery
         private string GetThumbUrl(IFileInfo file)
         {
@@ -125,22 +141,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return fileIcon;
-        }
-
-        private static string GetTypeName(IFileInfo file)
-        {
-            return file.ContentType == null
-                       ? string.Empty
-                       : (file.ContentType.StartsWith("image/")
-                            ? file.ContentType.Replace("image/", string.Empty)
-                            : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
-        }
-
-        private static bool IsImageFile(string relativePath)
-        {
-            var acceptedExtensions = new List<string> { "jpg", "png", "gif", "jpe", "jpeg", "tiff" };
-            var extension = relativePath.Substring(relativePath.LastIndexOf(".", StringComparison.Ordinal) + 1).ToLowerInvariant();
-            return acceptedExtensions.Contains(extension);
         }
 
         private static string GetFileSize(int sizeInBytes)

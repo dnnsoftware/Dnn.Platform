@@ -41,9 +41,6 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         [JsonProperty(PropertyName = "nextPageCommand")]
         public string NextPageCommand;
 
-        [JsonProperty(PropertyName = "records")]
-        public int Records { get; set; }
-
         public ConsoleResultModel()
         {
         }
@@ -52,5 +49,8 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
         {
             this.Output = output;
         }
+
+        [JsonProperty(PropertyName = "records")]
+        public int Records { get; set; }
     }
 }

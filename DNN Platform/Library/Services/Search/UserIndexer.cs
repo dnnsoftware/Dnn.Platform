@@ -140,13 +140,6 @@ namespace DotNetNuke.Services.Search
             return totalIndexed;
         }
 
-        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
-            return total;
-        }
-
         private static int FindModifiedUsers(int portalId, DateTime startDateLocal,
             IDictionary<string, SearchDocument> searchDocuments, IList<ProfilePropertyDefinition> profileDefinitions, out IList<int> indexedUsers,
             ref int startUserId)
@@ -311,6 +304,13 @@ namespace DotNetNuke.Services.Search
             }
         }
 
+        private int IndexCollectedDocs(Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Select(d => d.UniqueKey.Substring(0, d.UniqueKey.IndexOf("_", StringComparison.Ordinal))).Distinct().Count();
+            return total;
+        }
+
         private static UserSearch GetUserSearch(IDataRecord reader)
         {
             try
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Search
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
 
-                        // max cluaseCount is 1024, if reach the max value, perform a delete action.
+                    // max cluaseCount is 1024, if reach the max value, perform a delete action.
                     {
                         keyword.Append(")");
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());

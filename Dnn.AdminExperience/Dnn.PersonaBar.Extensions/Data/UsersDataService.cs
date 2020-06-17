@@ -13,20 +13,16 @@ namespace Dnn.PersonaBar.Users.Data
 
     public class UsersDataService : ServiceLocator<IUsersDataService, UsersDataService>, IUsersDataService
     {
-        #region Overrides of ServiceLocator
-
-        protected override Func<IUsersDataService> GetFactory()
-        {
-            return () => new UsersDataService();
-        }
-
-        #endregion
-
         public IList<UserBasicDto> GetUsersByUserIds(int portalId, string userIds)
         {
             return CBO.FillCollection<UserBasicDto>(DotNetNuke.Data.DataProvider.Instance()
                 .ExecuteReader("Personabar_GetUsersByUserIds",
                     portalId, userIds));
+        }
+
+        protected override Func<IUsersDataService> GetFactory()
+        {
+            return () => new UsersDataService();
         }
     }
 }

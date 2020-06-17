@@ -25,23 +25,7 @@ namespace DotNetNuke.UI.Containers
         private string _commandName = string.Empty;
         private bool _displayLink = true;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleActionCollection to bind to the list.
-        /// </summary>
-        /// <value>A ModuleActionCollection.</value>
-        protected ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                if (this._ModuleActions == null)
-                {
-                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
-                }
-
-                return this._ModuleActions;
-            }
-        }
+        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -83,6 +67,24 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ModuleActionCollection to bind to the list.
+        /// </summary>
+        /// <value>A ModuleActionCollection.</value>
+        protected ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                if (this._ModuleActions == null)
+                {
+                    this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
+                }
+
+                return this._ModuleActions;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether the icon is displayed.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
@@ -115,8 +117,6 @@ namespace DotNetNuke.UI.Containers
         /// <remarks>Defaults to the icon defined in Action.</remarks>
         /// <value>A String.</value>
         public string ImageURL { get; set; }
-
-        public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

@@ -38,23 +38,29 @@ namespace DotNetNuke.Services.Search.Internals
     /// -----------------------------------------------------------------------------
     internal class InternalSearchControllerImpl : IInternalSearchController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
         private const string SearchableModuleDefsKey = "{0}-{1}";
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
+        private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
+
+        private const string AttrText = "[\"'](?<text>.*?)[\"']";
+
         private static readonly string[] HtmlAttributesToRetain = { "alt", "title" };
+        private static readonly DataProvider DataProvider = DataProvider.Instance();
+
+        private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
         private readonly int _titleBoost;
         private readonly int _tagBoost;
         private readonly int _contentBoost;
         private readonly int _descriptionBoost;
         private readonly int _authorBoost;
         private readonly int _moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
-
-        private static readonly DataProvider DataProvider = DataProvider.Instance();
-
-        private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
 
         public InternalSearchControllerImpl()
         {
@@ -64,6 +70,33 @@ namespace DotNetNuke.Services.Search.Internals
             this._contentBoost = hostController.GetInteger(Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost);
             this._descriptionBoost = hostController.GetInteger(Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost);
             this._authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
+        }
+
+        public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
+        {
+            var searchableModuleDefsCacheArgs = new CacheItemArgs(
+                    string.Format(SearchableModuleDefsKey, SearchableModuleDefsCacheKey, portalId),
+                    120, CacheItemPriority.Default);
+
+            var list = CBO.GetCachedObject<IList<SearchContentSource>>(
+                searchableModuleDefsCacheArgs, this.SearchContentSourceCallback);
+
+            return list;
+        }
+
+        public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
+        {
+            // ModuleDefId will be zero for non-module
+            var key = string.Format("{0}-{1}", searchResult.SearchTypeId, searchResult.ModuleDefId);
+            var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
+                            new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
+
+            return keys.ContainsKey(key) ? keys[key] : string.Empty;
+        }
+
+        public void AddSearchDocument(SearchDocument searchDocument)
+        {
+            this.AddSearchDocumentInternal(searchDocument, false);
         }
 
         internal virtual object SearchContentSourceCallback(CacheItemArgs cacheItem)
@@ -136,18 +169,6 @@ namespace DotNetNuke.Services.Search.Internals
             return results;
         }
 
-        public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
-        {
-            var searchableModuleDefsCacheArgs = new CacheItemArgs(
-                    string.Format(SearchableModuleDefsKey, SearchableModuleDefsCacheKey, portalId),
-                    120, CacheItemPriority.Default);
-
-            var list = CBO.GetCachedObject<IList<SearchContentSource>>(
-                searchableModuleDefsCacheArgs, this.SearchContentSourceCallback);
-
-            return list;
-        }
-
         private object SearchDocumentTypeDisplayNameCallBack(CacheItemArgs cacheItem)
         {
             var data = new Dictionary<string, string>();
@@ -167,19 +188,41 @@ namespace DotNetNuke.Services.Search.Internals
             return data;
         }
 
-        public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
+        public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
         {
-            // ModuleDefId will be zero for non-module
-            var key = string.Format("{0}-{1}", searchResult.SearchTypeId, searchResult.ModuleDefId);
-            var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
-                            new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
+            var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
+            if (searchDocs.Any())
+            {
+                const int commitBatchSize = 1024 * 16;
+                var idx = 0;
 
-            return keys.ContainsKey(key) ? keys[key] : string.Empty;
+                // var added = false;
+                foreach (var searchDoc in searchDocs)
+                {
+                    try
+                    {
+                        this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
+
+                        // added = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.ErrorFormat("Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
+                    }
+                }
+
+                // Note: modified to do commit only once at the end of scheduler job
+                // check so we don't commit again
+                // if (added && (idx % commitBatchSize) != 0)
+                // {
+                //    Commit();
+                // }
+            }
         }
 
-        public void AddSearchDocument(SearchDocument searchDocument)
+        public void DeleteSearchDocument(SearchDocument searchDocument)
         {
-            this.AddSearchDocumentInternal(searchDocument, false);
+            this.DeleteSearchDocumentInternal(searchDocument, false);
         }
 
         private void AddSearchDocumentInternal(SearchDocument searchDocument, bool autoCommit)
@@ -256,41 +299,33 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
+        public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
         {
-            var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
-            if (searchDocs.Any())
+            Requires.NotNegative("PortalId", portalId);
+
+            this.DeleteSearchDocument(new SearchDocument
             {
-                const int commitBatchSize = 1024 * 16;
-                var idx = 0;
-
-                // var added = false;
-                foreach (var searchDoc in searchDocs)
-                {
-                    try
-                    {
-                        this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
-
-                        // added = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.ErrorFormat("Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
-                    }
-                }
-
-                // Note: modified to do commit only once at the end of scheduler job
-                // check so we don't commit again
-                // if (added && (idx % commitBatchSize) != 0)
-                // {
-                //    Commit();
-                // }
-            }
+                PortalId = portalId,
+                ModuleId = moduleId,
+                ModuleDefId = moduleDefId,
+                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
+            });
         }
 
-        public void DeleteSearchDocument(SearchDocument searchDocument)
+        public void DeleteAllDocuments(int portalId, int searchTypeId)
         {
-            this.DeleteSearchDocumentInternal(searchDocument, false);
+            Requires.NotNegative("SearchTypeId", searchTypeId);
+
+            this.DeleteSearchDocument(new SearchDocument
+            {
+                PortalId = portalId,
+                SearchTypeId = searchTypeId,
+            });
+        }
+
+        private static Query NumericValueQuery(string numericName, int numericVal)
+        {
+            return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
         }
 
         private void DeleteSearchDocumentInternal(SearchDocument searchDocument, bool autoCommit)
@@ -355,35 +390,6 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
-        private static Query NumericValueQuery(string numericName, int numericVal)
-        {
-            return NumericRangeQuery.NewIntRange(numericName, numericVal, numericVal, true, true);
-        }
-
-        public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
-        {
-            Requires.NotNegative("PortalId", portalId);
-
-            this.DeleteSearchDocument(new SearchDocument
-            {
-                PortalId = portalId,
-                ModuleId = moduleId,
-                ModuleDefId = moduleDefId,
-                SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
-            });
-        }
-
-        public void DeleteAllDocuments(int portalId, int searchTypeId)
-        {
-            Requires.NotNegative("SearchTypeId", searchTypeId);
-
-            this.DeleteSearchDocument(new SearchDocument
-            {
-                PortalId = portalId,
-                SearchTypeId = searchTypeId,
-            });
-        }
-
         public void Commit()
         {
             LuceneController.Instance.Commit();
@@ -398,6 +404,17 @@ namespace DotNetNuke.Services.Search.Internals
         public SearchStatistics GetSearchStatistics()
         {
             return LuceneController.Instance.GetSearchStatistics();
+        }
+
+        /// <summary>
+        /// Add Field to Doc when supplied fieldValue > 0.
+        /// </summary>
+        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
+        {
+            if (fieldValue > 0)
+            {
+                doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
+            }
         }
 
         private void AddSearchDocumentParamters(Document doc, SearchDocument searchDocument, StringBuilder sb)
@@ -547,23 +564,6 @@ namespace DotNetNuke.Services.Search.Internals
                 }
             }
         }
-
-        /// <summary>
-        /// Add Field to Doc when supplied fieldValue > 0.
-        /// </summary>
-        private static void AddIntField(Document doc, int fieldValue, string fieldTag)
-        {
-            if (fieldValue > 0)
-            {
-                doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
-            }
-        }
-
-        private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
-        private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private const string AttrText = "[\"'](?<text>.*?)[\"']";
-        private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
 
         private static string StripTagsRetainAttributes(string html, IEnumerable<string> attributes, bool decoded, bool retainSpace)
         {

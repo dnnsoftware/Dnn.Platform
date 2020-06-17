@@ -91,10 +91,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             var controllerContext = MockHelper.CreateMockControllerContext();
             var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext,
-                                            };
+            {
+                ActionResult = actionResultMock.Object,
+                ControllerContext = controllerContext,
+            };
 
             // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
@@ -115,10 +115,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             var controllerContext = MockHelper.CreateMockControllerContext();
             var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext,
-                                            };
+            {
+                ActionResult = actionResultMock.Object,
+                ControllerContext = controllerContext,
+            };
 
             // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());

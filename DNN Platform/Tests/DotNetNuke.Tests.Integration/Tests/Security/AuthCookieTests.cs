@@ -42,12 +42,6 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             Assert.AreEqual(HttpStatusCode.Unauthorized, result2.StatusCode);
         }
 
-        private HttpResponseMessage SendDirectGetRequest(Uri domain, string path, TimeSpan timeout, CookieContainer cookies)
-        {
-            var client = CreateHttpClient(domain, timeout, cookies);
-            return client.GetAsync(path).Result;
-        }
-
         private static HttpClient CreateHttpClient(Uri domain, TimeSpan timeout, CookieContainer cookies)
         {
             var clientHandler = new HttpClientHandler
@@ -63,6 +57,12 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             };
 
             return client;
+        }
+
+        private HttpResponseMessage SendDirectGetRequest(Uri domain, string path, TimeSpan timeout, CookieContainer cookies)
+        {
+            var client = CreateHttpClient(domain, timeout, cookies);
+            return client.GetAsync(path).Result;
         }
     }
 }

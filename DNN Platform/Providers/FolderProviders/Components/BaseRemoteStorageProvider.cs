@@ -23,6 +23,31 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         private readonly string _encryptionKey = Host.GUID;
         private readonly PortalSecurity _portalSecurity = PortalSecurity.Instance;
 
+        public override bool SupportsMappedPaths
+        {
+            get { return true; }
+        }
+
+        public override bool SupportsMoveFile
+        {
+            get { return false; }
+        }
+
+        protected virtual string FileNotFoundMessage
+        {
+            get { return string.Empty; }
+        }
+
+        protected virtual string ObjectCacheKey
+        {
+            get { return string.Empty; }
+        }
+
+        protected virtual int ObjectCacheTimeout
+        {
+            get { return 150; }
+        }
+
         private IRemoteStorageItem GetStorageItemInternal(FolderMappingInfo folderMapping, string key)
         {
             var cacheKey = string.Format(this.ObjectCacheKey, folderMapping.FolderMappingID, key);
@@ -42,21 +67,6 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 });
         }
 
-        protected virtual string FileNotFoundMessage
-        {
-            get { return string.Empty; }
-        }
-
-        protected virtual string ObjectCacheKey
-        {
-            get { return string.Empty; }
-        }
-
-        protected virtual int ObjectCacheTimeout
-        {
-            get { return 150; }
-        }
-
         protected virtual string ListObjectsCacheKey
         {
             get { return string.Empty; }
@@ -67,69 +77,9 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             get { return 300; }
         }
 
-        public override bool SupportsMappedPaths
-        {
-            get { return true; }
-        }
-
-        public override bool SupportsMoveFile
-        {
-            get { return false; }
-        }
-
         public override bool SupportsMoveFolder
         {
             get { return true; }
-        }
-
-        protected abstract void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
-
-        protected abstract void DeleteFileInternal(FolderMappingInfo folderMapping, string uri);
-
-        protected abstract void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder);
-
-        protected static bool GetBooleanSetting(FolderMappingInfo folderMapping, string settingName)
-        {
-            return bool.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
-        }
-
-        protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
-        {
-            int value;
-            if (int.TryParse(GetSetting(folderMapping, settingName), out value))
-            {
-                return value;
-            }
-
-            return defaultValue;
-        }
-
-        protected abstract Stream GetFileStreamInternal(FolderMappingInfo folderMapping, string uri);
-
-        protected abstract IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping);
-
-        protected virtual IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping, string path)
-        {
-            return this.GetObjectList(folderMapping);
-        }
-
-        protected static string GetSetting(FolderMappingInfo folderMapping, string settingName)
-        {
-            Requires.NotNull(nameof(folderMapping), folderMapping);
-            Requires.NotNullOrEmpty(nameof(settingName), settingName);
-
-            return folderMapping.FolderMappingSettings[settingName]?.ToString();
-        }
-
-        protected abstract void MoveFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
-
-        protected abstract void MoveFolderInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
-
-        protected abstract void UpdateFileInternal(Stream stream, FolderMappingInfo folderMapping, string uri);
-
-        protected virtual IRemoteStorageItem GetStorageItem(FolderMappingInfo folderMapping, string key)
-        {
-            return this.GetStorageItemInternal(folderMapping, key);
         }
 
         /// <summary>
@@ -150,6 +100,56 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("content", content);
 
             this.UpdateFile(folder, fileName, content);
+        }
+
+        protected static bool GetBooleanSetting(FolderMappingInfo folderMapping, string settingName)
+        {
+            return bool.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
+        }
+
+        protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
+        {
+            int value;
+            if (int.TryParse(GetSetting(folderMapping, settingName), out value))
+            {
+                return value;
+            }
+
+            return defaultValue;
+        }
+
+        protected abstract void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
+
+        protected abstract void DeleteFileInternal(FolderMappingInfo folderMapping, string uri);
+
+        protected abstract void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder);
+
+        protected static string GetSetting(FolderMappingInfo folderMapping, string settingName)
+        {
+            Requires.NotNull(nameof(folderMapping), folderMapping);
+            Requires.NotNullOrEmpty(nameof(settingName), settingName);
+
+            return folderMapping.FolderMappingSettings[settingName]?.ToString();
+        }
+
+        protected abstract Stream GetFileStreamInternal(FolderMappingInfo folderMapping, string uri);
+
+        protected abstract IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping);
+
+        protected virtual IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping, string path)
+        {
+            return this.GetObjectList(folderMapping);
+        }
+
+        protected abstract void MoveFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
+
+        protected abstract void MoveFolderInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri);
+
+        protected abstract void UpdateFileInternal(Stream stream, FolderMappingInfo folderMapping, string uri);
+
+        protected virtual IRemoteStorageItem GetStorageItem(FolderMappingInfo folderMapping, string key)
+        {
+            return this.GetStorageItemInternal(folderMapping, key);
         }
 
         public virtual void ClearCache(int folderMappingId)
@@ -268,7 +268,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var pattern = "^" + mappedPath;
             return (from i in list
                     let f = i.Key
-                     let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
+                    let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
                     select Path.GetFileName(f)).ToArray();
         }
@@ -356,15 +356,15 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var pattern = "^" + Regex.Escape(folderPath);
 
             return (from o in list
-                let f = o.Key
-                let r =
-                    !string.IsNullOrEmpty(folderPath)
-                        ? Regex.Replace(f,  pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
-                        : f
-                where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
-                                   && f.Length > folderPath.Length
-                                   && r.IndexOf("/", StringComparison.Ordinal) > -1
-                           select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
+                    let f = o.Key
+                    let r =
+                        !string.IsNullOrEmpty(folderPath)
+                            ? Regex.Replace(f, pattern, string.Empty, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
+                            : f
+                    where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
+                                       && f.Length > folderPath.Length
+                                       && r.IndexOf("/", StringComparison.Ordinal) > -1
+                    select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
             // var mylist =  (from o in list
             //        let f = o.Key

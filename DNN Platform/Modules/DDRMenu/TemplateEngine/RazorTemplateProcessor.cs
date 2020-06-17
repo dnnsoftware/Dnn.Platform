@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
-            if (! string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
+            if (!string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
             {
                 var resolver = new PathResolver(liveDefinition.Folder);
                 dynamic model = new ExpandoObject();
@@ -48,27 +48,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 liveDefinition.TemplateArguments.ForEach(a => modelDictionary.Add(a.Name, a.Value));
                 htmlWriter.Write(this.RenderTemplate(liveDefinition.TemplateVirtualPath, model));
             }
-        }
-
-        private StringWriter RenderTemplate(string virtualPath, dynamic model)
-        {
-            var page = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
-            var httpContext = new HttpContextWrapper(HttpContext.Current);
-            var pageContext = new WebPageContext(httpContext, page, model);
-
-            var writer = new StringWriter();
-
-            if (page is WebPage)
-            {
-                page.ExecutePageHierarchy(pageContext, writer);
-            }
-            else
-            {
-                var razorEngine = new RazorEngine(virtualPath, null, null);
-                razorEngine.Render<dynamic>(writer, model);
-            }
-
-            return writer;
         }
 
         protected static string ConvertToJson(List<ClientOption> options)
@@ -107,6 +86,27 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             result.Append("}");
             return result.ToString();
+        }
+
+        private StringWriter RenderTemplate(string virtualPath, dynamic model)
+        {
+            var page = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
+            var httpContext = new HttpContextWrapper(HttpContext.Current);
+            var pageContext = new WebPageContext(httpContext, page, model);
+
+            var writer = new StringWriter();
+
+            if (page is WebPage)
+            {
+                page.ExecutePageHierarchy(pageContext, writer);
+            }
+            else
+            {
+                var razorEngine = new RazorEngine(virtualPath, null, null);
+                razorEngine.Render<dynamic>(writer, model);
+            }
+
+            return writer;
         }
     }
 }

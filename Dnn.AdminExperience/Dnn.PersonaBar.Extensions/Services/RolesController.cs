@@ -30,8 +30,6 @@ namespace Dnn.PersonaBar.Roles.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));
 
-        #region Role API
-
         [HttpGet]
         public HttpResponseMessage GetRoles(int groupId, string keyword, int startIndex, int pageSize)
         {
@@ -88,10 +86,6 @@ namespace Dnn.PersonaBar.Roles.Services
             return !string.IsNullOrEmpty(roleName) ? this.Request.CreateResponse(HttpStatusCode.OK, new { roleId = roleDto.Id })
                 : this.Request.CreateErrorResponse(message.Key, message.Value);
         }
-
-        #endregion
-
-        #region Role Group API
 
         [HttpGet]
         public HttpResponseMessage GetRoleGroups(bool reload = false)
@@ -184,10 +178,6 @@ namespace Dnn.PersonaBar.Roles.Services
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { groupId = roleGroupDto.Id });
         }
-
-        #endregion
-
-        #region Role Users API
 
         [HttpGet]
         public HttpResponseMessage GetSuggestUsers(string keyword, int roleId, int count)
@@ -369,10 +359,6 @@ namespace Dnn.PersonaBar.Roles.Services
             }
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void Validate(RoleDto role)
         {
             Requires.NotNullOrEmpty("Name", role.Name);
@@ -442,7 +428,5 @@ namespace Dnn.PersonaBar.Roles.Services
                 user = UserController.Instance.GetUserById(Null.NullInteger, userId);
             return user;
         }
-
-        #endregion
     }
 }

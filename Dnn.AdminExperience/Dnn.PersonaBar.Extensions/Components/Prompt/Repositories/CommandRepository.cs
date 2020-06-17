@@ -22,17 +22,25 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
 
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
-        protected override Func<ICommandRepository> GetFactory()
-        {
-            return () => new CommandRepository();
-        }
-
         public SortedDictionary<string, Command> GetCommands()
         {
             return
                 DataCache.GetCachedData<SortedDictionary<string, Command>>(
                     new CacheItemArgs("DnnPromptCommands", CacheItemPriority.Default),
                     c => GetCommandsInternal());
+        }
+
+        public CommandHelp GetCommandHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        {
+            var cacheKey = (string.Join("_", command.Args) + "_" + PortalController.Instance.GetCurrentPortalSettings()?.DefaultLanguage).Replace("-", "_");
+            cacheKey = $"{cacheKey}_{(showSyntax ? "1" : "0")}_{(showLearn ? "1" : "0")}}}";
+            return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
+                c => this.GetCommandHelpInternal(consoleCommand, showSyntax, showLearn));
+        }
+
+        protected override Func<ICommandRepository> GetFactory()
+        {
+            return () => new CommandRepository();
         }
 
         private static SortedDictionary<string, Command> GetCommandsInternal()
@@ -66,12 +74,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             return commands;
         }
 
-        public CommandHelp GetCommandHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
+        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
         {
-            var cacheKey = (string.Join("_", command.Args) + "_" + PortalController.Instance.GetCurrentPortalSettings()?.DefaultLanguage).Replace("-", "_");
-            cacheKey = $"{cacheKey}_{(showSyntax ? "1" : "0")}_{(showLearn ? "1" : "0")}}}";
-            return DataCache.GetCachedData<CommandHelp>(new CacheItemArgs(cacheKey, CacheItemPriority.Low),
-                c => this.GetCommandHelpInternal(consoleCommand, showSyntax, showLearn));
+            var localizedText = Localization.GetString(key, resourcesFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
 
         private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
@@ -114,12 +120,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
             }
             return commandHelp;
-        }
-
-        private static string LocalizeString(string key, string resourcesFile = Constants.LocalResourcesFile)
-        {
-            var localizedText = Localization.GetString(key, resourcesFile);
-            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
 
         private static string CreateCommandFromClass(string className)

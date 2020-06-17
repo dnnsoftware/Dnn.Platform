@@ -13,17 +13,17 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public class EmptyPropertyAccess : IPropertyAccess
     {
-        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
-        {
-            return string.Empty;
-        }
-
         public CacheLevel Cacheability
         {
             get
             {
                 return CacheLevel.notCacheable;
             }
+        }
+
+        public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
+        {
+            return string.Empty;
         }
     }
 }

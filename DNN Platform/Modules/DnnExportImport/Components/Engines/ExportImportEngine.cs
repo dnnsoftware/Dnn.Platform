@@ -38,11 +38,23 @@ namespace Dnn.ExportImport.Components.Engines
 
     public class ExportImportEngine
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
-
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+
         private static readonly string ExportFolder;
+
+        private static readonly Tuple<string, Type>[] DatasetColumns =
+        {
+            new Tuple<string, Type>("JobId", typeof(int)),
+            new Tuple<string, Type>("Name", typeof(string)),
+            new Tuple<string, Type>("Value", typeof(string)),
+            new Tuple<string, Type>("Level", typeof(int)),
+            new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
+        };
+
+        private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
+        private int _timeoutSeconds;
 
         static ExportImportEngine()
         {
@@ -53,8 +65,43 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
-        private readonly Stopwatch _stopWatch = Stopwatch.StartNew();
-        private int _timeoutSeconds;
+        private static string[] NotAllowedCategoriesinRequestArray => new[]
+        {
+            Constants.Category_Content,
+            Constants.Category_Pages,
+            Constants.Category_Portal,
+            Constants.Category_Content,
+            Constants.Category_Assets,
+            Constants.Category_Users,
+            Constants.Category_UsersData,
+            Constants.Category_Roles,
+            Constants.Category_Vocabularies,
+            Constants.Category_Templates,
+            Constants.Category_ProfileProps,
+            Constants.Category_Packages,
+            Constants.Category_Workflows,
+        };
+
+        private static string[] CleanUpIgnoredClasses => new[]
+        {
+            typeof(ExportFile).Name,
+            typeof(ExportFolder).Name,
+            typeof(ExportFolderMapping).Name,
+            typeof(ExportFolderPermission).Name,
+            typeof(ExportPageTemplate).Name,
+            typeof(ExportPortalSetting).Name,
+            typeof(ExportPortalLanguage).Name,
+            typeof(ExportProfileProperty).Name,
+            typeof(ExportUser).Name,
+            typeof(ExportAspnetUser).Name,
+            typeof(ExportAspnetMembership).Name,
+            typeof(ExportUserAuthentication).Name,
+            typeof(ExportUserPortal).Name,
+            typeof(ExportUserProfile).Name,
+            typeof(ExportUserRole).Name,
+        };
+
+        private bool TimeIsUp => this._stopWatch.Elapsed.TotalSeconds > this._timeoutSeconds;
 
         public void Export(ExportImportJob exportJob, ExportImportResult result, ScheduleHistoryItem scheduleHistoryItem)
         {
@@ -405,6 +452,67 @@ namespace Dnn.ExportImport.Components.Engines
             }
         }
 
+        public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
+        {
+            if (completeLog == null || completeLog.Count == 0)
+            {
+                return;
+            }
+
+            using (var table = new DataTable("ExportImportJobLogs"))
+            {
+                // must create the columns from scratch with each iteration
+                table.Columns.AddRange(DatasetColumns.Select(
+                    column => new DataColumn(column.Item1, column.Item2)).ToArray());
+
+                // batch specific amount of record each time
+                const int batchSize = 500;
+                var toSkip = 0;
+                while (toSkip < completeLog.Count)
+                {
+                    foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
+                    {
+                        var row = table.NewRow();
+                        row["JobId"] = jobId;
+                        row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
+                        row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
+                        row["Level"] = (int)item.ReportLevel;
+                        row["CreatedOnDate"] = item.CreatedOnDate;
+                        table.Rows.Add(row);
+                    }
+
+                    PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
+                    toSkip += batchSize;
+                    table.Rows.Clear();
+                }
+            }
+
+            completeLog.Clear();
+        }
+
+        private static bool CheckCancelledCallBack(ExportImportJob job)
+        {
+            var job2 = CachingProvider.Instance().GetItem(Util.GetExpImpJobCacheKey(job)) as ExportImportJob;
+            if (job2 == null)
+            {
+                job2 = EntitiesController.Instance.GetJobById(job.JobId);
+                job.IsCancelled = job2.IsCancelled;
+                AddJobToCache(job2);
+            }
+
+            return job2.IsCancelled;
+        }
+
+        private static void AddJobToCache(ExportImportJob job)
+        {
+            CachingProvider.Instance().Insert(Util.GetExpImpJobCacheKey(job), job);
+        }
+
+        private static void RemoveTokenFromCache(ExportImportJob job)
+        {
+            CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
+        }
+
         private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,
             HashSet<string> includedItems, IList<ExportImportChekpoint> checkpoints)
         {
@@ -461,19 +569,6 @@ namespace Dnn.ExportImport.Components.Engines
             while (parentServices.Count > 0);
         }
 
-        private static bool CheckCancelledCallBack(ExportImportJob job)
-        {
-            var job2 = CachingProvider.Instance().GetItem(Util.GetExpImpJobCacheKey(job)) as ExportImportJob;
-            if (job2 == null)
-            {
-                job2 = EntitiesController.Instance.GetJobById(job.JobId);
-                job.IsCancelled = job2.IsCancelled;
-                AddJobToCache(job2);
-            }
-
-            return job2.IsCancelled;
-        }
-
         /// <summary>
         /// Callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
         /// </summary>
@@ -483,18 +578,6 @@ namespace Dnn.ExportImport.Components.Engines
         {
             EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
             return this.TimeIsUp;
-        }
-
-        private bool TimeIsUp => this._stopWatch.Elapsed.TotalSeconds > this._timeoutSeconds;
-
-        private static void AddJobToCache(ExportImportJob job)
-        {
-            CachingProvider.Instance().Insert(Util.GetExpImpJobCacheKey(job), job);
-        }
-
-        private static void RemoveTokenFromCache(ExportImportJob job)
-        {
-            CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
         private static HashSet<string> GetAllCategoriesToInclude(
@@ -678,88 +761,5 @@ namespace Dnn.ExportImport.Components.Engines
                 }
             }
         }
-
-        private static string[] NotAllowedCategoriesinRequestArray => new[]
-        {
-            Constants.Category_Content,
-            Constants.Category_Pages,
-            Constants.Category_Portal,
-            Constants.Category_Content,
-            Constants.Category_Assets,
-            Constants.Category_Users,
-            Constants.Category_UsersData,
-            Constants.Category_Roles,
-            Constants.Category_Vocabularies,
-            Constants.Category_Templates,
-            Constants.Category_ProfileProps,
-            Constants.Category_Packages,
-            Constants.Category_Workflows,
-        };
-
-        private static string[] CleanUpIgnoredClasses => new[]
-        {
-            typeof(ExportFile).Name,
-            typeof(ExportFolder).Name,
-            typeof(ExportFolderMapping).Name,
-            typeof(ExportFolderPermission).Name,
-            typeof(ExportPageTemplate).Name,
-            typeof(ExportPortalSetting).Name,
-            typeof(ExportPortalLanguage).Name,
-            typeof(ExportProfileProperty).Name,
-            typeof(ExportUser).Name,
-            typeof(ExportAspnetUser).Name,
-            typeof(ExportAspnetMembership).Name,
-            typeof(ExportUserAuthentication).Name,
-            typeof(ExportUserPortal).Name,
-            typeof(ExportUserProfile).Name,
-            typeof(ExportUserRole).Name,
-        };
-
-        public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
-        {
-            if (completeLog == null || completeLog.Count == 0)
-            {
-                return;
-            }
-
-            using (var table = new DataTable("ExportImportJobLogs"))
-            {
-                // must create the columns from scratch with each iteration
-                table.Columns.AddRange(DatasetColumns.Select(
-                    column => new DataColumn(column.Item1, column.Item2)).ToArray());
-
-                // batch specific amount of record each time
-                const int batchSize = 500;
-                var toSkip = 0;
-                while (toSkip < completeLog.Count)
-                {
-                    foreach (var item in completeLog.Skip(toSkip).Take(batchSize))
-                    {
-                        var row = table.NewRow();
-                        row["JobId"] = jobId;
-                        row["Name"] = item.Name.TrimToLength(Constants.LogColumnLength);
-                        row["Value"] = item.Value.TrimToLength(Constants.LogColumnLength);
-                        row["Level"] = (int)item.ReportLevel;
-                        row["CreatedOnDate"] = item.CreatedOnDate;
-                        table.Rows.Add(row);
-                    }
-
-                    PlatformDataProvider.Instance().BulkInsert("ExportImportJobLogs_AddBulk", "@DataTable", table);
-                    toSkip += batchSize;
-                    table.Rows.Clear();
-                }
-            }
-
-            completeLog.Clear();
-        }
-
-        private static readonly Tuple<string, Type>[] DatasetColumns =
-        {
-            new Tuple<string, Type>("JobId", typeof(int)),
-            new Tuple<string, Type>("Name", typeof(string)),
-            new Tuple<string, Type>("Value", typeof(string)),
-            new Tuple<string, Type>("Level", typeof(int)),
-            new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
-        };
     }
 }

@@ -15,14 +15,14 @@ namespace DotNetNuke.Web.Razor.Helpers
     {
         private readonly ModuleInstanceContext _context;
 
-        protected INavigationManager NavigationManager { get; }
-
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public UrlHelper(ModuleInstanceContext context)
         {
             this._context = context;
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public string NavigateToControl()

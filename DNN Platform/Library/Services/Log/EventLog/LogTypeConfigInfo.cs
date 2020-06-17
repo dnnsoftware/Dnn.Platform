@@ -11,6 +11,8 @@ namespace DotNetNuke.Services.Log.EventLog
     [Serializable]
     public class LogTypeConfigInfo : LogTypeInfo
     {
+        private string _mailFromAddress;
+
         public enum NotificationThresholdTimeTypes
         {
             None = 0,
@@ -19,8 +21,6 @@ namespace DotNetNuke.Services.Log.EventLog
             Hours = 3,
             Days = 4,
         }
-
-        private string _mailFromAddress;
 
         public DateTime StartDateTime
         {

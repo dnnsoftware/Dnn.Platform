@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Search
             // We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate.
             // LastContentModifiedOnDate remains MinValue for modules that don't update this property
             var modulesInDateRange = searchModuleCollection.Where(module =>
-                ! (SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal))
+                !(SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal))
                 .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
 
             if (modulesInDateRange.Any())
@@ -131,33 +131,6 @@ namespace DotNetNuke.Services.Search
             }
 
             return totalIndexed;
-        }
-
-        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
-        {
-            foreach (var searchItem in searchItems)
-            {
-                searchItem.ModuleDefId = module.ModuleDefID;
-                searchItem.ModuleId = module.ModuleID;
-                if (string.IsNullOrEmpty(searchItem.CultureCode))
-                {
-                    searchItem.CultureCode = module.CultureCode;
-                }
-
-                if (Null.IsNull(searchItem.ModifiedTimeUtc))
-                {
-                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
-                }
-            }
-        }
-
-        private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Count;
-            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
-            return total;
         }
 
         /// -----------------------------------------------------------------------------
@@ -220,7 +193,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="searchItem"></param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        #pragma warning disable 0618
+#pragma warning disable 0618
         public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
         {
             var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
@@ -247,6 +220,33 @@ namespace DotNetNuke.Services.Search
 
             return searchDoc;
         }
+
+        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
+        {
+            foreach (var searchItem in searchItems)
+            {
+                searchItem.ModuleDefId = module.ModuleDefID;
+                searchItem.ModuleId = module.ModuleID;
+                if (string.IsNullOrEmpty(searchItem.CultureCode))
+                {
+                    searchItem.CultureCode = module.CultureCode;
+                }
+
+                if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                {
+                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                }
+            }
+        }
+
+        private int IndexCollectedDocs(
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Count;
+            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
+            return total;
+        }
 #pragma warning restore 0618
 
         /// -----------------------------------------------------------------------------
@@ -265,8 +265,8 @@ namespace DotNetNuke.Services.Search
         protected IEnumerable<ModuleInfo> GetSearchModules(int portalId, bool allModules)
         {
             return from mii in this.GetModulesForIndex(portalId)
-                where allModules || mii.SupportSearch
-                select mii.ModuleInfo;
+                   where allModules || mii.SupportSearch
+                   select mii.ModuleInfo;
         }
 
         private static void ThrowLogError(ModuleInfo module, Exception ex)

@@ -64,12 +64,12 @@ namespace DotNetNuke.Admin.Containers
 
         protected bool IsShared { get; set; }
 
+        protected string ModuleTitle { get; set; }
+
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
-
-        protected string ModuleTitle { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -86,11 +86,6 @@ namespace DotNetNuke.Admin.Containers
             ClientResourceManager.RegisterScript(this.Page, "~/admin/menus/ModuleActions/ModuleActions.js");
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-        }
-
-        private void actionButton_Click(object sender, EventArgs e)
-        {
-            this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -195,6 +190,11 @@ namespace DotNetNuke.Admin.Containers
             {
                 this.Page.ClientScript.RegisterForEventValidation(this.actionButton.UniqueID, id.ToString());
             }
+        }
+
+        private void actionButton_Click(object sender, EventArgs e)
+        {
+            this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
         }
     }
 }

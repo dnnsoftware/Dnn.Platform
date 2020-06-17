@@ -41,10 +41,84 @@ namespace DotNetNuke.Entities.Profile
         private static readonly ProfileProvider _profileProvider = ProfileProvider.Instance();
         private static int _orderCounter;
 
-        private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds the default property definitions for a portal.
+        /// </summary>
+        /// <param name="portalId">Id of the Portal.</param>
+        /// -----------------------------------------------------------------------------
+        public static void AddDefaultDefinitions(int portalId)
         {
-            _orderCounter += 2;
-            AddDefaultDefinition(portalId, category, name, strType, length, _orderCounter, defaultVisibility, types);
+            portalId = GetEffectivePortalId(portalId);
+
+            _orderCounter = 1;
+            var listController = new ListController();
+            Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
+
+            AddDefaultDefinition(portalId, "Name", "Prefix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(portalId, "Name", "FirstName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(portalId, "Name", "MiddleName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(portalId, "Name", "LastName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(portalId, "Name", "Suffix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(portalId, "Address", "Unit", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Address", "Street", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Address", "City", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Address", "Region", "Region", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Address", "Country", "Country", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Address", "PostalCode", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Contact Info", "Telephone", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Contact Info", "Cell", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Contact Info", "Fax", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Contact Info", "Website", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Contact Info", "IM", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Preferences", "Biography", "Multi-line Text", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Preferences", "TimeZone", "TimeZone", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Preferences", "PreferredTimeZone", "TimeZoneInfo", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(portalId, "Preferences", "Photo", "Image", 0, UserVisibilityMode.AllUsers, dataTypes);
+
+            // 6.0 requires the old TimeZone property to be marked as Deleted
+            ProfilePropertyDefinition pdf = GetPropertyDefinitionByName(portalId, "TimeZone");
+            if (pdf != null)
+            {
+                DeletePropertyDefinition(pdf);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a Property Defintion to the Data Store.
+        /// </summary>
+        /// <param name="definition">An ProfilePropertyDefinition object.</param>
+        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
+        /// -----------------------------------------------------------------------------
+        public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
+        {
+            int portalId = GetEffectivePortalId(definition.PortalId);
+            if (definition.Required)
+            {
+                definition.Visible = true;
+            }
+
+            int intDefinition = _dataProvider.AddPropertyDefinition(
+                portalId,
+                definition.ModuleDefId,
+                definition.DataType,
+                definition.DefaultValue,
+                definition.PropertyCategory,
+                definition.PropertyName,
+                definition.ReadOnly,
+                definition.Required,
+                definition.ValidationExpression,
+                definition.ViewOrder,
+                definition.Visible,
+                definition.Length,
+                (int)definition.DefaultVisibility,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
+            ClearProfileDefinitionCache(definition.PortalId);
+            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
+            return intDefinition;
         }
 
         internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility,
@@ -65,6 +139,12 @@ namespace DotNetNuke.Entities.Profile
                 DefaultVisibility = defaultVisibility,
             };
             AddPropertyDefinition(propertyDefinition);
+        }
+
+        private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
+        {
+            _orderCounter += 2;
+            AddDefaultDefinition(portalId, category, name, strType, length, _orderCounter, defaultVisibility, types);
         }
 
         private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr)
@@ -188,86 +268,6 @@ namespace DotNetNuke.Entities.Profile
             }
 
             return definitions;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds the default property definitions for a portal.
-        /// </summary>
-        /// <param name="portalId">Id of the Portal.</param>
-        /// -----------------------------------------------------------------------------
-        public static void AddDefaultDefinitions(int portalId)
-        {
-            portalId = GetEffectivePortalId(portalId);
-
-            _orderCounter = 1;
-            var listController = new ListController();
-            Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
-
-            AddDefaultDefinition(portalId, "Name", "Prefix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "FirstName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "MiddleName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "LastName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "Suffix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Unit", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Street", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "City", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Region", "Region", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Country", "Country", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "PostalCode", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Telephone", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Cell", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Fax", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Website", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "IM", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "Biography", "Multi-line Text", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "TimeZone", "TimeZone", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "PreferredTimeZone", "TimeZoneInfo", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "Photo", "Image", 0, UserVisibilityMode.AllUsers, dataTypes);
-
-            // 6.0 requires the old TimeZone property to be marked as Deleted
-            ProfilePropertyDefinition pdf = GetPropertyDefinitionByName(portalId, "TimeZone");
-            if (pdf != null)
-            {
-                DeletePropertyDefinition(pdf);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a Property Defintion to the Data Store.
-        /// </summary>
-        /// <param name="definition">An ProfilePropertyDefinition object.</param>
-        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
-        /// -----------------------------------------------------------------------------
-        public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
-        {
-            int portalId = GetEffectivePortalId(definition.PortalId);
-            if (definition.Required)
-            {
-                definition.Visible = true;
-            }
-
-            int intDefinition = _dataProvider.AddPropertyDefinition(
-                portalId,
-                definition.ModuleDefId,
-                definition.DataType,
-                definition.DefaultValue,
-                definition.PropertyCategory,
-                definition.PropertyName,
-                definition.ReadOnly,
-                definition.Required,
-                definition.ValidationExpression,
-                definition.ViewOrder,
-                definition.Visible,
-                definition.Length,
-                (int)definition.DefaultVisibility,
-                UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
-            ClearProfileDefinitionCache(definition.PortalId);
-            ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
-            return intDefinition;
         }
 
         /// -----------------------------------------------------------------------------
@@ -577,33 +577,6 @@ namespace DotNetNuke.Entities.Profile
             return user;
         }
 
-        private static void CreateThumbnails(int fileId)
-        {
-            CreateThumbnail(fileId, "l", 64, 64);
-            CreateThumbnail(fileId, "s", 50, 50);
-            CreateThumbnail(fileId, "xs", 32, 32);
-        }
-
-        private static void CreateThumbnail(int fileId, string type, int width, int height)
-        {
-            var file = FileManager.Instance.GetFile(fileId);
-            if (file != null)
-            {
-                var folder = FolderManager.Instance.GetFolder(file.FolderId);
-                var extension = "." + file.Extension;
-                var sizedPhoto = file.FileName.Replace(extension, "_" + type + extension);
-                if (!FileManager.Instance.FileExists(folder, sizedPhoto))
-                {
-                    using (var content = FileManager.Instance.GetFileContent(file))
-                    {
-                        var sizedContent = ImageUtils.CreateImage(content, height, width, extension);
-
-                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
-                    }
-                }
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Validates the Profile properties for the User (determines if all required properties
@@ -657,6 +630,33 @@ namespace DotNetNuke.Entities.Profile
             }
 
             return res;
+        }
+
+        private static void CreateThumbnails(int fileId)
+        {
+            CreateThumbnail(fileId, "l", 64, 64);
+            CreateThumbnail(fileId, "s", 50, 50);
+            CreateThumbnail(fileId, "xs", 32, 32);
+        }
+
+        private static void CreateThumbnail(int fileId, string type, int width, int height)
+        {
+            var file = FileManager.Instance.GetFile(fileId);
+            if (file != null)
+            {
+                var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                var extension = "." + file.Extension;
+                var sizedPhoto = file.FileName.Replace(extension, "_" + type + extension);
+                if (!FileManager.Instance.FileExists(folder, sizedPhoto))
+                {
+                    using (var content = FileManager.Instance.GetFileContent(file))
+                    {
+                        var sizedContent = ImageUtils.CreateImage(content, height, width, extension);
+
+                        FileManager.Instance.AddFile(folder, sizedPhoto, sizedContent);
+                    }
+                }
+            }
         }
 
         [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]

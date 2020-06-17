@@ -16,14 +16,14 @@ namespace Dnn.PersonaBar.Security.Attributes
     [AttributeUsage(AttributeTargets.Property)]
     class RegistrationFieldsAttribute : ValidationAttribute
     {
-        public string RegistrationFormTypePropertyName { get; private set; }
-        public string RequireUniqueDisplayNamePropertyName { get; private set; }
-
         public RegistrationFieldsAttribute(string registrationFormType, string requireUniqueDisplayName)
         {
             this.RegistrationFormTypePropertyName = registrationFormType;
             this.RequireUniqueDisplayNamePropertyName = requireUniqueDisplayName;
         }
+
+        public string RegistrationFormTypePropertyName { get; private set; }
+        public string RequireUniqueDisplayNamePropertyName { get; private set; }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

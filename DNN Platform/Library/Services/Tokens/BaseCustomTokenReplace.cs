@@ -28,12 +28,6 @@ namespace DotNetNuke.Services.Tokens
         public UserInfo AccessingUser { get; set; }
 
         /// <summary>
-        /// Gets or sets /sets the current Access Level controlling access to critical user settings.
-        /// </summary>
-        /// <value>A TokenAccessLevel as defined above.</value>
-        protected Scope CurrentAccessLevel { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
         /// </summary>
         /// <value>
@@ -43,50 +37,11 @@ namespace DotNetNuke.Services.Tokens
         /// <remarks></remarks>
         public bool DebugMessages { get; set; }
 
-        protected override string replacedTokenValue(string objectName, string propertyName, string format)
-        {
-            string result = string.Empty;
-            bool propertyNotFound = false;
-            if (this.PropertySource.ContainsKey(objectName.ToLowerInvariant()))
-            {
-                result = this.PropertySource[objectName.ToLowerInvariant()].GetProperty(propertyName, format, this.FormatProvider, this.AccessingUser, this.CurrentAccessLevel, ref propertyNotFound);
-            }
-            else
-            {
-                if (this.DebugMessages)
-                {
-                    string message = Localization.GetString("TokenReplaceUnknownObject", Localization.SharedResourceFile, this.FormatProvider.ToString());
-                    if (message == string.Empty)
-                    {
-                        message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
-                    }
-
-                    result = string.Format(message, objectName, propertyName);
-                }
-            }
-
-            if (this.DebugMessages && propertyNotFound)
-            {
-                string message;
-                if (result == PropertyAccess.ContentLocked)
-                {
-                    message = Localization.GetString("TokenReplaceRestrictedProperty", Localization.GlobalResourceFile, this.FormatProvider.ToString());
-                }
-                else
-                {
-                    message = Localization.GetString("TokenReplaceUnknownProperty", Localization.GlobalResourceFile, this.FormatProvider.ToString());
-                }
-
-                if (message == string.Empty)
-                {
-                    message = "Error accessing [{0}:{1}], {1} is unknown for datasource {0}";
-                }
-
-                result = string.Format(message, objectName, propertyName);
-            }
-
-            return result;
-        }
+        /// <summary>
+        /// Gets or sets /sets the current Access Level controlling access to critical user settings.
+        /// </summary>
+        /// <value>A TokenAccessLevel as defined above.</value>
+        protected Scope CurrentAccessLevel { get; set; }
 
         /// <summary>
         /// returns cacheability of the passed text regarding all contained tokens.
@@ -142,6 +97,51 @@ namespace DotNetNuke.Services.Tokens
             }
 
             return false;
+        }
+
+        protected override string replacedTokenValue(string objectName, string propertyName, string format)
+        {
+            string result = string.Empty;
+            bool propertyNotFound = false;
+            if (this.PropertySource.ContainsKey(objectName.ToLowerInvariant()))
+            {
+                result = this.PropertySource[objectName.ToLowerInvariant()].GetProperty(propertyName, format, this.FormatProvider, this.AccessingUser, this.CurrentAccessLevel, ref propertyNotFound);
+            }
+            else
+            {
+                if (this.DebugMessages)
+                {
+                    string message = Localization.GetString("TokenReplaceUnknownObject", Localization.SharedResourceFile, this.FormatProvider.ToString());
+                    if (message == string.Empty)
+                    {
+                        message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
+                    }
+
+                    result = string.Format(message, objectName, propertyName);
+                }
+            }
+
+            if (this.DebugMessages && propertyNotFound)
+            {
+                string message;
+                if (result == PropertyAccess.ContentLocked)
+                {
+                    message = Localization.GetString("TokenReplaceRestrictedProperty", Localization.GlobalResourceFile, this.FormatProvider.ToString());
+                }
+                else
+                {
+                    message = Localization.GetString("TokenReplaceUnknownProperty", Localization.GlobalResourceFile, this.FormatProvider.ToString());
+                }
+
+                if (message == string.Empty)
+                {
+                    message = "Error accessing [{0}:{1}], {1} is unknown for datasource {0}";
+                }
+
+                result = string.Format(message, objectName, propertyName);
+            }
+
+            return result;
         }
     }
 }

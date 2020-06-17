@@ -56,6 +56,32 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
             return Localization.GetString("SuccessMessage", ResourceFileRelativePath);
         }
 
+        private static IDictionary<string, string> CreateMappedCapabilities()
+        {
+            var mappingCapabilites = new Dictionary<string, string>
+            {
+                { "is_wireless_device", "IsMobile" },
+                { "resolution_width", "ScreenPixelsWidth" },
+                { "resolution_height", "ScreenPixelsHeight" },
+            };
+
+            if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")
+            {
+                mappingCapabilites.Add("is_tablet", "IsTablet");
+                mappingCapabilites.Add("device_os", "PlatformName");
+                mappingCapabilites.Add("mobile_browser", "BrowserName");
+                mappingCapabilites.Add("mobile_browser_version", "BrowserVersion");
+                mappingCapabilites.Add("device_os_version", "PlatformVersion");
+                mappingCapabilites.Add("brand_name", "HardwareVendor");
+                mappingCapabilites.Add("cookie_support", "CookiesCapable");
+                mappingCapabilites.Add("model_name", "HardwareModel");
+                mappingCapabilites.Add("physical_screen_height", "ScreenMMHeight");
+                mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
+            }
+
+            return mappingCapabilites;
+        }
+
         private void RemoveWurflProvider()
         {
             var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name == "DotNetNuke.WURFLClientCapabilityProvider");
@@ -126,32 +152,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
 
                 controller.Save(redirection);
             }
-        }
-
-        private static IDictionary<string, string> CreateMappedCapabilities()
-        {
-            var mappingCapabilites = new Dictionary<string, string>
-            {
-                { "is_wireless_device", "IsMobile" },
-                { "resolution_width", "ScreenPixelsWidth" },
-                { "resolution_height", "ScreenPixelsHeight" },
-            };
-
-            if (DotNetNukeContext.Current.Application.Name != "DNNCORP.CE")
-            {
-                mappingCapabilites.Add("is_tablet", "IsTablet");
-                mappingCapabilites.Add("device_os", "PlatformName");
-                mappingCapabilites.Add("mobile_browser", "BrowserName");
-                mappingCapabilites.Add("mobile_browser_version", "BrowserVersion");
-                mappingCapabilites.Add("device_os_version", "PlatformVersion");
-                mappingCapabilites.Add("brand_name", "HardwareVendor");
-                mappingCapabilites.Add("cookie_support", "CookiesCapable");
-                mappingCapabilites.Add("model_name", "HardwareModel");
-                mappingCapabilites.Add("physical_screen_height", "ScreenMMHeight");
-                mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
-            }
-
-            return mappingCapabilites;
         }
     }
 }

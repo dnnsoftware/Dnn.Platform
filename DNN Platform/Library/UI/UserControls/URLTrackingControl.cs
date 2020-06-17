@@ -26,13 +26,13 @@ namespace DotNetNuke.UI.UserControls
         protected Label Label5;
         protected Label Label6;
         protected Label Label7;
+        protected LinkButton cmdDisplay;
+        protected HyperLink cmdEndCalendar;
         private string _FormattedURL = string.Empty;
         private int _ModuleID = -2;
         private string _TrackingURL = string.Empty;
         private string _URL = string.Empty;
         private string _localResourceFile;
-        protected LinkButton cmdDisplay;
-        protected HyperLink cmdEndCalendar;
         protected HyperLink cmdStartCalendar;
         protected DataGrid grdLog;
         protected Label lblClicks;

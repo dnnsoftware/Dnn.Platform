@@ -11,6 +11,19 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Assets;
 
+    public enum DigitalAssestsMode
+    {
+        Normal,
+        Group,
+        User,
+    }
+
+    public enum FilterCondition
+    {
+        NotSet,
+        FilterByFolder,
+    }
+
     public class DigitalAssetsSettingsRepository
     {
         private const string DefaultFolderTypeIdSetting = "DefaultFolderTypeId";
@@ -56,18 +69,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return mode;
         }
 
-        private bool IsGroupMode(int moduleId)
-        {
-            var groupMode = this.GetSettingByKey(moduleId, GroupModeSetting);
-
-            if (string.IsNullOrEmpty(groupMode))
-            {
-                return false;
-            }
-
-            return Convert.ToBoolean(groupMode);
-        }
-
         public FilterCondition GetFilterCondition(int moduleId)
         {
             var setting = this.GetSettingByKey(moduleId, FilterConditionSetting);
@@ -80,6 +81,18 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             var setting = this.GetSettingByKey(moduleId, SubfolderFilterSetting);
             SubfolderFilter excludeSubfolders;
             return !Enum.TryParse(setting, true, out excludeSubfolders) ? SubfolderFilter.IncludeSubfoldersFolderStructure : excludeSubfolders;
+        }
+
+        private bool IsGroupMode(int moduleId)
+        {
+            var groupMode = this.GetSettingByKey(moduleId, GroupModeSetting);
+
+            if (string.IsNullOrEmpty(groupMode))
+            {
+                return false;
+            }
+
+            return Convert.ToBoolean(groupMode);
         }
 
         public void SaveDefaultFolderTypeId(int moduleId, int defaultFolderTypeId)
@@ -107,13 +120,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             ModuleController.Instance.UpdateModuleSetting(moduleId, FilterConditionSetting, filterCondition.ToString());
         }
 
-        private string GetSettingByKey(int moduleId, string key)
-        {
-            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
-            var moduleSettings = module.ModuleSettings;
-            return (string)moduleSettings[key];
-        }
-
         internal bool SettingExists(int moduleId, string settingName)
         {
             return !string.IsNullOrEmpty(this.GetSettingByKey(moduleId, settingName));
@@ -127,18 +133,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
             }
         }
-    }
 
-    public enum DigitalAssestsMode
-    {
-        Normal,
-        Group,
-        User,
-    }
-
-    public enum FilterCondition
-    {
-        NotSet,
-        FilterByFolder,
+        private string GetSettingByKey(int moduleId, string key)
+        {
+            var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
+            var moduleSettings = module.ModuleSettings;
+            return (string)moduleSettings[key];
+        }
     }
 }

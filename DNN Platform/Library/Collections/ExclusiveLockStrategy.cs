@@ -13,26 +13,6 @@ namespace DotNetNuke.Collections.Internal
         private bool _isDisposed;
         private Thread _lockedThread;
 
-        public ISharedCollectionLock GetReadLock()
-        {
-            return this.GetLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetReadLock(TimeSpan timeout)
-        {
-            return this.GetLock(timeout);
-        }
-
-        public ISharedCollectionLock GetWriteLock()
-        {
-            return this.GetLock(TimeSpan.FromMilliseconds(-1));
-        }
-
-        public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
-        {
-            return this.GetLock(timeout);
-        }
-
         public bool ThreadCanRead
         {
             get
@@ -59,11 +39,38 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
+        public ISharedCollectionLock GetReadLock()
+        {
+            return this.GetLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetReadLock(TimeSpan timeout)
+        {
+            return this.GetLock(timeout);
+        }
+
+        public ISharedCollectionLock GetWriteLock()
+        {
+            return this.GetLock(TimeSpan.FromMilliseconds(-1));
+        }
+
+        public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
+        {
+            return this.GetLock(timeout);
+        }
+
         public void Dispose()
         {
             this._isDisposed = true;
 
             // todo remove disposable from interface?
+        }
+
+        public void Exit()
+        {
+            this.EnsureNotDisposed();
+            Monitor.Exit(this._lock);
+            this._lockedThread = null;
         }
 
         private ISharedCollectionLock GetLock(TimeSpan timeout)
@@ -101,13 +108,6 @@ namespace DotNetNuke.Collections.Internal
         private bool IsThreadLocked()
         {
             return Thread.CurrentThread.Equals(this._lockedThread);
-        }
-
-        public void Exit()
-        {
-            this.EnsureNotDisposed();
-            Monitor.Exit(this._lock);
-            this._lockedThread = null;
         }
 
         private void EnsureNotDisposed()

@@ -13,10 +13,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("restore-module", Constants.RecylcleBinCategory, "Prompt_RestoreModule_Description")]
     public class RestoreModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_RestoreModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("pageid", "Prompt_RestoreModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
             this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }

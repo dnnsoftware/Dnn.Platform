@@ -100,6 +100,11 @@ namespace DotNetNuke.Modules.CoreMessaging
             base.OnInit(e);
         }
 
+        private static bool PermissionPredicate(PermissionInfoBase p)
+        {
+            return p.PermissionKey == "VIEW" && p.AllowAccess && (p.RoleName == Globals.glbRoleAllUsersName || p.RoleName == Globals.glbRoleUnauthUserName);
+        }
+
         private void AddIe7StyleSheet()
         {
             var browser = this.Request.Browser;
@@ -125,11 +130,6 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
 
             return permissions.Find(PermissionPredicate) != null;
-        }
-
-        private static bool PermissionPredicate(PermissionInfoBase p)
-        {
-            return p.PermissionKey == "VIEW" && p.AllowAccess && (p.RoleName == Globals.glbRoleAllUsersName || p.RoleName == Globals.glbRoleUnauthUserName);
         }
     }
 }

@@ -98,7 +98,7 @@ namespace log4net.Appender
         /// </remarks>
         public EventLogAppender()
         {
-            this.m_applicationName  = System.Threading.Thread.GetDomain().FriendlyName;
+            this.m_applicationName = System.Threading.Thread.GetDomain().FriendlyName;
             this.m_logName = "Application"; // Defaults to application log
             this.m_machineName = ".";   // Only log on the local machine
         }

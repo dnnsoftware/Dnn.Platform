@@ -150,6 +150,46 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UpdateConfig method processes the source file and updates the Target
+        /// Config Xml Document.
+        /// </summary>
+        /// <param name="target">An Xml Document represent the Target Xml File.</param>
+        /// -----------------------------------------------------------------------------
+        public void UpdateConfig(XmlDocument target)
+        {
+            var changedAnyNodes = false;
+            this.TargetConfig = target;
+            if (this.TargetConfig != null)
+            {
+                changedAnyNodes = this.ProcessNodes(this.SourceConfig.SelectNodes("/configuration/nodes/node"), false);
+            }
+
+            this.ConfigUpdateChangedNodes = changedAnyNodes;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UpdateConfig method processes the source file and updates the Target
+        /// Config file.
+        /// </summary>
+        /// <param name="target">An Xml Document represent the Target Xml File.</param>
+        /// <param name="fileName">The fileName for the Target Xml File - relative to the webroot.</param>
+        /// -----------------------------------------------------------------------------
+        public void UpdateConfig(XmlDocument target, string fileName)
+        {
+            var changedAnyNodes = false;
+            this.TargetFileName = fileName;
+            this.TargetConfig = target;
+            if (this.TargetConfig != null)
+            {
+                changedAnyNodes = this.ProcessNodes(this.SourceConfig.SelectNodes("/configuration/nodes/node"), true);
+            }
+
+            this.ConfigUpdateChangedNodes = changedAnyNodes;
+        }
+
         private bool AddNode(XmlNode rootNode, XmlNode actionNode)
         {
             var changedNode = false;
@@ -571,46 +611,6 @@ namespace DotNetNuke.Services.Installer
             {
                 commentNodes.ForEach(n => { node.RemoveChild(n); });
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UpdateConfig method processes the source file and updates the Target
-        /// Config Xml Document.
-        /// </summary>
-        /// <param name="target">An Xml Document represent the Target Xml File.</param>
-        /// -----------------------------------------------------------------------------
-        public void UpdateConfig(XmlDocument target)
-        {
-            var changedAnyNodes = false;
-            this.TargetConfig = target;
-            if (this.TargetConfig != null)
-            {
-                changedAnyNodes = this.ProcessNodes(this.SourceConfig.SelectNodes("/configuration/nodes/node"), false);
-            }
-
-            this.ConfigUpdateChangedNodes = changedAnyNodes;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UpdateConfig method processes the source file and updates the Target
-        /// Config file.
-        /// </summary>
-        /// <param name="target">An Xml Document represent the Target Xml File.</param>
-        /// <param name="fileName">The fileName for the Target Xml File - relative to the webroot.</param>
-        /// -----------------------------------------------------------------------------
-        public void UpdateConfig(XmlDocument target, string fileName)
-        {
-            var changedAnyNodes = false;
-            this.TargetFileName = fileName;
-            this.TargetConfig = target;
-            if (this.TargetConfig != null)
-            {
-                changedAnyNodes = this.ProcessNodes(this.SourceConfig.SelectNodes("/configuration/nodes/node"), true);
-            }
-
-            this.ConfigUpdateChangedNodes = changedAnyNodes;
         }
 
         /// -----------------------------------------------------------------------------

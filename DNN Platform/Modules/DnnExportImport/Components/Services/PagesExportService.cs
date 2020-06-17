@@ -45,6 +45,12 @@ namespace Dnn.ExportImport.Components.Services
     /// </summary>
     public class PagesExportService : BasePortableService
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+
+        private ProgressTotals _totals;
+        private DataProvider _dataProvider;
+        private ITabController _tabController;
+
         public override string Category => Constants.Category_Pages;
 
         public override string ParentCategory => null;
@@ -56,21 +62,36 @@ namespace Dnn.ExportImport.Components.Services
         public virtual bool IgnoreParentMatch { get; set; } = false;
 
         protected ImportDto ImportDto => this._importDto;
-
-        private ProgressTotals _totals;
-        private DataProvider _dataProvider;
-        private ITabController _tabController;
         private IModuleController _moduleController;
         private ExportImportJob _exportImportJob;
         private ImportDto _importDto;
         private ExportDto _exportDto;
 
         private IList<int> _exportedModuleDefinitions = new List<int>();
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
         private Dictionary<int, int> _partialImportedTabs = new Dictionary<int, int>();
         private Dictionary<int, bool> _searchedParentTabs = new Dictionary<int, bool>();
         private IList<ImportModuleMapping> _importContentList = new List<ImportModuleMapping>(); // map the exported module and local module.
+
+        public static void ResetContentsFlag(ExportImportRepository repository)
+        {
+            // reset restored flag; if it same extracted db is reused, then content will be restored
+            var toSkip = 0;
+            const int batchSize = 100;
+            var totalCount = repository.GetCount<ExportModuleContent>();
+            while (totalCount > 0)
+            {
+                var items = repository.GetAllItems<ExportModuleContent>(skip: toSkip, max: batchSize)
+                    .Where(item => item.IsRestored).ToList();
+                if (items.Count > 0)
+                {
+                    items.ForEach(item => item.IsRestored = false);
+                    repository.UpdateItems(items);
+                }
+
+                toSkip += batchSize;
+                totalCount -= batchSize;
+            }
+        }
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
@@ -133,62 +154,22 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
         }
 
-        private void ProcessImportPages()
+        public void RestoreTab(TabInfo tab, PortalSettings portalSettings)
         {
-            this._dataProvider = DataProvider.Instance();
-            this._totals = string.IsNullOrEmpty(this.CheckPoint.StageData)
-                ? new ProgressTotals()
-                : JsonConvert.DeserializeObject<ProgressTotals>(this.CheckPoint.StageData);
-
-            var portalId = this._exportImportJob.PortalId;
-
-            var localTabs = this._tabController.GetTabsByPortal(portalId).Values.ToList();
-
-            var exportedTabs = this.Repository.GetItems<ExportTab>(x => x.IsSystem == (this.Category == Constants.Category_Templates))
-                .OrderBy(t => t.Level).ThenBy(t => t.ParentId).ThenBy(t => t.TabOrder).ToList();
-
-            // Update the total items count in the check points. This should be updated only once.
-            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportedTabs.Count : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this))
+            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tab.PortalID, tab.TabID);
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
             {
-                return;
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
 
-            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < this._totals.LastProcessedId);
+            this._tabController.RestoreTab(tab, portalSettings);
 
-            var index = 0;
-            var referenceTabs = new List<int>();
-            this._importContentList.Clear();
-            foreach (var otherTab in exportedTabs)
+            if (changeControlStateForTab.IsChangeControlEnabledForTab)
             {
-                if (this.CheckCancelled(this._exportImportJob))
-                {
-                    break;
-                }
-
-                if (this._totals.LastProcessedId > index)
-                {
-                    continue; // this is the exported DB row ID; not the TabID
-                }
-
-                this.ProcessImportPage(otherTab, exportedTabs, localTabs, referenceTabs);
-
-                this.CheckPoint.ProcessedItems++;
-                this.CheckPoint.Progress += progressStep;
-                if (this.CheckPointStageCallback(this))
-                {
-                    break;
-                }
-
-                this._totals.LastProcessedId = index++;
-                this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
+                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
+                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
             }
-
-            // repair pages which linked to other pages
-            this.RepairReferenceTabs(referenceTabs, localTabs, exportedTabs);
-
-            this._searchedParentTabs.Clear();
-            this.ReportImportTotals();
         }
 
         protected virtual void ProcessImportPage(ExportTab otherTab, IList<ExportTab> exportedTabs, IList<TabInfo> localTabs, IList<int> referenceTabs)
@@ -367,22 +348,103 @@ namespace Dnn.ExportImport.Components.Services
             this.UpdateParentInPartialImportTabs(localTab, otherTab, portalId, exportedTabs, localTabs);
         }
 
-        public void RestoreTab(TabInfo tab, PortalSettings portalSettings)
+        private static int TryFindLocalParentTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
         {
-            var changeControlStateForTab = TabChangeSettings.Instance.GetChangeControlState(tab.PortalID, tab.TabID);
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+            return TryFindLocalTabId(exportedTab, exportedTabs, localTabs, exportedTab.ParentId);
+        }
+
+        private static int TryFindLocalTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs, int? tabId)
+        {
+            if (tabId.HasValue && tabId.Value > 0)
             {
-                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
-                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+                var otherParent = exportedTabs.FirstOrDefault(t => t.TabId == tabId);
+                if (otherParent != null)
+                {
+                    if (otherParent.LocalId.HasValue)
+                    {
+                        var localTab = localTabs.FirstOrDefault(t => t.TabID == otherParent.LocalId);
+                        if (localTab != null)
+                        {
+                            return localTab.TabID;
+                        }
+                    }
+                }
+                else if (exportedTab.TabPath.HasValue())
+                {
+                    var index = exportedTab.TabPath.LastIndexOf(@"//", StringComparison.Ordinal);
+                    if (index > 0)
+                    {
+                        var path = exportedTab.TabPath.Substring(0, index);
+                        var localTab = localTabs.FirstOrDefault(t =>
+                            path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
+                            && IsSameCulture(t.CultureCode, exportedTab.CultureCode));
+                        if (localTab != null)
+                        {
+                            return localTab.TabID;
+                        }
+                    }
+                }
             }
 
-            this._tabController.RestoreTab(tab, portalSettings);
+            return -1;
+        }
 
-            if (changeControlStateForTab.IsChangeControlEnabledForTab)
+        private void ProcessImportPages()
+        {
+            this._dataProvider = DataProvider.Instance();
+            this._totals = string.IsNullOrEmpty(this.CheckPoint.StageData)
+                ? new ProgressTotals()
+                : JsonConvert.DeserializeObject<ProgressTotals>(this.CheckPoint.StageData);
+
+            var portalId = this._exportImportJob.PortalId;
+
+            var localTabs = this._tabController.GetTabsByPortal(portalId).Values.ToList();
+
+            var exportedTabs = this.Repository.GetItems<ExportTab>(x => x.IsSystem == (this.Category == Constants.Category_Templates))
+                .OrderBy(t => t.Level).ThenBy(t => t.ParentId).ThenBy(t => t.TabOrder).ToList();
+
+            // Update the total items count in the check points. This should be updated only once.
+            this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportedTabs.Count : this.CheckPoint.TotalItems;
+            if (this.CheckPointStageCallback(this))
             {
-                TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, changeControlStateForTab.IsVersioningEnabledForTab);
-                TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, changeControlStateForTab.IsWorkflowEnabledForTab);
+                return;
             }
+
+            var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < this._totals.LastProcessedId);
+
+            var index = 0;
+            var referenceTabs = new List<int>();
+            this._importContentList.Clear();
+            foreach (var otherTab in exportedTabs)
+            {
+                if (this.CheckCancelled(this._exportImportJob))
+                {
+                    break;
+                }
+
+                if (this._totals.LastProcessedId > index)
+                {
+                    continue; // this is the exported DB row ID; not the TabID
+                }
+
+                this.ProcessImportPage(otherTab, exportedTabs, localTabs, referenceTabs);
+
+                this.CheckPoint.ProcessedItems++;
+                this.CheckPoint.Progress += progressStep;
+                if (this.CheckPointStageCallback(this))
+                {
+                    break;
+                }
+
+                this._totals.LastProcessedId = index++;
+                this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
+            }
+
+            // repair pages which linked to other pages
+            this.RepairReferenceTabs(referenceTabs, localTabs, exportedTabs);
+
+            this._searchedParentTabs.Clear();
+            this.ReportImportTotals();
         }
 
         /// <summary>
@@ -1404,47 +1466,6 @@ namespace Dnn.ExportImport.Components.Services
             return count;
         }
 
-        private static int TryFindLocalParentTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs)
-        {
-            return TryFindLocalTabId(exportedTab, exportedTabs, localTabs, exportedTab.ParentId);
-        }
-
-        private static int TryFindLocalTabId(ExportTab exportedTab, IEnumerable<ExportTab> exportedTabs, IEnumerable<TabInfo> localTabs, int? tabId)
-        {
-            if (tabId.HasValue && tabId.Value > 0)
-            {
-                var otherParent = exportedTabs.FirstOrDefault(t => t.TabId == tabId);
-                if (otherParent != null)
-                {
-                    if (otherParent.LocalId.HasValue)
-                    {
-                        var localTab = localTabs.FirstOrDefault(t => t.TabID == otherParent.LocalId);
-                        if (localTab != null)
-                        {
-                            return localTab.TabID;
-                        }
-                    }
-                }
-                else if (exportedTab.TabPath.HasValue())
-                {
-                    var index = exportedTab.TabPath.LastIndexOf(@"//", StringComparison.Ordinal);
-                    if (index > 0)
-                    {
-                        var path = exportedTab.TabPath.Substring(0, index);
-                        var localTab = localTabs.FirstOrDefault(t =>
-                            path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
-                            && IsSameCulture(t.CultureCode, exportedTab.CultureCode));
-                        if (localTab != null)
-                        {
-                            return localTab.TabID;
-                        }
-                    }
-                }
-            }
-
-            return -1;
-        }
-
         private static bool IsSameCulture(string sourceCultureCode, string targetCultureCode)
         {
             sourceCultureCode = !string.IsNullOrWhiteSpace(sourceCultureCode) ? sourceCultureCode : Localization.SystemLocale;
@@ -1487,6 +1508,34 @@ namespace Dnn.ExportImport.Components.Services
             localTab.IsSystem = otherTab.IsSystem;
             localTab.Terms.Clear();
             localTab.Terms.AddRange(TermHelper.ToTabTerms(otherTab.Tags, localTab.PortalID));
+        }
+
+        private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
+        {
+            var first = true;
+            while (tab != null)
+            {
+                var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
+                if (pg != null)
+                {
+                    if (first)
+                    {
+                        // this is the current page we are checking for.
+                        return pg.CheckedState == TriCheckedState.Checked || pg.CheckedState == TriCheckedState.CheckedWithAllChildren;
+                    }
+
+                    // this is a [grand] parent of the page we are checking for.
+                    if (pg.CheckedState == TriCheckedState.CheckedWithAllChildren)
+                    {
+                        return true;
+                    }
+                }
+
+                first = false;
+                tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
+            }
+
+            return false;
         }
 
         private void RepairReferenceTabs(IList<int> referenceTabs, IList<TabInfo> localTabs, IList<ExportTab> exportTabs)
@@ -1761,12 +1810,12 @@ namespace Dnn.ExportImport.Components.Services
 
                         this.Repository.CreateItem(
                             new ExportPackage
-                        {
-                            PackageName = package.Name,
-                            Version = package.Version,
-                            PackageType = package.PackageType,
-                            PackageFileName = InstallerUtil.GetPackageBackupName(package),
-                        }, null);
+                            {
+                                PackageName = package.Name,
+                                Version = package.Version,
+                                PackageType = package.PackageType,
+                                PackageFileName = InstallerUtil.GetPackageBackupName(package),
+                            }, null);
 
                         this._exportedModuleDefinitions.Add(exportModule.ModuleDefID);
                         return 1;
@@ -1906,55 +1955,6 @@ namespace Dnn.ExportImport.Components.Services
             this.Repository.CreateItem(exportPage, null);
             this.Result.AddLogEntry("Exported page", tab.TabName + " (" + tab.TabPath + ")");
             return exportPage;
-        }
-
-        private static bool IsTabIncluded(ExportTabInfo tab, IList<ExportTabInfo> allTabs, PageToExport[] selectedPages)
-        {
-            var first = true;
-            while (tab != null)
-            {
-                var pg = selectedPages.FirstOrDefault(p => p.TabId == tab.TabID);
-                if (pg != null)
-                {
-                    if (first)
-                    {
-                        // this is the current page we are checking for.
-                        return pg.CheckedState == TriCheckedState.Checked || pg.CheckedState == TriCheckedState.CheckedWithAllChildren;
-                    }
-
-                    // this is a [grand] parent of the page we are checking for.
-                    if (pg.CheckedState == TriCheckedState.CheckedWithAllChildren)
-                    {
-                        return true;
-                    }
-                }
-
-                first = false;
-                tab = allTabs.FirstOrDefault(t => t.TabID == tab.ParentID);
-            }
-
-            return false;
-        }
-
-        public static void ResetContentsFlag(ExportImportRepository repository)
-        {
-            // reset restored flag; if it same extracted db is reused, then content will be restored
-            var toSkip = 0;
-            const int batchSize = 100;
-            var totalCount = repository.GetCount<ExportModuleContent>();
-            while (totalCount > 0)
-            {
-                var items = repository.GetAllItems<ExportModuleContent>(skip: toSkip, max: batchSize)
-                    .Where(item => item.IsRestored).ToList();
-                if (items.Count > 0)
-                {
-                    items.ForEach(item => item.IsRestored = false);
-                    repository.UpdateItems(items);
-                }
-
-                toSkip += batchSize;
-                totalCount -= batchSize;
-            }
         }
 
         private void ReportExportTotals()

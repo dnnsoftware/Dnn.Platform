@@ -26,8 +26,8 @@ namespace DotNetNuke.Entities.Content.Workflow
     [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
     public class ContentWorkflowController : ComponentBase<IContentWorkflowController, ContentWorkflowController>, IContentWorkflowController
     {
-        private readonly ContentController contentController;
         private const string ContentWorkflowNotificationType = "ContentWorkflowNotification";
+        private readonly ContentController contentController;
 
         private ContentWorkflowController()
         {
@@ -502,6 +502,30 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.SendNotification(sendEmail, sendMessage, settings, roles, users, replacedSubject, replacedBody, comment, userID, null, null);
         }
 
+        private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
+        {
+            return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
+        }
+
+        private static IEnumerable<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
+        {
+            var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
+            foreach (UserInfo superUser in superUsers)
+            {
+                if (IsSuperUserNotIncluded(users, superUser))
+                {
+                    users.Add(superUser);
+                }
+            }
+
+            return users;
+        }
+
+        private static bool IsSuperUserNotIncluded(IEnumerable<UserInfo> users, UserInfo superUser)
+        {
+            return users.All(u => u.UserID != superUser.UserID);
+        }
+
         private void AddWorkflowCommentLog(ContentItem item, string userComment, int userID)
         {
             var workflow = this.GetWorkflow(item);
@@ -608,11 +632,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             return roles;
         }
 
-        private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
-        {
-            return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
-        }
-
         private IEnumerable<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<ContentWorkflowStatePermission> permissions)
         {
             var users = new List<UserInfo>();
@@ -625,25 +644,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
 
             return IncludeSuperUsers(users);
-        }
-
-        private static IEnumerable<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
-        {
-            var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
-            foreach (UserInfo superUser in superUsers)
-            {
-                if (IsSuperUserNotIncluded(users, superUser))
-                {
-                    users.Add(superUser);
-                }
-            }
-
-            return users;
-        }
-
-        private static bool IsSuperUserNotIncluded(IEnumerable<UserInfo> users, UserInfo superUser)
-        {
-            return users.All(u => u.UserID != superUser.UserID);
         }
 
         private bool IsReviewer(UserInfo user, PortalSettings settings, IEnumerable<ContentWorkflowStatePermission> permissions)

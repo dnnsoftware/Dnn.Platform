@@ -17,29 +17,51 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class TextColumn : TemplateColumn
     {
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the Data Field is the field that binds to the Text Column.
- /// </summary>
- /// <value>A String.</value>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Data Field is the field that binds to the Text Column.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
         public string DataField { get; set; }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the Text (for Header/Footer Templates).
- /// </summary>
- /// <value>A String.</value>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Text (for Header/Footer Templates).
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets the Width of the Column.
- /// </summary>
- /// <value>A Unit.</value>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Width of the Column.
+        /// </summary>
+        /// <value>A Unit.</value>
+        /// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Initialises the Column.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Initialize()
+        {
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+            if (HttpContext.Current == null)
+            {
+                this.ItemStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.ItemStyle.Font.Size = new FontUnit("10pt");
+                this.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
+                this.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -73,28 +95,6 @@ namespace DotNetNuke.UI.WebControls
 
             template.DesignMode = isDesignMode;
             return template;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Initialize()
-        {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-            if (HttpContext.Current == null)
-            {
-                this.ItemStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.ItemStyle.Font.Size = new FontUnit("10pt");
-                this.ItemStyle.HorizontalAlign = HorizontalAlign.Left;
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
-                this.HeaderStyle.HorizontalAlign = HorizontalAlign.Left;
-            }
         }
     }
 }

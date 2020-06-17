@@ -1,20 +1,34 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using Newtonsoft.Json;
-
-#endregion
-
 namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 {
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class ModuleControlDto
     {
+        public ModuleControlDto()
+        {
+        }
+
+        public ModuleControlDto(ModuleControlInfo moduleControl)
+        {
+            this.Id = moduleControl.ModuleControlID;
+            this.DefinitionId = moduleControl.ModuleDefID;
+            this.Key = moduleControl.ControlKey;
+            this.Title = moduleControl.ControlTitle;
+            this.Source = moduleControl.ControlSrc;
+            this.Type = moduleControl.ControlType;
+            this.Order = moduleControl.ViewOrder;
+            this.Icon = moduleControl.IconFile;
+            this.HelpUrl = moduleControl.HelpURL;
+            this.SupportPopups = moduleControl.SupportsPopUps;
+            this.SupportPartialRendering = moduleControl.SupportsPartialRendering;
+        }
+
         [JsonProperty("id")]
         public int Id { get; set; }
 
@@ -29,7 +43,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         [JsonProperty("source")]
         public string Source { get; set; }
-
 
         [JsonProperty("type")]
         public SecurityAccessLevel Type { get; set; }
@@ -48,26 +61,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         [JsonProperty("supportPartialRendering")]
         public bool SupportPartialRendering { get; set; }
-
-        public ModuleControlDto()
-        {
-            
-        }
-
-        public ModuleControlDto(ModuleControlInfo moduleControl)
-        {
-            this.Id = moduleControl.ModuleControlID;
-            this.DefinitionId = moduleControl.ModuleDefID;
-            this.Key = moduleControl.ControlKey;
-            this.Title = moduleControl.ControlTitle;
-            this.Source = moduleControl.ControlSrc;
-            this.Type = moduleControl.ControlType;
-            this.Order = moduleControl.ViewOrder;
-            this.Icon = moduleControl.IconFile;
-            this.HelpUrl = moduleControl.HelpURL;
-            this.SupportPopups = moduleControl.SupportsPopUps;
-            this.SupportPartialRendering = moduleControl.SupportsPartialRendering;
-        }
 
         public ModuleControlInfo ToModuleControlInfo()
         {

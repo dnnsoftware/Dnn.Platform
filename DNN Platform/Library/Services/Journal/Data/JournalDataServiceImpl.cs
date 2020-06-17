@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Journal
             journalId = this._provider.ExecuteScalar<int>("Journal_Save", portalId, journalId, journalTypeId, currentUserId, profileId,
                                                     groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, false, false);
             return journalId;
-         }
+        }
 
         public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
                         string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)

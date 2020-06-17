@@ -12,6 +12,8 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListEntryInfo
     {
+        private string _Text = Null.NullString;
+
         public ListEntryInfo()
         {
             this.ParentKey = Null.NullString;
@@ -51,8 +53,6 @@ namespace DotNetNuke.Common.Lists
         }
 
         public string Value { get; set; }
-
-        private string _Text = Null.NullString;
 
         /// <summary>
         /// Gets or sets localized text value of the list entry item. An attempt is made to look up the key "[ParentKey].[Value].Text" in the resource file

@@ -416,6 +416,43 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             return portalSettings.UserTabId;
         }
 
+        private static string RemoveHttpUrlsIfSiteisSSLEnabled(string stringContainingHttp, PortalSettings portalSettings)
+        {
+            if (stringContainingHttp.IndexOf("http") > -1 && portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
+            {
+                var urlToReplace = GetPortalHomeUrl(portalSettings);
+                var urlReplaceWith = $"https://{portalSettings.DefaultPortalAlias}";
+                stringContainingHttp = stringContainingHttp.Replace(urlToReplace, urlReplaceWith);
+            }
+
+            return stringContainingHttp;
+        }
+
+        private static string ResolveUrl(PortalSettings portalSettings, string template)
+        {
+            const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
+            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
+            foreach (Match match in matches)
+            {
+                var link = match.Groups[2].Value;
+                var defaultAlias = portalSettings.DefaultPortalAlias;
+                var domain = Globals.AddHTTP(defaultAlias);
+                if (defaultAlias.Contains("/"))
+                {
+                    var subDomain =
+                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
+                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        link = link.Substring(subDomain.Length);
+                    }
+                }
+
+                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
+            }
+
+            return template;
+        }
+
         /// <summary>Handles the frequent digests.</summary>
         /// <param name="schedulerInstance">The scheduler instance.</param>
         /// <param name="remainingMessages">The remaining messages.</param>
@@ -570,18 +607,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             MarkMessagesAsDispatched(messageRecipients);
         }
 
-        private static string RemoveHttpUrlsIfSiteisSSLEnabled(string stringContainingHttp, PortalSettings portalSettings)
-        {
-            if (stringContainingHttp.IndexOf("http") > -1 && portalSettings != null && (portalSettings.SSLEnabled || portalSettings.SSLEnforced))
-            {
-                var urlToReplace = GetPortalHomeUrl(portalSettings);
-                var urlReplaceWith = $"https://{portalSettings.DefaultPortalAlias}";
-                stringContainingHttp = stringContainingHttp.Replace(urlToReplace, urlReplaceWith);
-            }
-
-            return stringContainingHttp;
-        }
-
         /// <summary>Gets the schedule item date setting.</summary>
         /// <param name="settingKey">The setting key.</param>
         /// <returns>The date the schedule was ran.</returns>
@@ -717,31 +742,6 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                     yield return new Attachment(fileContent, file.ContentType);
                 }
             }
-        }
-
-        private static string ResolveUrl(PortalSettings portalSettings, string template)
-        {
-            const string linkRegex = "(href|src)=\"(/[^\"]*?)\"";
-            var matches = Regex.Matches(template, linkRegex, RegexOptions.Multiline | RegexOptions.IgnoreCase);
-            foreach (Match match in matches)
-            {
-                var link = match.Groups[2].Value;
-                var defaultAlias = portalSettings.DefaultPortalAlias;
-                var domain = Globals.AddHTTP(defaultAlias);
-                if (defaultAlias.Contains("/"))
-                {
-                    var subDomain =
-                        defaultAlias.Substring(defaultAlias.IndexOf("/", StringComparison.InvariantCultureIgnoreCase));
-                    if (link.StartsWith(subDomain, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        link = link.Substring(subDomain.Length);
-                    }
-                }
-
-                template = template.Replace(match.Value, $"{match.Groups[1].Value}=\"{domain}{link}\"");
-            }
-
-            return template;
         }
     }
 }

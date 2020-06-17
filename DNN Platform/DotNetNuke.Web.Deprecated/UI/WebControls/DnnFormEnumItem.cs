@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 this.ListSource = (from object enumValue in Enum.GetValues(Type.GetType(this._enumType))
-                              select new { Name = Localization.GetString(Enum.GetName(Type.GetType(this._enumType), enumValue)) ?? Enum.GetName(Type.GetType(this._enumType), enumValue), Value = (int)enumValue })
+                                   select new { Name = Localization.GetString(Enum.GetName(Type.GetType(this._enumType), enumValue)) ?? Enum.GetName(Type.GetType(this._enumType), enumValue), Value = (int)enumValue })
                                 .ToList();
 
                 // ReSharper restore AssignNullToNotNullAttribute

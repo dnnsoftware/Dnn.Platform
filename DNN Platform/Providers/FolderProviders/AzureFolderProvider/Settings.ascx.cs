@@ -123,6 +123,45 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             folderMappingController.UpdateFolderMapping(folderMapping);
         }
 
+        /// <summary>
+        /// </summary>
+        protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.ddlContainers.SelectedIndex != 1)
+            {
+                return;
+            }
+
+            if (this.tbAccountName.Text.Trim().Length > 0 && this.tbAccountKey.Text.Trim().Length > 0)
+            {
+                this.ddlContainers.Items.Clear();
+
+                this.ddlContainers.Items.Add(Localization.GetString("SelectContainer", this.LocalResourceFile));
+                this.ddlContainers.Items.Add(Localization.GetString("RefreshContainerList", this.LocalResourceFile));
+
+                this.LoadContainers();
+
+                if (this.ddlContainers.Items.Count == 3)
+                {
+                    // If there is only one container, then select it
+                    this.ddlContainers.SelectedValue = this.ddlContainers.Items[2].Value;
+                }
+            }
+            else
+            {
+                this.valContainerName.ErrorMessage = Localization.GetString("CredentialsRequired.ErrorMessage", this.LocalResourceFile);
+                this.valContainerName.IsValid = false;
+            }
+        }
+
+        /// <summary>
+        /// </summary>
+        protected void btnNewContainer_Click(object sender, EventArgs e)
+        {
+            this.SelectContainerPanel.Visible = false;
+            this.CreateContainerPanel.Visible = true;
+        }
+
         private static bool AreThereFolderMappingsWithSameSettings(FolderMappingInfo folderMapping, string accountName, string container)
         {
             var folderMappingController = FolderMappingController.Instance;
@@ -321,45 +360,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 this.valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", this.LocalResourceFile);
                 this.valContainerName.IsValid = false;
             }
-        }
-
-        /// <summary>
-        /// </summary>
-        protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.ddlContainers.SelectedIndex != 1)
-            {
-                return;
-            }
-
-            if (this.tbAccountName.Text.Trim().Length > 0 && this.tbAccountKey.Text.Trim().Length > 0)
-            {
-                this.ddlContainers.Items.Clear();
-
-                this.ddlContainers.Items.Add(Localization.GetString("SelectContainer", this.LocalResourceFile));
-                this.ddlContainers.Items.Add(Localization.GetString("RefreshContainerList", this.LocalResourceFile));
-
-                this.LoadContainers();
-
-                if (this.ddlContainers.Items.Count == 3)
-                {
-                    // If there is only one container, then select it
-                    this.ddlContainers.SelectedValue = this.ddlContainers.Items[2].Value;
-                }
-            }
-            else
-            {
-                this.valContainerName.ErrorMessage = Localization.GetString("CredentialsRequired.ErrorMessage", this.LocalResourceFile);
-                this.valContainerName.IsValid = false;
-            }
-        }
-
-        /// <summary>
-        /// </summary>
-        protected void btnNewContainer_Click(object sender, EventArgs e)
-        {
-            this.SelectContainerPanel.Visible = false;
-            this.CreateContainerPanel.Visible = true;
         }
 
         /// <summary>

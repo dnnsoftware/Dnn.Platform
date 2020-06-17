@@ -136,6 +136,47 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
+        protected override void GetFiles(bool includeSource, bool includeAppCode)
+        {
+            // Language file starts at the root
+            this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
+        }
+
+        protected override void ParseFiles(DirectoryInfo folder, string rootPath)
+        {
+            if (this.LanguagePack.PackageType == LanguagePackType.Core)
+            {
+                if ((folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin")) || folder.FullName.ToLowerInvariant().Contains("providers"))
+                {
+                    return;
+                }
+
+                if (folder.FullName.ToLowerInvariant().Contains("install") && folder.FullName.ToLowerInvariant().Contains("temp"))
+                {
+                    return;
+                }
+            }
+
+            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
+            {
+                // Add the Files in the Folder
+                FileInfo[] files = folder.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    string filePath = folder.FullName.Replace(rootPath, string.Empty);
+                    if (filePath.StartsWith("\\"))
+                    {
+                        filePath = filePath.Substring(1);
+                    }
+
+                    if (file.Name.ToLowerInvariant().Contains(this.Language.Code.ToLowerInvariant()) || (this.Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
+                    {
+                        this.AddFile(Path.Combine(filePath, file.Name));
+                    }
+                }
+            }
+        }
+
         private void ReadLegacyManifest(XPathNavigator manifestNav)
         {
             string fileName = Null.NullString;
@@ -498,47 +539,6 @@ namespace DotNetNuke.Services.Installer.Writers
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
-                }
-            }
-        }
-
-        protected override void GetFiles(bool includeSource, bool includeAppCode)
-        {
-            // Language file starts at the root
-            this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
-        }
-
-        protected override void ParseFiles(DirectoryInfo folder, string rootPath)
-        {
-            if (this.LanguagePack.PackageType == LanguagePackType.Core)
-            {
-                if ((folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin")) || folder.FullName.ToLowerInvariant().Contains("providers"))
-                {
-                    return;
-                }
-
-                if (folder.FullName.ToLowerInvariant().Contains("install") && folder.FullName.ToLowerInvariant().Contains("temp"))
-                {
-                    return;
-                }
-            }
-
-            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
-            {
-                // Add the Files in the Folder
-                FileInfo[] files = folder.GetFiles();
-                foreach (FileInfo file in files)
-                {
-                    string filePath = folder.FullName.Replace(rootPath, string.Empty);
-                    if (filePath.StartsWith("\\"))
-                    {
-                        filePath = filePath.Substring(1);
-                    }
-
-                    if (file.Name.ToLowerInvariant().Contains(this.Language.Code.ToLowerInvariant()) || (this.Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
-                    {
-                        this.AddFile(Path.Combine(filePath, file.Name));
-                    }
                 }
             }
         }

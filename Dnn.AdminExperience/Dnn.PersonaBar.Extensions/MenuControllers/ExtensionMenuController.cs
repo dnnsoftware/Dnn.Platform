@@ -16,11 +16,11 @@ namespace Dnn.PersonaBar.Extensions.MenuControllers
 
     public class ExtensionMenuController : IMenuItemController
     {
-        protected INavigationManager NavigationManager { get; }
         public ExtensionMenuController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+        protected INavigationManager NavigationManager { get; }
 
         public void UpdateParameters(MenuItem menuItem)
         {

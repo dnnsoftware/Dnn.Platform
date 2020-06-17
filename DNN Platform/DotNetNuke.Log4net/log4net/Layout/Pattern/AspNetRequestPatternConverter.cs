@@ -60,14 +60,14 @@ namespace log4net.Layout.Pattern
             HttpRequest request = null;
             try
             {
-            request = httpContext.Request;
+                request = httpContext.Request;
             }
             catch (HttpException)
             {
-            // likely a case of running in IIS integrated mode
-            // when inside an Application_Start event.
-            // treat it like a case of the Request
-            // property returning null
+                // likely a case of running in IIS integrated mode
+                // when inside an Application_Start event.
+                // treat it like a case of the Request
+                // property returning null
             }
 
             if (request != null)

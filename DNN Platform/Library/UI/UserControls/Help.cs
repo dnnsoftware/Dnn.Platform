@@ -20,10 +20,10 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class Help : PortalModuleBase
     {
-        private string MyFileName = "Help.ascx";
-        private string _key;
         protected LinkButton cmdCancel;
         protected HyperLink cmdHelp;
+        private string MyFileName = "Help.ascx";
+        private string _key;
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;

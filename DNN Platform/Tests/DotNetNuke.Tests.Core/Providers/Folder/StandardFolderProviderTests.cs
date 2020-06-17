@@ -82,6 +82,23 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             LocaleController.RegisterInstance(this._localeControllerMock.Object);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            MockComponentProvider.ResetContainer();
+            TestableGlobals.ClearInstance();
+            PortalController.ClearInstance();
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void AddFile_Throws_On_Null_Folder()
+        {
+            var stream = new Mock<Stream>();
+
+            this._sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
+        }
+
         private Dictionary<string, string> GetPortalSettingsDictionaryMock()
         {
             var portalSettingsDictionary = new Dictionary<string, string>();
@@ -99,23 +116,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             portalSettingsMock.Object.GUID = Guid.NewGuid();
 
             return portalSettingsMock.Object;
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            MockComponentProvider.ResetContainer();
-            TestableGlobals.ClearInstance();
-            PortalController.ClearInstance();
-        }
-
-        [Test]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AddFile_Throws_On_Null_Folder()
-        {
-            var stream = new Mock<Stream>();
-
-            this._sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
         }
 
         [Test]

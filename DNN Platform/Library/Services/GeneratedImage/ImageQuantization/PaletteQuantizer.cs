@@ -16,6 +16,16 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class PaletteQuantizer : Quantizer
     {
         /// <summary>
+        /// List of all colors in the palette.
+        /// </summary>
+        protected Color[] _colors;
+
+        /// <summary>
+        /// Lookup table for colors.
+        /// </summary>
+        private readonly Hashtable _colorMap;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PaletteQuantizer"/> class.
         /// Construct the palette quantizer.
         /// </summary>
@@ -39,7 +49,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <returns>The quantized value.</returns>
         protected override byte QuantizePixel(Color32 pixel)
         {
-            byte    colorIndex = 0;
+            byte colorIndex = 0;
             int colorHash = pixel.ARGB;
 
             // Check if the color is in the lookup table
@@ -74,7 +84,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     // Loop through the entire palette, looking for the closest color match
                     for (int index = 0; index < this._colors.Length; index++)
                     {
-                        Color   paletteColor = this._colors[index];
+                        Color paletteColor = this._colors[index];
 
                         int redDistance = paletteColor.R - red;
                         int greenDistance = paletteColor.G - green;
@@ -119,15 +129,5 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
             return palette;
         }
-
-        /// <summary>
-        /// Lookup table for colors.
-        /// </summary>
-        private readonly Hashtable _colorMap;
-
-        /// <summary>
-        /// List of all colors in the palette.
-        /// </summary>
-        protected Color[] _colors;
     }
 }

@@ -38,6 +38,55 @@ namespace DotNetNuke.Common
         private static bool InitializedAlready;
         private static readonly object InitializeLock = new object();
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Inits the app.
+        /// </summary>
+        /// <param name="app">The app.</param>
+        /// -----------------------------------------------------------------------------
+        public static void Init(HttpApplication app)
+        {
+            string redirect;
+
+            // Check if app is initialised
+            if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
+            {
+                return;
+            }
+
+            lock (InitializeLock)
+            {
+                // Double-Check if app was initialised by another request
+                if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
+                {
+                    return;
+                }
+
+                // Initialize ...
+                redirect = InitializeApp(app, ref InitializedAlready);
+            }
+
+            if (!string.IsNullOrEmpty(redirect))
+            {
+                app.Response.Redirect(redirect, true);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LogStart logs the Application Start Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void LogStart()
+        {
+            var log = new LogInfo
+            {
+                BypassBuffering = true,
+                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString(),
+            };
+            LogController.Instance.AddLog(log);
+        }
+
         private static string CheckVersion(HttpApplication app)
         {
             HttpServerUtility Server = app.Server;
@@ -248,55 +297,6 @@ namespace DotNetNuke.Common
             return url.EndsWith("/install.aspx")
                 || url.Contains("/upgradewizard.aspx")
                 || url.Contains("/installwizard.aspx");
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Inits the app.
-        /// </summary>
-        /// <param name="app">The app.</param>
-        /// -----------------------------------------------------------------------------
-        public static void Init(HttpApplication app)
-        {
-            string redirect;
-
-            // Check if app is initialised
-            if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
-            {
-                return;
-            }
-
-            lock (InitializeLock)
-            {
-                // Double-Check if app was initialised by another request
-                if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
-                {
-                    return;
-                }
-
-                // Initialize ...
-                redirect = InitializeApp(app, ref InitializedAlready);
-            }
-
-            if (!string.IsNullOrEmpty(redirect))
-            {
-                app.Response.Redirect(redirect, true);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LogStart logs the Application Start Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public static void LogStart()
-        {
-            var log = new LogInfo
-            {
-                BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.APPLICATION_START.ToString(),
-            };
-            LogController.Instance.AddLog(log);
         }
 
         /// -----------------------------------------------------------------------------

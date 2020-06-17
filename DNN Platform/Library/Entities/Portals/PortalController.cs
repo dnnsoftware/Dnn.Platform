@@ -58,42 +58,248 @@ namespace DotNetNuke.Entities.Portals
     /// </remarks>
     public partial class PortalController : ServiceLocator<IPortalController, PortalController>, IPortalController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
-
         public const string HtmlText_TimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlText_AutoSaveEnabled = "HtmlText_AutoSaveEnabled";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
+
+        /// <summary>
+        /// Adds the portal dictionary.
+        /// </summary>
+        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab id.</param>
+        public static void AddPortalDictionary(int portalId, int tabId)
+        {
+            var portalDic = GetPortalDictionary();
+            portalDic[tabId] = portalId;
+            DataCache.SetCache(DataCache.PortalDictionaryCacheKey, portalDic);
+        }
+
+        /// <summary>
+        /// Creates the root folder for a child portal.
+        /// </summary>
+        /// <remarks>
+        /// If call this method, it will create the specific folder if the folder doesn't exist;
+        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx'.
+        /// </remarks>
+        /// <param name="ChildPath">The child path.</param>
+        /// <returns>
+        /// If the method executed successful, it will return NullString, otherwise return error message.
+        /// </returns>
+        /// <example>
+        /// <code lang="C#">
+        /// string childPhysicalPath = Server.MapPath(childPath);
+        /// message = PortalController.CreateChildPortalFolder(childPhysicalPath);
+        /// </code>
+        /// </example>
+        public static string CreateChildPortalFolder(string ChildPath)
+        {
+            string message = Null.NullString;
+
+            // Set up Child Portal
+            try
+            {
+                // create the subdirectory for the new portal
+                if (!Directory.Exists(ChildPath))
+                {
+                    Directory.CreateDirectory(ChildPath);
+                }
+
+                // create the subhost default.aspx file
+                if (!File.Exists(ChildPath + "\\" + Globals.glbDefaultPage))
+                {
+                    File.Copy(Globals.HostMapPath + "subhost.aspx", ChildPath + "\\" + Globals.glbDefaultPage);
+                }
+            }
+            catch (Exception Exc)
+            {
+                Logger.Error(Exc);
+                message += Localization.GetString("ChildPortal.Error") + Exc.Message + Exc.StackTrace;
+            }
+
+            return message;
+        }
+
+        /// <summary>
+        /// Creates a new portal alias.
+        /// </summary>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalAlias">Portal Alias to be created.</param>
+        public void AddPortalAlias(int portalId, string portalAlias)
+        {
+            // Check if the Alias exists
+            PortalAliasInfo portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
+
+            // If alias does not exist add new
+            if (portalAliasInfo == null)
+            {
+                portalAliasInfo = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true };
+                PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
+            }
+        }
+
+        /// <summary>
+        /// Copies the page template.
+        /// </summary>
+        /// <param name="templateFile">The template file.</param>
+        /// <param name="mappedHomeDirectory">The mapped home directory.</param>
+        public void CopyPageTemplate(string templateFile, string mappedHomeDirectory)
+        {
+            string hostTemplateFile = string.Format("{0}Templates\\{1}", Globals.HostMapPath, templateFile);
+            if (File.Exists(hostTemplateFile))
+            {
+                string portalTemplateFolder = string.Format("{0}Templates\\", mappedHomeDirectory);
+                if (!Directory.Exists(portalTemplateFolder))
+                {
+                    // Create Portal Templates folder
+                    Directory.CreateDirectory(portalTemplateFolder);
+                }
+
+                string portalTemplateFile = portalTemplateFolder + templateFile;
+                if (!File.Exists(portalTemplateFile))
+                {
+                    File.Copy(hostTemplateFile, portalTemplateFile);
+                }
+            }
+        }
+
+        internal static void EnsureRequiredEventLogTypesExist()
+        {
+            if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
+            {
+                // Add 404 Log
+                var logTypeInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                // Add LogType
+                var logTypeConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()))
+            {
+                // Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeFilterInfo);
+
+                // Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
+            {
+                var logTypeInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    LogTypeFriendlyName = "TabURL created",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationSuccess",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                logTypeInfo.LogTypeFriendlyName = "TabURL updated";
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
+                LogController.Instance.AddLogType(logTypeInfo);
+
+                // Add LogType
+                var logTypeUrlConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = false,
+                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
+
+                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
+
+                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
+                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
+            }
+
+            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
+            {
+                // Add IP filter log type
+                var logTypeFilterInfo = new LogTypeInfo
+                {
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    LogTypeFriendlyName = "Javscript library registration resolved script collision",
+                    LogTypeDescription = string.Empty,
+                    LogTypeCSSClass = "OperationFailure",
+                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                };
+                LogController.Instance.AddLogType(logTypeFilterInfo);
+
+                // Add LogType
+                var logTypeFilterConf = new LogTypeConfigInfo
+                {
+                    LoggingIsActive = true,
+                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
+                    KeepMostRecent = "100",
+                    NotificationThreshold = 1,
+                    NotificationThresholdTime = 1,
+                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                    MailFromAddress = Null.NullString,
+                    MailToAddress = Null.NullString,
+                    LogTypePortalID = "*",
+                };
+                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
+            }
+        }
 
         protected override Func<IPortalController> GetFactory()
         {
             return () => new PortalController();
-        }
-
-        private void AddFolderPermissions(int portalId, int folderId)
-        {
-            var portal = this.GetPortal(portalId);
-            var folderManager = FolderManager.Instance;
-            var folder = folderManager.GetFolder(folderId);
-            var permissionController = new PermissionController();
-            foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", string.Empty))
-            {
-                var folderPermission = new FolderPermissionInfo(permission)
-                {
-                    FolderID = folder.FolderID,
-                    RoleID = portal.AdministratorRoleId,
-                    AllowAccess = true,
-                };
-
-                folder.FolderPermissions.Add(folderPermission);
-                if (permission.PermissionKey == "READ")
-                {
-                    // add READ permissions to the All Users Role
-                    folderManager.AddAllUserReadPermission(folder, permission);
-                }
-            }
-
-            FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
         private static void CreateDefaultPortalRoles(int portalId, int administratorId, ref int administratorRoleId, ref int registeredRoleId, ref int subscriberRoleId, int unverifiedRoleId)
@@ -122,6 +328,115 @@ namespace DotNetNuke.Entities.Portals
             RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
+        }
+
+        private static string CreateProfileDefinitions(int portalId, string templateFilePath)
+        {
+            string strMessage = Null.NullString;
+            try
+            {
+                // add profile definitions
+                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
+
+                // open the XML template file
+                try
+                {
+                    xmlDoc.Load(templateFilePath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+
+                // parse profile definitions if available
+                var node = xmlDoc.SelectSingleNode("//portal/profiledefinitions");
+                if (node != null)
+                {
+                    ParseProfileDefinitions(node, portalId);
+                }
+                else // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
+                {
+                    ProfileController.AddDefaultDefinitions(portalId);
+                }
+            }
+            catch (Exception ex)
+            {
+                strMessage = Localization.GetString("CreateProfileDefinitions.Error");
+                Exceptions.LogException(ex);
+            }
+
+            return strMessage;
+        }
+
+        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
+        {
+            // add portal
+            int PortalId = -1;
+            try
+            {
+                // Use host settings as default values for these parameters
+                // This can be overwritten on the portal template
+                var datExpiryDate = Host.Host.DemoPeriod > Null.NullInteger
+                    ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.AddDays(Host.Host.DemoPeriod).ToString(CultureInfo.InvariantCulture)))
+                    : Null.NullDate;
+
+                PortalId = DataProvider.Instance().CreatePortal(
+                    portalName,
+                    Host.Host.HostCurrency,
+                    datExpiryDate,
+                    Host.Host.HostFee,
+                    Host.Host.HostSpace,
+                    Host.Host.PageQuota,
+                    Host.Host.UserQuota,
+                    0, // site log history function has been removed.
+                    homeDirectory,
+                    cultureCode,
+                    UserController.Instance.GetCurrentUserInfo().UserID);
+
+                // clear portal cache
+                DataCache.ClearHostCache(true);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+
+            try
+            {
+                EnsureRequiredEventLogTypesExist();
+            }
+            catch (Exception)
+            {
+                // should be no exception, but suppress just in case
+            }
+
+            return PortalId;
+        }
+
+        private void AddFolderPermissions(int portalId, int folderId)
+        {
+            var portal = this.GetPortal(portalId);
+            var folderManager = FolderManager.Instance;
+            var folder = folderManager.GetFolder(folderId);
+            var permissionController = new PermissionController();
+            foreach (PermissionInfo permission in permissionController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", string.Empty))
+            {
+                var folderPermission = new FolderPermissionInfo(permission)
+                {
+                    FolderID = folder.FolderID,
+                    RoleID = portal.AdministratorRoleId,
+                    AllowAccess = true,
+                };
+
+                folder.FolderPermissions.Add(folderPermission);
+                if (permission.PermissionKey == "READ")
+                {
+                    // add READ permissions to the All Users Role
+                    folderManager.AddAllUserReadPermission(folder, permission);
+                }
+            }
+
+            FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
         private void CreatePortalInternal(int portalId, string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template,
@@ -390,89 +705,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static string CreateProfileDefinitions(int portalId, string templateFilePath)
-        {
-            string strMessage = Null.NullString;
-            try
-            {
-                // add profile definitions
-                XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
-
-                // open the XML template file
-                try
-                {
-                    xmlDoc.Load(templateFilePath);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
-
-                // parse profile definitions if available
-                var node = xmlDoc.SelectSingleNode("//portal/profiledefinitions");
-                if (node != null)
-                {
-                    ParseProfileDefinitions(node, portalId);
-                }
-                else // template does not contain profile definitions ( ie. was created prior to DNN 3.3.0 )
-                {
-                    ProfileController.AddDefaultDefinitions(portalId);
-                }
-            }
-            catch (Exception ex)
-            {
-                strMessage = Localization.GetString("CreateProfileDefinitions.Error");
-                Exceptions.LogException(ex);
-            }
-
-            return strMessage;
-        }
-
-        private static int CreatePortal(string portalName, string homeDirectory, string cultureCode)
-        {
-            // add portal
-            int PortalId = -1;
-            try
-            {
-                // Use host settings as default values for these parameters
-                // This can be overwritten on the portal template
-                var datExpiryDate = Host.Host.DemoPeriod > Null.NullInteger
-                    ? Convert.ToDateTime(Globals.GetMediumDate(DateTime.Now.AddDays(Host.Host.DemoPeriod).ToString(CultureInfo.InvariantCulture)))
-                    : Null.NullDate;
-
-                PortalId = DataProvider.Instance().CreatePortal(
-                    portalName,
-                    Host.Host.HostCurrency,
-                    datExpiryDate,
-                    Host.Host.HostFee,
-                    Host.Host.HostSpace,
-                    Host.Host.PageQuota,
-                    Host.Host.UserQuota,
-                    0, // site log history function has been removed.
-                    homeDirectory,
-                    cultureCode,
-                    UserController.Instance.GetCurrentUserInfo().UserID);
-
-                // clear portal cache
-                DataCache.ClearHostCache(true);
-            }
-            catch (Exception ex)
-            {
-                Exceptions.LogException(ex);
-            }
-
-            try
-            {
-                EnsureRequiredEventLogTypesExist();
-            }
-            catch (Exception)
-            {
-                // should be no exception, but suppress just in case
-            }
-
-            return PortalId;
-        }
-
         private static int CreateRole(RoleInfo role)
         {
             int roleId;
@@ -571,138 +803,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return true;
-        }
-
-        internal static void EnsureRequiredEventLogTypesExist()
-        {
-            if (!DoesLogTypeExists(EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString()))
-            {
-                // Add 404 Log
-                var logTypeInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    LogTypeFriendlyName = "HTTP Error Code 404 Page Not Found",
-                    LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                };
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                // Add LogType
-                var logTypeConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeConf);
-            }
-
-            if (!DoesLogTypeExists(EventLogController.EventLogType.IP_LOGIN_BANNED.ToString()))
-            {
-                // Add IP filter log type
-                var logTypeFilterInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
-                    LogTypeFriendlyName = "HTTP Error Code Forbidden IP address rejected",
-                    LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                };
-                LogController.Instance.AddLogType(logTypeFilterInfo);
-
-                // Add LogType
-                var logTypeFilterConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.IP_LOGIN_BANNED.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
-            }
-
-            if (!DoesLogTypeExists(EventLogController.EventLogType.TABURL_CREATED.ToString()))
-            {
-                var logTypeInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
-                    LogTypeFriendlyName = "TabURL created",
-                    LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationSuccess",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                };
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
-                logTypeInfo.LogTypeFriendlyName = "TabURL updated";
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                logTypeInfo.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
-                logTypeInfo.LogTypeFriendlyName = "TabURL deleted";
-                LogController.Instance.AddLogType(logTypeInfo);
-
-                // Add LogType
-                var logTypeUrlConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = false,
-                    LogTypeKey = EventLogController.EventLogType.TABURL_CREATED.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
-
-                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_UPDATED.ToString();
-                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
-
-                logTypeUrlConf.LogTypeKey = EventLogController.EventLogType.TABURL_DELETED.ToString();
-                LogController.Instance.AddLogTypeConfigInfo(logTypeUrlConf);
-            }
-
-            if (!DoesLogTypeExists(EventLogController.EventLogType.SCRIPT_COLLISION.ToString()))
-            {
-                // Add IP filter log type
-                var logTypeFilterInfo = new LogTypeInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
-                    LogTypeFriendlyName = "Javscript library registration resolved script collision",
-                    LogTypeDescription = string.Empty,
-                    LogTypeCSSClass = "OperationFailure",
-                    LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                };
-                LogController.Instance.AddLogType(logTypeFilterInfo);
-
-                // Add LogType
-                var logTypeFilterConf = new LogTypeConfigInfo
-                {
-                    LoggingIsActive = true,
-                    LogTypeKey = EventLogController.EventLogType.SCRIPT_COLLISION.ToString(),
-                    KeepMostRecent = "100",
-                    NotificationThreshold = 1,
-                    NotificationThresholdTime = 1,
-                    NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                    MailFromAddress = Null.NullString,
-                    MailToAddress = Null.NullString,
-                    LogTypePortalID = "*",
-                };
-                LogController.Instance.AddLogTypeConfigInfo(logTypeFilterConf);
-            }
         }
 
         private static PortalSettings GetCurrentPortalSettingsInternal()
@@ -931,6 +1031,27 @@ namespace DotNetNuke.Entities.Portals
             FolderPermissionController.SaveFolderPermissions(folder);
         }
 
+        private static void EnsureRequiredProvidersForFolderTypes()
+        {
+            if (ComponentFactory.GetComponent<CryptographyProvider>() == null)
+            {
+                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
+                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new FipsCompilanceCryptographyProvider());
+            }
+        }
+
+        private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig, XmlDocument webConfig)
+            where TAbstract : class
+        {
+            var providerBusinessClassNode = webConfig.SelectSingleNode("configuration/dotnetnuke/folder/providers/add[@name='" + folderTypeConfig.Provider + "']");
+
+            var typeClass = Type.GetType(providerBusinessClassNode.Attributes["type"].Value);
+            if (typeClass != null)
+            {
+                ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, Activator.CreateInstance(typeClass));
+            }
+        }
+
         private void CreatePredefinedFolderTypes(int portalId)
         {
             try
@@ -959,63 +1080,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void EnsureRequiredProvidersForFolderTypes()
-        {
-            if (ComponentFactory.GetComponent<CryptographyProvider>() == null)
-            {
-                ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(FipsCompilanceCryptographyProvider)));
-                ComponentFactory.RegisterComponentInstance<CryptographyProvider>(new FipsCompilanceCryptographyProvider());
-            }
-        }
-
-        private static void EnsureFolderProviderRegistration<TAbstract>(FolderTypeConfig folderTypeConfig, XmlDocument webConfig)
-            where TAbstract : class
-        {
-            var providerBusinessClassNode = webConfig.SelectSingleNode("configuration/dotnetnuke/folder/providers/add[@name='" + folderTypeConfig.Provider + "']");
-
-            var typeClass = Type.GetType(providerBusinessClassNode.Attributes["type"].Value);
-            if (typeClass != null)
-            {
-                ComponentFactory.RegisterComponentInstance<TAbstract>(folderTypeConfig.Provider, Activator.CreateInstance(typeClass));
-            }
-        }
-
-        private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
-        {
-            var providers = ExtensionUrlProviderController.GetProviders(portalId);
-            foreach (XPathNavigator providerNavigator in providersNavigator.Select("extensionUrlProvider"))
-            {
-                HtmlUtils.WriteKeepAlive();
-                var providerName = XmlUtils.GetNodeValue(providerNavigator, "name");
-                var provider = providers.SingleOrDefault(p => p.ProviderName.Equals(providerName, StringComparison.OrdinalIgnoreCase));
-                if (provider == null)
-                {
-                    continue;
-                }
-
-                var active = XmlUtils.GetNodeValueBoolean(providerNavigator, "active");
-                if (active)
-                {
-                    ExtensionUrlProviderController.EnableProvider(provider.ExtensionUrlProviderId, portalId);
-                }
-                else
-                {
-                    ExtensionUrlProviderController.DisableProvider(provider.ExtensionUrlProviderId, portalId);
-                }
-
-                var settingsNavigator = providerNavigator.SelectSingleNode("settings");
-                if (settingsNavigator != null)
-                {
-                    foreach (XPathNavigator settingNavigator in settingsNavigator.Select("setting"))
-                    {
-                        var name = XmlUtils.GetAttributeValue(settingNavigator, "name");
-                        var value = XmlUtils.GetAttributeValue(settingNavigator, "value");
-                        ExtensionUrlProviderController.SaveSetting(provider.ExtensionUrlProviderId, portalId, name, value);
-                    }
-                }
-            }
-        }
-
         private static bool EnableBrowserLanguageInDefault(int portalId)
         {
             bool retValue = Null.NullBoolean;
@@ -1038,59 +1102,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return retValue;
-        }
-
-        private string EnsureSettingValue(string folderProviderType, FolderTypeSettingConfig settingNode, int portalId)
-        {
-            var ensuredSettingValue =
-                settingNode.Value.Replace("{PortalId}", (portalId != -1) ? portalId.ToString(CultureInfo.InvariantCulture) : "_default").Replace("{HostId}", Host.Host.GUID);
-            if (settingNode.Encrypt)
-            {
-                return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
-
-                // return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
-            }
-
-            return ensuredSettingValue;
-        }
-
-        private string GetCultureCode(string languageFileName)
-        {
-            // e.g. "default template.template.en-US.resx"
-            return languageFileName.GetLocaleCodeFromFileName();
-        }
-
-        private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
-        {
-            var folderMapping = new FolderMappingInfo
-            {
-                PortalID = portalId,
-                MappingName = node.Name,
-                FolderProviderType = node.Provider,
-            };
-
-            foreach (FolderTypeSettingConfig settingNode in node.Settings)
-            {
-                var settingValue = this.EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);
-                folderMapping.FolderMappingSettings.Add(settingNode.Name, settingValue);
-            }
-
-            return folderMapping;
-        }
-
-        private FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
-        {
-            var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"));
-
-            switch (storageLocation)
-            {
-                case (int)FolderController.StorageLocationTypes.SecureFileSystem:
-                    return FolderMappingController.Instance.GetFolderMapping(portalId, "Secure");
-                case (int)FolderController.StorageLocationTypes.DatabaseSecure:
-                    return FolderMappingController.Instance.GetFolderMapping(portalId, "Database");
-                default:
-                    return FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
-            }
         }
 
         private static Dictionary<string, string> GetPortalSettingsDictionary(int portalId, string cultureCode)
@@ -1152,10 +1163,93 @@ namespace DotNetNuke.Entities.Portals
             return cultureCode;
         }
 
-        private string GetTemplateName(string languageFileName)
+        private void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
+        {
+            var providers = ExtensionUrlProviderController.GetProviders(portalId);
+            foreach (XPathNavigator providerNavigator in providersNavigator.Select("extensionUrlProvider"))
+            {
+                HtmlUtils.WriteKeepAlive();
+                var providerName = XmlUtils.GetNodeValue(providerNavigator, "name");
+                var provider = providers.SingleOrDefault(p => p.ProviderName.Equals(providerName, StringComparison.OrdinalIgnoreCase));
+                if (provider == null)
+                {
+                    continue;
+                }
+
+                var active = XmlUtils.GetNodeValueBoolean(providerNavigator, "active");
+                if (active)
+                {
+                    ExtensionUrlProviderController.EnableProvider(provider.ExtensionUrlProviderId, portalId);
+                }
+                else
+                {
+                    ExtensionUrlProviderController.DisableProvider(provider.ExtensionUrlProviderId, portalId);
+                }
+
+                var settingsNavigator = providerNavigator.SelectSingleNode("settings");
+                if (settingsNavigator != null)
+                {
+                    foreach (XPathNavigator settingNavigator in settingsNavigator.Select("setting"))
+                    {
+                        var name = XmlUtils.GetAttributeValue(settingNavigator, "name");
+                        var value = XmlUtils.GetAttributeValue(settingNavigator, "value");
+                        ExtensionUrlProviderController.SaveSetting(provider.ExtensionUrlProviderId, portalId, name, value);
+                    }
+                }
+            }
+        }
+
+        private string EnsureSettingValue(string folderProviderType, FolderTypeSettingConfig settingNode, int portalId)
+        {
+            var ensuredSettingValue =
+                settingNode.Value.Replace("{PortalId}", (portalId != -1) ? portalId.ToString(CultureInfo.InvariantCulture) : "_default").Replace("{HostId}", Host.Host.GUID);
+            if (settingNode.Encrypt)
+            {
+                return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
+
+                // return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
+            }
+
+            return ensuredSettingValue;
+        }
+
+        private string GetCultureCode(string languageFileName)
         {
             // e.g. "default template.template.en-US.resx"
-            return languageFileName.GetFileNameFromLocalizedResxFile();
+            return languageFileName.GetLocaleCodeFromFileName();
+        }
+
+        private FolderMappingInfo GetFolderMappingFromConfig(FolderTypeConfig node, int portalId)
+        {
+            var folderMapping = new FolderMappingInfo
+            {
+                PortalID = portalId,
+                MappingName = node.Name,
+                FolderProviderType = node.Provider,
+            };
+
+            foreach (FolderTypeSettingConfig settingNode in node.Settings)
+            {
+                var settingValue = this.EnsureSettingValue(folderMapping.FolderProviderType, settingNode, portalId);
+                folderMapping.FolderMappingSettings.Add(settingNode.Name, settingValue);
+            }
+
+            return folderMapping;
+        }
+
+        private FolderMappingInfo GetFolderMappingFromStorageLocation(int portalId, XmlNode folderNode)
+        {
+            var storageLocation = Convert.ToInt32(XmlUtils.GetNodeValue(folderNode, "storagelocation", "0"));
+
+            switch (storageLocation)
+            {
+                case (int)FolderController.StorageLocationTypes.SecureFileSystem:
+                    return FolderMappingController.Instance.GetFolderMapping(portalId, "Secure");
+                case (int)FolderController.StorageLocationTypes.DatabaseSecure:
+                    return FolderMappingController.Instance.GetFolderMapping(portalId, "Database");
+                default:
+                    return FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
+            }
         }
 
         private static LocaleCollection ParseEnabledLocales(XmlNode nodeEnabledLocales, int portalId)
@@ -1187,73 +1281,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return returnCollection;
-        }
-
-        private void ParseFolders(XmlNode nodeFolders, int portalId)
-        {
-            var folderManager = FolderManager.Instance;
-            var folderMappingController = FolderMappingController.Instance;
-            var xmlNodeList = nodeFolders.SelectNodes("//folder");
-            if (xmlNodeList != null)
-            {
-                foreach (XmlNode node in xmlNodeList)
-                {
-                    HtmlUtils.WriteKeepAlive();
-                    var folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
-
-                    // First check if the folder exists
-                    var objInfo = folderManager.GetFolder(portalId, folderPath);
-
-                    if (objInfo == null)
-                    {
-                        FolderMappingInfo folderMapping;
-                        try
-                        {
-                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
-                                            ?? this.GetFolderMappingFromStorageLocation(portalId, node);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-                            folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
-                        }
-
-                        var isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
-
-                        try
-                        {
-                            // Save new folder
-                            objInfo = folderManager.AddFolder(folderMapping, folderPath);
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.Error(ex);
-
-                            // Retry with default folderMapping
-                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
-                            if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
-                            {
-                                objInfo = folderManager.AddFolder(defaultFolderMapping, folderPath);
-                            }
-                            else
-                            {
-                                throw;
-                            }
-                        }
-
-                        objInfo.IsProtected = isProtected;
-
-                        folderManager.UpdateFolder(objInfo);
-                    }
-
-                    var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
-                    ParseFolderPermissions(nodeFolderPermissions, portalId, (FolderInfo)objInfo);
-
-                    var nodeFiles = node.SelectNodes("files/file");
-
-                    ParseFiles(nodeFiles, portalId, (FolderInfo)objInfo);
-                }
-            }
         }
 
         private static void ParseProfileDefinitions(XmlNode nodeProfileDefinitions, int portalId)
@@ -1385,6 +1412,115 @@ namespace DotNetNuke.Entities.Portals
                         DesktopModuleController.AddDesktopModuleToPortal(portalID, desktopModule, permissions, false);
                     }
                 }
+            }
+        }
+
+        private string GetTemplateName(string languageFileName)
+        {
+            // e.g. "default template.template.en-US.resx"
+            return languageFileName.GetFileNameFromLocalizedResxFile();
+        }
+
+        private void ParseFolders(XmlNode nodeFolders, int portalId)
+        {
+            var folderManager = FolderManager.Instance;
+            var folderMappingController = FolderMappingController.Instance;
+            var xmlNodeList = nodeFolders.SelectNodes("//folder");
+            if (xmlNodeList != null)
+            {
+                foreach (XmlNode node in xmlNodeList)
+                {
+                    HtmlUtils.WriteKeepAlive();
+                    var folderPath = XmlUtils.GetNodeValue(node.CreateNavigator(), "folderpath");
+
+                    // First check if the folder exists
+                    var objInfo = folderManager.GetFolder(portalId, folderPath);
+
+                    if (objInfo == null)
+                    {
+                        FolderMappingInfo folderMapping;
+                        try
+                        {
+                            folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, folderPath)
+                                            ?? this.GetFolderMappingFromStorageLocation(portalId, node);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+                            folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
+                        }
+
+                        var isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
+
+                        try
+                        {
+                            // Save new folder
+                            objInfo = folderManager.AddFolder(folderMapping, folderPath);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Error(ex);
+
+                            // Retry with default folderMapping
+                            var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
+                            if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
+                            {
+                                objInfo = folderManager.AddFolder(defaultFolderMapping, folderPath);
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
+
+                        objInfo.IsProtected = isProtected;
+
+                        folderManager.UpdateFolder(objInfo);
+                    }
+
+                    var nodeFolderPermissions = node.SelectNodes("folderpermissions/permission");
+                    ParseFolderPermissions(nodeFolderPermissions, portalId, (FolderInfo)objInfo);
+
+                    var nodeFiles = node.SelectNodes("files/file");
+
+                    ParseFiles(nodeFiles, portalId, (FolderInfo)objInfo);
+                }
+            }
+        }
+
+        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
+        {
+            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
+
+            if (currentSetting != settingValue)
+            {
+                if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
+                {
+                    settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
+                }
+
+                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode, isSecure);
+                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
+                if (clearCache)
+                {
+                    DataCache.ClearPortalCache(portalID, false);
+                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
+
+                    var httpContext = HttpContext.Current;
+                    if (httpContext != null)
+                    {
+                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
+                        var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
+                        httpContext.Items[dictionaryKey] = null;
+                    }
+                }
+
+                EventManager.Instance.OnPortalSettingUpdated(new PortalSettingUpdatedEventArgs
+                {
+                    PortalId = portalID,
+                    SettingName = settingName,
+                    SettingValue = settingValue,
+                });
             }
         }
 
@@ -2119,42 +2255,6 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        private static void UpdatePortalSettingInternal(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
-        {
-            string currentSetting = GetPortalSetting(settingName, portalID, string.Empty, cultureCode);
-
-            if (currentSetting != settingValue)
-            {
-                if (isSecure && !string.IsNullOrEmpty(settingName) && !string.IsNullOrEmpty(settingValue))
-                {
-                    settingValue = Security.FIPSCompliant.EncryptAES(settingValue, Config.GetDecryptionkey(), Host.Host.GUID);
-                }
-
-                DataProvider.Instance().UpdatePortalSetting(portalID, settingName, settingValue, UserController.Instance.GetCurrentUserInfo().UserID, cultureCode, isSecure);
-                EventLogController.Instance.AddLog(settingName + ((cultureCode == Null.NullString) ? string.Empty : " (" + cultureCode + ")"), settingValue, GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTAL_SETTING_UPDATED);
-                if (clearCache)
-                {
-                    DataCache.ClearPortalCache(portalID, false);
-                    DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
-
-                    var httpContext = HttpContext.Current;
-                    if (httpContext != null)
-                    {
-                        var cultureCodeForKey = GetActivePortalLanguageFromHttpContext(httpContext, portalID);
-                        var dictionaryKey = string.Format(HttpContextKeyPortalSettingsDictionary, portalID, cultureCodeForKey);
-                        httpContext.Items[dictionaryKey] = null;
-                    }
-                }
-
-                EventManager.Instance.OnPortalSettingUpdated(new PortalSettingUpdatedEventArgs
-                {
-                    PortalId = portalID,
-                    SettingName = settingName,
-                    SettingValue = settingValue,
-                });
-            }
-        }
-
         private void UpdatePortalSetup(int portalId, int administratorId, int administratorRoleId, int registeredRoleId, int splashTabId, int homeTabId, int loginTabId, int registerTabId,
                                        int userTabId, int searchTabId, int custom404TabId, int custom500TabId, int termsTabId, int privacyTabId, int adminTabId, string cultureCode)
         {
@@ -2177,49 +2277,6 @@ namespace DotNetNuke.Entities.Portals
                 cultureCode);
             EventLogController.Instance.AddLog("PortalId", portalId.ToString(), GetCurrentPortalSettingsInternal(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.PORTALINFO_UPDATED);
             DataCache.ClearHostCache(true);
-        }
-
-        /// <summary>
-        /// Creates a new portal alias.
-        /// </summary>
-        /// <param name="portalId">Id of the portal.</param>
-        /// <param name="portalAlias">Portal Alias to be created.</param>
-        public void AddPortalAlias(int portalId, string portalAlias)
-        {
-            // Check if the Alias exists
-            PortalAliasInfo portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias, portalId);
-
-            // If alias does not exist add new
-            if (portalAliasInfo == null)
-            {
-                portalAliasInfo = new PortalAliasInfo { PortalID = portalId, HTTPAlias = portalAlias, IsPrimary = true };
-                PortalAliasController.Instance.AddPortalAlias(portalAliasInfo);
-            }
-        }
-
-        /// <summary>
-        /// Copies the page template.
-        /// </summary>
-        /// <param name="templateFile">The template file.</param>
-        /// <param name="mappedHomeDirectory">The mapped home directory.</param>
-        public void CopyPageTemplate(string templateFile, string mappedHomeDirectory)
-        {
-            string hostTemplateFile = string.Format("{0}Templates\\{1}", Globals.HostMapPath, templateFile);
-            if (File.Exists(hostTemplateFile))
-            {
-                string portalTemplateFolder = string.Format("{0}Templates\\", mappedHomeDirectory);
-                if (!Directory.Exists(portalTemplateFolder))
-                {
-                    // Create Portal Templates folder
-                    Directory.CreateDirectory(portalTemplateFolder);
-                }
-
-                string portalTemplateFile = portalTemplateFolder + templateFile;
-                if (!File.Exists(portalTemplateFile))
-                {
-                    File.Copy(hostTemplateFile, portalTemplateFile);
-                }
-            }
         }
 
         /// <summary>
@@ -2842,63 +2899,6 @@ namespace DotNetNuke.Entities.Portals
         void IPortalController.UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             UpdatePortalSettingInternal(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
-        }
-
-        /// <summary>
-        /// Adds the portal dictionary.
-        /// </summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="tabId">The tab id.</param>
-        public static void AddPortalDictionary(int portalId, int tabId)
-        {
-            var portalDic = GetPortalDictionary();
-            portalDic[tabId] = portalId;
-            DataCache.SetCache(DataCache.PortalDictionaryCacheKey, portalDic);
-        }
-
-        /// <summary>
-        /// Creates the root folder for a child portal.
-        /// </summary>
-        /// <remarks>
-        /// If call this method, it will create the specific folder if the folder doesn't exist;
-        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx'.
-        /// </remarks>
-        /// <param name="ChildPath">The child path.</param>
-        /// <returns>
-        /// If the method executed successful, it will return NullString, otherwise return error message.
-        /// </returns>
-        /// <example>
-        /// <code lang="C#">
-        /// string childPhysicalPath = Server.MapPath(childPath);
-        /// message = PortalController.CreateChildPortalFolder(childPhysicalPath);
-        /// </code>
-        /// </example>
-        public static string CreateChildPortalFolder(string ChildPath)
-        {
-            string message = Null.NullString;
-
-            // Set up Child Portal
-            try
-            {
-                // create the subdirectory for the new portal
-                if (!Directory.Exists(ChildPath))
-                {
-                    Directory.CreateDirectory(ChildPath);
-                }
-
-                // create the subhost default.aspx file
-                if (!File.Exists(ChildPath + "\\" + Globals.glbDefaultPage))
-                {
-                    File.Copy(Globals.HostMapPath + "subhost.aspx", ChildPath + "\\" + Globals.glbDefaultPage);
-                }
-            }
-            catch (Exception Exc)
-            {
-                Logger.Error(Exc);
-                message += Localization.GetString("ChildPortal.Error") + Exc.Message + Exc.StackTrace;
-            }
-
-            return message;
         }
 
         /// <summary>
@@ -3643,8 +3643,8 @@ namespace DotNetNuke.Entities.Portals
 
         public class PortalTemplateInfo
         {
-            private string _resourceFilePath;
             private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+            private string _resourceFilePath;
 
             public PortalTemplateInfo(string templateFilePath, string cultureCode)
             {
@@ -3652,6 +3652,19 @@ namespace DotNetNuke.Entities.Portals
 
                 this.InitLocalizationFields(cultureCode);
                 this.InitNameAndDescription();
+            }
+
+            public string Name { get; private set; }
+
+            public string CultureCode { get; private set; }
+
+            public string TemplateFilePath { get; private set; }
+
+            private static string ReadLanguageFileValue(XDocument xmlDoc, string name)
+            {
+                return (from f in xmlDoc.Descendants("data")
+                        where (string)f.Attribute("name") == name
+                        select (string)f.Element("value")).SingleOrDefault();
             }
 
             private void InitNameAndDescription()
@@ -3708,13 +3721,6 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
 
-            private static string ReadLanguageFileValue(XDocument xmlDoc, string name)
-            {
-                return (from f in xmlDoc.Descendants("data")
-                        where (string)f.Attribute("name") == name
-                        select (string)f.Element("value")).SingleOrDefault();
-            }
-
             private void InitLocalizationFields(string cultureCode)
             {
                 this.LanguageFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(this.TemplateFilePath, cultureCode);
@@ -3730,12 +3736,6 @@ namespace DotNetNuke.Entities.Portals
                     this.CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                 }
             }
-
-            public string Name { get; private set; }
-
-            public string CultureCode { get; private set; }
-
-            public string TemplateFilePath { get; private set; }
 
             public string LanguageFilePath { get; private set; }
 

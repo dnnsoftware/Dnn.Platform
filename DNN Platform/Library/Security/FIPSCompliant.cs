@@ -68,23 +68,6 @@ namespace DotNetNuke.Security
             }
         }
 
-        private static void VerifyAesSettings(string passPhrase, string salt)
-        {
-            Requires.PropertyNotNull("passPhrase", passPhrase);
-            Requires.PropertyNotNull("salt", salt);
-
-            // Throw exception if the password or salt are too short
-            if (passPhrase.Length < 8)
-            {
-                throw new CryptographicException("Passphrase must be at least 8 characters long.");
-            }
-
-            if (salt.Length < 8)
-            {
-                throw new CryptographicException("Salt must be at least 8 characters long.");
-            }
-        }
-
         /// <summary>
         /// uses the AES FIPS-140 compliant algorithm to encrypt a string.
         /// </summary>
@@ -118,6 +101,23 @@ namespace DotNetNuke.Security
                 memStream.Close();
                 cryptoStream.Close();
                 return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
+            }
+        }
+
+        private static void VerifyAesSettings(string passPhrase, string salt)
+        {
+            Requires.PropertyNotNull("passPhrase", passPhrase);
+            Requires.PropertyNotNull("salt", salt);
+
+            // Throw exception if the password or salt are too short
+            if (passPhrase.Length < 8)
+            {
+                throw new CryptographicException("Passphrase must be at least 8 characters long.");
+            }
+
+            if (salt.Length < 8)
+            {
+                throw new CryptographicException("Salt must be at least 8 characters long.");
             }
         }
     }

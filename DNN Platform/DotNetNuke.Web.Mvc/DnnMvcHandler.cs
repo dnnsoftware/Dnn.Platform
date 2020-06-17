@@ -21,6 +21,10 @@ namespace DotNetNuke.Web.Mvc
 
     public class DnnMvcHandler : IHttpHandler, IRequiresSessionState
     {
+        public static readonly string MvcVersionHeaderName = "X-AspNetMvc-Version";
+
+        private ControllerBuilder _controllerBuilder;
+
         public DnnMvcHandler(RequestContext requestContext)
         {
             if (requestContext == null)
@@ -31,9 +35,12 @@ namespace DotNetNuke.Web.Mvc
             this.RequestContext = requestContext;
         }
 
-        public static readonly string MvcVersionHeaderName = "X-AspNetMvc-Version";
+        public static bool DisableMvcResponseHeader { get; set; }
 
-        private ControllerBuilder _controllerBuilder;
+        bool IHttpHandler.IsReusable
+        {
+            get { return this.IsReusable; }
+        }
 
         internal ControllerBuilder ControllerBuilder
         {
@@ -55,25 +62,12 @@ namespace DotNetNuke.Web.Mvc
             get { return false; }
         }
 
-        public static bool DisableMvcResponseHeader { get; set; }
-
-        bool IHttpHandler.IsReusable
-        {
-            get { return this.IsReusable; }
-        }
+        public RequestContext RequestContext { get; private set; }
 
         void IHttpHandler.ProcessRequest(HttpContext httpContext)
         {
             MembershipModule.AuthenticateRequest(this.RequestContext.HttpContext, allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);
-        }
-
-        public RequestContext RequestContext { get; private set; }
-
-        protected virtual void ProcessRequest(HttpContext httpContext)
-        {
-            HttpContextBase httpContextBase = new HttpContextWrapper(httpContext);
-            this.ProcessRequest(httpContextBase);
         }
 
         protected internal virtual void ProcessRequest(HttpContextBase httpContext)
@@ -91,6 +85,12 @@ namespace DotNetNuke.Web.Mvc
             finally
             {
             }
+        }
+
+        protected virtual void ProcessRequest(HttpContext httpContext)
+        {
+            HttpContextBase httpContextBase = new HttpContextWrapper(httpContext);
+            this.ProcessRequest(httpContextBase);
         }
 
         private IModuleExecutionEngine GetModuleExecutionEngine()

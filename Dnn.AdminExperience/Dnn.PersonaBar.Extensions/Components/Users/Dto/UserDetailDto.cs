@@ -22,6 +22,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserDetailDto : UserBasicDto
     {
+        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
         [DataMember(Name = "lastLogin")]
         public DateTime LastLogin { get; set; }
 
@@ -46,7 +48,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [IgnoreDataMember]
         public int PortalId { get; set; }
 
-
         [DataMember(Name = "profileUrl")]
         public string ProfileUrl => this.UserId > 0 ? Globals.UserProfileURL(this.UserId) : null;
 
@@ -64,8 +65,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "hasAgreedToTermsOn")]
         public DateTime HasAgreedToTermsOn { get; set; }
-
-        private static readonly INavigationManager _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
 
         public UserDetailDto()
         {

@@ -86,17 +86,17 @@ namespace DotNetNuke.Tests.Core
     {
         private readonly List<int> _periods = new List<int>();
 
-        public void GoToSleep(int delay)
-        {
-            this._periods.Add(delay);
-        }
-
         public IList<int> SleepPeriod
         {
             get
             {
                 return this._periods.AsReadOnly();
             }
+        }
+
+        public void GoToSleep(int delay)
+        {
+            this._periods.Add(delay);
         }
     }
 

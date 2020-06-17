@@ -31,13 +31,13 @@ namespace DotNetNuke.Modules.RazorHost
             }
 
             var m = new ModuleControlInfo
-                        {
-                            ControlKey = "EditRazorScript",
-                            ControlSrc = "DesktopModules/RazorModules/RazorHost/EditScript.ascx",
-                            ControlTitle = "Edit Script",
-                            ControlType = SecurityAccessLevel.Host,
-                            ModuleDefID = moduleDefId,
-                        };
+            {
+                ControlKey = "EditRazorScript",
+                ControlSrc = "DesktopModules/RazorModules/RazorHost/EditScript.ascx",
+                ControlTitle = "Edit Script",
+                ControlType = SecurityAccessLevel.Host,
+                ModuleDefID = moduleDefId,
+            };
             ModuleControlController.UpdateModuleControl(m);
         }
     }

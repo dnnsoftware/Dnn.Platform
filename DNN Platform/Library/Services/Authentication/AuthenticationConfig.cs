@@ -18,8 +18,8 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public class AuthenticationConfig : AuthenticationConfigBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
         private const string CACHEKEY = "Authentication.DNN";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
 
         protected AuthenticationConfig(int portalID)
             : base(portalID)

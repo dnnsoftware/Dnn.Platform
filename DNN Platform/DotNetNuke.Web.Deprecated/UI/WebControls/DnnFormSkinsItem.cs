@@ -30,35 +30,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string SkinDataField { get; set; }
 
-        private void ContainerIndexChanged(object sender, EventArgs e)
-        {
-            this.UpdateDataSource(this._containerValue, this._containerCombo.SelectedValue, this.ContainerDataField);
-        }
-
-        private void SkinIndexChanged(object sender, EventArgs e)
-        {
-            this.UpdateDataSource(this._skinValue, this._skinCombo.SelectedValue, this.SkinDataField);
-        }
-
-        private Dictionary<string, string> GetSkins(string skinRoot)
-        {
-            // load host skins
-            var skins = SkinController.GetSkins(null, skinRoot, SkinScope.Host).ToDictionary(skin => skin.Key, skin => skin.Value);
-
-            if (this.IncludePortalSkins)
-            {
-                // load portal skins
-                var portal = PortalController.Instance.GetPortal(this.PortalId);
-
-                foreach (var skin in SkinController.GetSkins(portal, skinRoot, SkinScope.Site))
-                {
-                    skins.Add(skin.Key, skin.Value);
-                }
-            }
-
-            return skins;
-        }
-
         protected override WebControl CreateControlInternal(Control container)
         {
             var panel = new Panel();
@@ -99,6 +70,35 @@ namespace DotNetNuke.Web.UI.WebControls
             this.DataBindInternal(this.ContainerDataField, ref this._containerValue);
 
             this.Value = new Pair { First = this._skinValue, Second = this._containerValue };
+        }
+
+        private void ContainerIndexChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this._containerValue, this._containerCombo.SelectedValue, this.ContainerDataField);
+        }
+
+        private void SkinIndexChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this._skinValue, this._skinCombo.SelectedValue, this.SkinDataField);
+        }
+
+        private Dictionary<string, string> GetSkins(string skinRoot)
+        {
+            // load host skins
+            var skins = SkinController.GetSkins(null, skinRoot, SkinScope.Host).ToDictionary(skin => skin.Key, skin => skin.Value);
+
+            if (this.IncludePortalSkins)
+            {
+                // load portal skins
+                var portal = PortalController.Instance.GetPortal(this.PortalId);
+
+                foreach (var skin in SkinController.GetSkins(portal, skinRoot, SkinScope.Site))
+                {
+                    skins.Add(skin.Key, skin.Value);
+                }
+            }
+
+            return skins;
         }
 
         protected override void LoadControlState(object state)

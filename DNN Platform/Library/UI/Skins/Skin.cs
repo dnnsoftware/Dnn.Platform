@@ -59,13 +59,13 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class Skin : UserControlBase
     {
+        public const string OnInitMessage = "Skin_InitMessage";
+        public const string OnInitMessageType = "Skin_InitMessageType";
+
         // ReSharper disable InconsistentNaming
         public static string MODULELOAD_ERROR = Localization.GetString("ModuleLoad.Error");
         public static string CONTAINERLOAD_ERROR = Localization.GetString("ContainerLoad.Error");
         public static string MODULEADD_ERROR = Localization.GetString("ModuleAdd.Error");
-
-        public const string OnInitMessage = "Skin_InitMessage";
-        public const string OnInitMessageType = "Skin_InitMessageType";
 
         private readonly ModuleCommunicate _communicator = new ModuleCommunicate();
 
@@ -78,38 +78,6 @@ namespace DotNetNuke.UI.Skins
         {
             this.ModuleControlPipeline = Globals.DependencyProvider.GetRequiredService<IModuleControlPipeline>();
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ControlPanel container.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        internal Control ControlPanel
-        {
-            get
-            {
-                return this._controlPanel ?? (this._controlPanel = this.FindControl("ControlPanel"));
-            }
-        }
-
-        protected IModuleControlPipeline ModuleControlPipeline { get; }
-
-        protected INavigationManager NavigationManager { get; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ModuleCommunicate instance for the skin.
-        /// </summary>
-        /// <returns>The ModuleCommunicate instance for the Skin.</returns>
-        internal ModuleCommunicate Communicator
-        {
-            get
-            {
-                return this._communicator;
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -147,6 +115,38 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the ControlPanel container.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        internal Control ControlPanel
+        {
+            get
+            {
+                return this._controlPanel ?? (this._controlPanel = this.FindControl("ControlPanel"));
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the ModuleCommunicate instance for the skin.
+        /// </summary>
+        /// <returns>The ModuleCommunicate instance for the Skin.</returns>
+        internal ModuleCommunicate Communicator
+        {
+            get
+            {
+                return this._communicator;
+            }
+        }
+
+        protected IModuleControlPipeline ModuleControlPipeline { get; }
+
+        protected INavigationManager NavigationManager { get; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the Path for this skin.
         /// </summary>
         /// <returns>A String.</returns>
@@ -166,6 +166,88 @@ namespace DotNetNuke.UI.Skins
         /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string SkinSrc { get; set; }
+
+        public static void AddModuleMessage(PortalModuleBase control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
+        {
+            AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
+        }
+
+        public static void AddModuleMessage(PortalModuleBase control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
+        {
+            AddModuleMessage(control, heading, message, moduleMessageType, Null.NullString);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnInit runs when the Skin is initialised.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            // Load the Panes
+            this.LoadPanes();
+
+            // Load the Module Control(s)
+            bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule() : this.ProcessMasterModules();
+
+            // Load the Control Panel
+            this.InjectControlPanel();
+
+            // Register any error messages on the Skin
+            if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
+            {
+                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
+
+                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+                {
+                    ServicesFramework.Instance.RequestAjaxScriptSupport();
+                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+                    JavaScript.RequestRegistration(CommonJs.jQueryUI);
+                    JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
+                    ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.logViewer.js");
+                }
+            }
+
+            if (!TabPermissionController.CanAdminPage() && !success)
+            {
+                // only display the warning to non-administrators (administrators will see the errors)
+                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
+            }
+
+            this.InvokeSkinEvents(SkinEventType.OnSkinInit);
+
+            if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
+            {
+                var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
+                if (HttpContext.Current.Items.Contains(OnInitMessageType))
+                {
+                    messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+                }
+
+                AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
+
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            }
+
+            // Process the Panes attributes
+            this.ProcessPanes();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs when the Skin is loaded.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.InvokeSkinEvents(SkinEventType.OnSkinLoad);
+        }
 
         private static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
         {
@@ -215,6 +297,41 @@ namespace DotNetNuke.UI.Skins
             }
 
             return null;
+        }
+
+        private static Skin LoadSkin(PageBase page, string skinPath)
+        {
+            Skin ctlSkin = null;
+            try
+            {
+                string skinSrc = skinPath;
+                if (skinPath.IndexOf(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
+                }
+
+                ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
+                ctlSkin.SkinSrc = skinSrc;
+
+                // call databind so that any server logic in the skin is executed
+                ctlSkin.DataBind();
+            }
+            catch (Exception exc)
+            {
+                // could not load user control
+                var lex = new PageLoadException("Unhandled error loading page.", exc);
+                if (TabPermissionController.CanAdminPage())
+                {
+                    // only display the error to administrators
+                    var skinError = (Label)page.FindControl("SkinError");
+                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
+                    skinError.Visible = true;
+                }
+
+                Exceptions.LogException(lex);
+            }
+
+            return ctlSkin;
         }
 
         private bool CheckExpired()
@@ -336,41 +453,6 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
             }
-        }
-
-        private static Skin LoadSkin(PageBase page, string skinPath)
-        {
-            Skin ctlSkin = null;
-            try
-            {
-                string skinSrc = skinPath;
-                if (skinPath.IndexOf(Globals.ApplicationPath, StringComparison.OrdinalIgnoreCase) != -1)
-                {
-                    skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
-                }
-
-                ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
-                ctlSkin.SkinSrc = skinSrc;
-
-                // call databind so that any server logic in the skin is executed
-                ctlSkin.DataBind();
-            }
-            catch (Exception exc)
-            {
-                // could not load user control
-                var lex = new PageLoadException("Unhandled error loading page.", exc);
-                if (TabPermissionController.CanAdminPage())
-                {
-                    // only display the error to administrators
-                    var skinError = (Label)page.FindControl("SkinError");
-                    skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
-                    skinError.Visible = true;
-                }
-
-                Exceptions.LogException(lex);
-            }
-
-            return ctlSkin;
         }
 
         private bool ProcessModule(ModuleInfo module)
@@ -574,78 +656,6 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnInit runs when the Skin is initialised.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            // Load the Panes
-            this.LoadPanes();
-
-            // Load the Module Control(s)
-            bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule() : this.ProcessMasterModules();
-
-            // Load the Control Panel
-            this.InjectControlPanel();
-
-            // Register any error messages on the Skin
-            if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
-            {
-                AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
-
-                if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-                {
-                    ServicesFramework.Instance.RequestAjaxScriptSupport();
-                    ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-                    JavaScript.RequestRegistration(CommonJs.jQueryUI);
-                    JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn_dom);
-                    ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.logViewer.js");
-                }
-            }
-
-            if (!TabPermissionController.CanAdminPage() && !success)
-            {
-                // only display the warning to non-administrators (administrators will see the errors)
-                AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
-            }
-
-            this.InvokeSkinEvents(SkinEventType.OnSkinInit);
-
-            if (HttpContext.Current != null && HttpContext.Current.Items.Contains(OnInitMessage))
-            {
-                var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
-                if (HttpContext.Current.Items.Contains(OnInitMessageType))
-                {
-                    messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
-                }
-
-                AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
-
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            }
-
-            // Process the Panes attributes
-            this.ProcessPanes();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs when the Skin is loaded.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.InvokeSkinEvents(SkinEventType.OnSkinLoad);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// OnLoad runs just before the Skin is rendered.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -699,16 +709,6 @@ namespace DotNetNuke.UI.Skins
             base.OnUnload(e);
 
             this.InvokeSkinEvents(SkinEventType.OnSkinUnLoad);
-        }
-
-        public static void AddModuleMessage(PortalModuleBase control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
-        {
-            AddModuleMessage(control, string.Empty, message, moduleMessageType, Null.NullString);
-        }
-
-        public static void AddModuleMessage(PortalModuleBase control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
-        {
-            AddModuleMessage(control, heading, message, moduleMessageType, Null.NullString);
         }
 
         /// -----------------------------------------------------------------------------
@@ -971,6 +971,23 @@ namespace DotNetNuke.UI.Skins
             return skin;
         }
 
+        public static List<InstalledSkinInfo> GetInstalledSkins()
+        {
+            var list = new List<InstalledSkinInfo>();
+            foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
+            {
+                if (!folder.EndsWith(Globals.glbHostSkinFolder))
+                {
+                    var skin = new InstalledSkinInfo();
+                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
+                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
+                    list.Add(skin);
+                }
+            }
+
+            return list;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// InjectModule injects the module into the Pane.
@@ -1034,23 +1051,6 @@ namespace DotNetNuke.UI.Skins
             }
 
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
-        }
-
-        public static List<InstalledSkinInfo> GetInstalledSkins()
-        {
-            var list = new List<InstalledSkinInfo>();
-            foreach (string folder in Directory.GetDirectories(Path.Combine(Globals.HostMapPath, "Skins")))
-            {
-                if (!folder.EndsWith(Globals.glbHostSkinFolder))
-                {
-                    var skin = new InstalledSkinInfo();
-                    skin.SkinName = folder.Substring(folder.LastIndexOf("\\") + 1);
-                    skin.InUse = isFallbackSkin(folder) || !SkinController.CanDeleteSkin(folder, string.Empty);
-                    list.Add(skin);
-                }
-            }
-
-            return list;
         }
     }
 }

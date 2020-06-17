@@ -2,32 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-#region Usings
-
-
-
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Xml;
-using System.Xml.XPath;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Installer.Writers;
-using DotNetNuke.Services.Localization;
-using Constants = Dnn.PersonaBar.Library.Constants;
-
 namespace Dnn.PersonaBar.SiteSettings.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Installer.Writers;
+    using DotNetNuke.Services.Localization;
+
+    using Constants = Dnn.PersonaBar.Library.Constants;
+
     public class SiteSettingsController
     {
         private Dictionary<string, InstallFile> _Files;
@@ -134,7 +130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
         public bool CreateCorePackage(string cultureCode, string fileName, bool createZip)
         {
-            var package = new PackageInfo {Name = Globals.CleanFileName(fileName)};
+            var package = new PackageInfo { Name = Globals.CleanFileName(fileName) };
             package.FriendlyName = package.Name;
             package.Version = DotNetNukeContext.Current.Application.Version;
             package.License = Util.PACKAGE_NoLicense;
@@ -221,6 +217,70 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             return this.CreatePackage(cultureCode, package, modulePackage.PackageID, Path.Combine("DesktopModules\\", desktopModule.FolderName), fileName, createZip);
         }
 
+        public bool CreateProviderPackage(string cultureCode, PackageInfo providerPackage, bool createZip)
+        {
+            var package = new PackageInfo
+            {
+                Name = providerPackage.Name,
+                FriendlyName = providerPackage.FriendlyName,
+                Version = providerPackage.Version,
+                License = Util.PACKAGE_NoLicense
+            };
+
+            var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
+
+            //Get the provider "path"
+            XmlDocument configDoc = Config.Load();
+            string providerName = package.Name;
+            if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
+            {
+                providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
+            }
+            switch (providerName)
+            {
+                case "SchedulingProvider":
+                    providerName = "DNNScheduler";
+                    break;
+                case "SearchIndexProvider":
+                    providerName = "ModuleIndexProvider";
+                    break;
+                case "SearchProvider":
+                    providerName = "SearchDataStoreProvider";
+                    break;
+            }
+            var providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + providerName + "']") ??
+                                    configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + package.Name + "']");
+
+            if (providerNavigator != null)
+            {
+                string providerPath = providerNavigator.GetAttribute("providerPath", "");
+                return this.CreatePackage(cultureCode, package, providerPackage.PackageID,
+                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"), fileName, createZip);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public string GetResourceFile(string type, string language, int portalId)
+        {
+            string resourcefilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
+            if (language != Localization.SystemLocale)
+            {
+                resourcefilename = resourcefilename + "." + language;
+            }
+            if (type == "Portal")
+            {
+                resourcefilename = resourcefilename + "." + "Portal-" + portalId;
+            }
+            else if (type == "Host")
+            {
+                resourcefilename = resourcefilename + "." + "Host";
+            }
+            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
+        }
+
         private bool CreatePackage(string cultureCode, PackageInfo package, int dependentPackageId, string basePath, string fileName, bool createZip)
         {
             var language = LocaleController.Instance.GetLocale(cultureCode);
@@ -272,52 +332,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
             }
         }
 
-        public bool CreateProviderPackage(string cultureCode, PackageInfo providerPackage, bool createZip)
-        {
-            var package = new PackageInfo
-            {
-                Name = providerPackage.Name,
-                FriendlyName = providerPackage.FriendlyName,
-                Version = providerPackage.Version,
-                License = Util.PACKAGE_NoLicense
-            };
-
-            var fileName = Path.Combine(this.BasePath, "ResourcePack." + package.Name);
-
-            //Get the provider "path"
-            XmlDocument configDoc = Config.Load();
-            string providerName = package.Name;
-            if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
-            {
-                providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
-            }
-            switch (providerName)
-            {
-                case "SchedulingProvider":
-                    providerName = "DNNScheduler";
-                    break;
-                case "SearchIndexProvider":
-                    providerName = "ModuleIndexProvider";
-                    break;
-                case "SearchProvider":
-                    providerName = "SearchDataStoreProvider";
-                    break;
-            }
-            var providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + providerName + "']") ??
-                                    configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + package.Name + "']");
-
-            if (providerNavigator != null)
-            {
-                string providerPath = providerNavigator.GetAttribute("providerPath", "");
-                return this.CreatePackage(cultureCode, package, providerPackage.PackageID,
-                    providerPath.Substring(2, providerPath.Length - 2).Replace("/", "\\"), fileName, createZip);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         private bool IsAnalyzerType(Type type)
         {
             return type != null && type.FullName != null && (type.FullName.Contains("Lucene.Net.Analysis.Analyzer") || this.IsAnalyzerType(type.BaseType));
@@ -345,24 +359,6 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
             }
             node.InnerXml = HttpUtility.HtmlEncode(text);
-        }
-
-        public string GetResourceFile(string type, string language, int portalId)
-        {
-            string resourcefilename = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx";
-            if (language != Localization.SystemLocale)
-            {
-                resourcefilename = resourcefilename + "." + language;
-            }
-            if (type == "Portal")
-            {
-                resourcefilename = resourcefilename + "." + "Portal-" + portalId;
-            }
-            else if (type == "Host")
-            {
-                resourcefilename = resourcefilename + "." + "Host";
-            }
-            return HttpContext.Current.Server.MapPath(resourcefilename + ".resx");
         }
     }
 }

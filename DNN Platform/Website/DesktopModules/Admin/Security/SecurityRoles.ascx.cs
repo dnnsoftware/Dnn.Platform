@@ -58,6 +58,23 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the ParentModule (if one exists).
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        public PortalModuleBase ParentModule { get; set; }
+
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                return new ModuleActionCollection();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the Return Url for the page.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -177,19 +194,49 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ParentModule (if one exists).
+        /// DataBind binds the data to the controls.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void DataBind()
+        {
+            if (!ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
+            {
+                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
+            }
+
+            base.DataBind();
+
+            // Localize Headers
+            Localization.LocalizeDataGrid(ref this.grdUserRoles, this.LocalResourceFile);
+
+            // Bind the role data to the datalist
+            this.BindData();
+
+            this.BindGrid();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeleteButonVisible returns a boolean indicating if the delete button for
+        /// the specified UserID, RoleID pair should be shown.
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <param name="UserID">The ID of the user to check delete button visibility for.</param>
+        /// <param name="RoleID">The ID of the role to check delete button visibility for.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        public PortalModuleBase ParentModule { get; set; }
-
-        public ModuleActionCollection ModuleActions
+        public bool DeleteButtonVisible(int UserID, int RoleID)
         {
-            get
+            // [DNN-4285] Check if the role can be removed (only handles case of Administrator and Administrator Role
+            bool canDelete = RoleController.CanRemoveUserFromRole(this.PortalSettings, UserID, RoleID);
+            if (RoleID == this.PortalSettings.AdministratorRoleId && canDelete)
             {
-                return new ModuleActionCollection();
+                // User can only delete if in Admin role
+                canDelete = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
             }
+
+            return canDelete;
         }
 
         /// -----------------------------------------------------------------------------
@@ -408,53 +455,6 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void DataBind()
-        {
-            if (!ModulePermissionController.CanEditModuleContent(this.ModuleConfiguration))
-            {
-                this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
-            }
-
-            base.DataBind();
-
-            // Localize Headers
-            Localization.LocalizeDataGrid(ref this.grdUserRoles, this.LocalResourceFile);
-
-            // Bind the role data to the datalist
-            this.BindData();
-
-            this.BindGrid();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteButonVisible returns a boolean indicating if the delete button for
-        /// the specified UserID, RoleID pair should be shown.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="UserID">The ID of the user to check delete button visibility for.</param>
-        /// <param name="RoleID">The ID of the role to check delete button visibility for.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public bool DeleteButtonVisible(int UserID, int RoleID)
-        {
-            // [DNN-4285] Check if the role can be removed (only handles case of Administrator and Administrator Role
-            bool canDelete = RoleController.CanRemoveUserFromRole(this.PortalSettings, UserID, RoleID);
-            if (RoleID == this.PortalSettings.AdministratorRoleId && canDelete)
-            {
-                // User can only delete if in Admin role
-                canDelete = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-            }
-
-            return canDelete;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
         /// </summary>
         /// <remarks>
@@ -483,6 +483,34 @@ namespace DotNetNuke.Modules.Admin.Security
         public string FormatUser(int UserID, string DisplayName)
         {
             return "<a href=\"" + Globals.LinkClick("userid=" + UserID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + DisplayName + "</a>";
+        }
+
+        public void cmdDeleteUserRole_click(object sender, ImageClickEventArgs e)
+        {
+            if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
+            {
+                return;
+            }
+
+            try
+            {
+                var cmdDeleteUserRole = (ImageButton)sender;
+                int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
+                int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
+
+                RoleInfo role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
+                if (!RoleController.DeleteUserRole(UserController.GetUserById(this.PortalId, userId), role, this.PortalSettings, this.chkNotify.Checked))
+                {
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                }
+
+                this.BindGrid();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -566,6 +594,30 @@ namespace DotNetNuke.Modules.Admin.Security
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void grdUserRoles_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            DataGridItem item = e.Item;
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var userRole = (UserRoleInfo)item.DataItem;
+                if (this.RoleId == Null.NullInteger)
+                {
+                    if (userRole.RoleID == Convert.ToInt32(this.cboRoles.SelectedValue))
+                    {
+                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
+                    }
+                }
+
+                if (this.UserId == Null.NullInteger)
+                {
+                    if (userRole.UserID == this.SelectedUserID)
+                    {
+                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
+                    }
+                }
             }
         }
 
@@ -702,34 +754,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        public void cmdDeleteUserRole_click(object sender, ImageClickEventArgs e)
-        {
-            if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
-            {
-                return;
-            }
-
-            try
-            {
-                var cmdDeleteUserRole = (ImageButton)sender;
-                int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
-                int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
-
-                RoleInfo role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
-                if (!RoleController.DeleteUserRole(UserController.GetUserById(this.PortalId, userId), role, this.PortalSettings, this.chkNotify.Checked))
-                {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                }
-
-                this.BindGrid();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// grdUserRoles_ItemCreated runs when an item in the UserRoles Grid is created.
@@ -766,30 +790,6 @@ namespace DotNetNuke.Modules.Admin.Security
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void grdUserRoles_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            DataGridItem item = e.Item;
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var userRole = (UserRoleInfo)item.DataItem;
-                if (this.RoleId == Null.NullInteger)
-                {
-                    if (userRole.RoleID == Convert.ToInt32(this.cboRoles.SelectedValue))
-                    {
-                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
-                    }
-                }
-
-                if (this.UserId == Null.NullInteger)
-                {
-                    if (userRole.UserID == this.SelectedUserID)
-                    {
-                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
-                    }
-                }
             }
         }
     }

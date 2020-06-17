@@ -19,22 +19,24 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
     public class SetTask : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
-
         [FlagParameter("id", "Prompt_SetTask_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
+
         [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
         private const string FlagEnabled = "enabled";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int TaskId { get; set; }
         private bool Enabled { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.TaskId = this.GetFlagValue(FlagId, "Task Id", -1, true, true, true);
-            this.Enabled = this.GetFlagValue(FlagEnabled, "Enabled", true,true);
+            this.Enabled = this.GetFlagValue(FlagEnabled, "Enabled", true, true);
         }
 
         public override ConsoleResultModel Run()
@@ -64,7 +66,5 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_TaskUpdateFailed"));
             }
         }
-
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
     }
 }

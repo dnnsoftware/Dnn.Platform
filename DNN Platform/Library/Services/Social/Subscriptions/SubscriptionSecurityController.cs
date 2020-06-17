@@ -20,11 +20,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
     /// </summary>
     public class SubscriptionSecurityController : ServiceLocator<ISubscriptionSecurityController, SubscriptionSecurityController>, ISubscriptionSecurityController
     {
-        protected override Func<ISubscriptionSecurityController> GetFactory()
-        {
-            return () => new SubscriptionSecurityController();
-        }
-
         public bool HasPermission(Subscription subscription)
         {
             var userInfo = GetUserFromSubscription(subscription);
@@ -42,6 +37,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
             }
 
             return true;
+        }
+
+        protected override Func<ISubscriptionSecurityController> GetFactory()
+        {
+            return () => new SubscriptionSecurityController();
         }
 
         private static bool HasUserModuleViewPermission(UserInfo userInfo, ModuleInfo moduleInfo)

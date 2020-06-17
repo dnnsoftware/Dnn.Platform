@@ -24,19 +24,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Centralised Event that is raised whenever a check box is changed.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void OnItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
-        {
-            if (this.ItemCheckedChanged != null)
-            {
-                this.ItemCheckedChanged(sender, e);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Called when the grid is Data Bound.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -56,6 +43,19 @@ namespace DotNetNuke.UI.WebControls
         protected override void CreateControlHierarchy(bool useDataSource)
         {
             base.CreateControlHierarchy(useDataSource);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Centralised Event that is raised whenever a check box is changed.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void OnItemCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
+        {
+            if (this.ItemCheckedChanged != null)
+            {
+                this.ItemCheckedChanged(sender, e);
+            }
         }
 
         protected override void PrepareControlHierarchy()

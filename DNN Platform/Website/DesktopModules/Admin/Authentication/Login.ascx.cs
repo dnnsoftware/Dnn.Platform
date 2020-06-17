@@ -52,22 +52,22 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// </remarks>
     public partial class Login : UserModuleBase
     {
+        private const string LOGIN_PATH = "/login";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
-        private readonly INavigationManager _navigationManager;
-
         private static readonly Regex UserLanguageRegex = new Regex(
             "(.*)(&|\\?)(language=)([^&\\?]+)(.*)",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private readonly INavigationManager _navigationManager;
+
+        private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
+        private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
+        private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
 
         public Login()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private readonly List<AuthenticationLoginBase> _loginControls = new List<AuthenticationLoginBase>();
-        private readonly List<AuthenticationLoginBase> _defaultauthLogin = new List<AuthenticationLoginBase>();
-        private readonly List<OAuthLoginBase> _oAuthControls = new List<OAuthLoginBase>();
-        private const string LOGIN_PATH = "/login";
 
         /// <summary>
         /// Gets or sets and sets the current AuthenticationType.
@@ -255,33 +255,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        private bool IsRedirectingFromLoginUrl()
-        {
-            return this.Request.UrlReferrer != null &&
-                this.Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
-        }
-
-        private bool NeedRedirectAfterLogin =>
-               this.LoginStatus == UserLoginStatus.LOGIN_SUCCESS
-            || this.LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
-            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
-            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
-
-        /// <summary>
-        /// Replaces the original language with user language.
-        /// </summary>
-        /// <param name="Url"></param>
-        /// <param name="originalLanguage"></param>
-        /// <param name="newLanguage"></param>
-        /// <returns></returns>
-        private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
-        {
-            var returnValue = Host.UseFriendlyUrls
-                ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
-                : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
-            return returnValue;
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.
         /// </summary>
@@ -335,6 +308,33 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
+        private bool NeedRedirectAfterLogin =>
+               this.LoginStatus == UserLoginStatus.LOGIN_SUCCESS
+            || this.LoginStatus == UserLoginStatus.LOGIN_SUPERUSER
+            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD
+            || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
+
+        /// <summary>
+        /// Replaces the original language with user language.
+        /// </summary>
+        /// <param name="Url"></param>
+        /// <param name="originalLanguage"></param>
+        /// <param name="newLanguage"></param>
+        /// <returns></returns>
+        private static string ReplaceLanguage(string Url, string originalLanguage, string newLanguage)
+        {
+            var returnValue = Host.UseFriendlyUrls
+                ? Regex.Replace(Url, "(.*)(/" + originalLanguage + "/)(.*)", "$1/" + newLanguage + "/$3", RegexOptions.IgnoreCase)
+                : UserLanguageRegex.Replace(Url, "$1$2$3" + newLanguage + "$5");
+            return returnValue;
+        }
+
+        private bool IsRedirectingFromLoginUrl()
+        {
+            return this.Request.UrlReferrer != null &&
+                this.Request.UrlReferrer.LocalPath.ToLowerInvariant().EndsWith(LOGIN_PATH);
+        }
+
         /// <summary>
         /// Gets or sets and sets the current UserToken.
         /// </summary>
@@ -376,6 +376,138 @@ namespace DotNetNuke.Modules.Admin.Authentication
             set
             {
                 this.ViewState["UserName"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Page_Init runs when the control is initialised.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.ctlPassword.PasswordUpdated += this.PasswordUpdated;
+            this.ctlProfile.ProfileUpdated += this.ProfileUpdated;
+            this.ctlUser.UserCreateCompleted += this.UserCreateCompleted;
+            this.ctlDataConsent.DataConsentCompleted += this.DataConsentCompleted;
+
+            // Set the User Control Properties
+            this.ctlUser.ID = "User";
+
+            // Set the Password Control Properties
+            this.ctlPassword.ID = "Password";
+
+            // Set the Profile Control Properties
+            this.ctlProfile.ID = "Profile";
+
+            // Set the Data Consent Control Properties
+            this.ctlDataConsent.ID = "DataConsent";
+
+            // Override the redirected page title if page has loaded with ctl=Login
+            if (this.Request.QueryString["ctl"] != null)
+            {
+                if (this.Request.QueryString["ctl"].ToLowerInvariant() == "login")
+                {
+                    var myPage = (CDefault)this.Page;
+                    if (myPage.PortalSettings.LoginTabId == this.TabId || myPage.PortalSettings.LoginTabId == -1)
+                    {
+                        myPage.Title = Localization.GetString("ControlTitle_login", this.LocalResourceFile);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Page_Load runs when the control is loaded.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cmdAssociate.Click += this.cmdAssociate_Click;
+            this.cmdCreateUser.Click += this.cmdCreateUser_Click;
+            this.cmdProceed.Click += this.cmdProceed_Click;
+
+            // Verify if portal has a customized login page
+            if (!Null.IsNull(this.PortalSettings.LoginTabId) && Globals.IsAdminControl())
+            {
+                if (Globals.ValidateLoginTabID(this.PortalSettings.LoginTabId))
+                {
+                    // login page exists and trying to access this control directly with url param -> not allowed
+                    var parameters = new string[3];
+                    if (!string.IsNullOrEmpty(this.Request.QueryString["returnUrl"]))
+                    {
+                        parameters[0] = "returnUrl=" + HttpUtility.UrlEncode(this.Request.QueryString["returnUrl"]);
+                    }
+
+                    if (!string.IsNullOrEmpty(this.Request.QueryString["username"]))
+                    {
+                        parameters[1] = "username=" + HttpUtility.UrlEncode(this.Request.QueryString["username"]);
+                    }
+
+                    if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]))
+                    {
+                        parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(this.Request.QueryString["verificationcode"]);
+                    }
+
+                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
+                }
+            }
+
+            if (this.Page.IsPostBack == false)
+            {
+                try
+                {
+                    this.PageNo = 0;
+                }
+                catch (Exception ex)
+                {
+                    // control not there
+                    Logger.Error(ex);
+                }
+            }
+
+            if (!this.Request.IsAuthenticated || this.UserNeedsVerification())
+            {
+                this.ShowPanel();
+            }
+            else // user is already authenticated
+            {
+                // if a Login Page has not been specified for the portal
+                if (Globals.IsAdminControl())
+                {
+                    // redirect browser
+                    this.Response.Redirect(this.RedirectURL, true);
+                }
+                else // make module container invisible if user is not a page admin
+                {
+                    var path = this.RedirectURL.Split('?')[0];
+                    if (this.NeedRedirectAfterLogin && path != this._navigationManager.NavigateURL() && path != this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
+                    {
+                        this.Response.Redirect(this.RedirectURL, true);
+                    }
+
+                    if (TabPermissionController.CanAdminPage())
+                    {
+                        this.ShowPanel();
+                    }
+                    else
+                    {
+                        this.ContainerControl.Visible = false;
+                    }
+                }
+            }
+
+            this.divCaptcha.Visible = this.UseCaptcha;
+
+            if (this.UseCaptcha)
+            {
+                this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
+                this.ctlCaptcha.Text = Localization.GetString("CaptchaText", Localization.SharedResourceFile);
             }
         }
 
@@ -1010,138 +1142,6 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private bool LocaleEnabled(string locale)
         {
             return LocaleController.Instance.GetLocales(this.PortalSettings.PortalId).ContainsKey(locale);
-        }
-
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.ctlPassword.PasswordUpdated += this.PasswordUpdated;
-            this.ctlProfile.ProfileUpdated += this.ProfileUpdated;
-            this.ctlUser.UserCreateCompleted += this.UserCreateCompleted;
-            this.ctlDataConsent.DataConsentCompleted += this.DataConsentCompleted;
-
-            // Set the User Control Properties
-            this.ctlUser.ID = "User";
-
-            // Set the Password Control Properties
-            this.ctlPassword.ID = "Password";
-
-            // Set the Profile Control Properties
-            this.ctlProfile.ID = "Profile";
-
-            // Set the Data Consent Control Properties
-            this.ctlDataConsent.ID = "DataConsent";
-
-            // Override the redirected page title if page has loaded with ctl=Login
-            if (this.Request.QueryString["ctl"] != null)
-            {
-                if (this.Request.QueryString["ctl"].ToLowerInvariant() == "login")
-                {
-                    var myPage = (CDefault)this.Page;
-                    if (myPage.PortalSettings.LoginTabId == this.TabId || myPage.PortalSettings.LoginTabId == -1)
-                    {
-                        myPage.Title = Localization.GetString("ControlTitle_login", this.LocalResourceFile);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cmdAssociate.Click += this.cmdAssociate_Click;
-            this.cmdCreateUser.Click += this.cmdCreateUser_Click;
-            this.cmdProceed.Click += this.cmdProceed_Click;
-
-            // Verify if portal has a customized login page
-            if (!Null.IsNull(this.PortalSettings.LoginTabId) && Globals.IsAdminControl())
-            {
-                if (Globals.ValidateLoginTabID(this.PortalSettings.LoginTabId))
-                {
-                    // login page exists and trying to access this control directly with url param -> not allowed
-                    var parameters = new string[3];
-                    if (!string.IsNullOrEmpty(this.Request.QueryString["returnUrl"]))
-                    {
-                        parameters[0] = "returnUrl=" + HttpUtility.UrlEncode(this.Request.QueryString["returnUrl"]);
-                    }
-
-                    if (!string.IsNullOrEmpty(this.Request.QueryString["username"]))
-                    {
-                        parameters[1] = "username=" + HttpUtility.UrlEncode(this.Request.QueryString["username"]);
-                    }
-
-                    if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]))
-                    {
-                        parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(this.Request.QueryString["verificationcode"]);
-                    }
-
-                    this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
-                }
-            }
-
-            if (this.Page.IsPostBack == false)
-            {
-                try
-                {
-                    this.PageNo = 0;
-                }
-                catch (Exception ex)
-                {
-                    // control not there
-                    Logger.Error(ex);
-                }
-            }
-
-            if (!this.Request.IsAuthenticated || this.UserNeedsVerification())
-            {
-                this.ShowPanel();
-            }
-            else // user is already authenticated
-            {
-                // if a Login Page has not been specified for the portal
-                if (Globals.IsAdminControl())
-                {
-                    // redirect browser
-                    this.Response.Redirect(this.RedirectURL, true);
-                }
-                else // make module container invisible if user is not a page admin
-                {
-                    var path = this.RedirectURL.Split('?')[0];
-                    if (this.NeedRedirectAfterLogin && path != this._navigationManager.NavigateURL() && path != this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId))
-                    {
-                        this.Response.Redirect(this.RedirectURL, true);
-                    }
-
-                    if (TabPermissionController.CanAdminPage())
-                    {
-                        this.ShowPanel();
-                    }
-                    else
-                    {
-                        this.ContainerControl.Visible = false;
-                    }
-                }
-            }
-
-            this.divCaptcha.Visible = this.UseCaptcha;
-
-            if (this.UseCaptcha)
-            {
-                this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", Localization.SharedResourceFile);
-                this.ctlCaptcha.Text = Localization.GetString("CaptchaText", Localization.SharedResourceFile);
-            }
         }
 
         /// <summary>

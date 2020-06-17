@@ -20,6 +20,8 @@ namespace DotNetNuke.Services.Tokens
     /// <remarks></remarks>
     public abstract class BaseTokenReplace
     {
+        protected const string ObjectLessToken = "no_object";
+
         private const string ExpressionDefault =
             "(?:(?<text>\\[\\])|\\[(?:(?<object>[^{}\\]\\[:]+):(?<property>[^\\]\\[\\|]+))(?:\\|(?:(?<format>[^\\]\\[]+)\\|(?<ifEmpty>[^\\]\\[]+))|\\|(?:(?<format>[^\\|\\]\\[]+)))?\\])|(?<text>\\[[^\\]\\[]+\\])|(?<text>[^\\]\\[]+)";
 
@@ -33,19 +35,6 @@ namespace DotNetNuke.Services.Tokens
 
         private CultureInfo _formatProvider;
         private string _language;
-
-        protected const string ObjectLessToken = "no_object";
-
-        protected bool UseObjectLessExpression { get; set; }
-
-        /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture.
-        /// </summary>
-        /// <value>An CultureInfo.</value>
-        protected CultureInfo FormatProvider
-        {
-            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
-        }
 
         /// <summary>
         /// Gets or sets /sets the language to be used, e.g. for date format.
@@ -63,6 +52,17 @@ namespace DotNetNuke.Services.Tokens
                 this._language = value;
                 this._formatProvider = new CultureInfo(this._language);
             }
+        }
+
+        protected bool UseObjectLessExpression { get; set; }
+
+        /// <summary>
+        /// Gets the Format provider as Culture info from stored language or current culture.
+        /// </summary>
+        /// <value>An CultureInfo.</value>
+        protected CultureInfo FormatProvider
+        {
+            get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>

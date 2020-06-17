@@ -29,11 +29,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.subscriptionSecurityController = SubscriptionSecurityController.Instance;
         }
 
-        protected override Func<ISubscriptionController> GetFactory()
-        {
-            return () => new SubscriptionController();
-        }
-
         public IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1)
         {
             var subscriptions = CBO.FillCollection<Subscription>(this.dataService.GetSubscriptionsByUser(
@@ -52,6 +47,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 objectKey));
 
             return subscriptions.Where(s => this.subscriptionSecurityController.HasPermission(s));
+        }
+
+        protected override Func<ISubscriptionController> GetFactory()
+        {
+            return () => new SubscriptionController();
         }
 
         public bool IsSubscribed(Subscription subscription)

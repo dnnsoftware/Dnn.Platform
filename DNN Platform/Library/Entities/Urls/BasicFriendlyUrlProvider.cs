@@ -17,12 +17,12 @@ namespace DotNetNuke.Entities.Urls
     internal class BasicFriendlyUrlProvider : FriendlyUrlProviderBase
     {
         private const string RegexMatchExpression = "[^a-zA-Z0-9 ]";
+        private static readonly Regex FriendlyPathRx = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
+        private static readonly Regex DefaultPageRx = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
         private readonly string _fileExtension;
         private readonly bool _includePageName;
         private readonly string _regexMatch;
-
-        private static readonly Regex FriendlyPathRx = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
-        private static readonly Regex DefaultPageRx = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
@@ -46,6 +46,18 @@ namespace DotNetNuke.Entities.Urls
         public string RegexMatch
         {
             get { return this._regexMatch; }
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path)
+        {
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, _portalSettings);
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
+        {
+            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            return this.FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
         /// -----------------------------------------------------------------------------
@@ -290,18 +302,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return results;
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path)
-        {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, _portalSettings);
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
-        {
-            PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return this.FriendlyUrl(tab, path, pageName, _portalSettings);
         }
 
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)

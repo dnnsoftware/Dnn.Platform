@@ -19,7 +19,13 @@ namespace DotNetNuke.Entities.Content
     /// <summary>Implementation of <see cref="IAttachmentController"/>.</summary>
     public class AttachmentController : IAttachmentController
     {
+        internal const string FilesKey = "Files";
+        internal const string ImageKey = "Images";
+        internal const string VideoKey = "Videos";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
+
+        private readonly IContentController _contentController;
 
         public AttachmentController()
             : this(Util.GetContentController())
@@ -31,17 +37,6 @@ namespace DotNetNuke.Entities.Content
             this._contentController = contentController;
         }
 
-        private readonly IContentController _contentController;
-
-        private void AddToContent(int contentItemId, Action<ContentItem> action)
-        {
-            var contentItem = this._contentController.GetContentItem(contentItemId);
-
-            action(contentItem);
-
-            this._contentController.UpdateContentItem(contentItem);
-        }
-
         public void AddFileToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddFilesToContent(contentItemId, new[] { fileInfo });
@@ -50,6 +45,15 @@ namespace DotNetNuke.Entities.Content
         public void AddFilesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
+        }
+
+        private void AddToContent(int contentItemId, Action<ContentItem> action)
+        {
+            var contentItem = this._contentController.GetContentItem(contentItemId);
+
+            action(contentItem);
+
+            this._contentController.UpdateContentItem(contentItem);
         }
 
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
@@ -93,60 +97,11 @@ namespace DotNetNuke.Entities.Content
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
-        private static void SerializeToMetadata(IList<IFileInfo> files, NameValueCollection nvc, string key)
-        {
-            var remove = !files.Any();
-            if (remove == false)
-            {
-                var serialized = SerializeFileInfo(files);
-
-                if (string.IsNullOrEmpty(serialized))
-                {
-                    remove = true;
-                }
-                else
-                {
-                    nvc[key] = serialized;
-                }
-            }
-
-            if (remove)
-            {
-                nvc.Remove(key);
-            }
-        }
-
         internal static void SerializeAttachmentMetadata(ContentItem contentItem)
         {
             SerializeToMetadata(contentItem.Files, contentItem.Metadata, FilesKey);
             SerializeToMetadata(contentItem.Videos, contentItem.Metadata, VideoKey);
             SerializeToMetadata(contentItem.Images, contentItem.Metadata, ImageKey);
-        }
-
-        private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
-        {
-            var contentItem = this._contentController.GetContentItem(contentItemId);
-            if (contentItem == null)
-            {
-                throw new ApplicationException(string.Format("Cannot find ContentItem ID {0}", contentItemId));
-            }
-
-            var serialized = contentItem.Metadata[type];
-
-            if (string.IsNullOrEmpty(serialized))
-            {
-                return new int[0];
-            }
-
-            try
-            {
-                return serialized.FromJson<int[]>().ToArray();
-            }
-            catch (FormatException ex)
-            {
-                throw new ApplicationException(
-                    string.Format("ContentItem metadata has become corrupt (ID {0}): invalid file ID", contentItemId), ex);
-            }
         }
 
         internal static IEnumerable<IFileInfo> DeserializeFileInfo(string content)
@@ -191,9 +146,54 @@ namespace DotNetNuke.Entities.Content
             return fileList.ToJson();
         }
 
-        internal const string FilesKey = "Files";
-        internal const string ImageKey = "Images";
-        internal const string VideoKey = "Videos";
+        private static void SerializeToMetadata(IList<IFileInfo> files, NameValueCollection nvc, string key)
+        {
+            var remove = !files.Any();
+            if (remove == false)
+            {
+                var serialized = SerializeFileInfo(files);
+
+                if (string.IsNullOrEmpty(serialized))
+                {
+                    remove = true;
+                }
+                else
+                {
+                    nvc[key] = serialized;
+                }
+            }
+
+            if (remove)
+            {
+                nvc.Remove(key);
+            }
+        }
+
+        private IEnumerable<int> GetFilesByContent(int contentItemId, string type)
+        {
+            var contentItem = this._contentController.GetContentItem(contentItemId);
+            if (contentItem == null)
+            {
+                throw new ApplicationException(string.Format("Cannot find ContentItem ID {0}", contentItemId));
+            }
+
+            var serialized = contentItem.Metadata[type];
+
+            if (string.IsNullOrEmpty(serialized))
+            {
+                return new int[0];
+            }
+
+            try
+            {
+                return serialized.FromJson<int[]>().ToArray();
+            }
+            catch (FormatException ex)
+            {
+                throw new ApplicationException(
+                    string.Format("ContentItem metadata has become corrupt (ID {0}): invalid file ID", contentItemId), ex);
+            }
+        }
         internal const string TitleKey = "Title";
     }
 }

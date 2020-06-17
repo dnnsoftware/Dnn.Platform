@@ -23,14 +23,14 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private readonly INavigationManager _navigationManager;
 
-        public string BorderWidth { get; set; }
-
-        public string CssClass { get; set; }
-
         public Logo()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        public string BorderWidth { get; set; }
+
+        public string CssClass { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {

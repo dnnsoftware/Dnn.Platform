@@ -17,6 +17,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RestartApplication));
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
         public override ConsoleResultModel Run()
         {
             try
@@ -37,7 +39,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
             }
             return new ConsoleResultModel(this.LocalizeString("Prompt_UserRestart_Success")) { MustReload = true };
         }
-
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
     }
 }

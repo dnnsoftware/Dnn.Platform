@@ -31,7 +31,7 @@ namespace DotNetNuke.Common.Controls
 
             if (this.ID != null)
             {
-            // Locate and replace id attribute
+                // Locate and replace id attribute
                 StartPoint = html.IndexOf("id=\"");
                 if (StartPoint >= 0)
                 {

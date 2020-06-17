@@ -279,8 +279,6 @@ namespace Dnn.PersonaBar.Recyclebin.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
         }
 
-        #region Private Methods
-
         private PageItem ConvertToPageItem(TabInfo tab, IEnumerable<TabInfo> portalTabs)
         {
             return new PageItem
@@ -349,7 +347,5 @@ namespace Dnn.PersonaBar.Recyclebin.Services
                         CultureInfo.CreateSpecificCulture(user.Profile.PreferredLocale ?? "en-US"))
             };
         }
-
-        #endregion
     }
 }

@@ -27,6 +27,8 @@ namespace DotNetNuke.Modules.MemberDirectory
     [PresenterBinding(typeof(ModuleSettingsPresenter))]
     public partial class Settings : SettingsView<MemberDirectorySettingsModel>
     {
+        public const int DefaultPageSize = 20;
+
         private static string templatePath = "~/DesktopModules/MemberDirectory/Templates/";
 
         private string _defaultSearchField1 = "DisplayName";
@@ -73,8 +75,6 @@ namespace DotNetNuke.Modules.MemberDirectory
                 return template;
             }
         }
-
-        public const int DefaultPageSize = 20;
 
         public static string DefaultPopUpTemplate
         {
@@ -171,17 +171,6 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-        private ListItemCollection GetPropertiesCollection(string profileResourceFile)
-        {
-            var result = new ListItemCollection();
-            foreach (var property in this.Model.ProfileProperties)
-            {
-                result.Add(new ListItem(this.GetLocalizeName(property.PropertyName, profileResourceFile), property.PropertyName));
-            }
-
-            return result;
-        }
-
         protected override void OnSettingsLoaded()
         {
             base.OnSettingsLoaded();
@@ -248,6 +237,17 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.Model.TabModuleSettings["ExcludeHostUsers"] = this.ExcludeHostUsersCheckBox.Checked.ToString(CultureInfo.InvariantCulture);
 
             base.OnSavingSettings();
+        }
+
+        private ListItemCollection GetPropertiesCollection(string profileResourceFile)
+        {
+            var result = new ListItemCollection();
+            foreach (var property in this.Model.ProfileProperties)
+            {
+                result.Add(new ListItem(this.GetLocalizeName(property.PropertyName, profileResourceFile), property.PropertyName));
+            }
+
+            return result;
         }
 
         private string GetLocalizeName(string propertyName, string resourceFile)

@@ -19,6 +19,27 @@ namespace DotNetNuke.Web.Mvp
             this.AutoDataBind = true;
         }
 
+        public event EventHandler Initialize;
+
+        public new event EventHandler Load;
+
+        public bool AutoDataBind { get; set; }
+
+        public bool ThrowExceptionIfNoPresenterBound
+        {
+            get { return true; }
+        }
+
+        public void ProcessModuleLoadException(Exception ex)
+        {
+            Exceptions.ProcessModuleLoadException(this, ex);
+        }
+
+        public void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType)
+        {
+            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, messageHeader, message, messageType);
+        }
+
         protected T DataItem<T>()
             where T : class, new()
         {
@@ -45,27 +66,6 @@ namespace DotNetNuke.Web.Mvp
             this.Page.InitComplete += this.PageInitComplete;
             this.Page.PreRenderComplete += this.PagePreRenderComplete;
             this.Page.Load += this.PageLoad;
-        }
-
-        public bool AutoDataBind { get; set; }
-
-        public event EventHandler Initialize;
-
-        public void ProcessModuleLoadException(Exception ex)
-        {
-            Exceptions.ProcessModuleLoadException(this, ex);
-        }
-
-        public void ShowMessage(string messageHeader, string message, ModuleMessage.ModuleMessageType messageType)
-        {
-            DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, messageHeader, message, messageType);
-        }
-
-        public new event EventHandler Load;
-
-        public bool ThrowExceptionIfNoPresenterBound
-        {
-            get { return true; }
         }
 
         private void PageInitComplete(object sender, EventArgs e)

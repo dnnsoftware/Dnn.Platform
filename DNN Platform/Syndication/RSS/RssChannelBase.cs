@@ -35,25 +35,27 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        protected void LoadFromUrl(string url)
+        public XmlDocument SaveAsXml()
         {
-            // download the feed
-            RssChannelDom dom = RssDownloadManager.GetChannel(url);
-
-            // create the channel
-            this.LoadFromDom(dom);
-
-            // remember the url
-            this._url = url;
+            return this.SaveAsXml(RssXmlHelper.CreateEmptyRssXml());
         }
 
-        protected void LoadFromXml(XmlDocument doc)
+        public XmlDocument SaveAsXml(XmlDocument EmptyRssXml)
         {
-            // parse XML
-            RssChannelDom dom = RssXmlHelper.ParseChannelXml(doc);
+            XmlDocument doc = EmptyRssXml;
+            XmlNode channelNode = RssXmlHelper.SaveRssElementAsXml(doc.DocumentElement, this, "channel");
 
-            // create the channel
-            this.LoadFromDom(dom);
+            if (this._image != null)
+            {
+                RssXmlHelper.SaveRssElementAsXml(channelNode, this._image, "image");
+            }
+
+            foreach (RssItemType item in this._items)
+            {
+                RssXmlHelper.SaveRssElementAsXml(channelNode, item, "item");
+            }
+
+            return doc;
         }
 
         internal void LoadFromDom(RssChannelDom dom)
@@ -78,27 +80,25 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        public XmlDocument SaveAsXml()
+        protected void LoadFromUrl(string url)
         {
-            return this.SaveAsXml(RssXmlHelper.CreateEmptyRssXml());
+            // download the feed
+            RssChannelDom dom = RssDownloadManager.GetChannel(url);
+
+            // create the channel
+            this.LoadFromDom(dom);
+
+            // remember the url
+            this._url = url;
         }
 
-        public XmlDocument SaveAsXml(XmlDocument EmptyRssXml)
+        protected void LoadFromXml(XmlDocument doc)
         {
-            XmlDocument doc = EmptyRssXml;
-            XmlNode channelNode = RssXmlHelper.SaveRssElementAsXml(doc.DocumentElement, this, "channel");
+            // parse XML
+            RssChannelDom dom = RssXmlHelper.ParseChannelXml(doc);
 
-            if (this._image != null)
-            {
-                RssXmlHelper.SaveRssElementAsXml(channelNode, this._image, "image");
-            }
-
-            foreach (RssItemType item in this._items)
-            {
-                RssXmlHelper.SaveRssElementAsXml(channelNode, item, "item");
-            }
-
-            return doc;
+            // create the channel
+            this.LoadFromDom(dom);
         }
 
         protected RssImageType GetImage()

@@ -48,7 +48,7 @@ namespace log4net.Config
     /// </remarks>
     /// <author>Nicko Cadell.</author>
     /// <author>Gert Driesen.</author>
-    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple=true)]
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
     [Serializable]
     [Obsolete("Use AliasRepositoryAttribute instead of AliasDomainAttribute. Scheduled removal in v10.0.0.")]
     public sealed class AliasDomainAttribute : AliasRepositoryAttribute

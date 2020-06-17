@@ -19,25 +19,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public override GridColumn Clone()
-        {
-            DnnGridButtonColumn dnnGridColumn = new DnnGridButtonColumn();
-
-            // you should override CopyBaseProperties if you have some column specific properties
-            dnnGridColumn.CopyBaseProperties(this);
-
-            return dnnGridColumn;
-        }
-
-        public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
-        {
-            base.InitializeCell(cell, columnIndex, inItem);
-            if (inItem is GridHeaderItem && !string.IsNullOrEmpty(this.HeaderText))
-            {
-                cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Icon Key to obtain ImageURL.
@@ -61,6 +42,25 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconStyle { get; set; }
+
+        public override GridColumn Clone()
+        {
+            DnnGridButtonColumn dnnGridColumn = new DnnGridButtonColumn();
+
+            // you should override CopyBaseProperties if you have some column specific properties
+            dnnGridColumn.CopyBaseProperties(this);
+
+            return dnnGridColumn;
+        }
+
+        public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
+        {
+            base.InitializeCell(cell, columnIndex, inItem);
+            if (inItem is GridHeaderItem && !string.IsNullOrEmpty(this.HeaderText))
+            {
+                cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
+            }
+        }
 
         public override string ImageUrl
         {

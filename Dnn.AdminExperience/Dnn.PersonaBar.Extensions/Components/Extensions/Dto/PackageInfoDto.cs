@@ -1,29 +1,67 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.Components.Controllers.Models;
-using Newtonsoft.Json;
-
-#endregion
-
 namespace Dnn.PersonaBar.Extensions.Components.Dto
 {
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.Components.Controllers.Models;
+    using Microsoft.Extensions.DependencyInjection;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class PackageInfoDto
     {
+        public PackageInfoDto()
+        {
+        }
+
+        public PackageInfoDto(int portalId, PackageInfo package)
+        {
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+
+            this.PackageType = package.PackageType;
+            this.FriendlyName = package.FriendlyName;
+            this.Name = package.Name;
+            this.PackageId = package.PackageID;
+            this.Description = package.Description;
+            this.IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
+            this.Version = package.Version.ToString(3);
+            this.UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
+            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
+            this.PackageIcon = ExtensionsController.GetPackageIcon(package);
+            this.License = package.License;
+            this.ReleaseNotes = package.ReleaseNotes;
+            this.Owner = package.Owner;
+            this.Organization = package.Organization;
+            this.Url = package.Url;
+            this.Email = package.Email;
+            this.CanDelete = !package.IsSystemPackage &&
+                             package.PackageID > 0 &&
+                             PackageController.CanDeletePackage(package, PortalSettings.Current);
+
+            var authService = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageId);
+            this.ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
+
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var tabId = portalSettings.ActiveTab.TabID;
+            this.SiteSettingsLink = this.NavigationManager.NavigateURL(tabId, "EditExtension",
+                new[]
+                {
+                    $"packageid={this.PackageId}",
+                    "Display=editor",
+                    "popUp=true",
+                });
+        }
+
         [JsonProperty("packageId")]
         public int PackageId { get; set; }
 
@@ -82,49 +120,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
         public string SiteSettingsLink { get; set; }
 
         protected INavigationManager NavigationManager { get; }
-
-        public PackageInfoDto()
-        {
-
-        }
-
-        public PackageInfoDto(int portalId, PackageInfo package)
-        {
-            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-
-            this.PackageType = package.PackageType;
-            this.FriendlyName = package.FriendlyName;
-            this.Name = package.Name;
-            this.PackageId = package.PackageID;
-            this.Description = package.Description;
-            this.IsInUse = ExtensionsController.IsPackageInUse(package, portalId);
-            this.Version = package.Version.ToString(3);
-            this.UpgradeUrl = ExtensionsController.UpgradeRedirect(package.Version, package.PackageType, package.Name);
-            this.UpgradeIndicator = ExtensionsController.UpgradeIndicator(package.Version, package.PackageType, package.Name);
-            this.PackageIcon = ExtensionsController.GetPackageIcon(package);
-            this.License = package.License;
-            this.ReleaseNotes = package.ReleaseNotes;
-            this.Owner = package.Owner;
-            this.Organization = package.Organization;
-            this.Url = package.Url;
-            this.Email = package.Email;
-            this.CanDelete = !package.IsSystemPackage &&
-                package.PackageID > 0 &&
-                PackageController.CanDeletePackage(package, PortalSettings.Current);
-
-            var authService = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageId);
-            this.ReadOnly = authService != null && authService.AuthenticationType == Constants.DnnAuthTypeName;
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tabId = portalSettings.ActiveTab.TabID;
-            this.SiteSettingsLink = this.NavigationManager.NavigateURL(tabId, "EditExtension",
-                    new[]
-                    {
-                        $"packageid={this.PackageId}",
-                        "Display=editor",
-                        "popUp=true",
-                    });
-        }
 
         public PackageInfo ToPackageInfo()
         {

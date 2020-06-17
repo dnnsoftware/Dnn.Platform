@@ -32,20 +32,20 @@ namespace DotNetNuke.Web.DDRMenu
                     }
 
                     var menuSettings = new Settings
-                                       {
-                                        MenuStyle = this.GetStringSetting("MenuStyle"),
-                                        NodeXmlPath = this.GetStringSetting("NodeXmlPath"),
-                                        NodeSelector = this.GetStringSetting("NodeSelector"),
-                                        IncludeContext = this.GetBoolSetting("IncludeContext"),
-                                        IncludeHidden = this.GetBoolSetting("IncludeHidden"),
-                                        IncludeNodes = this.GetStringSetting("IncludeNodes"),
-                                        ExcludeNodes = this.GetStringSetting("ExcludeNodes"),
-                                        NodeManipulator = this.GetStringSetting("NodeManipulator"),
-                                        TemplateArguments =
+                    {
+                        MenuStyle = this.GetStringSetting("MenuStyle"),
+                        NodeXmlPath = this.GetStringSetting("NodeXmlPath"),
+                        NodeSelector = this.GetStringSetting("NodeSelector"),
+                        IncludeContext = this.GetBoolSetting("IncludeContext"),
+                        IncludeHidden = this.GetBoolSetting("IncludeHidden"),
+                        IncludeNodes = this.GetStringSetting("IncludeNodes"),
+                        ExcludeNodes = this.GetStringSetting("ExcludeNodes"),
+                        NodeManipulator = this.GetStringSetting("NodeManipulator"),
+                        TemplateArguments =
                                             DDRMenu.Settings.TemplateArgumentsFromSettingString(this.GetStringSetting("TemplateArguments")),
-                                        ClientOptions =
+                        ClientOptions =
                                             DDRMenu.Settings.ClientOptionsFromSettingString(this.GetStringSetting("ClientOptions")),
-                                       };
+                    };
 
                     MenuNode rootNode = null;
                     if (string.IsNullOrEmpty(menuSettings.NodeXmlPath))

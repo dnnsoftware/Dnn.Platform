@@ -40,6 +40,11 @@ namespace DotNetNuke.Services.Mail
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
 
+        // ReSharper restore InconsistentNaming
+        private readonly List<string> _addressedRoles = new List<string>();
+        private readonly List<UserInfo> _addressedUsers = new List<UserInfo>();
+        private readonly List<Attachment> _attachments = new List<Attachment>();
+
         /// <summary>
         /// Addressing Methods (personalized or hidden).
         /// </summary>
@@ -51,11 +56,6 @@ namespace DotNetNuke.Services.Mail
             Send_BCC = 2,
             Send_Relay = 3,
         }
-
-        // ReSharper restore InconsistentNaming
-        private readonly List<string> _addressedRoles = new List<string>();
-        private readonly List<UserInfo> _addressedUsers = new List<UserInfo>();
-        private readonly List<Attachment> _attachments = new List<Attachment>();
         private UserInfo _replyToUser;
         private bool _smtpEnableSSL;
         private TokenReplace _tokenReplace;
@@ -97,6 +97,11 @@ namespace DotNetNuke.Services.Mail
             this.Body = body;
             this.SuppressTokenReplace = this.SuppressTokenReplace;
             this.Initialize();
+        }
+
+        ~SendTokenizedBulkEmail()
+        {
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -178,16 +183,16 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-         /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
-         /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
+        /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
+        /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-         /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
-         /// <remarks>default value: false.</remarks>
+        /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
+        /// <remarks>default value: false.</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-         /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
-         /// <remarks>enabled by default.</remarks>
+        /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
+        /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 
         public string RelayEmailAddress
@@ -204,6 +209,35 @@ namespace DotNetNuke.Services.Mail
         }
 
         public string[] LanguageFilter { get; set; }
+
+        /// <summary>Specify SMTP server to be used.</summary>
+        /// <param name="smtpServer">name of the SMTP server.</param>
+        /// <param name="smtpAuthentication">authentication string (0: anonymous, 1: basic, 2: NTLM).</param>
+        /// <param name="smtpUsername">username to log in SMTP server.</param>
+        /// <param name="smtpPassword">password to log in SMTP server.</param>
+        /// <param name="smtpEnableSSL">SSL used to connect tp SMTP server.</param>
+        /// <returns>always true.</returns>
+        /// <remarks>if not called, values will be taken from host settings.</remarks>
+        public bool SetSMTPServer(string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
+        {
+            this.EnsureNotDisposed();
+
+            this._smtpServer = smtpServer;
+            this._smtpAuthenticationMethod = smtpAuthentication;
+            this._smtpUsername = smtpUsername;
+            this._smtpPassword = smtpPassword;
+            this._smtpEnableSSL = smtpEnableSSL;
+            return true;
+        }
+
+        /// <summary>Add a single attachment file to the email.</summary>
+        /// <param name="localPath">path to file to attach.</param>
+        /// <remarks>only local stored files can be added with a path.</remarks>
+        public void AddAttachment(string localPath)
+        {
+            this.EnsureNotDisposed();
+            this._attachments.Add(new Attachment(localPath));
+        }
 
         /// <summary>internal method to initialize used objects, depending on parameters of construct method.</summary>
         private void Initialize()
@@ -347,35 +381,6 @@ namespace DotNetNuke.Services.Mail
             }
 
             return attachments;
-        }
-
-        /// <summary>Specify SMTP server to be used.</summary>
-        /// <param name="smtpServer">name of the SMTP server.</param>
-        /// <param name="smtpAuthentication">authentication string (0: anonymous, 1: basic, 2: NTLM).</param>
-        /// <param name="smtpUsername">username to log in SMTP server.</param>
-        /// <param name="smtpPassword">password to log in SMTP server.</param>
-        /// <param name="smtpEnableSSL">SSL used to connect tp SMTP server.</param>
-        /// <returns>always true.</returns>
-        /// <remarks>if not called, values will be taken from host settings.</remarks>
-        public bool SetSMTPServer(string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
-        {
-            this.EnsureNotDisposed();
-
-            this._smtpServer = smtpServer;
-            this._smtpAuthenticationMethod = smtpAuthentication;
-            this._smtpUsername = smtpUsername;
-            this._smtpPassword = smtpPassword;
-            this._smtpEnableSSL = smtpEnableSSL;
-            return true;
-        }
-
-        /// <summary>Add a single attachment file to the email.</summary>
-        /// <param name="localPath">path to file to attach.</param>
-        /// <remarks>only local stored files can be added with a path.</remarks>
-        public void AddAttachment(string localPath)
-        {
-            this.EnsureNotDisposed();
-            this._attachments.Add(new Attachment(localPath));
         }
 
         public void AddAttachment(Stream contentStream, ContentType contentType)
@@ -630,14 +635,6 @@ namespace DotNetNuke.Services.Mail
             this.SendMails();
         }
 
-        private void EnsureNotDisposed()
-        {
-            if (this._isDisposed)
-            {
-                throw new ObjectDisposedException("SharedDictionary");
-            }
-        }
-
         public void Dispose()
         {
             this.Dispose(true);
@@ -662,9 +659,12 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        ~SendTokenizedBulkEmail()
+        private void EnsureNotDisposed()
         {
-            this.Dispose(false);
+            if (this._isDisposed)
+            {
+                throw new ObjectDisposedException("SharedDictionary");
+            }
         }
     }
 }

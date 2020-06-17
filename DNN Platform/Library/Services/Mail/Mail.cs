@@ -26,6 +26,27 @@ namespace DotNetNuke.Services.Mail
     {
         private static readonly Regex SmtpServerRegex = new Regex("^[^:]+(:[0-9]{1,5})?$", RegexOptions.Compiled);
 
+        public static string ConvertToText(string sHTML)
+        {
+            var formattedHtml = HtmlUtils.FormatText(sHTML, true);
+            var styleLessHtml = HtmlUtils.RemoveInlineStyle(formattedHtml);
+            return HtmlUtils.StripTags(styleLessHtml, true);
+        }
+
+        public static bool IsValidEmailAddress(string Email, int portalid)
+        {
+            string pattern = Null.NullString;
+
+            // During install Wizard we may not have a valid PortalID
+            if (portalid != Null.NullInteger)
+            {
+                pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"]);
+            }
+
+            pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
+            return Regex.Match(Email, pattern).Success;
+        }
+
         private static string SendMailInternal(MailMessage mailMessage, string subject, string body, MailPriority priority,
                                 MailFormat bodyFormat, Encoding bodyEncoding, IEnumerable<Attachment> attachments,
                                 string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
@@ -175,27 +196,6 @@ namespace DotNetNuke.Services.Mail
             }
 
             return retValue;
-        }
-
-        public static string ConvertToText(string sHTML)
-        {
-            var formattedHtml = HtmlUtils.FormatText(sHTML, true);
-            var styleLessHtml = HtmlUtils.RemoveInlineStyle(formattedHtml);
-            return HtmlUtils.StripTags(styleLessHtml, true);
-        }
-
-        public static bool IsValidEmailAddress(string Email, int portalid)
-        {
-            string pattern = Null.NullString;
-
-            // During install Wizard we may not have a valid PortalID
-            if (portalid != Null.NullInteger)
-            {
-                pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"]);
-            }
-
-            pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
-            return Regex.Match(Email, pattern).Success;
         }
 
         public static void SendEmail(string fromAddress, string toAddress, string subject, string body)

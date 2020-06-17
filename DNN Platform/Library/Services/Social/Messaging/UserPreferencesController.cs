@@ -16,11 +16,6 @@ namespace DotNetNuke.Services.Social.Messaging
     {
         private readonly IDataService dataService;
 
-        protected override Func<IUserPreferencesController> GetFactory()
-        {
-            return () => new UserPreferencesController();
-        }
-
         public UserPreferencesController()
             : this(DataService.Instance)
         {
@@ -37,6 +32,11 @@ namespace DotNetNuke.Services.Social.Messaging
         public void SetUserPreference(UserPreference userPreference)
         {
             this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
+        }
+
+        protected override Func<IUserPreferencesController> GetFactory()
+        {
+            return () => new UserPreferencesController();
         }
 
         public UserPreference GetUserPreference(UserInfo userinfo)

@@ -44,12 +44,12 @@ namespace DotNetNuke.Web.InternalServices
                     string[] parameters = notification.Context.Split(':');
 
                     var stateTransiction = new StateTransaction
-                                           {
-                                               ContentItemId = int.Parse(parameters[0]),
-                                               CurrentStateId = int.Parse(parameters[2]),
-                                               Message = new StateTransactionMessage(),
-                                               UserId = this.UserInfo.UserID,
-                                           };
+                    {
+                        ContentItemId = int.Parse(parameters[0]),
+                        CurrentStateId = int.Parse(parameters[2]),
+                        Message = new StateTransactionMessage(),
+                        UserId = this.UserInfo.UserID,
+                    };
                     this._workflowEngine.DiscardState(stateTransiction);
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
@@ -80,12 +80,12 @@ namespace DotNetNuke.Web.InternalServices
                     string[] parameters = notification.Context.Split(':');
 
                     var stateTransiction = new StateTransaction
-                                            {
-                                                ContentItemId = int.Parse(parameters[0]),
-                                                CurrentStateId = int.Parse(parameters[2]),
-                                                Message = new StateTransactionMessage(),
-                                                UserId = this.UserInfo.UserID,
-                                            };
+                    {
+                        ContentItemId = int.Parse(parameters[0]),
+                        CurrentStateId = int.Parse(parameters[2]),
+                        Message = new StateTransactionMessage(),
+                        UserId = this.UserInfo.UserID,
+                    };
                     this._workflowEngine.CompleteState(stateTransiction);
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });

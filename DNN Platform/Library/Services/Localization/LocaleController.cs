@@ -30,13 +30,12 @@ namespace DotNetNuke.Services.Localization
     /// </remarks>
     public class LocaleController : ComponentBase<ILocaleController, LocaleController>, ILocaleController
     {
-        private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
+        public static bool IsValidCultureName(string name)
         {
-            var portalID = (int)cacheItemArgs.ParamList[0];
-            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
-                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
-                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
-            return locales;
+            return
+                CultureInfo
+                .GetCultures(CultureTypes.SpecificCultures)
+                .Any(c => c.Name == name);
         }
 
         /// <summary>
@@ -61,6 +60,15 @@ namespace DotNetNuke.Services.Localization
         public List<CultureInfo> GetCultures(Dictionary<string, Locale> locales)
         {
             return locales.Values.Select(locale => new CultureInfo(locale.Code)).ToList();
+        }
+
+        private static object GetLocalesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var portalID = (int)cacheItemArgs.ParamList[0];
+            Dictionary<string, Locale> locales = CBO.FillDictionary("CultureCode", portalID > Null.NullInteger
+                                                                       ? DataProvider.Instance().GetLanguagesByPortal(portalID)
+                                                                       : DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
+            return locales;
         }
 
         /// <summary>
@@ -303,14 +311,6 @@ namespace DotNetNuke.Services.Localization
                     TabController.Instance.PublishTabs(TabController.GetTabsBySortOrder(portalid, cultureCode, false));
                 }
             }
-        }
-
-        public static bool IsValidCultureName(string name)
-        {
-            return
-                CultureInfo
-                .GetCultures(CultureTypes.SpecificCultures)
-                .Any(c => c.Name == name);
         }
     }
 }

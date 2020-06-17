@@ -20,6 +20,14 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        public GenericRssElement Image
+        {
+            get
+            {
+                return this.GetImage();
+            }
+        }
+
         public string this[string attributeName]
         {
             get
@@ -30,14 +38,6 @@ namespace DotNetNuke.Services.Syndication
             set
             {
                 this.Attributes[attributeName] = value;
-            }
-        }
-
-        public GenericRssElement Image
-        {
-            get
-            {
-                return this.GetImage();
             }
         }
 

@@ -25,82 +25,6 @@ namespace Dnn.Modules.Console
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
-        private void BindTabs(int tabId, bool includeParent)
-        {
-            List<TabInfo> tempTabs = TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.HasChildren).ToList();
-
-            IList<TabInfo> tabList = new List<TabInfo>();
-
-            IList<int> tabIdList = new List<int>();
-            tabIdList.Add(tabId);
-
-            if (includeParent)
-            {
-                TabInfo consoleTab = TabController.Instance.GetTab(tabId, this.PortalId);
-                if (consoleTab != null)
-                {
-                    tabList.Add(consoleTab);
-                }
-            }
-
-            foreach (TabInfo tab in tempTabs)
-            {
-                bool canShowTab = TabPermissionController.CanViewPage(tab) &&
-                        !tab.IsDeleted &&
-                        (tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate);
-
-                if (!canShowTab)
-                {
-                    continue;
-                }
-
-                if (tabIdList.Contains(tab.ParentId))
-                {
-                    if (!tabIdList.Contains(tab.TabID))
-                    {
-                        tabIdList.Add(tab.TabID);
-                    }
-
-                    tabList.Add(tab);
-                }
-            }
-
-            this.tabs.DataSource = tabList;
-            this.tabs.DataBind();
-        }
-
-        private void SwitchMode()
-        {
-            int parentTabId = -1;
-            if (this.Settings.ContainsKey("ParentTabID") && !string.IsNullOrEmpty(Convert.ToString(this.Settings["ParentTabID"])))
-            {
-                parentTabId = Convert.ToInt32(this.Settings["ParentTabID"]);
-            }
-
-            switch (this.modeList.SelectedValue)
-            {
-                case "Normal":
-                    this.parentTabRow.Visible = true;
-                    this.includeParentRow.Visible = true;
-                    this.tabVisibilityRow.Visible = false;
-                    break;
-                case "Profile":
-                    this.parentTabRow.Visible = false;
-                    this.includeParentRow.Visible = false;
-                    this.tabVisibilityRow.Visible = true;
-                    parentTabId = this.PortalSettings.UserTabId;
-                    break;
-                case "Group":
-                    this.parentTabRow.Visible = true;
-                    this.includeParentRow.Visible = true;
-                    this.tabVisibilityRow.Visible = true;
-                    break;
-            }
-
-            this.ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, this.PortalId);
-            this.BindTabs(parentTabId, this.IncludeParent.Checked);
-        }
-
         public override void LoadSettings()
         {
             try
@@ -232,6 +156,82 @@ namespace Dnn.Modules.Console
             }
         }
 
+        private void BindTabs(int tabId, bool includeParent)
+        {
+            List<TabInfo> tempTabs = TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.HasChildren).ToList();
+
+            IList<TabInfo> tabList = new List<TabInfo>();
+
+            IList<int> tabIdList = new List<int>();
+            tabIdList.Add(tabId);
+
+            if (includeParent)
+            {
+                TabInfo consoleTab = TabController.Instance.GetTab(tabId, this.PortalId);
+                if (consoleTab != null)
+                {
+                    tabList.Add(consoleTab);
+                }
+            }
+
+            foreach (TabInfo tab in tempTabs)
+            {
+                bool canShowTab = TabPermissionController.CanViewPage(tab) &&
+                        !tab.IsDeleted &&
+                        (tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate);
+
+                if (!canShowTab)
+                {
+                    continue;
+                }
+
+                if (tabIdList.Contains(tab.ParentId))
+                {
+                    if (!tabIdList.Contains(tab.TabID))
+                    {
+                        tabIdList.Add(tab.TabID);
+                    }
+
+                    tabList.Add(tab);
+                }
+            }
+
+            this.tabs.DataSource = tabList;
+            this.tabs.DataBind();
+        }
+
+        private void SwitchMode()
+        {
+            int parentTabId = -1;
+            if (this.Settings.ContainsKey("ParentTabID") && !string.IsNullOrEmpty(Convert.ToString(this.Settings["ParentTabID"])))
+            {
+                parentTabId = Convert.ToInt32(this.Settings["ParentTabID"]);
+            }
+
+            switch (this.modeList.SelectedValue)
+            {
+                case "Normal":
+                    this.parentTabRow.Visible = true;
+                    this.includeParentRow.Visible = true;
+                    this.tabVisibilityRow.Visible = false;
+                    break;
+                case "Profile":
+                    this.parentTabRow.Visible = false;
+                    this.includeParentRow.Visible = false;
+                    this.tabVisibilityRow.Visible = true;
+                    parentTabId = this.PortalSettings.UserTabId;
+                    break;
+                case "Group":
+                    this.parentTabRow.Visible = true;
+                    this.includeParentRow.Visible = true;
+                    this.tabVisibilityRow.Visible = true;
+                    break;
+            }
+
+            this.ParentTab.SelectedPage = TabController.Instance.GetTab(parentTabId, this.PortalId);
+            this.BindTabs(parentTabId, this.IncludeParent.Checked);
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -242,14 +242,14 @@ namespace Dnn.Modules.Console
             this.ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);
         }
 
-        private void modeList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.SwitchMode();
-        }
-
         protected void parentTab_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
+        }
+
+        private void modeList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.SwitchMode();
         }
 
         private void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)

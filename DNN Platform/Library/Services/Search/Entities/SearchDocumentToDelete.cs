@@ -15,6 +15,20 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchDocumentToDelete
     {
+        public SearchDocumentToDelete()
+        {
+            this.Keywords = new Dictionary<string, string>();
+            this.NumericKeys = new Dictionary<string, int>();
+            this.CultureCode = string.Empty;
+            this.SearchTypeId =
+                this.PortalId =
+                this.RoleId = -1;
+            this.ModuleDefId =
+                this.ModuleId =
+                this.TabId =
+                this.AuthorUserId = 0;
+        }
+
         /// <summary>
         /// Gets or sets a key to uniquely identify a document in the Index.
         /// </summary>
@@ -94,20 +108,6 @@ namespace DotNetNuke.Services.Search.Entities
         /// </summary>
         /// <remarks>A value of NULL/EMPTY means this is property is not used.</remarks>
         public string CultureCode { get; set; }
-
-        public SearchDocumentToDelete()
-        {
-            this.Keywords = new Dictionary<string, string>();
-            this.NumericKeys = new Dictionary<string, int>();
-            this.CultureCode = string.Empty;
-            this.SearchTypeId =
-                this.PortalId =
-                this.RoleId = -1;
-            this.ModuleDefId =
-                this.ModuleId =
-                this.TabId =
-                this.AuthorUserId = 0;
-        }
 
         /// <summary>
         /// This is to allow saving current instance into DB as JSON entity.

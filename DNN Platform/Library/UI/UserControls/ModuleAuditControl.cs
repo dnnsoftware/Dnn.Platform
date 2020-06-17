@@ -18,12 +18,24 @@ namespace DotNetNuke.UI.UserControls
 
     public abstract class ModuleAuditControl : UserControl
     {
-        private const string MyFileName = "ModuleAuditControl.ascx";
-        private string _systemUser;
         protected Label lblCreatedBy;
         protected Label lblUpdatedBy;
+        private const string MyFileName = "ModuleAuditControl.ascx";
+        private string _systemUser;
 
         private static readonly Regex CheckDateColumnRegex = new Regex(@"^-?\d+$", RegexOptions.Compiled);
+
+        public ModuleAuditControl()
+        {
+            this.LastModifiedDate = string.Empty;
+            this.LastModifiedByUser = string.Empty;
+            this.CreatedByUser = string.Empty;
+            this.CreatedDate = string.Empty;
+        }
+
+        public string CreatedDate { private get; set; }
+
+        public string CreatedByUser { private get; set; }
 
         private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
@@ -38,18 +50,6 @@ namespace DotNetNuke.UI.UserControls
 
             public DateTime LastModifiedOnDate { get; set; }
         }
-
-        public ModuleAuditControl()
-        {
-            this.LastModifiedDate = string.Empty;
-            this.LastModifiedByUser = string.Empty;
-            this.CreatedByUser = string.Empty;
-            this.CreatedDate = string.Empty;
-        }
-
-        public string CreatedDate { private get; set; }
-
-        public string CreatedByUser { private get; set; }
 
         public string LastModifiedByUser { private get; set; }
 

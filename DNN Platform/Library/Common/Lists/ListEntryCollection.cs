@@ -57,12 +57,6 @@ namespace DotNetNuke.Common.Lists
             return this.Item(parentName);
         }
 
-        internal new void Clear()
-        {
-            this._keyIndexLookup.Clear();
-            base.Clear();
-        }
-
         public void Add(string key, ListEntryInfo value)
         {
             int index;
@@ -75,6 +69,12 @@ namespace DotNetNuke.Common.Lists
             {
                 Logger.Error(exc);
             }
+        }
+
+        internal new void Clear()
+        {
+            this._keyIndexLookup.Clear();
+            base.Clear();
         }
     }
 }

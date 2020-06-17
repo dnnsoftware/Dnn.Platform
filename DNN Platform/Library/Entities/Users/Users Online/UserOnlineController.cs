@@ -126,6 +126,67 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Tracks an online User.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public void TrackUsers()
+        {
+            HttpContext context = HttpContext.Current;
+
+            // Have we already done the work for this request?
+            if (context.Items["CheckedUsersOnlineCookie"] != null)
+            {
+                return;
+            }
+            else
+            {
+                context.Items["CheckedUsersOnlineCookie"] = "true";
+            }
+
+            if (context.Request.IsAuthenticated)
+            {
+                this.TrackAuthenticatedUser(context);
+            }
+            else if (context.Request.Browser.Cookies)
+            {
+                this.TrackAnonymousUser(context);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Update the Users Online information.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
+        public void UpdateUsersOnline()
+        {
+            // Get a Current User List
+            Hashtable userList = this.GetUserList();
+
+            // Create a shallow copy of the list to Process
+            var listToProcess = (Hashtable)userList.Clone();
+
+            // Clear the list
+            this.ClearUserList();
+
+            // Persist the current User List
+            try
+            {
+                memberProvider.UpdateUsersOnline(listToProcess);
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+
+            // Remove users that have expired
+            memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Tracks an Anonymous User.
         /// </summary>
         /// <param name="context">An HttpContext Object.</param>
@@ -253,67 +314,6 @@ namespace DotNetNuke.Entities.Users
 
             userList[objUserInfo.UserID.ToString()] = user;
             this.SetUserList(userList);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tracks an online User.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public void TrackUsers()
-        {
-            HttpContext context = HttpContext.Current;
-
-            // Have we already done the work for this request?
-            if (context.Items["CheckedUsersOnlineCookie"] != null)
-            {
-                return;
-            }
-            else
-            {
-                context.Items["CheckedUsersOnlineCookie"] = "true";
-            }
-
-            if (context.Request.IsAuthenticated)
-            {
-                this.TrackAuthenticatedUser(context);
-            }
-            else if (context.Request.Browser.Cookies)
-            {
-                this.TrackAnonymousUser(context);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Update the Users Online information.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
-        public void UpdateUsersOnline()
-        {
-            // Get a Current User List
-            Hashtable userList = this.GetUserList();
-
-            // Create a shallow copy of the list to Process
-            var listToProcess = (Hashtable)userList.Clone();
-
-            // Clear the list
-            this.ClearUserList();
-
-            // Persist the current User List
-            try
-            {
-                memberProvider.UpdateUsersOnline(listToProcess);
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-
-            // Remove users that have expired
-            memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }
     }
 }

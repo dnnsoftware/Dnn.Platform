@@ -744,20 +744,20 @@ namespace log4net.Util
                             // Found type in loaded assembly
                             LogLog.Debug(declaringType, "Loaded type [" + typeName + "] from assembly [" + assembly.FullName + "] by searching loaded assemblies.");
                             if (assembly.GlobalAssemblyCache)
-                                                        {
-                                                            fallback = t;
-                                                        }
-                                                        else
-                                                        {
-                                                            return t;
-                                                        }
+                            {
+                                fallback = t;
+                            }
+                            else
+                            {
+                                return t;
+                            }
                         }
                     }
 
                     if (fallback != null)
-                                        {
-                                            return fallback;
-                                        }
+                    {
+                        return fallback;
+                    }
                 }
 
                 // Didn't find the type

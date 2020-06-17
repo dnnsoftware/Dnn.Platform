@@ -12,17 +12,17 @@ namespace DotNetNuke.Common
     [DataContract]
     public class SerializableKeyValuePair<TKey, TValue>
     {
-        [DataMember(Name = "key")]
-        public TKey Key { get; set; }
-
-        [DataMember(Name = "value")]
-        public TValue Value { get; set; }
-
         public SerializableKeyValuePair(TKey key, TValue value)
         {
             this.Key = key;
             this.Value = value;
         }
+
+        [DataMember(Name = "key")]
+        public TKey Key { get; set; }
+
+        [DataMember(Name = "value")]
+        public TValue Value { get; set; }
 
         public override string ToString()
         {

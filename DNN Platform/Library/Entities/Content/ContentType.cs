@@ -21,12 +21,12 @@ namespace DotNetNuke.Entities.Content
     [Serializable]
     public class ContentType : ContentTypeMemberNameFixer, IHydratable
     {
+        private const string desktopModuleContentTypeName = "DesktopModule";
+        private const string moduleContentTypeName = "Module";
+
         private static ContentType _desktopModule;
         private static ContentType _module;
         private static ContentType _tab;
-
-        private const string desktopModuleContentTypeName = "DesktopModule";
-        private const string moduleContentTypeName = "Module";
         private const string tabContentTypeName = "Tab";
 
         public ContentType()
@@ -73,17 +73,6 @@ namespace DotNetNuke.Entities.Content
         public int ContentTypeId { get; set; }
 
         /// <summary>
-        /// Fill this content object will the information from data reader.
-        /// </summary>
-        /// <param name="dr">The data reader.</param>
-        /// <seealso cref="IHydratable.Fill"/>
-        public void Fill(IDataReader dr)
-        {
-            this.ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
-            this.ContentType = Null.SetNullString(dr["ContentType"]);
-        }
-
-        /// <summary>
         /// Gets or sets the key ID.
         /// </summary>
         /// <value>
@@ -100,6 +89,17 @@ namespace DotNetNuke.Entities.Content
             {
                 this.ContentTypeId = value;
             }
+        }
+
+        /// <summary>
+        /// Fill this content object will the information from data reader.
+        /// </summary>
+        /// <param name="dr">The data reader.</param>
+        /// <seealso cref="IHydratable.Fill"/>
+        public void Fill(IDataReader dr)
+        {
+            this.ContentTypeId = Null.SetNullInteger(dr["ContentTypeID"]);
+            this.ContentType = Null.SetNullString(dr["ContentType"]);
         }
 
         /// <summary>

@@ -31,11 +31,6 @@ namespace DotNetNuke.Entities.Tabs
             this._tabWorkflowSettings = TabWorkflowSettings.Instance;
         }
 
-        protected override Func<ITabChangeTracker> GetFactory()
-        {
-            return () => new TabWorkflowTracker();
-        }
-
         /// <summary>
         /// Tracks a workflow instance when a module is added to a page.
         /// </summary>
@@ -56,6 +51,11 @@ namespace DotNetNuke.Entities.Tabs
         public void TrackModuleModification(ModuleInfo module, int moduleVersion, int userId)
         {
             this.NotifyWorkflowAboutChanges(module.PortalID, module.TabID, userId);
+        }
+
+        protected override Func<ITabChangeTracker> GetFactory()
+        {
+            return () => new TabWorkflowTracker();
         }
 
         /// <summary>

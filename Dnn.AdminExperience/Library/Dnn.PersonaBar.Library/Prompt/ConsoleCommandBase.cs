@@ -17,6 +17,13 @@ namespace Dnn.PersonaBar.Library.Prompt
     {
         public abstract string LocalResourceFile { get; }
 
+        public string ValidationMessage { get; private set; }
+
+        /// <summary>
+        /// Gets resource key for the result html.
+        /// </summary>
+        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
+
         protected PortalSettings PortalSettings { get; private set; }
 
         protected UserInfo User { get; private set; }
@@ -28,29 +35,6 @@ namespace Dnn.PersonaBar.Library.Prompt
         protected string[] Args { get; private set; }
 
         protected Hashtable Flags { get; private set; }
-
-        protected bool HasFlag(string flagName)
-        {
-            flagName = NormalizeFlagName(flagName);
-            return this.Flags.ContainsKey(flagName);
-        }
-
-        protected bool IsFlag(object input)
-        {
-            var inputVal = Convert.ToString(input);
-            return !string.IsNullOrEmpty(inputVal) && inputVal.StartsWith("--");
-        }
-
-        protected string LocalizeString(string key)
-        {
-            var localizedText = Localization.GetString(key, this.LocalResourceFile);
-            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
-        }
-
-        protected void AddMessage(string message)
-        {
-            this.ValidationMessage += message;
-        }
 
         /// <summary>
         /// Get the flag value.
@@ -122,6 +106,29 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
         }
 
+        protected bool HasFlag(string flagName)
+        {
+            flagName = NormalizeFlagName(flagName);
+            return this.Flags.ContainsKey(flagName);
+        }
+
+        protected bool IsFlag(object input)
+        {
+            var inputVal = Convert.ToString(input);
+            return !string.IsNullOrEmpty(inputVal) && inputVal.StartsWith("--");
+        }
+
+        protected string LocalizeString(string key)
+        {
+            var localizedText = Localization.GetString(key, this.LocalResourceFile);
+            return string.IsNullOrEmpty(localizedText) ? key : localizedText;
+        }
+
+        protected void AddMessage(string message)
+        {
+            this.ValidationMessage += message;
+        }
+
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Args = args;
@@ -139,6 +146,46 @@ namespace Dnn.PersonaBar.Library.Prompt
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(this.ValidationMessage);
+        }
+
+        private static string GetTypeName(Type type)
+        {
+            if (type.FullName.ToLowerInvariant().Contains("int"))
+            {
+                return "Integer";
+            }
+
+            if (type.FullName.ToLowerInvariant().Contains("double"))
+            {
+                return "Double";
+            }
+
+            if (type.FullName.ToLowerInvariant().Contains("bool"))
+            {
+                return "Boolean";
+            }
+
+            if (type.FullName.ToLowerInvariant().Contains("datetime"))
+            {
+                return "DateTime";
+            }
+
+            return string.Empty;
+        }
+
+        private static string NormalizeFlagName(string flagName)
+        {
+            if (flagName == null)
+            {
+                return string.Empty;
+            }
+
+            if (flagName.StartsWith("--"))
+            {
+                flagName = flagName.Substring(2);
+            }
+
+            return flagName.ToLower().Trim();
         }
 
         private void ParseFlags()
@@ -202,52 +249,5 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
             return typeof(T) == typeof(bool?);
         }
-
-        private static string GetTypeName(Type type)
-        {
-            if (type.FullName.ToLowerInvariant().Contains("int"))
-            {
-                return "Integer";
-            }
-
-            if (type.FullName.ToLowerInvariant().Contains("double"))
-            {
-                return "Double";
-            }
-
-            if (type.FullName.ToLowerInvariant().Contains("bool"))
-            {
-                return "Boolean";
-            }
-
-            if (type.FullName.ToLowerInvariant().Contains("datetime"))
-            {
-                return "DateTime";
-            }
-
-            return string.Empty;
-        }
-
-        private static string NormalizeFlagName(string flagName)
-        {
-            if (flagName == null)
-            {
-                return string.Empty;
-            }
-
-            if (flagName.StartsWith("--"))
-            {
-                flagName = flagName.Substring(2);
-            }
-
-            return flagName.ToLower().Trim();
-        }
-
-        public string ValidationMessage { get; private set; }
-
-        /// <summary>
-        /// Gets resource key for the result html.
-        /// </summary>
-        public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
     }
 }

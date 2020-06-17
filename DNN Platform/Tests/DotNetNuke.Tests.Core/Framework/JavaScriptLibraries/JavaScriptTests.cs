@@ -230,16 +230,16 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
             this.SetupJavaScriptLibraryController(
                 new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
-                LibraryName = "Test",
-                Version = new Version(2, 1, 0),
-            }, new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
-                LibraryName = "Test",
-                Version = new Version(3, 3, 3),
-            });
+                {
+                    JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
+                    LibraryName = "Test",
+                    Version = new Version(2, 1, 0),
+                }, new JavaScriptLibrary
+                {
+                    JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
+                    LibraryName = "Test",
+                    Version = new Version(3, 3, 3),
+                });
 
             // Act
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.LatestMinor);
@@ -257,16 +257,16 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
             this.SetupJavaScriptLibraryController(
                 new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
-                LibraryName = "test",
-                Version = new Version(2, 1, 0),
-            }, new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
-                LibraryName = "Test",
-                Version = new Version(3, 3, 3),
-            });
+                {
+                    JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
+                    LibraryName = "test",
+                    Version = new Version(2, 1, 0),
+                }, new JavaScriptLibrary
+                {
+                    JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
+                    LibraryName = "Test",
+                    Version = new Version(3, 3, 3),
+                });
 
             // Act
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.LatestMinor);
@@ -322,16 +322,16 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
             this.SetupJavaScriptLibraryController(
                 new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
-                LibraryName = "Test",
-                Version = new Version(1, 2, 2),
-            }, new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
-                LibraryName = "Test",
-                Version = new Version(3, 3, 3),
-            });
+                {
+                    JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
+                    LibraryName = "Test",
+                    Version = new Version(1, 2, 2),
+                }, new JavaScriptLibrary
+                {
+                    JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
+                    LibraryName = "Test",
+                    Version = new Version(3, 3, 3),
+                });
 
             // Act
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.LatestMajor);
@@ -349,16 +349,16 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             int higherVersionJavaScriptLibraryId = this.libraryIdCounter++;
             this.SetupJavaScriptLibraryController(
                 new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
-                LibraryName = "test",
-                Version = new Version(1, 2, 2),
-            }, new JavaScriptLibrary
-            {
-                JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
-                LibraryName = "Test",
-                Version = new Version(3, 3, 3),
-            });
+                {
+                    JavaScriptLibraryID = lowerVersionJavaScriptLibraryId,
+                    LibraryName = "test",
+                    Version = new Version(1, 2, 2),
+                }, new JavaScriptLibrary
+                {
+                    JavaScriptLibraryID = higherVersionJavaScriptLibraryId,
+                    LibraryName = "Test",
+                    Version = new Version(3, 3, 3),
+                });
 
             // Act
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.LatestMajor);

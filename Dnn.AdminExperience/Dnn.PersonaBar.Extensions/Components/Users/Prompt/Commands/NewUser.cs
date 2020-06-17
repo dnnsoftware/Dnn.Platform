@@ -19,10 +19,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("new-user", Constants.UsersCategory, "Prompt_NewUser_Description")]
     public class NewUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("email", "Prompt_NewUser_FlagEmail", "String", true)]
         private const string FlagEmail = "email";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("username", "Prompt_NewUser_FlagUsername", "String", true)]
         private const string FlagUsername = "username";
         [FlagParameter("firstname", "Prompt_NewUser_FlagFirstname", "String", true)]
@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty, true);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty, true);
             this.FirstName = this.GetFlagValue(FlagFirstname, "FirstName", string.Empty, true);

@@ -102,92 +102,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The CheckSecurity method checks whether the user has the appropriate security.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void CheckSecurity()
-        {
-            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
-            if (type == null)
-            {
-                // This package type not registered
-                this.Log.Logs.Clear();
-                this.Log.AddFailure(Util.SECURITY_NotRegistered + " - " + this.Package.PackageType);
-                this.IsValid = false;
-            }
-            else
-            {
-                if (type.SecurityAccessLevel > this.Package.InstallerInfo.SecurityAccessLevel)
-                {
-                    this.Log.Logs.Clear();
-                    this.Log.AddFailure(Util.SECURITY_Installer);
-                    this.IsValid = false;
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadComponents method reads the components node of the manifest file.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void ReadComponents(XPathNavigator manifestNav)
-        {
-            foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))
-            {
-                // Set default order to next value (ie the same as the size of the collection)
-                int order = this._componentInstallers.Count;
-
-                string type = componentNav.GetAttribute("type", string.Empty);
-                if (this.InstallMode == InstallMode.Install)
-                {
-                    string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
-                    if (!string.IsNullOrEmpty(installOrder))
-                    {
-                        order = int.Parse(installOrder);
-                    }
-                }
-                else
-                {
-                    string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
-                    if (!string.IsNullOrEmpty(unInstallOrder))
-                    {
-                        order = int.Parse(unInstallOrder);
-                    }
-                }
-
-                if (this.Package.InstallerInfo != null)
-                {
-                    this.Log.AddInfo(Util.DNN_ReadingComponent + " - " + type);
-                }
-
-                ComponentInstallerBase installer = InstallerFactory.GetInstaller(componentNav, this.Package);
-                if (installer == null)
-                {
-                    this.Log.AddFailure(Util.EXCEPTION_InstallerCreate);
-                }
-                else
-                {
-                    this._componentInstallers.Add(order, installer);
-                    this.Package.InstallerInfo.AllowableFiles += ", " + installer.AllowableFiles;
-                }
-            }
-        }
-
-        private string ReadTextFromFile(string source)
-        {
-            string strText = Null.NullString;
-            if (this.Package.InstallerInfo.InstallMode != InstallMode.ManifestOnly)
-            {
-                // Load from file
-                strText = FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
-            }
-
-            return strText;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The Commit method commits the package installation.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -283,6 +197,92 @@ namespace DotNetNuke.Services.Installer.Installers
                 // There has been a failure so Rollback
                 this.Rollback();
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The CheckSecurity method checks whether the user has the appropriate security.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void CheckSecurity()
+        {
+            PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
+            if (type == null)
+            {
+                // This package type not registered
+                this.Log.Logs.Clear();
+                this.Log.AddFailure(Util.SECURITY_NotRegistered + " - " + this.Package.PackageType);
+                this.IsValid = false;
+            }
+            else
+            {
+                if (type.SecurityAccessLevel > this.Package.InstallerInfo.SecurityAccessLevel)
+                {
+                    this.Log.Logs.Clear();
+                    this.Log.AddFailure(Util.SECURITY_Installer);
+                    this.IsValid = false;
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ReadComponents method reads the components node of the manifest file.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void ReadComponents(XPathNavigator manifestNav)
+        {
+            foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))
+            {
+                // Set default order to next value (ie the same as the size of the collection)
+                int order = this._componentInstallers.Count;
+
+                string type = componentNav.GetAttribute("type", string.Empty);
+                if (this.InstallMode == InstallMode.Install)
+                {
+                    string installOrder = componentNav.GetAttribute("installOrder", string.Empty);
+                    if (!string.IsNullOrEmpty(installOrder))
+                    {
+                        order = int.Parse(installOrder);
+                    }
+                }
+                else
+                {
+                    string unInstallOrder = componentNav.GetAttribute("unInstallOrder", string.Empty);
+                    if (!string.IsNullOrEmpty(unInstallOrder))
+                    {
+                        order = int.Parse(unInstallOrder);
+                    }
+                }
+
+                if (this.Package.InstallerInfo != null)
+                {
+                    this.Log.AddInfo(Util.DNN_ReadingComponent + " - " + type);
+                }
+
+                ComponentInstallerBase installer = InstallerFactory.GetInstaller(componentNav, this.Package);
+                if (installer == null)
+                {
+                    this.Log.AddFailure(Util.EXCEPTION_InstallerCreate);
+                }
+                else
+                {
+                    this._componentInstallers.Add(order, installer);
+                    this.Package.InstallerInfo.AllowableFiles += ", " + installer.AllowableFiles;
+                }
+            }
+        }
+
+        private string ReadTextFromFile(string source)
+        {
+            string strText = Null.NullString;
+            if (this.Package.InstallerInfo.InstallMode != InstallMode.ManifestOnly)
+            {
+                // Load from file
+                strText = FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
+            }
+
+            return strText;
         }
 
         /// -----------------------------------------------------------------------------

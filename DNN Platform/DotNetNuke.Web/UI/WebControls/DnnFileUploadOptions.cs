@@ -93,13 +93,13 @@ namespace DotNetNuke.Web.UI.WebControls
     [DataContract]
     public class DnnFileUploadOptions
     {
-        private const int DefaultWidth = 780;
-        private const int DefaultHeight = 630;
         [DataMember(Name = "clientId")]
         public string ClientId;
-
         [DataMember(Name = "moduleId")]
         public string ModuleId = string.Empty;
+
+        private const int DefaultWidth = 780;
+        private const int DefaultHeight = 630;
 
         [DataMember(Name = "parentClientId")]
         public string ParentClientId;
@@ -128,36 +128,10 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "height")]
         public int Height;
 
-        private Dictionary<string, string> _parameters;
-
-        [DataMember(Name = "parameters")]
-        public Dictionary<string, string> Parameters
-        {
-            get
-            {
-                return this._parameters ?? (this._parameters = new Dictionary<string, string>());
-            }
-        }
-
         [DataMember(Name = "folderPath")]
         public string FolderPath;
 
-        [DataMember(Name = "validationCode")]
-        public string ValidationCode
-        {
-            get
-            {
-                var portalSettings = PortalSettings.Current;
-                var parameters = new List<object>() { this.Extensions };
-                if (portalSettings != null)
-                {
-                    parameters.Add(portalSettings.PortalId);
-                    parameters.Add(portalSettings.UserInfo.UserID);
-                }
-
-                return ValidationUtils.ComputeValidationCode(parameters);
-            }
-        }
+        private Dictionary<string, string> _parameters;
 
         public DnnFileUploadOptions()
         {
@@ -194,6 +168,32 @@ namespace DotNetNuke.Web.UI.WebControls
                 UnzipFileFailedPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileFailedPromptBody.Text"),
                 UnzipFileSuccessPromptBody = Utilities.GetLocalizedString("FileUpload.UnzipFileSuccessPromptBody.Text"),
             };
+        }
+
+        [DataMember(Name = "parameters")]
+        public Dictionary<string, string> Parameters
+        {
+            get
+            {
+                return this._parameters ?? (this._parameters = new Dictionary<string, string>());
+            }
+        }
+
+        [DataMember(Name = "validationCode")]
+        public string ValidationCode
+        {
+            get
+            {
+                var portalSettings = PortalSettings.Current;
+                var parameters = new List<object>() { this.Extensions };
+                if (portalSettings != null)
+                {
+                    parameters.Add(portalSettings.PortalId);
+                    parameters.Add(portalSettings.UserInfo.UserID);
+                }
+
+                return ValidationUtils.ComputeValidationCode(parameters);
+            }
         }
     }
 }

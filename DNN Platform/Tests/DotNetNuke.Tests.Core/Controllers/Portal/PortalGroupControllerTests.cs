@@ -484,11 +484,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private static PortalGroupInfo CreateValidPortalGroup()
         {
             var portalGroup = new PortalGroupInfo
-                                        {
-                                            PortalGroupName = Constants.PORTALGROUP_ValidName,
-                                            PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
-                                            MasterPortalId = Constants.PORTAL_ValidPortalId,
-                                        };
+            {
+                PortalGroupName = Constants.PORTALGROUP_ValidName,
+                PortalGroupDescription = Constants.PORTALGROUP_ValidDescription,
+                MasterPortalId = Constants.PORTAL_ValidPortalId,
+            };
             return portalGroup;
         }
 

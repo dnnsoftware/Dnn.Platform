@@ -84,11 +84,11 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 }
 
                 var response = new
-                    {
-                        Success = true,
-                        Results = sortedList.Skip(pageIndex * pageSize).Take(pageSize).ToList(),
-                        TotalResults = sortedList.Count(),
-                    };
+                {
+                    Success = true,
+                    Results = sortedList.Skip(pageIndex * pageSize).Take(pageSize).ToList(),
+                    TotalResults = sortedList.Count(),
+                };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
@@ -107,12 +107,12 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 var userPreferencesController = UserPreferencesController.Instance;
                 var userPreference = new UserPreference
-                    {
-                        PortalId = this.UserInfo.PortalID,
-                        UserId = this.UserInfo.UserID,
-                        MessagesEmailFrequency = (Frequency)post.MsgFreq,
-                        NotificationsEmailFrequency = (Frequency)post.NotifyFreq,
-                    };
+                {
+                    PortalId = this.UserInfo.PortalID,
+                    UserId = this.UserInfo.UserID,
+                    MessagesEmailFrequency = (Frequency)post.MsgFreq,
+                    NotificationsEmailFrequency = (Frequency)post.NotifyFreq,
+                };
                 userPreferencesController.SetUserPreference(userPreference);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, userPreferencesController.GetUserPreference(this.UserInfo));

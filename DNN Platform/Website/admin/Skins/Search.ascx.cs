@@ -23,16 +23,16 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public partial class Search : SkinObjectBase
     {
+        private const string MyFileName = "Search.ascx";
+
         private readonly INavigationManager _navigationManager;
+        private bool _showSite = true;
+        private bool _showWeb = true;
 
         public Search()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private const string MyFileName = "Search.ascx";
-        private bool _showSite = true;
-        private bool _showWeb = true;
         private string _siteIconURL;
         private string _siteText;
         private string _siteToolTip;
@@ -41,6 +41,8 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _webText;
         private string _webToolTip;
         private string _webURL;
+
+        private bool _enableWildSearch = true;
 
         /// <summary>
         /// Gets or sets the CSS class for the option buttons and search button.
@@ -349,14 +351,13 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public int AutoSearchDelayInMilliSecond { get; set; }
 
-        private bool _enableWildSearch = true;
-
         /// <summary>
         /// Gets or sets a value indicating whether disable the wild search.
         /// </summary>
         public bool EnableWildSearch
         {
-            get { return this._enableWildSearch; } set { this._enableWildSearch = value; }
+            get { return this._enableWildSearch; }
+            set { this._enableWildSearch = value; }
         }
 
         protected int PortalId { get; set; }
@@ -364,31 +365,6 @@ namespace DotNetNuke.UI.Skins.Controls
         protected string SearchType { get; set; }
 
         protected string CultureCode { get; set; }
-
-        private int GetSearchTabId()
-        {
-            int searchTabId = this.PortalSettings.SearchTabId;
-            if (searchTabId == Null.NullInteger)
-            {
-                ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
-                if (arrModules.Count > 1)
-                {
-                    foreach (ModuleInfo SearchModule in arrModules)
-                    {
-                        if (SearchModule.CultureCode == this.PortalSettings.CultureCode)
-                        {
-                            searchTabId = SearchModule.TabID;
-                        }
-                    }
-                }
-                else if (arrModules.Count == 1)
-                {
-                    searchTabId = ((ModuleInfo)arrModules[0]).TabID;
-                }
-            }
-
-            return searchTabId;
-        }
 
         /// <summary>
         ///   Executes the search.
@@ -515,24 +491,29 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <summary>
-        /// Handles the Click event of the cmdSearch control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        /// <remarks>This event is only used when <see cref="UseDropDownList">UseDropDownList</see> is false.</remarks>
-        private void CmdSearchClick(object sender, EventArgs e)
+        private int GetSearchTabId()
         {
-            this.SearchType = "S";
-            if (this.WebRadioButton.Visible)
+            int searchTabId = this.PortalSettings.SearchTabId;
+            if (searchTabId == Null.NullInteger)
             {
-                if (this.WebRadioButton.Checked)
+                ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
+                if (arrModules.Count > 1)
                 {
-                    this.SearchType = "W";
+                    foreach (ModuleInfo SearchModule in arrModules)
+                    {
+                        if (SearchModule.CultureCode == this.PortalSettings.CultureCode)
+                        {
+                            searchTabId = SearchModule.TabID;
+                        }
+                    }
+                }
+                else if (arrModules.Count == 1)
+                {
+                    searchTabId = ((ModuleInfo)arrModules[0]).TabID;
                 }
             }
 
-            this.ExecuteSearch(this.txtSearch.Text.Trim(), this.SearchType);
+            return searchTabId;
         }
 
         /// <summary>
@@ -605,6 +586,26 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.txtSearch.Attributes.Add("autocomplete", "off");
                 this.txtSearch.Attributes.Add("placeholder", this.PlaceHolderText);
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the cmdSearch control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        /// <remarks>This event is only used when <see cref="UseDropDownList">UseDropDownList</see> is false.</remarks>
+        private void CmdSearchClick(object sender, EventArgs e)
+        {
+            this.SearchType = "S";
+            if (this.WebRadioButton.Visible)
+            {
+                if (this.WebRadioButton.Checked)
+                {
+                    this.SearchType = "W";
+                }
+            }
+
+            this.ExecuteSearch(this.txtSearch.Text.Trim(), this.SearchType);
         }
     }
 }

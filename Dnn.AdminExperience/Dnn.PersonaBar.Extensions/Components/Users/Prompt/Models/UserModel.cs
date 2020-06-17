@@ -9,16 +9,8 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
 
     public class UserModel : UserModelBase
     {
-        public string DisplayName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string LastActivity { get; set; }
-        public string LastLockout { get; set; }
-        public string LastPasswordChange { get; set; }
-        public string Created { get; set; }
-
         // provide a default field order for use of callers
-        public new static string[] FieldOrder =
+        public static new string[] FieldOrder =
         {
             "UserId",
             "Username",
@@ -36,7 +28,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             "Created"
         };
 
-        #region Constructors
+        public string DisplayName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string LastActivity { get; set; }
+        public string LastLockout { get; set; }
+        public string LastPasswordChange { get; set; }
+        public string Created { get; set; }
+
         public UserModel()
         {
         }
@@ -51,9 +50,5 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Models
             this.LastPasswordChange = user.Membership.LastPasswordChangeDate.ToPromptLongDateString();
             this.Created = user.CreatedOnDate.ToPromptLongDateString();
         }
-        #endregion
-
-        #region Command Links
-        #endregion
     }
 }

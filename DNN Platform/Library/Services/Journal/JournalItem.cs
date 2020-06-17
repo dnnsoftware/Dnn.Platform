@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Journal
     using DotNetNuke.Security;
     using DotNetNuke.Services.Tokens;
 
-   public class JournalItem : IHydratable, IPropertyAccess
+    public class JournalItem : IHydratable, IPropertyAccess
     {
         public int JournalId { get; set; }
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Journal
 
         public int SimilarCount { get; set; }
 
-       /// <summary>
+        /// <summary>
         /// Gets or sets the key ID.
         /// </summary>
         /// <value>
@@ -91,6 +91,14 @@ namespace DotNetNuke.Services.Journal
             set
             {
                 this.JournalId = value;
+            }
+        }
+
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
             }
         }
 
@@ -136,14 +144,6 @@ namespace DotNetNuke.Services.Journal
             this.CommentsDisabled = Null.SetNullBoolean(dr["CommentsDisabled"]);
             this.CommentsHidden = Null.SetNullBoolean(dr["CommentsHidden"]);
             this.SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
         }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)

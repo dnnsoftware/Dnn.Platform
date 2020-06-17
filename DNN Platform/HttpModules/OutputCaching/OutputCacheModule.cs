@@ -27,6 +27,12 @@ namespace DotNetNuke.HttpModules.OutputCaching
         private const string ContextKeyTabOutputCacheProvider = "OutputCache:TabOutputCacheProvider";
         private HttpApplication _app;
 
+        private enum IncludeExcludeType
+        {
+            IncludeByDefault,
+            ExcludeByDefault,
+        }
+
         public void Init(HttpApplication httpApp)
         {
             this._app = httpApp;
@@ -57,12 +63,12 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 return;
             }
 
-            if (this._app.Context.Request.RequestType == "POST" || ! this._app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
+            if (this._app.Context.Request.RequestType == "POST" || !this._app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
             {
                 return;
             }
 
-            var portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            var portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             int tabId = portalSettings.ActiveTab.TabID;
 
             Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId);
@@ -172,22 +178,22 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 }
             }
 
-            if (! varyBy.ContainsKey("portalid"))
+            if (!varyBy.ContainsKey("portalid"))
             {
                 varyBy.Add("portalid", portalId.ToString());
             }
 
-            if (! varyBy.ContainsKey("tabid"))
+            if (!varyBy.ContainsKey("tabid"))
             {
                 varyBy.Add("tabid", tabId.ToString());
             }
 
-            if (! varyBy.ContainsKey("locale"))
+            if (!varyBy.ContainsKey("locale"))
             {
                 varyBy.Add("locale", locale);
             }
 
-            if (! varyBy.ContainsKey("alias"))
+            if (!varyBy.ContainsKey("alias"))
             {
                 varyBy.Add("alias", portalSettings.PortalAlias.HTTPAlias);
             }
@@ -246,12 +252,6 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     responseFilter.StopFiltering(Convert.ToInt32(this._app.Context.Items[ContextKeyTabId]), false);
                 }
             }
-        }
-
-        private enum IncludeExcludeType
-        {
-            IncludeByDefault,
-            ExcludeByDefault,
         }
     }
 }

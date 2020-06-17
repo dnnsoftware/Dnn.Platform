@@ -13,17 +13,17 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     [JsonObject]
     public class DnnModulesDto
     {
-        public Guid UniqueId { get; set; }
-        public List<DnnModuleDto> Modules { get; }
-
         public DnnModulesDto(IEnumerable<string> locales)
         {
             this.Modules = new List<DnnModuleDto>(); // one module for each language
             foreach (var locale in locales)
             {
-                this.Modules.Add(new DnnModuleDto {CultureCode = locale});
+                this.Modules.Add(new DnnModuleDto { CultureCode = locale });
             }
         }
+
+        public Guid UniqueId { get; set; }
+        public List<DnnModuleDto> Modules { get; }
 
         public DnnModuleDto Module(string locale)
         {

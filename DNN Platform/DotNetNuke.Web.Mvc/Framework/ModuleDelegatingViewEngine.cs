@@ -55,6 +55,16 @@ namespace DotNetNuke.Web.Mvc.Framework
             }
         }
 
+        private static ModuleRequestResult GetCurrentModuleRequestResult(ControllerContext controllerContext)
+        {
+            if (controllerContext.HttpContext.HasModuleRequestResult())
+            {
+                return controllerContext.HttpContext.GetModuleRequestResult();
+            }
+
+            return null;
+        }
+
         private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
         {
             var controller = controllerContext.Controller as IDnnController;
@@ -72,16 +82,6 @@ namespace DotNetNuke.Web.Mvc.Framework
             }
 
             return result;
-        }
-
-        private static ModuleRequestResult GetCurrentModuleRequestResult(ControllerContext controllerContext)
-        {
-            if (controllerContext.HttpContext.HasModuleRequestResult())
-            {
-                return controllerContext.HttpContext.GetModuleRequestResult();
-            }
-
-            return null;
         }
     }
 }

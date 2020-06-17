@@ -20,11 +20,6 @@ namespace Dnn.ExportImport.Components.Controllers
         private const string CacheKey = "ExportImport_Settings";
         private const int CacheDuration = 120;
 
-        protected override Func<ISettingsController> GetFactory()
-        {
-            return () => new SettingsController();
-        }
-
         public IEnumerable<ExportImportSetting> GetAllSettings()
         {
             return CBO.GetCachedObject<List<ExportImportSetting>>(
@@ -35,6 +30,11 @@ namespace Dnn.ExportImport.Components.Controllers
         public ExportImportSetting GetSetting(string settingName)
         {
             return this.GetAllSettings().ToList().FirstOrDefault(x => x.SettingName == settingName);
+        }
+
+        protected override Func<ISettingsController> GetFactory()
+        {
+            return () => new SettingsController();
         }
 
         public void AddSetting(ExportImportSetting exportImportSetting)

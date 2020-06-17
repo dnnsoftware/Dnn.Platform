@@ -15,25 +15,11 @@ namespace DotNetNuke.Web.Api
 
     public class ValidateAntiForgeryTokenAttribute : ActionFilterAttribute
     {
-        private static readonly List<string> BypassedAuthTypes = new List<string>();
-
         protected static Tuple<bool, string> SuccessResult = new Tuple<bool, string>(true, null);
 
-        internal static void AppendToBypassAuthTypes(string authType)
-        {
-            var text = (authType ?? string.Empty).Trim();
-            if (text.Length > 0)
-            {
-                BypassedAuthTypes.Add(text);
-            }
-        }
+        private static readonly List<string> BypassedAuthTypes = new List<string>();
 
-        private static bool BypassTokenCheck()
-        {
-            // bypass anti-forgery for those handllers that request so.
-            var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
-            return !string.IsNullOrEmpty(authType) && BypassedAuthTypes.Contains(authType);
-        }
+        public override bool AllowMultiple => false;
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
@@ -45,6 +31,35 @@ namespace DotNetNuke.Web.Api
                     throw new UnauthorizedAccessException(result.Item2);
                 }
             }
+        }
+
+        internal static void AppendToBypassAuthTypes(string authType)
+        {
+            var text = (authType ?? string.Empty).Trim();
+            if (text.Length > 0)
+            {
+                BypassedAuthTypes.Add(text);
+            }
+        }
+
+        protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
+        {
+            IEnumerable<string> cookies;
+            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
+            {
+                foreach (var cookieValue in cookies)
+                {
+                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
+                    if (nameIndex > -1)
+                    {
+                        var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
+                        var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
+                        return valueEndIndex > -1 ? cookieValue.Substring(valueIndex, valueEndIndex) : cookieValue.Substring(valueIndex);
+                    }
+                }
+            }
+
+            return string.Empty;
         }
 
         protected virtual Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
@@ -78,26 +93,11 @@ namespace DotNetNuke.Web.Api
             return SuccessResult;
         }
 
-        protected static string GetAntiForgeryCookieValue(HttpActionContext actionContext)
+        private static bool BypassTokenCheck()
         {
-            IEnumerable<string> cookies;
-            if (actionContext?.Request != null && actionContext.Request.Headers.TryGetValues("Cookie", out cookies))
-            {
-                foreach (var cookieValue in cookies)
-                {
-                    var nameIndex = cookieValue.IndexOf(AntiForgery.Instance.CookieName, StringComparison.InvariantCultureIgnoreCase);
-                    if (nameIndex > -1)
-                    {
-                        var valueIndex = nameIndex + AntiForgery.Instance.CookieName.Length + 1;
-                        var valueEndIndex = cookieValue.Substring(valueIndex).IndexOf(';');
-                        return valueEndIndex > -1 ? cookieValue.Substring(valueIndex, valueEndIndex) : cookieValue.Substring(valueIndex);
-                    }
-                }
-            }
-
-            return string.Empty;
+            // bypass anti-forgery for those handllers that request so.
+            var authType = Thread.CurrentPrincipal?.Identity?.AuthenticationType;
+            return !string.IsNullOrEmpty(authType) && BypassedAuthTypes.Contains(authType);
         }
-
-        public override bool AllowMultiple => false;
     }
 }

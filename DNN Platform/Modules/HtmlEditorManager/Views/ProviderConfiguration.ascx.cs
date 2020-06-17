@@ -39,6 +39,11 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
             }
         }
 
+        public void Refresh()
+        {
+            this.Response.Redirect(this.Request.RawUrl, true);
+        }
+
         /// <summary>Handles the Click event of the SaveButton control.</summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
@@ -53,11 +58,6 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
         protected void ProvidersDropDownList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.EditorChanged(this, new EditorEventArgs(this.ProvidersDropDownList.SelectedValue));
-        }
-
-        public void Refresh()
-        {
-            this.Response.Redirect(this.Request.RawUrl, true);
         }
 
         protected override void OnInit(EventArgs e)

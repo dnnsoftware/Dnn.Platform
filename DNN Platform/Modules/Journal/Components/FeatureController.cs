@@ -44,12 +44,12 @@ namespace DotNetNuke.Modules.Journal.Components
     // uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
-        protected INavigationManager NavigationManager { get; }
-
         public FeatureController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

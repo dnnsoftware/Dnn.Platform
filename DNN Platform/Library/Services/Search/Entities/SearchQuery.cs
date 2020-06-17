@@ -14,6 +14,21 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchQuery
     {
+        public SearchQuery()
+        {
+            this.Tags = new string[0];
+            this.PortalIds = new int[0];
+            this.SearchTypeIds = new int[0];
+            this.ModuleDefIds = new int[0];
+            this.TitleSnippetLength = 60;
+            this.BodySnippetLength = 100;
+            this.PageSize = 10;
+            this.PageIndex = 1;
+            this.SearchContext = new Dictionary<string, string>();
+            this.CustomKeywords = new Dictionary<string, string>();
+            this.NumericKeys = new Dictionary<string, int>();
+        }
+
         /// <summary>
         /// Gets or sets a key to uniquely identify a document in the Index.
         /// </summary>
@@ -155,20 +170,5 @@ namespace DotNetNuke.Services.Search.Entities
         /// </summary>
         /// <remarks>When host setting "Search_AllowLeadingWildcard" set to true, it will always allow search in word but ignore this value.</remarks>
         public bool AllowLeadingWildcard { get; set; }
-
-        public SearchQuery()
-        {
-            this.Tags = new string[0];
-            this.PortalIds = new int[0];
-            this.SearchTypeIds = new int[0];
-            this.ModuleDefIds = new int[0];
-            this.TitleSnippetLength = 60;
-            this.BodySnippetLength = 100;
-            this.PageSize = 10;
-            this.PageIndex = 1;
-            this.SearchContext = new Dictionary<string, string>();
-            this.CustomKeywords = new Dictionary<string, string>();
-            this.NumericKeys = new Dictionary<string, int>();
-        }
     }
 }

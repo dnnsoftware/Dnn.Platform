@@ -15,17 +15,11 @@ namespace DotNetNuke.HttpModules.DependencyInjection
 {
     public class ServiceRequestScopeModule : IHttpModule
     {
+        private static IServiceProvider _serviceProvider;
+
         public static void InitModule()
         {
             DynamicModuleUtility.RegisterModule(typeof(ServiceRequestScopeModule));
-        }
-
-        private static IServiceProvider _serviceProvider;
-
-        public void Init(HttpApplication context)
-        {
-            context.BeginRequest += this.Context_BeginRequest;
-            context.EndRequest += this.Context_EndRequest;
         }
 
         public static void SetServiceProvider(IServiceProvider serviceProvider)
@@ -33,17 +27,10 @@ namespace DotNetNuke.HttpModules.DependencyInjection
             _serviceProvider = serviceProvider;
         }
 
-        private void Context_BeginRequest(object sender, EventArgs e)
+        public void Init(HttpApplication context)
         {
-            var context = ((HttpApplication)sender).Context;
-            context.SetScope(_serviceProvider.CreateScope());
-        }
-
-        private void Context_EndRequest(object sender, EventArgs e)
-        {
-            var context = ((HttpApplication)sender).Context;
-            context.GetScope()?.Dispose();
-            context.ClearScope();
+            context.BeginRequest += this.Context_BeginRequest;
+            context.EndRequest += this.Context_EndRequest;
         }
 
         /// <summary>
@@ -65,6 +52,19 @@ namespace DotNetNuke.HttpModules.DependencyInjection
         protected virtual void Dispose(bool disposing)
         {
             // left empty by design
+        }
+
+        private void Context_BeginRequest(object sender, EventArgs e)
+        {
+            var context = ((HttpApplication)sender).Context;
+            context.SetScope(_serviceProvider.CreateScope());
+        }
+
+        private void Context_EndRequest(object sender, EventArgs e)
+        {
+            var context = ((HttpApplication)sender).Context;
+            context.GetScope()?.Dispose();
+            context.ClearScope();
         }
     }
 }
