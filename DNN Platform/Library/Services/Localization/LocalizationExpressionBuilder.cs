@@ -24,19 +24,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
-        {
-            var inputParams = new CodeExpression[]
-                                  {
-                                      new CodePrimitiveExpression(entry.Expression.Trim()),
-                                      new CodeTypeOfExpression(entry.DeclaringType),
-                                      new CodePrimitiveExpression(entry.PropertyInfo.Name),
-                                      new CodePrimitiveExpression(context.VirtualPath),
-                                  };
-
-            return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(this.GetType()), "GetLocalizedResource", inputParams);
-        }
-
         public static object GetLocalizedResource(string key, Type targetType, string propertyName, string virtualPath)
         {
             if (HttpContext.Current == null)
@@ -82,6 +69,19 @@ namespace DotNetNuke.Services.Localization
 
             // If we reach here, no type mismatch - return the value
             return value;
+        }
+
+        public override CodeExpression GetCodeExpression(BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
+        {
+            var inputParams = new CodeExpression[]
+                                  {
+                                      new CodePrimitiveExpression(entry.Expression.Trim()),
+                                      new CodeTypeOfExpression(entry.DeclaringType),
+                                      new CodePrimitiveExpression(entry.PropertyInfo.Name),
+                                      new CodePrimitiveExpression(context.VirtualPath),
+                                  };
+
+            return new CodeMethodInvokeExpression(new CodeTypeReferenceExpression(this.GetType()), "GetLocalizedResource", inputParams);
         }
 
         public override object EvaluateExpression(object target, BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)

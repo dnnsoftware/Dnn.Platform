@@ -22,13 +22,13 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         private readonly INavigationManager _navigationManager;
 
+        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
+        private int _folderMappingID = Null.NullInteger;
+
         public EditFolderMapping()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
-        private int _folderMappingID = Null.NullInteger;
 
         public int FolderPortalID
         {
@@ -105,6 +105,11 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected void cboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.BindFolderMappingSettings();
         }
 
         private void cmdUpdate_Click(object sender, EventArgs e)
@@ -196,11 +201,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-        }
-
-        protected void cboFolderProviders_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.BindFolderMappingSettings();
         }
 
         private void BindFolderProviders()

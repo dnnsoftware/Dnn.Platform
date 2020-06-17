@@ -14,6 +14,22 @@ namespace DotNetNuke.Tests.Urls
 
     public class TestUtil
     {
+        internal static string EmbeddedFilePath
+        {
+            get { return "DotNetNuke.Tests.Urls.TestFiles"; }
+        }
+
+        internal static string FilePath
+        {
+            get
+            {
+                var uri = new System.Uri(Assembly.GetExecutingAssembly().CodeBase);
+                string path = Path.GetFullPath(uri.AbsolutePath).Replace("%20", " ");
+
+                return Path.Combine(path.Substring(0, path.IndexOf("bin", System.StringComparison.Ordinal)), "TestFiles");
+            }
+        }
+
         internal static void AddUser(int portalId, string userName, string password, string vanityUrl)
         {
             var user = UserController.GetUserByName(portalId, userName);
@@ -45,22 +61,6 @@ namespace DotNetNuke.Tests.Urls
             if (user != null)
             {
                 UserController.RemoveUser(user);
-            }
-        }
-
-        internal static string EmbeddedFilePath
-        {
-            get { return "DotNetNuke.Tests.Urls.TestFiles"; }
-        }
-
-        internal static string FilePath
-        {
-            get
-            {
-                var uri = new System.Uri(Assembly.GetExecutingAssembly().CodeBase);
-                string path = Path.GetFullPath(uri.AbsolutePath).Replace("%20", " ");
-
-                return Path.Combine(path.Substring(0, path.IndexOf("bin", System.StringComparison.Ordinal)), "TestFiles");
             }
         }
 

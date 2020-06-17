@@ -16,23 +16,40 @@ namespace DotNetNuke.Services.FileSystem
 
     public class FileLinkClickController : ServiceLocator<IFileLinkClickController, FileLinkClickController>, IFileLinkClickController
     {
+        public string GetFileLinkClick(IFileInfo file)
+        {
+            Requires.NotNull("file", file);
+            var portalId = file.PortalId;
+            var linkClickPortalSettigns = this.GetPortalSettingsForLinkClick(portalId);
+
+            return TestableGlobals.Instance.LinkClick(string.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
+        }
+
+        public int GetFileIdFromLinkClick(NameValueCollection queryParams)
+        {
+            var linkClickPortalSettings = this.GetPortalSettingsForLinkClick(this.GetPortalIdFromLinkClick(queryParams));
+            var strFileId = UrlUtils.DecryptParameter(queryParams["fileticket"], linkClickPortalSettings.PortalGUID);
+            int fileId;
+            return int.TryParse(strFileId, out fileId) ? fileId : -1;
+        }
+
         private LinkClickPortalSettings GetPortalSettingsForLinkClick(int portalId)
         {
             if (portalId == Null.NullInteger)
             {
                 return new LinkClickPortalSettings
-                    {
-                        PortalGUID = Host.GUID,
-                        EnableUrlLanguage = Host.EnableUrlLanguage,
-                    };
+                {
+                    PortalGUID = Host.GUID,
+                    EnableUrlLanguage = Host.EnableUrlLanguage,
+                };
             }
 
             var portalSettings = new PortalSettings(portalId);
             return new LinkClickPortalSettings
-                {
-                    PortalGUID = portalSettings.GUID.ToString(),
-                    EnableUrlLanguage = portalSettings.EnableUrlLanguage,
-                };
+            {
+                PortalGUID = portalSettings.GUID.ToString(),
+                EnableUrlLanguage = portalSettings.EnableUrlLanguage,
+            };
         }
 
         private int GetPortalIdFromLinkClick(NameValueCollection queryParams)
@@ -52,23 +69,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return PortalSettings.Current.PortalId;
-        }
-
-        public string GetFileLinkClick(IFileInfo file)
-        {
-            Requires.NotNull("file", file);
-            var portalId = file.PortalId;
-            var linkClickPortalSettigns = this.GetPortalSettingsForLinkClick(portalId);
-
-            return TestableGlobals.Instance.LinkClick(string.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
-        }
-
-        public int GetFileIdFromLinkClick(NameValueCollection queryParams)
-        {
-            var linkClickPortalSettings = this.GetPortalSettingsForLinkClick(this.GetPortalIdFromLinkClick(queryParams));
-            var strFileId = UrlUtils.DecryptParameter(queryParams["fileticket"], linkClickPortalSettings.PortalGUID);
-            int fileId;
-            return int.TryParse(strFileId, out fileId) ? fileId : -1;
         }
 
         protected override Func<IFileLinkClickController> GetFactory()

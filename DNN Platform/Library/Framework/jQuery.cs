@@ -25,13 +25,6 @@ namespace DotNetNuke.Framework
 #pragma warning disable 618
     public class jQuery
     {
-        private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
-        private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
-        private const string jQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
-        private const string jQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
-        private const string jQueryVersionKey = "jQueryVersionKey";
-        private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
-
         /// <summary>
         /// Returns the default URL for a hosted version of the jQuery script.
         /// </summary>
@@ -42,11 +35,18 @@ namespace DotNetNuke.Framework
         /// </remarks>
         public const string DefaultHostedUrl = "http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js";
 
+        public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
+        private const string jQueryDebugFile = "~/Resources/Shared/Scripts/jquery/jquery.js";
+        private const string jQueryMinFile = "~/Resources/Shared/Scripts/jquery/jquery.min.js";
+        private const string jQueryMigrateDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.js";
+        private const string jQueryMigrateMinFile = "~/Resources/Shared/Scripts/jquery/jquery-migrate.min.js";
+        private const string jQueryVersionKey = "jQueryVersionKey";
+        private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
+
         private const string jQueryUIDebugFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.js";
         private const string jQueryUIMinFile = "~/Resources/Shared/Scripts/jquery/jquery-ui.min.js";
         private const string jQueryUIVersionKey = "jQueryUIVersionKey";
         private const string jQueryUIVersionMatch = "(?<=version:\\s\")(.*)(?=\")";
-        public const string DefaultUIHostedUrl = "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js";
 
         /// <summary>
         /// Gets the HostSetting for the URL of the hosted version of the jQuery script.
@@ -298,6 +298,18 @@ namespace DotNetNuke.Framework
             }
         }
 
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        public static string JQueryFileMapPath(bool getMinFile)
+        {
+            return HttpContext.Current.Server.MapPath(JQueryFile(getMinFile));
+        }
+
+        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
+        public static string JQueryUIFileMapPath(bool getMinFile)
+        {
+            return HttpContext.Current.Server.MapPath(JQueryUIFile(getMinFile));
+        }
+
         private static bool GetSettingAsBoolean(string key, bool defaultValue)
         {
             bool retValue = defaultValue;
@@ -315,18 +327,6 @@ namespace DotNetNuke.Framework
             }
 
             return retValue;
-        }
-
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
-        public static string JQueryFileMapPath(bool getMinFile)
-        {
-            return HttpContext.Current.Server.MapPath(JQueryFile(getMinFile));
-        }
-
-        [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
-        public static string JQueryUIFileMapPath(bool getMinFile)
-        {
-            return HttpContext.Current.Server.MapPath(JQueryUIFile(getMinFile));
         }
 
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]

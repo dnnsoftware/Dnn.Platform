@@ -23,6 +23,49 @@ namespace DotNetNuke.Entities.Urls
     {
         private static readonly object tabPathDictBuildLock = new object();
 
+        public static void InvalidateDictionary(string reason, PageIndexData rebuildData, int portalId)
+        {
+            // if supplied, store the rebuildData for when the dictionary gets rebuilt
+            // this is a way of storing data between dictionary rebuilds
+            if (rebuildData != null)
+            {
+                DataCache.SetCache("rebuildData", rebuildData);
+            }
+
+            // add log entry for cache clearance
+            var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+            try
+            {
+                // 817 : not clearing items correctly from dictionary
+                CacheController.FlushPageIndexFromCache();
+            }
+            catch (Exception ex)
+            {
+                // do nothing ; can be from trying to access cache after system restart
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+
+            log.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
+            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+            LogController.Instance.AddLog(log);
+        }
+
+        internal static string CreateRewritePath(int tabId, string cultureCode, params string[] keyValuePair)
+        {
+            string rewritePath = "?TabId=" + tabId.ToString();
+
+            // 736 : 5.5 compatibility - identify tab rewriting at source by tab culture code
+            RewriteController.AddLanguageCodeToRewritePath(ref rewritePath, cultureCode);
+            return keyValuePair.Aggregate(rewritePath, (current, keyValue) => current + ("&" + keyValue));
+        }
+
+        internal static string CreateRewritePath(int tabId, string cultureCode, ActionType action, RedirectReason reason)
+        {
+            string rewritePath = CreateRewritePath(tabId, cultureCode);
+            rewritePath = RedirectTokens.AddRedirectReasonToRewritePath(rewritePath, action, reason);
+            return rewritePath;
+        }
+
         private static void AddCustomRedirectsToDictionary(
             SharedDictionary<string, string> tabIndex,
             Dictionary<string, DupKeyCheck> dupCheck,
@@ -1002,16 +1045,16 @@ namespace DotNetNuke.Entities.Urls
 
         private static OrderedDictionary BuildPortalAliasesDictionary()
         {
-           var aliases = PortalAliasController.Instance.GetPortalAliases();
+            var aliases = PortalAliasController.Instance.GetPortalAliases();
 
             // create a new OrderedDictionary.  We use this because we
             // want to key by the correct regex pattern and return the
             // portalAlias that matches, and we want to preserve the
             // order of the items, such that the item with the most path separators (/)
             // is at the front of the list.
-           var aliasList = new OrderedDictionary(aliases.Count);
-           var pathLengths = new List<int>();
-           foreach (string aliasKey in aliases.Keys)
+            var aliasList = new OrderedDictionary(aliases.Count);
+            var pathLengths = new List<int>();
+            foreach (string aliasKey in aliases.Keys)
             {
                 PortalAliasInfo alias = aliases[aliasKey];
 
@@ -1086,7 +1129,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-           return aliasList;
+            return aliasList;
         }
 
         private static SharedDictionary<string, string> BuildTabDictionary(
@@ -1473,43 +1516,6 @@ namespace DotNetNuke.Entities.Urls
             return customHttpAlias;
         }
 
-        internal static string CreateRewritePath(int tabId, string cultureCode, params string[] keyValuePair)
-        {
-            string rewritePath = "?TabId=" + tabId.ToString();
-
-            // 736 : 5.5 compatibility - identify tab rewriting at source by tab culture code
-            RewriteController.AddLanguageCodeToRewritePath(ref rewritePath, cultureCode);
-            return keyValuePair.Aggregate(rewritePath, (current, keyValue) => current + ("&" + keyValue));
-        }
-
-        internal static string CreateRewritePath(int tabId, string cultureCode, ActionType action, RedirectReason reason)
-        {
-            string rewritePath = CreateRewritePath(tabId, cultureCode);
-            rewritePath = RedirectTokens.AddRedirectReasonToRewritePath(rewritePath, action, reason);
-            return rewritePath;
-        }
-
-        /// <summary>
-        /// Returns whether the portal specified exists in the Tab index or not.
-        /// </summary>
-        /// <param name="portalDepths">The current portalDepths dictionary.</param>
-        /// <param name="portalId">The id of the portal to search for.</param>
-        /// <returns></returns>
-        private static bool PortalExistsInIndex(SharedDictionary<int, PathSizes> portalDepths, int portalId)
-        {
-            bool result = false;
-
-            if (portalDepths != null)
-            {
-                using (portalDepths.GetReadLock())
-                {
-                    result = portalDepths.ContainsKey(portalId);
-                }
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.
         /// </summary>
@@ -1666,6 +1672,27 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
+        /// Returns whether the portal specified exists in the Tab index or not.
+        /// </summary>
+        /// <param name="portalDepths">The current portalDepths dictionary.</param>
+        /// <param name="portalId">The id of the portal to search for.</param>
+        /// <returns></returns>
+        private static bool PortalExistsInIndex(SharedDictionary<int, PathSizes> portalDepths, int portalId)
+        {
+            bool result = false;
+
+            if (portalDepths != null)
+            {
+                using (portalDepths.GetReadLock())
+                {
+                    result = portalDepths.ContainsKey(portalId);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Gets the portal alias by portal.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
@@ -1784,33 +1811,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return tabPath ?? TabPathHelper.GetFriendlyUrlTabPath(tab, options, parentTraceId);
-        }
-
-        public static void InvalidateDictionary(string reason, PageIndexData rebuildData, int portalId)
-        {
-            // if supplied, store the rebuildData for when the dictionary gets rebuilt
-            // this is a way of storing data between dictionary rebuilds
-            if (rebuildData != null)
-            {
-                DataCache.SetCache("rebuildData", rebuildData);
-            }
-
-            // add log entry for cache clearance
-            var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
-            try
-            {
-                // 817 : not clearing items correctly from dictionary
-                CacheController.FlushPageIndexFromCache();
-            }
-            catch (Exception ex)
-            {
-                // do nothing ; can be from trying to access cache after system restart
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-
-            log.AddProperty("Url Rewriting Caching Message", "Page Index Cache Cleared.  Reason: " + reason);
-            log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-            LogController.Instance.AddLog(log);
         }
     }
 }

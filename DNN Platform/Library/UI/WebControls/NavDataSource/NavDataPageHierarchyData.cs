@@ -105,42 +105,6 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets an enumeration object that represents all the child nodes of the current hierarchical node.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual IHierarchicalEnumerable GetChildren()
-        {
-            var objNodes = new NavDataPageHierarchicalEnumerable();
-            if (this.m_objNode != null)
-            {
-                foreach (DNNNode objNode in this.m_objNode.DNNNodes)
-                {
-                    objNodes.Add(new NavDataPageHierarchyData(objNode));
-                }
-            }
-
-            return objNodes;
-        }
-
-        /// <summary>
-        /// Gets an enumeration object that represents the parent node of the current hierarchical node.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual IHierarchyData GetParent()
-        {
-            if (this.m_objNode != null)
-            {
-                return new NavDataPageHierarchyData(this.m_objNode.ParentNode);
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Gets node name.
         /// </summary>
         /// <value>
@@ -185,6 +149,42 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 return this.GetSafeValue(this.m_objNode.NavigateURL, string.Empty);
+            }
+        }
+
+        /// <summary>
+        /// Gets an enumeration object that represents all the child nodes of the current hierarchical node.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public virtual IHierarchicalEnumerable GetChildren()
+        {
+            var objNodes = new NavDataPageHierarchicalEnumerable();
+            if (this.m_objNode != null)
+            {
+                foreach (DNNNode objNode in this.m_objNode.DNNNodes)
+                {
+                    objNodes.Add(new NavDataPageHierarchyData(objNode));
+                }
+            }
+
+            return objNodes;
+        }
+
+        /// <summary>
+        /// Gets an enumeration object that represents the parent node of the current hierarchical node.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public virtual IHierarchyData GetParent()
+        {
+            if (this.m_objNode != null)
+            {
+                return new NavDataPageHierarchyData(this.m_objNode.ParentNode);
+            }
+            else
+            {
+                return null;
             }
         }
 

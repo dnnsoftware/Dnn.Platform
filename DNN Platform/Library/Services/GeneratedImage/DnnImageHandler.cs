@@ -38,32 +38,26 @@ namespace DotNetNuke.Services.GeneratedImage
             Globals.ApplicationPath + "/Portals/",
         };
 
-        private static bool IsAllowedFilePathImage(string filePath)
-        {
-            var normalizeFilePath = NormalizeFilePath(filePath.Trim());
-
-            // Resources file cannot be served
-            if (filePath.EndsWith(".resources"))
-            {
-                return false;
-            }
-
-            // File outside the white list cannot be served
-            return WhiteListFolderPaths.Any(normalizeFilePath.StartsWith);
-        }
-
-        private static string NormalizeFilePath(string filePath)
-        {
-            var normalizeFilePath = filePath.Replace("\\", "/");
-            if (!normalizeFilePath.StartsWith("/"))
-            {
-                normalizeFilePath = "/" + normalizeFilePath;
-            }
-
-            return normalizeFilePath;
-        }
-
         private string _defaultImageFile = string.Empty;
+
+        public DnnImageHandler()
+        {
+            // Set default settings here
+            this.EnableClientCache = true;
+            this.EnableServerCache = true;
+            this.AllowStandalone = true;
+            this.LogSecurity = false;
+            this.EnableIPCount = false;
+            this.ImageCompression = 95;
+            DiskImageStore.PurgeInterval = new TimeSpan(0, 3, 0);
+            this.IPCountPurgeInterval = new TimeSpan(0, 5, 0);
+            this.IPCountMaxCount = 500;
+            this.ClientCacheExpiration = new TimeSpan(0, 10, 0);
+            this.AllowedDomains = new[] { string.Empty };
+
+            // read settings from web.config
+            this.ReadSettings();
+        }
 
         private Image EmptyImage
         {
@@ -101,25 +95,6 @@ namespace DotNetNuke.Services.GeneratedImage
                     return emptyBmp;
                 }
             }
-        }
-
-        public DnnImageHandler()
-        {
-            // Set default settings here
-            this.EnableClientCache = true;
-            this.EnableServerCache = true;
-            this.AllowStandalone = true;
-            this.LogSecurity = false;
-            this.EnableIPCount = false;
-            this.ImageCompression = 95;
-            DiskImageStore.PurgeInterval = new TimeSpan(0, 3, 0);
-            this.IPCountPurgeInterval = new TimeSpan(0, 5, 0);
-            this.IPCountMaxCount = 500;
-            this.ClientCacheExpiration = new TimeSpan(0, 10, 0);
-            this.AllowedDomains = new[] { string.Empty };
-
-            // read settings from web.config
-            this.ReadSettings();
         }
 
         // Add image generation logic here and return an instance of ImageInfo
@@ -475,12 +450,29 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        private ImageInfo GetEmptyImageInfo()
+        private static bool IsAllowedFilePathImage(string filePath)
         {
-            return new ImageInfo(this.EmptyImage)
+            var normalizeFilePath = NormalizeFilePath(filePath.Trim());
+
+            // Resources file cannot be served
+            if (filePath.EndsWith(".resources"))
             {
-                IsEmptyImage = true,
-            };
+                return false;
+            }
+
+            // File outside the white list cannot be served
+            return WhiteListFolderPaths.Any(normalizeFilePath.StartsWith);
+        }
+
+        private static string NormalizeFilePath(string filePath)
+        {
+            var normalizeFilePath = filePath.Replace("\\", "/");
+            if (!normalizeFilePath.StartsWith("/"))
+            {
+                normalizeFilePath = "/" + normalizeFilePath;
+            }
+
+            return normalizeFilePath;
         }
 
         private static bool TryParseDimension(string value, out int dimension)
@@ -506,6 +498,49 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             return true;
+        }
+
+        private static ImageFormat GetImageFormat(string extension)
+        {
+            switch (extension.ToLowerInvariant())
+            {
+                case "jpg":
+                case "jpeg":
+                    return ImageFormat.Jpeg;
+                case "bmp":
+                    return ImageFormat.Bmp;
+                case "gif":
+                    return ImageFormat.Gif;
+                case "png":
+                    return ImageFormat.Png;
+                case "ico":
+                    return ImageFormat.Icon;
+                default:
+                    return ImageFormat.Png;
+            }
+        }
+
+        // checks whether the uri belongs to any of the site-wide aliases
+        private static bool UriBelongsToSite(Uri uri)
+        {
+            IEnumerable<string> hostAliases =
+                from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
+                select alias.HTTPAlias.ToLowerInvariant();
+
+            // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
+            // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case
+            // uriNoScheme2 = "mydomain:80/dnndev/mypage"  -- lower case
+            var uriNoScheme1 = (uri.DnsSafeHost + uri.LocalPath).ToLowerInvariant();
+            var uriNoScheme2 = (uri.Authority + uri.LocalPath).ToLowerInvariant();
+            return hostAliases.Any(alias => uriNoScheme1.StartsWith(alias) || uriNoScheme2.StartsWith(alias));
+        }
+
+        private ImageInfo GetEmptyImageInfo()
+        {
+            return new ImageInfo(this.EmptyImage)
+            {
+                IsEmptyImage = true,
+            };
         }
 
         private void ReadSettings()
@@ -573,41 +608,6 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
             }
-        }
-
-        private static ImageFormat GetImageFormat(string extension)
-        {
-            switch (extension.ToLowerInvariant())
-            {
-                case "jpg":
-                case "jpeg":
-                    return ImageFormat.Jpeg;
-                case "bmp":
-                    return ImageFormat.Bmp;
-                case "gif":
-                    return ImageFormat.Gif;
-                case "png":
-                    return ImageFormat.Png;
-                case "ico":
-                    return ImageFormat.Icon;
-                default:
-                    return ImageFormat.Png;
-            }
-        }
-
-        // checks whether the uri belongs to any of the site-wide aliases
-        private static bool UriBelongsToSite(Uri uri)
-        {
-            IEnumerable<string> hostAliases =
-                from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
-                 select alias.HTTPAlias.ToLowerInvariant();
-
-            // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
-            // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case
-            // uriNoScheme2 = "mydomain:80/dnndev/mypage"  -- lower case
-            var uriNoScheme1 = (uri.DnsSafeHost + uri.LocalPath).ToLowerInvariant();
-            var uriNoScheme2 = (uri.Authority + uri.LocalPath).ToLowerInvariant();
-            return hostAliases.Any(alias => uriNoScheme1.StartsWith(alias) || uriNoScheme2.StartsWith(alias));
         }
     }
 }

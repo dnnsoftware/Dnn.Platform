@@ -85,17 +85,6 @@ namespace DotNetNuke.Services.Localization
             }
         }
 
-        public void Fill(IDataReader dr)
-        {
-            this.LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
-            this.LanguageID = Null.SetNullInteger(dr["LanguageID"]);
-            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
-            this.DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
-
-            // Call the base classes fill method to populate base class proeprties
-            this.FillInternal(dr);
-        }
-
         public int KeyID
         {
             get
@@ -107,6 +96,17 @@ namespace DotNetNuke.Services.Localization
             {
                 this.LanguagePackID = value;
             }
+        }
+
+        public void Fill(IDataReader dr)
+        {
+            this.LanguagePackID = Null.SetNullInteger(dr["LanguagePackID"]);
+            this.LanguageID = Null.SetNullInteger(dr["LanguageID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
         }
     }
 }

@@ -17,6 +17,13 @@ namespace DotNetNuke.Web.Razor
         private dynamic _model;
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        public dynamic Model
+        {
+            get { return this._model ?? (this._model = this.PageContext.Model); }
+            set { this._model = value; }
+        }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected internal DnnHelper Dnn { get; internal set; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -32,13 +39,6 @@ namespace DotNetNuke.Web.Razor
 
             // Child pages need to get their context from the Parent
             this.Context = parentPage.Context;
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        public dynamic Model
-        {
-            get { return this._model ?? (this._model = this.PageContext.Model); }
-            set { this._model = value; }
         }
     }
 

@@ -30,6 +30,20 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the name of the Collection Node ("skinFiles").
         /// </summary>
         /// <value>A String.</value>
@@ -158,110 +172,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "ascx, html, htm, css, xml, js, resx, jpg, jpeg, gif, png";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteSkinPackage method deletes the Skin Package
-        /// from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteSkinPackage()
-        {
-            try
-            {
-                // Attempt to get the Authentication Service
-                SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
-                if (skinPackage != null)
-                {
-                    SkinController.DeleteSkinPackage(skinPackage);
-                }
-
-                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node.
-        /// </summary>
-        /// <param name="file">The file represented by the node.</param>
-        /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void ProcessFile(InstallFile file, XPathNavigator nav)
-        {
-            switch (file.Extension)
-            {
-                case "htm":
-                case "html":
-                case "ascx":
-                case "css":
-                    if (file.Path.IndexOf(Globals.glbAboutPage, StringComparison.InvariantCultureIgnoreCase) < 0)
-                    {
-                        this.SkinFiles.Add(this.PhysicalBasePath + file.FullName);
-                    }
-
-                    break;
-            }
-
-            // Call base method to set up for file processing
-            base.ProcessFile(file, nav);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadCustomManifest method reads the custom manifest items.
-        /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void ReadCustomManifest(XPathNavigator nav)
-        {
-            this.SkinPackage = new SkinPackageInfo();
-            this.SkinPackage.PortalID = this.Package.PortalID;
-
-            // Get the Skin name
-            this.SkinPackage.SkinName = Util.ReadElement(nav, this.SkinNameNodeName);
-
-            // Call base class
-            base.ReadCustomManifest(nav);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstallFile method unInstalls a single file.
-        /// </summary>
-        /// <param name="unInstallFile">The InstallFile to unInstall.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void UnInstallFile(InstallFile unInstallFile)
-        {
-            // Uninstall file
-            base.UnInstallFile(unInstallFile);
-
-            if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
-            {
-                // Try to remove "processed file"
-                string fileName = unInstallFile.FullName;
-                fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
-                Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The Install method installs the skin component.
         /// </summary>
         public override void Install()
@@ -371,6 +281,96 @@ namespace DotNetNuke.Services.Installer.Installers
 
             // Call base class to prcoess files
             base.Rollback();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ProcessFile method determines what to do with parsed "file" node.
+        /// </summary>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void ProcessFile(InstallFile file, XPathNavigator nav)
+        {
+            switch (file.Extension)
+            {
+                case "htm":
+                case "html":
+                case "ascx":
+                case "css":
+                    if (file.Path.IndexOf(Globals.glbAboutPage, StringComparison.InvariantCultureIgnoreCase) < 0)
+                    {
+                        this.SkinFiles.Add(this.PhysicalBasePath + file.FullName);
+                    }
+
+                    break;
+            }
+
+            // Call base method to set up for file processing
+            base.ProcessFile(file, nav);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ReadCustomManifest method reads the custom manifest items.
+        /// </summary>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void ReadCustomManifest(XPathNavigator nav)
+        {
+            this.SkinPackage = new SkinPackageInfo();
+            this.SkinPackage.PortalID = this.Package.PortalID;
+
+            // Get the Skin name
+            this.SkinPackage.SkinName = Util.ReadElement(nav, this.SkinNameNodeName);
+
+            // Call base class
+            base.ReadCustomManifest(nav);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The DeleteSkinPackage method deletes the Skin Package
+        /// from the data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void DeleteSkinPackage()
+        {
+            try
+            {
+                // Attempt to get the Authentication Service
+                SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
+                if (skinPackage != null)
+                {
+                    SkinController.DeleteSkinPackage(skinPackage);
+                }
+
+                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstallFile method unInstalls a single file.
+        /// </summary>
+        /// <param name="unInstallFile">The InstallFile to unInstall.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void UnInstallFile(InstallFile unInstallFile)
+        {
+            // Uninstall file
+            base.UnInstallFile(unInstallFile);
+
+            if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
+            {
+                // Try to remove "processed file"
+                string fileName = unInstallFile.FullName;
+                fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
+                Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
+            }
         }
 
         /// -----------------------------------------------------------------------------

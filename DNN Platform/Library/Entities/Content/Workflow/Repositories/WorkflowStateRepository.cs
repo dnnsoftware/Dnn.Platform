@@ -97,6 +97,11 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
 
+        protected override Func<IWorkflowStateRepository> GetFactory()
+        {
+            return () => new WorkflowStateRepository();
+        }
+
         private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
         {
             return rep.Find(
@@ -118,11 +123,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                     _ => state);
             }
-        }
-
-        protected override Func<IWorkflowStateRepository> GetFactory()
-        {
-            return () => new WorkflowStateRepository();
         }
     }
 }

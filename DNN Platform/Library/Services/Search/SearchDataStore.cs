@@ -37,42 +37,6 @@ namespace DotNetNuke.Services.Search
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetCommonWords gets a list of the Common Words for the locale.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="locale">The locale string.</param>
-        /// <returns>A hashtable of common words.</returns>
-        /// -----------------------------------------------------------------------------
-        private Hashtable GetCommonWords(string locale)
-        {
-            string strCacheKey = "CommonWords" + locale;
-            var objWords = (Hashtable)DataCache.GetCache(strCacheKey);
-            if (objWords == null)
-            {
-                objWords = new Hashtable();
-                IDataReader drWords = DataProvider.Instance().GetSearchCommonWordsByLocale(locale);
-                try
-                {
-                    while (drWords.Read())
-                    {
-                        objWords.Add(drWords["CommonWord"].ToString(), drWords["CommonWord"].ToString());
-                    }
-                }
-                finally
-                {
-                    drWords.Close();
-                    drWords.Dispose();
-                }
-
-                DataCache.SetCache(strCacheKey, objWords);
-            }
-
-            return objWords;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// GetSearchItems gets a collection of Search Items for a Module/Tab/Portal.
         /// </summary>
         /// <remarks>
@@ -239,6 +203,42 @@ namespace DotNetNuke.Services.Search
 
             // Return Search Results Collection
             return results;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetCommonWords gets a list of the Common Words for the locale.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="locale">The locale string.</param>
+        /// <returns>A hashtable of common words.</returns>
+        /// -----------------------------------------------------------------------------
+        private Hashtable GetCommonWords(string locale)
+        {
+            string strCacheKey = "CommonWords" + locale;
+            var objWords = (Hashtable)DataCache.GetCache(strCacheKey);
+            if (objWords == null)
+            {
+                objWords = new Hashtable();
+                IDataReader drWords = DataProvider.Instance().GetSearchCommonWordsByLocale(locale);
+                try
+                {
+                    while (drWords.Read())
+                    {
+                        objWords.Add(drWords["CommonWord"].ToString(), drWords["CommonWord"].ToString());
+                    }
+                }
+                finally
+                {
+                    drWords.Close();
+                    drWords.Dispose();
+                }
+
+                DataCache.SetCache(strCacheKey, objWords);
+            }
+
+            return objWords;
         }
 
         /// -----------------------------------------------------------------------------

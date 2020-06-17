@@ -13,6 +13,20 @@ namespace DotNetNuke.Tests.Utilities
 
     public static class MailAssert
     {
+        public static void Base64EncodedContentLineContains(string expectedValue, string toAddress, string findByText)
+        {
+            var contentLine = ConvertEmailContentFromBase64ToUnicode(GetEmailFileName(toAddress, findByText));
+
+            Assert.IsTrue(contentLine.Contains(expectedValue));
+        }
+
+        public static void ContentLineContains(string expectedValue, string toAddress, string findByText)
+        {
+            var contentLine = FindContentUsingRegex(expectedValue, GetEmailFileName(toAddress, findByText));
+
+            Assert.IsFalse(string.IsNullOrEmpty(contentLine));
+        }
+
         private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
         {
             string emailContent = File.ReadAllText(emailFileName);
@@ -85,20 +99,6 @@ namespace DotNetNuke.Tests.Utilities
             Assert.IsTrue(emailFileName != null, message + " The test was searching in: " + emailPath);
 
             return emailFileName;
-        }
-
-        public static void Base64EncodedContentLineContains(string expectedValue, string toAddress, string findByText)
-        {
-            var contentLine = ConvertEmailContentFromBase64ToUnicode(GetEmailFileName(toAddress, findByText));
-
-            Assert.IsTrue(contentLine.Contains(expectedValue));
-        }
-
-        public static void ContentLineContains(string expectedValue, string toAddress, string findByText)
-        {
-            var contentLine = FindContentUsingRegex(expectedValue, GetEmailFileName(toAddress, findByText));
-
-            Assert.IsFalse(string.IsNullOrEmpty(contentLine));
         }
 
         public static void FromLineContains(string expectedValue, string toAddress, string findByText)

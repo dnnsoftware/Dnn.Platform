@@ -14,6 +14,11 @@ namespace DotNetNuke.Services.Search.Entities
     [Serializable]
     public class SearchResults
     {
+        public SearchResults()
+        {
+            this.Results = new List<SearchResult>();
+        }
+
         /// <summary>
         /// Gets or sets total Hits found in Lucene.
         /// </summary>
@@ -24,10 +29,5 @@ namespace DotNetNuke.Services.Search.Entities
         /// Gets or sets collection of Results.
         /// </summary>
         public IList<SearchResult> Results { get; set; }
-
-        public SearchResults()
-        {
-            this.Results = new List<SearchResult>();
-        }
     }
 }

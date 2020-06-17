@@ -13,11 +13,11 @@ namespace DotNetNuke.Web.DDRMenu
     [XmlRoot("xmlroot", Namespace = "")]
     public class MenuXml
     {
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public MenuNode root { get; set; }
 
         public UserInfo user { get; set; }
 
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
     }
 }

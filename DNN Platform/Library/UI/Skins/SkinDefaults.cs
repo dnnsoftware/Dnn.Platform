@@ -72,18 +72,18 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        private static object GetSkinDefaultsCallback(CacheItemArgs cacheItemArgs)
-        {
-            var defaultType = (SkinDefaultType)cacheItemArgs.ParamList[0];
-            return new SkinDefaults(defaultType);
-        }
-
         public static SkinDefaults GetSkinDefaults(SkinDefaultType DefaultType)
         {
             return
                 CBO.GetCachedObject<SkinDefaults>(
                     new CacheItemArgs(string.Format(DataCache.SkinDefaultsCacheKey, DefaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, DefaultType),
                     GetSkinDefaultsCallback);
+        }
+
+        private static object GetSkinDefaultsCallback(CacheItemArgs cacheItemArgs)
+        {
+            var defaultType = (SkinDefaultType)cacheItemArgs.ParamList[0];
+            return new SkinDefaults(defaultType);
         }
     }
 }

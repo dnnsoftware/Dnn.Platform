@@ -33,6 +33,21 @@ namespace DotNetNuke.UI.Containers
         private int _animationFrames = 5;
         private Panel _pnlModuleContent;
 
+        public int AnimationFrames
+        {
+            get
+            {
+                return this._animationFrames;
+            }
+
+            set
+            {
+                this._animationFrames = value;
+            }
+        }
+
+        public string BorderWidth { get; set; }
+
         private string MinIconLoc
         {
             get
@@ -84,21 +99,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        public int AnimationFrames
-        {
-            get
-            {
-                return this._animationFrames;
-            }
-
-            set
-            {
-                this._animationFrames = value;
-            }
-        }
-
-        public string BorderWidth { get; set; }
-
         public bool ContentVisible
         {
             get
@@ -128,11 +128,11 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-// ReSharper disable InconsistentNaming
-// TODO can this be renamed with a capital M
+        // ReSharper disable InconsistentNaming
+        // TODO can this be renamed with a capital M
         public string minIcon { get; set; }
 
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         public string MaxIcon { get; set; }
 
         public string ResourceFile

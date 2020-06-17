@@ -18,6 +18,14 @@ namespace DotNetNuke.Tests.Core.ComponentModel
     [TestFixture]
     public class ComponentFactoryTests
     {
+        public static IContainer CreateMockContainer()
+        {
+            var mockContainer = new Mock<IContainer>();
+            IContainer container = mockContainer.Object;
+            ComponentFactory.Container = container;
+            return container;
+        }
+
         [TearDown]
         public void TearDown()
         {
@@ -68,14 +76,6 @@ namespace DotNetNuke.Tests.Core.ComponentModel
             // Assert
             var retreivedComponent = ComponentFactory.GetComponent<IList>();
             Assert.AreEqual(testComp1, retreivedComponent);
-        }
-
-        public static IContainer CreateMockContainer()
-        {
-            var mockContainer = new Mock<IContainer>();
-            IContainer container = mockContainer.Object;
-            ComponentFactory.Container = container;
-            return container;
         }
     }
 }

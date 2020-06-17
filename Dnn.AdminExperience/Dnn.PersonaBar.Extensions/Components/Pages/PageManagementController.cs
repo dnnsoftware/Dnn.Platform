@@ -23,9 +23,6 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             this._tabController = TabController.Instance;
         }
-        
-        
-        #region Public Methods
 
         public string GetCreatedInfo(TabInfo tab)
         {
@@ -87,7 +84,6 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return url;
         }
-        #endregion
 
         protected override Func<IPageManagementController> GetFactory()
         {

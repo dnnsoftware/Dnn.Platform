@@ -15,10 +15,15 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class UserBasicDto
     {
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public UserBasicDto()
+        {
+
+        }
 
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
+
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         [DataMember(Name = "userName")]
         public string Username { get; set; }
@@ -56,14 +61,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-
         [DataMember(Name = "avatar")]
         public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
-
-        public UserBasicDto()
-        {
-
-        }
 
         public UserBasicDto(UserInfo user)
         {
@@ -92,8 +91,8 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Membership.Approved,
-                HasAgreedToTerms=user.HasAgreedToTerms,
-                RequestsRemoval=user.RequestsRemoval,
+                HasAgreedToTerms = user.HasAgreedToTerms,
+                RequestsRemoval = user.RequestsRemoval,
                 IsSuperUser = user.IsSuperUser
             };
         }

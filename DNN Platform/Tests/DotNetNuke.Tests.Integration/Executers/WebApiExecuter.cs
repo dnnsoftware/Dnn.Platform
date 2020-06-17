@@ -27,7 +27,22 @@ namespace DotNetNuke.Tests.Integration.Executers
     {
         public Func<string, string, string, IWebApiConnector> Login;
 
+        protected Func<string, IWebApiConnector> Anonymous;
+
+        protected List<HttpResponseMessage> Responses = new List<HttpResponseMessage>();
+
         private LoginAsUser _loginAs;
+        private IWebApiConnector _connector;
+
+        protected WebApiExecuter()
+        {
+            this.LoginAs = LoginAsUser.RegisteredUser;
+            this.Login = WebApiTestHelper.LoginRegisteredUser;
+            this.Anonymous = WebApiTestHelper.GetAnnonymousConnector;
+
+            this.UserFirstName = Constants.RuFirstName;
+            this.UserLastName = Constants.RuLastName;
+        }
 
         public LoginAsUser LoginAs
         {
@@ -46,19 +61,6 @@ namespace DotNetNuke.Tests.Integration.Executers
         public string UserFirstName { get; set; }
 
         public string UserLastName { get; set; }
-
-        protected Func<string, IWebApiConnector> Anonymous;
-        private IWebApiConnector _connector;
-
-        protected WebApiExecuter()
-        {
-            this.LoginAs = LoginAsUser.RegisteredUser;
-            this.Login = WebApiTestHelper.LoginRegisteredUser;
-            this.Anonymous = WebApiTestHelper.GetAnnonymousConnector;
-
-            this.UserFirstName = Constants.RuFirstName;
-            this.UserLastName = Constants.RuLastName;
-        }
 
         public IWebApiConnector Connector
         {
@@ -121,8 +123,6 @@ namespace DotNetNuke.Tests.Integration.Executers
                 return DatabaseHelper.ExecuteScalar<int>($"SELECT UserId FROM {{objectQualifier}}Users WHERE UserName = '{this.UserName}'");
             }
         }
-
-        protected List<HttpResponseMessage> Responses = new List<HttpResponseMessage>();
 
         public HttpResponseMessage GetLastResponseMessage()
         {

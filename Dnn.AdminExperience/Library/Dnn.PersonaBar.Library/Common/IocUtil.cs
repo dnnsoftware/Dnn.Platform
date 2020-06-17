@@ -118,14 +118,6 @@ namespace Dnn.PersonaBar.Library.Common
             return instance;
         }
 
-        private static TContract GetInstanceLocal<TContract>(string name)
-            where TContract : class
-        {
-            return string.IsNullOrEmpty(name)
-                ? ComponentFactory.GetComponent<TContract>()
-                : ComponentFactory.GetComponent<TContract>(name);
-        }
-
         /// <summary>
         /// Retrieves a concrete implementation of the given interface/contract.
         /// </summary>
@@ -136,6 +128,14 @@ namespace Dnn.PersonaBar.Library.Common
         {
             var instances = ComponentFactory.GetComponents<TContract>();
             return instances.Values;
+        }
+
+        private static TContract GetInstanceLocal<TContract>(string name)
+            where TContract : class
+        {
+            return string.IsNullOrEmpty(name)
+                ? ComponentFactory.GetComponent<TContract>()
+                : ComponentFactory.GetComponent<TContract>(name);
         }
     }
 }

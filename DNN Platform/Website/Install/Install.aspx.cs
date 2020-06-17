@@ -32,6 +32,100 @@ namespace DotNetNuke.Services.Install
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
         private static readonly object installLocker = new object();
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
+            {
+                this.Response.Redirect(this.Request.RawUrl, true);
+            }
+
+            // if previous config deleted create new empty one
+            string installConfig = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config");
+            if (!File.Exists(installConfig))
+            {
+                File.Copy(installConfig + ".resources", installConfig);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            Config.AddFCNMode(Config.FcnMode.Single);
+
+            // Get current Script time-out
+            int scriptTimeOut = this.Server.ScriptTimeout;
+
+            string mode = string.Empty;
+            if (this.Request.QueryString["mode"] != null)
+            {
+                mode = this.Request.QueryString["mode"].ToLowerInvariant();
+            }
+
+            // Disable Client side caching
+            this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
+
+            // Check mode is not Nothing
+            if (mode == "none")
+            {
+                this.NoUpgrade();
+            }
+            else
+            {
+                // Set Script timeout to MAX value
+                this.Server.ScriptTimeout = int.MaxValue;
+
+                switch (Globals.Status)
+                {
+                    case Globals.UpgradeStatus.Install:
+                        this.InstallApplication();
+
+                        // Force an App Restart
+                        Config.Touch();
+                        break;
+                    case Globals.UpgradeStatus.Upgrade:
+                        this.UpgradeApplication();
+
+                        // Force an App Restart
+                        Config.Touch();
+                        break;
+                    case Globals.UpgradeStatus.None:
+                        // Check mode
+                        switch (mode)
+                        {
+                            case "addportal":
+                                this.AddPortal();
+                                break;
+                            case "installresources":
+                                this.InstallResources();
+                                break;
+                            case "executescripts":
+                                this.ExecuteScripts();
+                                break;
+                        }
+
+                        break;
+                    case Globals.UpgradeStatus.Error:
+                        this.NoUpgrade();
+                        break;
+                }
+
+                // restore Script timeout
+                this.Server.ScriptTimeout = scriptTimeOut;
+            }
+        }
+
+        private static void RegisterInstallBegining()
+        {
+            InstallBlocker.Instance.RegisterInstallBegining();
+        }
+
+        private static void RegisterInstallEnd()
+        {
+            InstallBlocker.Instance.RegisterInstallEnd();
+        }
+
         private void ExecuteScripts()
         {
             // Start Timer
@@ -190,16 +284,6 @@ namespace DotNetNuke.Services.Install
                     RegisterInstallEnd();
                 }
             }
-        }
-
-        private static void RegisterInstallBegining()
-        {
-            InstallBlocker.Instance.RegisterInstallBegining();
-        }
-
-        private static void RegisterInstallEnd()
-        {
-            InstallBlocker.Instance.RegisterInstallEnd();
         }
 
         private void WriteInstallationHeader()
@@ -509,90 +593,6 @@ namespace DotNetNuke.Services.Install
 
             // Write out Footer
             HtmlUtils.WriteFooter(this.Response);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
-            {
-                this.Response.Redirect(this.Request.RawUrl, true);
-            }
-
-            // if previous config deleted create new empty one
-            string installConfig = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Install", "DotNetNuke.install.config");
-            if (!File.Exists(installConfig))
-            {
-                File.Copy(installConfig + ".resources", installConfig);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            Config.AddFCNMode(Config.FcnMode.Single);
-
-            // Get current Script time-out
-            int scriptTimeOut = this.Server.ScriptTimeout;
-
-            string mode = string.Empty;
-            if (this.Request.QueryString["mode"] != null)
-            {
-                mode = this.Request.QueryString["mode"].ToLowerInvariant();
-            }
-
-            // Disable Client side caching
-            this.Response.Cache.SetCacheability(HttpCacheability.ServerAndNoCache);
-
-            // Check mode is not Nothing
-            if (mode == "none")
-            {
-                this.NoUpgrade();
-            }
-            else
-            {
-                // Set Script timeout to MAX value
-                this.Server.ScriptTimeout = int.MaxValue;
-
-                switch (Globals.Status)
-                {
-                    case Globals.UpgradeStatus.Install:
-                        this.InstallApplication();
-
-                        // Force an App Restart
-                        Config.Touch();
-                        break;
-                    case Globals.UpgradeStatus.Upgrade:
-                        this.UpgradeApplication();
-
-                        // Force an App Restart
-                        Config.Touch();
-                        break;
-                    case Globals.UpgradeStatus.None:
-                        // Check mode
-                        switch (mode)
-                        {
-                            case "addportal":
-                                this.AddPortal();
-                                break;
-                            case "installresources":
-                                this.InstallResources();
-                                break;
-                            case "executescripts":
-                                this.ExecuteScripts();
-                                break;
-                        }
-
-                        break;
-                    case Globals.UpgradeStatus.Error:
-                        this.NoUpgrade();
-                        break;
-                }
-
-                // restore Script timeout
-                this.Server.ScriptTimeout = scriptTimeOut;
-            }
         }
     }
 }

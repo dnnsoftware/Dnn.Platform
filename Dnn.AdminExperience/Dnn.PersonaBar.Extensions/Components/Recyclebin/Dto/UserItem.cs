@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Dto
         public string Username { get; set; }
 
         public string DisplayName { get; set; }
-        
+
         public string Email { get; set; }
 
         public string LastModifiedOnDate { get; set; }

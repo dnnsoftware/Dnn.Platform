@@ -20,19 +20,14 @@ namespace DotNetNuke.Services.Authentication
         private string _AuthenticationType = Null.NullString;
         private string _RedirectURL = Null.NullString;
 
-        /// <summary>
-        /// Gets the Dependency Provider to resolve registered
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider { get; }
-
         public AuthenticationLogoffBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
         }
+
+        public event EventHandler LogOff;
+
+        public event EventHandler Redirect;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -52,9 +47,14 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        public event EventHandler LogOff;
-
-        public event EventHandler Redirect;
+        /// <summary>
+        /// Gets the Dependency Provider to resolve registered
+        /// services with the container.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        protected IServiceProvider DependencyProvider { get; }
 
         protected virtual void OnLogOff(EventArgs a)
         {

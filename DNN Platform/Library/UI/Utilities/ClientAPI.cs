@@ -28,6 +28,8 @@ namespace DotNetNuke.UI.Utilities
     /// </remarks>
     public class DNNClientAPI
     {
+        private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
+
         public enum MinMaxPersistanceType
         {
             None,
@@ -41,8 +43,6 @@ namespace DotNetNuke.UI.Utilities
             GetPersonalization = 0,
             SetPersonalization = 1,
         }
-
-        private static readonly Hashtable m_objEnabledClientPersonalizationKeys = new Hashtable();
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -82,12 +82,6 @@ namespace DotNetNuke.UI.Utilities
         public static void InitFileManager(Page objPage)
         {
             AddBodyOnLoad(objPage, "initFileManager", "initFileManager();");
-        }
-
-        private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
-        {
-            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
-            objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -143,6 +137,12 @@ namespace DotNetNuke.UI.Utilities
         public static void EnableMinMax(Control objButton, Control objContent, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
             EnableMinMax(objButton, objContent, -1, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
+        }
+
+        private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
+        {
+            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
+            objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
         }
 
         public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
@@ -290,6 +290,16 @@ namespace DotNetNuke.UI.Utilities
             }
         }
 
+        public static bool MinMaxContentVisibile(Control objButton, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
+        {
+            return MinMaxContentVisibile(objButton, -1, blnDefaultMin, ePersistanceType);
+        }
+
+        public static void MinMaxContentVisibile(Control objButton, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType, bool value)
+        {
+            MinMaxContentVisibile(objButton, -1, blnDefaultMin, ePersistanceType, value);
+        }
+
         private static void SetMinMaxProperties(Control objButton, string strImage, string strToolTip, string strAltText)
         {
             if (objButton is LinkButton)
@@ -333,16 +343,6 @@ namespace DotNetNuke.UI.Utilities
                 objImage.Src = strImage;
                 objImage.Alt = strAltText;
             }
-        }
-
-        public static bool MinMaxContentVisibile(Control objButton, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
-        {
-            return MinMaxContentVisibile(objButton, -1, blnDefaultMin, ePersistanceType);
-        }
-
-        public static void MinMaxContentVisibile(Control objButton, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType, bool value)
-        {
-            MinMaxContentVisibile(objButton, -1, blnDefaultMin, ePersistanceType, value);
         }
 
         public static bool MinMaxContentVisibile(Control objButton, int intModuleId, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
@@ -423,6 +423,39 @@ namespace DotNetNuke.UI.Utilities
             }
         }
 
+        // enables callbacks for request, and registers personalization key to be accessible from client
+        // returns true when browser is capable of callbacks
+        public static bool EnableClientPersonalization(string strNamingContainer, string strKey, Page objPage)
+        {
+            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
+            {
+                // Instead of sending the callback js function down to the client, we are hardcoding
+                // it on the client.  DNN owns the interface, so there is no worry about an outside
+                // entity changing it on us.  We are simply calling this here to register all the appropriate
+                // js libraries
+                ClientAPI.GetCallbackEventReference(objPage, string.Empty, string.Empty, string.Empty, string.Empty);
+
+                // in order to limit the keys that can be accessed and written we are storing the enabled keys
+                // in this shared hash table
+                lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
+                {
+                    if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
+                    {
+                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsPersonalizationKeyRegistered(string strKey)
+        {
+            return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
+        }
+
         private static void AddAttribute(Control objControl, string strName, string strValue)
         {
             if (objControl is HtmlControl)
@@ -459,39 +492,6 @@ namespace DotNetNuke.UI.Utilities
                     ((WebControl)objControl).Style.Remove(strName);
                 }
             }
-        }
-
-        // enables callbacks for request, and registers personalization key to be accessible from client
-        // returns true when browser is capable of callbacks
-        public static bool EnableClientPersonalization(string strNamingContainer, string strKey, Page objPage)
-        {
-            if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
-            {
-                // Instead of sending the callback js function down to the client, we are hardcoding
-                // it on the client.  DNN owns the interface, so there is no worry about an outside
-                // entity changing it on us.  We are simply calling this here to register all the appropriate
-                // js libraries
-                ClientAPI.GetCallbackEventReference(objPage, string.Empty, string.Empty, string.Empty, string.Empty);
-
-                // in order to limit the keys that can be accessed and written we are storing the enabled keys
-                // in this shared hash table
-                lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
-                {
-                    if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)
-                    {
-                        m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public static bool IsPersonalizationKeyRegistered(string strKey)
-        {
-            return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
         }
     }
 }

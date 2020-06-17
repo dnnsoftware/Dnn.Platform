@@ -16,22 +16,22 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("delete-user", Constants.UsersCategory, "Prompt_DeleteUser_Description")]
     public class DeleteUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_DeleteUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
         private IUserValidator _userValidator;
         private IUserControllerWrapper _userControllerWrapper;
 
-        private int UserId { get; set; }
-        private bool Notify { get; set; }
-
         public DeleteUser() : this(new UserValidator(), new UserControllerWrapper())
         {
         }
+
+        private int UserId { get; set; }
+        private bool Notify { get; set; }
 
         public DeleteUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
             this.Notify = this.GetFlagValue(FlagNotify, "Notify", false);
         }
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                 return errorResultModel;
             }
 
-            var userModels = new List<UserModel> { new UserModel(userInfo) };            
+            var userModels = new List<UserModel> { new UserModel(userInfo) };
 
             if (userInfo.IsDeleted)
             {
@@ -76,7 +76,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             // attempt to retrieve the user from the dB 
             userInfo = this._userControllerWrapper.GetUserById(validPortalId, userInfo.UserID);
             userModels = new List<UserModel> { new UserModel(userInfo) };
-            return new ConsoleResultModel(this.LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };            
+            return new ConsoleResultModel(this.LocalizeString("UserDeleted")) { Data = userModels, Records = userModels.Count };
         }
     }
 }

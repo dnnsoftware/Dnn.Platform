@@ -16,6 +16,9 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     public class UrlAction
     {
+        private List<string> _licensedProviders;
+        private PortalAliasInfo _portalAlias;
+
         // 829 add in constructor that works around physical path length restriction
         public UrlAction(HttpRequest request)
         {
@@ -53,6 +56,8 @@ namespace DotNetNuke.Entities.Urls
             this.Constructor(scheme, applicationPath, physicalPath);
         }
 
+        public Uri Url { get; set; }
+
         private void Constructor(string scheme, string applicationPath, string physicalPath)
         {
             if (scheme.EndsWith("://") == false)
@@ -79,11 +84,6 @@ namespace DotNetNuke.Entities.Urls
             this.DebugMessages = new List<string>();
             this.CultureCode = null;
         }
-
-        private List<string> _licensedProviders;
-        private PortalAliasInfo _portalAlias;
-
-        public Uri Url { get; set; }
 
         public bool DoRewrite { get; set; }
 

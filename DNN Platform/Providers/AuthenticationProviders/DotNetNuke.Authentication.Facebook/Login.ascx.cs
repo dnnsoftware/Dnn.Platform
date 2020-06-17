@@ -14,14 +14,14 @@ namespace DotNetNuke.Authentication.Facebook
 
     public partial class Login : OAuthLoginBase
     {
-        protected override string AuthSystemApplicationName
-        {
-            get { return "Facebook"; }
-        }
-
         public override bool SupportsRegistration
         {
             get { return true; }
+        }
+
+        protected override string AuthSystemApplicationName
+        {
+            get { return "Facebook"; }
         }
 
         protected override UserData GetCurrentUser()

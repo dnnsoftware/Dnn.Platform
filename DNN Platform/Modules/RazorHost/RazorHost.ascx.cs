@@ -17,22 +17,6 @@ namespace DotNetNuke.Modules.RazorHost
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-        protected override string RazorScriptFile
-        {
-            get
-            {
-                string m_RazorScriptFile = base.RazorScriptFile;
-                var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-                if (! string.IsNullOrEmpty(scriptFileSetting))
-                {
-                    m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
-                }
-
-                return m_RazorScriptFile;
-            }
-        }
-
-        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public ModuleActionCollection ModuleActions
         {
             get
@@ -61,6 +45,22 @@ namespace DotNetNuke.Modules.RazorHost
                     true,
                     false);
                 return Actions;
+            }
+        }
+
+        [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
+        protected override string RazorScriptFile
+        {
+            get
+            {
+                string m_RazorScriptFile = base.RazorScriptFile;
+                var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
+                if (!string.IsNullOrEmpty(scriptFileSetting))
+                {
+                    m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
+                }
+
+                return m_RazorScriptFile;
             }
         }
     }

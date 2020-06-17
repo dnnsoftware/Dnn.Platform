@@ -35,66 +35,12 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string m_RazorScriptFile = Null.NullString;
                 var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-                if (! string.IsNullOrEmpty(scriptFileSetting))
+                if (!string.IsNullOrEmpty(scriptFileSetting))
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
 
                 return m_RazorScriptFile;
-            }
-        }
-
-        private void LoadScripts()
-        {
-            string basePath = this.Server.MapPath(this.razorScriptFolder);
-            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-
-            foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
-            {
-                string scriptPath = script.Replace(basePath, string.Empty);
-                var item = new ListItem(scriptPath, scriptPath);
-                if (! string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
-                {
-                    item.Selected = true;
-                }
-
-                this.scriptList.Items.Add(item);
-            }
-        }
-
-        private void DisplayFile()
-        {
-            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-            string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
-            string srcFile = this.Server.MapPath(scriptFile);
-
-            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
-
-            StreamReader objStreamReader = null;
-            objStreamReader = File.OpenText(srcFile);
-            this.txtSource.Text = objStreamReader.ReadToEnd();
-            objStreamReader.Close();
-
-            if (! string.IsNullOrEmpty(scriptFileSetting))
-            {
-                this.isCurrentScript.Checked = this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant();
-            }
-        }
-
-        private void SaveScript()
-        {
-            string srcFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue));
-
-            // write file
-            StreamWriter objStream = null;
-            objStream = File.CreateText(srcFile);
-            objStream.WriteLine(this.txtSource.Text);
-            objStream.Close();
-
-            if (this.isCurrentScript.Checked)
-            {
-                // Update setting
-                ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
             }
         }
 
@@ -119,6 +65,60 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.LoadScripts();
                 this.DisplayFile();
+            }
+        }
+
+        private void LoadScripts()
+        {
+            string basePath = this.Server.MapPath(this.razorScriptFolder);
+            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
+
+            foreach (string script in Directory.GetFiles(this.Server.MapPath(this.razorScriptFolder), "*.??html"))
+            {
+                string scriptPath = script.Replace(basePath, string.Empty);
+                var item = new ListItem(scriptPath, scriptPath);
+                if (!string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
+                {
+                    item.Selected = true;
+                }
+
+                this.scriptList.Items.Add(item);
+            }
+        }
+
+        private void DisplayFile()
+        {
+            var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
+            string scriptFile = string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue);
+            string srcFile = this.Server.MapPath(scriptFile);
+
+            this.lblSourceFile.Text = string.Format(Localization.GetString("SourceFile", this.LocalResourceFile), scriptFile);
+
+            StreamReader objStreamReader = null;
+            objStreamReader = File.OpenText(srcFile);
+            this.txtSource.Text = objStreamReader.ReadToEnd();
+            objStreamReader.Close();
+
+            if (!string.IsNullOrEmpty(scriptFileSetting))
+            {
+                this.isCurrentScript.Checked = this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant();
+            }
+        }
+
+        private void SaveScript()
+        {
+            string srcFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue));
+
+            // write file
+            StreamWriter objStream = null;
+            objStream = File.CreateText(srcFile);
+            objStream.WriteLine(this.txtSource.Text);
+            objStream.Close();
+
+            if (this.isCurrentScript.Checked)
+            {
+                // Update setting
+                ModuleController.Instance.UpdateModuleSetting(this.ModuleContext.ModuleId, "ScriptFile", this.scriptList.SelectedValue);
             }
         }
 

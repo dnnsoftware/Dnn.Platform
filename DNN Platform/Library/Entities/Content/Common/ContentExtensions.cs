@@ -40,35 +40,6 @@ namespace DotNetNuke.Entities.Content.Common
     public static class ContentExtensions
     {
         /// <summary>
-        /// Gets the child terms.
-        /// </summary>
-        /// <param name="Term">The term.</param>
-        /// <param name="termId">The term id.</param>
-        /// <param name="vocabularyId">The vocabulary id.</param>
-        /// <returns>term collection which's parent is the specific term.</returns>
-        internal static List<Term> GetChildTerms(this Term Term, int termId, int vocabularyId)
-        {
-            ITermController ctl = Util.GetTermController();
-
-            IQueryable<Term> terms = from term in ctl.GetTermsByVocabulary(vocabularyId) where term.ParentTermId == termId select term;
-
-            return terms.ToList();
-        }
-
-        /// <summary>
-        /// Gets the vocabulary.
-        /// </summary>
-        /// <param name="term">The term.</param>
-        /// <param name="vocabularyId">The vocabulary id.</param>
-        /// <returns>Vocabulary.</returns>
-        internal static Vocabulary GetVocabulary(this Term term, int vocabularyId)
-        {
-            IVocabularyController ctl = Util.GetVocabularyController();
-
-            return (from v in ctl.GetVocabularies() where v.VocabularyId == vocabularyId select v).SingleOrDefault();
-        }
-
-        /// <summary>
         /// Toes the delimitted string.
         /// </summary>
         /// <param name="terms">The terms.</param>
@@ -117,6 +88,35 @@ namespace DotNetNuke.Entities.Content.Common
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Gets the child terms.
+        /// </summary>
+        /// <param name="Term">The term.</param>
+        /// <param name="termId">The term id.</param>
+        /// <param name="vocabularyId">The vocabulary id.</param>
+        /// <returns>term collection which's parent is the specific term.</returns>
+        internal static List<Term> GetChildTerms(this Term Term, int termId, int vocabularyId)
+        {
+            ITermController ctl = Util.GetTermController();
+
+            IQueryable<Term> terms = from term in ctl.GetTermsByVocabulary(vocabularyId) where term.ParentTermId == termId select term;
+
+            return terms.ToList();
+        }
+
+        /// <summary>
+        /// Gets the vocabulary.
+        /// </summary>
+        /// <param name="term">The term.</param>
+        /// <param name="vocabularyId">The vocabulary id.</param>
+        /// <returns>Vocabulary.</returns>
+        internal static Vocabulary GetVocabulary(this Term term, int vocabularyId)
+        {
+            IVocabularyController ctl = Util.GetVocabularyController();
+
+            return (from v in ctl.GetVocabularies() where v.VocabularyId == vocabularyId select v).SingleOrDefault();
         }
 
         /// <summary>

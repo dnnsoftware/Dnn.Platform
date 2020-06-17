@@ -37,8 +37,6 @@ namespace Dnn.PersonaBar.Users.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
 
-        #region Users API
-
         /// <summary>
         /// Create a User.
         /// </summary>
@@ -80,12 +78,12 @@ namespace Dnn.PersonaBar.Users.Services
         /// <summary>
         /// Perform a search on Users registered in the Site.
         /// </summary>
-        /// <param name="searchText">Search filter text (if any)</param>
+        /// <param name="searchText">Search filter text (if any).</param>
         /// <param name="filter">User filter. Send -1 to disable.</param>
-        /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
-        /// <param name="pageSize">Number of records to return per page</param>
-        /// <param name="sortColumn">Column to sort on</param>
-        /// <param name="sortAscending">Sort ascending or descending</param>
+        /// <param name="pageIndex">Page index to begin from (0, 1, 2).</param>
+        /// <param name="pageSize">Number of records to return per page.</param>
+        /// <param name="sortColumn">Column to sort on.</param>
+        /// <param name="sortAscending">Sort ascending or descending.</param>
         [HttpGet]
         public HttpResponseMessage GetUsers(string searchText, UserFilters filter, int pageIndex, int pageSize,
             string sortColumn,
@@ -485,10 +483,6 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        #endregion
-
-        #region User Roles API
-
         [HttpGet]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
         public HttpResponseMessage GetSuggestRoles(string keyword, int count)
@@ -599,9 +593,6 @@ namespace Dnn.PersonaBar.Users.Services
             }
         }
 
-        #endregion
-
-        #region Profiles API
         //        User profile is not implemented currently
         //        [HttpGet]
         //        public HttpResponseMessage GetProfileDefinitions()
@@ -618,12 +609,10 @@ namespace Dnn.PersonaBar.Users.Services
         //            return Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
         //        }
 
-        #endregion
-
         /// <summary>
-        /// Return Password security options from server 
+        /// Return Password security options from server. 
         /// </summary>
-        /// <returns>MembershipPasswordSettings</returns>
+        /// <returns>MembershipPasswordSettings.</returns>
         [HttpGet]
         [ValidateAntiForgeryToken]
         [AdvancedPermission(MenuName = Components.Constants.MenuName, Permission = Components.Constants.ManageRoles)]
@@ -631,7 +620,8 @@ namespace Dnn.PersonaBar.Users.Services
         {
             var settings = new MembershipPasswordSettings(this.PortalId);
 
-            var passwordSettings = new PasswordSettingsDto{
+            var passwordSettings = new PasswordSettingsDto
+            {
                 MinLength = settings.MinPasswordLength,
                 MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters,
                 ValidationExpression = settings.ValidationExpression

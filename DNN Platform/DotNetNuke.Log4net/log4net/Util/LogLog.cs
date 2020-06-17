@@ -588,7 +588,7 @@ namespace log4net.Util
 
         private const string PREFIX = "log4net: ";
         private const string ERR_PREFIX = "log4net:ERROR ";
-        private const string WARN_PREFIX    = "log4net:WARN ";
+        private const string WARN_PREFIX = "log4net:WARN ";
 
         /// <summary>
         /// Subscribes to the LogLog.LogReceived event and stores messages

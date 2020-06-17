@@ -70,29 +70,6 @@ namespace Dnn.PersonaBar.Pages.Components
             AllTabs = module.AllTabs
         };
 
-        private static string GetModuleEditSettingUrl(ModuleInfo module)
-        {
-            var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
-            return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
-        }
-
-        private static string GetModuleEditContentUrl(ModuleInfo module)
-        {
-            var moduleControl = ModuleControlController.GetModuleControlByControlKey("Edit", module.ModuleDefID);
-            if(moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
-            {
-                var parameters = new List<string>{ "mid=" + module.ModuleID };
-                if (moduleControl.SupportsPopUps)
-                {
-                    parameters.Add("popUp=true");
-                }
-
-                return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
-            }
-
-            return string.Empty;
-        }
-
         public static T ConvertToPageSettings<T>(TabInfo tab) where T : PageSettings, new()
         {
             if (tab == null)
@@ -161,6 +138,29 @@ namespace Dnn.PersonaBar.Pages.Components
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 PagePermissions = SecurityService.Instance.GetPagePermissions(tab)
             };
+        }
+
+        private static string GetModuleEditSettingUrl(ModuleInfo module)
+        {
+            var parameters = new List<string> { "ModuleId=" + module.ModuleID, "popUp=true" };
+            return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, "Module", parameters.ToArray());
+        }
+
+        private static string GetModuleEditContentUrl(ModuleInfo module)
+        {
+            var moduleControl = ModuleControlController.GetModuleControlByControlKey("Edit", module.ModuleDefID);
+            if (moduleControl != null && moduleControl.ControlType == SecurityAccessLevel.Edit && !string.IsNullOrEmpty(moduleControl.ControlTitle))
+            {
+                var parameters = new List<string> { "mid=" + module.ModuleID };
+                if (moduleControl.SupportsPopUps)
+                {
+                    parameters.Add("popUp=true");
+                }
+
+                return _navigationManager.NavigateURL(module.TabID, PortalSettings.Current, moduleControl.ControlKey, parameters.ToArray());
+            }
+
+            return string.Empty;
         }
 
         private static ThemeFileInfo GetThemeFileFromSkinSrc(string skinSrc)

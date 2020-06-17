@@ -39,45 +39,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private DnnGenericHiddenField<DnnDropDownListState> _stateControl;
         private HtmlAnchor _selectedValue;
 
-        internal DnnDropDownListOptions Options
-        {
-            get
-            {
-                return this._options.Value;
-            }
-        }
-
-        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this._stateControl;
-            }
-        }
-
-        private HtmlAnchor SelectedValue
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this._selectedValue;
-            }
-        }
-
-        private bool UseUndefinedItem
-        {
-            get
-            {
-                return this.ViewState.GetValue("UseUndefinedItem", false);
-            }
-
-            set
-            {
-                this.ViewState.SetValue("UseUndefinedItem", value, false);
-            }
-        }
-
         /// <summary>
         /// Occurs when the selection from the list control changes between posts to the server.
         /// </summary>
@@ -121,6 +82,45 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this.StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
+            }
+        }
+
+        internal DnnDropDownListOptions Options
+        {
+            get
+            {
+                return this._options.Value;
+            }
+        }
+
+        protected DnnGenericHiddenField<DnnDropDownListState> StateControl
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this._stateControl;
+            }
+        }
+
+        private HtmlAnchor SelectedValue
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this._selectedValue;
+            }
+        }
+
+        private bool UseUndefinedItem
+        {
+            get
+            {
+                return this.ViewState.GetValue("UseUndefinedItem", false);
+            }
+
+            set
+            {
+                this.ViewState.SetValue("UseUndefinedItem", value, false);
             }
         }
 
@@ -284,6 +284,26 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        internal static void RegisterClientScript(Page page, string skin)
+        {
+            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
+            if (!string.IsNullOrEmpty(skin))
+            {
+                ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css", FileOrder.Css.ResourceCss);
+            }
+
+            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
+
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.extensions.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
+            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
+        }
+
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -333,26 +353,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private static string LocalizeString(string key)
         {
             return Localization.GetString(key, Localization.SharedResourceFile);
-        }
-
-        internal static void RegisterClientScript(Page page, string skin)
-        {
-            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
-            if (!string.IsNullOrEmpty(skin))
-            {
-                ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css", FileOrder.Css.ResourceCss);
-            }
-
-            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
-
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.extensions.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.DataStructures.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/jquery.mousewheel.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/TreeView/dnn.TreeView.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/TreeView/dnn.DynamicTreeView.js");
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/DropDownList/dnn.DropDownList.js");
         }
 
         private string GetPostBackScript()

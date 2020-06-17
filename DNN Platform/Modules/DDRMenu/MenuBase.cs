@@ -28,6 +28,25 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class MenuBase
     {
+        private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
+                                                                          {
+                                                                            { "rootonly", "*,0,0" },
+                                                                            { "rootchildren", "+0" },
+                                                                            { "currentchildren", "." },
+                                                                          };
+
+        private Settings menuSettings;
+
+        private HttpContext currentContext;
+
+        private PortalSettings hostPortalSettings;
+
+        public TemplateDefinition TemplateDef { get; set; }
+
+        internal MenuNode RootNode { get; set; }
+
+        internal bool SkipLocalisation { get; set; }
+
         public static MenuBase Instantiate(string menuStyle)
         {
             try
@@ -41,34 +60,15 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        private Settings menuSettings;
-
-        internal MenuNode RootNode { get; set; }
-
-        internal bool SkipLocalisation { get; set; }
-
-        public TemplateDefinition TemplateDef { get; set; }
-
-        private HttpContext currentContext;
-
-        private HttpContext CurrentContext
-        {
-            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
-        }
-
-        private PortalSettings hostPortalSettings;
-
         internal PortalSettings HostPortalSettings
         {
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
         }
 
-        private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
-                                                                          {
-                                                                            { "rootonly", "*,0,0" },
-                                                                            { "rootchildren", "+0" },
-                                                                            { "currentchildren", "." },
-                                                                          };
+        private HttpContext CurrentContext
+        {
+            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
+        }
 
         internal void ApplySettings(Settings settings)
         {
@@ -142,6 +142,16 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
         }
 
+        protected string MapPath(string path)
+        {
+            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
+        }
+
+        private static List<string> SplitAndTrim(string str)
+        {
+            return new List<string>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
+        }
+
         private void LoadNodeXml()
         {
             this.menuSettings.NodeXmlPath =
@@ -164,7 +174,7 @@ namespace DotNetNuke.Web.DDRMenu
             using (var reader = XmlReader.Create(this.menuSettings.NodeXmlPath))
             {
                 reader.ReadToFollowing("root");
-                this.RootNode = (MenuNode) new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
+                this.RootNode = (MenuNode)new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
             }
 
             cache.Insert(this.menuSettings.NodeXmlPath, this.RootNode, new CacheDependency(this.menuSettings.NodeXmlPath));
@@ -320,10 +330,10 @@ namespace DotNetNuke.Web.DDRMenu
                 }
             }
 
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             this.RootNode = new MenuNode(newRoot.Children);
 
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper restore PossibleNullReferenceException
             if (selectorSplit.Count > 1)
             {
                 for (var n = Convert.ToInt32(selectorSplit[1]); n > 0; n--)
@@ -365,16 +375,6 @@ namespace DotNetNuke.Web.DDRMenu
                 new MenuNode(
                     ((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(this.menuSettings.NodeManipulator, true, true))).
                         ManipulateNodes(this.RootNode.Children, this.HostPortalSettings));
-        }
-
-        protected string MapPath(string path)
-        {
-            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
-        }
-
-        private static List<string> SplitAndTrim(string str)
-        {
-            return new List<string>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
         }
     }
 }

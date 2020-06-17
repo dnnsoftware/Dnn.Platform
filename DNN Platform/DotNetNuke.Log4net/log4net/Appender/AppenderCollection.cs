@@ -627,7 +627,7 @@ namespace log4net.Appender
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator) this.GetEnumerator();
+            return (IEnumerator)this.GetEnumerator();
         }
 
         /// <summary>

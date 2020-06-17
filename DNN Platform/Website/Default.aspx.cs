@@ -59,8 +59,6 @@ namespace DotNetNuke.Framework
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 
-        protected INavigationManager NavigationManager { get; }
-
         public DefaultPage()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -92,6 +90,16 @@ namespace DotNetNuke.Framework
 
             set { this.ScrollTop.Value = value.ToString(); }
         }
+
+        public string CurrentSkinPath
+        {
+            get
+            {
+                return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
+            }
+        }
+
+        protected INavigationManager NavigationManager { get; }
 
         protected string HtmlAttributeList
         {
@@ -129,14 +137,6 @@ namespace DotNetNuke.Framework
             }
         }
 
-        public string CurrentSkinPath
-        {
-            get
-            {
-                return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
-            }
-        }
-
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -160,6 +160,160 @@ namespace DotNetNuke.Framework
             }
 
             return string.Empty;
+        }
+
+        protected bool NonProductionVersion()
+        {
+            return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Contains the functionality to populate the Root aspx page with controls.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// - obtain PortalSettings from Current Context
+        /// - set global page settings.
+        /// - initialise reference paths to load the cascading style sheets
+        /// - add skin control placeholder.  This holds all the modules and content of the page.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            // set global page settings
+            this.InitializePage();
+
+            // load skin control and register UI js
+            UI.Skins.Skin ctlSkin;
+            if (this.PortalSettings.EnablePopUps)
+            {
+                ctlSkin = UrlUtils.InPopUp() ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
+
+                // register popup js
+                JavaScript.RequestRegistration(CommonJs.jQueryUI);
+
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+
+                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
+            }
+            else
+            {
+                ctlSkin = UI.Skins.Skin.GetSkin(this);
+            }
+
+            // DataBind common paths for the client resource loader
+            this.ClientResourceLoader.DataBind();
+            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
+
+            // check for and read skin package level doctype
+            this.SetSkinDoctype();
+
+            // Manage disabled pages
+            if (this.PortalSettings.ActiveTab.DisableLink)
+            {
+                if (TabPermissionController.CanAdminPage())
+                {
+                    var heading = Localization.GetString("PageDisabled.Header");
+                    var message = Localization.GetString("PageDisabled.Text");
+                    UI.Skins.Skin.AddPageMessage(ctlSkin, heading, message,
+                                                 ModuleMessage.ModuleMessageType.YellowWarning);
+                }
+                else
+                {
+                    if (this.PortalSettings.HomeTabId > 0)
+                    {
+                        this.Response.Redirect(this.NavigationManager.NavigateURL(this.PortalSettings.HomeTabId), true);
+                    }
+                    else
+                    {
+                        this.Response.Redirect(Globals.GetPortalDomainName(this.PortalSettings.PortalAlias.HTTPAlias, this.Request, true), true);
+                    }
+                }
+            }
+
+            // Manage canonical urls
+            if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
+            {
+                string primaryHttpAlias = null;
+                if (Config.GetFriendlyUrlProvider() == "advanced") // advanced mode compares on the primary alias as set during alias identification
+                {
+                    if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
+                    {
+                        if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
+                        {
+                            primaryHttpAlias = this.PortalSettings.PrimaryAlias.HTTPAlias;
+                        }
+                    }
+                }
+                else // other modes just depend on the default alias
+                {
+                    if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
+                    {
+                        primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
+                    }
+                }
+
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
+                {
+                    var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
+                    this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
+
+                    if (UrlUtils.IsSecureConnectionOrSslOffload(this.Request))
+                    {
+                        this.CanonicalLinkUrl = this.CanonicalLinkUrl.Replace("http://", "https://");
+                    }
+                }
+            }
+
+            // check if running with known account defaults
+            if (this.Request.IsAuthenticated && string.IsNullOrEmpty(this.Request.QueryString["runningDefault"]) == false)
+            {
+                var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
+                var usernameLower = userInfo?.Username?.ToLowerInvariant();
+
+                // only show message to default users
+                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
+                {
+                    var messageText = this.RenderDefaultsWarning();
+                    var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
+                    UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
+                }
+            }
+
+            // add CSS links
+            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/7.0.0/default.css"));
+            ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
+
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
+            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss);
+
+            // add skin to page
+            this.SkinPlaceHolder.Controls.Add(ctlSkin);
+
+            ClientResourceManager.RegisterStyleSheet(this, string.Concat(this.PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss);
+
+            // add Favicon
+            this.ManageFavicon();
+
+            // ClientCallback Logic
+            ClientAPI.HandleClientAPICallbackEvent(this);
+
+            // add viewstateuserkey to protect against CSRF attacks
+            if (this.User.Identity.IsAuthenticated)
+            {
+                this.ViewStateUserKey = this.User.Identity.Name;
+            }
+
+            // set the async postback timeout.
+            if (AJAX.IsEnabled())
+            {
+                AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -540,160 +694,6 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfoCallBack(CacheItemArgs itemArgs)
         {
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
-        }
-
-        protected bool NonProductionVersion()
-        {
-            return DotNetNukeContext.Current.Application.Status != ReleaseMode.Stable;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Contains the functionality to populate the Root aspx page with controls.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <remarks>
-        /// - obtain PortalSettings from Current Context
-        /// - set global page settings.
-        /// - initialise reference paths to load the cascading style sheets
-        /// - add skin control placeholder.  This holds all the modules and content of the page.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            // set global page settings
-            this.InitializePage();
-
-            // load skin control and register UI js
-            UI.Skins.Skin ctlSkin;
-            if (this.PortalSettings.EnablePopUps)
-            {
-                ctlSkin = UrlUtils.InPopUp() ? UI.Skins.Skin.GetPopUpSkin(this) : UI.Skins.Skin.GetSkin(this);
-
-                // register popup js
-                JavaScript.RequestRegistration(CommonJs.jQueryUI);
-
-                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
-                                   ? "~/js/Debug/dnn.modalpopup.js"
-                                   : "~/js/dnn.modalpopup.js";
-
-                ClientResourceManager.RegisterScript(this, popupFilePath, FileOrder.Js.DnnModalPopup);
-            }
-            else
-            {
-                ctlSkin = UI.Skins.Skin.GetSkin(this);
-            }
-
-            // DataBind common paths for the client resource loader
-            this.ClientResourceLoader.DataBind();
-            this.ClientResourceLoader.PreRender += (sender, args) => JavaScript.Register(this.Page);
-
-            // check for and read skin package level doctype
-            this.SetSkinDoctype();
-
-            // Manage disabled pages
-            if (this.PortalSettings.ActiveTab.DisableLink)
-            {
-                if (TabPermissionController.CanAdminPage())
-                {
-                    var heading = Localization.GetString("PageDisabled.Header");
-                    var message = Localization.GetString("PageDisabled.Text");
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, heading, message,
-                                                 ModuleMessage.ModuleMessageType.YellowWarning);
-                }
-                else
-                {
-                    if (this.PortalSettings.HomeTabId > 0)
-                    {
-                        this.Response.Redirect(this.NavigationManager.NavigateURL(this.PortalSettings.HomeTabId), true);
-                    }
-                    else
-                    {
-                        this.Response.Redirect(Globals.GetPortalDomainName(this.PortalSettings.PortalAlias.HTTPAlias, this.Request, true), true);
-                    }
-                }
-            }
-
-            // Manage canonical urls
-            if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
-            {
-                string primaryHttpAlias = null;
-                if (Config.GetFriendlyUrlProvider() == "advanced") // advanced mode compares on the primary alias as set during alias identification
-                {
-                    if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
-                    {
-                        if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
-                        {
-                            primaryHttpAlias = this.PortalSettings.PrimaryAlias.HTTPAlias;
-                        }
-                    }
-                }
-                else // other modes just depend on the default alias
-                {
-                    if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
-                    {
-                        primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
-                    }
-                }
-
-                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
-                {
-                    var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
-                    this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);
-
-                    if (UrlUtils.IsSecureConnectionOrSslOffload(this.Request))
-                    {
-                        this.CanonicalLinkUrl = this.CanonicalLinkUrl.Replace("http://", "https://");
-                    }
-                }
-            }
-
-            // check if running with known account defaults
-            if (this.Request.IsAuthenticated && string.IsNullOrEmpty(this.Request.QueryString["runningDefault"]) == false)
-            {
-                var userInfo = HttpContext.Current.Items["UserInfo"] as UserInfo;
-                var usernameLower = userInfo?.Username?.ToLowerInvariant();
-
-                // only show message to default users
-                if ("admin".Equals(usernameLower) || "host".Equals(usernameLower))
-                {
-                    var messageText = this.RenderDefaultsWarning();
-                    var messageTitle = Localization.GetString("InsecureDefaults.Title", Localization.GlobalResourceFile);
-                    UI.Skins.Skin.AddPageMessage(ctlSkin, messageTitle, messageText, ModuleMessage.ModuleMessageType.RedError);
-                }
-            }
-
-            // add CSS links
-            ClientResourceManager.RegisterDefaultStylesheet(this, string.Concat(Globals.ApplicationPath, "/Resources/Shared/stylesheets/dnndefault/7.0.0/default.css"));
-            ClientResourceManager.RegisterIEStylesheet(this, string.Concat(Globals.HostPath, "ie.css"));
-
-            ClientResourceManager.RegisterStyleSheet(this, string.Concat(ctlSkin.SkinPath, "skin.css"), FileOrder.Css.SkinCss);
-            ClientResourceManager.RegisterStyleSheet(this, ctlSkin.SkinSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificSkinCss);
-
-            // add skin to page
-            this.SkinPlaceHolder.Controls.Add(ctlSkin);
-
-            ClientResourceManager.RegisterStyleSheet(this, string.Concat(this.PortalSettings.HomeDirectory, "portal.css"), FileOrder.Css.PortalCss);
-
-            // add Favicon
-            this.ManageFavicon();
-
-            // ClientCallback Logic
-            ClientAPI.HandleClientAPICallbackEvent(this);
-
-            // add viewstateuserkey to protect against CSRF attacks
-            if (this.User.Identity.IsAuthenticated)
-            {
-                this.ViewStateUserKey = this.User.Identity.Name;
-            }
-
-            // set the async postback timeout.
-            if (AJAX.IsEnabled())
-            {
-                AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
-            }
         }
 
         /// -----------------------------------------------------------------------------

@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
 // ReSharper disable InconsistentNaming
         public string OnClickJS { get; set; }
 
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether an Image is displayed.
@@ -121,6 +121,26 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Boolean.</value>
         public string VisibleField { get; set; }
+
+        /// <summary>
+        /// Initialises the Column.
+        /// </summary>
+        public override void Initialize()
+        {
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+
+            if (HttpContext.Current == null)
+            {
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
+            }
+
+            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+        }
 
         /// <summary>
         /// Creates a ImageCommandColumnTemplate.
@@ -154,26 +174,6 @@ namespace DotNetNuke.UI.WebControls
             template.DesignMode = isDesignMode;
 
             return template;
-        }
-
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
-        public override void Initialize()
-        {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-
-            if (HttpContext.Current == null)
-            {
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
-            }
-
-            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
     }
 }

@@ -26,6 +26,38 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
+        public override int GetItemCount(int tabId)
+        {
+            return GetCachedItemCount(tabId);
+        }
+
+        public override byte[] GetOutput(int tabId, string cacheKey)
+        {
+            string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
+            if (!File.Exists(cachedOutput))
+            {
+                return null;
+            }
+
+            var fInfo = new FileInfo(cachedOutput);
+            long numBytes = fInfo.Length;
+            using (var fStream = new FileStream(cachedOutput, FileMode.Open, FileAccess.Read))
+            using (var br = new BinaryReader(fStream))
+            {
+                return br.ReadBytes(Convert.ToInt32(numBytes));
+            }
+        }
+
+        internal static string GetAttribFileName(int tabId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
+        }
+
+        internal static int GetCachedItemCount(int tabId)
+        {
+            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
+        }
+
         private static string GetCacheFolder()
         {
             int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
@@ -48,10 +80,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
-            if (! string.IsNullOrEmpty(homeDirectoryMapPath))
+            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (! Directory.Exists(cacheFolder))
+                if (!Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }
@@ -98,7 +130,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 int i = 0;
                 foreach (string file in Directory.GetFiles(folder, "*.resources"))
                 {
-                    if (! FileSystemUtils.DeleteFileWithWait(file, 100, 200))
+                    if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                     {
                         filesNotDeleted.Append(file + ";");
                     }
@@ -119,16 +151,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        internal static string GetAttribFileName(int tabId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
-        }
-
-        internal static int GetCachedItemCount(int tabId)
-        {
-            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
-        }
-
         internal static string GetCachedOutputFileName(int tabId, string cacheKey)
         {
             return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
@@ -139,28 +161,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             return string.Concat(GetCacheFolder(), cacheKey, TempFileExtension);
         }
 
-        public override int GetItemCount(int tabId)
-        {
-            return GetCachedItemCount(tabId);
-        }
-
-        public override byte[] GetOutput(int tabId, string cacheKey)
-        {
-            string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
-            if (! File.Exists(cachedOutput))
-            {
-                return null;
-            }
-
-            var fInfo = new FileInfo(cachedOutput);
-            long numBytes = fInfo.Length;
-            using (var fStream = new FileStream(cachedOutput, FileMode.Open, FileAccess.Read))
-            using (var br = new BinaryReader(fStream))
-            {
-                return br.ReadBytes(Convert.ToInt32(numBytes));
-            }
-        }
-
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new FileResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
@@ -169,7 +169,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         public override void PurgeCache(int portalId)
         {
             string cacheFolder = GetCacheFolder(portalId);
-            if (! string.IsNullOrEmpty(cacheFolder))
+            if (!string.IsNullOrEmpty(cacheFolder))
             {
                 this.PurgeCache(cacheFolder);
             }
@@ -181,14 +181,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
             int i = 0;
             string cacheFolder = GetCacheFolder(portalId);
 
-            if (! string.IsNullOrEmpty(cacheFolder))
+            if (!string.IsNullOrEmpty(cacheFolder))
             {
                 foreach (string file in Directory.GetFiles(cacheFolder, "*" + AttribFileExtension))
                 {
                     if (this.IsFileExpired(file))
                     {
                         string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
-                        if (! FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
+                        if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                         {
                             filesNotDeleted.Append(fileToDelete + ";");
                         }
@@ -217,11 +217,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     int i = 0;
                     string cacheFolder = GetCacheFolder(portals[tabId]);
 
-                    if (! string.IsNullOrEmpty(cacheFolder))
+                    if (!string.IsNullOrEmpty(cacheFolder))
                     {
                         foreach (string file in Directory.GetFiles(cacheFolder, string.Concat(tabId, "_*.*")))
                         {
-                            if (! FileSystemUtils.DeleteFileWithWait(file, 100, 200))
+                            if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                             {
                                 filesNotDeleted.Append(string.Concat(file, ";"));
                             }

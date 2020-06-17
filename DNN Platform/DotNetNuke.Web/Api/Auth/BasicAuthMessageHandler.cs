@@ -19,14 +19,14 @@ namespace DotNetNuke.Web.Api.Auth
 
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
-        public override string AuthScheme => "Basic";
-
         private readonly Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
 
         public BasicAuthMessageHandler(bool includeByDefault, bool forceSsl)
             : base(includeByDefault, forceSsl)
         {
         }
+
+        public override string AuthScheme => "Basic";
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {

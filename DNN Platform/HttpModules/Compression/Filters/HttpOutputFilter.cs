@@ -15,14 +15,6 @@ namespace DotNetNuke.HttpModules.Compression
             this._sink = baseStream;
         }
 
-        protected Stream BaseStream
-        {
-            get
-            {
-                return this._sink;
-            }
-        }
-
         public override bool CanRead
         {
             get
@@ -36,6 +28,14 @@ namespace DotNetNuke.HttpModules.Compression
             get
             {
                 return false;
+            }
+        }
+
+        protected Stream BaseStream
+        {
+            get
+            {
+                return this._sink;
             }
         }
 

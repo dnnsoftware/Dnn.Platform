@@ -31,10 +31,6 @@ namespace DotNetNuke.Modules.Admin.Sales
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -137,6 +133,10 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
 
         private void cmdPurchase_Click(object sender, EventArgs e)

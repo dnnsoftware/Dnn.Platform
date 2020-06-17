@@ -101,6 +101,11 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
+        protected override Func<ITabModulesController> GetFactory()
+        {
+            return () => new TabModulesController();
+        }
+
         private static void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
         {
             if (Null.IsNull(cloneModule.StartDate))
@@ -136,11 +141,6 @@ namespace DotNetNuke.Entities.Tabs
             }
 
             return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
-        }
-
-        protected override Func<ITabModulesController> GetFactory()
-        {
-            return () => new TabModulesController();
         }
     }
 }

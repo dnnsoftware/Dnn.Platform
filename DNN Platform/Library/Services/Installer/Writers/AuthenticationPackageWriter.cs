@@ -40,6 +40,12 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
 
+        protected override void WriteManifestComponent(XmlWriter writer)
+        {
+            // Write Authentication Component
+            this.WriteAuthenticationComponent(writer);
+        }
+
         private void Initialize()
         {
             this.BasePath = Path.Combine("DesktopModules\\AuthenticationServices", this.AuthSystem.AuthenticationType);
@@ -66,12 +72,6 @@ namespace DotNetNuke.Services.Installer.Writers
 
             // End component Element
             writer.WriteEndElement();
-        }
-
-        protected override void WriteManifestComponent(XmlWriter writer)
-        {
-            // Write Authentication Component
-            this.WriteAuthenticationComponent(writer);
         }
     }
 }

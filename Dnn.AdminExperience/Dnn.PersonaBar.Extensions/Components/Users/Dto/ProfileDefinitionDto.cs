@@ -16,6 +16,11 @@ namespace Dnn.PersonaBar.Users.Components.Dto
     [DataContract]
     public class ProfileDefinitionDto
     {
+        public ProfileDefinitionDto()
+        {
+
+        }
+
         [DataMember(Name = "propertyCategory")]
         public string PropertyCategory { get; set; }
 
@@ -39,11 +44,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
 
         [DataMember(Name = "length")]
         public int Length { get; set; }
-
-        public ProfileDefinitionDto()
-        {
-            
-        }
 
         public ProfileDefinitionDto(ProfilePropertyDefinition definition)
         {

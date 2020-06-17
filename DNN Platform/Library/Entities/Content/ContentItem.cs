@@ -227,6 +227,39 @@ namespace DotNetNuke.Entities.Content
         public int StateID { get; set; }
 
         /// <summary>
+        /// Gets or sets the key ID.
+        /// </summary>
+        /// <value>
+        /// The key ID.
+        /// </value>
+        /// <remarks>
+        /// If you derive class has its own key id, please override this property and set the value to your own key id.
+        /// </remarks>
+        [XmlIgnore]
+        public virtual int KeyID
+        {
+            get
+            {
+                return this.ContentItemId;
+            }
+
+            set
+            {
+                this.ContentItemId = value;
+            }
+        }
+
+        /// <summary>
+        /// Fill this content object will the information from data reader.
+        /// </summary>
+        /// <param name="dr">The data reader.</param>
+        /// <seealso cref="IHydratable.Fill"/>
+        public virtual void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+        }
+
+        /// <summary>
         /// Fills the internal.
         /// </summary>
         /// <param name="dr">The data reader contains module information.</param>
@@ -267,39 +300,6 @@ namespace DotNetNuke.Entities.Content
             cloneItem.ContentKey = originalItem.ContentKey;
             cloneItem.Indexed = originalItem.Indexed;
             cloneItem.StateID = originalItem.StateID;
-        }
-
-        /// <summary>
-        /// Fill this content object will the information from data reader.
-        /// </summary>
-        /// <param name="dr">The data reader.</param>
-        /// <seealso cref="IHydratable.Fill"/>
-        public virtual void Fill(IDataReader dr)
-        {
-            this.FillInternal(dr);
-        }
-
-        /// <summary>
-        /// Gets or sets the key ID.
-        /// </summary>
-        /// <value>
-        /// The key ID.
-        /// </value>
-        /// <remarks>
-        /// If you derive class has its own key id, please override this property and set the value to your own key id.
-        /// </remarks>
-        [XmlIgnore]
-        public virtual int KeyID
-        {
-            get
-            {
-                return this.ContentItemId;
-            }
-
-            set
-            {
-                this.ContentItemId = value;
-            }
         }
     }
 }

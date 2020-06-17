@@ -28,9 +28,9 @@ namespace Dnn.EditBar.UI.Services
     [DnnPageEditor]
     public class ContentEditorController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
-
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
 
         private string LocalResourcesFile
         {
@@ -39,7 +39,7 @@ namespace Dnn.EditBar.UI.Services
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage DeleteModule([FromUri]int moduleId)
+        public HttpResponseMessage DeleteModule([FromUri] int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, this.PortalSettings.ActiveTab.TabID, false);
             if (module == null)

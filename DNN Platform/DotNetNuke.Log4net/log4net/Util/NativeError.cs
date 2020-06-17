@@ -248,7 +248,7 @@ namespace log4net.Util
 #if NETCF
 		[DllImport("CoreDll.dll", SetLastError=true, CharSet=CharSet.Unicode)]
 #else
-        [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+        [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
 #endif
         private static extern int FormatMessage(
             int dwFlags,

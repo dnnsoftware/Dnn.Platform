@@ -32,10 +32,10 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
         /// GET: api/CssEditor/GetStyleSheet
         /// <summary>
-        /// Gets portal.css of specific portal
+        /// Gets portal.css of specific portal.
         /// </summary>
-        /// <param name="portalId">Id of portal</param>
-        /// <returns>Content of portal.css</returns>
+        /// <param name="portalId">Id of portal.</param>
+        /// <returns>Content of portal.css.</returns>
         [HttpGet]
         public HttpResponseMessage GetStyleSheet(int portalId)
         {
@@ -78,9 +78,9 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
         /// POST: api/CssEditor/UpdateStyleSheet
         /// <summary>
-        /// Updates portal.css of specific portal
+        /// Updates portal.css of specific portal.
         /// </summary>
-        /// <param name="request">Content of portal css</param>
+        /// <param name="request">Content of portal css.</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -137,7 +137,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
                     ClientResourceManager.ClearFileExistsCache(relativePath);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                 }
                 catch (Exception exc)
                 {
@@ -149,10 +149,10 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
         /// POST: api/CssEditor/RestoreStyleSheet
         /// <summary>
-        /// Restores portal.css of specific portal
+        /// Restores portal.css of specific portal.
         /// </summary>
-        /// <param name="request">Id of portal</param>
-        /// <returns>Content of portal.css</returns>
+        /// <param name="request">Id of portal.</param>
+        /// <returns>Content of portal.css.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RestoreStyleSheet(RestoreCssRequest request)
@@ -185,7 +185,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
                     }
                     var content = this.LoadStyleSheet(request.PortalId);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Success = true, StyleSheetContent = content});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, StyleSheetContent = content });
                 }
                 catch (Exception exc)
                 {
@@ -194,8 +194,6 @@ namespace Dnn.PersonaBar.CssEditor.Services
                 }
             }
         }
-
-        #region Private Methods
 
         private string LoadStyleSheet(int portalId)
         {
@@ -220,7 +218,5 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
             return styleSheetContent;
         }
-
-        #endregion
     }
 }

@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.WebControls
                 PropertyInfo objProperty = this.DataSource.GetType().GetProperty(e.Name);
                 if (objProperty != null)
                 {
-                    if ((! ReferenceEquals(newValue, oldValue)) || changed)
+                    if ((!ReferenceEquals(newValue, oldValue)) || changed)
                     {
                         objProperty.SetValue(this.DataSource, newValue, null);
                         _IsDirty = true;
@@ -188,9 +188,9 @@ namespace DotNetNuke.UI.WebControls
 
             // Set Visibility
             editInfo.ProfileVisibility = new ProfileVisibility
-                                             {
-                                                 VisibilityMode = UserVisibilityMode.AllUsers,
-                                             };
+            {
+                VisibilityMode = UserVisibilityMode.AllUsers,
+            };
 
             return editInfo;
         }

@@ -14,6 +14,13 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     /// -----------------------------------------------------------------------------
     public class InstallConfig
     {
+        public InstallConfig()
+        {
+            this.Portals = new List<PortalConfig>();
+            this.Scripts = new List<string>();
+            this.Settings = new List<HostSettingConfig>();
+        }
+
         public IList<string> Scripts { get; set; }
 
         public string Version { get; set; }
@@ -33,12 +40,5 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
         public string FolderMappingsSettings { get; set; }
 
         public bool SupportLocalization { get; set; }
-
-        public InstallConfig()
-        {
-            this.Portals = new List<PortalConfig>();
-            this.Scripts = new List<string>();
-            this.Settings = new List<HostSettingConfig>();
-        }
     }
 }

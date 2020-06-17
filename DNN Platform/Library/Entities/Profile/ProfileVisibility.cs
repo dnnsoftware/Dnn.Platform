@@ -64,11 +64,11 @@ namespace DotNetNuke.Entities.Profile
         public ProfileVisibility Clone()
         {
             var pv = new ProfileVisibility()
-                         {
-                             VisibilityMode = this.VisibilityMode,
-                             RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
-                             RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities),
-                         };
+            {
+                VisibilityMode = this.VisibilityMode,
+                RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
+                RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities),
+            };
             return pv;
         }
 

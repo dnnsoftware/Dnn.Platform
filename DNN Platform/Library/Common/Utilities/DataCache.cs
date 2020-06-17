@@ -38,11 +38,11 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class DataCache
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
-
         // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
         public const string UnSecureHostSettingsCacheKey = "UnsecureHostSettings";
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
         public const string HostSettingsCacheKey = "HostSettings";
         public const CacheItemPriority HostSettingsCachePriority = CacheItemPriority.NotRemovable;
         public const int HostSettingsCacheTimeOut = 20;
@@ -301,10 +301,10 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority WorkflowsCachePriority = CacheItemPriority.Low;
         public const int WorkflowsCacheTimeout = 2;
 
-        private static string _CachePersistenceEnabled = string.Empty;
-
         public const string ScopeTypesCacheKey = "ScopeTypes";
         public const string VocabularyCacheKey = "Vocabularies";
+
+        private static string _CachePersistenceEnabled = string.Empty;
         public const string TermCacheKey = "Terms_{0}";
 
         internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
@@ -313,6 +313,8 @@ namespace DotNetNuke.Common.Utilities
         private static readonly Dictionary<string, object> lockDictionary = new Dictionary<string, object>();
 
         private static readonly SharedDictionary<string, object> dictionaryCache = new SharedDictionary<string, object>();
+
+        private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
 
         public static bool CachePersistenceEnabled
         {
@@ -327,14 +329,23 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        private static string GetDnnCacheKey(string CacheKey)
+        public static void ClearCache()
         {
-            return CachingProvider.GetCacheKey(CacheKey);
+            CachingProvider.Instance().Clear("Prefix", "DNN_");
+            using (dictionaryCache.GetWriteLock())
+            {
+                dictionaryCache.Clear();
+            }
+
+            // log the cache clear event
+            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString() };
+            log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
+            LogController.Instance.AddLog(log);
         }
 
-        private static string CleanCacheKey(string cacheKey)
+        public static void ClearCache(string cachePrefix)
         {
-            return CachingProvider.CleanCacheKey(cacheKey);
+            CachingProvider.Instance().Clear("Prefix", GetDnnCacheKey(cachePrefix));
         }
 
         internal static void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
@@ -372,23 +383,14 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        public static void ClearCache()
+        private static string GetDnnCacheKey(string CacheKey)
         {
-            CachingProvider.Instance().Clear("Prefix", "DNN_");
-            using (dictionaryCache.GetWriteLock())
-            {
-                dictionaryCache.Clear();
-            }
-
-            // log the cache clear event
-            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString() };
-            log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
-            LogController.Instance.AddLog(log);
+            return CachingProvider.GetCacheKey(CacheKey);
         }
 
-        public static void ClearCache(string cachePrefix)
+        private static string CleanCacheKey(string cacheKey)
         {
-            CachingProvider.Instance().Clear("Prefix", GetDnnCacheKey(cachePrefix));
+            return CachingProvider.CleanCacheKey(cacheKey);
         }
 
         public static void ClearFolderCache(int PortalId)
@@ -498,6 +500,43 @@ namespace DotNetNuke.Common.Utilities
             RemoveCache(string.Format(PackagesCacheKey, portalId));
         }
 
+        public static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        {
+            // declare local object and try and retrieve item from the cache
+            return GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, false);
+        }
+
+        public static TObject GetCache<TObject>(string CacheKey)
+        {
+            object objObject = GetCache(CacheKey);
+            if (objObject == null)
+            {
+                return default(TObject);
+            }
+
+            return (TObject)objObject;
+        }
+
+        public static object GetCache(string CacheKey)
+        {
+            return CachingProvider.Instance().GetItem(GetDnnCacheKey(CacheKey));
+        }
+
+        internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
+        {
+            object objObject = storeInDictionary
+                                   ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired)
+                                   : GetCachedDataFromRuntimeCache(cacheItemArgs, cacheItemExpired);
+
+            // return the object
+            if (objObject == null)
+            {
+                return default(TObject);
+            }
+
+            return (TObject)objObject;
+        }
+
         private static object GetCachedDataFromRuntimeCache(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
             object objObject = GetCache(cacheItemArgs.CacheKey);
@@ -601,29 +640,6 @@ namespace DotNetNuke.Common.Utilities
             return cachedObject;
         }
 
-        public static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
-        {
-            // declare local object and try and retrieve item from the cache
-            return GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, false);
-        }
-
-        internal static TObject GetCachedData<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool storeInDictionary)
-        {
-            object objObject = storeInDictionary
-                                   ? GetCachedDataFromDictionary(cacheItemArgs, cacheItemExpired)
-                                   : GetCachedDataFromRuntimeCache(cacheItemArgs, cacheItemExpired);
-
-            // return the object
-            if (objObject == null)
-            {
-                return default(TObject);
-            }
-
-            return (TObject)objObject;
-        }
-
-        private static readonly TimeSpan _5seconds = new TimeSpan(0, 0, 5);
-
         private static object GetUniqueLockObject(string key)
         {
             object @lock = null;
@@ -689,22 +705,6 @@ namespace DotNetNuke.Common.Utilities
             {
                 dictionaryLock.ExitWriteLock();
             }
-        }
-
-        public static TObject GetCache<TObject>(string CacheKey)
-        {
-            object objObject = GetCache(CacheKey);
-            if (objObject == null)
-            {
-                return default(TObject);
-            }
-
-            return (TObject)objObject;
-        }
-
-        public static object GetCache(string CacheKey)
-        {
-            return CachingProvider.Instance().GetItem(GetDnnCacheKey(CacheKey));
         }
 
         public static void RemoveCache(string CacheKey)

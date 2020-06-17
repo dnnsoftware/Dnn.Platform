@@ -11,12 +11,6 @@ namespace DotNetNuke.Common.Utilities
     /// </summary>
     public static class JsonExtensionsWeb
     {
-        private static JavaScriptSerializer SerializerFactory()
-        {
-            // Allow large JSON strings to be serialized and deserialized.
-            return new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
-        }
-
         /// <summary>
         ///   Serializes a type to Json. Note the type must be marked Serializable
         ///   or include a DataContract attribute.
@@ -39,6 +33,12 @@ namespace DotNetNuke.Common.Utilities
         public static string ToJson(this object value)
         {
             return ToJsonString(value);
+        }
+
+        private static JavaScriptSerializer SerializerFactory()
+        {
+            // Allow large JSON strings to be serialized and deserialized.
+            return new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
         }
 
         /// <summary>

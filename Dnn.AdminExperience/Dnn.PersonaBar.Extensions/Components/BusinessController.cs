@@ -38,16 +38,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             return String.Empty;
         }
 
-        private void UpdateMenuController()
-        {
-            PersonaBarRepository.Instance.UpdateMenuController(Dnn.PersonaBar.Vocabularies.Components.Constants.MenuIdentifier, string.Empty);
-        }
-
-        private bool TelerikAssemblyExists()
-        {
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
-        }
-
         private static string UpdateTelerikEncryptionKey(string keyName)
         {
             var strError = "";
@@ -80,6 +70,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                 }
             }
             return strError;
+        }
+
+        private void UpdateMenuController()
+        {
+            PersonaBarRepository.Instance.UpdateMenuController(Dnn.PersonaBar.Vocabularies.Components.Constants.MenuIdentifier, string.Empty);
+        }
+
+        private bool TelerikAssemblyExists()
+        {
+            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
         }
     }
 }

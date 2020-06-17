@@ -27,22 +27,22 @@ namespace DotNetNuke.Entities.Urls
         public static FriendlyUrlOptions GetOptionsFromSettings(FriendlyUrlSettings settings)
         {
             var options = new FriendlyUrlOptions
-                {
-                    PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
+            {
+                PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                                                     ? settings.ReplaceSpaceWith
                                                     : string.Empty,
-                    SpaceEncoding = settings.SpaceEncodingValue,
-                    MaxUrlPathLength = 200,
-                    ConvertDiacriticChars = settings.AutoAsciiConvert,
-                    RegexMatch = settings.RegexMatch,
-                    IllegalChars = settings.IllegalChars,
-                    ReplaceChars = settings.ReplaceChars,
-                    ReplaceDoubleChars = settings.ReplaceDoubleChars,
-                    ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
-                    PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never)
+                SpaceEncoding = settings.SpaceEncodingValue,
+                MaxUrlPathLength = 200,
+                ConvertDiacriticChars = settings.AutoAsciiConvert,
+                RegexMatch = settings.RegexMatch,
+                IllegalChars = settings.IllegalChars,
+                ReplaceChars = settings.ReplaceChars,
+                ReplaceDoubleChars = settings.ReplaceDoubleChars,
+                ReplaceCharWithChar = settings.ReplaceCharacterDictionary,
+                PageExtension = (settings.PageExtensionUsageType == PageExtensionUsageType.Never)
                                             ? string.Empty
                                             : settings.PageExtension,
-                };
+            };
             return options;
         }
 
@@ -78,13 +78,13 @@ namespace DotNetNuke.Entities.Urls
         public static void Log404(HttpRequest request, FriendlyUrlSettings settings, UrlAction result)
         {
             var log = new LogInfo
-                {
-                    LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
-                    LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1,
-                };
+            {
+                LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
+                LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1,
+            };
             log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : string.Empty));
-            log.LogProperties.Add(new LogDetailInfo("PortalAlias",  (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));
-            log.LogProperties.Add(new LogDetailInfo("OriginalUrl",  result.RawUrl));
+            log.LogProperties.Add(new LogDetailInfo("PortalAlias", (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));
+            log.LogProperties.Add(new LogDetailInfo("OriginalUrl", result.RawUrl));
 
             if (request != null)
             {

@@ -17,6 +17,9 @@ namespace DotNetNuke.Tests.Data
     [TestFixture]
     public class PetaPocoDataContextTests
     {
+        private const string connectionStringName = "PetaPoco";
+        private const string tablePrefix = "dnn_";
+
         // ReSharper disable InconsistentNaming
         [SetUp]
         public void SetUp()
@@ -27,9 +30,6 @@ namespace DotNetNuke.Tests.Data
         public void TearDown()
         {
         }
-
-        private const string connectionStringName = "PetaPoco";
-        private const string tablePrefix = "dnn_";
 
         [Test]
         public void PetaPocoDataContext_Constructors_Throw_On_Null_ConnectionString()

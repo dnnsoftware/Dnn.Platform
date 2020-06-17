@@ -16,16 +16,18 @@ namespace DotNetNuke.Services.Scheduling
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
 
+        private static int numberOfProcessesInQueue;
+        private static int numberOfProcesses;
+        private static int processesCompleted;
+
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         // This class represents a process group for
         // our threads to run in.
         // ''''''''''''''''''''''''''''''''''''''''''''''''''
         public delegate void CompletedEventHandler();
-
-        private static int numberOfProcessesInQueue;
-        private static int numberOfProcesses;
-        private static int processesCompleted;
         private static int ticksElapsed;
+
+        public event CompletedEventHandler Completed;
 
         private static int GetTicksElapsed
         {
@@ -50,8 +52,6 @@ namespace DotNetNuke.Services.Scheduling
                 return numberOfProcessesInQueue;
             }
         }
-
-        public event CompletedEventHandler Completed;
 
         public void Run(ScheduleHistoryItem objScheduleHistoryItem)
         {
@@ -154,22 +154,6 @@ namespace DotNetNuke.Services.Scheduling
             }
         }
 
-        private SchedulerClient GetSchedulerClient(IServiceProvider services, string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
-        {
-            // This is a method to encapsulate returning
-            // an object whose class inherits SchedulerClient.
-            Type t = BuildManager.GetType(strProcess, true, true);
-            return (SchedulerClient)ActivatorUtilities.CreateInstance(services, t, objScheduleHistoryItem);
-        }
-
-        // This subroutine is callback for Threadpool.QueueWorkItem.  This is the necessary
-        // subroutine signature for QueueWorkItem, and Run() is proper for creating a Thread
-        // so the two subroutines cannot be combined, so instead just call Run from here.
-        private void RunPooledThread(object objScheduleHistoryItem)
-        {
-            this.Run((ScheduleHistoryItem)objScheduleHistoryItem);
-        }
-
         // Add a queue request to Threadpool with a
         // callback to RunPooledThread which calls Run()
         public void AddQueueUserWorkItem(ScheduleItem s)
@@ -189,6 +173,22 @@ namespace DotNetNuke.Services.Scheduling
             {
                 Exceptions.Exceptions.ProcessSchedulerException(exc);
             }
+        }
+
+        private SchedulerClient GetSchedulerClient(IServiceProvider services, string strProcess, ScheduleHistoryItem objScheduleHistoryItem)
+        {
+            // This is a method to encapsulate returning
+            // an object whose class inherits SchedulerClient.
+            Type t = BuildManager.GetType(strProcess, true, true);
+            return (SchedulerClient)ActivatorUtilities.CreateInstance(services, t, objScheduleHistoryItem);
+        }
+
+        // This subroutine is callback for Threadpool.QueueWorkItem.  This is the necessary
+        // subroutine signature for QueueWorkItem, and Run() is proper for creating a Thread
+        // so the two subroutines cannot be combined, so instead just call Run from here.
+        private void RunPooledThread(object objScheduleHistoryItem)
+        {
+            this.Run((ScheduleHistoryItem)objScheduleHistoryItem);
         }
     }
 }

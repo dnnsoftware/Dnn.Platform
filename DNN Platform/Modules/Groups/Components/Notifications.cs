@@ -41,14 +41,14 @@ namespace DotNetNuke.Modules.Groups.Components
 
             bool dismiss = notificationTypeName != Constants.GroupPendingNotification;
             var notification = new Notification
-                                   {
-                                       NotificationTypeID = notificationType.NotificationTypeId,
-                                       Subject = subject,
-                                       Body = body,
-                                       IncludeDismissAction = dismiss,
-                                       SenderUserID = initiatingUser.UserID,
-                                       Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID),
-                                   };
+            {
+                NotificationTypeID = notificationType.NotificationTypeId,
+                Subject = subject,
+                Body = body,
+                IncludeDismissAction = dismiss,
+                SenderUserID = initiatingUser.UserID,
+                Context = string.Format("{0}:{1}:{2}", tabId, moduleId, group.RoleID),
+            };
             NotificationsController.Instance.SendNotification(notification, initiatingUser.PortalID, moderators, recipients);
 
             return notification;

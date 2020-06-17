@@ -37,14 +37,14 @@ namespace DotNetNuke.Modules.Admin.Security
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager _navigationManager;
 
+        private UserInfo _user;
+        private int _userCount = Null.NullInteger;
+        private string _ipAddress;
+
         public SendPassword()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private UserInfo _user;
-        private int _userCount = Null.NullInteger;
-        private string _ipAddress;
 
         /// <summary>
         /// Gets the Redirect URL (after successful sending of password).
@@ -63,38 +63,38 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                if (Convert.ToInt32(setting) <= 0)
-                {
-                    if (this.Request.QueryString["returnurl"] != null)
+                    if (Convert.ToInt32(setting) <= 0)
                     {
-                        // return to the url passed to register
-                        _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
-
-                        // clean the return url to avoid possible XSS attack.
-                        _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
-
-                        if (_RedirectURL.Contains("?returnurl"))
+                        if (this.Request.QueryString["returnurl"] != null)
                         {
-                            string baseURL = _RedirectURL.Substring(
-                                0,
-                                _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
-                            string returnURL =
-                                _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+                            // return to the url passed to register
+                            _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                            _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                            // clean the return url to avoid possible XSS attack.
+                            _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
+
+                            if (_RedirectURL.Contains("?returnurl"))
+                            {
+                                string baseURL = _RedirectURL.Substring(
+                                    0,
+                                    _RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal));
+                                string returnURL =
+                                    _RedirectURL.Substring(_RedirectURL.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+
+                                _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(_RedirectURL))
+                        {
+                            // redirect to current page
+                            _RedirectURL = this._navigationManager.NavigateURL();
                         }
                     }
-
-                    if (string.IsNullOrEmpty(_RedirectURL))
+                    else // redirect to after registration page
                     {
-                        // redirect to current page
-                        _RedirectURL = this._navigationManager.NavigateURL();
+                        _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }
-                }
-                else // redirect to after registration page
-                {
-                    _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
-                }
                 }
 
                 return _RedirectURL;
@@ -126,23 +126,6 @@ namespace DotNetNuke.Modules.Admin.Security
             get
             {
                 return MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
-            }
-        }
-
-        private void GetUser()
-        {
-            ArrayList arrUsers;
-            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
-            {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
-                if (arrUsers != null && arrUsers.Count == 1)
-                {
-                    this._user = (UserInfo)arrUsers[0];
-                }
-            }
-            else
-            {
-                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
 
@@ -205,6 +188,23 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.ctlCaptcha.ErrorMessage = Localization.GetString("InvalidCaptcha", this.LocalResourceFile);
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
+            }
+        }
+
+        private void GetUser()
+        {
+            ArrayList arrUsers;
+            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
+            {
+                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
+                if (arrUsers != null && arrUsers.Count == 1)
+                {
+                    this._user = (UserInfo)arrUsers[0];
+                }
+            }
+            else
+            {
+                this._user = UserController.GetUserByName(this.PortalSettings.PortalId, this.txtUsername.Text);
             }
         }
 

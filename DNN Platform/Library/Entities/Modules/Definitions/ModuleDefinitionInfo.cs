@@ -114,24 +114,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModuleDefinitionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
-            this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
-            this.DefaultCacheTime = Null.SetNullInteger(dr["DefaultCacheTime"]);
-            this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
-            if (dr.GetSchemaTable().Select("ColumnName = 'DefinitionName'").Length > 0)
-            {
-                this.DefinitionName = Null.SetNullString(dr["DefinitionName"]);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -146,6 +128,24 @@ namespace DotNetNuke.Entities.Modules.Definitions
             set
             {
                 this.ModuleDefID = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a ModuleDefinitionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.ModuleDefID = Null.SetNullInteger(dr["ModuleDefID"]);
+            this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
+            this.DefaultCacheTime = Null.SetNullInteger(dr["DefaultCacheTime"]);
+            this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
+            if (dr.GetSchemaTable().Select("ColumnName = 'DefinitionName'").Length > 0)
+            {
+                this.DefinitionName = Null.SetNullString(dr["DefinitionName"]);
             }
         }
 

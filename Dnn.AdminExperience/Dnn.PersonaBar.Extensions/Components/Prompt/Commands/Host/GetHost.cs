@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             var sbErrors = new StringBuilder();
 
             // HOST-ONLY ACCESS
@@ -51,7 +51,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
 
             return new ConsoleResultModel(string.Empty) { Data = lst, Output = this.LocalizeString("Prompt_GetHost_OkMessage") };
         }
-
 
     }
 }

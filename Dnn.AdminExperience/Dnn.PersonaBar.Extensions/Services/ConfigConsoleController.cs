@@ -24,10 +24,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
 
         /// GET: api/ConfigConsole/GetConfigFilesList
         /// <summary>
-        /// Gets list of config files
+        /// Gets list of config files.
         /// </summary>
         /// <param></param>
-        /// <returns>List of config files</returns>
+        /// <returns>List of config files.</returns>
         [HttpGet]
         public HttpResponseMessage GetConfigFilesList()
         {
@@ -53,10 +53,10 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
 
         /// GET: api/ConfigConsole/GetConfigFile
         /// <summary>
-        /// Gets content of a specific config file
+        /// Gets content of a specific config file.
         /// </summary>
-        /// <param name="fileName">Name of a config file</param>
-        /// <returns>Content of a config file</returns>
+        /// <param name="fileName">Name of a config file.</param>
+        /// <returns>Content of a config file.</returns>
         [HttpGet]
         public HttpResponseMessage GetConfigFile(string fileName)
         {
@@ -85,9 +85,9 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
 
         /// POST: api/ConfigConsole/UpdateConfigFile
         /// <summary>
-        /// Updates a config file
+        /// Updates a config file.
         /// </summary>
-        /// <param name="configFileDto">Content of config file</param>
+        /// <param name="configFileDto">Content of config file.</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -111,9 +111,9 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
 
         /// POST: api/ConfigConsole/MergeConfigFile
         /// <summary>
-        /// Merges config files
+        /// Merges config files.
         /// </summary>
-        /// <param name="configFileDto">Content of config file</param>
+        /// <param name="configFileDto">Content of config file.</param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -11,6 +11,11 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     /// </summary>
     public class GroupedDetailView
     {
+        public GroupedDetailView()
+        {
+            this.Results = new List<DetailedView>();
+        }
+
         /// <summary>
         /// Gets or sets document's Url.
         /// </summary>
@@ -25,10 +30,5 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// Gets or sets results of the Search.
         /// </summary>
         public List<DetailedView> Results { get; set; }
-
-        public GroupedDetailView()
-        {
-            this.Results = new List<DetailedView>();
-        }
     }
 }

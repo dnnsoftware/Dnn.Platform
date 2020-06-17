@@ -104,41 +104,6 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             return "Success";
         }
 
-        /// <summary>Gets the module definition identifier.</summary>
-        /// <param name="moduleName">Name of the module.</param>
-        /// <param name="moduleDefinitionName">Name of the module definition.</param>
-        /// <returns>The Module Id for the HTML Editor Management module.</returns>
-        private int GetModuleDefinitionID(string moduleName, string moduleDefinitionName)
-        {
-            // get desktop module
-            DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
-            if (desktopModule == null)
-            {
-                return -1;
-            }
-
-            // get module definition
-            ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByDefinitionName(
-                moduleDefinitionName,
-                desktopModule.DesktopModuleID);
-            if (moduleDefinition == null)
-            {
-                return -1;
-            }
-
-            return moduleDefinition.ModuleDefID;
-        }
-
-        private bool RadEditorProviderInstalled()
-        {
-            return PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals("DotNetNuke.RadEditorProvider")) != null;
-        }
-
-        private bool TelerikAssemblyExists()
-        {
-            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
-        }
-
         private static void UpdateRadCfgFiles()
         {
             var folder = Path.Combine(Globals.ApplicationMapPath, @"DesktopModules\Admin\RadEditorProvider\ConfigFile");
@@ -194,6 +159,41 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                     xlc.AddLog(ex);
                 }
             }
+        }
+
+        /// <summary>Gets the module definition identifier.</summary>
+        /// <param name="moduleName">Name of the module.</param>
+        /// <param name="moduleDefinitionName">Name of the module definition.</param>
+        /// <returns>The Module Id for the HTML Editor Management module.</returns>
+        private int GetModuleDefinitionID(string moduleName, string moduleDefinitionName)
+        {
+            // get desktop module
+            DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
+            if (desktopModule == null)
+            {
+                return -1;
+            }
+
+            // get module definition
+            ModuleDefinitionInfo moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByDefinitionName(
+                moduleDefinitionName,
+                desktopModule.DesktopModuleID);
+            if (moduleDefinition == null)
+            {
+                return -1;
+            }
+
+            return moduleDefinition.ModuleDefID;
+        }
+
+        private bool RadEditorProviderInstalled()
+        {
+            return PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals("DotNetNuke.RadEditorProvider")) != null;
+        }
+
+        private bool TelerikAssemblyExists()
+        {
+            return File.Exists(Path.Combine(Globals.ApplicationMapPath, "bin\\Telerik.Web.UI.dll"));
         }
 
         private static string UpdateWebConfigFile()

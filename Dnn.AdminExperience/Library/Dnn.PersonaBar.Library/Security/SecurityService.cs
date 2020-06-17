@@ -10,12 +10,6 @@ namespace Dnn.PersonaBar.Library.Security
 
     public class SecurityService : ISecurityService
     {
-        public virtual bool IsPagesAdminUser()
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
-        }
-
         public static ISecurityService Instance
         {
             get
@@ -28,6 +22,12 @@ namespace Dnn.PersonaBar.Library.Security
 
                 return ComponentFactory.GetComponent<ISecurityService>("SecurityService");
             }
+        }
+
+        public virtual bool IsPagesAdminUser()
+        {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
     }
 }

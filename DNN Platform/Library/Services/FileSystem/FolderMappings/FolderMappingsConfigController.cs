@@ -16,6 +16,8 @@ namespace DotNetNuke.Services.FileSystem
 
     public class FolderMappingsConfigController : ServiceLocator<IFolderMappingsConfigController, FolderMappingsConfigController>, IFolderMappingsConfigController
     {
+        private const string configNode = "folderMappingsSettings";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderMappingsConfigController));
         private static readonly string defaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
 
@@ -26,7 +28,32 @@ namespace DotNetNuke.Services.FileSystem
             this.LoadConfig();
         }
 
+        public IList<FolderTypeConfig> FolderTypes { get; internal set; }
+
+        public string ConfigNode
+        {
+            get { return configNode; }
+        }
+
         private IDictionary<string, string> FolderMappings { get; set; }
+
+        public void LoadConfig()
+        {
+            try
+            {
+                if (File.Exists(defaultConfigFilePath))
+                {
+                    var configDocument = new XmlDocument { XmlResolver = null };
+                    configDocument.Load(defaultConfigFilePath);
+                    this.FillFolderMappings(configDocument);
+                    this.FillFolderTypes(configDocument);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+        }
 
         private void FillFolderMappings(XmlDocument configDocument)
         {
@@ -85,33 +112,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return folderType;
-        }
-
-        public IList<FolderTypeConfig> FolderTypes { get; internal set; }
-
-        private const string configNode = "folderMappingsSettings";
-
-        public string ConfigNode
-        {
-            get { return configNode; }
-        }
-
-        public void LoadConfig()
-        {
-            try
-            {
-                if (File.Exists(defaultConfigFilePath))
-                {
-                    var configDocument = new XmlDocument { XmlResolver = null };
-                    configDocument.Load(defaultConfigFilePath);
-                    this.FillFolderMappings(configDocument);
-                    this.FillFolderTypes(configDocument);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
         }
 
         public void SaveConfig(string folderMappinsSettings)

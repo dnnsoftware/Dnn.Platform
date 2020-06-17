@@ -53,6 +53,8 @@ namespace DotNetNuke.Entities.Modules
 
         public event UserUpdateErrorEventHandler UserUpdateError;
 
+        protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Raises the UserCreateCompleted Event.
@@ -175,8 +177,6 @@ namespace DotNetNuke.Entities.Modules
                 this.UserUpdateError(this, e);
             }
         }
-
-        protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

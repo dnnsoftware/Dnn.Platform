@@ -31,11 +31,6 @@ namespace DotNetNuke.Web.Api
             providers.Enqueue(tabAndModuleInfoProvider);
         }
 
-        private static object InitValue(object o)
-        {
-            return new ConcurrentQueue<ITabAndModuleInfoProvider>();
-        }
-
         public static IEnumerable<ITabAndModuleInfoProvider> GetTabAndModuleInfoProviders(this HttpConfiguration configuration)
         {
             Requires.NotNull("configuration", configuration);
@@ -49,6 +44,11 @@ namespace DotNetNuke.Web.Api
             }
 
             return providers.ToArray();
+        }
+
+        private static object InitValue(object o)
+        {
+            return new ConcurrentQueue<ITabAndModuleInfoProvider>();
         }
     }
 }

@@ -166,7 +166,7 @@ namespace log4net.Appender
             /// <summary>
             /// Roll files based on both the size and date of the file
             /// </summary>
-            Composite   = 3,
+            Composite = 3,
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace log4net.Appender
             /// <summary>
             /// Roll the log not based on the date
             /// </summary>
-            InvalidRollPoint    = -1,
+            InvalidRollPoint = -1,
 
             /// <summary>
             /// Roll the log for each minute
@@ -831,7 +831,7 @@ namespace log4net.Appender
 
                     LogLog.Debug(declaringType, "[" + last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo) + "] vs. [" + this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]");
 
-                    if (! last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))
+                    if (!last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))
                     {
                         this.m_scheduledFilename = this.CombinePath(this.m_baseFileName, last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo));
                         LogLog.Debug(declaringType, "Initial roll over to [" + this.m_scheduledFilename + "]");

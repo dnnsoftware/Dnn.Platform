@@ -11,6 +11,16 @@ namespace DotNetNuke.Web.UI.WebControls
 
     public class DnnComboBox : RadComboBox
     {
+        public void AddItem(string text, string value)
+        {
+            this.Items.Add(new DnnComboBoxItem(text, value));
+        }
+
+        public void InsertItem(int index, string text, string value)
+        {
+            this.Items.Insert(index, new DnnComboBoxItem(text, value));
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -33,16 +43,6 @@ namespace DotNetNuke.Web.UI.WebControls
             Utilities.ApplySkin(this);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnPreRender(e);
-        }
-
-        public void AddItem(string text, string value)
-        {
-            this.Items.Add(new DnnComboBoxItem(text, value));
-        }
-
-        public void InsertItem(int index, string text, string value)
-        {
-            this.Items.Insert(index, new DnnComboBoxItem(text, value));
         }
 
         public void DataBind(string initialValue)

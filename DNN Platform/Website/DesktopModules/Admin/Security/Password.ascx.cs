@@ -40,15 +40,11 @@ namespace DotNetNuke.Modules.Admin.Users
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
 
-        protected bool UseCaptcha
-        {
-            get
-            {
-                return Convert.ToBoolean(GetSetting(this.PortalId, "Security_CaptchaChangePassword"));
-            }
-        }
-
         public delegate void PasswordUpdatedEventHandler(object sender, PasswordUpdatedEventArgs e);
+
+        public event PasswordUpdatedEventHandler PasswordUpdated;
+
+        public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -68,9 +64,13 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        public event PasswordUpdatedEventHandler PasswordUpdated;
-
-        public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
+        protected bool UseCaptcha
+        {
+            get
+            {
+                return Convert.ToBoolean(GetSetting(this.PortalId, "Security_CaptchaChangePassword"));
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

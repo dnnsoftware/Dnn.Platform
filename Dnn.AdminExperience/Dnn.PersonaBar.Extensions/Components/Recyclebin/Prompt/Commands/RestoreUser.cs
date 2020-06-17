@@ -16,18 +16,18 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("restore-user", Constants.RecylcleBinCategory, "Prompt_RestoreUser_Description")]
     public class RestoreUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private IUserValidator _userValidator;
         private IRecyclebinController _recyclebinController;
 
-        private int UserId { get; set; }
-
-        public RestoreUser(): this (new UserValidator(), RecyclebinController.Instance)
+        public RestoreUser() : this(new UserValidator(), RecyclebinController.Instance)
         {
         }
+
+        private int UserId { get; set; }
 
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {
@@ -37,7 +37,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
         }
 
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
             UserInfo userInfo;
             this._userValidator.ValidateUser(this.UserId, this.PortalSettings, this.User, out userInfo);
-                
+
             if (userInfo == null)
                 return new ConsoleErrorResultModel(string.Format(this.LocalizeString("UserNotFound"), this.UserId));
 

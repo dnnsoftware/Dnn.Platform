@@ -54,6 +54,8 @@ namespace DotNetNuke.Security.Permissions
         private const string ManagePagePermissionKey = "EDIT";
         private const string NavigatePagePermissionKey = "VIEW";
         private const string ViewPagePermissionKey = "VIEW";
+        private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
+
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
         // return the provider
@@ -70,7 +72,55 @@ namespace DotNetNuke.Security.Permissions
             return ComponentFactory.GetComponent<PermissionProvider>();
         }
 
-        private static SharedDictionary<int, DNNCacheDependency> _cacheDependencyDict = new SharedDictionary<int, DNNCacheDependency>();
+        public virtual bool SupportsFullControl()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// The portal editor can edit whole site's content, it should be only administrators by default.
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool IsPortalEditor()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
+        }
+
+        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
+        {
+            // first execute the cache clear action then check the dependency change
+            cacehClearAction.Invoke();
+            DNNCacheDependency dependency;
+            using (_cacheDependencyDict.GetReadLock())
+            {
+                _cacheDependencyDict.TryGetValue(portalId, out dependency);
+            }
+
+            if (dependency != null)
+            {
+                using (_cacheDependencyDict.GetWriteLock())
+                {
+                    _cacheDependencyDict.Remove(portalId);
+                }
+
+                dependency.Dispose();
+            }
+        }
+
+        protected bool HasModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return this.CanViewModule(moduleConfiguration) &&
+                                (this.HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                                 || this.HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT"));
+        }
+
+        protected bool IsDeniedModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
+        {
+            return this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW")
+                        || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
+                        || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
+        }
 
         private static DNNCacheDependency GetCacheDependency(int portalId)
         {
@@ -95,25 +145,29 @@ namespace DotNetNuke.Security.Permissions
             return dependency;
         }
 
-        internal static void ResetCacheDependency(int portalId, Action cacehClearAction)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
+        /// DesktopModule.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
         {
-            // first execute the cache clear action then check the dependency change
-            cacehClearAction.Invoke();
-            DNNCacheDependency dependency;
-            using (_cacheDependencyDict.GetReadLock())
-            {
-                _cacheDependencyDict.TryGetValue(portalId, out dependency);
-            }
+            return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
+                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
+        }
 
-            if (dependency != null)
-            {
-                using (_cacheDependencyDict.GetWriteLock())
-                {
-                    _cacheDependencyDict.Remove(portalId);
-                }
-
-                dependency.Dispose();
-            }
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by
+        /// DesktopModule from the the Database.
+        /// </summary>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
+        /// -----------------------------------------------------------------------------
+        private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return FillDesktopModulePermissionDictionary(DataProvider.Instance().GetDesktopModulePermissions());
         }
 
 #if false
@@ -375,31 +429,6 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModulePermissions gets a Dictionary of DesktopModulePermissionCollections by
-        /// DesktopModule.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private static Dictionary<int, DesktopModulePermissionCollection> GetDesktopModulePermissions()
-        {
-            return CBO.GetCachedObject<Dictionary<int, DesktopModulePermissionCollection>>(
-                new CacheItemArgs(DataCache.DesktopModulePermissionCacheKey, DataCache.DesktopModulePermissionCachePriority), GetDesktopModulePermissionsCallBack);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetDesktopModulePermissionsCallBack gets a Dictionary of DesktopModulePermissionCollections by
-        /// DesktopModule from the the Database.
-        /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
-        /// -----------------------------------------------------------------------------
-        private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return FillDesktopModulePermissionDictionary(DataProvider.Instance().GetDesktopModulePermissions());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// FillDesktopModulePermissionDictionary fills a Dictionary of DesktopModulePermissions from a
         /// dataReader.
         /// </summary>
@@ -454,40 +483,11 @@ namespace DotNetNuke.Security.Permissions
             };
         }
 
-        protected bool HasModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
-        {
-            return this.CanViewModule(moduleConfiguration) &&
-                                (this.HasModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                                 || this.HasModulePermission(moduleConfiguration.ModulePermissions, "EDIT"));
-        }
-
-        protected bool IsDeniedModulePermission(ModuleInfo moduleConfiguration, string permissionKey)
-        {
-            return this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "VIEW")
-                        || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, permissionKey)
-                        || this.IsDeniedModulePermission(moduleConfiguration.ModulePermissions, "EDIT");
-        }
-
         protected bool IsDeniedTabPermission(TabInfo tab, string permissionKey)
         {
             return this.IsDeniedTabPermission(tab.TabPermissions, "VIEW")
                         || this.IsDeniedTabPermission(tab.TabPermissions, permissionKey)
                         || this.IsDeniedTabPermission(tab.TabPermissions, "EDIT");
-        }
-
-        public virtual bool SupportsFullControl()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// The portal editor can edit whole site's content, it should be only administrators by default.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool IsPortalEditor()
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            return settings != null && PortalSecurity.IsInRole(settings.AdministratorRoleName);
         }
 
         /// <summary>
@@ -675,23 +675,23 @@ namespace DotNetNuke.Security.Permissions
                     {
                         // Try to add Read permission
                         var newFolderPerm = new FolderPermissionInfo(readPerm)
-                                                {
-                                                    FolderID = folderPermission.FolderID,
-                                                    RoleID = folderPermission.RoleID,
-                                                    UserID = folderPermission.UserID,
-                                                    AllowAccess = true,
-                                                };
+                        {
+                            FolderID = folderPermission.FolderID,
+                            RoleID = folderPermission.RoleID,
+                            UserID = folderPermission.UserID,
+                            AllowAccess = true,
+                        };
 
                         additionalPermissions.Add(newFolderPerm);
 
                         // Try to add Browse permission
                         newFolderPerm = new FolderPermissionInfo(browsePerm)
-                                            {
-                                                FolderID = folderPermission.FolderID,
-                                                RoleID = folderPermission.RoleID,
-                                                UserID = folderPermission.UserID,
-                                                AllowAccess = true,
-                                            };
+                        {
+                            FolderID = folderPermission.FolderID,
+                            RoleID = folderPermission.RoleID,
+                            UserID = folderPermission.UserID,
+                            AllowAccess = true,
+                        };
 
                         additionalPermissions.Add(newFolderPerm);
                     }

@@ -15,17 +15,17 @@ namespace DotNetNuke.Modules.UrlManagement
 
     public partial class ProviderSettings : ModuleUserControlBase
     {
+        private readonly INavigationManager _navigationManager;
+
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
-
-        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
-
-        private readonly INavigationManager _navigationManager;
 
         public ProviderSettings()
         {
             this._navigationManager = Globals.DependencyProvider.GetService<INavigationManager>();
         }
+
+        private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
         protected override void OnInit(EventArgs e)
         {
@@ -47,10 +47,10 @@ namespace DotNetNuke.Modules.UrlManagement
 
                 this.providerSettingsPlaceHolder.Controls.Add(settingsControl);
 
-// ReSharper disable SuspiciousTypeConversion.Global
+                // ReSharper disable SuspiciousTypeConversion.Global
                 this._providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
 
-// ReSharper restore SuspiciousTypeConversion.Global
+                // ReSharper restore SuspiciousTypeConversion.Global
                 if (this._providerSettingsControl != null)
                 {
                     this._providerSettingsControl.Provider = provider.ProviderConfig;

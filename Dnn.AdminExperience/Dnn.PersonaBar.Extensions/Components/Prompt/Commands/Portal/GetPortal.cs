@@ -16,16 +16,16 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     [ConsoleCommand("get-portal", Constants.PortalCategory, "Prompt_GetPortal_Description")]
     public class GetPortal : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_GetPortal_FlagId", "Integer")]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         int PortalIdFlagValue { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             // default usage: return current portal if nothing else specified
             if (args.Length == 1)
             {
@@ -59,7 +59,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             lst.Add(new PortalModel(portal));
             return new ConsoleResultModel(string.Empty) { Data = lst, Records = lst.Count, Output = string.Format(this.LocalizeString("Prompt_GetPortal_Found"), this.PortalIdFlagValue) };
         }
-
 
     }
 }

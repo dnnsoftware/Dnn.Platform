@@ -6,6 +6,11 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 {
     public class FilesStatus
     {
+        // ReSharper restore InconsistentNaming
+        public FilesStatus()
+        {
+        }
+
         // ReSharper disable InconsistentNaming
         public bool success { get; set; }
 
@@ -26,10 +31,5 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         public string message { get; set; }
 
         public int id { get; set; }
-
-        // ReSharper restore InconsistentNaming
-        public FilesStatus()
-        {
-        }
     }
 }

@@ -22,11 +22,13 @@ namespace DotNetNuke.Entities.Urls
 
     public class CacheController
     {
+        internal const string VanityUrlLookupKey = "url_VanityUrlLookup_{0}";
+
+        private const string PageIndexKey = "url_PageIndex";
+        private const string PageIndexDepthKey = "url_PageIndexDepth";
         private static CacheItemRemovedReason cacheItemRemovedReason;
         private static bool LogRemovedReason;
         private CacheItemRemovedCallback onRemovePageIndex;
-        private const string PageIndexKey = "url_PageIndex";
-        private const string PageIndexDepthKey = "url_PageIndexDepth";
         private const string UrlDictKey = "url_UrlDict";
         private const string UrlPortalsKey = "url_UrlPortals";
         private const string CustomAliasTabsKey = "url_CustomAliasTabsKey";
@@ -45,77 +47,21 @@ namespace DotNetNuke.Entities.Urls
         private const string HomePageSkinsKey = "url_HomePageSkins_{0}";
         private const string TabPathsKey = "url_TabPathsKey_{0}";
 
-        internal const string VanityUrlLookupKey = "url_VanityUrlLookup_{0}";
-
-        private static CacheDependency GetPortalsCacheDependency()
+        public static void FlushFriendlyUrlSettingsFromCache()
         {
-            var keys = new List<string> { "DNN_PortalDictionary" };
-            var portalsDepedency = new CacheDependency(null, keys.ToArray());
-            return portalsDepedency;
+            DataCache.RemoveCache(FriendlyUrlSettingsKey);
         }
 
-        private CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
+        public static void FlushPageIndexFromCache()
         {
-            var keys = new List<string>();
-            foreach (int portalId in portalIds)
-            {
-                const string cacheKey = DataCache.TabCacheKey;
-                string key = string.Format(cacheKey, portalId);
-                key = "DNN_" + key; // add on the DNN_ prefix
-                keys.Add(key);
-            }
-
-            // get the portals list dependency
-            var portalKeys = new List<string>();
-            if (portalKeys.Count > 0)
-            {
-                keys.AddRange(portalKeys);
-            }
-
-            var tabsDependency = new CacheDependency(null, keys.ToArray());
-            return tabsDependency;
-        }
-
-        private static void SetPageCache(string key, object value, FriendlyUrlSettings settings)
-        {
-            SetPageCache(key, value, null, settings, null);
-        }
-
-        private static void SetPageCache(string key, object value, DNNCacheDependency dependency, FriendlyUrlSettings settings, CacheItemRemovedCallback callback)
-        {
-            DateTime absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
-            DataCache.SetCache(
-                key,
-                value,
-                dependency,
-                absoluteExpiration,
-                Cache.NoSlidingExpiration,
-                CacheItemPriority.AboveNormal,
-                callback);
-        }
-
-        private static void SetPortalCache(string key, object value, FriendlyUrlSettings settings)
-        {
-            var absoluteExpiration = DateTime.Now.Add(new TimeSpan(24, 0, 0));
-            if (settings != null)
-            {
-                absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
-            }
-
-            // 857 : use cache dependency for portal alias cache
-            if (settings != null)
-            {
-                DataCache.SetCache(
-                    key,
-                    value,
-                    new DNNCacheDependency(GetPortalsCacheDependency()),
-                    absoluteExpiration,
-                    Cache.NoSlidingExpiration);
-            }
-            else
-            {
-                DataCache.SetCache(key, value, absoluteExpiration);
-            }
+            DataCache.RemoveCache(UrlDictKey);
+            DataCache.RemoveCache(PageIndexKey);
+            DataCache.RemoveCache(PageIndexDepthKey);
+            DataCache.RemoveCache(UrlPortalsKey);
+            DataCache.RemoveCache(UserProfileActionsKey);
+            DataCache.RemoveCache(PortalAliasListKey);
+            DataCache.RemoveCache(PortalAliasesKey);
+            DataCache.RemoveCache(TabPathsKey);
         }
 
         /// <summary>
@@ -203,6 +149,77 @@ namespace DotNetNuke.Entities.Urls
             return result;
         }
 
+        private static CacheDependency GetPortalsCacheDependency()
+        {
+            var keys = new List<string> { "DNN_PortalDictionary" };
+            var portalsDepedency = new CacheDependency(null, keys.ToArray());
+            return portalsDepedency;
+        }
+
+        private static void SetPageCache(string key, object value, FriendlyUrlSettings settings)
+        {
+            SetPageCache(key, value, null, settings, null);
+        }
+
+        private static void SetPageCache(string key, object value, DNNCacheDependency dependency, FriendlyUrlSettings settings, CacheItemRemovedCallback callback)
+        {
+            DateTime absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
+            DataCache.SetCache(
+                key,
+                value,
+                dependency,
+                absoluteExpiration,
+                Cache.NoSlidingExpiration,
+                CacheItemPriority.AboveNormal,
+                callback);
+        }
+
+        private CacheDependency GetTabsCacheDependency(IEnumerable<int> portalIds)
+        {
+            var keys = new List<string>();
+            foreach (int portalId in portalIds)
+            {
+                const string cacheKey = DataCache.TabCacheKey;
+                string key = string.Format(cacheKey, portalId);
+                key = "DNN_" + key; // add on the DNN_ prefix
+                keys.Add(key);
+            }
+
+            // get the portals list dependency
+            var portalKeys = new List<string>();
+            if (portalKeys.Count > 0)
+            {
+                keys.AddRange(portalKeys);
+            }
+
+            var tabsDependency = new CacheDependency(null, keys.ToArray());
+            return tabsDependency;
+        }
+
+        private static void SetPortalCache(string key, object value, FriendlyUrlSettings settings)
+        {
+            var absoluteExpiration = DateTime.Now.Add(new TimeSpan(24, 0, 0));
+            if (settings != null)
+            {
+                absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
+            }
+
+            // 857 : use cache dependency for portal alias cache
+            if (settings != null)
+            {
+                DataCache.SetCache(
+                    key,
+                    value,
+                    new DNNCacheDependency(GetPortalsCacheDependency()),
+                    absoluteExpiration,
+                    Cache.NoSlidingExpiration);
+            }
+            else
+            {
+                DataCache.SetCache(key, value, absoluteExpiration);
+            }
+        }
+
         // 770 : customised portal alias per-tab
         internal static List<string> GetCustomAliasesFromCache()
         {
@@ -213,6 +230,26 @@ namespace DotNetNuke.Entities.Urls
         internal static void ClearCustomAliasesCache()
         {
             DataCache.ClearCache(CustomPortalAliasesKey);
+        }
+
+        internal static Hashtable GetHomePageSkinsFromCache(int portalId)
+        {
+            string key = string.Format(HomePageSkinsKey, portalId);
+            var result = (Hashtable)DataCache.GetCache(key);
+            return result;
+        }
+
+        internal static List<int> GetListOfTabsWithProviders(int portalId, FriendlyUrlSettings settings)
+        {
+            List<int> result = null;
+            string key = string.Format(PortalModuleProviderTabsKey, portalId);
+            var tabIdsForPortal = (int[])DataCache.GetCache(key);
+            if (tabIdsForPortal != null)
+            {
+                result = new List<int>(tabIdsForPortal);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -251,45 +288,6 @@ namespace DotNetNuke.Entities.Urls
             if (rawCustomAliasTabs != null)
             {
                 customAliasTabs = (SharedDictionary<string, string>)rawCustomAliasTabs;
-            }
-        }
-
-        internal static Hashtable GetHomePageSkinsFromCache(int portalId)
-        {
-            string key = string.Format(HomePageSkinsKey, portalId);
-            var result = (Hashtable)DataCache.GetCache(key);
-            return result;
-        }
-
-        internal static List<int> GetListOfTabsWithProviders(int portalId, FriendlyUrlSettings settings)
-        {
-            List<int> result = null;
-            string key = string.Format(PortalModuleProviderTabsKey, portalId);
-            var tabIdsForPortal = (int[])DataCache.GetCache(key);
-            if (tabIdsForPortal != null)
-            {
-                result = new List<int>(tabIdsForPortal);
-            }
-
-            return result;
-        }
-
-        internal void GetPageIndexFromCache(
-            out SharedDictionary<string, string> dict,
-            out SharedDictionary<int, PathSizes> portalDepthInfo,
-            FriendlyUrlSettings settings)
-        {
-            object raw = DataCache.GetCache(PageIndexKey);
-            if (raw != null)
-            {
-                dict = (SharedDictionary<string, string>)raw;
-                raw = DataCache.GetCache(PageIndexDepthKey);
-                portalDepthInfo = (SharedDictionary<int, PathSizes>)raw;
-            }
-            else
-            {
-                dict = null;
-                portalDepthInfo = null;
             }
         }
 
@@ -382,6 +380,25 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return replaceActions;
+        }
+
+        internal void GetPageIndexFromCache(
+            out SharedDictionary<string, string> dict,
+            out SharedDictionary<int, PathSizes> portalDepthInfo,
+            FriendlyUrlSettings settings)
+        {
+            object raw = DataCache.GetCache(PageIndexKey);
+            if (raw != null)
+            {
+                dict = (SharedDictionary<string, string>)raw;
+                raw = DataCache.GetCache(PageIndexDepthKey);
+                portalDepthInfo = (SharedDictionary<int, PathSizes>)raw;
+            }
+            else
+            {
+                dict = null;
+                portalDepthInfo = null;
+            }
         }
 
         internal static Dictionary<int, SharedList<ParameterRewriteAction>> GetParameterRewrites(int portalId, ref List<string> messages, Guid parentTraceId)
@@ -511,60 +528,6 @@ namespace DotNetNuke.Entities.Urls
             DataCache.SetCache(CustomPortalAliasesKey, aliases, absoluteExpiration);
         }
 
-        /// <summary>
-        /// Store the Url Dictionary (all tab urls / tabids) for the installation.
-        /// </summary>
-        /// <param name="urlDict"></param>
-        /// <param name="urlPortals"></param>
-        /// <param name="customAliasTabs"></param>
-        /// <param name="settings"></param>
-        /// <param name="reason"></param>
-        /// <remarks>
-        /// </remarks>
-        internal void StoreFriendlyUrlIndexInCache(
-            SharedDictionary<int, SharedDictionary<string, string>> urlDict,
-            ConcurrentBag<int> urlPortals,
-            SharedDictionary<string, string> customAliasTabs,
-            FriendlyUrlSettings settings,
-            string reason)
-        {
-            if (settings.LogCacheMessages)
-            {
-                this.onRemovePageIndex = this.RemovedPageIndexCallBack;
-            }
-            else
-            {
-                this.onRemovePageIndex = null;
-            }
-
-            LogRemovedReason = settings.LogCacheMessages;
-
-            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
-            SetPageCache(UrlPortalsKey, urlPortals, settings);
-            SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
-
-            if (settings.LogCacheMessages)
-            {
-                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
-                log.AddProperty("Url Rewriting Caching Message", "Friendly Url Index built and Stored in Cache.");
-                log.AddProperty("Build Reason", reason);
-                log.AddProperty("Cache Key", UrlDictKey);
-                using (urlDict.GetReadLock())
-                {
-                    log.AddProperty("Item Count", urlDict.Values.Count.ToString());
-                }
-
-                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
-                log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
-                using (customAliasTabs.GetReadLock())
-                {
-                    log.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
-                }
-
-                LogController.Instance.AddLog(log);
-            }
-        }
-
         internal static void StoreHomePageSkinsInCache(int portalId, Hashtable homePageSkins)
         {
             if (homePageSkins != null && homePageSkins.Count > 0)
@@ -629,6 +592,60 @@ namespace DotNetNuke.Entities.Urls
                 log.AddProperty("PortalId", portalId.ToString());
                 log.AddProperty("Provider With Tabs", string.Join(",", providersWithTabsStr.ToArray()));
                 log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                LogController.Instance.AddLog(log);
+            }
+        }
+
+        /// <summary>
+        /// Store the Url Dictionary (all tab urls / tabids) for the installation.
+        /// </summary>
+        /// <param name="urlDict"></param>
+        /// <param name="urlPortals"></param>
+        /// <param name="customAliasTabs"></param>
+        /// <param name="settings"></param>
+        /// <param name="reason"></param>
+        /// <remarks>
+        /// </remarks>
+        internal void StoreFriendlyUrlIndexInCache(
+            SharedDictionary<int, SharedDictionary<string, string>> urlDict,
+            ConcurrentBag<int> urlPortals,
+            SharedDictionary<string, string> customAliasTabs,
+            FriendlyUrlSettings settings,
+            string reason)
+        {
+            if (settings.LogCacheMessages)
+            {
+                this.onRemovePageIndex = this.RemovedPageIndexCallBack;
+            }
+            else
+            {
+                this.onRemovePageIndex = null;
+            }
+
+            LogRemovedReason = settings.LogCacheMessages;
+
+            SetPageCache(UrlDictKey, urlDict, new DNNCacheDependency(this.GetTabsCacheDependency(urlPortals)), settings, this.onRemovePageIndex);
+            SetPageCache(UrlPortalsKey, urlPortals, settings);
+            SetPageCache(CustomAliasTabsKey, customAliasTabs, settings);
+
+            if (settings.LogCacheMessages)
+            {
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT" };
+                log.AddProperty("Url Rewriting Caching Message", "Friendly Url Index built and Stored in Cache.");
+                log.AddProperty("Build Reason", reason);
+                log.AddProperty("Cache Key", UrlDictKey);
+                using (urlDict.GetReadLock())
+                {
+                    log.AddProperty("Item Count", urlDict.Values.Count.ToString());
+                }
+
+                log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
+                log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
+                using (customAliasTabs.GetReadLock())
+                {
+                    log.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
+                }
+
                 LogController.Instance.AddLog(log);
             }
         }
@@ -724,6 +741,16 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        internal static void StorePortalAliasesInCache(SharedDictionary<string, PortalAliasInfo> aliases, FriendlyUrlSettings settings)
+        {
+            SetPortalCache(PortalAliasListKey, aliases, settings);
+        }
+
+        internal static void StorePortalAliasesInCache(OrderedDictionary aliasList, FriendlyUrlSettings settings)
+        {
+            SetPortalCache(PortalAliasesKey, aliasList, settings);
+        }
+
         internal void StorePageIndexInCache(
             SharedDictionary<string, string> tabDictionary,
             SharedDictionary<int, PathSizes> portalDepthInfo,
@@ -763,16 +790,6 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
-        internal static void StorePortalAliasesInCache(SharedDictionary<string, PortalAliasInfo> aliases, FriendlyUrlSettings settings)
-        {
-            SetPortalCache(PortalAliasListKey, aliases, settings);
-        }
-
-        internal static void StorePortalAliasesInCache(OrderedDictionary aliasList, FriendlyUrlSettings settings)
-        {
-            SetPortalCache(PortalAliasesKey, aliasList, settings);
-        }
-
         internal void StoreTabPathsInCache(int portalId, SharedDictionary<string, string> tabPathDictionary, FriendlyUrlSettings settings)
         {
             SetPageCache(
@@ -781,23 +798,6 @@ namespace DotNetNuke.Entities.Urls
                 new DNNCacheDependency(this.GetTabsCacheDependency(new List<int> { portalId })),
                 settings,
                 null);
-        }
-
-        public static void FlushFriendlyUrlSettingsFromCache()
-        {
-            DataCache.RemoveCache(FriendlyUrlSettingsKey);
-        }
-
-        public static void FlushPageIndexFromCache()
-        {
-            DataCache.RemoveCache(UrlDictKey);
-            DataCache.RemoveCache(PageIndexKey);
-            DataCache.RemoveCache(PageIndexDepthKey);
-            DataCache.RemoveCache(UrlPortalsKey);
-            DataCache.RemoveCache(UserProfileActionsKey);
-            DataCache.RemoveCache(PortalAliasListKey);
-            DataCache.RemoveCache(PortalAliasesKey);
-            DataCache.RemoveCache(TabPathsKey);
         }
 
         /// <summary>
@@ -864,10 +864,10 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-// ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
 
-// ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
                         // this happens when portalId = -1

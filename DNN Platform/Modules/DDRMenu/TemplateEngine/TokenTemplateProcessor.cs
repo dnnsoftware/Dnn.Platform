@@ -18,14 +18,14 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
     public class TokenTemplateProcessor : ITemplateProcessor
     {
-        private XslCompiledTransform xsl;
         private static readonly Dictionary<string, string> aliases = new Dictionary<string, string>
                                                                      { { "page", "node" }, { "name", "text" } };
-
         private static readonly Regex TemplatesRegex =
                 new Regex(
                     @"(\[(?<directive>(\*|\*\>|\/\*|\>|\/\>|\?|\?!|\/\?|\=))(?<nodename>[A-Z]*)(-(?<modename>[0-9A-Z]*))?\])",
                     RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+        private XslCompiledTransform xsl;
 
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             validParams.AddRange(new[] { "controlid", "options", "dnnpath", "manifestpath", "portalpath", "skinpath" });
 
             var docElt = xml.DocumentElement;
-            var outputElt = (XmlElement) docElt.GetElementsByTagName("output", xmlNs)[0];
+            var outputElt = (XmlElement)docElt.GetElementsByTagName("output", xmlNs)[0];
             foreach (var param in validParams)
             {
                 var elt = xml.CreateElement("param", xmlNs);
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 docElt.InsertAfter(elt, outputElt);
             }
 
-            var current = (XmlElement) docElt.GetElementsByTagName("template", xmlNs)[1];
+            var current = (XmlElement)docElt.GetElementsByTagName("template", xmlNs)[1];
             var stack = new Stack<XmlElement>();
 
             var index = 0;

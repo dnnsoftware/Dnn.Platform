@@ -16,19 +16,16 @@ namespace DotNetNuke.Collections.Internal
             this._lock = @lock;
         }
 
+        ~ReaderWriterSlimLock()
+        {
+            this.Dispose(false);
+        }
+
         public void Dispose()
         {
             this.Dispose(true);
 
             GC.SuppressFinalize(this);
-        }
-
-        private void EnsureNotDisposed()
-        {
-            if (this._disposed)
-            {
-                throw new ObjectDisposedException("ReaderWriterSlimLock");
-            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -59,9 +56,12 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        ~ReaderWriterSlimLock()
+        private void EnsureNotDisposed()
         {
-            this.Dispose(false);
+            if (this._disposed)
+            {
+                throw new ObjectDisposedException("ReaderWriterSlimLock");
+            }
         }
     }
 }

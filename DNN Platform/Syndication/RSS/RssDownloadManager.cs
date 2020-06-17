@@ -17,8 +17,8 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     internal class RssDownloadManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
         private const string RSS_Dir = "/RSS/";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
         private static readonly RssDownloadManager _theManager = new RssDownloadManager();
 
         private readonly Dictionary<string, RssChannelDom> _cache;
@@ -34,6 +34,28 @@ namespace DotNetNuke.Services.Syndication
 
             // prepare disk directory
             this._directoryOnDisk = PrepareTempDir();
+        }
+
+        public static RssChannelDom GetChannel(string url)
+        {
+            return _theManager.GetChannelDom(url);
+        }
+
+        private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
+        {
+            if (!string.IsNullOrEmpty(ttlString))
+            {
+                int ttlMinutes;
+                if (int.TryParse(ttlString, out ttlMinutes))
+                {
+                    if (ttlMinutes >= 0)
+                    {
+                        return ttlMinutes;
+                    }
+                }
+            }
+
+            return defaultTtlMinutes;
         }
 
         private RssChannelDom DownloadChannelDom(string url)
@@ -195,28 +217,6 @@ namespace DotNetNuke.Services.Syndication
             }
 
             return dom;
-        }
-
-        public static RssChannelDom GetChannel(string url)
-        {
-            return _theManager.GetChannelDom(url);
-        }
-
-        private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
-        {
-            if (!string.IsNullOrEmpty(ttlString))
-            {
-                int ttlMinutes;
-                if (int.TryParse(ttlString, out ttlMinutes))
-                {
-                    if (ttlMinutes >= 0)
-                    {
-                        return ttlMinutes;
-                    }
-                }
-            }
-
-            return defaultTtlMinutes;
         }
 
         private static string PrepareTempDir()

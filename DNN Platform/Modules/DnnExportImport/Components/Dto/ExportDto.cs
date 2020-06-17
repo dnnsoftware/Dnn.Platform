@@ -9,6 +9,21 @@ namespace Dnn.ExportImport.Components.Dto
     using Dnn.ExportImport.Components.Common;
     using Newtonsoft.Json;
 
+    public enum TriCheckedState
+    {
+#if false
+        // for schema 1.0.0
+        Checked = 0,
+        UnChecked = 1,
+        Partial = 2,
+#else
+        UnChecked = 0,
+        Checked = 1,
+        CheckedWithAllChildren = 2,
+#endif
+
+    }
+
     [JsonObject]
     public class ExportDto
     {
@@ -163,20 +178,5 @@ namespace Dnn.ExportImport.Components.Dto
         public int ParentTabId { get; set; }
 
         public TriCheckedState CheckedState { get; set; }
-    }
-
-    public enum TriCheckedState
-    {
-#if false
-        // for schema 1.0.0
-        Checked = 0,
-        UnChecked = 1,
-        Partial = 2,
-#else
-        UnChecked = 0,
-        Checked = 1,
-        CheckedWithAllChildren = 2,
-#endif
-
     }
 }

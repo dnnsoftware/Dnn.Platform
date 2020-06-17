@@ -126,6 +126,14 @@ namespace DotNetNuke.Framework
             }
         }
 
+        public virtual bool IsReusable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         /// <summary>
         ///   Processs the incoming HTTP request.
         /// </summary>
@@ -152,14 +160,6 @@ namespace DotNetNuke.Framework
             this.Response.ContentEncoding = this.ContentEncoding;
 
             this.HandleRequest();
-        }
-
-        public virtual bool IsReusable
-        {
-            get
-            {
-                return true;
-            }
         }
 
         /// <summary>

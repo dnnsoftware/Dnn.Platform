@@ -31,6 +31,41 @@ namespace DotNetNuke.Collections.Internal
         {
         }
 
+        ~SharedDictionary()
+        {
+            this.Dispose(false);
+        }
+
+        public int Count
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._dict.Count;
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._dict.IsReadOnly;
+            }
+        }
+
+        public ICollection<TKey> Keys
+        {
+            get
+            {
+                this.EnsureNotDisposed();
+                this.EnsureReadAccess();
+                return this._dict.Keys;
+            }
+        }
+
         internal IDictionary<TKey, TValue> BackingDictionary
         {
             get
@@ -84,23 +119,30 @@ namespace DotNetNuke.Collections.Internal
             return this._dict.Remove(item);
         }
 
-        public int Count
+        public ICollection<TValue> Values
         {
             get
             {
                 this.EnsureNotDisposed();
                 this.EnsureReadAccess();
-                return this._dict.Count;
+                return this._dict.Values;
             }
         }
 
-        public bool IsReadOnly
+        public TValue this[TKey key]
         {
             get
             {
                 this.EnsureNotDisposed();
                 this.EnsureReadAccess();
-                return this._dict.IsReadOnly;
+                return this._dict[key];
+            }
+
+            set
+            {
+                this.EnsureNotDisposed();
+                this.EnsureWriteAccess();
+                this._dict[key] = value;
             }
         }
 
@@ -130,43 +172,6 @@ namespace DotNetNuke.Collections.Internal
             this.EnsureNotDisposed();
             this.EnsureReadAccess();
             return this._dict.TryGetValue(key, out value);
-        }
-
-        public TValue this[TKey key]
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._dict[key];
-            }
-
-            set
-            {
-                this.EnsureNotDisposed();
-                this.EnsureWriteAccess();
-                this._dict[key] = value;
-            }
-        }
-
-        public ICollection<TKey> Keys
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._dict.Keys;
-            }
-        }
-
-        public ICollection<TValue> Values
-        {
-            get
-            {
-                this.EnsureNotDisposed();
-                this.EnsureReadAccess();
-                return this._dict.Values;
-            }
         }
 
         public void Dispose()
@@ -208,22 +213,6 @@ namespace DotNetNuke.Collections.Internal
             return this.GetWriteLock(TimeSpan.FromMilliseconds(millisecondTimeout));
         }
 
-        private void EnsureReadAccess()
-        {
-            if (! this._lockController.ThreadCanRead)
-            {
-                throw new ReadLockRequiredException();
-            }
-        }
-
-        private void EnsureWriteAccess()
-        {
-            if (!this._lockController.ThreadCanWrite)
-            {
-                throw new WriteLockRequiredException();
-            }
-        }
-
         public IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable_GetEnumerator()
         {
             this.EnsureNotDisposed();
@@ -231,14 +220,6 @@ namespace DotNetNuke.Collections.Internal
 
             // todo nothing ensures read lock is held for life of enumerator
             return this._dict.GetEnumerator();
-        }
-
-        private void EnsureNotDisposed()
-        {
-            if (this._isDisposed)
-            {
-                throw new ObjectDisposedException("SharedDictionary");
-            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -258,9 +239,28 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        ~SharedDictionary()
+        private void EnsureReadAccess()
         {
-            this.Dispose(false);
+            if (!this._lockController.ThreadCanRead)
+            {
+                throw new ReadLockRequiredException();
+            }
+        }
+
+        private void EnsureWriteAccess()
+        {
+            if (!this._lockController.ThreadCanWrite)
+            {
+                throw new WriteLockRequiredException();
+            }
+        }
+
+        private void EnsureNotDisposed()
+        {
+            if (this._isDisposed)
+            {
+                throw new ObjectDisposedException("SharedDictionary");
+            }
         }
     }
 }

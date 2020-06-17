@@ -31,6 +31,11 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
+        public string InstallerLogName
+        {
+            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
+        }
+
         /// <summary>
         /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.
         /// </summary>
@@ -456,15 +461,15 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     switch (versionNumber)
                     {
                         case 8:
-                            // sql 2000
+                        // sql 2000
                         case 9:
                             // sql 2005
                             isValidVersion = false;
                             break;
                         case 10:
-                            // sql 2008
+                        // sql 2008
                         case 11:
-                            // sql 2010
+                        // sql 2010
                         case 12:
                             // sql 2012
                             isValidVersion = true;
@@ -602,11 +607,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return culture;
         }
 
-        public string InstallerLogName
-        {
-            get { return "InstallerLog" + DateTime.Now.ToString("yyyyMMdd") + ".resources"; }
-        }
-
         public CultureInfo GetCultureFromBrowser()
         {
             CultureInfo culture = null;
@@ -618,6 +618,18 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
 
             return culture;
+        }
+
+        private static XmlNode AppendNewXmlNode(ref XmlDocument document, ref XmlNode parentNode, string elementName, string elementValue)
+        {
+            XmlNode newNode = document.CreateNode(XmlNodeType.Element, elementName, null);
+            if (!string.IsNullOrEmpty(elementValue))
+            {
+                newNode.InnerText = elementValue;
+            }
+
+            parentNode.AppendChild(newNode);
+            return newNode;
         }
 
         private CultureInfo GetCultureFromQs()
@@ -654,18 +666,6 @@ namespace DotNetNuke.Services.Upgrade.Internals
             // use fixed name for later installation
             myfile = "installlanguage.resources";
             Util.DeployExtension(wr, myfile, installFolder);
-        }
-
-        private static XmlNode AppendNewXmlNode(ref XmlDocument document, ref XmlNode parentNode, string elementName, string elementValue)
-        {
-            XmlNode newNode = document.CreateNode(XmlNodeType.Element, elementName, null);
-            if (!string.IsNullOrEmpty(elementValue))
-            {
-                newNode.InnerText = elementValue;
-            }
-
-            parentNode.AppendChild(newNode);
-            return newNode;
         }
     }
 }

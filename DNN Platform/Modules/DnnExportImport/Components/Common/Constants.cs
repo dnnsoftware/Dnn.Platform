@@ -15,6 +15,10 @@ namespace Dnn.ExportImport.Components.Common
         /// </summary>
         public const string CurrentSchemaVersion = "1.0.2";
 
+        // these are set by the API caller
+        public const string Category_Users = "USERS";
+        public const string Category_Vocabularies = "VOCABULARIES";
+
         internal const string ExportFolder = @"\App_Data\ExportImport\";
         internal const string ExportManifestName = "export.json"; // export manifest file name
         internal const string ExportDbName = "export.dnndb"; // export database file name
@@ -36,15 +40,11 @@ namespace Dnn.ExportImport.Components.Common
 
         internal const int LogColumnLength = 255;
 
+        internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
+
         internal static DateTime MinDbTime = new DateTime(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static DateTime MaxDbTime = new DateTime(3000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         internal static int MaxZipFilesMemory = 104857600; // 100 MB
-
-        internal const string SharedResources = "/DesktopModules/SiteExportImport/App_LocalResources/ExportImport.resx";
-
-        // these are set by the API caller
-        public const string Category_Users = "USERS";
-        public const string Category_Vocabularies = "VOCABULARIES";
         public const string Category_Roles = "ROLES";
         public const string Category_ProfileProps = "PROFILE_PROPERTIES";
         public const string Category_Content = "CONTENT";

@@ -46,6 +46,8 @@ namespace DotNetNuke.Services.FileSystem
     /// </summary>
     public class FileManager : ComponentBase<IFileManager, FileManager>, IFileManager
     {
+        private const int BufferSize = 4096;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
 
         public virtual IDictionary<string, string> ContentTypes
@@ -53,7 +55,116 @@ namespace DotNetNuke.Services.FileSystem
             get { return FileContentTypeManager.Instance.ContentTypes; }
         }
 
-        private const int BufferSize = 4096;
+        private FileExtensionWhitelist WhiteList
+        {
+            get
+            {
+                var user = UserController.Instance.GetCurrentUserInfo();
+                if (user != null)
+                {
+                    if (user.IsSuperUser)
+                    {
+                        return Host.AllowedExtensionWhitelist;
+                    }
+
+                    if (!user.IsAdmin)
+                    {
+                        var settings = PortalSettings.Current;
+                        if (settings != null)
+                        {
+                            return settings.AllowedExtensionsWhitelist;
+                        }
+                    }
+                }
+
+                return Host.AllowedExtensionWhitelist;
+            }
+        }
+
+        /// <summary>
+        /// Adds a file to the specified folder.
+        /// </summary>
+        /// <param name="folder">The folder where to add the file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="fileContent">The content of the file.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
+        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
+        {
+            return this.AddFile(folder, fileName, fileContent, true, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
+        }
+
+        /// <summary>
+        /// Adds a file to the specified folder.
+        /// </summary>
+        /// <param name="folder">The folder where to add the file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        /// <param name="fileContent">The content of the file.</param>
+        /// <param name="overwrite">Indicates if the file has to be over-written if it exits.</param>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
+        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite)
+        {
+            return this.AddFile(folder, fileName, fileContent, overwrite, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
+        }
+
+        private static ImageFormat GetImageFormat(Image img)
+        {
+            if (img.RawFormat.Equals(ImageFormat.Jpeg))
+            {
+                return ImageFormat.Jpeg;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Bmp))
+            {
+                return ImageFormat.Bmp;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Png))
+            {
+                return ImageFormat.Png;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Emf))
+            {
+                return ImageFormat.Emf;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Exif))
+            {
+                return ImageFormat.Exif;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Gif))
+            {
+                return ImageFormat.Gif;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Icon))
+            {
+                return ImageFormat.Icon;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
+            {
+                return ImageFormat.Jpeg;
+            }
+
+            if (img.RawFormat.Equals(ImageFormat.Tiff))
+            {
+                return ImageFormat.Tiff;
+            }
+            else
+            {
+                return ImageFormat.Wmf;
+            }
+        }
+
+        private static Stream ToStream(Image image, ImageFormat formaw)
+        {
+            var stream = new MemoryStream();
+            image.Save(stream, formaw);
+            stream.Position = 0;
+            return stream;
+        }
 
         private void AddFileToFolderProvider(Stream fileContent, string fileName, IFolderInfo destinationFolder, FolderProvider provider)
         {
@@ -192,66 +303,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private static ImageFormat GetImageFormat(Image img)
-        {
-            if (img.RawFormat.Equals(ImageFormat.Jpeg))
-            {
-                return ImageFormat.Jpeg;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Bmp))
-            {
-                return ImageFormat.Bmp;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Png))
-            {
-                return ImageFormat.Png;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Emf))
-            {
-                return ImageFormat.Emf;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Exif))
-            {
-                return ImageFormat.Exif;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Gif))
-            {
-                return ImageFormat.Gif;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Icon))
-            {
-                return ImageFormat.Icon;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
-            {
-                return ImageFormat.Jpeg;
-            }
-
-            if (img.RawFormat.Equals(ImageFormat.Tiff))
-            {
-                return ImageFormat.Tiff;
-            }
-            else
-            {
-                return ImageFormat.Wmf;
-            }
-        }
-
-        private static Stream ToStream(Image image, ImageFormat formaw)
-        {
-            var stream = new MemoryStream();
-            image.Save(stream, formaw);
-            stream.Position = 0;
-            return stream;
-        }
-
         // Match the orientation code to the correct rotation:
         private static RotateFlipType OrientationToFlipType(string orientation)
         {
@@ -276,57 +327,6 @@ namespace DotNetNuke.Services.FileSystem
                 default:
                     return RotateFlipType.RotateNoneFlipNone;
             }
-        }
-
-        private FileExtensionWhitelist WhiteList
-        {
-            get
-            {
-                var user = UserController.Instance.GetCurrentUserInfo();
-                if (user != null)
-                {
-                    if (user.IsSuperUser)
-                    {
-                        return Host.AllowedExtensionWhitelist;
-                    }
-
-                    if (!user.IsAdmin)
-                    {
-                        var settings = PortalSettings.Current;
-                        if (settings != null)
-                        {
-                            return settings.AllowedExtensionsWhitelist;
-                        }
-                    }
-                }
-
-                return Host.AllowedExtensionWhitelist;
-            }
-        }
-
-        /// <summary>
-        /// Adds a file to the specified folder.
-        /// </summary>
-        /// <param name="folder">The folder where to add the file.</param>
-        /// <param name="fileName">The name of the file.</param>
-        /// <param name="fileContent">The content of the file.</param>
-        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
-        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent)
-        {
-            return this.AddFile(folder, fileName, fileContent, true, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
-        }
-
-        /// <summary>
-        /// Adds a file to the specified folder.
-        /// </summary>
-        /// <param name="folder">The folder where to add the file.</param>
-        /// <param name="fileName">The name of the file.</param>
-        /// <param name="fileContent">The content of the file.</param>
-        /// <param name="overwrite">Indicates if the file has to be over-written if it exits.</param>
-        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
-        public virtual IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite)
-        {
-            return this.AddFile(folder, fileName, fileContent, overwrite, false, false, this.GetContentType(Path.GetExtension(fileName)), this.GetCurrentUserID());
         }
 
         /// <summary>
@@ -579,6 +579,111 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
+        /// <summary>
+        /// Copies the specified file into the specified folder.
+        /// </summary>
+        /// <param name="file">The file to copy.</param>
+        /// <param name="destinationFolder">The folder where to copy the file to.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when file or destinationFolder are null.</exception>
+        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the copied file.</returns>
+        public virtual IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder)
+        {
+            Requires.NotNull("file", file);
+            Requires.NotNull("destinationFolder", destinationFolder);
+
+            if (file.FolderMappingID == destinationFolder.FolderMappingID)
+            {
+                if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
+                {
+                    throw new PermissionsNotMetException(Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
+                }
+
+                if (!PortalController.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
+                {
+                    throw new NoSpaceAvailableException(Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
+                }
+
+                var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
+                try
+                {
+                    // check for existing file
+                    var existingFile = this.GetFile(destinationFolder, file.FileName, true);
+                    if (existingFile != null)
+                    {
+                        this.DeleteFile(existingFile);
+                    }
+
+                    var folder = FolderManager.Instance.GetFolder(file.FolderId);
+                    FolderProvider.Instance(folderMapping.FolderProviderType).CopyFile(folder.MappedPath, file.FileName, destinationFolder.MappedPath, folderMapping);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    throw new FolderProviderException(Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
+                }
+
+                // copy Content Item
+                var contentItemID = this.CopyContentItem(file.ContentItemID);
+
+                var fileId = DataProvider.Instance().AddFile(
+                    file.PortalId,
+                    Guid.NewGuid(),
+                    Guid.NewGuid(),
+                    file.FileName,
+                    file.Extension,
+                    file.Size,
+                    file.Width,
+                    file.Height,
+                    file.ContentType,
+                    destinationFolder.FolderPath,
+                    destinationFolder.FolderID,
+                    this.GetCurrentUserID(),
+                    file.SHA1Hash,
+                    DateTime.Now,
+                    file.Title,
+                    file.Description,
+                    file.StartDate,
+                    file.EndDate,
+                    file.EnablePublishPeriod,
+                    contentItemID);
+
+                var copiedFile = this.GetFile(fileId, true);
+
+                // Notify added file event
+                this.OnFileAdded(copiedFile, destinationFolder, this.GetCurrentUserID());
+
+                return copiedFile;
+            }
+
+            using (var fileContent = this.GetFileContent(file))
+            {
+                // check for existing file
+                var existingFile = this.GetFile(destinationFolder, file.FileName, true);
+                if (existingFile != null)
+                {
+                    this.DeleteFile(existingFile);
+                }
+
+                return this.AddFile(destinationFolder, file.FileName, fileContent, true, true, file.ContentType);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified file.
+        /// </summary>
+        /// <param name="file">The file to delete.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when file is null.</exception>
+        /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
+        public virtual void DeleteFile(IFileInfo file)
+        {
+            Requires.NotNull("file", file);
+            FileDeletionController.Instance.DeleteFile(file);
+            this.ClearFolderCache(file.PortalId);
+
+            // Notify File Delete Event
+            this.OnFileDeleted(file, this.GetCurrentUserID());
+        }
+
         private void CheckFileAddingRestrictions(IFolderInfo folder, string fileName, bool checkPermissions,
             bool ignoreWhiteList)
         {
@@ -751,111 +856,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             return file.FileName;
-        }
-
-        /// <summary>
-        /// Copies the specified file into the specified folder.
-        /// </summary>
-        /// <param name="file">The file to copy.</param>
-        /// <param name="destinationFolder">The folder where to copy the file to.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when file or destinationFolder are null.</exception>
-        /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the copied file.</returns>
-        public virtual IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder)
-        {
-            Requires.NotNull("file", file);
-            Requires.NotNull("destinationFolder", destinationFolder);
-
-            if (file.FolderMappingID == destinationFolder.FolderMappingID)
-            {
-                if (!FolderPermissionController.Instance.CanAddFolder(destinationFolder))
-                {
-                    throw new PermissionsNotMetException(Localization.GetExceptionMessage("CopyFilePermissionsNotMet", "Permissions are not met. The file has not been copied."));
-                }
-
-                if (!PortalController.Instance.HasSpaceAvailable(destinationFolder.PortalID, file.Size))
-                {
-                    throw new NoSpaceAvailableException(Localization.GetExceptionMessage("CopyFileNoSpaceAvailable", "The portal has no space available to store the specified file. The file has not been copied."));
-                }
-
-                var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-                try
-                {
-                    // check for existing file
-                    var existingFile = this.GetFile(destinationFolder, file.FileName, true);
-                    if (existingFile != null)
-                    {
-                        this.DeleteFile(existingFile);
-                    }
-
-                    var folder = FolderManager.Instance.GetFolder(file.FolderId);
-                    FolderProvider.Instance(folderMapping.FolderProviderType).CopyFile(folder.MappedPath, file.FileName, destinationFolder.MappedPath, folderMapping);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                    throw new FolderProviderException(Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
-                }
-
-                // copy Content Item
-                var contentItemID = this.CopyContentItem(file.ContentItemID);
-
-                var fileId = DataProvider.Instance().AddFile(
-                    file.PortalId,
-                    Guid.NewGuid(),
-                    Guid.NewGuid(),
-                    file.FileName,
-                    file.Extension,
-                    file.Size,
-                    file.Width,
-                    file.Height,
-                    file.ContentType,
-                    destinationFolder.FolderPath,
-                    destinationFolder.FolderID,
-                    this.GetCurrentUserID(),
-                    file.SHA1Hash,
-                    DateTime.Now,
-                    file.Title,
-                    file.Description,
-                    file.StartDate,
-                    file.EndDate,
-                    file.EnablePublishPeriod,
-                    contentItemID);
-
-                var copiedFile = this.GetFile(fileId, true);
-
-                // Notify added file event
-                this.OnFileAdded(copiedFile, destinationFolder, this.GetCurrentUserID());
-
-                return copiedFile;
-            }
-
-            using (var fileContent = this.GetFileContent(file))
-            {
-                // check for existing file
-                var existingFile = this.GetFile(destinationFolder, file.FileName, true);
-                if (existingFile != null)
-                {
-                    this.DeleteFile(existingFile);
-                }
-
-                return this.AddFile(destinationFolder, file.FileName, fileContent, true, true, file.ContentType);
-            }
-        }
-
-        /// <summary>
-        /// Deletes the specified file.
-        /// </summary>
-        /// <param name="file">The file to delete.</param>
-        /// <exception cref="System.ArgumentNullException">Thrown when file is null.</exception>
-        /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
-        public virtual void DeleteFile(IFileInfo file)
-        {
-            Requires.NotNull("file", file);
-            FileDeletionController.Instance.DeleteFile(file);
-            this.ClearFolderCache(file.PortalId);
-
-            // Notify File Delete Event
-            this.OnFileDeleted(file, this.GetCurrentUserID());
         }
 
         /// <summary>
@@ -1566,65 +1566,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        private bool CanUpdateWhenApproving(IFolderInfo folder, ContentItem item, int createdByUserID)
-        {
-            if (WorkflowEngine.Instance.IsWorkflowOnDraft(item.ContentItemId))
-            {
-                ////We assume User can add content to folder
-                return true;
-            }
-
-            return WorkflowSecurity.Instance.HasStateReviewerPermission(folder.PortalID, createdByUserID, item.StateID);
-        }
-
-        private bool StartWorkflow(int createdByUserID, Workflow folderWorkflow, bool fileExists, int contentItemID)
-        {
-            if (WorkflowEngine.Instance.IsWorkflowCompleted(contentItemID))
-            {
-                WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
-                return true;
-            }
-
-            return false;
-        }
-
-        private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, IFileInfo oldFile, Stream content)
-        {
-            var contentController = new ContentController();
-            bool workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
-
-            var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
-
-            // If the file does not exist, then the field would not has value.
-            // Currently, first upload has not version file
-            if (oldFile == null || !oldFile.HasBeenPublished)
-            {
-                return file.FileName;
-            }
-
-            if (workflowCompleted) // We assume User can add content to folder
-            {
-                return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
-            }
-
-            if (this.CanUpdateWhenApproving(folder, contentController.GetContentItem(file.ContentItemID), createdByUserID))
-            {
-                // Update the Unpublished version
-                var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
-                if (versions.Any())
-                {
-                    FileVersionController.Instance.DeleteFileVersion(file, versions.OrderByDescending(f => f.Version).FirstOrDefault().Version);
-                }
-
-                return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
-            }
-
-            throw new FileLockedException(
-                Localization.GetExceptionMessage(
-                    "FileLockedRunningWorkflowError",
-                    "File locked. The file cannot be updated because it has a running workflow"));
-        }
-
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void AutoSyncFile(IFileInfo file)
         {
@@ -1651,7 +1592,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             var folderManager = FolderManager.Instance;
@@ -1733,6 +1674,65 @@ namespace DotNetNuke.Services.FileSystem
             return exactFilesCount;
         }
 
+        private bool CanUpdateWhenApproving(IFolderInfo folder, ContentItem item, int createdByUserID)
+        {
+            if (WorkflowEngine.Instance.IsWorkflowOnDraft(item.ContentItemId))
+            {
+                ////We assume User can add content to folder
+                return true;
+            }
+
+            return WorkflowSecurity.Instance.HasStateReviewerPermission(folder.PortalID, createdByUserID, item.StateID);
+        }
+
+        private bool StartWorkflow(int createdByUserID, Workflow folderWorkflow, bool fileExists, int contentItemID)
+        {
+            if (WorkflowEngine.Instance.IsWorkflowCompleted(contentItemID))
+            {
+                WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
+                return true;
+            }
+
+            return false;
+        }
+
+        private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, IFileInfo oldFile, Stream content)
+        {
+            var contentController = new ContentController();
+            bool workflowCompleted = WorkflowEngine.Instance.IsWorkflowCompleted(file.ContentItemID);
+
+            var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
+
+            // If the file does not exist, then the field would not has value.
+            // Currently, first upload has not version file
+            if (oldFile == null || !oldFile.HasBeenPublished)
+            {
+                return file.FileName;
+            }
+
+            if (workflowCompleted) // We assume User can add content to folder
+            {
+                return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
+            }
+
+            if (this.CanUpdateWhenApproving(folder, contentController.GetContentItem(file.ContentItemID), createdByUserID))
+            {
+                // Update the Unpublished version
+                var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
+                if (versions.Any())
+                {
+                    FileVersionController.Instance.DeleteFileVersion(file, versions.OrderByDescending(f => f.Version).FirstOrDefault().Version);
+                }
+
+                return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
+            }
+
+            throw new FileLockedException(
+                Localization.GetExceptionMessage(
+                    "FileLockedRunningWorkflowError",
+                    "File locked. The file cannot be updated because it has a running workflow"));
+        }
+
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal void EnsureZipFolder(string fileName, IFolderInfo destinationFolder)
         {
@@ -1778,14 +1778,14 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual Stream GetAutoDeleteFileStream(string filePath)
         {
             return new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, BufferSize, FileOptions.DeleteOnClose);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual int GetCurrentUserID()
         {
             return UserController.Instance.GetCurrentUserInfo().UserID;
@@ -1820,28 +1820,28 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual string GetHostMapPath()
         {
             return TestableGlobals.Instance.HostMapPath;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual Image GetImageFromStream(Stream stream)
         {
             return Image.FromStream(stream);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual Globals.PerformanceSettings GetPerformanceSetting()
         {
             return Host.PerformanceSetting;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual bool IsAllowedExtension(string fileName)
         {
             var extension = Path.GetExtension(fileName);
@@ -1855,7 +1855,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual bool IsValidFilename(string fileName)
         {
             // regex ensures the file is a valid filename and doesn't include illegal characters
@@ -1863,7 +1863,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         internal virtual bool IsFileAutoSyncEnabled()
         {
             return Host.EnableFileAutoSync;

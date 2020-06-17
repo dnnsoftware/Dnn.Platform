@@ -21,11 +21,6 @@ namespace DotNetNuke.Web.Api
             this._activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }
 
-        private ModuleInfo InitModuleInfo()
-        {
-            return this.Request.FindModuleInfo();
-        }
-
         /// <summary>
         /// Gets portalSettings for the current portal.
         /// </summary>
@@ -52,6 +47,11 @@ namespace DotNetNuke.Web.Api
         public ModuleInfo ActiveModule
         {
             get { return this._activeModule.Value; }
+        }
+
+        private ModuleInfo InitModuleInfo()
+        {
+            return this.Request.FindModuleInfo();
         }
     }
 }

@@ -26,6 +26,60 @@ namespace DotNetNuke.Services.EventQueue.Config
 
         internal Dictionary<string, PublishedEvent> PublishedEvents { get; set; }
 
+        public static void RegisterEventSubscription(EventQueueConfiguration config, string eventname, SubscriberInfo subscriber)
+        {
+            var e = new PublishedEvent();
+            e.EventName = eventname;
+            e.Subscribers = subscriber.ID;
+            config.PublishedEvents.Add(e.EventName, e);
+            if (!config.EventQueueSubscribers.ContainsKey(subscriber.ID))
+            {
+                config.EventQueueSubscribers.Add(subscriber.ID, subscriber);
+            }
+        }
+
+        internal static EventQueueConfiguration GetConfig()
+        {
+            var config = (EventQueueConfiguration)DataCache.GetCache("EventQueueConfig");
+            if (config == null)
+            {
+                string filePath = Globals.HostMapPath + "EventQueue\\EventQueue.config";
+                if (File.Exists(filePath))
+                {
+                    config = new EventQueueConfiguration();
+
+                    // Deserialize into EventQueueConfiguration
+                    config.Deserialize(FileSystemUtils.ReadFile(filePath));
+
+                    // Set back into Cache
+                    DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
+                }
+                else
+                {
+                    // make a default config file
+                    config = new EventQueueConfiguration();
+                    config.PublishedEvents = new Dictionary<string, PublishedEvent>();
+                    config.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
+                    var subscriber = new SubscriberInfo("DNN Core");
+                    RegisterEventSubscription(config, "Application_Start", subscriber);
+                    RegisterEventSubscription(config, "Application_Start_FirstRequest", subscriber);
+                    SaveConfig(config, filePath);
+                }
+            }
+
+            return config;
+        }
+
+        internal static void SaveConfig(EventQueueConfiguration config, string filePath)
+        {
+            StreamWriter oStream = File.CreateText(filePath);
+            oStream.WriteLine(config.Serialize());
+            oStream.Close();
+
+            // Set back into Cache
+            DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
+        }
+
         private void Deserialize(string configXml)
         {
             if (!string.IsNullOrEmpty(configXml))
@@ -50,18 +104,6 @@ namespace DotNetNuke.Services.EventQueue.Config
                     oSubscriberInfo.PrivateKey = xmlItem.SelectSingleNode("PrivateKey").InnerText;
                     this.EventQueueSubscribers.Add(oSubscriberInfo.ID, oSubscriberInfo);
                 }
-            }
-        }
-
-        public static void RegisterEventSubscription(EventQueueConfiguration config, string eventname, SubscriberInfo subscriber)
-        {
-            var e = new PublishedEvent();
-            e.EventName = eventname;
-            e.Subscribers = subscriber.ID;
-            config.PublishedEvents.Add(e.EventName, e);
-            if (!config.EventQueueSubscribers.ContainsKey(subscriber.ID))
-            {
-                config.EventQueueSubscribers.Add(subscriber.ID, subscriber);
             }
         }
 
@@ -113,48 +155,6 @@ namespace DotNetNuke.Services.EventQueue.Config
                 writer.Close();
                 return sb.ToString();
             }
-        }
-
-        internal static EventQueueConfiguration GetConfig()
-        {
-            var config = (EventQueueConfiguration)DataCache.GetCache("EventQueueConfig");
-            if (config == null)
-            {
-                string filePath = Globals.HostMapPath + "EventQueue\\EventQueue.config";
-                if (File.Exists(filePath))
-                {
-                    config = new EventQueueConfiguration();
-
-                    // Deserialize into EventQueueConfiguration
-                    config.Deserialize(FileSystemUtils.ReadFile(filePath));
-
-                    // Set back into Cache
-                    DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
-                }
-                else
-                {
-                    // make a default config file
-                    config = new EventQueueConfiguration();
-                    config.PublishedEvents = new Dictionary<string, PublishedEvent>();
-                    config.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
-                    var subscriber = new SubscriberInfo("DNN Core");
-                    RegisterEventSubscription(config, "Application_Start", subscriber);
-                    RegisterEventSubscription(config, "Application_Start_FirstRequest", subscriber);
-                    SaveConfig(config, filePath);
-                }
-            }
-
-            return config;
-        }
-
-        internal static void SaveConfig(EventQueueConfiguration config, string filePath)
-        {
-            StreamWriter oStream = File.CreateText(filePath);
-            oStream.WriteLine(config.Serialize());
-            oStream.Close();
-
-            // Set back into Cache
-            DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
         }
     }
 }

@@ -26,14 +26,12 @@ namespace Dnn.PersonaBar.SqlConsole.Services
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SqlConsoleController : PersonaBarApiController
     {
-        private ISqlQueryController _controller = SqlQueryController.Instance;
         const string ScriptDelimiterRegex = "(?<=(?:[^\\w]+|^))GO(?=(?: |\\t)*?(?:\\r?\\n|$))";
+        private ISqlQueryController _controller = SqlQueryController.Instance;
         private static readonly Regex SqlObjRegex = new Regex(ScriptDelimiterRegex,
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
         //private const int MaxOutputRecords = 500;
-
-        #region API
 
         [HttpGet]
         public HttpResponseMessage GetSavedQueries()
@@ -91,7 +89,7 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             {
                 this._controller.DeleteQuery(savedQuery);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.NoContent);
@@ -136,12 +134,8 @@ namespace Dnn.PersonaBar.SqlConsole.Services
             this.RecordAuditEventLog(query.Query);
 
             var statusCode = string.IsNullOrEmpty(errorMessage) ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
-            return this.Request.CreateResponse(statusCode,  new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
+            return this.Request.CreateResponse(statusCode, new { Data = runAsQuery ? null : outputTables, Error = errorMessage });
         }
-
-        #endregion
-
-        #region Private Methods
 
         private void RecordAuditEventLog(string query)
         {
@@ -164,7 +158,5 @@ namespace Dnn.PersonaBar.SqlConsole.Services
         {
             return SqlObjRegex.IsMatch(query);
         }
-
-        #endregion
     }
 }

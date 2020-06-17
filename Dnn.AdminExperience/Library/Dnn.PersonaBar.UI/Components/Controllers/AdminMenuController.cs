@@ -25,11 +25,6 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
     {
         private IDictionary<string, IList<string>> _knownPages;
 
-        protected override Func<IAdminMenuController> GetFactory()
-        {
-            return () => new AdminMenuController();
-        }
-
         public void CreateLinkMenu(TabInfo tab)
         {
             if (!this.ValidateTab(tab))
@@ -76,6 +71,11 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             var identifier = $"Link_{portalId}_{tabId}";
 
             PersonaBarRepository.Instance.DeleteMenuItem(identifier);
+        }
+
+        protected override Func<IAdminMenuController> GetFactory()
+        {
+            return () => new AdminMenuController();
         }
 
         private bool ValidateTab(TabInfo tab)

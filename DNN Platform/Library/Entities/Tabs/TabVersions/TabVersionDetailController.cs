@@ -73,14 +73,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             DataCache.RemoveCache(GetTabVersionDetailCacheKey(tabVersionId));
         }
 
-        private static string GetTabVersionDetailCacheKey(int tabVersionId)
-        {
-            return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);
-        }
-
         protected override System.Func<ITabVersionDetailController> GetFactory()
         {
             return () => new TabVersionDetailController();
+        }
+
+        private static string GetTabVersionDetailCacheKey(int tabVersionId)
+        {
+            return string.Format(DataCache.TabVersionDetailsCacheKey, tabVersionId);
         }
     }
 }

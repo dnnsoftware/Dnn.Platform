@@ -29,20 +29,6 @@ namespace DesktopModules.Admin.Security
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to display the Visibility controls.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected bool ShowVisibility
-        {
-            get
-            {
-                object setting = GetSetting(this.PortalId, "Profile_DisplayVisibility");
-                return Convert.ToBoolean(setting) && this.IsUser;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the EditorMode.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -69,6 +55,20 @@ namespace DesktopModules.Admin.Security
             get
             {
                 return this.ProfileProperties.IsValid || this.IsAdmin;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether to display the Visibility controls.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected bool ShowVisibility
+        {
+            get
+            {
+                object setting = GetSetting(this.PortalId, "Profile_DisplayVisibility");
+                return Convert.ToBoolean(setting) && this.IsUser;
             }
         }
 

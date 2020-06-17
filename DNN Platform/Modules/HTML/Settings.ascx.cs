@@ -29,38 +29,6 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.cboWorkflow.SelectedIndexChanged += this.OnWorkflowSelectedIndexChanged;
-        }
-
-        protected void OnWorkflowSelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.DisplayWorkflowDetails();
-        }
-
-        private void DisplayWorkflowDetails()
-        {
-            if (this.cboWorkflow.SelectedValue != null)
-            {
-                var objWorkflow = new WorkflowStateController();
-                var strDescription = string.Empty;
-                var arrStates = objWorkflow.GetWorkflowStates(int.Parse(this.cboWorkflow.SelectedValue));
-                if (arrStates.Count > 0)
-                {
-                    foreach (WorkflowStateInfo objState in arrStates)
-                    {
-                        strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
-                    }
-
-                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
-                }
-
-                this.lblDescription.Text = strDescription;
-            }
-        }
-
         /// <summary>
         ///   LoadSettings loads the settings from the Database and displays them.
         /// </summary>
@@ -160,6 +128,38 @@ namespace DotNetNuke.Modules.Html
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.cboWorkflow.SelectedIndexChanged += this.OnWorkflowSelectedIndexChanged;
+        }
+
+        protected void OnWorkflowSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.DisplayWorkflowDetails();
+        }
+
+        private void DisplayWorkflowDetails()
+        {
+            if (this.cboWorkflow.SelectedValue != null)
+            {
+                var objWorkflow = new WorkflowStateController();
+                var strDescription = string.Empty;
+                var arrStates = objWorkflow.GetWorkflowStates(int.Parse(this.cboWorkflow.SelectedValue));
+                if (arrStates.Count > 0)
+                {
+                    foreach (WorkflowStateInfo objState in arrStates)
+                    {
+                        strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
+                    }
+
+                    strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
+                }
+
+                this.lblDescription.Text = strDescription;
             }
         }
     }

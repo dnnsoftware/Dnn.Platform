@@ -99,20 +99,6 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a TabPermissionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            // Call the base classes fill method to ppoulate base class proeprties
-            this.FillInternal(dr);
-            this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
-            this.TabID = Null.SetNullInteger(dr["TabID"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -129,6 +115,20 @@ namespace DotNetNuke.Security.Permissions
             {
                 this.TabPermissionID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a TabPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            // Call the base classes fill method to ppoulate base class proeprties
+            this.FillInternal(dr);
+            this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
+            this.TabID = Null.SetNullInteger(dr["TabID"]);
         }
     }
 }

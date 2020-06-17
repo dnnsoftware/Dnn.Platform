@@ -22,12 +22,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
     public class NewRole : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
+        private const string FlagIsPublic = "public";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
-        [FlagParameter("public", "Prompt_NewRole_FlagIsPublic", "Boolean", "false")]
-        private const string FlagIsPublic = "public";
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("autoassign", "Prompt_NewRole_FlagAutoAssign", "Boolean", "false")]
         private const string FlagAutoAssign = "autoassign";
         [FlagParameter("name", "Prompt_NewRole_FlagRoleName", "String", true)]
@@ -37,17 +37,15 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
         private const string FlagStatus = "status";
 
-
         public string RoleName { get; set; }
         public string Description { get; set; }
         public bool IsPublic { get; set; }
         public bool AutoAssign { get; set; }
         public RoleStatus Status { get; set; }
 
-
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.RoleName = this.GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
             this.Description = this.GetFlagValue(FlagDescription, "Description", string.Empty);
             this.IsPublic = this.GetFlagValue(FlagIsPublic, "Is Public", false);

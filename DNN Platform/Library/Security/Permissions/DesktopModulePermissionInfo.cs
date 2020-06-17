@@ -95,19 +95,6 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a DesktopModulePermissionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.FillInternal(dr);
-            this.DesktopModulePermissionID = Null.SetNullInteger(dr["DesktopModulePermissionID"]);
-            this.PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -123,6 +110,19 @@ namespace DotNetNuke.Security.Permissions
             {
                 this.DesktopModulePermissionID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a DesktopModulePermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.DesktopModulePermissionID = Null.SetNullInteger(dr["DesktopModulePermissionID"]);
+            this.PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
         }
 
         /// -----------------------------------------------------------------------------

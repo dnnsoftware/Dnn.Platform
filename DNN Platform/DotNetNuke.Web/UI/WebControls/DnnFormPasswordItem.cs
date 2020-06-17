@@ -43,11 +43,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        private void TextChanged(object sender, EventArgs e)
-        {
-            this.UpdateDataSource(this.Value, this._password.Text, this.DataField);
-        }
-
         /// <summary>
         /// Use container to add custom control hierarchy to.
         /// </summary>
@@ -88,6 +83,11 @@ namespace DotNetNuke.Web.UI.WebControls
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.PasswordStrength.css", FileOrder.Css.ResourceCss);
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+        }
+
+        private void TextChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this.Value, this._password.Text, this.DataField);
         }
 
         protected override void OnPreRender(EventArgs e)

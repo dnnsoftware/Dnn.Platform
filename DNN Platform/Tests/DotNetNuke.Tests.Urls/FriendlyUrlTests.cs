@@ -24,8 +24,8 @@ namespace DotNetNuke.Tests.Urls
     public class FriendlyUrlTests : UrlTestBase
     {
         private const string _defaultPage = Globals.glbDefaultPage;
-        private int _tabId;
         private const string _aboutUsPageName = "About Us";
+        private int _tabId;
         private string _redirectMode;
         private Locale _customLocale;
         private PortalAliasInfo _primaryAlias;
@@ -71,10 +71,10 @@ namespace DotNetNuke.Tests.Urls
                             if (alias == null)
                             {
                                 alias = new PortalAliasInfo
-                                                {
-                                                    HTTPAlias = fields[0],
-                                                    PortalID = this.PortalId,
-                                                };
+                                {
+                                    HTTPAlias = fields[0],
+                                    PortalID = this.PortalId,
+                                };
                                 PortalAliasController.Instance.AddPortalAlias(alias);
                             }
                         });
@@ -131,6 +131,20 @@ namespace DotNetNuke.Tests.Urls
 
                             TestUtil.DeleteUser(this.PortalId, fields[0]);
                         });
+        }
+
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_BaseTestCases")]
+        public void AdvancedUrlProvider_BaseFriendlyUrl(Dictionary<string, string> testFields)
+        {
+            this.ExecuteTest("Base", testFields);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ImprovedTestCases")]
+        public void AdvancedUrlProvider_ImprovedFriendlyUrl(Dictionary<string, string> testFields)
+        {
+            this.ExecuteTest("Improved", testFields);
         }
 
         private void ExecuteTest(string test, Dictionary<string, string> testFields)
@@ -220,20 +234,6 @@ namespace DotNetNuke.Tests.Urls
             var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
             tab.TabName = newName;
             TabController.Instance.UpdateTab(tab);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_BaseTestCases")]
-        public void AdvancedUrlProvider_BaseFriendlyUrl(Dictionary<string, string> testFields)
-        {
-            this.ExecuteTest("Base", testFields);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "FriendlyUrl_ImprovedTestCases")]
-        public void AdvancedUrlProvider_ImprovedFriendlyUrl(Dictionary<string, string> testFields)
-        {
-            this.ExecuteTest("Improved", testFields);
         }
 
         [Test]

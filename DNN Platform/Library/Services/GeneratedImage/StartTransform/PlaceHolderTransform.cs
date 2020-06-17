@@ -13,6 +13,19 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     /// </summary>
     public class PlaceholderTransform : ImageTransform
     {
+        public PlaceholderTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.BackColor = Color.LightGray;
+            this.Color = Color.LightSlateGray;
+            this.Width = 0;
+            this.Height = 0;
+            this.Text = string.Empty;
+        }
+
         /// <summary>
         /// Gets or sets the width of the placeholder image.
         /// </summary>
@@ -42,19 +55,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
-
-        public PlaceholderTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.BackColor = Color.LightGray;
-            this.Color = Color.LightSlateGray;
-            this.Width = 0;
-            this.Height = 0;
-            this.Text = string.Empty;
-        }
 
         /// <summary>
         /// Processes an input image returning a placeholder image.

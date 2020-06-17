@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Servers.MenuControllers
     {
         public void UpdateParameters(MenuItem menuItem)
         {
-            
+
         }
 
         public bool Visible(MenuItem menuItem)

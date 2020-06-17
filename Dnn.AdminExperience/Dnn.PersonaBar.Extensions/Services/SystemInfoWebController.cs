@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Servers.Services
     public class SystemInfoWebController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
-        
+
         [HttpGet]
         public HttpResponseMessage GetWebServerInfo()
         {

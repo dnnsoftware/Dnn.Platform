@@ -22,6 +22,22 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnPageDropDownList runat='server'></{0}:DnnPageDropDownList>")]
     public class DnnPageDropDownList : DnnDropDownList
     {
+        /// <summary>
+        /// Gets or sets a value indicating whether whether disabled pages are not selectable
+        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
+        /// </summary>
+        public bool DisabledNotSelectable { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether whether include active page.
+        /// </summary>
+        public bool IncludeActiveTab { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether whether include pages which are disabled.
+        /// </summary>
+        public bool IncludeDisabledTabs { get; set; }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -71,22 +87,6 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether whether disabled pages are not selectable
-        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
-        /// </summary>
-        public bool DisabledNotSelectable { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether whether include active page.
-        /// </summary>
-        public bool IncludeActiveTab { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether whether include pages which are disabled.
-        /// </summary>
-        public bool IncludeDisabledTabs { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether whether include pages which tab type is not normal.
         /// </summary>
         public bool IncludeAllTabTypes { get; set; }
@@ -114,19 +114,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        private int? InternalPortalId
-        {
-            get
-            {
-                return this.ViewState.GetValue<int?>("PortalId", null);
-            }
-
-            set
-            {
-                this.ViewState.SetValue<int?>("PortalId", value, null);
-            }
-        }
-
         /// <summary>
         /// Gets or sets the selected Page in the control, or selects the Page in the control.
         /// </summary>
@@ -150,5 +137,18 @@ namespace DotNetNuke.Web.UI.WebControls
         /// Gets or sets specific to only show tabs which have view permission on these roles.
         /// </summary>
         public IList<int> Roles { get; set; }
+
+        private int? InternalPortalId
+        {
+            get
+            {
+                return this.ViewState.GetValue<int?>("PortalId", null);
+            }
+
+            set
+            {
+                this.ViewState.SetValue<int?>("PortalId", value, null);
+            }
+        }
     }
 }

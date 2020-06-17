@@ -31,6 +31,9 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "getTreeWithNodeMethod")]
         public string GetTreeWithNodeMethod;
 
+        [DataMember(Name = "rootId")]
+        public string RootId = "Root"; // should not be (-1), as (-1) can be treated as Null.Integer
+
         private Dictionary<string, string> _parameters;
 
         [DataMember(Name = "parameters")]
@@ -41,8 +44,5 @@ namespace DotNetNuke.Web.UI.WebControls
                 return this._parameters ?? (this._parameters = new Dictionary<string, string>());
             }
         }
-
-        [DataMember(Name = "rootId")]
-        public string RootId = "Root"; // should not be (-1), as (-1) can be treated as Null.Integer
     }
 }

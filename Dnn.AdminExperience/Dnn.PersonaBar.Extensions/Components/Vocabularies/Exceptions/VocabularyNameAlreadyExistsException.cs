@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Vocabularies.Exceptions
         public VocabularyNameAlreadyExistsException()
             : base(Constants.VocabularyExistsError)
         {
-            
+
         }
     }
 }

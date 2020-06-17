@@ -27,12 +27,17 @@ namespace DotNetNuke.UI.Skins.Controls
         private const string MyFileName = "UserAndLogin.ascx";
         private readonly INavigationManager _navigationManager;
 
-        protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(this.PortalSettings.UserId, 32, 32);
-
         public UserAndLogin()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
+        /// </summary>
+        public bool ShowInErrorPage { get; set; }
+
+        protected string AvatarImageUrl => UserController.Instance.GetUserProfilePictureUrl(this.PortalSettings.UserId, 32, 32);
 
         protected bool CanRegister
         {
@@ -128,11 +133,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 return Globals.UserProfileURL(this.PortalSettings.UserInfo.UserID);
             }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
-        /// </summary>
-        public bool ShowInErrorPage { get; set; }
 
         protected string LocalizeString(string key)
         {

@@ -21,10 +21,6 @@ namespace DotNetNuke.Modules.Admin.Sales
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PayPalSubscription));
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -218,6 +214,10 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 Exceptions.ProcessPageLoadException(exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
 
         /// <summary>

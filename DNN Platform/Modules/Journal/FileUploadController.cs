@@ -23,6 +23,8 @@ namespace DotNetNuke.Modules.Journal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
 
+        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG" };
+
         [DnnAuthorize]
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -42,6 +44,11 @@ namespace DotNetNuke.Modules.Journal
             return this.IframeSafeJson(statuses);
         }
 
+        private static bool IsImageExtension(string extension)
+        {
+            return ImageExtensions.Contains(extension.ToUpper());
+        }
+
         private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
         {
             // return json but label it as plain text
@@ -49,13 +56,6 @@ namespace DotNetNuke.Modules.Journal
             {
                 Content = new StringContent(JsonConvert.SerializeObject(statuses)),
             };
-        }
-
-        private static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG" };
-
-        private static bool IsImageExtension(string extension)
-        {
-            return ImageExtensions.Contains(extension.ToUpper());
         }
 
         // Upload entire file

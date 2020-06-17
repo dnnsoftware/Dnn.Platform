@@ -20,6 +20,28 @@ namespace DotNetNuke.Entities.Users.Membership
     {
         private readonly DataProvider _dataProvider = DataProvider.Instance();
 
+        /// <summary>
+        /// returns the password history of the supplied user.
+        /// </summary>
+        /// <returns>list of PasswordHistory objects.</returns>
+        public List<PasswordHistory> GetPasswordHistory(int userId)
+        {
+            return this.GetPasswordHistory(userId, Null.NullInteger);
+        }
+
+        /// <summary>
+        /// returns the password history of the supplied user.
+        /// </summary>
+        /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
+        /// <returns>list of PasswordHistory objects.</returns>
+        public List<PasswordHistory> GetPasswordHistory(int userId, int portalId)
+        {
+            var settings = new MembershipPasswordSettings(portalId);
+            List<PasswordHistory> history =
+                CBO.FillCollection<PasswordHistory>(this._dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
+            return history;
+        }
+
         private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
         {
             using (HashAlgorithm ha = HashAlgorithm.Create())
@@ -44,28 +66,6 @@ namespace DotNetNuke.Entities.Users.Membership
                 rcsp.GetBytes(bSalt);
                 return bSalt;
             }
-        }
-
-        /// <summary>
-        /// returns the password history of the supplied user.
-        /// </summary>
-        /// <returns>list of PasswordHistory objects.</returns>
-        public List<PasswordHistory> GetPasswordHistory(int userId)
-        {
-            return this.GetPasswordHistory(userId, Null.NullInteger);
-        }
-
-        /// <summary>
-        /// returns the password history of the supplied user.
-        /// </summary>
-        /// <param name="portalId">portalid - futureproofing against any setting become site level.</param>
-        /// <returns>list of PasswordHistory objects.</returns>
-        public List<PasswordHistory> GetPasswordHistory(int userId, int portalId)
-        {
-            var settings = new MembershipPasswordSettings(portalId);
-            List<PasswordHistory> history =
-                CBO.FillCollection<PasswordHistory>(this._dataProvider.GetPasswordHistory(userId, settings.NumberOfPasswordsStored, settings.NumberOfDaysBeforePasswordReuse));
-            return history;
         }
 
         /// <summary>

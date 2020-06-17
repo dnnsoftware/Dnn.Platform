@@ -25,10 +25,10 @@ namespace DotNetNuke.Services.Zip
     /// </remarks>
     internal class SharpZipLibRedirect
     {
-        internal static bool AlreadyRun { get; private set; }
-
         private const string OldName = "SharpZipLib";
         private const string NewName = "ICSharpCode.SharpZipLib";
+
+        internal static bool AlreadyRun { get; private set; }
 
         /// <summary>
         /// Registration call - should only be called once

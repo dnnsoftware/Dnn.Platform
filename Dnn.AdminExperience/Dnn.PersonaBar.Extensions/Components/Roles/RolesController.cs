@@ -1,35 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using Dnn.PersonaBar.Roles.Services.DTO;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
 namespace Dnn.PersonaBar.Roles.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
+    using Dnn.PersonaBar.Roles.Services.DTO;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+
     public class RolesController : ServiceLocator<IRolesController, RolesController>, IRolesController
     {
-        protected override Func<IRolesController> GetFactory()
-        {
-            return () => new RolesController();
-        }
-
-        #region Public Methods
         /// <summary>
-        /// Gets a paginated list of Roles matching given search criteria
+        /// Gets a paginated list of Roles matching given search criteria.
         /// </summary>
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
@@ -55,13 +45,18 @@ namespace Dnn.PersonaBar.Roles.Components
             return roleInfos.Skip(startIndex).Take(pageSize);
         }
 
+        protected override Func<IRolesController> GetFactory()
+        {
+            return () => new RolesController();
+        }
+
         /// <summary>
         /// Gets a list (not paginated) of Roles given a comma separated list of Roles' names.
         /// </summary>
         /// <param name="portalSettings"></param>
         /// <param name="groupId"></param>
         /// <param name="rolesFilter"></param>
-        /// <returns>List of found Roles</returns>
+        /// <returns>List of found Roles.</returns>
         public IList<RoleInfo> GetRolesByNames(PortalSettings portalSettings, int groupId, IList<string> rolesFilter)
         {
             var isAdmin = this.IsAdmin(portalSettings);
@@ -72,15 +67,15 @@ namespace Dnn.PersonaBar.Roles.Components
                 var allRoles = (groupId < Null.NullInteger
                 ? RoleController.Instance.GetRoles(portalSettings.PortalId)
                 : RoleController.Instance.GetRoles(portalSettings.PortalId, r => r.RoleGroupID == groupId));
-                
-                foundRoles = allRoles.Where(r => 
+
+                foundRoles = allRoles.Where(r =>
                 {
                     bool adminCheck = isAdmin || r.RoleID != portalSettings.AdministratorRoleId;
                     return adminCheck && rolesFilter.Contains(r.RoleName);
                 }).ToList();
-            
+
             }
-            
+
             return foundRoles;
         }
 
@@ -185,15 +180,10 @@ namespace Dnn.PersonaBar.Roles.Components
             return role.RoleName;
         }
 
-        #endregion
-
-        #region Private Methods
         private bool IsAdmin(PortalSettings portalSettings)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(portalSettings.AdministratorRoleName);
         }
-
-        #endregion
     }
 }

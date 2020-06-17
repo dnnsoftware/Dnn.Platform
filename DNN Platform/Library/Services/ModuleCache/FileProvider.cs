@@ -22,14 +22,25 @@ namespace DotNetNuke.Services.ModuleCache
         private const string AttribFileExtension = ".attrib.resources";
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
-        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
+        public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
-            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
-            using (var sha256 = new SHA256CryptoServiceProvider())
+            var cacheKey = new StringBuilder();
+            if (varyBy != null)
             {
-                hash = sha256.ComputeHash(hash);
-                return tabModuleId + "_" + this.ByteArrayToString(hash);
+                SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
+                while (varyByParms.MoveNext())
+                {
+                    string key = varyByParms.Current.Key.ToLowerInvariant();
+                    cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
+                }
             }
+
+            return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
+        }
+
+        public override int GetItemCount(int tabModuleId)
+        {
+            return GetCachedItemCount(tabModuleId);
         }
 
         private static string GetAttribFileName(int tabModuleId, string cacheKey)
@@ -40,6 +51,16 @@ namespace DotNetNuke.Services.ModuleCache
         private static int GetCachedItemCount(int tabModuleId)
         {
             return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
+        }
+
+        private string GenerateCacheKeyHash(int tabModuleId, string cacheKey)
+        {
+            byte[] hash = Encoding.ASCII.GetBytes(cacheKey);
+            using (var sha256 = new SHA256CryptoServiceProvider())
+            {
+                hash = sha256.ComputeHash(hash);
+                return tabModuleId + "_" + this.ByteArrayToString(hash);
+            }
         }
 
         private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
@@ -68,10 +89,10 @@ namespace DotNetNuke.Services.ModuleCache
 
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
-            if (! string.IsNullOrEmpty(homeDirectoryMapPath))
+            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (! Directory.Exists(cacheFolder))
+                if (!Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }
@@ -92,6 +113,11 @@ namespace DotNetNuke.Services.ModuleCache
         {
             int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
             return GetCacheFolder(portalId);
+        }
+
+        private static bool IsPathInApplication(string cacheFolder)
+        {
+            return cacheFolder.Contains(Globals.ApplicationMapPath);
         }
 
         private bool IsFileExpired(string file)
@@ -144,32 +170,6 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
             }
-        }
-
-        private static bool IsPathInApplication(string cacheFolder)
-        {
-            return cacheFolder.Contains(Globals.ApplicationMapPath);
-        }
-
-        public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
-        {
-            var cacheKey = new StringBuilder();
-            if (varyBy != null)
-            {
-                SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
-                while (varyByParms.MoveNext())
-                {
-                    string key = varyByParms.Current.Key.ToLowerInvariant();
-                    cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
-                }
-            }
-
-            return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
-        }
-
-        public override int GetItemCount(int tabModuleId)
-        {
-            return GetCachedItemCount(tabModuleId);
         }
 
         public override byte[] GetModule(int tabModuleId, string cacheKey)

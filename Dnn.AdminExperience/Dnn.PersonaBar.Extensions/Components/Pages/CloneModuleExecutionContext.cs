@@ -13,15 +13,15 @@ namespace Dnn.PersonaBar.Pages.Components
     {
         private const string CloneModuleSlotName = "CloneModuleContext";
 
-        protected override Func<ICloneModuleExecutionContext> GetFactory()
-        {
-            return () => new CloneModuleExecutionContext();
-        }
-
         public void SetCloneModuleContext(bool cloneModule)
         {
             var slot = Thread.GetNamedDataSlot(CloneModuleSlotName);
             Thread.SetData(slot, cloneModule ? bool.TrueString : bool.FalseString);
+        }
+
+        protected override Func<ICloneModuleExecutionContext> GetFactory()
+        {
+            return () => new CloneModuleExecutionContext();
         }
     }
 }

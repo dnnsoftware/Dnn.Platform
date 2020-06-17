@@ -17,6 +17,14 @@ namespace DotNetNuke.Entities.Users
             this.objUser = User;
         }
 
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.notCacheable;
+            }
+        }
+
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
         {
             UserMembership objMembership = this.objUser.Membership;
@@ -74,14 +82,6 @@ namespace DotNetNuke.Entities.Users
             }
 
             return PropertyAccess.GetObjectProperty(objMembership, propertyName, format, formatProvider, ref PropertyNotFound);
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
         }
     }
 }

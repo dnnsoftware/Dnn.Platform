@@ -20,15 +20,20 @@ namespace DotNetNuke.Framework
         private const string AntiForgeryKey = "dnnAntiForgeryRequested";
         private const string ScriptKey = "dnnSFAjaxScriptRequested";
 
+        public bool IsAjaxAntiForgerySupportRequired
+        {
+            get { return CheckKey(AntiForgeryKey); }
+        }
+
+        public bool IsAjaxScriptSupportRequired
+        {
+            get { return CheckKey(ScriptKey); }
+        }
+
         public void RequestAjaxAntiForgerySupport()
         {
             this.RequestAjaxScriptSupport();
             SetKey(AntiForgeryKey);
-        }
-
-        public bool IsAjaxAntiForgerySupportRequired
-        {
-            get { return CheckKey(AntiForgeryKey); }
         }
 
         public void RegisterAjaxAntiForgery(Page page)
@@ -38,11 +43,6 @@ namespace DotNetNuke.Framework
             {
                 ctl.Controls.Add(new LiteralControl(AntiForgery.GetHtml().ToHtmlString()));
             }
-        }
-
-        public bool IsAjaxScriptSupportRequired
-        {
-            get { return CheckKey(ScriptKey); }
         }
 
         public void RequestAjaxScriptSupport()

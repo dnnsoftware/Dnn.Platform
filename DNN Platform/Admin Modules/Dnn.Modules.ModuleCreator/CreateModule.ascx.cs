@@ -32,6 +32,40 @@ namespace Dnn.Module.ModuleCreator
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.optLanguage.SelectedIndexChanged += this.optLanguage_SelectedIndexChanged;
+            this.cboTemplate.SelectedIndexChanged += this.cboTemplate_SelectedIndexChanged;
+            this.cmdCreate.Click += this.cmdCreate_Click;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            if (this.UserInfo.IsSuperUser)
+            {
+                if (!this.Page.IsPostBack)
+                {
+                    Dictionary<string, string> HostSettings = HostController.Instance.GetSettingsDictionary();
+                    if (HostSettings.ContainsKey("Owner"))
+                    {
+                        this.txtOwner.Text = HostSettings["Owner"];
+                    }
+
+                    this.LoadLanguages();
+                    this.LoadModuleTemplates();
+                    this.txtControl.Text = "View";
+                }
+            }
+            else
+            {
+                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SuperUser.ErrorMessage", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                this.createForm.Visible = false;
+            }
+        }
+
         private void LoadReadMe()
         {
             var readMePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedItem.Value + "\\readme.txt";
@@ -367,40 +401,6 @@ namespace Dnn.Module.ModuleCreator
                 Exceptions.LogException(exc);
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, exc.ToString(), ModuleMessage.ModuleMessageType.RedError);
                 return false;
-            }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.optLanguage.SelectedIndexChanged += this.optLanguage_SelectedIndexChanged;
-            this.cboTemplate.SelectedIndexChanged += this.cboTemplate_SelectedIndexChanged;
-            this.cmdCreate.Click += this.cmdCreate_Click;
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            if (this.UserInfo.IsSuperUser)
-            {
-                if (!this.Page.IsPostBack)
-                {
-                    Dictionary<string, string> HostSettings = HostController.Instance.GetSettingsDictionary();
-                    if (HostSettings.ContainsKey("Owner"))
-                    {
-                        this.txtOwner.Text = HostSettings["Owner"];
-                    }
-
-                    this.LoadLanguages();
-                    this.LoadModuleTemplates();
-                    this.txtControl.Text = "View";
-                }
-            }
-            else
-            {
-                DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SuperUser.ErrorMessage", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                this.createForm.Visible = false;
             }
         }
 

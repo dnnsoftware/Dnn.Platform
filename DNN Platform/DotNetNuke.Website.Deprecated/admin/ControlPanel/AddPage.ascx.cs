@@ -27,9 +27,50 @@ namespace DotNetNuke.UI.ControlPanel
     {
         private readonly INavigationManager _navigationManager;
 
+        private TabInfo _newTabObject;
+
         public AddPage()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public override bool Visible
+        {
+            get
+            {
+                return base.Visible && TabPermissionController.CanAddPage();
+            }
+
+            set
+            {
+                base.Visible = value;
+            }
+        }
+
+        public string ToolName
+        {
+            get
+            {
+                return "QuickAddPage";
+            }
+
+            set
+            {
+                throw new NotSupportedException("Set ToolName not supported");
+            }
+        }
+
+        protected TabInfo NewTabObject
+        {
+            get
+            {
+                if (this._newTabObject == null)
+                {
+                    this._newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
+                }
+
+                return this._newTabObject;
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -111,44 +152,11 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        public override bool Visible
+        private static PortalSettings PortalSettings
         {
             get
             {
-                return base.Visible && TabPermissionController.CanAddPage();
-            }
-
-            set
-            {
-                base.Visible = value;
-            }
-        }
-
-        public string ToolName
-        {
-            get
-            {
-                return "QuickAddPage";
-            }
-
-            set
-            {
-                throw new NotSupportedException("Set ToolName not supported");
-            }
-        }
-
-        private TabInfo _newTabObject;
-
-        protected TabInfo NewTabObject
-        {
-            get
-            {
-                if (this._newTabObject == null)
-                {
-                    this._newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
-                }
-
-                return this._newTabObject;
+                return PortalSettings.Current;
             }
         }
 
@@ -157,14 +165,6 @@ namespace DotNetNuke.UI.ControlPanel
             get
             {
                 return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType.Name);
-            }
-        }
-
-        private static PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalSettings.Current;
             }
         }
 

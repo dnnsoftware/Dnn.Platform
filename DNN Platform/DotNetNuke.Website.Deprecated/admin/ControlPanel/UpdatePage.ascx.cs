@@ -27,9 +27,59 @@ namespace DotNetNuke.UI.ControlPanel
     {
         private readonly INavigationManager _navigationManager;
 
+        private TabInfo _currentTab;
+
         public UpdatePage()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public override bool Visible
+        {
+            get
+            {
+                return base.Visible && TabPermissionController.CanManagePage();
+            }
+
+            set
+            {
+                base.Visible = value;
+            }
+        }
+
+        public string ToolName
+        {
+            get
+            {
+                return "QuickUpdatePage";
+            }
+
+            set
+            {
+                throw new NotSupportedException("Set ToolName not supported");
+            }
+        }
+
+        private static PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalSettings.Current;
+            }
+        }
+
+        private TabInfo CurrentTab
+        {
+            get
+            {
+                // Weird - but the activetab has different skin src value than getting from the db
+                if (this._currentTab == null)
+                {
+                    this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
+                }
+
+                return this._currentTab;
+            }
         }
 
         protected override void OnLoad(EventArgs e)
@@ -120,48 +170,6 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        public override bool Visible
-        {
-            get
-            {
-                return base.Visible && TabPermissionController.CanManagePage();
-            }
-
-            set
-            {
-                base.Visible = value;
-            }
-        }
-
-        public string ToolName
-        {
-            get
-            {
-                return "QuickUpdatePage";
-            }
-
-            set
-            {
-                throw new NotSupportedException("Set ToolName not supported");
-            }
-        }
-
-        private TabInfo _currentTab;
-
-        private TabInfo CurrentTab
-        {
-            get
-            {
-                // Weird - but the activetab has different skin src value than getting from the db
-                if (this._currentTab == null)
-                {
-                    this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
-                }
-
-                return this._currentTab;
-            }
-        }
-
         private string LocalResourceFile
         {
             get
@@ -170,11 +178,21 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        private static PortalSettings PortalSettings
+        private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
-            get
+            if (strSkinFolder.ToLowerInvariant() == "_default")
             {
-                return PortalSettings.Current;
+                return strSkinFile;
+            }
+
+            switch (strSkinFile.ToLowerInvariant())
+            {
+                case "skin":
+                case "container":
+                case "default":
+                    return strSkinFolder;
+                default:
+                    return strSkinFolder + " - " + strSkinFile;
             }
         }
 
@@ -286,24 +304,6 @@ namespace DotNetNuke.UI.ControlPanel
         private RadComboBoxItem GetSeparatorItem()
         {
             return new RadComboBoxItem(this.GetString("SkinLstSeparator"), string.Empty) { CssClass = "SkinLstSeparator", Enabled = false };
-        }
-
-        private static string FormatSkinName(string strSkinFolder, string strSkinFile)
-        {
-            if (strSkinFolder.ToLowerInvariant() == "_default")
-            {
-                return strSkinFile;
-            }
-
-            switch (strSkinFile.ToLowerInvariant())
-            {
-                case "skin":
-                case "container":
-                case "default":
-                    return strSkinFolder;
-                default:
-                    return strSkinFolder + " - " + strSkinFile;
-            }
         }
 
         private void LoadLocationList()

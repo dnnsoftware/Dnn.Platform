@@ -22,6 +22,17 @@ namespace DotNetNuke.Common.Utilities
 
         private int _retryTimes = 30;
 
+        public FileSystemPermissionVerifier(string basePath)
+        {
+            this._basePath = basePath;
+        }
+
+        public FileSystemPermissionVerifier(string basePath, int retryTimes)
+            : this(basePath)
+        {
+            this._retryTimes = retryTimes;
+        }
+
         /// <summary>
         /// Gets base path need to verify permission.
         /// </summary>
@@ -33,15 +44,39 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        public FileSystemPermissionVerifier(string basePath)
+        public bool VerifyAll()
         {
-            this._basePath = basePath;
+            lock (typeof(FileSystemPermissionVerifier))
+            {
+                // All these steps must be executed in this sequence as one unit
+                return this.VerifyFolderCreate() &&
+                       this.VerifyFileCreate() &&
+                       this.VerifyFileDelete() &&
+                       this.VerifyFolderDelete();
+            }
         }
 
-        public FileSystemPermissionVerifier(string basePath, int retryTimes)
-            : this(basePath)
+        private static void FileCreateAction(string verifyPath)
         {
-            this._retryTimes = retryTimes;
+            if (File.Exists(verifyPath))
+            {
+                File.Delete(verifyPath);
+            }
+
+            using (File.Create(verifyPath))
+            {
+                // do nothing just let it close
+            }
+        }
+
+        private static void FolderCreateAction(string verifyPath)
+        {
+            if (Directory.Exists(verifyPath))
+            {
+                Directory.Delete(verifyPath, true);
+            }
+
+            Directory.CreateDirectory(verifyPath);
         }
 
         /// -----------------------------------------------------------------------------
@@ -66,19 +101,6 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return verified;
-        }
-
-        private static void FileCreateAction(string verifyPath)
-        {
-            if (File.Exists(verifyPath))
-            {
-                File.Delete(verifyPath);
-            }
-
-            using (File.Create(verifyPath))
-            {
-                // do nothing just let it close
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -129,16 +151,6 @@ namespace DotNetNuke.Common.Utilities
             return verified;
         }
 
-        private static void FolderCreateAction(string verifyPath)
-        {
-            if (Directory.Exists(verifyPath))
-            {
-                Directory.Delete(verifyPath, true);
-            }
-
-            Directory.CreateDirectory(verifyPath);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   VerifyFolderDelete checks whether a folder can be deleted.
@@ -161,18 +173,6 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return verified;
-        }
-
-        public bool VerifyAll()
-        {
-            lock (typeof(FileSystemPermissionVerifier))
-            {
-                // All these steps must be executed in this sequence as one unit
-                return this.VerifyFolderCreate() &&
-                       this.VerifyFileCreate() &&
-                       this.VerifyFileDelete() &&
-                       this.VerifyFolderDelete();
-            }
         }
 
         private void Try(Action action, string description)

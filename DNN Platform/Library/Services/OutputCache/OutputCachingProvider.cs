@@ -15,6 +15,16 @@ namespace DotNetNuke.Services.OutputCache
 
     public abstract class OutputCachingProvider
     {
+        public static Dictionary<string, OutputCachingProvider> GetProviderList()
+        {
+            return ComponentFactory.GetComponents<OutputCachingProvider>();
+        }
+
+        public static OutputCachingProvider Instance(string FriendlyName)
+        {
+            return ComponentFactory.GetComponent<OutputCachingProvider>(FriendlyName);
+        }
+
         protected string ByteArrayToString(byte[] arrInput)
         {
             int i = 0;
@@ -57,16 +67,6 @@ namespace DotNetNuke.Services.OutputCache
                 context.Response.ContentEncoding = Encoding.UTF8;
                 context.Response.Output.Write(output);
             }
-        }
-
-        public static Dictionary<string, OutputCachingProvider> GetProviderList()
-        {
-            return ComponentFactory.GetComponents<OutputCachingProvider>();
-        }
-
-        public static OutputCachingProvider Instance(string FriendlyName)
-        {
-            return ComponentFactory.GetComponent<OutputCachingProvider>(FriendlyName);
         }
 
         public static void RemoveItemFromAllProviders(int tabId)

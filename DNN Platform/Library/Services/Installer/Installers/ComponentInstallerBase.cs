@@ -113,6 +113,30 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        public bool Skipped { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        public virtual bool SupportsManifestOnlyInstall
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Type of the component.
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public string Type { get; set; }
+
         public EventMessage ReadEventMessageNode(XPathNavigator manifestNav)
         {
             EventMessage eventMessage = null;
@@ -121,14 +145,14 @@ namespace DotNetNuke.Services.Installer.Installers
             if (eventMessageNav != null)
             {
                 eventMessage = new EventMessage
-                                    {
-                                        Priority = MessagePriority.High,
-                                        ExpirationDate = DateTime.Now.AddYears(-1),
-                                        SentDate = DateTime.Now,
-                                        Body = string.Empty,
-                                        ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
-                                        ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing),
-                                    };
+                {
+                    Priority = MessagePriority.High,
+                    ExpirationDate = DateTime.Now.AddYears(-1),
+                    SentDate = DateTime.Now,
+                    Body = string.Empty,
+                    ProcessorType = Util.ReadElement(eventMessageNav, "processorType", this.Log, Util.EVENTMESSAGE_TypeMissing),
+                    ProcessorCommand = Util.ReadElement(eventMessageNav, "processorCommand", this.Log, Util.EVENTMESSAGE_CommandMissing),
+                };
                 foreach (XPathNavigator attributeNav in eventMessageNav.Select("attributes/*"))
                 {
                     var attribName = attributeNav.Name;
@@ -191,30 +215,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
             return eventMessage;
         }
-
-        public bool Skipped { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        public virtual bool SupportsManifestOnlyInstall
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Type of the component.
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public string Type { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

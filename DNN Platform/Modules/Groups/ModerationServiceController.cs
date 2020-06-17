@@ -27,11 +27,11 @@ namespace DotNetNuke.Modules.Groups
     [DnnAuthorize]
     public class ModerationServiceController : DnnApiController
     {
-        protected INavigationManager NavigationManager { get; }
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
         private int _tabId;
         private int _moduleId;
+
+        protected INavigationManager NavigationManager { get; }
         private int _roleId;
         private int _memberId;
         private RoleInfo _roleInfo;
@@ -39,11 +39,6 @@ namespace DotNetNuke.Modules.Groups
         public ModerationServiceController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
-        }
-
-        public class NotificationDTO
-        {
-            public int NotificationId { get; set; }
         }
 
         [HttpPost]
@@ -181,11 +176,9 @@ namespace DotNetNuke.Modules.Groups
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
 
-        public class RoleDTO
+        public class NotificationDTO
         {
-            public int RoleId { get; set; }
-
-            public int GroupViewTabId { get; set; }
+            public int NotificationId { get; set; }
         }
 
         [HttpPost]
@@ -320,6 +313,13 @@ namespace DotNetNuke.Modules.Groups
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
+        }
+
+        public class RoleDTO
+        {
+            public int RoleId { get; set; }
+
+            public int GroupViewTabId { get; set; }
         }
 
         private void ParseKey(string key)

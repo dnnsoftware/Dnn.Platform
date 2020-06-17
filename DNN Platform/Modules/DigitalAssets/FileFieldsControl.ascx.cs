@@ -18,6 +18,12 @@ namespace DotNetNuke.Modules.DigitalAssets
 
     public partial class FileFieldsControl : PortalModuleBase, IFieldsControl
     {
+        public IDigitalAssetsController Controller { get; private set; }
+
+        public ItemViewModel Item { get; private set; }
+
+        protected IFileInfo File { get; private set; }
+
         public virtual void PrepareProperties()
         {
             this.FileNameInput.Text = this.Item.ItemName;
@@ -43,11 +49,15 @@ namespace DotNetNuke.Modules.DigitalAssets
             return result.Value;
         }
 
-        public IDigitalAssetsController Controller { get; private set; }
+        public void SetController(IDigitalAssetsController damController)
+        {
+            this.Controller = damController;
+        }
 
-        public ItemViewModel Item { get; private set; }
-
-        protected IFileInfo File { get; private set; }
+        public void SetModuleConfiguration(ModuleInfo moduleConfiguration)
+        {
+            this.ModuleConfiguration = moduleConfiguration;
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -68,16 +78,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                     this.PrepareFileAttributes();
                 }
             }
-        }
-
-        public void SetController(IDigitalAssetsController damController)
-        {
-            this.Controller = damController;
-        }
-
-        public void SetModuleConfiguration(ModuleInfo moduleConfiguration)
-        {
-            this.ModuleConfiguration = moduleConfiguration;
         }
 
         public void SetItemViewModel(ItemViewModel itemViewModel)

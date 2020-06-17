@@ -13,6 +13,14 @@ namespace DotNetNuke.Services.Tokens
 
     public class TicksPropertyAccess : IPropertyAccess
     {
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.secureforCaching;
+            }
+        }
+
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())
@@ -27,14 +35,6 @@ namespace DotNetNuke.Services.Tokens
 
             PropertyNotFound = true;
             return string.Empty;
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.secureforCaching;
-            }
         }
     }
 }

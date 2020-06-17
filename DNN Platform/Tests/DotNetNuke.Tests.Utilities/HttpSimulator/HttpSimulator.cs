@@ -38,6 +38,12 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private readonly NameValueCollection _formVars = new NameValueCollection();
         private readonly NameValueCollection _headers = new NameValueCollection();
 
+        private string _applicationPath = "/";
+
+        private string _physicalApplicationPath = WebsitePhysicalAppPath;
+
+        private string _physicalPath = WebsitePhysicalAppPath;
+
         public HttpSimulator()
             : this("/", WebsitePhysicalAppPath)
         {
@@ -53,6 +59,12 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this.ApplicationPath = applicationPath;
             this.PhysicalApplicationPath = physicalApplicationPath;
         }
+
+        public string Host { get; private set; }
+
+        public string LocalPath { get; private set; }
+
+        public int Port { get; private set; }
 
         /// <summary>
         /// Sets up the HttpContext objects to simulate a GET request.
@@ -120,6 +132,58 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public HttpSimulator SimulateRequest(Uri url, HttpVerb httpVerb, NameValueCollection headers)
         {
             return this.SimulateRequest(url, httpVerb, null, headers);
+        }
+
+        /// <summary>
+        /// Sets the referer for the request. Uses a fluent interface.
+        /// </summary>
+        /// <param name="referer"></param>
+        /// <returns></returns>
+        public HttpSimulator SetReferer(Uri referer)
+        {
+            if (this.WorkerRequest != null)
+            {
+                this.WorkerRequest.SetReferer(referer);
+            }
+
+            this._referer = referer;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets a form variable.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public HttpSimulator SetFormVariable(string name, string value)
+        {
+            if (this.WorkerRequest != null)
+            {
+                throw new InvalidOperationException("Cannot set form variables after calling Simulate().");
+            }
+
+            this._formVars.Add(name, value);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets a header value.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public HttpSimulator SetHeader(string name, string value)
+        {
+            if (this.WorkerRequest != null)
+            {
+                throw new InvalidOperationException("Cannot set headers after calling Simulate().");
+            }
+
+            this._headers.Add(name, value);
+
+            return this;
         }
 
         /// <summary>
@@ -217,11 +281,51 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         public class FakeHttpSessionState : NameObjectCollectionBase, IHttpSessionState
         {
+            private const bool _isNewSession = true;
             private readonly string _sessionId = Guid.NewGuid().ToString();
             private int _timeout = 30; // minutes
-            private const bool _isNewSession = true;
             private readonly HttpStaticObjectsCollection _staticObjects = new HttpStaticObjectsCollection();
             private readonly object _syncRoot = new object();
+
+            /// <summary>
+            /// Gets the unique session identifier for the session.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The session ID.
+            /// </returns>
+            ///
+            public string SessionID
+            {
+                get { return this._sessionId; }
+            }
+
+            /// <summary>
+            /// Gets or sets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The time-out period, in minutes.
+            /// </returns>
+            ///
+            public int Timeout
+            {
+                get { return this._timeout; }
+                set { this._timeout = value; }
+            }
+
+            /// <summary>
+            /// Gets a value indicating whether the session was created with the current request.
+            /// </summary>
+            ///
+            /// <returns>
+            /// true if the session was created with the current request; otherwise, false.
+            /// </returns>
+            ///
+            public bool IsNewSession
+            {
+                get { return _isNewSession; }
+            }
 
             /// <summary>
             /// Ends the current session.
@@ -290,46 +394,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             public void CopyTo(Array array, int index)
             {
                 throw new NotImplementedException();
-            }
-
-            /// <summary>
-            /// Gets the unique session identifier for the session.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The session ID.
-            /// </returns>
-            ///
-            public string SessionID
-            {
-                get { return this._sessionId; }
-            }
-
-            /// <summary>
-            /// Gets or sets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The time-out period, in minutes.
-            /// </returns>
-            ///
-            public int Timeout
-            {
-                get { return this._timeout; }
-                set { this._timeout = value; }
-            }
-
-            /// <summary>
-            /// Gets a value indicating whether the session was created with the current request.
-            /// </summary>
-            ///
-            /// <returns>
-            /// true if the session was created with the current request; otherwise, false.
-            /// </returns>
-            ///
-            public bool IsNewSession
-            {
-                get { return _isNewSession; }
             }
 
             /// <summary>
@@ -405,36 +469,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
 
             /// <summary>
-            /// Gets or sets a session-state item value by name.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The session-state item value specified in the name parameter.
-            /// </returns>
-            ///
-            /// <param name="name">The key name of the session-state item value. </param>
-            public object this[string name]
-            {
-                get { return this.BaseGet(name); }
-                set { this.BaseSet(name, value); }
-            }
-
-            /// <summary>
-            /// Gets or sets a session-state item value by numerical index.
-            /// </summary>
-            ///
-            /// <returns>
-            /// The session-state item value specified in the index parameter.
-            /// </returns>
-            ///
-            /// <param name="index">The numerical index of the session-state item value. </param>
-            public object this[int index]
-            {
-                get { return this.BaseGet(index); }
-                set { this.BaseSet(index, value); }
-            }
-
-            /// <summary>
             /// Gets an object that can be used to synchronize access to the collection of session-state values.
             /// </summary>
             ///
@@ -474,72 +508,36 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                     return true;
                 }
             }
-        }
 
-        /// <summary>
-        /// Sets the referer for the request. Uses a fluent interface.
-        /// </summary>
-        /// <param name="referer"></param>
-        /// <returns></returns>
-        public HttpSimulator SetReferer(Uri referer)
-        {
-            if (this.WorkerRequest != null)
+            /// <summary>
+            /// Gets or sets a session-state item value by name.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The session-state item value specified in the name parameter.
+            /// </returns>
+            ///
+            /// <param name="name">The key name of the session-state item value. </param>
+            public object this[string name]
             {
-                this.WorkerRequest.SetReferer(referer);
+                get { return this.BaseGet(name); }
+                set { this.BaseSet(name, value); }
             }
 
-            this._referer = referer;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets a form variable.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public HttpSimulator SetFormVariable(string name, string value)
-        {
-            if (this.WorkerRequest != null)
+            /// <summary>
+            /// Gets or sets a session-state item value by numerical index.
+            /// </summary>
+            ///
+            /// <returns>
+            /// The session-state item value specified in the index parameter.
+            /// </returns>
+            ///
+            /// <param name="index">The numerical index of the session-state item value. </param>
+            public object this[int index]
             {
-                throw new InvalidOperationException("Cannot set form variables after calling Simulate().");
+                get { return this.BaseGet(index); }
+                set { this.BaseSet(index, value); }
             }
-
-            this._formVars.Add(name, value);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets a header value.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public HttpSimulator SetHeader(string name, string value)
-        {
-            if (this.WorkerRequest != null)
-            {
-                throw new InvalidOperationException("Cannot set headers after calling Simulate().");
-            }
-
-            this._headers.Add(name, value);
-
-            return this;
-        }
-
-        private void ParseRequestUrl(Uri url)
-        {
-            if (url == null)
-            {
-                return;
-            }
-
-            this.Host = url.Host;
-            this.Port = url.Port;
-            this.LocalPath = url.LocalPath;
-            this.Page = StripPrecedingSlashes(RightAfter(url.LocalPath, this.ApplicationPath));
-            this._physicalPath = Path.Combine(this._physicalApplicationPath, this.Page.Replace("/", @"\"));
         }
 
         private static string RightAfter(string original, string search)
@@ -569,18 +567,24 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return result;
         }
 
-        public string Host { get; private set; }
+        private void ParseRequestUrl(Uri url)
+        {
+            if (url == null)
+            {
+                return;
+            }
 
-        public string LocalPath { get; private set; }
-
-        public int Port { get; private set; }
+            this.Host = url.Host;
+            this.Port = url.Port;
+            this.LocalPath = url.LocalPath;
+            this.Page = StripPrecedingSlashes(RightAfter(url.LocalPath, this.ApplicationPath));
+            this._physicalPath = Path.Combine(this._physicalApplicationPath, this.Page.Replace("/", @"\"));
+        }
 
         /// <summary>
         /// Gets portion of the URL after the application.
         /// </summary>
         public string Page { get; private set; }
-
-        private string _applicationPath = "/";
 
         /// <summary>
         /// Gets or sets the same thing as the IIS Virtual directory. It's
@@ -597,8 +601,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
         }
 
-        private string _physicalApplicationPath = WebsitePhysicalAppPath;
-
         /// <summary>
         /// Gets or sets physical path to the application (used for simulation purposes).
         /// </summary>
@@ -614,8 +616,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 this._physicalApplicationPath = StripTrailingBackSlashes(this._physicalApplicationPath) + @"\";
             }
         }
-
-        private string _physicalPath = WebsitePhysicalAppPath;
 
         /// <summary>
         /// Gets physical path to the requested file (used for simulation purposes).
@@ -640,34 +640,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         public SimulatedHttpRequest WorkerRequest { get; private set; }
 
-        private static string ExtractQueryStringPart(Uri url)
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2.</filterpriority>
+        public void Dispose()
         {
-            var query = url.Query;
-            return query.StartsWith("?") ? query.Substring(1) : query;
-        }
-
-        private void SetHttpRuntimeInternals()
-        {
-            // We cheat by using reflection.
-
-            // get singleton property value
-            var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
-
-            // set app path property value
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
-
-            // set app virtual path property value
-            const string vpathTypeName = "System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
-            var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { this.ApplicationPath });
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppVPath", runtime, virtualPath);
-
-            // set codegen dir property value
-            ReflectionHelper.SetPrivateInstanceFieldValue("_codegenDir", runtime, this.PhysicalApplicationPath);
-
-            var environment = GetHostingEnvironment();
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appPhysicalPath", environment, this.PhysicalApplicationPath);
-            ReflectionHelper.SetPrivateInstanceFieldValue("_appVirtualPath", environment, virtualPath);
-            ReflectionHelper.SetPrivateInstanceFieldValue("_configMapPath", environment, new ConfigMapPath(this));
+            HttpContext.Current = null;
         }
 
         protected static HostingEnvironment GetHostingEnvironment()
@@ -704,6 +683,36 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             // Strip right.
             normalized = StripTrailingSlashes(normalized);
             return "/" + normalized;
+        }
+
+        private static string ExtractQueryStringPart(Uri url)
+        {
+            var query = url.Query;
+            return query.StartsWith("?") ? query.Substring(1) : query;
+        }
+
+        private void SetHttpRuntimeInternals()
+        {
+            // We cheat by using reflection.
+
+            // get singleton property value
+            var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
+
+            // set app path property value
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
+
+            // set app virtual path property value
+            const string vpathTypeName = "System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
+            var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { this.ApplicationPath });
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppVPath", runtime, virtualPath);
+
+            // set codegen dir property value
+            ReflectionHelper.SetPrivateInstanceFieldValue("_codegenDir", runtime, this.PhysicalApplicationPath);
+
+            var environment = GetHostingEnvironment();
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appPhysicalPath", environment, this.PhysicalApplicationPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_appVirtualPath", environment, virtualPath);
+            ReflectionHelper.SetPrivateInstanceFieldValue("_configMapPath", environment, new ConfigMapPath(this));
         }
 
         protected static string StripPrecedingSlashes(string s)
@@ -765,15 +774,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 return this._requestSimulation.ApplicationPath;
             }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2.</filterpriority>
-        public void Dispose()
-        {
-            HttpContext.Current = null;
         }
     }
 }

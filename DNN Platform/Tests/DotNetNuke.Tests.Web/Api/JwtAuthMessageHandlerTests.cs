@@ -29,16 +29,16 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class JwtAuthMessageHandlerTests
     {
+        // { "type":"JWT","alg":"HS256"} . {"sub":"host","nbf":1,"exp":4102444799,"sid":"0123456789ABCDEF"} . (HS256_KEY="secret")
+        private const string ValidToken =
+            "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ";
+
         private Mock<DataProvider> _mockDataProvider;
         private Mock<MembershipProvider> _mockMembership;
         private Mock<Entities.Portals.Data.IDataService> _mockDataService;
         private Mock<IDataService> _mockJwtDataService;
         private Mock<IUserController> _mockUserController;
         private Mock<IPortalController> _mockPortalController;
-
-        // { "type":"JWT","alg":"HS256"} . {"sub":"host","nbf":1,"exp":4102444799,"sid":"0123456789ABCDEF"} . (HS256_KEY="secret")
-        private const string ValidToken =
-            "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ";
 
         public void SetupMockServices()
         {
@@ -76,6 +76,34 @@ namespace DotNetNuke.Tests.Web.Api
             // _mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
         }
 
+        [Test]
+        public void ReturnsResponseAsReceived()
+        {
+            // Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { RequestMessage = new HttpRequestMessage() };
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response2 = handler.OnOutboundResponse(response, CancellationToken.None);
+
+            // Assert
+            Assert.AreEqual(response, response2);
+        }
+
+        [Test]
+        public void MissingAuthoizationHeaderReturnsNullResponse()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
+
+            // Act
+            var handler = new JwtAuthMessageHandler(true, false);
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
+
+            // Assert
+            Assert.IsNull(response);
+        }
+
         private static IDataReader GetUser()
         {
             var table = new DataTable("Users");
@@ -105,24 +133,6 @@ namespace DotNetNuke.Tests.Web.Api
             table.Rows.Add(1, null, "host", "host", "host", "host", 1, "host@changeme.invalid", null, null, 0, null,
                            "127.0.0.1", 0, "8D3C800F-7A40-45D6-BA4D-E59A393F9800", DateTime.Now, null, -1, DateTime.Now,
                            -1, DateTime.Now);
-            return table.CreateDataReader();
-        }
-
-        private IDataReader GetPortalGroups()
-        {
-            var table = new DataTable("ModuleDefinitions");
-            var pkId = table.Columns.Add("PortalGroupID", typeof(int));
-            table.Columns.Add("MasterPortalID", typeof(int));
-            table.Columns.Add("PortalGroupName", typeof(string));
-            table.Columns.Add("PortalGroupDescription", typeof(string));
-            table.Columns.Add("AuthenticationDomain", typeof(string));
-            table.Columns.Add("CreatedByUserID", typeof(int));
-            table.Columns.Add("CreatedOnDate", typeof(DateTime));
-            table.Columns.Add("LastModifiedByUserID", typeof(int));
-            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            table.PrimaryKey = new[] { pkId };
-
-            table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
             return table.CreateDataReader();
         }
 
@@ -165,6 +175,24 @@ namespace DotNetNuke.Tests.Web.Api
             return table.CreateDataReader();
         }
 
+        private IDataReader GetPortalGroups()
+        {
+            var table = new DataTable("ModuleDefinitions");
+            var pkId = table.Columns.Add("PortalGroupID", typeof(int));
+            table.Columns.Add("MasterPortalID", typeof(int));
+            table.Columns.Add("PortalGroupName", typeof(string));
+            table.Columns.Add("PortalGroupDescription", typeof(string));
+            table.Columns.Add("AuthenticationDomain", typeof(string));
+            table.Columns.Add("CreatedByUserID", typeof(int));
+            table.Columns.Add("CreatedOnDate", typeof(DateTime));
+            table.Columns.Add("LastModifiedByUserID", typeof(int));
+            table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
+            table.PrimaryKey = new[] { pkId };
+
+            table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
+            return table.CreateDataReader();
+        }
+
         private static PersistedToken GetPersistedToken(string sessionId)
         {
             if ("0123456789ABCDEF".Equals(sessionId))
@@ -199,34 +227,6 @@ namespace DotNetNuke.Tests.Web.Api
             }
 
             return null;
-        }
-
-        [Test]
-        public void ReturnsResponseAsReceived()
-        {
-            // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { RequestMessage = new HttpRequestMessage() };
-
-            // Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response2 = handler.OnOutboundResponse(response, CancellationToken.None);
-
-            // Assert
-            Assert.AreEqual(response, response2);
-        }
-
-        [Test]
-        public void MissingAuthoizationHeaderReturnsNullResponse()
-        {
-            // Arrange
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
-
-            // Act
-            var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, CancellationToken.None);
-
-            // Assert
-            Assert.IsNull(response);
         }
 
         [Test]

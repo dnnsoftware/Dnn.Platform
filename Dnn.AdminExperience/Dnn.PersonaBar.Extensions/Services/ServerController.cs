@@ -25,13 +25,13 @@ namespace Dnn.PersonaBar.Servers.Services
     public class ServerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
-        protected INavigationManager NavigationManager { get; }
-        internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
-
         public ServerController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
         }
+
+        internal static string LocalResourceFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx");
+        protected INavigationManager NavigationManager { get; }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 log.AddProperty("Message", Localization.GetString("UserRestart", LocalResourceFile));
                 LogController.Instance.AddLog(log);
                 Config.Touch();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {url = this.NavigationManager.NavigateURL()});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { url = this.NavigationManager.NavigateURL() });
             }
             catch (Exception exc)
             {
@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 DataCache.ClearCache();
                 ClientResourceManager.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {url = this.NavigationManager.NavigateURL() });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { url = this.NavigationManager.NavigateURL() });
             }
             catch (Exception exc)
             {

@@ -42,6 +42,28 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        public string Mode
+        {
+            get
+            {
+                return Convert.ToString(this.ModuleContext.Settings["Extensions_Mode"]);
+            }
+        }
+
+        public int PackageID
+        {
+            get
+            {
+                var packageID = Null.NullInteger;
+                if (this.Request.QueryString["PackageID"] != null)
+                {
+                    packageID = int.Parse(this.Request.QueryString["PackageID"]);
+                }
+
+                return packageID;
+            }
+        }
+
         protected bool IsSuperTab
         {
             get
@@ -54,14 +76,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get { return (string)this.ViewState["ReturnUrl"]; }
             set { this.ViewState["ReturnUrl"] = value; }
-        }
-
-        public string Mode
-        {
-            get
-            {
-                return Convert.ToString(this.ModuleContext.Settings["Extensions_Mode"]);
-            }
         }
 
         protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
@@ -94,20 +108,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        public int PackageID
-        {
-            get
-            {
-                var packageID = Null.NullInteger;
-                if (this.Request.QueryString["PackageID"] != null)
-                {
-                    packageID = int.Parse(this.Request.QueryString["PackageID"]);
-                }
-
-                return packageID;
-            }
-        }
-
         protected PropertyEditorMode ViewMode
         {
             get
@@ -119,6 +119,65 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
 
                 return viewMode;
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cmdCancel.Click += this.OnCancelClick;
+            this.cmdDelete.Click += this.OnDeleteClick;
+            this.cmdPackage.Click += this.OnPackageClick;
+            this.cmdUpdate.Click += this.OnUpdateClick;
+            this.Page.PreRenderComplete += (sender, args) =>
+                                          {
+                                              if (UrlUtils.InPopUp())
+                                              {
+                                                  var title = string.Format("{0} > {1}", this.Page.Title, this.Package.FriendlyName);
+                                                  this.Page.Title = title;
+                                              }
+                                          };
+
+            this.BindData();
+
+            if (!this.IsPostBack)
+            {
+                this.ReturnUrl = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : this._navigationManager.NavigateURL();
+                switch (this.DisplayMode)
+                {
+                    case "editor":
+                        this.packageSettingsSection.Visible = false;
+                        break;
+                    case "settings":
+                        this.extensionSection.Visible = false;
+                        break;
+                }
+            }
+
+            switch (this.DisplayMode)
+            {
+                case "editor":
+                    this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
+                    this.cmdUpdate.Visible = this.cmdUpdate.Enabled = false;
+                    this.cmdPackage.Visible = this.cmdPackage.Enabled = false;
+                    this.cmdDelete.Visible = this.cmdDelete.Enabled = false;
+                    break;
+                case "settings":
+                    this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
+                    break;
             }
         }
 
@@ -231,65 +290,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             if (this.PackageEditor != null)
             {
                 this.PackageEditor.UpdatePackage();
-            }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cmdCancel.Click += this.OnCancelClick;
-            this.cmdDelete.Click += this.OnDeleteClick;
-            this.cmdPackage.Click += this.OnPackageClick;
-            this.cmdUpdate.Click += this.OnUpdateClick;
-            this.Page.PreRenderComplete += (sender, args) =>
-                                          {
-                                              if (UrlUtils.InPopUp())
-                                              {
-                                                  var title = string.Format("{0} > {1}", this.Page.Title, this.Package.FriendlyName);
-                                                  this.Page.Title = title;
-                                              }
-                                          };
-
-            this.BindData();
-
-            if (!this.IsPostBack)
-            {
-                this.ReturnUrl = this.Request.UrlReferrer != null ? this.Request.UrlReferrer.ToString() : this._navigationManager.NavigateURL();
-                switch (this.DisplayMode)
-                {
-                    case "editor":
-                        this.packageSettingsSection.Visible = false;
-                        break;
-                    case "settings":
-                        this.extensionSection.Visible = false;
-                        break;
-                }
-            }
-
-            switch (this.DisplayMode)
-            {
-                case "editor":
-                    this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
-                    this.cmdUpdate.Visible = this.cmdUpdate.Enabled = false;
-                    this.cmdPackage.Visible = this.cmdPackage.Enabled = false;
-                    this.cmdDelete.Visible = this.cmdDelete.Enabled = false;
-                    break;
-                case "settings":
-                    this.cmdCancel.Visible = this.cmdCancel.Enabled = false;
-                    break;
             }
         }
 

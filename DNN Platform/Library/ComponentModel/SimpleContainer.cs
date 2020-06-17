@@ -37,6 +37,29 @@ namespace DotNetNuke.ComponentModel
             this._name = name;
         }
 
+        public override string Name
+        {
+            get
+            {
+                return this._name;
+            }
+        }
+
+        public override void RegisterComponent(string name, Type type)
+        {
+            using (this._registeredComponents.GetWriteLock())
+            {
+                this._registeredComponents[type] = name;
+            }
+        }
+
+        public override object GetComponent(string name)
+        {
+            IComponentBuilder builder = this.GetComponentBuilder(name);
+
+            return this.GetComponent(builder);
+        }
+
         private void AddBuilder(Type contractType, IComponentBuilder builder)
         {
             ComponentType componentType = this.GetComponentType(contractType);
@@ -120,29 +143,6 @@ namespace DotNetNuke.ComponentModel
             }
 
             return componentType;
-        }
-
-        public override void RegisterComponent(string name, Type type)
-        {
-            using (this._registeredComponents.GetWriteLock())
-            {
-                this._registeredComponents[type] = name;
-            }
-        }
-
-        public override string Name
-        {
-            get
-            {
-                return this._name;
-            }
-        }
-
-        public override object GetComponent(string name)
-        {
-            IComponentBuilder builder = this.GetComponentBuilder(name);
-
-            return this.GetComponent(builder);
         }
 
         public override object GetComponent(Type contractType)

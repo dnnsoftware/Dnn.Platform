@@ -20,17 +20,17 @@ namespace DotNetNuke.ComponentModel
             this._Instance = instance;
         }
 
-        public object BuildComponent()
-        {
-            return this._Instance;
-        }
-
         public string Name
         {
             get
             {
                 return this._Name;
             }
+        }
+
+        public object BuildComponent()
+        {
+            return this._Instance;
         }
     }
 }

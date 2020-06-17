@@ -122,6 +122,12 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public IList<MenuItem> Children { get; set; } = new List<MenuItem>();
 
+        public int KeyID
+        {
+            get { return this.MenuId; }
+            set { this.MenuId = value; }
+        }
+
         public void Fill(IDataReader dr)
         {
             this.MenuId = Convert.ToInt32(dr["MenuId"]);
@@ -138,11 +144,6 @@ namespace Dnn.PersonaBar.Library.Model
             this.Enabled = Convert.ToBoolean(dr["Enabled"]);
             this.ParentId = Null.SetNullInteger(dr["ParentId"]);
             this.Order = Null.SetNullInteger(dr["Order"]);
-        }
-
-        public int KeyID
-        {
-            get { return this.MenuId; } set { this.MenuId = value; }
         }
     }
 }

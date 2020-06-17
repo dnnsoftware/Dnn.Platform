@@ -15,9 +15,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     [ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
     public class ClearCache : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCache));
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public override ConsoleResultModel Run()
         {

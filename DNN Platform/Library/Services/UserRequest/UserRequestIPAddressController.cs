@@ -58,6 +58,11 @@ namespace DotNetNuke.Services.UserRequest
             return userIPAddress;
         }
 
+        protected override Func<IUserRequestIPAddressController> GetFactory()
+        {
+            return () => new UserRequestIPAddressController();
+        }
+
         private bool ValidateIP(string ipString, IPAddressFamily ipFamily)
         {
             IPAddress address;
@@ -78,11 +83,6 @@ namespace DotNetNuke.Services.UserRequest
             }
 
             return false;
-        }
-
-        protected override Func<IUserRequestIPAddressController> GetFactory()
-        {
-            return () => new UserRequestIPAddressController();
         }
     }
 }

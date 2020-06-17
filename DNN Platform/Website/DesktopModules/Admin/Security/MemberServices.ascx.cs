@@ -32,73 +32,37 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatPrice formats the Fee amount and filters out null-values.
+        /// DataBind binds the data to the controls.
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        ///     <param name="price">The price to format.</param>
-        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
-        private string FormatPrice(float price)
+        public override void DataBind()
         {
-            string formatPrice = Null.NullString;
-            try
+            if (this.Request.IsAuthenticated)
             {
-                if (price != Null.NullSingle)
-                {
-                    formatPrice = price.ToString("##0.00");
-                }
-                else
-                {
-                    formatPrice = string.Empty;
-                }
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
+                Localization.LocalizeDataGrid(ref this.grdServices, this.LocalResourceFile);
+                this.grdServices.DataSource = RoleController.Instance.GetUserRoles(this.UserInfo, false);
+                this.grdServices.DataBind();
 
-            return formatPrice;
-        }
-
-        private void Subscribe(int roleID, bool cancel)
-        {
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
-
-            if (objRole.IsPublic && objRole.ServiceFee == 0.0)
-            {
-                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
-
-                // Raise SubscriptionUpdated Event
-                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
-            }
-            else
-            {
-                if (!cancel)
-                {
-                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
-                }
-                else
-                {
-                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID + "&cancel=1", true);
-                }
+                // if no service available then hide options
+                this.ServicesRow.Visible = this.grdServices.Items.Count > 0;
             }
         }
 
-        private void UseTrial(int roleID)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Raises the SubscriptionUpdated Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
         {
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
-
-            if (objRole.IsPublic && objRole.TrialFee == 0.0)
+            if (this.IsUserOrAdmin == false)
             {
-                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
-
-                // Raise SubscriptionUpdated Event
-                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
+                return;
             }
-            else
+
+            if (this.SubscriptionUpdated != null)
             {
-                this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
+                this.SubscriptionUpdated(this, e);
             }
         }
 
@@ -172,6 +136,78 @@ namespace DotNetNuke.Modules.Admin.Security
             }
 
             return formatPrice;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FormatPrice formats the Fee amount and filters out null-values.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        ///     <param name="price">The price to format.</param>
+        ///     <returns>The correctly formatted price.</returns>
+        /// -----------------------------------------------------------------------------
+        private string FormatPrice(float price)
+        {
+            string formatPrice = Null.NullString;
+            try
+            {
+                if (price != Null.NullSingle)
+                {
+                    formatPrice = price.ToString("##0.00");
+                }
+                else
+                {
+                    formatPrice = string.Empty;
+                }
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+
+            return formatPrice;
+        }
+
+        private void Subscribe(int roleID, bool cancel)
+        {
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
+
+            if (objRole.IsPublic && objRole.ServiceFee == 0.0)
+            {
+                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
+
+                // Raise SubscriptionUpdated Event
+                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
+            }
+            else
+            {
+                if (!cancel)
+                {
+                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
+                }
+                else
+                {
+                    this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID + "&cancel=1", true);
+                }
+            }
+        }
+
+        private void UseTrial(int roleID)
+        {
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
+
+            if (objRole.IsPublic && objRole.TrialFee == 0.0)
+            {
+                RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
+
+                // Raise SubscriptionUpdated Event
+                this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
+            }
+            else
+            {
+                this.Response.Redirect("~/admin/Sales/PayPalSubscription.aspx?tabid=" + this.TabId + "&RoleID=" + roleID, true);
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -327,42 +363,6 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void DataBind()
-        {
-            if (this.Request.IsAuthenticated)
-            {
-                Localization.LocalizeDataGrid(ref this.grdServices, this.LocalResourceFile);
-                this.grdServices.DataSource = RoleController.Instance.GetUserRoles(this.UserInfo, false);
-                this.grdServices.DataBind();
-
-                // if no service available then hide options
-                this.ServicesRow.Visible = this.grdServices.Items.Count > 0;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Raises the SubscriptionUpdated Event.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
-        {
-            if (this.IsUserOrAdmin == false)
-            {
-                return;
-            }
-
-            if (this.SubscriptionUpdated != null)
-            {
-                this.SubscriptionUpdated(this, e);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
@@ -375,6 +375,30 @@ namespace DotNetNuke.Modules.Admin.Security
             this.cmdRSVP.Click += this.cmdRSVP_Click;
             this.grdServices.ItemCommand += this.grdServices_ItemCommand;
             this.lblRSVP.Text = string.Empty;
+        }
+
+        protected void grdServices_ItemCommand(object source, DataGridCommandEventArgs e)
+        {
+            string commandName = e.CommandName;
+            int roleID = Convert.ToInt32(e.CommandArgument);
+            if (commandName == Localization.GetString("Subscribe", this.LocalResourceFile) || commandName == Localization.GetString("Renew", this.LocalResourceFile))
+            {
+                // Subscribe
+                this.Subscribe(roleID, false);
+            }
+            else if (commandName == Localization.GetString("Unsubscribe", this.LocalResourceFile))
+            {
+                // Unsubscribe
+                this.Subscribe(roleID, true);
+            }
+            else if (commandName == "UseTrial")
+            {
+                // Use Trial
+                this.UseTrial(roleID);
+            }
+
+            // Rebind Grid
+            this.DataBind();
         }
 
         /// -----------------------------------------------------------------------------
@@ -422,30 +446,6 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
 
-            this.DataBind();
-        }
-
-        protected void grdServices_ItemCommand(object source, DataGridCommandEventArgs e)
-        {
-            string commandName = e.CommandName;
-            int roleID = Convert.ToInt32(e.CommandArgument);
-            if (commandName == Localization.GetString("Subscribe", this.LocalResourceFile) || commandName == Localization.GetString("Renew", this.LocalResourceFile))
-            {
-                // Subscribe
-                this.Subscribe(roleID, false);
-            }
-            else if (commandName == Localization.GetString("Unsubscribe", this.LocalResourceFile))
-            {
-                // Unsubscribe
-                this.Subscribe(roleID, true);
-            }
-            else if (commandName == "UseTrial")
-            {
-                // Use Trial
-                this.UseTrial(roleID);
-            }
-
-            // Rebind Grid
             this.DataBind();
         }
 

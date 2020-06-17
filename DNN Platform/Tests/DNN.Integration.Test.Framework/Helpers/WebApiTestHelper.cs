@@ -21,12 +21,6 @@ namespace DNN.Integration.Test.Framework.Helpers
 
         private static readonly string HostGuid = HostSettingsHelper.GetHostSettingValue("GUID");
 
-        internal static void ClearCachedConnections()
-        {
-            _anonymousConnector = null;
-            CachedConnections.Clear();
-        }
-
         /// <summary>
         /// Returns a coonector to access the default site annonymously.
         /// </summary>
@@ -53,6 +47,12 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
                 { "TabId", tabId.ToString() },
                 { "ModuleId", moduleId.ToString() },
             };
+        }
+
+        internal static void ClearCachedConnections()
+        {
+            _anonymousConnector = null;
+            CachedConnections.Clear();
         }
 
         public static IWebApiConnector PrepareNewUser(out int userId, out string username, out int fileId, int portalId = 0)
@@ -107,6 +107,19 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return connector.PostUserForm(registerRelativeUrl, postData, excludedInputPrefixes, false);
         }
 
+        public static string GenerateSha256Hash(this string str)
+        {
+            return str.GenerateHash("SHA256");
+        }
+
+        /// <summary>Generate a MD5 hash of a string.
+        /// </summary>
+        /// <returns></returns>
+        public static string GenerateMd5(this string str)
+        {
+            return str.GenerateHash("MD5");
+        }
+
         private static string CodifyInputName(string originalId, string sufix, bool encriptName)
         {
             var transformedId = encriptName ? CodifyString(originalId) : originalId;
@@ -129,50 +142,6 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             catch (Exception)
             {
                 return str.GenerateMd5();
-            }
-        }
-
-        public static string GenerateSha256Hash(this string str)
-        {
-            return str.GenerateHash("SHA256");
-        }
-
-        /// <summary>Generate a MD5 hash of a string.
-        /// </summary>
-        /// <returns></returns>
-        public static string GenerateMd5(this string str)
-        {
-            return str.GenerateHash("MD5");
-        }
-
-        private static string GenerateHash(this string str, string hashType)
-        {
-            var hasher = HashAlgorithm.Create(hashType);
-            if (hasher == null)
-            {
-                throw new InvalidOperationException("No hashing type found by name " + hashType);
-            }
-
-            using (hasher)
-            {
-                // convert our string into byte array
-                var byteArray = Encoding.UTF8.GetBytes(str);
-
-                // get the hashed values created by our SHA1CryptoServiceProvider
-                var hashedByteArray = hasher.ComputeHash(byteArray);
-
-                // create a StringBuilder object
-                var stringBuilder = new StringBuilder();
-
-                // loop to each each byte
-                foreach (var b in hashedByteArray)
-                {
-                    // append it to our StringBuilder
-                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
-                }
-
-                // return the hashed value
-                return stringBuilder.ToString();
             }
         }
 
@@ -231,6 +200,37 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             }
 
             return connector;
+        }
+
+        private static string GenerateHash(this string str, string hashType)
+        {
+            var hasher = HashAlgorithm.Create(hashType);
+            if (hasher == null)
+            {
+                throw new InvalidOperationException("No hashing type found by name " + hashType);
+            }
+
+            using (hasher)
+            {
+                // convert our string into byte array
+                var byteArray = Encoding.UTF8.GetBytes(str);
+
+                // get the hashed values created by our SHA1CryptoServiceProvider
+                var hashedByteArray = hasher.ComputeHash(byteArray);
+
+                // create a StringBuilder object
+                var stringBuilder = new StringBuilder();
+
+                // loop to each each byte
+                foreach (var b in hashedByteArray)
+                {
+                    // append it to our StringBuilder
+                    stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
+                }
+
+                // return the hashed value
+                return stringBuilder.ToString();
+            }
         }
 
         /// <summary>

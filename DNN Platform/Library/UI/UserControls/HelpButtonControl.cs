@@ -24,10 +24,10 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     public abstract class HelpButtonControl : UserControl
     {
-        private string _HelpKey;
-        private string _ResourceKey;
         protected LinkButton cmdHelp;
         protected Image imgHelp;
+        private string _HelpKey;
+        private string _ResourceKey;
         protected Label lblHelp;
         protected Panel pnlHelp;
 

@@ -12,6 +12,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageBrightnessTransform : ImageTransform
     {
+        public ImageBrightnessTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.Brightness = 0;
+        }
+
         /// <summary>
         /// Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255.
         /// </summary>
@@ -21,15 +30,6 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Brightness;
-
-        public ImageBrightnessTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.Brightness = 0;
-        }
 
         /// <summary>
         /// Processes an input image applying a brightness image transformation.

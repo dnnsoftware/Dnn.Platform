@@ -18,6 +18,8 @@ namespace DotNetNuke.UI.WebControls
     /// </summary>
     public class LanguageSelector : Control, INamingContainer
     {
+        private Panel pnlControl;
+
         public enum LanguageItemStyle
         {
             FlagOnly = 1,
@@ -48,8 +50,6 @@ namespace DotNetNuke.UI.WebControls
             NeutralCulture = 1,
             SpecificCulture = 2,
         }
-
-        private Panel pnlControl;
 
         /// <summary>
         /// Gets or sets selection mode (single, multiple).

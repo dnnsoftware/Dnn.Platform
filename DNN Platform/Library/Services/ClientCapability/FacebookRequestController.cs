@@ -13,6 +13,31 @@ namespace DotNetNuke.Services.ClientCapability
 
     using DotNetNuke.Common.Utilities;
 
+    internal struct Page
+    {
+        public string id { get; set; }
+
+        public bool liked { get; set; }
+
+        public bool admin { get; set; }
+    }
+
+    internal struct Age
+    {
+        public long min { get; set; }
+
+        public long max { get; set; }
+    }
+
+    internal struct User
+    {
+        public string locale { get; set; }
+
+        public string country { get; set; }
+
+        public Age age { get; set; }
+    }
+
     /// <summary>
     /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,
     /// giving it variables such as if the Page has been Liked, and the age range of the user.
@@ -20,6 +45,12 @@ namespace DotNetNuke.Services.ClientCapability
     /// </summary>
     public class FacebookRequestController
     {
+        private const string SignedRequestParameter = "signed_request";
+
+        public static string API_SECRET { get; set; }
+
+        public static string APP_ID { get; set; }
+
         public string AccessToken { get; set; }
 
         public DateTime Expires { get; set; }
@@ -28,13 +59,7 @@ namespace DotNetNuke.Services.ClientCapability
 
         public long ProfileId { get; set; }
 
-        public static string API_SECRET { get; set; }
-
-        public static string APP_ID { get; set; }
-
         public string RawSignedRequest { get; set; }
-
-        private const string SignedRequestParameter = "signed_request";
 
         public bool IsValid { get; set; }
 
@@ -172,31 +197,6 @@ namespace DotNetNuke.Services.ClientCapability
             DateTime epoc = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return epoc.AddSeconds((double)value);
         }
-    }
-
-    internal struct Page
-    {
-        public string id { get; set; }
-
-        public bool liked { get; set; }
-
-        public bool admin { get; set; }
-    }
-
-    internal struct Age
-    {
-        public long min { get; set; }
-
-        public long max { get; set; }
-    }
-
-    internal struct User
-    {
-        public string locale { get; set; }
-
-        public string country { get; set; }
-
-        public Age age { get; set; }
     }
 
     internal struct FaceBookData

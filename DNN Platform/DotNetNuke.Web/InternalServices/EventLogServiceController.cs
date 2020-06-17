@@ -41,10 +41,10 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
-                                                                     {
-                                                                         Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
-                                                                         Content = this.GetPropertiesText(logInfo),
-                                                                     });
+                {
+                    Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
+                    Content = this.GetPropertiesText(logInfo),
+                });
             }
             catch (Exception ex)
             {

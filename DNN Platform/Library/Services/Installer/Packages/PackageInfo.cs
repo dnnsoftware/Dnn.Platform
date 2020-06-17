@@ -296,29 +296,29 @@ namespace DotNetNuke.Services.Installer.Packages
         public PackageInfo Clone()
         {
             return new PackageInfo
-                   {
-                       PackageID = this.PackageID,
-                       PortalID = this.PortalID,
-                       PackageType = this.PackageType,
-                       InstallerInfo = this.InstallerInfo,
-                       Name = this.Name,
-                       FriendlyName = this.FriendlyName,
-                       Manifest = this.Manifest,
-                       Email = this.Email,
-                       Description = this.Description,
-                       FolderName = this.FolderName,
-                       FileName = this.FileName,
-                       IconFile = this.IconFile,
-                       IsSystemPackage = this.IsSystemPackage,
-                       IsValid = this.IsValid,
-                       Organization = this.Organization,
-                       Owner = this.Owner,
-                       License = this.License,
-                       ReleaseNotes = this.ReleaseNotes,
-                       Url = this.Url,
-                       Version = this.Version,
-                       InstalledVersion = this.InstalledVersion,
-                   };
+            {
+                PackageID = this.PackageID,
+                PortalID = this.PortalID,
+                PackageType = this.PackageType,
+                InstallerInfo = this.InstallerInfo,
+                Name = this.Name,
+                FriendlyName = this.FriendlyName,
+                Manifest = this.Manifest,
+                Email = this.Email,
+                Description = this.Description,
+                FolderName = this.FolderName,
+                FileName = this.FileName,
+                IconFile = this.IconFile,
+                IsSystemPackage = this.IsSystemPackage,
+                IsValid = this.IsValid,
+                Organization = this.Organization,
+                Owner = this.Owner,
+                License = this.License,
+                ReleaseNotes = this.ReleaseNotes,
+                Url = this.Url,
+                Version = this.Version,
+                InstalledVersion = this.InstalledVersion,
+            };
         }
     }
 }

@@ -48,11 +48,169 @@ namespace DotNetNuke.Modules.Html
         public const int MAX_DESCRIPTION_LENGTH = 100;
         private const string PortalRootToken = "{{PortalRoot}}";
 
-        protected INavigationManager NavigationManager { get; }
-
         public HtmlTextController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        protected INavigationManager NavigationManager { get; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   FormatHtmlText formats HtmlText content for display in the browser.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="moduleId">The ModuleID.</param>
+        /// <param name = "content">The HtmlText Content.</param>
+        /// <param name = "settings">Module Settings.</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <param name="page">The Page Instance.</param>
+        /// <returns></returns>
+        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
+        {
+            // token replace
+            if (settings.ReplaceTokens)
+            {
+                var tr = new HtmlTokenReplace(page)
+                {
+                    AccessingUser = UserController.Instance.GetCurrentUserInfo(),
+                    DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
+                    ModuleId = moduleId,
+                    PortalSettings = portalSettings,
+                };
+                content = tr.ReplaceEnvironmentTokens(content);
+            }
+
+            // Html decode content
+            content = HttpUtility.HtmlDecode(content);
+
+            // manage relative paths
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background", portalSettings.PortalId);
+
+            return content;
+        }
+
+        public static string ManageRelativePaths(string strHTML, string strUploadDirectory, string strToken, int intPortalID)
+        {
+            int P = 0;
+            int R = 0;
+            int S = 0;
+            int tLen = 0;
+            string strURL = null;
+            var sbBuff = new StringBuilder(string.Empty);
+
+            if (!string.IsNullOrEmpty(strHTML))
+            {
+                tLen = strToken.Length + 2;
+                string uploadDirectory = strUploadDirectory.ToLowerInvariant();
+
+                // find position of first occurrance:
+                P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
+                while (P != -1)
+                {
+                    sbBuff.Append(strHTML.Substring(S, P - S + tLen));
+
+                    // keep charactes left of URL
+                    S = P + tLen;
+
+                    // save startpos of URL
+                    R = strHTML.IndexOf("\"", S);
+
+                    // end of URL
+                    if (R >= 0)
+                    {
+                        strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
+                    }
+                    else
+                    {
+                        strURL = strHTML.Substring(S).ToLowerInvariant();
+                    }
+
+                    if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                        continue;
+                    }
+
+                    // if we are linking internally
+                    if (!strURL.Contains("://"))
+                    {
+                        // remove the leading portion of the path if the URL contains the upload directory structure
+                        string strDirectory = uploadDirectory;
+                        if (!strDirectory.EndsWith("/"))
+                        {
+                            strDirectory += "/";
+                        }
+
+                        if (strURL.IndexOf(strDirectory) != -1)
+                        {
+                            S = S + strURL.IndexOf(strDirectory) + strDirectory.Length;
+                            strURL = strURL.Substring(strURL.IndexOf(strDirectory) + strDirectory.Length);
+                        }
+
+                        // add upload directory
+                        if (!strURL.StartsWith("/")
+                            && !string.IsNullOrEmpty(strURL.Trim())) // We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
+                        {
+                            sbBuff.Append(uploadDirectory);
+                        }
+                    }
+
+                    // find position of next occurrance
+                    P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
+                }
+
+                if (S > -1)
+                {
+                    sbBuff.Append(strHTML.Substring(S));
+                }
+
+                // append characters of last URL and behind
+            }
+
+            return sbBuff.ToString();
+        }
+
+        public string ReplaceWithRootToken(Match m)
+        {
+            var domain = m.Groups["domain"].Value;
+
+            // Relative url
+            if (string.IsNullOrEmpty(domain))
+            {
+                return PortalRootToken;
+            }
+
+            var aliases = PortalAliasController.Instance.GetPortalAliases();
+            if (!aliases.Contains(domain))
+            {
+                // this is no not a portal url so even if it contains /portals/..
+                // we do not need to replace it with a token
+                return m.ToString();
+            }
+
+            // full qualified portal url that needs to be tokenized
+            var result = domain + PortalRootToken;
+            var protocol = m.Groups["protocol"].Value;
+            return string.IsNullOrEmpty(protocol) ? result : protocol + result;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name = "ModuleID">The ID of the Module.</param>
+        /// <param name = "ItemID">The ID of the Item.</param>
+        public void DeleteHtmlText(int ModuleID, int ItemID)
+        {
+            DataProvider.Instance().DeleteHtmlText(ModuleID, ItemID);
+
+            // refresh output cache
+            ModuleController.SynchronizeModule(ModuleID);
         }
 
         private static void AddHtmlNotification(string subject, string body, UserInfo user)
@@ -246,83 +404,6 @@ namespace DotNetNuke.Modules.Html
             return exp.Replace(content, matchEvaluator);
         }
 
-        public string ReplaceWithRootToken(Match m)
-        {
-            var domain = m.Groups["domain"].Value;
-
-            // Relative url
-            if (string.IsNullOrEmpty(domain))
-            {
-                return PortalRootToken;
-            }
-
-            var aliases = PortalAliasController.Instance.GetPortalAliases();
-            if (!aliases.Contains(domain))
-            {
-                // this is no not a portal url so even if it contains /portals/..
-                // we do not need to replace it with a token
-                return m.ToString();
-            }
-
-            // full qualified portal url that needs to be tokenized
-            var result = domain + PortalRootToken;
-            var protocol = m.Groups["protocol"].Value;
-            return string.IsNullOrEmpty(protocol) ? result : protocol + result;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   DeleteHtmlText deletes an HtmlTextInfo object for the Module and Item.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name = "ModuleID">The ID of the Module.</param>
-        /// <param name = "ItemID">The ID of the Item.</param>
-        public void DeleteHtmlText(int ModuleID, int ItemID)
-        {
-            DataProvider.Instance().DeleteHtmlText(ModuleID, ItemID);
-
-            // refresh output cache
-            ModuleController.SynchronizeModule(ModuleID);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   FormatHtmlText formats HtmlText content for display in the browser.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="moduleId">The ModuleID.</param>
-        /// <param name = "content">The HtmlText Content.</param>
-        /// <param name = "settings">Module Settings.</param>
-        /// <param name="portalSettings">The Portal Settings.</param>
-        /// <param name="page">The Page Instance.</param>
-        /// <returns></returns>
-        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
-        {
-            // token replace
-            if (settings.ReplaceTokens)
-            {
-                var tr = new HtmlTokenReplace(page)
-                {
-                    AccessingUser = UserController.Instance.GetCurrentUserInfo(),
-                    DebugMessages = portalSettings.UserMode != PortalSettings.Mode.View,
-                    ModuleId = moduleId,
-                    PortalSettings = portalSettings,
-                };
-                content = tr.ReplaceEnvironmentTokens(content);
-            }
-
-            // Html decode content
-            content = HttpUtility.HtmlDecode(content);
-
-            // manage relative paths
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src", portalSettings.PortalId);
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background", portalSettings.PortalId);
-
-            return content;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   GetAllHtmlText gets a collection of HtmlTextInfo objects for the Module and Workflow.
@@ -457,87 +538,6 @@ namespace DotNetNuke.Modules.Html
             }
 
             return new KeyValuePair<string, int>(workFlowType, workFlowId);
-        }
-
-        public static string ManageRelativePaths(string strHTML, string strUploadDirectory, string strToken, int intPortalID)
-        {
-            int P = 0;
-            int R = 0;
-            int S = 0;
-            int tLen = 0;
-            string strURL = null;
-            var sbBuff = new StringBuilder(string.Empty);
-
-            if (!string.IsNullOrEmpty(strHTML))
-            {
-                tLen = strToken.Length + 2;
-                string uploadDirectory = strUploadDirectory.ToLowerInvariant();
-
-                // find position of first occurrance:
-                P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
-                while (P != -1)
-                {
-                    sbBuff.Append(strHTML.Substring(S, P - S + tLen));
-
-                    // keep charactes left of URL
-                    S = P + tLen;
-
-                    // save startpos of URL
-                    R = strHTML.IndexOf("\"", S);
-
-                    // end of URL
-                    if (R >= 0)
-                    {
-                        strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
-                    }
-                    else
-                    {
-                        strURL = strHTML.Substring(S).ToLowerInvariant();
-                    }
-
-                    if (strHTML.Substring(P + tLen, 10).Equals("data:image", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
-                        continue;
-                    }
-
-                    // if we are linking internally
-                    if (!strURL.Contains("://"))
-                    {
-                        // remove the leading portion of the path if the URL contains the upload directory structure
-                        string strDirectory = uploadDirectory;
-                        if (!strDirectory.EndsWith("/"))
-                        {
-                            strDirectory += "/";
-                        }
-
-                        if (strURL.IndexOf(strDirectory) != -1)
-                        {
-                            S = S + strURL.IndexOf(strDirectory) + strDirectory.Length;
-                            strURL = strURL.Substring(strURL.IndexOf(strDirectory) + strDirectory.Length);
-                        }
-
-                        // add upload directory
-                        if (!strURL.StartsWith("/")
-                            && !string.IsNullOrEmpty(strURL.Trim())) // We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
-                        {
-                            sbBuff.Append(uploadDirectory);
-                        }
-                    }
-
-                    // find position of next occurrance
-                    P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
-                }
-
-                if (S > -1)
-                {
-                    sbBuff.Append(strHTML.Substring(S));
-                }
-
-                // append characters of last URL and behind
-            }
-
-            return sbBuff.ToString();
         }
 
         /// -----------------------------------------------------------------------------
@@ -824,26 +824,6 @@ namespace DotNetNuke.Modules.Html
             return searchDocuments;
         }
 
-        private static List<string> CollectHierarchicalTags(List<Term> terms)
-        {
-            Func<List<Term>, List<string>, List<string>> collectTagsFunc = null;
-            collectTagsFunc = (ts, tags) =>
-            {
-                if (ts != null && ts.Count > 0)
-                {
-                    foreach (var t in ts)
-                    {
-                        tags.Add(t.Name);
-                        tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
-                    }
-                }
-
-                return tags;
-            };
-
-            return collectTagsFunc(terms, new List<string>());
-        }
-
         public string UpgradeModule(string Version)
         {
             switch (Version)
@@ -869,6 +849,26 @@ namespace DotNetNuke.Modules.Html
             }
 
             return string.Empty;
+        }
+
+        private static List<string> CollectHierarchicalTags(List<Term> terms)
+        {
+            Func<List<Term>, List<string>, List<string>> collectTagsFunc = null;
+            collectTagsFunc = (ts, tags) =>
+            {
+                if (ts != null && ts.Count > 0)
+                {
+                    foreach (var t in ts)
+                    {
+                        tags.Add(t.Name);
+                        tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
+                    }
+                }
+
+                return tags;
+            };
+
+            return collectTagsFunc(terms, new List<string>());
         }
 
         private void AddNotificationTypes()

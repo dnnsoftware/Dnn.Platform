@@ -28,6 +28,11 @@ namespace DotNetNuke.Web.Api.Internal
             return request;
         }
 
+        protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            return response;
+        }
+
         private static void SetThreadCulture(PortalSettings portalSettings)
         {
             CultureInfo pageLocale = TestableLocalization.Instance.GetPageLocale(portalSettings);
@@ -97,11 +102,6 @@ namespace DotNetNuke.Web.Api.Internal
                     }
                 }
             }
-        }
-
-        protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            return response;
         }
     }
 }

@@ -16,14 +16,14 @@ namespace DotNetNuke.Services.Connections
 
     public sealed class ConnectionsManager : ServiceLocator<IConnectionsManager, ConnectionsManager>, IConnectionsManager
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectionsManager));
+        private static readonly object LockerObject = new object();
+        private static IDictionary<string, IConnector> _processors;
+
         protected override Func<IConnectionsManager> GetFactory()
         {
             return () => new ConnectionsManager();
         }
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectionsManager));
-        private static readonly object LockerObject = new object();
-        private static IDictionary<string, IConnector> _processors;
 
         public void RegisterConnections()
         {

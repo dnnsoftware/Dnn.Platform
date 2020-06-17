@@ -45,15 +45,6 @@ namespace DotNetNuke.Entities.Modules
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 
-        /// <summary>
-        /// Gets the Dependency Provider to resolve registered
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider { get; }
-
         public PortalModuleBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
@@ -83,6 +74,15 @@ namespace DotNetNuke.Entities.Modules
                 return Globals.FindControlRecursive(this, "ctr" + this.ModuleId);
             }
         }
+
+        /// <summary>
+        /// Gets the Dependency Provider to resolve registered
+        /// services with the container.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        protected IServiceProvider DependencyProvider { get; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -319,108 +319,6 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-
-            base.OnInit(e);
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-
-            base.OnLoad(e);
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl()
-        {
-            return this.ModuleContext.EditUrl();
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string ControlKey)
-        {
-            return this.ModuleContext.EditUrl(ControlKey);
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string KeyName, string KeyValue)
-        {
-            return this.ModuleContext.EditUrl(KeyName, KeyValue);
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string KeyName, string KeyValue, string ControlKey)
-        {
-            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(string KeyName, string KeyValue, string ControlKey, params string[] AdditionalParameters)
-        {
-            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
-        }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string EditUrl(int TabID, string ControlKey, bool PageRedirect, params string[] AdditionalParameters)
-        {
-            return this.ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
-        /// Module Control.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected void AddActionHandler(ActionEventHandler e)
-        {
-            UI.Skins.Skin ParentSkin = UI.Skins.Skin.GetParentSkin(this);
-            if (ParentSkin != null)
-            {
-                ParentSkin.RegisterModuleActionEvent(this.ModuleId, e);
-            }
-        }
-
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
-
-        protected string LocalizeSafeJsString(string key)
-        {
-            return Localization.GetSafeJSString(key, this.LocalResourceFile);
-        }
-
-        public int GetNextActionID()
-        {
-            return this.ModuleContext.GetNextActionID();
-        }
-
         // CONVERSION: Remove obsoleted methods (FYI some core modules use these, such as Links)
 
         /// -----------------------------------------------------------------------------
@@ -470,6 +368,108 @@ namespace DotNetNuke.Entities.Modules
                 strCacheKey += Thread.CurrentThread.CurrentUICulture.ToString();
                 return strCacheKey;
             }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditUrl()
+        {
+            return this.ModuleContext.EditUrl();
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditUrl(string ControlKey)
+        {
+            return this.ModuleContext.EditUrl(ControlKey);
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
+            base.OnInit(e);
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
+            base.OnLoad(e);
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditUrl(string KeyName, string KeyValue)
+        {
+            return this.ModuleContext.EditUrl(KeyName, KeyValue);
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditUrl(string KeyName, string KeyValue, string ControlKey)
+        {
+            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditUrl(string KeyName, string KeyValue, string ControlKey, params string[] AdditionalParameters)
+        {
+            return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
+        }
+
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string EditUrl(int TabID, string ControlKey, bool PageRedirect, params string[] AdditionalParameters)
+        {
+            return this.ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);
+        }
+
+        public int GetNextActionID()
+        {
+            return this.ModuleContext.GetNextActionID();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Helper method that can be used to add an ActionEventHandler to the Skin for this
+        /// Module Control.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected void AddActionHandler(ActionEventHandler e)
+        {
+            UI.Skins.Skin ParentSkin = UI.Skins.Skin.GetParentSkin(this);
+            if (ParentSkin != null)
+            {
+                ParentSkin.RegisterModuleActionEvent(this.ModuleId, e);
+            }
+        }
+
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
+
+        protected string LocalizeSafeJsString(string key)
+        {
+            return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
 
         [Obsolete("This property is deprecated.  Please use ModuleController.CacheFileName(TabModuleID). Scheduled removal in v11.0.0.")]

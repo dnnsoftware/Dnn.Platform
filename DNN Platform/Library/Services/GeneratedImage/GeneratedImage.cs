@@ -19,6 +19,18 @@ namespace DotNetNuke.Services.GeneratedImage
         private readonly HttpContextBase _context;
         private string _imageHandlerUrl;
 
+        public GeneratedImage()
+        {
+            this.Parameters = new List<ImageParameter>();
+        }
+
+        internal GeneratedImage(HttpContextBase context, Control bindingContainer)
+            : this()
+        {
+            this._context = context;
+            this._bindingContainer = bindingContainer;
+        }
+
         public string ImageHandlerUrl
         {
             get
@@ -51,18 +63,6 @@ namespace DotNetNuke.Services.GeneratedImage
 
         private new Control BindingContainer => this._bindingContainer ?? base.BindingContainer;
 
-        public GeneratedImage()
-        {
-            this.Parameters = new List<ImageParameter>();
-        }
-
-        internal GeneratedImage(HttpContextBase context, Control bindingContainer)
-            : this()
-        {
-            this._context = context;
-            this._bindingContainer = bindingContainer;
-        }
-
         protected override void OnDataBinding(EventArgs e)
         {
             base.OnDataBinding(e);
@@ -87,6 +87,14 @@ namespace DotNetNuke.Services.GeneratedImage
             this.ImageUrl = this.BuildImageUrl();
         }
 
+        private static void AddQueryStringParameter(StringBuilder stringBuilder, bool paramAlreadyAdded, string name, string value)
+        {
+            stringBuilder.Append(paramAlreadyAdded ? '&' : '?');
+            stringBuilder.Append(HttpUtility.UrlEncode(name));
+            stringBuilder.Append('=');
+            stringBuilder.Append(HttpUtility.UrlEncode(value));
+        }
+
         private string BuildImageUrl()
         {
             var stringBuilder = new StringBuilder();
@@ -107,14 +115,6 @@ namespace DotNetNuke.Services.GeneratedImage
             }
 
             return stringBuilder.ToString();
-        }
-
-        private static void AddQueryStringParameter(StringBuilder stringBuilder, bool paramAlreadyAdded, string name, string value)
-        {
-            stringBuilder.Append(paramAlreadyAdded ? '&' : '?');
-            stringBuilder.Append(HttpUtility.UrlEncode(name));
-            stringBuilder.Append('=');
-            stringBuilder.Append(HttpUtility.UrlEncode(value));
         }
     }
 }

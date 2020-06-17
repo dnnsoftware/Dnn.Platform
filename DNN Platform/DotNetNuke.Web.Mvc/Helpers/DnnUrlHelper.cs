@@ -54,9 +54,9 @@ namespace DotNetNuke.Web.Mvc.Helpers
             this.ModuleContext = this._controller.ModuleContext;
         }
 
-        internal UrlHelper UrlHelper { get; set; }
-
         public ModuleInstanceContext ModuleContext { get; set; }
+
+        internal UrlHelper UrlHelper { get; set; }
 
         public virtual string Encode(string url)
         {

@@ -52,6 +52,44 @@ namespace DotNetNuke.UI.WebControls
             this._DisplayMode = eventArgument;
         }
 
+        /// <summary>
+        /// OnAttributesChanged runs when the CustomAttributes property has changed.
+        /// </summary>
+        protected override void OnAttributesChanged()
+        {
+            // Get the List settings out of the "Attributes"
+            if (this.CustomAttributes != null)
+            {
+                foreach (Attribute attribute in this.CustomAttributes)
+                {
+                    var listAtt = attribute as LanguagesListTypeAttribute;
+                    if (listAtt != null)
+                    {
+                        this._ListType = listAtt.ListType;
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// RenderViewMode renders the View (readonly) mode of the control.
+        /// </summary>
+        /// <param name="writer">A HtmlTextWriter.</param>
+        protected override void RenderViewMode(HtmlTextWriter writer)
+        {
+            Locale locale = LocaleController.Instance.GetLocale(this.StringValue);
+
+            this.ControlStyle.AddAttributesToRender(writer);
+            writer.RenderBeginTag(HtmlTextWriterTag.Div);
+            if (locale != null)
+            {
+                writer.Write(locale.Text);
+            }
+
+            writer.RenderEndTag();
+        }
+
         private bool IsSelected(string locale)
         {
             return locale == this.StringValue;
@@ -116,44 +154,6 @@ namespace DotNetNuke.UI.WebControls
             // Render Option Tag
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write(localeName);
-            writer.RenderEndTag();
-        }
-
-        /// <summary>
-        /// OnAttributesChanged runs when the CustomAttributes property has changed.
-        /// </summary>
-        protected override void OnAttributesChanged()
-        {
-            // Get the List settings out of the "Attributes"
-            if (this.CustomAttributes != null)
-            {
-                foreach (Attribute attribute in this.CustomAttributes)
-                {
-                    var listAtt = attribute as LanguagesListTypeAttribute;
-                    if (listAtt != null)
-                    {
-                        this._ListType = listAtt.ListType;
-                        break;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control.
-        /// </summary>
-        /// <param name="writer">A HtmlTextWriter.</param>
-        protected override void RenderViewMode(HtmlTextWriter writer)
-        {
-            Locale locale = LocaleController.Instance.GetLocale(this.StringValue);
-
-            this.ControlStyle.AddAttributesToRender(writer);
-            writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            if (locale != null)
-            {
-                writer.Write(locale.Text);
-            }
-
             writer.RenderEndTag();
         }
 

@@ -35,6 +35,67 @@ namespace DotNetNuke.Common.Utilities
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a File to a Zip File.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
+        {
+            FileStream fs = null;
+            try
+            {
+                // Open File Stream
+                fs = File.OpenRead(FixPath(filePath));
+
+                // Read file into byte array buffer
+                var buffer = new byte[fs.Length];
+
+                var len = fs.Read(buffer, 0, buffer.Length);
+                if (len != fs.Length)
+                {
+                    Logger.ErrorFormat(
+                        "Reading from " + filePath + " didn't read all data in buffer. " +
+                                      "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
+                }
+
+                // Create Zip Entry
+                var entry = new ZipEntry(Path.Combine(folder, fileName));
+                entry.DateTime = DateTime.Now;
+                entry.Size = fs.Length;
+                fs.Close();
+
+                // Compress file and add to Zip file
+                ZipFile.PutNextEntry(entry);
+                ZipFile.Write(buffer, 0, buffer.Length);
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                    fs.Dispose();
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Tries to copy a file in the file system.
+        /// </summary>
+        /// <param name="sourceFileName">The name of the source file.</param>
+        /// <param name="destFileName">The name of the destination file.</param>
+        /// -----------------------------------------------------------------------------
+        public static void CopyFile(string sourceFileName, string destFileName)
+        {
+            if (File.Exists(destFileName))
+            {
+                File.SetAttributes(destFileName, FileAttributes.Normal);
+            }
+
+            File.Copy(sourceFileName, destFileName, true);
+        }
+
         private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
         {
             var strMessage = string.Empty;
@@ -162,67 +223,6 @@ namespace DotNetNuke.Common.Utilities
                     objStream.Dispose();
                 }
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a File to a Zip File.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
-        {
-            FileStream fs = null;
-            try
-            {
-                // Open File Stream
-                fs = File.OpenRead(FixPath(filePath));
-
-                // Read file into byte array buffer
-                var buffer = new byte[fs.Length];
-
-                var len = fs.Read(buffer, 0, buffer.Length);
-                if (len != fs.Length)
-                {
-                    Logger.ErrorFormat(
-                        "Reading from " + filePath + " didn't read all data in buffer. " +
-                                      "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
-                }
-
-                // Create Zip Entry
-                var entry = new ZipEntry(Path.Combine(folder, fileName));
-                entry.DateTime = DateTime.Now;
-                entry.Size = fs.Length;
-                fs.Close();
-
-                // Compress file and add to Zip file
-                ZipFile.PutNextEntry(entry);
-                ZipFile.Write(buffer, 0, buffer.Length);
-            }
-            finally
-            {
-                if (fs != null)
-                {
-                    fs.Close();
-                    fs.Dispose();
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Tries to copy a file in the file system.
-        /// </summary>
-        /// <param name="sourceFileName">The name of the source file.</param>
-        /// <param name="destFileName">The name of the destination file.</param>
-        /// -----------------------------------------------------------------------------
-        public static void CopyFile(string sourceFileName, string destFileName)
-        {
-            if (File.Exists(destFileName))
-            {
-                File.SetAttributes(destFileName, FileAttributes.Normal);
-            }
-
-            File.Copy(sourceFileName, destFileName, true);
         }
 
         /// -----------------------------------------------------------------------------

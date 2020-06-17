@@ -33,6 +33,48 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection.
+        /// </summary>
+        /// <param name = "StateID">The ID of the State.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int StateID)
+        {
+            bool bFound = false;
+
+            // Get the WorkflowStatePermission Dictionary
+            Dictionary<int, WorkflowStatePermissionCollection> dicWorkflowStatePermissions = GetWorkflowStatePermissions();
+
+            // Get the Collection from the Dictionary
+            WorkflowStatePermissionCollection WorkflowStatePermissions = null;
+            bFound = dicWorkflowStatePermissions.TryGetValue(StateID, out WorkflowStatePermissions);
+
+            if (!bFound)
+            {
+                // try the database
+                WorkflowStatePermissions = new WorkflowStatePermissionCollection(
+                    CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
+                    StateID);
+            }
+
+            return WorkflowStatePermissions;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   HasWorkflowStatePermission checks whether the current user has a specific WorkflowState Permission.
+        /// </summary>
+        /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState.</param>
+        /// <param name = "permissionKey">The Permission to check.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static bool HasWorkflowStatePermission(WorkflowStatePermissionCollection objWorkflowStatePermissions, string permissionKey)
+        {
+            return PortalSecurity.IsInRoles(objWorkflowStatePermissions.ToString(permissionKey));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   GetWorkflowStatePermissions gets a Dictionary of WorkflowStatePermissionCollections by
         ///   WorkflowState.
         /// </summary>
@@ -107,48 +149,6 @@ namespace DotNetNuke.Security.Permissions
             }
 
             return dic;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection.
-        /// </summary>
-        /// <param name = "StateID">The ID of the State.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int StateID)
-        {
-            bool bFound = false;
-
-            // Get the WorkflowStatePermission Dictionary
-            Dictionary<int, WorkflowStatePermissionCollection> dicWorkflowStatePermissions = GetWorkflowStatePermissions();
-
-            // Get the Collection from the Dictionary
-            WorkflowStatePermissionCollection WorkflowStatePermissions = null;
-            bFound = dicWorkflowStatePermissions.TryGetValue(StateID, out WorkflowStatePermissions);
-
-            if (!bFound)
-            {
-                // try the database
-                WorkflowStatePermissions = new WorkflowStatePermissionCollection(
-                    CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
-                    StateID);
-            }
-
-            return WorkflowStatePermissions;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   HasWorkflowStatePermission checks whether the current user has a specific WorkflowState Permission.
-        /// </summary>
-        /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState.</param>
-        /// <param name = "permissionKey">The Permission to check.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static bool HasWorkflowStatePermission(WorkflowStatePermissionCollection objWorkflowStatePermissions, string permissionKey)
-        {
-            return PortalSecurity.IsInRoles(objWorkflowStatePermissions.ToString(permissionKey));
         }
     }
 }

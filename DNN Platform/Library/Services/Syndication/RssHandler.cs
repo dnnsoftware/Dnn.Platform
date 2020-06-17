@@ -90,6 +90,21 @@ namespace DotNetNuke.Services.Syndication
         }
 
         /// <summary>
+        /// The PreRender event is used to set the Caching Policy for the Feed.  This mimics the behavior from the
+        /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid".
+        /// </summary>
+        /// <param name="ea">Event Args.</param>
+        /// <remarks></remarks>
+        protected override void OnPreRender(EventArgs ea)
+        {
+            base.OnPreRender(ea);
+
+            this.Context.Response.Cache.SetExpires(DateTime.Now.AddSeconds(60));
+            this.Context.Response.Cache.SetCacheability(HttpCacheability.Public);
+            this.Context.Response.Cache.VaryByParams["moduleid"] = true;
+        }
+
+        /// <summary>
         /// Creates an RSS Item.
         /// </summary>
         /// <param name="searchResult"></param>
@@ -115,21 +130,6 @@ namespace DotNetNuke.Services.Syndication
             item["guid"] = url;
 
             return item;
-        }
-
-        /// <summary>
-        /// The PreRender event is used to set the Caching Policy for the Feed.  This mimics the behavior from the
-        /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid".
-        /// </summary>
-        /// <param name="ea">Event Args.</param>
-        /// <remarks></remarks>
-        protected override void OnPreRender(EventArgs ea)
-        {
-            base.OnPreRender(ea);
-
-            this.Context.Response.Cache.SetExpires(DateTime.Now.AddSeconds(60));
-            this.Context.Response.Cache.SetCacheability(HttpCacheability.Public);
-            this.Context.Response.Cache.VaryByParams["moduleid"] = true;
         }
     }
 }

@@ -56,13 +56,6 @@ namespace Dnn.PersonaBar.SiteGroups
                         });
         }
 
-        IEnumerable<DotNetNuke.Entities.Portals.PortalInfo> PortalsOfGroup(int groupId, int masterPortalId)
-        {
-            return this.PortalGroupController
-                .GetPortalsByGroup(groupId)
-                .Where(x => x.PortalID != masterPortalId);
-        }
-
         public int Save(PortalGroupInfo portalGroup)
         {
             if (portalGroup.PortalGroupId == -1)
@@ -73,6 +66,19 @@ namespace Dnn.PersonaBar.SiteGroups
             {
                 return this.UpdatePortalGroup(portalGroup);
             }
+        }
+
+        public void Delete(int portalGroupId)
+        {
+            var group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);
+            this.PortalGroupController.DeletePortalGroup(group);
+        }
+
+        IEnumerable<DotNetNuke.Entities.Portals.PortalInfo> PortalsOfGroup(int groupId, int masterPortalId)
+        {
+            return this.PortalGroupController
+                .GetPortalsByGroup(groupId)
+                .Where(x => x.PortalID != masterPortalId);
         }
 
         int UpdatePortalGroup(PortalGroupInfo portalGroup)
@@ -122,12 +128,6 @@ namespace Dnn.PersonaBar.SiteGroups
                 }
             }
             return @group.PortalGroupId;
-        }
-
-        public void Delete(int portalGroupId)
-        {
-            var group = this.PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);
-            this.PortalGroupController.DeletePortalGroup(group);
         }
     }
 }

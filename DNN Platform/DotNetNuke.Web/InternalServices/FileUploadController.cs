@@ -45,20 +45,12 @@ namespace DotNetNuke.Web.InternalServices
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        public class FolderItemDTO
+        private static readonly List<string> ImageExtensions = Globals.glbImageFileTypes.Split(',').ToList();
+
+        public static string GetUrl(int fileId)
         {
-            public int FolderId { get; set; }
-
-            public string FileFilter { get; set; }
-
-            public bool Required { get; set; }
-        }
-
-        public class SavedFileDTO
-        {
-            public string FileId { get; set; }
-
-            public string FilePath { get; set; }
+            var file = FileManager.Instance.GetFile(fileId, true);
+            return FileManager.Instance.GetUrl(file);
         }
 
         [HttpPost]
@@ -218,6 +210,150 @@ namespace DotNetNuke.Web.InternalServices
             return task;
         }
 
+        public class FolderItemDTO
+        {
+            public int FolderId { get; set; }
+
+            public string FileFilter { get; set; }
+
+            public bool Required { get; set; }
+        }
+
+        public class SavedFileDTO
+        {
+            public string FileId { get; set; }
+
+            public string FilePath { get; set; }
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public Task<HttpResponseMessage> UploadFromLocal()
+        {
+            return this.UploadFromLocal(this.PortalSettings.PortalId);
+        }
+
+        [HttpPost]
+        [IFrameSupportedValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public Task<HttpResponseMessage> UploadFromLocal(int portalId)
+        {
+            var request = this.Request;
+            FileUploadDto result = null;
+            if (!request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            if (portalId > -1)
+            {
+                if (!this.IsPortalIdValid(portalId))
+                {
+                    throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
+            }
+            else
+            {
+                portalId = this.PortalSettings.PortalId;
+            }
+
+            var provider = new MultipartMemoryStreamProvider();
+
+            // local references for use in closure
+            var currentSynchronizationContext = SynchronizationContext.Current;
+            var userInfo = this.UserInfo;
+            var task = request.Content.ReadAsMultipartAsync(provider)
+                .ContinueWith(o =>
+                {
+                    var folder = string.Empty;
+                    var filter = string.Empty;
+                    var fileName = string.Empty;
+                    var validationCode = string.Empty;
+                    var overwrite = false;
+                    var isHostPortal = false;
+                    var extract = false;
+                    Stream stream = null;
+
+                    foreach (var item in provider.Contents)
+                    {
+                        var name = item.Headers.ContentDisposition.Name;
+                        switch (name.ToUpper())
+                        {
+                            case "\"FOLDER\"":
+                                folder = item.ReadAsStringAsync().Result ?? string.Empty;
+                                break;
+
+                            case "\"FILTER\"":
+                                filter = item.ReadAsStringAsync().Result ?? string.Empty;
+                                break;
+
+                            case "\"OVERWRITE\"":
+                                bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
+                                break;
+
+                            case "\"ISHOSTPORTAL\"":
+                                bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal);
+                                break;
+
+                            case "\"EXTRACT\"":
+                                bool.TryParse(item.ReadAsStringAsync().Result, out extract);
+                                break;
+
+                            case "\"PORTALID\"":
+                                if (userInfo.IsSuperUser)
+                                {
+                                    int.TryParse(item.ReadAsStringAsync().Result, out portalId);
+                                }
+
+                                break;
+                            case "\"VALIDATIONCODE\"":
+                                validationCode = item.ReadAsStringAsync().Result ?? string.Empty;
+                                break;
+                            case "\"POSTFILE\"":
+                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                                if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
+                                {
+                                    fileName = Path.GetFileName(fileName);
+                                }
+
+                                if (Globals.FileEscapingRegex.Match(fileName).Success == false)
+                                {
+                                    stream = item.ReadAsStreamAsync().Result;
+                                }
+
+                                break;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(fileName) && stream != null)
+                    {
+                        // The SynchronizationContext keeps the main thread context. Send method is synchronous
+                        currentSynchronizationContext.Send(
+                            state =>
+                            {
+                                result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
+                            },
+                            null);
+                    }
+
+                    var mediaTypeFormatter = new JsonMediaTypeFormatter();
+                    mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
+
+                    /* Response Content Type cannot be application/json
+                     * because IE9 with iframe-transport manages the response
+                     * as a file download
+                     */
+                    return this.Request.CreateResponse(
+                        HttpStatusCode.OK,
+                        result,
+                        mediaTypeFormatter,
+                        "text/plain");
+                });
+
+            return task;
+        }
+
         private static SavedFileDTO SaveFile(
                 Stream stream,
                 PortalSettings portalSettings,
@@ -326,8 +462,6 @@ namespace DotNetNuke.Web.InternalServices
             return null;
         }
 
-        private static readonly List<string> ImageExtensions = Globals.glbImageFileTypes.Split(',').ToList();
-
         private static bool IsImageExtension(string extension)
         {
             return ImageExtensions.Any(e => e.Equals(extension, StringComparison.OrdinalIgnoreCase));
@@ -336,59 +470,6 @@ namespace DotNetNuke.Web.InternalServices
         private static bool IsImage(string fileName)
         {
             return ImageExtensions.Any(extension => fileName.EndsWith("." + extension, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public class UploadByUrlDto
-        {
-            public string Url { get; set; }
-
-            public string Folder { get; set; }
-
-            public bool Overwrite { get; set; }
-
-            public bool Unzip { get; set; }
-
-            public string Filter { get; set; }
-
-            public bool IsHostMenu { get; set; }
-
-            public int PortalId { get; set; } = -1;
-
-            public string ValidationCode { get; set; }
-        }
-
-        [DataContract]
-        public class FileUploadDto
-        {
-            [DataMember(Name = "path")]
-            public string Path { get; set; }
-
-            [DataMember(Name = "orientation")]
-            public Orientation Orientation { get; set; }
-
-            [DataMember(Name = "alreadyExists")]
-            public bool AlreadyExists { get; set; }
-
-            [DataMember(Name = "message")]
-            public string Message { get; set; }
-
-            [DataMember(Name = "fileIconUrl")]
-            public string FileIconUrl { get; set; }
-
-            [DataMember(Name = "fileId")]
-            public int FileId { get; set; }
-
-            [DataMember(Name = "fileName")]
-            public string FileName { get; set; }
-
-            [DataMember(Name = "prompt")]
-            public string Prompt { get; set; }
-        }
-
-        public static string GetUrl(int fileId)
-        {
-            var file = FileManager.Instance.GetFile(fileId, true);
-            return FileManager.Instance.GetUrl(file);
         }
 
         private static FileUploadDto UploadFile(
@@ -543,132 +624,51 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        [HttpPost]
-        [IFrameSupportedValidateAntiForgeryToken]
-        [AllowAnonymous]
-        public Task<HttpResponseMessage> UploadFromLocal()
+        public class UploadByUrlDto
         {
-            return this.UploadFromLocal(this.PortalSettings.PortalId);
+            public string Url { get; set; }
+
+            public string Folder { get; set; }
+
+            public bool Overwrite { get; set; }
+
+            public bool Unzip { get; set; }
+
+            public string Filter { get; set; }
+
+            public bool IsHostMenu { get; set; }
+
+            public int PortalId { get; set; } = -1;
+
+            public string ValidationCode { get; set; }
         }
 
-        [HttpPost]
-        [IFrameSupportedValidateAntiForgeryToken]
-        [AllowAnonymous]
-        public Task<HttpResponseMessage> UploadFromLocal(int portalId)
+        [DataContract]
+        public class FileUploadDto
         {
-            var request = this.Request;
-            FileUploadDto result = null;
-            if (!request.Content.IsMimeMultipartContent())
-            {
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-            }
+            [DataMember(Name = "path")]
+            public string Path { get; set; }
 
-            if (portalId > -1)
-            {
-                if (!this.IsPortalIdValid(portalId))
-                {
-                    throw new HttpResponseException(HttpStatusCode.Unauthorized);
-                }
-            }
-            else
-            {
-                portalId = this.PortalSettings.PortalId;
-            }
+            [DataMember(Name = "orientation")]
+            public Orientation Orientation { get; set; }
 
-            var provider = new MultipartMemoryStreamProvider();
+            [DataMember(Name = "alreadyExists")]
+            public bool AlreadyExists { get; set; }
 
-            // local references for use in closure
-            var currentSynchronizationContext = SynchronizationContext.Current;
-            var userInfo = this.UserInfo;
-            var task = request.Content.ReadAsMultipartAsync(provider)
-                .ContinueWith(o =>
-                {
-                    var folder = string.Empty;
-                    var filter = string.Empty;
-                    var fileName = string.Empty;
-                    var validationCode = string.Empty;
-                    var overwrite = false;
-                    var isHostPortal = false;
-                    var extract = false;
-                    Stream stream = null;
+            [DataMember(Name = "message")]
+            public string Message { get; set; }
 
-                    foreach (var item in provider.Contents)
-                    {
-                        var name = item.Headers.ContentDisposition.Name;
-                        switch (name.ToUpper())
-                        {
-                            case "\"FOLDER\"":
-                                folder = item.ReadAsStringAsync().Result ?? string.Empty;
-                                break;
+            [DataMember(Name = "fileIconUrl")]
+            public string FileIconUrl { get; set; }
 
-                            case "\"FILTER\"":
-                                filter = item.ReadAsStringAsync().Result ?? string.Empty;
-                                break;
+            [DataMember(Name = "fileId")]
+            public int FileId { get; set; }
 
-                            case "\"OVERWRITE\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out overwrite);
-                                break;
+            [DataMember(Name = "fileName")]
+            public string FileName { get; set; }
 
-                            case "\"ISHOSTPORTAL\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out isHostPortal);
-                                break;
-
-                            case "\"EXTRACT\"":
-                                bool.TryParse(item.ReadAsStringAsync().Result, out extract);
-                                break;
-
-                            case "\"PORTALID\"":
-                                if (userInfo.IsSuperUser)
-                                {
-                                    int.TryParse(item.ReadAsStringAsync().Result, out portalId);
-                                }
-
-                                break;
-                            case "\"VALIDATIONCODE\"":
-                                validationCode = item.ReadAsStringAsync().Result ?? string.Empty;
-                                break;
-                            case "\"POSTFILE\"":
-                                fileName = item.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                                if (fileName.IndexOf("\\", StringComparison.Ordinal) != -1)
-                                {
-                                    fileName = Path.GetFileName(fileName);
-                                }
-
-                                if (Globals.FileEscapingRegex.Match(fileName).Success == false)
-                                {
-                                    stream = item.ReadAsStreamAsync().Result;
-                                }
-
-                                break;
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(fileName) && stream != null)
-                    {
-                        // The SynchronizationContext keeps the main thread context. Send method is synchronous
-                        currentSynchronizationContext.Send(
-                            state =>
-                            {
-                                result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
-                            },
-                            null);
-                    }
-
-                    var mediaTypeFormatter = new JsonMediaTypeFormatter();
-                    mediaTypeFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/plain"));
-
-                    /* Response Content Type cannot be application/json
-                     * because IE9 with iframe-transport manages the response
-                     * as a file download
-                     */
-                    return this.Request.CreateResponse(
-                        HttpStatusCode.OK,
-                        result,
-                        mediaTypeFormatter,
-                        "text/plain");
-                });
-
-            return task;
+            [DataMember(Name = "prompt")]
+            public string Prompt { get; set; }
         }
 
         [HttpPost]
@@ -756,6 +756,17 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
+        private static IEnumerable<PortalInfo> GetMyPortalGroup()
+        {
+            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
+            var mygroup = (from @group in groups
+                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                               into portals
+                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                           select portals.ToArray()).FirstOrDefault();
+            return mygroup;
+        }
+
         private string GetFileName(WebResponse response)
         {
             if (!response.Headers.AllKeys.Contains("Content-Disposition"))
@@ -802,17 +813,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return false;
-        }
-
-        private static IEnumerable<PortalInfo> GetMyPortalGroup()
-        {
-            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-            var mygroup = (from @group in groups
-                           select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                               into portals
-                           where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                           select portals.ToArray()).FirstOrDefault();
-            return mygroup;
         }
 
         private bool IsPortalIdValid(int portalId)

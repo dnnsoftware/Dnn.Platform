@@ -25,6 +25,28 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
+    public enum DotNetNukeErrorCode
+    {
+        NotSet,
+        PageExists,
+        PageNameRequired,
+        PageNameInvalid,
+        DeserializePanesFailed,
+        PageCircularReference,
+        ParentTabInvalid,
+        PageEditorPermissionError,
+        HostBeforeAfterError,
+        DuplicateWithAlias,
+    }
+
+    public enum TabRelativeLocation
+    {
+        NOTSET,
+        BEFORE,
+        AFTER,
+        CHILD,
+    }
+
     public class RibbonBarManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
@@ -522,27 +544,5 @@ namespace DotNetNuke.Web.UI
                 return this._ErrorCode;
             }
         }
-    }
-
-    public enum DotNetNukeErrorCode
-    {
-        NotSet,
-        PageExists,
-        PageNameRequired,
-        PageNameInvalid,
-        DeserializePanesFailed,
-        PageCircularReference,
-        ParentTabInvalid,
-        PageEditorPermissionError,
-        HostBeforeAfterError,
-        DuplicateWithAlias,
-    }
-
-    public enum TabRelativeLocation
-    {
-        NOTSET,
-        BEFORE,
-        AFTER,
-        CHILD,
     }
 }

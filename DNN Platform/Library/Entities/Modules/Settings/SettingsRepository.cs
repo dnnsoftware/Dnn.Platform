@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     public abstract class SettingsRepository<T> : ISettingsRepository<T>
         where T : class, new()
     {
-        private IList<ParameterMapping> Mapping { get; }
+        public const string CachePrefix = "ModuleSettingsPersister_";
 
         private readonly IModuleController _moduleController;
 
@@ -32,6 +32,17 @@ namespace DotNetNuke.Entities.Modules.Settings
             this.Mapping = this.LoadMapping();
             this._moduleController = ModuleController.Instance;
         }
+
+        protected virtual string MappingCacheKey
+        {
+            get
+            {
+                var type = typeof(T);
+                return SettingsRepository<T>.CachePrefix + type.FullName.Replace(".", "_");
+            }
+        }
+
+        private IList<ParameterMapping> Mapping { get; }
 
         public T GetSettings(ModuleInfo moduleContext)
         {
@@ -81,6 +92,37 @@ namespace DotNetNuke.Entities.Modules.Settings
             DataCache.SetCache(this.CacheKey(moduleContext.TabModuleID), settings);
         }
 
+        protected IList<ParameterMapping> LoadMapping()
+        {
+            var cacheKey = this.MappingCacheKey;
+            var mapping = CachingProvider.Instance().GetItem(cacheKey) as IList<ParameterMapping>;
+            if (mapping == null)
+            {
+                mapping = this.CreateMapping();
+
+                // HARDCODED: 2 hour expiration.
+                // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
+                CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
+            }
+
+            return mapping;
+        }
+
+        protected virtual IList<ParameterMapping> CreateMapping()
+        {
+            var mapping = new List<ParameterMapping>();
+            var type = typeof(T);
+            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty);
+
+            properties.ForEach(property =>
+            {
+                var attributes = property.GetCustomAttributes<ParameterAttributeBase>(true);
+                attributes.ForEach(attribute => mapping.Add(new ParameterMapping(attribute, property)));
+            });
+
+            return mapping;
+        }
+
         private static string GetSettingValueAsString(object settingValue)
         {
             var dateTimeValue = settingValue as DateTime?;
@@ -98,46 +140,23 @@ namespace DotNetNuke.Entities.Modules.Settings
             return Convert.ToString(settingValue, CultureInfo.InvariantCulture);
         }
 
-        protected IList<ParameterMapping> LoadMapping()
+        private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
         {
-            var cacheKey = this.MappingCacheKey;
-            var mapping = CachingProvider.Instance().GetItem(cacheKey) as IList<ParameterMapping>;
-            if (mapping == null)
+            var serializerType = Framework.Reflection.CreateType(serializerTypeName, true);
+            if (serializerType == null)
             {
-                mapping = this.CreateMapping();
-
-                // HARDCODED: 2 hour expiration.
-                // Note that "caching" can also be accomplished with a static dictionary since the Attribute/Property mapping does not change unless the module is updated.
-                CachingProvider.Instance().Insert(cacheKey, mapping, (DNNCacheDependency)null, DateTime.Now.AddHours(2), Cache.NoSlidingExpiration);
+                return null;
             }
 
-            return mapping;
-        }
-
-        public const string CachePrefix = "ModuleSettingsPersister_";
-
-        protected virtual string MappingCacheKey
-        {
-            get
+            var serializer = Framework.Reflection.CreateInstance(serializerType);
+            if (serializer == null)
             {
-                var type = typeof(T);
-                return SettingsRepository<T>.CachePrefix + type.FullName.Replace(".", "_");
+                return null;
             }
-        }
 
-        protected virtual IList<ParameterMapping> CreateMapping()
-        {
-            var mapping = new List<ParameterMapping>();
-            var type = typeof(T);
-            var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetProperty | BindingFlags.SetProperty);
-
-            properties.ForEach(property =>
-            {
-                var attributes = property.GetCustomAttributes<ParameterAttributeBase>(true);
-                attributes.ForEach(attribute => mapping.Add(new ParameterMapping(attribute, property)));
-            });
-
-            return mapping;
+            var serializerInterfaceType = typeof(ISettingsSerializer<>).MakeGenericType(typeArgument);
+            var method = serializerInterfaceType.GetMethod(methodName);
+            return method.Invoke(serializer, new[] { value, });
         }
 
         private T Load(CacheItemArgs args)
@@ -304,25 +323,6 @@ namespace DotNetNuke.Entities.Modules.Settings
             }
 
             return propertyValue;
-        }
-
-        private static object CallSerializerMethod(string serializerTypeName, Type typeArgument, object value, string methodName)
-        {
-            var serializerType = Framework.Reflection.CreateType(serializerTypeName, true);
-            if (serializerType == null)
-            {
-                return null;
-            }
-
-            var serializer = Framework.Reflection.CreateInstance(serializerType);
-            if (serializer == null)
-            {
-                return null;
-            }
-
-            var serializerInterfaceType = typeof(ISettingsSerializer<>).MakeGenericType(typeArgument);
-            var method = serializerInterfaceType.GetMethod(methodName);
-            return method.Invoke(serializer, new[] { value, });
         }
     }
 }

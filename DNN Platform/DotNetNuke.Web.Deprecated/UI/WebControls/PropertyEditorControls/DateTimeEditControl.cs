@@ -37,6 +37,19 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateTimeEditControl));
         private DnnDateTimePicker _dateControl;
 
+        public override string ID
+        {
+            get
+            {
+                return base.ID + "_control";
+            }
+
+            set
+            {
+                base.ID = value;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets dateValue returns the Date representation of the Value.
@@ -158,19 +171,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             }
         }
 
-        public override string ID
-        {
-            get
-            {
-                return base.ID + "_control";
-            }
-
-            set
-            {
-                base.ID = value;
-            }
-        }
-
         private DnnDateTimePicker DateControl
         {
             get
@@ -181,24 +181,6 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
                 }
 
                 return this._dateControl;
-            }
-        }
-
-        protected override void CreateChildControls()
-        {
-            base.CreateChildControls();
-
-            this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
-            this.DateControl.ID = base.ID + "_control";
-
-            this.Controls.Add(this.DateControl);
-        }
-
-        protected virtual void LoadDateControls()
-        {
-            if (this.DateValue != Null.NullDate)
-            {
-                this.DateControl.SelectedDate = this.DateValue;
             }
         }
 
@@ -229,6 +211,24 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
             this.LoadDateControls();
             return dataChanged;
+        }
+
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+
+            this.DateControl.ControlStyle.CopyFrom(this.ControlStyle);
+            this.DateControl.ID = base.ID + "_control";
+
+            this.Controls.Add(this.DateControl);
+        }
+
+        protected virtual void LoadDateControls()
+        {
+            if (this.DateValue != Null.NullDate)
+            {
+                this.DateControl.SelectedDate = this.DateValue;
+            }
         }
 
         /// <summary>

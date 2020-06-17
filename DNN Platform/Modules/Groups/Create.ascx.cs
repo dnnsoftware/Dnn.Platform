@@ -35,16 +35,16 @@ namespace DotNetNuke.Modules.Groups
             base.OnInit(e);
         }
 
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+        }
+
         private void InitializeComponent()
         {
             this.Load += this.Page_Load;
             this.btnCreate.Click += this.Create_Click;
             this.btnCancel.Click += this.Cancel_Click;
-        }
-
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
         }
 
         private void Cancel_Click(object sender, EventArgs e)

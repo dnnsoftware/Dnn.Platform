@@ -15,6 +15,15 @@ namespace DotNetNuke.Services.Scheduling
 
     using Globals = DotNetNuke.Common.Globals;
 
+    // ReSharper restore InconsistentNaming
+
+    // set up our delegates so we can track and react to events of the scheduler clients
+    public delegate void WorkStarted(SchedulerClient objSchedulerClient);
+
+    public delegate void WorkProgressing(SchedulerClient objSchedulerClient);
+
+    public delegate void WorkCompleted(SchedulerClient objSchedulerClient);
+
     // ReSharper disable InconsistentNaming
     public enum EventName
     {
@@ -50,15 +59,6 @@ namespace DotNetNuke.Services.Scheduling
         TIMER_METHOD = 1,
         REQUEST_METHOD = 2,
     }
-
-    // ReSharper restore InconsistentNaming
-
-    // set up our delegates so we can track and react to events of the scheduler clients
-    public delegate void WorkStarted(SchedulerClient objSchedulerClient);
-
-    public delegate void WorkProgressing(SchedulerClient objSchedulerClient);
-
-    public delegate void WorkCompleted(SchedulerClient objSchedulerClient);
 
     public delegate void WorkErrored(SchedulerClient objSchedulerClient, Exception objException);
 
@@ -136,8 +136,6 @@ namespace DotNetNuke.Services.Scheduling
 
         public static int MaxThreads { get; private set; }
 
-        public string ProviderPath { get; private set; }
-
         public static bool ReadyForPoll
         {
             get
@@ -162,6 +160,8 @@ namespace DotNetNuke.Services.Scheduling
                 DataCache.SetCache("ScheduleLastPolled", value, nextStart);
             }
         }
+
+        public string ProviderPath { get; private set; }
 
         public static SchedulerMode SchedulerMode
         {

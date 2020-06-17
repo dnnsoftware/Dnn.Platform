@@ -26,16 +26,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         public string PermissionKey { get; set; }
 
-        protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {
-            if (this._module != null)
-            {
-                return this.HasModuleAccess();
-            }
-
-            return false;
-        }
-
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
@@ -48,6 +38,16 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             this._module = controller.ModuleContext.Configuration;
 
             base.OnAuthorization(filterContext);
+        }
+
+        protected override bool AuthorizeCore(HttpContextBase httpContext)
+        {
+            if (this._module != null)
+            {
+                return this.HasModuleAccess();
+            }
+
+            return false;
         }
 
         protected virtual bool HasModuleAccess()

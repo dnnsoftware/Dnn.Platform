@@ -95,6 +95,11 @@ namespace DotNetNuke.Web.Components.Controllers
             return menuItemsExtensionPoints.Select(this.GetMenuItemFromExtensionPoint);
         }
 
+        protected override Func<IControlBarController> GetFactory()
+        {
+            return () => new ControlBarController();
+        }
+
         private UpgradeIndicatorViewModel GetDefaultUpgradeIndicator(string imageUrl)
         {
             var alt = LocalizationHelper.GetControlBarString("Upgrade.Text");
@@ -145,11 +150,6 @@ namespace DotNetNuke.Web.Components.Controllers
                                         .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));
 
             return bookmarkedModules;
-        }
-
-        protected override Func<IControlBarController> GetFactory()
-        {
-            return () => new ControlBarController();
         }
     }
 }

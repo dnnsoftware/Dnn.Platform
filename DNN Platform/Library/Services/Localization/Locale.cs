@@ -86,6 +86,19 @@ namespace DotNetNuke.Services.Localization
 
         public string Text { get; set; }
 
+        public int KeyID
+        {
+            get
+            {
+                return this.LanguageId;
+            }
+
+            set
+            {
+                this.LanguageId = value;
+            }
+        }
+
         public void Fill(IDataReader dr)
         {
             this.LanguageId = Null.SetNullInteger(dr["LanguageID"]);
@@ -105,19 +118,6 @@ namespace DotNetNuke.Services.Localization
 
             // Call the base classes fill method to populate base class proeprties
             this.FillInternal(dr);
-        }
-
-        public int KeyID
-        {
-            get
-            {
-                return this.LanguageId;
-            }
-
-            set
-            {
-                this.LanguageId = value;
-            }
         }
     }
 }

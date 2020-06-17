@@ -66,16 +66,16 @@ namespace DotNetNuke.Tests.Core.Providers.Builders
         internal FileInfo Build()
         {
             return new FileInfo
-                {
-                    FileId = this.fileId,
-                    PortalId = this.portalId,
-                    StartDate = this.startDate,
-                    EnablePublishPeriod = this.enablePublishPeriod,
-                    EndDate = this.endDate,
-                    ContentItemID = this.contentItemId,
-                    FolderMappingID = this.folderMappingID,
-                    FolderId = this.folderId,
-                };
+            {
+                FileId = this.fileId,
+                PortalId = this.portalId,
+                StartDate = this.startDate,
+                EnablePublishPeriod = this.enablePublishPeriod,
+                EndDate = this.endDate,
+                ContentItemID = this.contentItemId,
+                FolderMappingID = this.folderMappingID,
+                FolderId = this.folderId,
+            };
         }
     }
 }

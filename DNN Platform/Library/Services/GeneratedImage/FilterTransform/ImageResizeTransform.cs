@@ -21,6 +21,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         private int _maxWidth;
         private int _maxHeight;
 
+        public ImageResizeTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.Mode = ImageResizeMode.Fit;
+        }
+
         /// <summary>
         /// Gets or sets the resize mode. The default value is Fit.
         /// </summary>
@@ -116,14 +125,11 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// </summary>
         public Color BackColor { get; set; } = Color.White;
 
-        public ImageResizeTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.Mode = ImageResizeMode.Fit;
-        }
+        /// <summary>
+        /// Gets provides an Unique String for this transformation.
+        /// </summary>
+        [Browsable(false)]
+        public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
 
         /// <summary>
         /// Processes an input image applying a resize image transformation.
@@ -171,6 +177,11 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
 
             return procImage;
+        }
+
+        public override string ToString()
+        {
+            return "ImageResizeTransform";
         }
 
         private static void CheckValue(int value)
@@ -298,17 +309,6 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 
             graphics.DrawImage(img, (this.Width - resizeWidth) / 2, (this.Height - resizeHeight) / 2, resizeWidth, resizeHeight);
             return newImage;
-        }
-
-        /// <summary>
-        /// Gets provides an Unique String for this transformation.
-        /// </summary>
-        [Browsable(false)]
-        public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
-
-        public override string ToString()
-        {
-            return "ImageResizeTransform";
         }
     }
 }

@@ -3,7 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Roles.Components
-{ 
+{
     public static class Constants
     {
         public const string MenuName = "Dnn.Roles";

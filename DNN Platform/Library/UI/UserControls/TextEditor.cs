@@ -31,10 +31,10 @@ namespace DotNetNuke.UI.UserControls
     [ValidationPropertyAttribute("Text")]
     public class TextEditor : UserControl
     {
-        private const string MyFileName = "TextEditor.ascx";
-        private HtmlEditorProvider _richTextEditor;
         protected Panel PanelTextEditor;
         protected RadioButtonList OptRender;
+        private const string MyFileName = "TextEditor.ascx";
+        private HtmlEditorProvider _richTextEditor;
         protected RadioButtonList OptView;
         protected PlaceHolder PlcEditor;
         protected HtmlGenericControl DivBasicTextBox;
@@ -161,11 +161,11 @@ namespace DotNetNuke.UI.UserControls
                             case "T":
                                 return this.Encode(HtmlUtils.ConvertToHtml(RemoveBaseTags(this.TxtDesktopHTML.Text)));
 
-                                // break;
+                            // break;
                             case "R":
                                 return RemoveBaseTags(this.TxtDesktopHTML.Text);
 
-                                // break;
+                            // break;
                             default:
                                 return this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
 
@@ -250,6 +250,23 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + MyFileName;
             }
+        }
+
+        public void ChangeMode(string mode)
+        {
+            this.OptView.SelectedItem.Value = mode;
+            this.OptViewSelectedIndexChanged(this.OptView, EventArgs.Empty);
+        }
+
+        public void ChangeTextRenderMode(string textRenderMode)
+        {
+            this.OptRender.SelectedItem.Value = textRenderMode;
+            this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
+        }
+
+        private static string RemoveBaseTags(string strInput)
+        {
+            return Globals.BaseTagRegex.Replace(strInput, " ");
         }
 
         /// -----------------------------------------------------------------------------
@@ -356,23 +373,6 @@ namespace DotNetNuke.UI.UserControls
                 this.DivRichTextBox.Visible = true;
                 this.PanelView.CssClass = "dnnTextPanelView";
             }
-        }
-
-        private static string RemoveBaseTags(string strInput)
-        {
-            return Globals.BaseTagRegex.Replace(strInput, " ");
-        }
-
-        public void ChangeMode(string mode)
-        {
-            this.OptView.SelectedItem.Value = mode;
-            this.OptViewSelectedIndexChanged(this.OptView, EventArgs.Empty);
-        }
-
-        public void ChangeTextRenderMode(string textRenderMode)
-        {
-            this.OptRender.SelectedItem.Value = textRenderMode;
-            this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
         }
 
         protected override void OnInit(EventArgs e)

@@ -294,6 +294,15 @@ namespace DotNetNuke.Entities.Users
 
         public string VanityUrl { get; set; }
 
+        [Browsable(false)]
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.notCacheable;
+            }
+        }
+
         /// <summary>
         /// Property access, initially provided for TokenReplace.
         /// </summary>
@@ -427,41 +436,6 @@ namespace DotNetNuke.Entities.Users
             return string.Empty;
         }
 
-        [Browsable(false)]
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
-        }
-
-        /// <summary>
-        /// Determine, if accessing user is Administrator.
-        /// </summary>
-        /// <param name="accessingUser">userinfo of the user to query.</param>
-        /// <returns>true, if user is portal administrator or superuser.</returns>
-        private bool isAdminUser(ref UserInfo accessingUser)
-        {
-            if (accessingUser == null || accessingUser.UserID == -1)
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(this._administratorRoleName))
-            {
-                PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
-                this._administratorRoleName = ps.AdministratorRoleName;
-            }
-
-            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
-        }
-
-        private string GetMembershipUserId()
-        {
-            return MembershipProvider.Instance().GetProviderUserKey(this)?.Replace("-", string.Empty) ?? string.Empty;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// IsInRole determines whether the user is in the role passed.
@@ -510,6 +484,32 @@ namespace DotNetNuke.Entities.Users
         public DateTime LocalTime()
         {
             return this.LocalTime(DateUtils.GetDatabaseUtcTime());
+        }
+
+        /// <summary>
+        /// Determine, if accessing user is Administrator.
+        /// </summary>
+        /// <param name="accessingUser">userinfo of the user to query.</param>
+        /// <returns>true, if user is portal administrator or superuser.</returns>
+        private bool isAdminUser(ref UserInfo accessingUser)
+        {
+            if (accessingUser == null || accessingUser.UserID == -1)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(this._administratorRoleName))
+            {
+                PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
+                this._administratorRoleName = ps.AdministratorRoleName;
+            }
+
+            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
+        }
+
+        private string GetMembershipUserId()
+        {
+            return MembershipProvider.Instance().GetProviderUserKey(this)?.Replace("-", string.Empty) ?? string.Empty;
         }
 
         /// -----------------------------------------------------------------------------

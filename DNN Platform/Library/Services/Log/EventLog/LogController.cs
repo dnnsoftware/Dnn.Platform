@@ -23,9 +23,157 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private const int WriterLockTimeout = 10000; // milliseconds
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
+
+        public void AddLog(LogInfo logInfo)
+        {
+            if (Globals.Status == Globals.UpgradeStatus.Install)
+            {
+                Logger.Info(logInfo);
+            }
+            else
+            {
+                try
+                {
+                    logInfo.LogCreateDate = DateTime.Now;
+                    logInfo.LogServerName = Globals.ServerName;
+                    if (string.IsNullOrEmpty(logInfo.LogServerName))
+                    {
+                        logInfo.LogServerName = "NA";
+                    }
+
+                    if (string.IsNullOrEmpty(logInfo.LogUserName))
+                    {
+                        if (HttpContext.Current != null)
+                        {
+                            if (HttpContext.Current.Request.IsAuthenticated)
+                            {
+                                logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
+                            }
+                        }
+                    }
+
+                    // Get portal name if name isn't set
+                    if (logInfo.LogPortalID != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
+                    {
+                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
+                    }
+
+                    // Check if Log Type exists
+                    if (!this.GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
+                    {
+                        // Add new Log Type
+                        var logType = new LogTypeInfo()
+                        {
+                            LogTypeKey = logInfo.LogTypeKey,
+                            LogTypeFriendlyName = logInfo.LogTypeKey,
+                            LogTypeOwner = "DotNetNuke.Logging.EventLogType",
+                            LogTypeCSSClass = "GeneralAdminOperation",
+                            LogTypeDescription = string.Empty,
+                        };
+                        this.AddLogType(logType);
+
+                        var logTypeConfigInfo = new LogTypeConfigInfo()
+                        {
+                            LogTypeKey = logInfo.LogTypeKey,
+                            LogTypePortalID = "*",
+                            LoggingIsActive = false,
+                            KeepMostRecent = "-1",
+                            EmailNotificationIsActive = false,
+                            NotificationThreshold = 1,
+                            NotificationThresholdTime = 1,
+                            NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
+                            MailFromAddress = string.Empty,
+                            MailToAddress = string.Empty,
+                        };
+                        this.AddLogTypeConfigInfo(logTypeConfigInfo);
+                    }
+
+                    if (LoggingProvider.Instance() != null)
+                    {
+                        try
+                        {
+                            LoggingProvider.Instance().AddLog(logInfo);
+                        }
+                        catch (Exception)
+                        {
+                            if (Globals.Status != Globals.UpgradeStatus.Upgrade) // this may caught exception during upgrade because old logging provider has problem in it.
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+
+                    AddLogToFile(logInfo);
+                }
+            }
+        }
+
+        public void AddLogType(string configFile, string fallbackConfigFile)
+        {
+            var xmlDoc = new XmlDocument { XmlResolver = null };
+            try
+            {
+                xmlDoc.Load(configFile);
+            }
+            catch (FileNotFoundException exc)
+            {
+                Logger.Debug(exc);
+                xmlDoc.Load(fallbackConfigFile);
+            }
+
+            var logType = xmlDoc.SelectNodes("/LogConfig/LogTypes/LogType");
+            if (logType != null)
+            {
+                foreach (XmlNode typeInfo in logType)
+                {
+                    if (typeInfo.Attributes != null)
+                    {
+                        var objLogTypeInfo = new LogTypeInfo
+                        {
+                            LogTypeKey = typeInfo.Attributes["LogTypeKey"].Value,
+                            LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
+                            LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
+                            LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
+                            LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
+                        };
+                        this.AddLogType(objLogTypeInfo);
+                    }
+                }
+            }
+
+            var logTypeConfig = xmlDoc.SelectNodes("/LogConfig/LogTypeConfig");
+            if (logTypeConfig != null)
+            {
+                foreach (XmlNode typeConfigInfo in logTypeConfig)
+                {
+                    if (typeConfigInfo.Attributes != null)
+                    {
+                        var logTypeConfigInfo = new LogTypeConfigInfo
+                        {
+                            EmailNotificationIsActive = typeConfigInfo.Attributes["EmailNotificationStatus"].Value == "On",
+                            KeepMostRecent = typeConfigInfo.Attributes["KeepMostRecent"].Value,
+                            LoggingIsActive = typeConfigInfo.Attributes["LoggingStatus"].Value == "On",
+                            LogTypeKey = typeConfigInfo.Attributes["LogTypeKey"].Value,
+                            LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
+                            MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
+                            MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
+                            NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
+                            NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
+                            NotificationThresholdTimeType =
+                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
+                        };
+                        this.AddLogTypeConfigInfo(logTypeConfigInfo);
+                    }
+                }
+            }
+        }
 
         protected override Func<ILogController> GetFactory()
         {
@@ -150,154 +298,6 @@ namespace DotNetNuke.Services.Log.EventLog
                 }
 
                 LockLog.ExitWriteLock();
-            }
-        }
-
-        public void AddLog(LogInfo logInfo)
-        {
-            if (Globals.Status == Globals.UpgradeStatus.Install)
-            {
-                Logger.Info(logInfo);
-            }
-            else
-            {
-                try
-                {
-                    logInfo.LogCreateDate = DateTime.Now;
-                    logInfo.LogServerName = Globals.ServerName;
-                    if (string.IsNullOrEmpty(logInfo.LogServerName))
-                    {
-                        logInfo.LogServerName = "NA";
-                    }
-
-                    if (string.IsNullOrEmpty(logInfo.LogUserName))
-                    {
-                        if (HttpContext.Current != null)
-                        {
-                            if (HttpContext.Current.Request.IsAuthenticated)
-                            {
-                                logInfo.LogUserName = UserController.Instance.GetCurrentUserInfo().Username;
-                            }
-                        }
-                    }
-
-                    // Get portal name if name isn't set
-                    if (logInfo.LogPortalID != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
-                    {
-                        logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
-                    }
-
-                    // Check if Log Type exists
-                    if (!this.GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
-                    {
-                        // Add new Log Type
-                        var logType = new LogTypeInfo()
-                                            {
-                                                LogTypeKey = logInfo.LogTypeKey,
-                                                LogTypeFriendlyName = logInfo.LogTypeKey,
-                                                LogTypeOwner = "DotNetNuke.Logging.EventLogType",
-                                                LogTypeCSSClass = "GeneralAdminOperation",
-                                                LogTypeDescription = string.Empty,
-                                            };
-                        this.AddLogType(logType);
-
-                        var logTypeConfigInfo = new LogTypeConfigInfo()
-                                            {
-                                                LogTypeKey = logInfo.LogTypeKey,
-                                                LogTypePortalID = "*",
-                                                LoggingIsActive = false,
-                                                KeepMostRecent = "-1",
-                                                EmailNotificationIsActive = false,
-                                                NotificationThreshold = 1,
-                                                NotificationThresholdTime = 1,
-                                                NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                                                MailFromAddress = string.Empty,
-                                                MailToAddress = string.Empty,
-                                            };
-                        this.AddLogTypeConfigInfo(logTypeConfigInfo);
-                    }
-
-                    if (LoggingProvider.Instance() != null)
-                    {
-                        try
-                        {
-                            LoggingProvider.Instance().AddLog(logInfo);
-                        }
-                        catch (Exception)
-                        {
-                            if (Globals.Status != Globals.UpgradeStatus.Upgrade) // this may caught exception during upgrade because old logging provider has problem in it.
-                            {
-                                throw;
-                            }
-                        }
-                    }
-                }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-
-                    AddLogToFile(logInfo);
-                }
-            }
-        }
-
-        public void AddLogType(string configFile, string fallbackConfigFile)
-        {
-            var xmlDoc = new XmlDocument { XmlResolver = null };
-            try
-            {
-                xmlDoc.Load(configFile);
-            }
-            catch (FileNotFoundException exc)
-            {
-                Logger.Debug(exc);
-                xmlDoc.Load(fallbackConfigFile);
-            }
-
-            var logType = xmlDoc.SelectNodes("/LogConfig/LogTypes/LogType");
-            if (logType != null)
-            {
-                foreach (XmlNode typeInfo in logType)
-                {
-                    if (typeInfo.Attributes != null)
-                    {
-                        var objLogTypeInfo = new LogTypeInfo
-                                                 {
-                                                     LogTypeKey = typeInfo.Attributes["LogTypeKey"].Value,
-                                                     LogTypeFriendlyName = typeInfo.Attributes["LogTypeFriendlyName"].Value,
-                                                     LogTypeDescription = typeInfo.Attributes["LogTypeDescription"].Value,
-                                                     LogTypeCSSClass = typeInfo.Attributes["LogTypeCSSClass"].Value,
-                                                     LogTypeOwner = typeInfo.Attributes["LogTypeOwner"].Value,
-                                                 };
-                        this.AddLogType(objLogTypeInfo);
-                    }
-                }
-            }
-
-            var logTypeConfig = xmlDoc.SelectNodes("/LogConfig/LogTypeConfig");
-            if (logTypeConfig != null)
-            {
-                foreach (XmlNode typeConfigInfo in logTypeConfig)
-                {
-                    if (typeConfigInfo.Attributes != null)
-                    {
-                        var logTypeConfigInfo = new LogTypeConfigInfo
-                                                    {
-                                                        EmailNotificationIsActive = typeConfigInfo.Attributes["EmailNotificationStatus"].Value == "On",
-                                                        KeepMostRecent = typeConfigInfo.Attributes["KeepMostRecent"].Value,
-                                                        LoggingIsActive = typeConfigInfo.Attributes["LoggingStatus"].Value == "On",
-                                                        LogTypeKey = typeConfigInfo.Attributes["LogTypeKey"].Value,
-                                                        LogTypePortalID = typeConfigInfo.Attributes["LogTypePortalID"].Value,
-                                                        MailFromAddress = typeConfigInfo.Attributes["MailFromAddress"].Value,
-                                                        MailToAddress = typeConfigInfo.Attributes["MailToAddress"].Value,
-                                                        NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
-                                                        NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
-                                                        NotificationThresholdTimeType =
-                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value),
-                                                    };
-                        this.AddLogTypeConfigInfo(logTypeConfigInfo);
-                    }
-                }
             }
         }
 

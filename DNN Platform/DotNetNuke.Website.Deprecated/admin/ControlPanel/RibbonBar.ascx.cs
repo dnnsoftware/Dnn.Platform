@@ -40,6 +40,45 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
+        protected string GetButtonConfirmMessage(string toolName)
+        {
+            if (toolName == "DeletePage")
+            {
+                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", this.LocalResourceFile));
+            }
+
+            if (toolName == "CopyPermissionsToChildren")
+            {
+                if (PortalSecurity.IsInRole("Administrators"))
+                {
+                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyPermissionsToChildren.Confirm", this.LocalResourceFile));
+                }
+
+                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm", this.LocalResourceFile));
+            }
+
+            if (toolName == "CopyDesignToChildren")
+            {
+                if (PortalSecurity.IsInRole("Administrators"))
+                {
+                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyDesignToChildren.Confirm", this.LocalResourceFile));
+                }
+
+                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyDesignToChildrenPageEditor.Confirm", this.LocalResourceFile));
+            }
+
+            return string.Empty;
+        }
+
+        protected void DetermineNodesToInclude(object sender, EventArgs e)
+        {
+            var skinObject = (Web.DDRMenu.SkinObject)sender;
+            string admin = this.StripLocalizationPrefix(Localization.GetString("//Admin.String", Localization.GlobalResourceFile)).Trim();
+            string host = this.StripLocalizationPrefix(Localization.GetString("//Host.String", Localization.GlobalResourceFile)).Trim();
+
+            skinObject.IncludeNodes = admin + ", " + host;
+        }
+
         private void Localize()
         {
             Control ctrl = this.AdminPanel.FindControl("SiteNewPage");
@@ -97,57 +136,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 DotNetNuke.Services.Personalization.Personalization.SetProfile("Usability", "UICulture", this.ddlUICulture.SelectedValue);
             }
-        }
-
-        protected string GetButtonConfirmMessage(string toolName)
-        {
-            if (toolName == "DeletePage")
-            {
-                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.DeletePage.Confirm", this.LocalResourceFile));
-            }
-
-            if (toolName == "CopyPermissionsToChildren")
-            {
-                if (PortalSecurity.IsInRole("Administrators"))
-                {
-                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyPermissionsToChildren.Confirm", this.LocalResourceFile));
-                }
-
-                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyPermissionsToChildrenPageEditor.Confirm", this.LocalResourceFile));
-            }
-
-            if (toolName == "CopyDesignToChildren")
-            {
-                if (PortalSecurity.IsInRole("Administrators"))
-                {
-                    return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyDesignToChildren.Confirm", this.LocalResourceFile));
-                }
-
-                return ClientAPI.GetSafeJSString(Localization.GetString("Tool.CopyDesignToChildrenPageEditor.Confirm", this.LocalResourceFile));
-            }
-
-            return string.Empty;
-        }
-
-        protected void DetermineNodesToInclude(object sender, EventArgs e)
-        {
-            var skinObject = (Web.DDRMenu.SkinObject)sender;
-            string admin = this.StripLocalizationPrefix(Localization.GetString("//Admin.String", Localization.GlobalResourceFile)).Trim();
-            string host = this.StripLocalizationPrefix(Localization.GetString("//Host.String", Localization.GlobalResourceFile)).Trim();
-
-            skinObject.IncludeNodes = admin + ", " + host;
-        }
-
-        private string StripLocalizationPrefix(string s)
-        {
-            const string prefix = "[L]";
-
-            if (s.StartsWith(prefix))
-            {
-                return s.Substring(prefix.Length);
-            }
-
-            return s;
         }
 
         protected override void OnInit(EventArgs e)
@@ -309,6 +297,18 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
+        private string StripLocalizationPrefix(string s)
+        {
+            const string prefix = "[L]";
+
+            if (s.StartsWith(prefix))
+            {
+                return s.Substring(prefix.Length);
+            }
+
+            return s;
+        }
+
         protected void ddlMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.Page.IsCallback)
@@ -317,17 +317,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             this.SetMode(true);
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        private void ddlUICulture_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.Page.IsCallback)
-            {
-                return;
-            }
-
-            this.SetLanguage(true);
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -347,6 +336,17 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 return string.Format("location.href = \"{0}\"", previewUrl);
             }
+        }
+
+        private void ddlUICulture_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.Page.IsCallback)
+            {
+                return;
+            }
+
+            this.SetLanguage(true);
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
     }
 }

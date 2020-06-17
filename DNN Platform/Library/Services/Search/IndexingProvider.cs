@@ -16,6 +16,9 @@ namespace DotNetNuke.Services.Search
     [Obsolete("Legacy Indexing base class -- Deprecated in DNN 7.1. Use 'IndexingProviderBase' instead.. Scheduled removal in v10.0.0.")]
     public abstract class IndexingProvider
     {
+        private const string TimePostfix = "UtcTime";
+        private const string DataPostfix = "Data";
+
         /// <summary>This method must save search documents in batches to minimize memory usage instead of returning all documents at once.</summary>
         /// <param name="portalId">ID of the portal for which to index items.</param>
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed.</param>
@@ -36,9 +39,6 @@ namespace DotNetNuke.Services.Search
 
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         public abstract SearchItemInfoCollection GetSearchIndexItems(int portalId);
-
-        private const string TimePostfix = "UtcTime";
-        private const string DataPostfix = "Data";
 
         /// <summary>Retrieves the date/time of the last item to be indexed.</summary>
         /// <param name="portalId">The portal ID.</param>

@@ -10,6 +10,11 @@ namespace Dnn.PersonaBar.Library.DTO
     [DataContract]
     public class RolePermission
     {
+        public RolePermission()
+        {
+            this.Permissions = new List<Permission>();
+        }
+
         [DataMember(Name = "roleId")]
         public int RoleId { get; set; }
 
@@ -24,10 +29,5 @@ namespace Dnn.PersonaBar.Library.DTO
 
         [DataMember(Name = "default")]
         public bool IsDefault { get; set; }
-
-        public RolePermission()
-        {
-            this.Permissions = new List<Permission>();
-        }
     }
 }

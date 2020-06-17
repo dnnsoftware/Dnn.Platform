@@ -37,68 +37,14 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class ControlBarController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
         private readonly Components.Controllers.IControlBarController Controller;
         private IDictionary<string, string> _nameDics;
 
         public ControlBarController()
         {
             this.Controller = Components.Controllers.ControlBarController.Instance;
-        }
-
-        public class ModuleDefDTO
-        {
-            public int ModuleID { get; set; }
-
-            public string ModuleName { get; set; }
-
-            public string ModuleImage { get; set; }
-
-            public bool Bookmarked { get; set; }
-
-            public bool ExistsInBookmarkCategory { get; set; }
-        }
-
-        public class PageDefDTO
-        {
-            public int TabID { get; set; }
-
-            public string IndentedTabName { get; set; }
-        }
-
-        public class AddModuleDTO
-        {
-            public string Visibility { get; set; }
-
-            public string Position { get; set; }
-
-            public string Module { get; set; }
-
-            public string Page { get; set; }
-
-            public string Pane { get; set; }
-
-            public string AddExistingModule { get; set; }
-
-            public string CopyModule { get; set; }
-
-            public string Sort { get; set; }
-        }
-
-        public class UserModeDTO
-        {
-            public string UserMode { get; set; }
-        }
-
-        public class SwitchSiteDTO
-        {
-            public string Site { get; set; }
-        }
-
-        public class SwitchLanguageDTO
-        {
-            public string Language { get; set; }
         }
 
         [HttpGet]
@@ -219,16 +165,58 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
-        private IList<ModuleInfo> GetModules(int tabID)
+        public class ModuleDefDTO
         {
-            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
-            var tabModules = ModuleController.Instance.GetTabModules(tabID);
+            public int ModuleID { get; set; }
 
-            var pageModules = isRemote
-                                ? tabModules.Values.Where(m => this.ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
-                                : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
+            public string ModuleName { get; set; }
 
-            return pageModules;
+            public string ModuleImage { get; set; }
+
+            public bool Bookmarked { get; set; }
+
+            public bool ExistsInBookmarkCategory { get; set; }
+        }
+
+        public class PageDefDTO
+        {
+            public int TabID { get; set; }
+
+            public string IndentedTabName { get; set; }
+        }
+
+        public class AddModuleDTO
+        {
+            public string Visibility { get; set; }
+
+            public string Position { get; set; }
+
+            public string Module { get; set; }
+
+            public string Page { get; set; }
+
+            public string Pane { get; set; }
+
+            public string AddExistingModule { get; set; }
+
+            public string CopyModule { get; set; }
+
+            public string Sort { get; set; }
+        }
+
+        public class UserModeDTO
+        {
+            public string UserMode { get; set; }
+        }
+
+        public class SwitchSiteDTO
+        {
+            public string Site { get; set; }
+        }
+
+        public class SwitchLanguageDTO
+        {
+            public string Language { get; set; }
         }
 
         [HttpPost]
@@ -346,6 +334,18 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+        }
+
+        private IList<ModuleInfo> GetModules(int tabID)
+        {
+            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
+
+            var pageModules = isRemote
+                                ? tabModules.Values.Where(m => this.ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
+                                : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
+
+            return pageModules;
         }
 
         [HttpPost]
@@ -472,13 +472,6 @@ namespace DotNetNuke.Web.InternalServices
             return response;
         }
 
-        public class BookmarkDTO
-        {
-            public string Title { get; set; }
-
-            public string Bookmark { get; set; }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPageEditor]
@@ -492,11 +485,6 @@ namespace DotNetNuke.Web.InternalServices
             this.Controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-        }
-
-        public class LockingDTO
-        {
-            public bool Lock { get; set; }
         }
 
         [HttpPost]
@@ -517,6 +505,21 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        public bool CanAddModuleToPage()
+        {
+            return true;
+
+            // If we are not in an edit page
+            // return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
+        }
+
+        private static void SetCloneModuleContext(bool cloneModuleContext)
+        {
+            Thread.SetData(
+                Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
+        }
+
         private void ToggleUserMode(string mode)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
@@ -524,6 +527,18 @@ namespace DotNetNuke.Web.InternalServices
             personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpper();
             personalization.IsModified = true;
             personalizationController.SaveProfile(personalization);
+        }
+
+        public class BookmarkDTO
+        {
+            public string Title { get; set; }
+
+            public string Bookmark { get; set; }
+        }
+
+        public class LockingDTO
+        {
+            public bool Lock { get; set; }
         }
 
         private PortalSettings GetPortalSettings(string portal)
@@ -592,14 +607,6 @@ namespace DotNetNuke.Web.InternalServices
 
             imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
-        }
-
-        public bool CanAddModuleToPage()
-        {
-            return true;
-
-            // If we are not in an edit page
-            // return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
         private bool ActiveTabHasChildren()
@@ -748,13 +755,6 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return -1;
-        }
-
-        private static void SetCloneModuleContext(bool cloneModuleContext)
-        {
-            Thread.SetData(
-                Thread.GetNamedDataSlot("CloneModuleContext"),
-                cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)

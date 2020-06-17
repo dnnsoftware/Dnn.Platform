@@ -14,16 +14,6 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class CachedCountryList : Dictionary<string, CachedCountryList.Country>
     {
-        [Serializable]
-        public struct Country
-        {
-            public int Id;
-            public string Name;
-            public string Code;
-            public string FullName;
-            public string NormalizedFullName;
-        }
-
         public CachedCountryList(string locale)
             : base()
         {
@@ -66,6 +56,16 @@ namespace DotNetNuke.Common.Lists
         public static string CacheKey(string locale)
         {
             return string.Format("CountryList:{0}", locale);
+        }
+
+        [Serializable]
+        public struct Country
+        {
+            public int Id;
+            public string Name;
+            public string Code;
+            public string FullName;
+            public string NormalizedFullName;
         }
     }
 }

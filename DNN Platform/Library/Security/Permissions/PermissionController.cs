@@ -23,83 +23,6 @@ namespace DotNetNuke.Security.Permissions
     {
         private static readonly DataProvider provider = DataProvider.Instance();
 
-        private static IEnumerable<PermissionInfo> GetPermissions()
-        {
-            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
-                new CacheItemArgs(
-                DataCache.PermissionsCacheKey,
-                DataCache.PermissionsCacheTimeout,
-                DataCache.PermissionsCachePriority),
-                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
-        }
-
-        private void ClearCache()
-        {
-            DataCache.RemoveCache(DataCache.PermissionsCacheKey);
-        }
-
-        public int AddPermission(PermissionInfo permission)
-        {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
-            var permissionId = Convert.ToInt32(provider.AddPermission(
-                permission.PermissionCode,
-                permission.ModuleDefID,
-                permission.PermissionKey,
-                permission.PermissionName,
-                UserController.Instance.GetCurrentUserInfo().UserID));
-
-            this.ClearCache();
-            return permissionId;
-        }
-
-        public void DeletePermission(int permissionID)
-        {
-            EventLogController.Instance.AddLog(
-                "PermissionID",
-                permissionID.ToString(),
-                PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                EventLogController.EventLogType.PERMISSION_DELETED);
-            provider.DeletePermission(permissionID);
-            this.ClearCache();
-        }
-
-        public PermissionInfo GetPermission(int permissionID)
-        {
-            return GetPermissions().SingleOrDefault(p => p.PermissionID == permissionID);
-        }
-
-        public ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
-        {
-            return new ArrayList(GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
-                                                             && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase)).ToArray());
-        }
-
-        public ArrayList GetPermissionsByModuleDefID(int moduleDefID)
-        {
-            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == moduleDefID).ToArray());
-        }
-
-        public ArrayList GetPermissionsByModule(int moduleId, int tabId)
-        {
-            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
-
-            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == module.ModuleDefID || p.PermissionCode == "SYSTEM_MODULE_DEFINITION").ToArray());
-        }
-
-        public void UpdatePermission(PermissionInfo permission)
-        {
-            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
-            provider.UpdatePermission(
-                permission.PermissionID,
-                permission.PermissionCode,
-                permission.ModuleDefID,
-                permission.PermissionKey,
-                permission.PermissionName,
-                UserController.Instance.GetCurrentUserInfo().UserID);
-            this.ClearCache();
-        }
-
         public static string BuildPermissions(IList Permissions, string PermissionKey)
         {
             var permissionsBuilder = new StringBuilder();
@@ -148,6 +71,83 @@ namespace DotNetNuke.Security.Permissions
         public static ArrayList GetPermissionsByFolder()
         {
             return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_FOLDER").ToArray());
+        }
+
+        public int AddPermission(PermissionInfo permission)
+        {
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_CREATED);
+            var permissionId = Convert.ToInt32(provider.AddPermission(
+                permission.PermissionCode,
+                permission.ModuleDefID,
+                permission.PermissionKey,
+                permission.PermissionName,
+                UserController.Instance.GetCurrentUserInfo().UserID));
+
+            this.ClearCache();
+            return permissionId;
+        }
+
+        public void DeletePermission(int permissionID)
+        {
+            EventLogController.Instance.AddLog(
+                "PermissionID",
+                permissionID.ToString(),
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                EventLogController.EventLogType.PERMISSION_DELETED);
+            provider.DeletePermission(permissionID);
+            this.ClearCache();
+        }
+
+        private static IEnumerable<PermissionInfo> GetPermissions()
+        {
+            return CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                new CacheItemArgs(
+                DataCache.PermissionsCacheKey,
+                DataCache.PermissionsCacheTimeout,
+                DataCache.PermissionsCachePriority),
+                c => CBO.FillCollection<PermissionInfo>(provider.ExecuteReader("GetPermissions")));
+        }
+
+        private void ClearCache()
+        {
+            DataCache.RemoveCache(DataCache.PermissionsCacheKey);
+        }
+
+        public PermissionInfo GetPermission(int permissionID)
+        {
+            return GetPermissions().SingleOrDefault(p => p.PermissionID == permissionID);
+        }
+
+        public ArrayList GetPermissionByCodeAndKey(string permissionCode, string permissionKey)
+        {
+            return new ArrayList(GetPermissions().Where(p => p.PermissionCode.Equals(permissionCode, StringComparison.InvariantCultureIgnoreCase)
+                                                             && p.PermissionKey.Equals(permissionKey, StringComparison.InvariantCultureIgnoreCase)).ToArray());
+        }
+
+        public ArrayList GetPermissionsByModuleDefID(int moduleDefID)
+        {
+            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == moduleDefID).ToArray());
+        }
+
+        public ArrayList GetPermissionsByModule(int moduleId, int tabId)
+        {
+            var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
+
+            return new ArrayList(GetPermissions().Where(p => p.ModuleDefID == module.ModuleDefID || p.PermissionCode == "SYSTEM_MODULE_DEFINITION").ToArray());
+        }
+
+        public void UpdatePermission(PermissionInfo permission)
+        {
+            EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PERMISSION_UPDATED);
+            provider.UpdatePermission(
+                permission.PermissionID,
+                permission.PermissionCode,
+                permission.ModuleDefID,
+                permission.PermissionKey,
+                permission.PermissionName,
+                UserController.Instance.GetCurrentUserInfo().UserID);
+            this.ClearCache();
         }
 
         public static ArrayList GetPermissionsByPortalDesktopModule()

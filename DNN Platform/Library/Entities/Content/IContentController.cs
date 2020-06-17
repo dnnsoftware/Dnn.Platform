@@ -85,7 +85,7 @@ namespace DotNetNuke.Entities.Content
         IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms);
 
         /// <summary>Return a list of ContentItems that have all of the specified terms attached.</summary>
-/// <returns></returns>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTerms(string[] terms);
 
         /// <summary>

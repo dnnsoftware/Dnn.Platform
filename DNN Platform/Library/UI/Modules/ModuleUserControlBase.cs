@@ -24,16 +24,6 @@ namespace DotNetNuke.UI.Modules
         private string _localResourceFile;
         private ModuleInstanceContext _moduleContext;
 
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
-
-        protected string LocalizeSafeJsString(string key)
-        {
-            return Localization.GetSafeJSString(key, this.LocalResourceFile);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the underlying base control for this ModuleControl.
@@ -74,6 +64,16 @@ namespace DotNetNuke.UI.Modules
             {
                 return this.GetType().Name.Replace("_", ".");
             }
+        }
+
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
+
+        protected string LocalizeSafeJsString(string key)
+        {
+            return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
 
         /// -----------------------------------------------------------------------------

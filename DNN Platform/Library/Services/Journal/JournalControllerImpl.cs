@@ -28,14 +28,145 @@ namespace DotNetNuke.Services.Journal
 
     internal class JournalControllerImpl : IJournalController
     {
-        private readonly IJournalDataService _dataService;
         private const string AllowResizePhotosSetting = "Journal_AllowResizePhotos";
         private const string AllowPhotosSetting = "Journal_AllowPhotos";
+        private readonly IJournalDataService _dataService;
         private const string EditorEnabledSetting = "Journal_EditorEnabled";
+
+        private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
+        private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
 
         public JournalControllerImpl()
         {
             this._dataService = JournalDataService.Instance;
+        }
+
+        // Journal Items
+        public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)
+        {
+            if (journalItem.UserId < 1)
+            {
+                throw new ArgumentException("journalItem.UserId must be for a real user");
+            }
+
+            UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
+            if (currentUser == null)
+            {
+                throw new Exception("Unable to locate the current user");
+            }
+
+            string xml = null;
+            var portalSecurity = PortalSecurity.Instance;
+            if (!string.IsNullOrEmpty(journalItem.Title))
+            {
+                journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
+            }
+
+            if (!string.IsNullOrEmpty(journalItem.Summary))
+            {
+                journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
+            }
+
+            if (!string.IsNullOrEmpty(journalItem.Body))
+            {
+                journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
+            }
+
+            if (!string.IsNullOrEmpty(journalItem.Body))
+            {
+                var xDoc = new XmlDocument { XmlResolver = null };
+                XmlElement xnode = xDoc.CreateElement("items");
+                XmlElement xnode2 = xDoc.CreateElement("item");
+                xnode2.AppendChild(this.CreateElement(xDoc, "id", "-1"));
+                xnode2.AppendChild(this.CreateCDataElement(xDoc, "body", journalItem.Body));
+                xnode.AppendChild(xnode2);
+                xDoc.AppendChild(xnode);
+                XmlDeclaration xDec = xDoc.CreateXmlDeclaration("1.0", null, null);
+                xDec.Encoding = "UTF-16";
+                xDec.Standalone = "yes";
+                XmlElement root = xDoc.DocumentElement;
+                xDoc.InsertBefore(xDec, root);
+                journalItem.JournalXML = xDoc;
+                xml = journalItem.JournalXML.OuterXml;
+            }
+
+            if (journalItem.ItemData != null)
+            {
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
+                {
+                    journalItem.ItemData.Title = portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
+                }
+
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
+                {
+                    journalItem.ItemData.Description = portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
+                }
+
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
+                {
+                    journalItem.ItemData.Url = portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
+                }
+
+                if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
+                {
+                    journalItem.ItemData.ImageUrl = portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
+                }
+            }
+
+            string journalData = journalItem.ItemData.ToJson();
+            if (journalData == "null")
+            {
+                journalData = null;
+            }
+
+            this.PrepareSecuritySet(journalItem, currentUser);
+
+            journalItem.JournalId = this._dataService.Journal_Save(
+                journalItem.PortalId,
+                journalItem.UserId,
+                journalItem.ProfileId,
+                journalItem.SocialGroupId,
+                journalItem.JournalId,
+                journalItem.JournalTypeId,
+                journalItem.Title,
+                journalItem.Summary,
+                journalItem.Body,
+                journalData,
+                xml,
+                journalItem.ObjectKey,
+                journalItem.AccessKey,
+                journalItem.SecuritySet,
+                journalItem.CommentsDisabled,
+                journalItem.CommentsHidden);
+
+            var updatedJournalItem = this.GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
+            journalItem.DateCreated = updatedJournalItem.DateCreated;
+            journalItem.DateUpdated = updatedJournalItem.DateUpdated;
+            var cnt = new Content();
+
+            if (journalItem.ContentItemId > 0)
+            {
+                cnt.UpdateContentItem(journalItem, tabId, moduleId);
+                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
+            }
+            else
+            {
+                ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
+                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
+                journalItem.ContentItemId = ci.ContentItemId;
+            }
+
+            if (journalItem.SocialGroupId > 0)
+            {
+                try
+                {
+                    this.UpdateGroupStats(journalItem.PortalId, journalItem.SocialGroupId);
+                }
+                catch (Exception exc)
+                {
+                    Exceptions.Exceptions.LogException(exc);
+                }
+            }
         }
 
         private XmlElement CreateElement(XmlDocument xDoc, string name, string value)
@@ -279,137 +410,6 @@ namespace DotNetNuke.Services.Journal
             journalItem.SecuritySet = string.Join(",", parts);
         }
 
-        private static readonly string[] InvalidSecuritySetsWithoutId = new[] { "R", "U", "F", "P" };
-        private static readonly char[] ValidSecurityDescriptors = new[] { 'E', 'C', 'R', 'U', 'F', 'P' };
-
-        // Journal Items
-        public void SaveJournalItem(JournalItem journalItem, int tabId, int moduleId)
-        {
-            if (journalItem.UserId < 1)
-            {
-                throw new ArgumentException("journalItem.UserId must be for a real user");
-            }
-
-            UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
-            if (currentUser == null)
-            {
-                throw new Exception("Unable to locate the current user");
-            }
-
-            string xml = null;
-            var portalSecurity = PortalSecurity.Instance;
-            if (!string.IsNullOrEmpty(journalItem.Title))
-            {
-                journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
-            }
-
-            if (!string.IsNullOrEmpty(journalItem.Summary))
-            {
-                journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
-            }
-
-            if (!string.IsNullOrEmpty(journalItem.Body))
-            {
-                journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
-            }
-
-            if (!string.IsNullOrEmpty(journalItem.Body))
-            {
-                var xDoc = new XmlDocument { XmlResolver = null };
-                XmlElement xnode = xDoc.CreateElement("items");
-                XmlElement xnode2 = xDoc.CreateElement("item");
-                xnode2.AppendChild(this.CreateElement(xDoc, "id", "-1"));
-                xnode2.AppendChild(this.CreateCDataElement(xDoc, "body", journalItem.Body));
-                xnode.AppendChild(xnode2);
-                xDoc.AppendChild(xnode);
-                XmlDeclaration xDec = xDoc.CreateXmlDeclaration("1.0", null, null);
-                xDec.Encoding = "UTF-16";
-                xDec.Standalone = "yes";
-                XmlElement root = xDoc.DocumentElement;
-                xDoc.InsertBefore(xDec, root);
-                journalItem.JournalXML = xDoc;
-                xml = journalItem.JournalXML.OuterXml;
-            }
-
-            if (journalItem.ItemData != null)
-            {
-                if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
-                {
-                    journalItem.ItemData.Title = portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
-                }
-
-                if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
-                {
-                    journalItem.ItemData.Description = portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
-                }
-
-                if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
-                {
-                    journalItem.ItemData.Url = portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
-                }
-
-                if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
-                {
-                    journalItem.ItemData.ImageUrl = portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
-                }
-            }
-
-            string journalData = journalItem.ItemData.ToJson();
-            if (journalData == "null")
-            {
-                journalData = null;
-            }
-
-            this.PrepareSecuritySet(journalItem, currentUser);
-
-            journalItem.JournalId = this._dataService.Journal_Save(
-                journalItem.PortalId,
-                journalItem.UserId,
-                journalItem.ProfileId,
-                journalItem.SocialGroupId,
-                journalItem.JournalId,
-                journalItem.JournalTypeId,
-                journalItem.Title,
-                journalItem.Summary,
-                journalItem.Body,
-                journalData,
-                xml,
-                journalItem.ObjectKey,
-                journalItem.AccessKey,
-                journalItem.SecuritySet,
-                journalItem.CommentsDisabled,
-                journalItem.CommentsHidden);
-
-            var updatedJournalItem = this.GetJournalItem(journalItem.PortalId, journalItem.UserId, journalItem.JournalId);
-            journalItem.DateCreated = updatedJournalItem.DateCreated;
-            journalItem.DateUpdated = updatedJournalItem.DateUpdated;
-            var cnt = new Content();
-
-            if (journalItem.ContentItemId > 0)
-            {
-                cnt.UpdateContentItem(journalItem, tabId, moduleId);
-                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, journalItem.ContentItemId);
-            }
-            else
-            {
-                ContentItem ci = cnt.CreateContentItem(journalItem, tabId, moduleId);
-                this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
-                journalItem.ContentItemId = ci.ContentItemId;
-            }
-
-            if (journalItem.SocialGroupId > 0)
-            {
-                try
-                {
-                    this.UpdateGroupStats(journalItem.PortalId, journalItem.SocialGroupId);
-                }
-                catch (Exception exc)
-                {
-                    Exceptions.Exceptions.LogException(exc);
-                }
-            }
-        }
-
         public void UpdateJournalItem(JournalItem journalItem, int tabId, int moduleId)
         {
             if (journalItem.UserId < 1)
@@ -627,7 +627,7 @@ namespace DotNetNuke.Services.Journal
 
         public void ShowComments(int portalId, int journalId)
         {
-           this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
+            this._dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
         }
 
         // Delete Journal Items

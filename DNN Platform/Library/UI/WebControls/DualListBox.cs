@@ -33,6 +33,12 @@ namespace DotNetNuke.UI.WebControls
             this.ShowRemoveAllButton = true;
         }
 
+        public event DualListBoxEventHandler AddButtonClick;
+
+        public event EventHandler AddAllButtonClick;
+
+        public event DualListBoxEventHandler RemoveButtonClick;
+
         public string AddAllImageURL { get; set; }
 
         public string AddAllKey { get; set; }
@@ -79,14 +85,6 @@ namespace DotNetNuke.UI.WebControls
 
         public string ValidationGroup { get; set; }
 
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the value of the Available List Box Style.
@@ -124,6 +122,14 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 return this._ButtonStyle;
+            }
+        }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
             }
         }
 
@@ -240,13 +246,28 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public event DualListBoxEventHandler AddButtonClick;
-
-        public event EventHandler AddAllButtonClick;
-
-        public event DualListBoxEventHandler RemoveButtonClick;
-
         public event EventHandler RemoveAllButtonClick;
+
+        protected virtual PostBackOptions GetPostBackOptions(string argument)
+        {
+            var postBackOptions = new PostBackOptions(this, argument) { RequiresJavaScriptProtocol = true };
+
+            if (this.CausesValidation && this.Page.GetValidators(this.ValidationGroup).Count > 0)
+            {
+                postBackOptions.PerformValidation = true;
+                postBackOptions.ValidationGroup = this.ValidationGroup;
+            }
+
+            return postBackOptions;
+        }
+
+        protected void OnAddButtonClick(DualListBoxEventArgs e)
+        {
+            if (this.AddButtonClick != null)
+            {
+                this.AddButtonClick(this, e);
+            }
+        }
 
         private NameValueCollection GetList(string listType, object dataSource)
         {
@@ -461,27 +482,6 @@ namespace DotNetNuke.UI.WebControls
 
             // Render end of List Boxes Row
             writer.RenderEndTag();
-        }
-
-        protected virtual PostBackOptions GetPostBackOptions(string argument)
-        {
-            var postBackOptions = new PostBackOptions(this, argument) { RequiresJavaScriptProtocol = true };
-
-            if (this.CausesValidation && this.Page.GetValidators(this.ValidationGroup).Count > 0)
-            {
-                postBackOptions.PerformValidation = true;
-                postBackOptions.ValidationGroup = this.ValidationGroup;
-            }
-
-            return postBackOptions;
-        }
-
-        protected void OnAddButtonClick(DualListBoxEventArgs e)
-        {
-            if (this.AddButtonClick != null)
-            {
-                this.AddButtonClick(this, e);
-            }
         }
 
         protected void OnAddAllButtonClick(EventArgs e)

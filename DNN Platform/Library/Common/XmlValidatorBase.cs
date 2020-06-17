@@ -54,16 +54,6 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Validations the call back.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
-        protected void ValidationCallBack(object sender, ValidationEventArgs args)
-        {
-            this._errs.Add(args.Message);
-        }
-
-        /// <summary>
         /// Determines whether this instance is valid.
         /// </summary>
         /// <returns>
@@ -108,6 +98,16 @@ namespace DotNetNuke.Common
                 DtdProcessing = DtdProcessing.Prohibit,
             };
             return this.IsValid();
+        }
+
+        /// <summary>
+        /// Validations the call back.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
+        protected void ValidationCallBack(object sender, ValidationEventArgs args)
+        {
+            this._errs.Add(args.Message);
         }
 
         /// <summary>

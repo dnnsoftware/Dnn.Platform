@@ -24,6 +24,8 @@ namespace Dnn.PersonaBar.Library.Controllers
 
     public class TabsController
     {
+        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Tabs.resx");
+
         private string IconHome => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Home.png");
 
         private string IconPortal => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Portal.png");
@@ -37,8 +39,6 @@ namespace Dnn.PersonaBar.Library.Controllers
         private string AllUsersIcon => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Everyone.png");
 
         private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
-
-        public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/Tabs.resx");
 
         public TabDto GetPortalTabs(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true,
             string roles = "", bool disabledNotSelectable = false, int sortOrder = 0,
@@ -204,6 +204,54 @@ namespace Dnn.PersonaBar.Library.Controllers
             return rootNode;
         }
 
+        public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
+        {
+            cultureCode = string.IsNullOrEmpty(cultureCode) ? PortalController.Instance.GetPortal(portalId).CultureCode : cultureCode;
+
+            var locale = LocaleController.Instance.GetLocale(cultureCode);
+            return this.GetTabByCulture(tabId, portalId, locale);
+        }
+
+        public IEnumerable<TabDto> GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeletedChildren = true)
+        {
+            var descendants = new List<TabDto>();
+            cultureCode = string.IsNullOrEmpty(cultureCode) ? PortalController.Instance.GetPortal(portalId).CultureCode : cultureCode;
+
+            var tabs =
+                this.GetExportableTabs(TabController.Instance.GetTabsByPortal(portalId)
+                    .WithCulture(cultureCode, true))
+                    .WithParentId(parentId).ToList();
+
+            if (!string.IsNullOrEmpty(validateTab))
+            {
+                tabs = this.ValidateModuleInTab(tabs, validateTab).ToList();
+            }
+
+            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
+            foreach (var tab in tabs.Where(
+                x => x.ParentId == parentId &&
+                (
+                    includeDeletedChildren ||
+                    !x.IsDeleted)))
+            {
+                string tooltip;
+                var nodeIcon = this.GetNodeIcon(tab, out tooltip);
+                var node = new TabDto
+                {
+                    Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
+                    ImageUrl = nodeIcon,
+                    Tooltip = tooltip,
+                    ParentTabId = tab.ParentId,
+                    HasChildren = tab.HasChildren,
+                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
+                };
+                descendants.Add(node);
+            }
+
+            return ApplySort(descendants, sortOrder);
+        }
+
         private IEnumerable<TabDto> ValidateModuleInTab(IEnumerable<TabDto> tabs, string validateTab)
         {
             return tabs.Where(
@@ -337,52 +385,25 @@ namespace Dnn.PersonaBar.Library.Controllers
             };
         }
 
-        public TabDto GetTabByCulture(int tabId, int portalId, string cultureCode)
+        private static bool IsSecuredTab(TabInfo tab)
         {
-            cultureCode = string.IsNullOrEmpty(cultureCode) ? PortalController.Instance.GetPortal(portalId).CultureCode : cultureCode;
-
-            var locale = LocaleController.Instance.GetLocale(cultureCode);
-            return this.GetTabByCulture(tabId, portalId, locale);
+            var perms = tab.TabPermissions;
+            return
+                perms.Cast<TabPermissionInfo>()
+                    .All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
         }
 
-        public IEnumerable<TabDto> GetTabsDescendants(int portalId, int parentId, string cultureCode, bool isMultiLanguage, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeletedChildren = true)
+        private static IEnumerable<TabDto> ApplySort(IEnumerable<TabDto> items, int sortOrder)
         {
-            var descendants = new List<TabDto>();
-            cultureCode = string.IsNullOrEmpty(cultureCode) ? PortalController.Instance.GetPortal(portalId).CultureCode : cultureCode;
-
-            var tabs =
-                this.GetExportableTabs(TabController.Instance.GetTabsByPortal(portalId)
-                    .WithCulture(cultureCode, true))
-                    .WithParentId(parentId).ToList();
-
-            if (!string.IsNullOrEmpty(validateTab))
+            switch (sortOrder)
             {
-                tabs = this.ValidateModuleInTab(tabs, validateTab).ToList();
+                case 1: // sort by a-z
+                    return items.OrderBy(item => item.Name).ToList();
+                case 2: // sort by z-a
+                    return items.OrderByDescending(item => item.Name).ToList();
+                default: // no sort
+                    return items;
             }
-
-            var filterTabs = this.FilterTabsByRole(tabs, roles, disabledNotSelectable);
-            foreach (var tab in tabs.Where(
-                x => x.ParentId == parentId &&
-                (
-                    includeDeletedChildren ||
-                    !x.IsDeleted)))
-            {
-                string tooltip;
-                var nodeIcon = this.GetNodeIcon(tab, out tooltip);
-                var node = new TabDto
-                {
-                    Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
-                    TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
-                    ImageUrl = nodeIcon,
-                    Tooltip = tooltip,
-                    ParentTabId = tab.ParentId,
-                    HasChildren = tab.HasChildren,
-                    Selectable = filterTabs.Contains(tab.TabID) && TabPermissionController.CanAddPage(tab),
-                };
-                descendants.Add(node);
-            }
-
-            return ApplySort(descendants, sortOrder);
         }
 
         private TabCollection GetExportableTabs(TabCollection tabs)
@@ -435,27 +456,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             return
                 perms.Cast<TabPermissionInfo>()
                     .Any(perm => perm.RoleName == this.PortalSettings.RegisteredRoleName && perm.AllowAccess);
-        }
-
-        private static bool IsSecuredTab(TabInfo tab)
-        {
-            var perms = tab.TabPermissions;
-            return
-                perms.Cast<TabPermissionInfo>()
-                    .All(perm => perm.RoleName != Globals.glbRoleAllUsersName || !perm.AllowAccess);
-        }
-
-        private static IEnumerable<TabDto> ApplySort(IEnumerable<TabDto> items, int sortOrder)
-        {
-            switch (sortOrder)
-            {
-                case 1: // sort by a-z
-                    return items.OrderBy(item => item.Name).ToList();
-                case 2: // sort by z-a
-                    return items.OrderByDescending(item => item.Name).ToList();
-                default: // no sort
-                    return items;
-            }
         }
     }
 }

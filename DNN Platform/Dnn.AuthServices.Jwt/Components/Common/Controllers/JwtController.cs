@@ -27,25 +27,22 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
     internal class JwtController : ServiceLocator<IJwtController, JwtController>, IJwtController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
-        private static readonly HashAlgorithm Hasher = SHA384.Create();
+        public const string AuthScheme = "Bearer";
+
+        public readonly IDataService DataProvider = DataService.Instance;
 
         private const int ClockSkew = 5; // in minutes; default for clock skew
         private const int SessionTokenTtl = 60; // in minutes = 1 hour
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
+        private static readonly HashAlgorithm Hasher = SHA384.Create();
         private const int RenewalTokenTtl = 14; // in days = 2 weeks
         private const string SessionClaimType = "sid";
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
-        public const string AuthScheme = "Bearer";
-
         public string SchemeType => "JWT";
 
-        protected override Func<IJwtController> GetFactory()
-        {
-            return () => new JwtController();
-        }
-
-        public readonly IDataService DataProvider = DataService.Instance;
+        private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
 
         /// <summary>
         /// Validates the received JWT against the databas eand returns username when successful.
@@ -91,6 +88,11 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             this.DataProvider.DeleteToken(sessionId);
             return true;
+        }
+
+        protected override Func<IJwtController> GetFactory()
+        {
+            return () => new JwtController();
         }
 
         /// <summary>
@@ -261,6 +263,30 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return this.UpdateToken(renewalToken, ptoken, userInfo);
         }
 
+        private static LoginResultData EmptyWithError(string error)
+        {
+            return new LoginResultData { Error = error };
+        }
+
+        private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, PersistedToken ptoken, IEnumerable<string> roles)
+        {
+            // var key = Convert.FromBase64String(symmetricKey);
+            var credentials = new SigningCredentials(
+                new InMemorySymmetricSecurityKey(symmetricKey),
+                "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256",
+                "http://www.w3.org/2001/04/xmlenc#sha256");
+
+            var claimsIdentity = new ClaimsIdentity();
+            claimsIdentity.AddClaim(new Claim(SessionClaimType, ptoken.TokenId));
+            claimsIdentity.AddClaims(roles.Select(r => new Claim(ClaimTypes.Role, r)));
+
+            var notBefore = DateTime.UtcNow.AddMinutes(-ClockSkew);
+            var notAfter = ptoken.TokenExpiry;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(issuer, null, claimsIdentity, notBefore, notAfter, credentials);
+            return token;
+        }
+
         private LoginResultData UpdateToken(string renewalToken, PersistedToken ptoken, UserInfo userInfo)
         {
             var expiry = DateTime.UtcNow.AddMinutes(SessionTokenTtl);
@@ -290,30 +316,58 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             };
         }
 
-        private static string NewSessionId => DateTime.UtcNow.Ticks.ToString("x16") + Guid.NewGuid().ToString("N").Substring(16);
-
-        private static LoginResultData EmptyWithError(string error)
+        private static JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
         {
-            return new LoginResultData { Error = error };
+            JwtSecurityToken jwt;
+            try
+            {
+                jwt = new JwtSecurityToken(rawToken);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Unable to construct JWT object from authorization value. " + ex.Message);
+                return null;
+            }
+
+            if (checkExpiry)
+            {
+                var now = DateTime.UtcNow;
+                if (now < jwt.ValidFrom || now > jwt.ValidTo)
+                {
+                    if (Logger.IsTraceEnabled)
+                    {
+                        Logger.Trace("Token is expired");
+                    }
+
+                    return null;
+                }
+            }
+
+            var sessionId = GetJwtSessionValue(jwt);
+            if (string.IsNullOrEmpty(sessionId))
+            {
+                if (Logger.IsTraceEnabled)
+                {
+                    Logger.Trace("Invaid session ID claim");
+                }
+
+                return null;
+            }
+
+            return jwt;
         }
 
-        private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, PersistedToken ptoken, IEnumerable<string> roles)
+        private static string GetJwtSessionValue(JwtSecurityToken jwt)
         {
-            // var key = Convert.FromBase64String(symmetricKey);
-            var credentials = new SigningCredentials(
-                new InMemorySymmetricSecurityKey(symmetricKey),
-                "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256",
-                "http://www.w3.org/2001/04/xmlenc#sha256");
+            var sessionClaim = jwt?.Claims?.FirstOrDefault(claim => SessionClaimType.Equals(claim.Type));
+            return sessionClaim?.Value;
+        }
 
-            var claimsIdentity = new ClaimsIdentity();
-            claimsIdentity.AddClaim(new Claim(SessionClaimType, ptoken.TokenId));
-            claimsIdentity.AddClaims(roles.Select(r => new Claim(ClaimTypes.Role, r)));
-
-            var notBefore = DateTime.UtcNow.AddMinutes(-ClockSkew);
-            var notAfter = ptoken.TokenExpiry;
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(issuer, null, claimsIdentity, notBefore, notAfter, credentials);
-            return token;
+        private static byte[] ObtainSecret(string sessionId, Guid portalGuid, DateTime userCreationDate)
+        {
+            // The secret should contain unpredictable components that can't be inferred from the JWT string.
+            var stext = string.Join(".", sessionId, portalGuid.ToString("N"), userCreationDate.ToUniversalTime().ToString("O"));
+            return TextEncoder.GetBytes(stext);
         }
 
         /// <summary>
@@ -408,47 +462,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             return true;
         }
 
-        private static JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
-        {
-            JwtSecurityToken jwt;
-            try
-            {
-                jwt = new JwtSecurityToken(rawToken);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("Unable to construct JWT object from authorization value. " + ex.Message);
-                return null;
-            }
-
-            if (checkExpiry)
-            {
-                var now = DateTime.UtcNow;
-                if (now < jwt.ValidFrom || now > jwt.ValidTo)
-                {
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.Trace("Token is expired");
-                    }
-
-                    return null;
-                }
-            }
-
-            var sessionId = GetJwtSessionValue(jwt);
-            if (string.IsNullOrEmpty(sessionId))
-            {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Invaid session ID claim");
-                }
-
-                return null;
-            }
-
-            return jwt;
-        }
-
         private UserInfo TryGetUser(JwtSecurityToken jwt, bool checkExpiry)
         {
             // validate against DB saved data
@@ -519,19 +532,6 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             return userInfo;
-        }
-
-        private static string GetJwtSessionValue(JwtSecurityToken jwt)
-        {
-            var sessionClaim = jwt?.Claims?.FirstOrDefault(claim => SessionClaimType.Equals(claim.Type));
-            return sessionClaim?.Value;
-        }
-
-        private static byte[] ObtainSecret(string sessionId, Guid portalGuid, DateTime userCreationDate)
-        {
-            // The secret should contain unpredictable components that can't be inferred from the JWT string.
-            var stext = string.Join(".", sessionId, portalGuid.ToString("N"), userCreationDate.ToUniversalTime().ToString("O"));
-            return TextEncoder.GetBytes(stext);
         }
 
         private static string DecodeBase64(string b64Str)

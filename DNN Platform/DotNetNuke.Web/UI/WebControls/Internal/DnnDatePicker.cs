@@ -18,10 +18,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnDatePicker : TextBox
     {
-        protected virtual string Format => "yyyy-MM-dd";
-
-        protected virtual string ClientFormat => "YYYY-MM-DD";
-
         public DateTime? SelectedDate
         {
             get
@@ -42,6 +38,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         public DateTime MinDate { get; set; } = new DateTime(1900, 1, 1);
+
+        protected virtual string Format => "yyyy-MM-dd";
+
+        protected virtual string ClientFormat => "YYYY-MM-DD";
 
         public DateTime MaxDate { get; set; } = DateTime.MaxValue;
 

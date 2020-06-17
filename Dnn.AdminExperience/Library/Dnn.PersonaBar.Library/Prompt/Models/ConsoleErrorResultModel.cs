@@ -10,8 +10,6 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
 
     public class ConsoleErrorResultModel : ConsoleResultModel
     {
-        private static string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
-
         public ConsoleErrorResultModel()
         {
             this.IsError = true;
@@ -23,5 +21,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
             this.IsError = true;
             this.Output = errMessage;
         }
+
+        private static string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
     }
 }

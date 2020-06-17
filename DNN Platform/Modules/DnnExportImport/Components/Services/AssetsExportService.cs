@@ -28,14 +28,14 @@ namespace Dnn.ExportImport.Components.Services
     {
         private const string DefaultUsersFoldersPath = "Users";
 
+        private const string UsersAssetsTempFolder = "{0}\\TempUsers\\";
+
         private static readonly Regex UserFolderEx = new Regex(
             @"users/\d+/\d+/(\d+)/",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private readonly string _assetsFolder =
             $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipFiles}";
-
-        private const string UsersAssetsTempFolder = "{0}\\TempUsers\\";
 
         public override string Category => Constants.Category_Assets;
 
@@ -351,6 +351,18 @@ namespace Dnn.ExportImport.Components.Services
             return this.Repository.GetCount<ExportFolder>();
         }
 
+        private static bool IsUserFolder(string folderPath, out int? userId)
+        {
+            userId = null;
+            var match = UserFolderEx.Match(folderPath);
+            if (match.Success)
+            {
+                userId = int.Parse(match.Groups[1].Value);
+            }
+
+            return match.Success;
+        }
+
         private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, ExportFolder folder)
         {
             var portalId = importJob.PortalId;
@@ -628,18 +640,6 @@ namespace Dnn.ExportImport.Components.Services
 
                 mFile.MoveTo(dirInfo + "\\" + mFile.Name);
             }
-        }
-
-        private static bool IsUserFolder(string folderPath, out int? userId)
-        {
-            userId = null;
-            var match = UserFolderEx.Match(folderPath);
-            if (match.Success)
-            {
-                userId = int.Parse(match.Groups[1].Value);
-            }
-
-            return match.Success;
         }
 
         private string GetActualFileName(ExportFile objFile)

@@ -20,32 +20,17 @@ namespace DotNetNuke.UI.WebControls
     {
         private TextBox _CountryName;
 
-        private TextBox CountryName
-        {
-            get
-            {
-                if (this._CountryName == null)
-                {
-                    this._CountryName = new TextBox();
-                }
-
-                return this._CountryName;
-            }
-        }
-
         private HiddenField _CountryId;
 
-        private HiddenField CountryId
+        public DnnCountryAutocompleteControl()
         {
-            get
-            {
-                if (this._CountryId == null)
-                {
-                    this._CountryId = new HiddenField();
-                }
+            this.Init += this.DnnCountryRegionControl_Init;
+        }
 
-                return this._CountryId;
-            }
+        public DnnCountryAutocompleteControl(string type)
+        {
+            this.Init += this.DnnCountryRegionControl_Init;
+            this.SystemType = type;
         }
 
         public override string EditControlClientId
@@ -73,20 +58,49 @@ namespace DotNetNuke.UI.WebControls
             set { this.Value = value; }
         }
 
+        private TextBox CountryName
+        {
+            get
+            {
+                if (this._CountryName == null)
+                {
+                    this._CountryName = new TextBox();
+                }
+
+                return this._CountryName;
+            }
+        }
+
+        private HiddenField CountryId
+        {
+            get
+            {
+                if (this._CountryId == null)
+                {
+                    this._CountryId = new HiddenField();
+                }
+
+                return this._CountryId;
+            }
+        }
+
         protected string OldStringValue
         {
             get { return Convert.ToString(this.OldValue); }
         }
 
-        public DnnCountryAutocompleteControl()
+        public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
-            this.Init += this.DnnCountryRegionControl_Init;
-        }
+            bool dataChanged = false;
+            string presentValue = this.StringValue;
+            string postedValue = postCollection[postDataKey + "_id"];
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
 
-        public DnnCountryAutocompleteControl(string type)
-        {
-            this.Init += this.DnnCountryRegionControl_Init;
-            this.SystemType = type;
+            return dataChanged;
         }
 
         protected override void OnDataChanged(EventArgs e)
@@ -113,20 +127,6 @@ namespace DotNetNuke.UI.WebControls
 
             this.CountryId.ID = this.ID + "_id";
             this.Controls.Add(this.CountryId);
-        }
-
-        public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
-        {
-            bool dataChanged = false;
-            string presentValue = this.StringValue;
-            string postedValue = postCollection[postDataKey + "_id"];
-            if (!presentValue.Equals(postedValue))
-            {
-                this.Value = postedValue;
-                dataChanged = true;
-            }
-
-            return dataChanged;
         }
 
         protected override void OnPreRender(System.EventArgs e)

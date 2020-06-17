@@ -49,19 +49,17 @@ namespace Dnn.PersonaBar.Extensions.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class ExtensionsController : PersonaBarApiController
     {
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));
         private static readonly Regex ManifestExensionsRegex = new Regex(@"dnn\d*$");
-        private readonly Components.ExtensionsController _controller = new Components.ExtensionsController();
         private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
-        private const string AuthFailureMessage = "Authorization has been denied for this request.";
-
-        #region Extensions Lists API
+        private readonly Components.ExtensionsController _controller = new Components.ExtensionsController();
 
         /// GET: api/Extensions/GetPackageTypes
         /// <summary>
         /// Get installed package types.
         /// </summary>
-        /// <returns>List of package types</returns>
+        /// <returns>List of package types.</returns>
         [HttpGet]
         public HttpResponseMessage GetPackageTypes()
         {
@@ -99,7 +97,7 @@ namespace Dnn.PersonaBar.Extensions.Services
         /// <summary>
         /// Get installed packages list except language packs.
         /// </summary>
-        /// <returns>List of [Id,Name] pairs of all system packages</returns>
+        /// <returns>List of [Id,Name] pairs of all system packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetAllPackagesListExceptLangPacks()
         {
@@ -117,10 +115,10 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         /// GET: api/Extensions/GetInstalledPackages
         /// <summary>
-        /// Gets installed packages
+        /// Gets installed packages.
         /// </summary>
         /// <param name="packageType"></param>
-        /// <returns>List of installed packages</returns>
+        /// <returns>List of installed packages.</returns>
         [HttpGet]
         public HttpResponseMessage GetInstalledPackages(string packageType)
         {
@@ -144,10 +142,10 @@ namespace Dnn.PersonaBar.Extensions.Services
 
         /// GET: api/Extensions/GetAvailablePackages
         /// <summary>
-        /// Gets available packages
+        /// Gets available packages.
         /// </summary>
         /// <param name="packageType"></param>
-        /// <returns>List of available packages</returns>
+        /// <returns>List of available packages.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetAvailablePackages(string packageType)
@@ -260,17 +258,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
-        private static void AddFiles(ICollection<KeyValuePair<string, string>> collection, string path, string root, string filter)
-        {
-            var files = Directory.GetFiles(path, filter);
-            foreach (var strFile in files)
-            {
-                var file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
-                var item = new KeyValuePair<string, string>(file.ToLower(), file);
-                collection.Add(item);
-            }
-        }
-
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage LoadIcons(string controlPath)
@@ -313,15 +300,22 @@ namespace Dnn.PersonaBar.Extensions.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
+        private static void AddFiles(ICollection<KeyValuePair<string, string>> collection, string path, string root, string filter)
+        {
+            var files = Directory.GetFiles(path, filter);
+            foreach (var strFile in files)
+            {
+                var file = root.Replace('\\', '/') + "/" + Path.GetFileName(strFile);
+                var item = new KeyValuePair<string, string>(file.ToLower(), file);
+                collection.Add(item);
+            }
+        }
+
         [HttpGet]
         public HttpResponseMessage GetLanguagesList()
         {
             return this.Request.CreateResponse(HttpStatusCode.OK, Utility.GetAllLanguagesList());
         }
-
-        #endregion
-
-        #region Edit Extensions API
 
         [HttpGet]
         [RequireHost]
@@ -482,10 +476,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        #endregion
-
-        #region Install Wizard API
 
         [HttpPost]
         [IFrameSupportedValidateAntiForgeryToken]
@@ -752,10 +742,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        #endregion
-
-        #region Create Extension API
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -881,10 +867,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
-
-        #endregion
-
-        #region Create Module API
 
         [HttpGet]
         [RequireHost]
@@ -1058,10 +1040,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        #endregion
-
-        #region Create Package API
-
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetPackageManifest(int packageId)
@@ -1073,7 +1051,6 @@ namespace Dnn.PersonaBar.Extensions.Services
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.NotFound, "PackageNotFound");
                 }
-
 
                 switch (package.PackageType.ToLowerInvariant())
                 {
@@ -1204,42 +1181,6 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        private HttpResponseMessage CreateManifestInternal(PackageInfo package, PackageManifestDto packageManifestDto)
-        {
-            var writer = PackageWriterFactory.GetWriter(package);
-
-            foreach (var fileName in packageManifestDto.Files)
-            {
-                var name = fileName.Trim();
-                if (!string.IsNullOrEmpty(name))
-                {
-                    writer.AddFile(new InstallFile(name));
-                }
-            }
-
-            foreach (var fileName in packageManifestDto.Assemblies)
-            {
-                var name = fileName.Trim();
-                if (!string.IsNullOrEmpty(name))
-                {
-                    writer.AddFile(new InstallFile(name));
-                }
-            }
-
-            string manifestContent;
-            if (!string.IsNullOrEmpty(packageManifestDto.ManifestName))
-            {
-                writer.WriteManifest(packageManifestDto.ManifestName, package.Manifest);
-                manifestContent = package.Manifest;
-            }
-            else
-            {
-                manifestContent = writer.WriteManifest(false);
-            }
-
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = manifestContent });
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -1326,6 +1267,42 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
+        private HttpResponseMessage CreateManifestInternal(PackageInfo package, PackageManifestDto packageManifestDto)
+        {
+            var writer = PackageWriterFactory.GetWriter(package);
+
+            foreach (var fileName in packageManifestDto.Files)
+            {
+                var name = fileName.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    writer.AddFile(new InstallFile(name));
+                }
+            }
+
+            foreach (var fileName in packageManifestDto.Assemblies)
+            {
+                var name = fileName.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    writer.AddFile(new InstallFile(name));
+                }
+            }
+
+            string manifestContent;
+            if (!string.IsNullOrEmpty(packageManifestDto.ManifestName))
+            {
+                writer.WriteManifest(packageManifestDto.ManifestName, package.Manifest);
+                manifestContent = package.Manifest;
+            }
+            else
+            {
+                manifestContent = writer.WriteManifest(false);
+            }
+
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = manifestContent });
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [RequireHost]
@@ -1367,9 +1344,46 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
         }
 
-        #endregion
+        protected string GetFormattedLink(object dataItem)
+        {
+            var returnValue = new StringBuilder();
+            if ((dataItem is TabInfo))
+            {
+                var tab = (TabInfo)dataItem;
+                {
+                    var index = 0;
+                    TabController.Instance.PopulateBreadCrumbs(ref tab);
+                    foreach (TabInfo t in tab.BreadCrumbs)
+                    {
+                        if (index > 0)
+                        {
+                            returnValue.Append(" > ");
+                        }
+                        if ((tab.BreadCrumbs.Count - 1 == index))
+                        {
+                            var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? this.PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList().OrderByDescending(a => a.IsPrimary).FirstOrDefault().HTTPAlias) + "/Default.aspx?tabId=" + t.TabID;
+                            returnValue.AppendFormat("<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
+                        }
+                        else
+                        {
+                            returnValue.AppendFormat("{0}", t.LocalizedTabName);
+                        }
+                        index = index + 1;
+                    }
+                }
+            }
+            return returnValue.ToString();
+        }
 
-        #region Private Methods
+        private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
+        {
+            if (!tabsWithModule.ContainsKey(currentTab.TabID) || tabsInOrder.ContainsKey(currentTab.TabID)) return;
+            tabsInOrder.Add(currentTab.TabID, currentTab);
+            foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
+            {
+                AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
+            }
+        }
 
         private Task<HttpResponseMessage> UploadFileAction(Func<PortalSettings, UserInfo, string, Stream, object> action)
         {
@@ -1582,48 +1596,5 @@ namespace Dnn.PersonaBar.Extensions.Services
                 return objStreamReader.ReadToEnd();
             }
         }
-
-        private static void AddChildTabsToList(TabInfo currentTab, ref TabCollection allPortalTabs, ref IDictionary<int, TabInfo> tabsWithModule, ref IDictionary<int, TabInfo> tabsInOrder)
-        {
-            if (!tabsWithModule.ContainsKey(currentTab.TabID) || tabsInOrder.ContainsKey(currentTab.TabID)) return;
-            tabsInOrder.Add(currentTab.TabID, currentTab);
-            foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
-            {
-                AddChildTabsToList(tab, ref allPortalTabs, ref tabsWithModule, ref tabsInOrder);
-            }
-        }
-
-        protected string GetFormattedLink(object dataItem)
-        {
-            var returnValue = new StringBuilder();
-            if ((dataItem is TabInfo))
-            {
-                var tab = (TabInfo)dataItem;
-                {
-                    var index = 0;
-                    TabController.Instance.PopulateBreadCrumbs(ref tab);
-                    foreach (TabInfo t in tab.BreadCrumbs)
-                    {
-                        if (index > 0)
-                        {
-                            returnValue.Append(" > ");
-                        }
-                        if ((tab.BreadCrumbs.Count - 1 == index))
-                        {
-                            var url = Globals.AddHTTP(t.PortalID == Null.NullInteger ? this.PortalSettings.PortalAlias.HTTPAlias : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID).ToList().OrderByDescending(a => a.IsPrimary).FirstOrDefault().HTTPAlias ) + "/Default.aspx?tabId=" + t.TabID;
-                            returnValue.AppendFormat("<a target=\"_blank\" href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
-                        }
-                        else
-                        {
-                            returnValue.AppendFormat("{0}", t.LocalizedTabName);
-                        }
-                        index = index + 1;
-                    }
-                }
-            }
-            return returnValue.ToString();
-        }
-
-        #endregion
     }
 }

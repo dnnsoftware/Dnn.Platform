@@ -13,16 +13,16 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
     [DataContract]
     public class ListItemInfo
     {
+        public ListItemInfo()
+        {
+
+        }
+
         [DataMember(Name = "text")]
         public string Text { get; set; }
 
         [DataMember(Name = "value")]
         public string Value { get; set; }
-
-        public ListItemInfo()
-        {
-            
-        }
 
         public ListItemInfo(string text, string value)
         {

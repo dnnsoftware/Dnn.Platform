@@ -231,6 +231,26 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        public static Opml LoadFromUrl(Uri uri)
+        {
+            return OpmlDownloadManager.GetOpmlFeed(uri);
+        }
+
+        public static Opml LoadFromFile(string path)
+        {
+            try
+            {
+                var opmlDoc = new XmlDocument { XmlResolver = null };
+                opmlDoc.Load(path);
+
+                return LoadFromXml(opmlDoc);
+            }
+            catch
+            {
+                return new Opml();
+            }
+        }
+
         public void AddOutline(OpmlOutline item)
         {
             this._outlines.Add(item);
@@ -343,26 +363,6 @@ namespace DotNetNuke.Services.Syndication
             }
 
             this.opmlDoc.Save(fileName);
-        }
-
-        public static Opml LoadFromUrl(Uri uri)
-        {
-            return OpmlDownloadManager.GetOpmlFeed(uri);
-        }
-
-        public static Opml LoadFromFile(string path)
-        {
-            try
-            {
-                var opmlDoc = new XmlDocument { XmlResolver = null };
-                opmlDoc.Load(path);
-
-                return LoadFromXml(opmlDoc);
-            }
-            catch
-            {
-                return new Opml();
-            }
         }
 
         public static Opml LoadFromXml(XmlDocument doc)

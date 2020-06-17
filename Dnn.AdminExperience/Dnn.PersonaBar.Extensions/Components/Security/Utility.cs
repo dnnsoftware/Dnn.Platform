@@ -21,6 +21,8 @@ namespace Dnn.PersonaBar.Security.Components
 
     public class Utility
     {
+        private const long MaxFileSize = 1024 * 1024 * 10; //10M
+
         private static readonly IList<Regex> ExcludedFilePathRegexList = new List<Regex>()
         {
             new Regex(Regex.Escape("\\App_Data\\ClientDependency"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
@@ -34,12 +36,10 @@ namespace Dnn.PersonaBar.Security.Components
             new Regex(Regex.Escape(AppDomain.CurrentDomain.BaseDirectory + "web.config"), RegexOptions.Compiled | RegexOptions.IgnoreCase),
         };
 
-        private const long MaxFileSize = 1024*1024*10; //10M
-
         private const int ModifiedFilesCount = 50;
 
         /// <summary>
-        ///     delete unnedded installwizard files
+        ///     delete unnedded installwizard files.
         /// </summary>
         public static void CleanUpInstallerFiles()
         {
@@ -72,10 +72,10 @@ namespace Dnn.PersonaBar.Security.Components
         }
 
         /// <summary>
-        ///     search all files in the website for matching text
+        ///     search all files in the website for matching text.
         /// </summary>
-        /// <param name="searchText">the matching text</param>
-        /// <returns>ienumerable of file names</returns>
+        /// <param name="searchText">the matching text.</param>
+        /// <returns>ienumerable of file names.</returns>
         public static IEnumerable<object> SearchFiles(string searchText)
         {
             try
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Security.Components
         }
 
         /// <summary>
-        ///     search all website files for files with a potential dangerous extension
+        ///     search all website files for files with a potential dangerous extension.
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<string> FindUnexpectedExtensions(IList<string> invalidFolders)
@@ -222,7 +222,7 @@ namespace Dnn.PersonaBar.Security.Components
 
         public static IList<FileInfo> GetLastModifiedExecutableFiles()
         {
-            var executableExtensions = new List<string>() {".asp", ".aspx", ".php"};
+            var executableExtensions = new List<string>() { ".asp", ".aspx", ".php" };
             var files = GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.*", SearchOption.AllDirectories)
                 .Where(f =>
                 {
@@ -281,7 +281,7 @@ namespace Dnn.PersonaBar.Security.Components
         }
 
         /// <summary>
-        /// Recursively finds file
+        /// Recursively finds file.
         /// </summary>
         /// <returns></returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption)
@@ -297,7 +297,7 @@ namespace Dnn.PersonaBar.Security.Components
         }
 
         /// <summary>
-        /// Recursively finds file
+        /// Recursively finds file.
         /// </summary>
         /// <returns></returns>
         private static IEnumerable<string> GetFiles(string path, string searchPattern, SearchOption searchOption, ICollection<string> invalidFolders)

@@ -58,6 +58,28 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._systemWorkflowManager = SystemWorkflowManager.Instance;
         }
 
+        public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
+        {
+            return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
+        }
+
+        public UserInfo GetSubmittedDraftStateUser(ContentItem contentItem)
+        {
+            return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
+        }
+
+        private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
+        {
+            return (from permission in permissions
+                    where permission.AllowAccess && permission.RoleID > Null.NullInteger
+                    select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
+        }
+
+        private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
+        {
+            return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
+        }
+
         private StateTransaction CreateInitialTransaction(int contentItemId, int stateId, int userId)
         {
             return new StateTransaction
@@ -282,20 +304,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             return notification;
         }
 
-        private class ReviewersDto
-        {
-            public List<RoleInfo> Roles { get; set; }
-
-            public List<UserInfo> Users { get; set; }
-        }
-
         private ReviewersDto GetUserAndRolesForStateReviewers(PortalSettings portalSettings, WorkflowState state)
         {
             var reviewers = new ReviewersDto
-                                             {
-                                                 Roles = new List<RoleInfo>(),
-                                                 Users = new List<UserInfo>(),
-                                             };
+            {
+                Roles = new List<RoleInfo>(),
+                Users = new List<UserInfo>(),
+            };
             if (state.SendNotification)
             {
                 var permissions = this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(state.StateID).ToArray();
@@ -317,23 +332,18 @@ namespace DotNetNuke.Entities.Content.Workflow
             return reviewers;
         }
 
-        private static List<RoleInfo> GetRolesFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
+        private class ReviewersDto
         {
-            return (from permission in permissions
-                         where permission.AllowAccess && permission.RoleID > Null.NullInteger
-                         select RoleController.Instance.GetRoleById(settings.PortalId, permission.RoleID)).ToList();
-        }
+            public List<RoleInfo> Roles { get; set; }
 
-        private static bool IsAdministratorRoleAlreadyIncluded(PortalSettings settings, IEnumerable<RoleInfo> roles)
-        {
-            return roles.Any(r => r.RoleName == settings.AdministratorRoleName);
+            public List<UserInfo> Users { get; set; }
         }
 
         private static List<UserInfo> GetUsersFromPermissions(PortalSettings settings, IEnumerable<WorkflowStatePermission> permissions)
         {
             return (from permission in permissions
-                where permission.AllowAccess && permission.UserID > Null.NullInteger
-                select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
+                    where permission.AllowAccess && permission.UserID > Null.NullInteger
+                    select UserController.GetUserById(settings.PortalId, permission.UserID)).ToList();
         }
 
         private static List<UserInfo> IncludeSuperUsers(ICollection<UserInfo> users)
@@ -353,6 +363,12 @@ namespace DotNetNuke.Entities.Content.Workflow
         private static bool IsSuperUserNotIncluded(IEnumerable<UserInfo> users, UserInfo superUser)
         {
             return users.All(u => u.UserID != superUser.UserID);
+        }
+
+        private static string GetWorkflowActionComment(WorkflowLogType logType)
+        {
+            var logName = Enum.GetName(typeof(WorkflowLogType), logType);
+            return Localization.GetString(logName + ".Comment");
         }
 
         private void AddWorkflowCommentLog(ContentItem contentItem, int userId, string userComment)
@@ -400,12 +416,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             var logTypeText = GetWorkflowActionComment(logType);
             var logComment = this.ReplaceNotificationTokens(logTypeText, workflow, contentItem, state, userId, userComment);
             this._workflowLogger.AddWorkflowLog(contentItem.ContentItemId, workflow.WorkflowID, logType, logComment, userId);
-        }
-
-        private static string GetWorkflowActionComment(WorkflowLogType logType)
-        {
-            var logName = Enum.GetName(typeof(WorkflowLogType), logType);
-            return Localization.GetString(logName + ".Comment");
         }
 
         private string ReplaceNotificationTokens(string text, Entities.Workflow workflow, ContentItem item, WorkflowState state, int userId, string comment = "")
@@ -467,16 +477,6 @@ namespace DotNetNuke.Entities.Content.Workflow
             }
 
             return previousState ?? workflow.LastState;
-        }
-
-        public UserInfo GetStartedDraftStateUser(ContentItem contentItem)
-        {
-            return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.WorkflowStarted);
-        }
-
-        public UserInfo GetSubmittedDraftStateUser(ContentItem contentItem)
-        {
-            return this.GetUserByWorkflowLogType(contentItem, WorkflowLogType.DraftCompleted);
         }
 
         public void StartWorkflow(int workflowId, int contentItemId, int userId)

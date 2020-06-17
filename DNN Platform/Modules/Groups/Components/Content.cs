@@ -17,6 +17,29 @@ namespace DotNetNuke.Entities.Groups
     public class Content
     {
         /// <summary>
+        /// This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
+        /// </summary>
+        /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
+        internal static int GetContentTypeID(string ContentTypeName)
+        {
+            var typeController = new ContentTypeController();
+            var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName select t;
+            int contentTypeId;
+
+            if (colContentTypes.Count() > 0)
+            {
+                var contentType = colContentTypes.Single();
+                contentTypeId = contentType == null ? CreateContentType(ContentTypeName) : contentType.ContentTypeId;
+            }
+            else
+            {
+                contentTypeId = CreateContentType(ContentTypeName);
+            }
+
+            return contentTypeId;
+        }
+
+        /// <summary>
         /// This should only run after the Post exists in the data store.
         /// </summary>
         /// <returns>The newly created ContentItemID from the data store.</returns>
@@ -105,29 +128,6 @@ namespace DotNetNuke.Entities.Groups
             // var cntTerms = new Terms();
             // cntTerms.RemoveQuestionTerms(objContent);
             Util.GetContentController().DeleteContentItem(objContent);
-        }
-
-        /// <summary>
-        /// This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
-        /// </summary>
-        /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
-        internal static int GetContentTypeID(string ContentTypeName)
-        {
-            var typeController = new ContentTypeController();
-            var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName select t;
-            int contentTypeId;
-
-            if (colContentTypes.Count() > 0)
-            {
-                var contentType = colContentTypes.Single();
-                contentTypeId = contentType == null ? CreateContentType(ContentTypeName) : contentType.ContentTypeId;
-            }
-            else
-            {
-                contentTypeId = CreateContentType(ContentTypeName);
-            }
-
-            return contentTypeId;
         }
 
         /// <summary>

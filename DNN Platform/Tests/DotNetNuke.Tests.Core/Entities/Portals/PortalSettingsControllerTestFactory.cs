@@ -29,22 +29,6 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             }
         }
 
-        internal static Dictionary<string, string> GetHostSettings()
-        {
-            var settings = new Dictionary<string, string>();
-
-            // Read Test Settings
-            Util.ReadStream(FilePath, "HostSettings", (line, header) =>
-                            {
-                                string[] fields = line.Split(',');
-                                string key = fields[0].Trim();
-                                string value = fields[1].Trim();
-
-                                settings.Add(key, value);
-                            });
-            return settings;
-        }
-
         internal static IEnumerable LoadPortalSettings_Loads_Default_Value
         {
             get
@@ -105,6 +89,22 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
                 return testData;
             }
+        }
+
+        internal static Dictionary<string, string> GetHostSettings()
+        {
+            var settings = new Dictionary<string, string>();
+
+            // Read Test Settings
+            Util.ReadStream(FilePath, "HostSettings", (line, header) =>
+                            {
+                                string[] fields = line.Split(',');
+                                string key = fields[0].Trim();
+                                string value = fields[1].Trim();
+
+                                settings.Add(key, value);
+                            });
+            return settings;
         }
     }
 }

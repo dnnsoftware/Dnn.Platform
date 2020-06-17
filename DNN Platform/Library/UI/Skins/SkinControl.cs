@@ -18,14 +18,14 @@ namespace DotNetNuke.UI.Skins
 
     public class SkinControl : UserControlBase
     {
+        protected DropDownList cboSkin;
+        protected CommandButton cmdPreview;
         private string _DefaultKey = "System";
         private string _SkinRoot;
         private string _SkinSrc;
         private string _Width = string.Empty;
         private string _localResourceFile;
         private PortalInfo _objPortal;
-        protected DropDownList cboSkin;
-        protected CommandButton cmdPreview;
         protected RadioButton optHost;
         protected RadioButton optSite;
 
@@ -111,41 +111,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        private void LoadSkins()
-        {
-            this.cboSkin.Items.Clear();
-
-            if (this.optHost.Checked)
-            {
-                // load host skins
-                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Host))
-                {
-                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
-                }
-            }
-
-            if (this.optSite.Checked)
-            {
-                // load portal skins
-                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Site))
-                {
-                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
-                }
-            }
-
-            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", string.Empty));
-
-            // select current skin
-            for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
-            {
-                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.InvariantCultureIgnoreCase))
-                {
-                    this.cboSkin.Items[intIndex].Selected = true;
-                    break;
-                }
-            }
-        }
-
         /// <summary>
         /// The Page_Load server event handler on this page is used
         /// to populate the role information for the page.
@@ -218,6 +183,41 @@ namespace DotNetNuke.UI.Skins
         protected void optHost_CheckedChanged(object sender, EventArgs e)
         {
             this.LoadSkins();
+        }
+
+        private void LoadSkins()
+        {
+            this.cboSkin.Items.Clear();
+
+            if (this.optHost.Checked)
+            {
+                // load host skins
+                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Host))
+                {
+                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
+                }
+            }
+
+            if (this.optSite.Checked)
+            {
+                // load portal skins
+                foreach (KeyValuePair<string, string> Skin in SkinController.GetSkins(this._objPortal, this.SkinRoot, SkinScope.Site))
+                {
+                    this.cboSkin.Items.Add(new ListItem(Skin.Key, Skin.Value));
+                }
+            }
+
+            this.cboSkin.Items.Insert(0, new ListItem("<" + Localization.GetString(this.DefaultKey, this.LocalResourceFile) + ">", string.Empty));
+
+            // select current skin
+            for (int intIndex = 0; intIndex < this.cboSkin.Items.Count; intIndex++)
+            {
+                if (this.cboSkin.Items[intIndex].Value.Equals(Convert.ToString(this.ViewState["SkinSrc"]), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    this.cboSkin.Items[intIndex].Selected = true;
+                    break;
+                }
+            }
         }
 
         protected void optSite_CheckedChanged(object sender, EventArgs e)

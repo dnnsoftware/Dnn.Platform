@@ -88,15 +88,6 @@ namespace DotNetNuke.Web.Mvc.Helpers
                 htmlAttributes);
         }
 
-        internal static MvcHtmlString LabelHelper(HtmlHelper html, ModelMetadata metadata, string htmlFieldName, string labelText = null, string helpText = null, IDictionary<string, object> htmlAttributes = null)
-        {
-            string resolvedLabelText = labelText ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
-            string resolvedHelpText = helpText ?? metadata.Description ?? metadata.Description ?? null;
-            string resolvedId = TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName));
-
-            return LabelHelper(html, resolvedId, resolvedLabelText, resolvedHelpText, htmlAttributes);
-        }
-
         public static MvcHtmlString LabelHelper(HtmlHelper html, string htmlFieldName, string labelText, string helpText = null, IDictionary<string, object> htmlAttributes = null)
         {
             if (string.IsNullOrEmpty(labelText))
@@ -149,6 +140,15 @@ namespace DotNetNuke.Web.Mvc.Helpers
             divTag.InnerHtml += toolTipTag.ToString();
 
             return new MvcHtmlString(divTag.ToString(TagRenderMode.Normal));
+        }
+
+        internal static MvcHtmlString LabelHelper(HtmlHelper html, ModelMetadata metadata, string htmlFieldName, string labelText = null, string helpText = null, IDictionary<string, object> htmlAttributes = null)
+        {
+            string resolvedLabelText = labelText ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName.Split('.').Last();
+            string resolvedHelpText = helpText ?? metadata.Description ?? metadata.Description ?? null;
+            string resolvedId = TagBuilder.CreateSanitizedId(html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName));
+
+            return LabelHelper(html, resolvedId, resolvedLabelText, resolvedHelpText, htmlAttributes);
         }
     }
 }

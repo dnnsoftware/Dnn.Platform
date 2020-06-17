@@ -15,111 +15,6 @@ namespace DotNetNuke.Entities.Urls
     internal class FriendlyUrlPathController
     {
         /// <summary>
-        /// Splits out the userid value from the supplied Friendly Url Path.
-        /// </summary>
-        /// <param name="parmName"></param>
-        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied).</param>
-        /// <param name="rawUserId"></param>
-        /// <param name="remainingPath">The remaining path not associated with the user id.</param>
-        /// <param name="urlPath"></param>
-        private static void SplitUserIdFromFriendlyUrlPath(
-            string urlPath,
-            string parmName,
-            string otherParametersPath,
-            out string rawUserId,
-            out string remainingPath)
-        {
-            // 688 : allow for other parts to be in the url by capturing more with the regex filters
-            string regexPattern;
-            rawUserId = null;
-            remainingPath = string.Empty;
-
-            // generally the path will start with a / and not end with one, but it's possible to get all sorts of things
-            if (!string.IsNullOrEmpty(otherParametersPath))
-            {
-                // remove the trailing slash from otherParamtersPath if it exists, because the other parameters may be anywhere in the path
-                if (otherParametersPath.EndsWith("/"))
-                {
-                    otherParametersPath = otherParametersPath.Substring(0, otherParametersPath.Length - 1);
-                }
-
-                const string patternFormatWithParameters = @"/?(?<rem1>.*)(?=_parm_)(?<parm1>(?<=/|^)(?:_parm_)/(?<p1v>[\d\w]+)){0,1}/?(?<op>_otherparm_){0,1}/?(?<parm2>(?<=/)(?:_parm_)/(?<p2v>[\d\w]+)){0,1}(?<rem2>.*)";
-                regexPattern = patternFormatWithParameters.Replace("_parm_", parmName);
-                regexPattern = regexPattern.Replace("_otherparm_", otherParametersPath);
-            }
-            else
-            {
-                const string patternNoParameters = @"/?(?<rem1>.*)(?<parm1>(?<=/|^)(?:_parm_)/(?<p1v>[\d\w]+)/?)+(?<rem2>.*)";
-                regexPattern = patternNoParameters.Replace("_parm_", parmName);
-            }
-
-            // check the regex match
-            Match parmMatch = Regex.Match(urlPath, regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-            if (parmMatch.Success)
-            {
-                // must be nothing in the op1 and op2 values
-                Group otherParmsGp = parmMatch.Groups["op"];
-                Group parm1ValueGp = parmMatch.Groups["p1v"];
-                Group parm2ValueGp = parmMatch.Groups["p2v"];
-                Group rem1ParmsGp = parmMatch.Groups["rem1"]; // remainder at the start of the match
-                Group rem2ParmsGp = parmMatch.Groups["rem2"]; // remainder at the end of the match
-
-                if (otherParmsGp != null && otherParmsGp.Success && (parm1ValueGp.Success || parm2ValueGp.Success))
-                {
-                    // matched the other parm value and either the p1 or p2 value
-                    rawUserId = parm1ValueGp.Success ? parm1ValueGp.Value : parm2ValueGp.Value;
-                }
-                else
-                {
-                    if ((otherParmsGp == null || otherParmsGp.Success == false) && parm1ValueGp != null &&
-                        parm1ValueGp.Success)
-                    {
-                        rawUserId = parm1ValueGp.Value;
-                    }
-                }
-
-                // add back the remainders
-                if (rem1ParmsGp != null && rem1ParmsGp.Success)
-                {
-                    remainingPath = rem1ParmsGp.Value;
-                }
-
-                if (rem2ParmsGp != null && rem2ParmsGp.Success)
-                {
-                    remainingPath += rem2ParmsGp.Value;
-                }
-
-                if (remainingPath.EndsWith("/"))
-                {
-                    remainingPath = remainingPath.Substring(0, remainingPath.Length - 1);
-                }
-
-                // 722: drop out the parts of the remaining path that are in the 'otherParameters' path.
-                // the other parameters path will be automatically provided upon rewrite
-                if (otherParametersPath != null)
-                {
-                    remainingPath = Regex.Replace(remainingPath, Regex.Escape(otherParametersPath), string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                }
-
-                if (parmName.Contains("|") && rawUserId != null)
-                {
-                    // eliminate any dups from the remaining path
-                    string[] vals = parmName.Split('|');
-                    foreach (string val in vals)
-                    {
-                        string find = "/?" + Regex.Escape(val + "/" + rawUserId);
-                        remainingPath = Regex.Replace(remainingPath, find, string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                    }
-                }
-
-                if (remainingPath.Length > 0 && remainingPath.StartsWith("/") == false)
-                {
-                    remainingPath = "/" + remainingPath;
-                }
-            }
-        }
-
-        /// <summary>
         /// This method checks the list of rules for parameter replacement and modifies the parameter path accordingly.
         /// </summary>
         /// <param name="parameterPath"></param>
@@ -334,6 +229,111 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return urlWasChanged;
+        }
+
+        /// <summary>
+        /// Splits out the userid value from the supplied Friendly Url Path.
+        /// </summary>
+        /// <param name="parmName"></param>
+        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied).</param>
+        /// <param name="rawUserId"></param>
+        /// <param name="remainingPath">The remaining path not associated with the user id.</param>
+        /// <param name="urlPath"></param>
+        private static void SplitUserIdFromFriendlyUrlPath(
+            string urlPath,
+            string parmName,
+            string otherParametersPath,
+            out string rawUserId,
+            out string remainingPath)
+        {
+            // 688 : allow for other parts to be in the url by capturing more with the regex filters
+            string regexPattern;
+            rawUserId = null;
+            remainingPath = string.Empty;
+
+            // generally the path will start with a / and not end with one, but it's possible to get all sorts of things
+            if (!string.IsNullOrEmpty(otherParametersPath))
+            {
+                // remove the trailing slash from otherParamtersPath if it exists, because the other parameters may be anywhere in the path
+                if (otherParametersPath.EndsWith("/"))
+                {
+                    otherParametersPath = otherParametersPath.Substring(0, otherParametersPath.Length - 1);
+                }
+
+                const string patternFormatWithParameters = @"/?(?<rem1>.*)(?=_parm_)(?<parm1>(?<=/|^)(?:_parm_)/(?<p1v>[\d\w]+)){0,1}/?(?<op>_otherparm_){0,1}/?(?<parm2>(?<=/)(?:_parm_)/(?<p2v>[\d\w]+)){0,1}(?<rem2>.*)";
+                regexPattern = patternFormatWithParameters.Replace("_parm_", parmName);
+                regexPattern = regexPattern.Replace("_otherparm_", otherParametersPath);
+            }
+            else
+            {
+                const string patternNoParameters = @"/?(?<rem1>.*)(?<parm1>(?<=/|^)(?:_parm_)/(?<p1v>[\d\w]+)/?)+(?<rem2>.*)";
+                regexPattern = patternNoParameters.Replace("_parm_", parmName);
+            }
+
+            // check the regex match
+            Match parmMatch = Regex.Match(urlPath, regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+            if (parmMatch.Success)
+            {
+                // must be nothing in the op1 and op2 values
+                Group otherParmsGp = parmMatch.Groups["op"];
+                Group parm1ValueGp = parmMatch.Groups["p1v"];
+                Group parm2ValueGp = parmMatch.Groups["p2v"];
+                Group rem1ParmsGp = parmMatch.Groups["rem1"]; // remainder at the start of the match
+                Group rem2ParmsGp = parmMatch.Groups["rem2"]; // remainder at the end of the match
+
+                if (otherParmsGp != null && otherParmsGp.Success && (parm1ValueGp.Success || parm2ValueGp.Success))
+                {
+                    // matched the other parm value and either the p1 or p2 value
+                    rawUserId = parm1ValueGp.Success ? parm1ValueGp.Value : parm2ValueGp.Value;
+                }
+                else
+                {
+                    if ((otherParmsGp == null || otherParmsGp.Success == false) && parm1ValueGp != null &&
+                        parm1ValueGp.Success)
+                    {
+                        rawUserId = parm1ValueGp.Value;
+                    }
+                }
+
+                // add back the remainders
+                if (rem1ParmsGp != null && rem1ParmsGp.Success)
+                {
+                    remainingPath = rem1ParmsGp.Value;
+                }
+
+                if (rem2ParmsGp != null && rem2ParmsGp.Success)
+                {
+                    remainingPath += rem2ParmsGp.Value;
+                }
+
+                if (remainingPath.EndsWith("/"))
+                {
+                    remainingPath = remainingPath.Substring(0, remainingPath.Length - 1);
+                }
+
+                // 722: drop out the parts of the remaining path that are in the 'otherParameters' path.
+                // the other parameters path will be automatically provided upon rewrite
+                if (otherParametersPath != null)
+                {
+                    remainingPath = Regex.Replace(remainingPath, Regex.Escape(otherParametersPath), string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                }
+
+                if (parmName.Contains("|") && rawUserId != null)
+                {
+                    // eliminate any dups from the remaining path
+                    string[] vals = parmName.Split('|');
+                    foreach (string val in vals)
+                    {
+                        string find = "/?" + Regex.Escape(val + "/" + rawUserId);
+                        remainingPath = Regex.Replace(remainingPath, find, string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                    }
+                }
+
+                if (remainingPath.Length > 0 && remainingPath.StartsWith("/") == false)
+                {
+                    remainingPath = "/" + remainingPath;
+                }
+            }
         }
     }
 }

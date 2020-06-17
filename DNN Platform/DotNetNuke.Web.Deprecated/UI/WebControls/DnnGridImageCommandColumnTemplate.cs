@@ -165,7 +165,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var colIcon = new ImageButton
-                                { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text };
+                            { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text };
                             if (!string.IsNullOrEmpty(this.OnClickJs))
                             {
                                 ClientAPI.AddButtonConfirm(colIcon, this.OnClickJs);

@@ -37,6 +37,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
+        public bool Localize { get; set; }
+
+        public string LocalResourceFile { get; set; }
+
+        public virtual void LocalizeStrings()
+        {
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -116,14 +124,6 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this._Label.Text = localeName;
             this._Flag.AlternateText = localeName;
-        }
-
-        public bool Localize { get; set; }
-
-        public string LocalResourceFile { get; set; }
-
-        public virtual void LocalizeStrings()
-        {
         }
     }
 }

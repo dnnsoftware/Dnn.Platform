@@ -18,10 +18,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string DateFormat { get; set; }
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -39,6 +35,10 @@ namespace DotNetNuke.UI.Skins.Controls
 
             var user = UserController.Instance.GetCurrentUserInfo();
             this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

@@ -50,6 +50,27 @@ namespace Dnn.PersonaBar.UI.Components
             return "Success";
         }
 
+        private static void RemoveAssembly(string assemblyName)
+        {
+            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
+
+            var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
+                p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
+                && p.PackageType.Equals("PersonaBar", StringComparison.OrdinalIgnoreCase));
+            if (packageInfo != null)
+            {
+                var fileName = assemblyName + ".dll";
+                if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
+                {
+                    Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
+                }
+            }
+            else
+            {
+                Logger.InstallLogInfo(Util.ASSEMBLY_InUse + " - " + assemblyName);
+            }
+        }
+
         private void CreateAdminLinks()
         {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
@@ -155,27 +176,6 @@ namespace Dnn.PersonaBar.UI.Components
             foreach (string assemblyName in assemblies)
             {
                 RemoveAssembly(assemblyName);
-            }
-        }
-
-        private static void RemoveAssembly(string assemblyName)
-        {
-            Logger.InstallLogInfo(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
-
-            var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
-                p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
-                && p.PackageType.Equals("PersonaBar", StringComparison.OrdinalIgnoreCase));
-            if (packageInfo != null)
-            {
-                var fileName = assemblyName + ".dll";
-                if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
-                {
-                    Logger.InstallLogInfo(Util.ASSEMBLY_UnRegistered + " - " + fileName);
-                }
-            }
-            else
-            {
-                Logger.InstallLogInfo(Util.ASSEMBLY_InUse + " - " + assemblyName);
             }
         }
     }

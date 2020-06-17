@@ -22,7 +22,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         // Returns the URL to the first instance of the module the user has access to view
         public override string GetDocUrl(SearchResult searchResult)
         {
-           return "http://www.google.com";
+            return "http://www.google.com";
         }
     }
 

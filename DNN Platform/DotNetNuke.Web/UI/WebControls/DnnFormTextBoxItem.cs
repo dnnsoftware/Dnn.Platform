@@ -41,11 +41,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         public bool ClearContentInPasswordMode { get; set; }
 
-        private void TextChanged(object sender, EventArgs e)
-        {
-            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
-        }
-
         protected override WebControl CreateControlInternal(Control container)
         {
             this._textBox = new TextBox { ID = this.ID + "_TextBox" };
@@ -83,6 +78,11 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this._textBox.Attributes.Add("value", Convert.ToString(this.Value));
             }
+        }
+
+        private void TextChanged(object sender, EventArgs e)
+        {
+            this.UpdateDataSource(this.Value, this._textBox.Text, this.DataField);
         }
     }
 }

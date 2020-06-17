@@ -22,6 +22,12 @@ namespace DotNetNuke.Services.Scheduling
             this.ScheduleHistoryItem = new ScheduleHistoryItem();
         }
 
+        public event WorkStarted ProcessStarted;
+
+        public event WorkProgressing ProcessProgressing;
+
+        public event WorkCompleted ProcessCompleted;
+
         public ScheduleHistoryItem ScheduleHistoryItem { get; set; }
 
         public string SchedulerEventGUID { get; set; }
@@ -37,12 +43,6 @@ namespace DotNetNuke.Services.Scheduling
                 return Thread.CurrentThread.ManagedThreadId;
             }
         }
-
-        public event WorkStarted ProcessStarted;
-
-        public event WorkProgressing ProcessProgressing;
-
-        public event WorkCompleted ProcessCompleted;
 
         public event WorkErrored ProcessErrored;
 

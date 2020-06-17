@@ -13,10 +13,6 @@ namespace DotNetNuke.UI.Skins.Controls
     [Obsolete("Support was removed for SolPart & Similar Modules in DNN 8.x, this control is no-longer functional to that point.  Usage of DDRMenu is suggested.  Scheduled removal in v10.0.0.")]
     public partial class Nav : NavObjectBase
     {
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -155,6 +151,20 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            this.InitializeNavControl(this, "SolpartMenuNavigationProvider");
+            this.Control.NodeClick += this.Control_NodeClick;
+            this.Control.PopulateOnDemand += this.Control_PopulateOnDemand;
+
+            base.OnInit(e);
+            this.InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+        }
+
         private string FixImagePath(string strPath)
         {
             if (strPath.IndexOf("src=") != -1 && strPath.IndexOf("src=\"/") < 0)
@@ -173,16 +183,6 @@ namespace DotNetNuke.UI.Skins.Controls
             objNodes = this.GetNavigationNodes(objNode);
             this.Control.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.Bind(objNodes);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            this.InitializeNavControl(this, "SolpartMenuNavigationProvider");
-            this.Control.NodeClick += this.Control_NodeClick;
-            this.Control.PopulateOnDemand += this.Control_PopulateOnDemand;
-
-            base.OnInit(e);
-            this.InitializeComponent();
         }
 
         private void Control_NodeClick(NavigationEventArgs args)

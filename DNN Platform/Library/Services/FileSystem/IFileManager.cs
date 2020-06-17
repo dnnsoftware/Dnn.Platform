@@ -15,6 +15,12 @@ namespace DotNetNuke.Services.FileSystem
     public interface IFileManager
     {
         /// <summary>
+        /// Gets the system defined content types.
+        /// </summary>
+        [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled removal in v10.0.0.")]
+        IDictionary<string, string> ContentTypes { get; }
+
+        /// <summary>
         /// Adds a file to the specified folder.
         /// </summary>
         /// <param name="folder">The folder where to add the file.</param>
@@ -79,12 +85,6 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="destinationFolder">The folder where to copy the file to.</param>
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the copied file.</returns>
         IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder);
-
-        /// <summary>
-        /// Gets the system defined content types.
-        /// </summary>
-        [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled removal in v10.0.0.")]
-        IDictionary<string, string> ContentTypes { get; }
 
         /// <summary>
         /// Deletes the specified file.

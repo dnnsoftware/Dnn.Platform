@@ -30,15 +30,15 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
     public class TaskSchedulerController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
-        private Components.TaskSchedulerController _controller = new Components.TaskSchedulerController();
         private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
+        private Components.TaskSchedulerController _controller = new Components.TaskSchedulerController();
 
         /// GET: api/TaskScheduler/GetServers
         /// <summary>
-        /// Gets list of servers
+        /// Gets list of servers.
         /// </summary>
         /// <param></param>
-        /// <returns>List of servers</returns>
+        /// <returns>List of servers.</returns>
         [HttpGet]
         public HttpResponseMessage GetServers()
         {
@@ -76,10 +76,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// GET: api/TaskScheduler/GetScheduleItems
         /// <summary>
-        /// Gets list of schedule items
+        /// Gets list of schedule items.
         /// </summary>
         /// <param name="serverName"></param>
-        /// <returns>List of schedule items</returns>
+        /// <returns>List of schedule items.</returns>
         [HttpGet]
         public HttpResponseMessage GetScheduleItems(string serverName = "")
         {
@@ -112,10 +112,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// GET: api/TaskScheduler/GetSchedulerSettings
         /// <summary>
-        /// Gets scheduler settings
+        /// Gets scheduler settings.
         /// </summary>
         /// <param></param>
-        /// <returns>scheduler settings</returns>
+        /// <returns>scheduler settings.</returns>
         [HttpGet]
         public HttpResponseMessage GetSchedulerSettings()
         {
@@ -149,7 +149,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/UpdateSchedulerSettings
         /// <summary>
-        /// Updates scheduler settings
+        /// Updates scheduler settings.
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -195,12 +195,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// GET: api/TaskScheduler/GetScheduleItemHistory
         /// <summary>
-        /// Gets schedule item history
+        /// Gets schedule item history.
         /// </summary>
         /// <param name="scheduleId"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
-        /// <returns>schedule item history</returns>
+        /// <returns>schedule item history.</returns>
         [HttpGet]
         public HttpResponseMessage GetScheduleItemHistory(int scheduleId = -1, int pageIndex = 0, int pageSize = 20)
         {
@@ -238,10 +238,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// GET: api/TaskScheduler/GetScheduleItem
         /// <summary>
-        /// Gets an existing schedule item
+        /// Gets an existing schedule item.
         /// </summary>
         /// <param></param>
-        /// <returns>schedule item</returns>
+        /// <returns>schedule item.</returns>
         [HttpGet]
         public HttpResponseMessage GetScheduleItem(int scheduleId)
         {
@@ -283,7 +283,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/CreateScheduleItem
         /// <summary>
-        /// Creates a new schedule item
+        /// Creates a new schedule item.
         /// </summary>
         /// <param name="scheduleDto"></param>
         /// <returns></returns>
@@ -319,7 +319,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/UpdateScheduleItem
         /// <summary>
-        /// Updates an existing schedule item
+        /// Updates an existing schedule item.
         /// </summary>
         /// <param name="scheduleDto"></param>
         /// <returns></returns>
@@ -345,7 +345,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             scheduleDto.RetryTimeLapse, scheduleDto.RetryTimeLapseMeasurement, scheduleDto.RetainHistoryNum, scheduleDto.AttachToEvent, scheduleDto.CatchUpEnabled,
             scheduleDto.Enabled, scheduleDto.ObjectDependencies, scheduleDto.ScheduleStartDate, scheduleDto.Servers);
                 updatedItem.ScheduleID = scheduleDto.ScheduleID;
-
 
                 if (updatedItem.ScheduleStartDate != existingItem.ScheduleStartDate ||
                     updatedItem.Enabled ||
@@ -374,10 +373,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// GET: api/TaskScheduler/GetScheduleStatus
         /// <summary>
-        /// Gets schedule status
+        /// Gets schedule status.
         /// </summary>
         /// <param></param>
-        /// <returns>schedule status</returns>
+        /// <returns>schedule status.</returns>
         [HttpGet]
         public HttpResponseMessage GetScheduleStatus()
         {
@@ -464,7 +463,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/StartSchedule
         /// <summary>
-        /// Starts schedule
+        /// Starts schedule.
         /// </summary>
         /// <param></param>
         /// <returns></returns>
@@ -486,7 +485,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/StopSchedule
         /// <summary>
-        /// Stops schedule
+        /// Stops schedule.
         /// </summary>
         /// <param></param>
         /// <returns></returns>
@@ -508,7 +507,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/RunSchedule
         /// <summary>
-        /// Runs schedule
+        /// Runs schedule.
         /// </summary>
         /// <param name="scheduleDto"></param>
         /// <returns></returns>
@@ -539,7 +538,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
 
         /// POST: api/TaskScheduler/DeleteSchedule
         /// <summary>
-        /// Runs schedule
+        /// Runs schedule.
         /// </summary>
         /// <param name="scheduleDto"></param>
         /// <returns></returns>
@@ -558,19 +557,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
-        }
-
-        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
-        {
-            if (retryTimeLapse == 0) return true;
-
-            var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
-            var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
-            if (retry > frequency)
-            {
-                return false;
-            }
-            return true;
         }
 
         private static DateTime CalculateTime(int lapse, string measurement)
@@ -601,6 +587,19 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     break;
             }
             return nextTime;
+        }
+
+        private bool VerifyValidTimeLapseRetry(int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement)
+        {
+            if (retryTimeLapse == 0) return true;
+
+            var frequency = CalculateTime(Convert.ToInt32(timeLapse), timeLapseMeasurement);
+            var retry = CalculateTime(Convert.ToInt32(retryTimeLapse), retryTimeLapseMeasurement);
+            if (retry > frequency)
+            {
+                return false;
+            }
+            return true;
         }
 
         private static void Halt()

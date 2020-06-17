@@ -15,11 +15,6 @@ namespace DotNetNuke.Entities.Tabs.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use TabController instead. Scheduled removal in v10.0.0.")]
     public class TestableTabController : ServiceLocator<DotNetNuke.Entities.Tabs.Internal.ITabController, TestableTabController>, ITabController
     {
-        protected override Func<DotNetNuke.Entities.Tabs.Internal.ITabController> GetFactory()
-        {
-            return () => new TestableTabController();
-        }
-
         public void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
             TabController.Instance.DeleteTabUrl(tabUrl, portalId, clearCache);
@@ -28,6 +23,11 @@ namespace DotNetNuke.Entities.Tabs.Internal
         public TabInfo GetTab(int tabId, int portalId)
         {
             return TabController.Instance.GetTab(tabId, portalId);
+        }
+
+        protected override Func<DotNetNuke.Entities.Tabs.Internal.ITabController> GetFactory()
+        {
+            return () => new TestableTabController();
         }
 
         public Dictionary<string, string> GetCustomAliases(int tabId, int portalId)

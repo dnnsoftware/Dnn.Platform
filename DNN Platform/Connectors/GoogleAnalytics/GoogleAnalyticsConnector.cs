@@ -17,12 +17,12 @@ namespace DNN.Connectors.GoogleAnalytics
     {
         private const string DefaultDisplayName = "Google Analytics";
 
+        private string _displayName;
+
         public string Name
         {
             get { return "Core Google Analytics Connector"; }
         }
-
-        private string _displayName;
 
         public string DisplayName
         {
@@ -134,22 +134,6 @@ namespace DNN.Connectors.GoogleAnalytics
             return configItems;
         }
 
-        /// <summary>
-        /// Handles custom conversion from "true" => "true"
-        /// Anything else to "" to support the strange knockout handling of string as booleans.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        private string HandleCustomBoolean(string value)
-        {
-            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
-            {
-                return "true";
-            }
-
-            return string.Empty;
-        }
-
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             // Delete / Deactivation functionality added into SaveConfig because
@@ -241,6 +225,22 @@ namespace DNN.Connectors.GoogleAnalytics
                 Exceptions.LogException(ex);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Handles custom conversion from "true" => "true"
+        /// Anything else to "" to support the strange knockout handling of string as booleans.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private string HandleCustomBoolean(string value)
+        {
+            if (value.Trim().Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                return "true";
+            }
+
+            return string.Empty;
         }
     }
 }

@@ -26,9 +26,9 @@ namespace Dnn.ExportImport.Components.Controllers
 
     public class BaseController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
-
         public static readonly string ExportFolder;
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
 
         static BaseController()
         {
@@ -37,28 +37,6 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 Directory.CreateDirectory(ExportFolder);
             }
-        }
-
-        protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
-        {
-            var objSecurity = PortalSecurity.Instance;
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-            var userInfo = UserController.Instance.GetUser(portalId, userId);
-            var username = objSecurity.InputFilter(
-                userInfo.Username,
-                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
-
-            var log = new LogInfo
-            {
-                LogTypeKey = logTypeKey,
-                LogPortalID = portalId,
-                LogPortalName = portalInfo.PortalName,
-                LogUserName = username,
-                LogUserID = userId,
-            };
-
-            log.AddProperty("JobID", jobId.ToString());
-            LogController.Instance.AddLog(log);
         }
 
         public bool CancelJob(int portalId, int jobId)
@@ -90,6 +68,28 @@ namespace Dnn.ExportImport.Components.Controllers
             controller.RemoveJob(job);
             DeleteJobData(job);
             return true;
+        }
+
+        protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
+        {
+            var objSecurity = PortalSecurity.Instance;
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+            var userInfo = UserController.Instance.GetUser(portalId, userId);
+            var username = objSecurity.InputFilter(
+                userInfo.Username,
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+
+            var log = new LogInfo
+            {
+                LogTypeKey = logTypeKey,
+                LogPortalID = portalId,
+                LogPortalName = portalInfo.PortalName,
+                LogUserName = username,
+                LogUserID = userId,
+            };
+
+            log.AddProperty("JobID", jobId.ToString());
+            LogController.Instance.AddLog(log);
         }
 
         /// <summary>
@@ -154,6 +154,35 @@ namespace Dnn.ExportImport.Components.Controllers
             return EntitiesController.Instance.GetLastJobTime(portalId, jobType);
         }
 
+        protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
+        {
+            var summaryItems = new SummaryList();
+            var implementors = Util.GetPortableImplementors();
+            var exportDto = repository.GetSingleItem<ExportDto>();
+
+            foreach (var implementor in implementors)
+            {
+                implementor.Repository = repository;
+                summaryItems.Add(new SummaryItem
+                {
+                    TotalItems = implementor.GetImportTotal(),
+                    Category = implementor.Category,
+                    Order = implementor.Priority,
+                });
+            }
+
+            summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
+            summary.FromDate = exportDto.FromDateUtc;
+            summary.ToDate = exportDto.ToDateUtc;
+            summary.SummaryItems = summaryItems;
+            summary.IncludeDeletions = exportDto.IncludeDeletions;
+            summary.IncludeContent = exportDto.IncludeContent;
+            summary.IncludeExtensions = exportDto.IncludeExtensions;
+            summary.IncludePermissions = exportDto.IncludePermissions;
+            summary.IncludeProfileProperties = exportDto.IncludeProperfileProperties;
+            summary.ExportMode = exportDto.ExportMode;
+        }
+
         protected static ImportExportSummary BuildJobSummary(int jobId)
         {
             var summaryItems = new SummaryList();
@@ -197,35 +226,6 @@ namespace Dnn.ExportImport.Components.Controllers
             }));
             importExportSummary.SummaryItems = summaryItems;
             return importExportSummary;
-        }
-
-        protected internal static void BuildJobSummary(string packageId, IExportImportRepository repository, ImportExportSummary summary)
-        {
-            var summaryItems = new SummaryList();
-            var implementors = Util.GetPortableImplementors();
-            var exportDto = repository.GetSingleItem<ExportDto>();
-
-            foreach (var implementor in implementors)
-            {
-                implementor.Repository = repository;
-                summaryItems.Add(new SummaryItem
-                {
-                    TotalItems = implementor.GetImportTotal(),
-                    Category = implementor.Category,
-                    Order = implementor.Priority,
-                });
-            }
-
-            summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
-            summary.FromDate = exportDto.FromDateUtc;
-            summary.ToDate = exportDto.ToDateUtc;
-            summary.SummaryItems = summaryItems;
-            summary.IncludeDeletions = exportDto.IncludeDeletions;
-            summary.IncludeContent = exportDto.IncludeContent;
-            summary.IncludeExtensions = exportDto.IncludeExtensions;
-            summary.IncludePermissions = exportDto.IncludePermissions;
-            summary.IncludeProfileProperties = exportDto.IncludeProperfileProperties;
-            summary.ExportMode = exportDto.ExportMode;
         }
 
         protected static ExportFileInfo GetExportFileInfo(string manifestPath)

@@ -14,6 +14,15 @@ namespace DotNetNuke.Services.Search.Internals
     /// </summary>
     internal class LuceneQuery
     {
+        public LuceneQuery()
+        {
+            this.PageIndex = 1;
+            this.TitleSnippetLength = 60;
+            this.BodySnippetLength = 100;
+            this.PageSize = 10;
+            this.Sort = Sort.RELEVANCE;
+        }
+
         /// <summary>
         /// Gets or sets lucene's original Query Object.
         /// </summary>
@@ -43,14 +52,5 @@ namespace DotNetNuke.Services.Search.Internals
         /// Gets or sets maximum length of highlighted title field in the results.
         /// </summary>
         public int BodySnippetLength { get; set; }
-
-        public LuceneQuery()
-        {
-            this.PageIndex = 1;
-            this.TitleSnippetLength = 60;
-            this.BodySnippetLength = 100;
-            this.PageSize = 10;
-            this.Sort = Sort.RELEVANCE;
-        }
     }
 }

@@ -26,11 +26,6 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.dataService = DataService.Instance;
         }
 
-        protected override Func<ISubscriptionTypeController> GetFactory()
-        {
-            return () => new SubscriptionTypeController();
-        }
-
         public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -48,6 +43,11 @@ namespace DotNetNuke.Services.Social.Subscriptions
             Requires.NotNull("predicate", predicate);
 
             return this.GetSubscriptionTypes().SingleOrDefault(predicate);
+        }
+
+        protected override Func<ISubscriptionTypeController> GetFactory()
+        {
+            return () => new SubscriptionTypeController();
         }
 
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()

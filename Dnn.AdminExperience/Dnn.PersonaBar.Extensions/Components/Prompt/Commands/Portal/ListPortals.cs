@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             if (args.Length == 1)
             {
                 // do nothing

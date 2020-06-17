@@ -11,17 +11,17 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     public class ConsoleCommandAttribute : Attribute
 #pragma warning restore CS3015 // Type has no accessible constructors which use only CLS-compliant types
     {
-        public string Name { get; set; }
-
-        public string Category { get; set; }
-
-        public string Description { get; set; }
-
         public ConsoleCommandAttribute(string name, string category, string description)
         {
             this.Name = name;
             this.Category = category;
             this.Description = description;
         }
+
+        public string Name { get; set; }
+
+        public string Category { get; set; }
+
+        public string Description { get; set; }
     }
 }

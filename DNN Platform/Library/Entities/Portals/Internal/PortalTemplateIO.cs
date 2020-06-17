@@ -15,11 +15,6 @@ namespace DotNetNuke.Entities.Portals.Internal
 
     public class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
-        protected override Func<IPortalTemplateIO> GetFactory()
-        {
-            return () => new PortalTemplateIO();
-        }
-
         public IEnumerable<string> EnumerateTemplates()
         {
             string path = Globals.HostMapPath;
@@ -40,6 +35,11 @@ namespace DotNetNuke.Entities.Portals.Internal
             }
 
             return new string[0];
+        }
+
+        protected override Func<IPortalTemplateIO> GetFactory()
+        {
+            return () => new PortalTemplateIO();
         }
 
         public string GetResourceFilePath(string templateFilePath)

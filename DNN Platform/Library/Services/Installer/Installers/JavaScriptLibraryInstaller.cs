@@ -16,26 +16,6 @@ namespace DotNetNuke.Services.Installer.Installers
         private JavaScriptLibrary _library;
         private JavaScriptLibrary _installedLibrary;
 
-        private void DeleteLibrary()
-        {
-            try
-            {
-                // Attempt to get the Library
-                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
-
-                if (library != null)
-                {
-                    JavaScriptLibraryController.Instance.DeleteLibrary(library);
-
-                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
         public override void Commit()
         {
         }
@@ -58,6 +38,26 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 this.Completed = true;
                 this.Log.AddInfo(string.Format(Util.LIBRARY_Registered, this._library.LibraryName));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
+        }
+
+        private void DeleteLibrary()
+        {
+            try
+            {
+                // Attempt to get the Library
+                var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
+
+                if (library != null)
+                {
+                    JavaScriptLibraryController.Instance.DeleteLibrary(library);
+
+                    this.Log.AddInfo(string.Format(Util.LIBRARY_UnRegistered, library.LibraryName));
+                }
             }
             catch (Exception ex)
             {
