@@ -1,4 +1,5 @@
-import React, { PropTypes} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import FolderSelector from "./FolderSelector";
 import internalService from "../../services/internalService";
 
@@ -48,9 +49,9 @@ export default class FolderPicker extends React.Component {
 
     getChildrenFolders(parentId) {
         internalService.getFolderDescendant(parentId)
-        .then(
-            this.addChildFolders.bind(this, parentId)
-        );
+            .then(
+                this.addChildFolders.bind(this, parentId)
+            );
     }
 
     setFolders(result) {

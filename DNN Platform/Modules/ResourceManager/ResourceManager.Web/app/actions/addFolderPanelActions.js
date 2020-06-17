@@ -62,32 +62,32 @@ const addFolderPanelActions = {
 
         return (dispatch) => {
             ItemsService.addFolder(newFolderData)
-            .then(
-                addFolderResponse => 
-                ItemsService.getContent(folderId, 0, numItems, sorting)
                 .then(
-                    getContentResponse => {
-                        dispatch({
-                            type: folderPanelActionTypes.CONTENT_LOADED,
-                            data: getContentResponse
-                        });
+                    addFolderResponse => 
+                        ItemsService.getContent(folderId, 0, numItems, sorting)
+                            .then(
+                                getContentResponse => {
+                                    dispatch({
+                                        type: folderPanelActionTypes.CONTENT_LOADED,
+                                        data: getContentResponse
+                                    });
 
-                        dispatch({
-                            type: actionTypes.FOLDER_CREATED,
-                            data: addFolderResponse
-                        });
-                    }
-                ),
-                reason => dispatch({
-                    type: actionTypes.ADD_FOLDER_ERROR,
-                    data: reason.data ? reason.data.message : null
-                })
-            )
-            .catch(
-                dispatch({
-                    type: actionTypes.ADD_FOLDER_ERROR
-                })
-            );
+                                    dispatch({
+                                        type: actionTypes.FOLDER_CREATED,
+                                        data: addFolderResponse
+                                    });
+                                }
+                            ),
+                    reason => dispatch({
+                        type: actionTypes.ADD_FOLDER_ERROR,
+                        data: reason.data ? reason.data.message : null
+                    })
+                )
+                .catch(
+                    dispatch({
+                        type: actionTypes.ADD_FOLDER_ERROR
+                    })
+                );
         };
     },
     setValidationErrors(validationErrors) {

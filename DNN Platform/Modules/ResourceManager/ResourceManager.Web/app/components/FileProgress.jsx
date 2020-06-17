@@ -1,9 +1,10 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import OverwriteContainer from "../containers/ProgressBarOverwriteContainer";
 
 const FileProgress = ({fileName, progress, imgSrc, fileUrl, uploading, error, stopped, message, alreadyExists}) => (
     <div className={"uploading-container" + (error ? " rm-error" : "")  + (uploading ? " rm-uploading" : "") + (stopped ? " rm-stopped" : "")}>
-        <a className="file-upload-thumbnail" href={fileUrl} target="_blank">
+        <a className="file-upload-thumbnail" href={fileUrl} target="_blank" rel="noopener noreferrer">
             <img src={imgSrc} />
         </a>
 

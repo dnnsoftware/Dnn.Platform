@@ -75,21 +75,21 @@ const addAssetPanelActions = {
 
             files.forEach (
                 file => uploadFilePromises.push(ItemsService.uploadFile(file, folderPath, overwrite, trackProgress.bind(null, file.name))
-                .then(
-                    response => fileUploadedHandler(dispatch, file, overwrite, response),
-                    reason => dispatch (fileUploadError(file.name, reason.message))
-                ))
+                    .then(
+                        response => fileUploadedHandler(dispatch, file, overwrite, response),
+                        reason => dispatch (fileUploadError(file.name, reason.message))
+                    ))
             );
 
             Promise.all(uploadFilePromises).then(
                 () => ItemsService.getContent(folderId, 0, numItems, sorting)
             )
-            .then(
-                getContentResponse => dispatch ({
-                    type: folderPanelActionTypes.CONTENT_LOADED,
-                    data: getContentResponse
-                })
-            );
+                .then(
+                    getContentResponse => dispatch ({
+                        type: folderPanelActionTypes.CONTENT_LOADED,
+                        data: getContentResponse
+                    })
+                );
         };
     },
     trackProgress(fileName, progress) {

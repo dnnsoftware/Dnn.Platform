@@ -1,19 +1,21 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import { PropTypes } from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import localizeService from "../services/localizeService";
 import addFolderPanelActions from "../actions/addFolderPanelActions";
-import DropDown from "dnn-dropdown";
+import DropDown from "../../../../../../Dnn.AdminExperience/ClientSide/Dnn.React.Common/src/Dropdown";
 
 class AddFolderPanelContainer extends React.Component {
     constructor(props) {
         super(props);
         this.props.loadFolderMappings();
+        this.nameInput = React.createRef();
     }
 
     componentDidUpdate(previousProps) {
         if (!previousProps.expanded && this.props.expanded) {
-            this.refs.nameInput.focus();
+            this.nameInput.focus();
         }
     }
 
@@ -86,12 +88,12 @@ class AddFolderPanelContainer extends React.Component {
                     <div className="rm-field">
                         <label className="formRequired">{ localizeService.getString("Name") }</label>
                         <input id="folderName" className="required" placeholder={localizeService.getString("FolderNamePlaceholder")} type="text"
-                            value={formData.name} onChange={changeName} ref="nameInput" />
+                            value={formData.name} onChange={changeName} ref={(input) => { this.nameInput = input; }} />
                         <label className="rm-error">{nameValidationError}</label>
 
                     </div>
                     {
-                    folderPanelState.folder.folderPath === "" && 
+                        folderPanelState.folder.folderPath === "" && 
                     <div className="rm-field right">
                         <label className="formRequired">{ localizeService.getString("Type") }</label>
                         <DropDown className="rm-dropdown" 

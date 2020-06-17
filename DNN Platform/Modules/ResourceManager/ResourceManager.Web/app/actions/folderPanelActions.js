@@ -10,12 +10,12 @@ function loadingWrap(actionFunction) {
         });
 
         actionFunction()
-        .then(() =>
-            dispatch({
-                type: actionTypes.SET_LOADING,
-                data: false
-            })
-        );
+            .then(() =>
+                dispatch({
+                    type: actionTypes.SET_LOADING,
+                    data: false
+                })
+            );
     };
 }
 
@@ -26,16 +26,16 @@ function getContent(folderPanelState, changeToFolderId=null) {
 
     return dispatch =>
         ItemsService.getContent(folderId, startIndex, numItems, sorting)
-        .then(
-            response => dispatch({
-                type: startIndex ? actionTypes.MORE_CONTENT_LOADED : actionTypes.CONTENT_LOADED,
-                data: response
-            }),
-            reason => dispatch({
-                type: actionTypes.LOAD_CONTENT_ERROR,
-                data: reason.data ? reason.data.message : null
-            })
-        );
+            .then(
+                response => dispatch({
+                    type: startIndex ? actionTypes.MORE_CONTENT_LOADED : actionTypes.CONTENT_LOADED,
+                    data: response
+                }),
+                reason => dispatch({
+                    type: actionTypes.LOAD_CONTENT_ERROR,
+                    data: reason.data ? reason.data.message : null
+                })
+            );
 }
 
 const folderPanelActions = {
@@ -64,14 +64,14 @@ const folderPanelActions = {
         return (dispatch) => {
             let deleteFolder = () =>
                 ItemsService.deleteFolder(folderToRemoveId)
-                .then(
-                    () => dispatch(getContent(folderPanelState, currentFolderId)),
+                    .then(
+                        () => dispatch(getContent(folderPanelState, currentFolderId)),
 
-                    reason => dispatch({
-                        type: actionTypes.DELETE_FOLDER_ERROR,
-                        data: reason.data ? reason.data.message : null
-                    })
-                );
+                        reason => dispatch({
+                            type: actionTypes.DELETE_FOLDER_ERROR,
+                            data: reason.data ? reason.data.message : null
+                        })
+                    );
 
             dispatch(loadingWrap(deleteFolder));
         };
@@ -82,14 +82,14 @@ const folderPanelActions = {
         return (dispatch) => {
             let deleteFile = () =>
                 ItemsService.deleteFile(fileToRemoveId)
-                .then(
-                    () => dispatch(getContent(folderPanelState, currentFolderId)),
+                    .then(
+                        () => dispatch(getContent(folderPanelState, currentFolderId)),
 
-                    reason => dispatch({
-                        type: actionTypes.DELETE_FILE_ERROR,
-                        data: reason.data ? reason.data.message : null
-                    })
-                );
+                        reason => dispatch({
+                            type: actionTypes.DELETE_FILE_ERROR,
+                            data: reason.data ? reason.data.message : null
+                        })
+                    );
 
             dispatch(loadingWrap(deleteFile));
         };
@@ -130,16 +130,16 @@ const folderPanelActions = {
         return (dispatch) => {
             let getContent = () =>
                 ItemsService.searchFiles(folderId, search, startIndex, numItems, sorting, "")
-                .then(
-                    response => dispatch({
-                        type: searchMore ? actionTypes.MORE_CONTENT_LOADED : actionTypes.FILES_SEARCHED,
-                        data: response
-                    }),
-                    reason => dispatch({
-                        type: actionTypes.SEARCH_FILES_ERROR,
-                        data: reason
-                    })
-                );
+                    .then(
+                        response => dispatch({
+                            type: searchMore ? actionTypes.MORE_CONTENT_LOADED : actionTypes.FILES_SEARCHED,
+                            data: response
+                        }),
+                        reason => dispatch({
+                            type: actionTypes.SEARCH_FILES_ERROR,
+                            data: reason
+                        })
+                    );
 
             dispatch(loadingWrap(getContent));
         };

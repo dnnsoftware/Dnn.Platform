@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import DropZone from "react-dropzone";
@@ -7,14 +8,21 @@ import api from "../globals/api";
 
 class DropZoneContainer extends React.Component {
     validateFile(file) {
-        const { maxUploadSize, maxFileUploadSizeHumanReadable, fileSizeError, invalidExtensionError } = this.props;
+        const {
+            maxUploadSize,
+            maxFileUploadSizeHumanReadable,
+            fileSizeError,
+            invalidExtensionError,
+        } = this.props;
 
         if (file.size > maxUploadSize) {
             fileSizeError(file.name, maxFileUploadSizeHumanReadable);
             return false;
         }
 
-        const validExtensions = api.getWhitelistObject().extensionWhitelist.split(",");
+        const validExtensions = api
+            .getWhitelistObject()
+            .extensionWhitelist.split(",");
         const ext = file.name.substr(file.name.lastIndexOf(".") + 1);
         let valid = false;
         for (let i = 0; i < validExtensions.length; i++) {
@@ -33,33 +41,50 @@ class DropZoneContainer extends React.Component {
     }
 
     uploadFilesHandler(acceptedFiles) {
-        const { showPanel, folderPanelState, trackProgress, uploadFiles } = this.props;
+        const {
+            showPanel,
+            folderPanelState,
+            trackProgress,
+            uploadFiles,
+        } = this.props;
         showPanel();
         const validFiles = acceptedFiles.filter(this.validateFile.bind(this));
-        uploadFiles(validFiles, this.getFolderPath(), folderPanelState, trackProgress);
+        uploadFiles(
+            validFiles,
+            this.getFolderPath(),
+            folderPanelState,
+            trackProgress
+        );
     }
 
     getFolderPath() {
-        const {folder} = this.props.folderPanelState;
+        const { folder } = this.props.folderPanelState;
         return folder ? folder.folderPath : "";
     }
 
     render() {
-        const {hasPermission, disableClick, style, activeStyle, className} = this.props;
+        const { hasPermission, style, activeStyle, className } = this.props;
 
-        return  (
-            hasPermission ?
-                <DropZone disableClick={disableClick} style={style} activeStyle={activeStyle}
-                className={className} onDrop={this.uploadFilesHandler.bind(this)}>
-                    {this.props.children}
-                </DropZone>
-                : <div>{this.props.children}</div>
+        return hasPermission ? (
+            <DropZone
+                onClick={(e) => {
+                    if (this.props.disableClick) e.preventDefault();
+                }}
+                style={style}
+                activeStyle={activeStyle}
+                className={className}
+                onDrop={this.uploadFilesHandler.bind(this)}
+            >
+                {({ getRootProps, getInputProps }) => this.props.children}
+            </DropZone>
+        ) : (
+            <div>{this.props.children}</div>
         );
     }
 }
 
 DropZoneContainer.propTypes = {
-    children: React.PropTypes.node,
+    children: PropTypes.node,
     disableClick: PropTypes.bool,
     className: PropTypes.string,
     style: PropTypes.any,
@@ -72,7 +97,7 @@ DropZoneContainer.propTypes = {
     maxUploadSize: PropTypes.number,
     maxFileUploadSizeHumanReadable: PropTypes.string,
     fileSizeError: PropTypes.func,
-    invalidExtensionError: PropTypes.func
+    invalidExtensionError: PropTypes.func,
 };
 
 function mapStateToProps(state) {
@@ -83,19 +108,22 @@ function mapStateToProps(state) {
         folderPanelState,
         maxUploadSize: moduleState.maxUploadSize,
         maxFileUploadSizeHumanReadable: moduleState.maxFileUploadSizeHumanReadable,
-        hasPermission: folderPanelState.hasAddFilesPermission
+        hasPermission: folderPanelState.hasAddFilesPermission,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({
-            showPanel: addAssetPanelActions.showPanel,
-            uploadFiles: addAssetPanelActions.uploadFiles,
-            trackProgress: addAssetPanelActions.trackProgress,
-            fileSizeError: addAssetPanelActions.fileSizeError,
-            invalidExtensionError: addAssetPanelActions.invalidExtensionError
-        }, dispatch)
+        ...bindActionCreators(
+            {
+                showPanel: addAssetPanelActions.showPanel,
+                uploadFiles: addAssetPanelActions.uploadFiles,
+                trackProgress: addAssetPanelActions.trackProgress,
+                fileSizeError: addAssetPanelActions.fileSizeError,
+                invalidExtensionError: addAssetPanelActions.invalidExtensionError,
+            },
+            dispatch
+        ),
     };
 }
 
