@@ -2768,6 +2768,12 @@
     <Content Include="images\xml.gif" />
     <Content Include="images\yellow-warning.gif" />
     <Content Include="images\yellow-warning_16px.gif" />
+    <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DesktopModules\Admin\Portals\portal.template.xsx">
+      <DependentUpon>portal.template.xsd</DependentUpon>
+    </Content>
     <None Include="Install\App_LocalResources\Locales.xml" />
     <Content Include="Install\AuthSystem\PlaceHolder.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
