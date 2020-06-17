@@ -49,6 +49,8 @@ namespace DotNetNuke.UI.WebControls
             this.AutoPostBack = autoPostBack;
         }
 
+        public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
@@ -158,7 +160,26 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Initialises the Column.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void Initialize()
+        {
+            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
+            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
+            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
+            if (HttpContext.Current == null)
+            {
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
+                this.HeaderStyle.Font.Size = new FontUnit("10pt");
+                this.HeaderStyle.Font.Bold = true;
+            }
+
+            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
+            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -209,27 +230,6 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.CheckedChanged(sender, e);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialises the Column.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Initialize()
-        {
-            this.ItemTemplate = this.CreateTemplate(ListItemType.Item);
-            this.EditItemTemplate = this.CreateTemplate(ListItemType.EditItem);
-            this.HeaderTemplate = this.CreateTemplate(ListItemType.Header);
-            if (HttpContext.Current == null)
-            {
-                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial" };
-                this.HeaderStyle.Font.Size = new FontUnit("10pt");
-                this.HeaderStyle.Font.Bold = true;
-            }
-
-            this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
-            this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }
     }
 }

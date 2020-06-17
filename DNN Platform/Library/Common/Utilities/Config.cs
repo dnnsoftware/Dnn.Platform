@@ -327,11 +327,6 @@ namespace DotNetNuke.Common.Utilities
             Save(configNav);
         }
 
-        private static bool Iis7AndAbove()
-        {
-            return Environment.OSVersion.Version.Major >= 6;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the specified upgrade connection string.
@@ -360,6 +355,11 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return databaseOwner;
+        }
+
+        private static bool Iis7AndAbove()
+        {
+            return Environment.OSVersion.Version.Major >= 6;
         }
 
         public static Provider GetDefaultProvider(string type)
@@ -829,17 +829,6 @@ namespace DotNetNuke.Common.Utilities
             return path;
         }
 
-        private static string EnumToFileName(ConfigFileType file)
-        {
-            switch (file)
-            {
-                case ConfigFileType.SolutionsExplorer:
-                    return "SolutionsExplorer.opml.config";
-                default:
-                    return file + ".config";
-            }
-        }
-
         /// <summary>
         /// UpdateInstallVersion, but only if the setting does not already exist.
         /// </summary>
@@ -881,14 +870,6 @@ namespace DotNetNuke.Common.Utilities
             return strError;
         }
 
-        private static XmlDocument UpdateInstallVersion(XmlDocument xmlConfig, Version version)
-        {
-            // only update appsetting if necessary
-            xmlConfig = AddAppSetting(xmlConfig, "InstallVersion", Globals.FormatVersion(version), false);
-
-            return xmlConfig;
-        }
-
         public static bool IsNet45OrNewer()
         {
             // Class "ReflectionContext" exists from .NET 4.5 onwards.
@@ -920,6 +901,25 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return string.Empty;
+        }
+
+        private static string EnumToFileName(ConfigFileType file)
+        {
+            switch (file)
+            {
+                case ConfigFileType.SolutionsExplorer:
+                    return "SolutionsExplorer.opml.config";
+                default:
+                    return file + ".config";
+            }
+        }
+
+        private static XmlDocument UpdateInstallVersion(XmlDocument xmlConfig, Version version)
+        {
+            // only update appsetting if necessary
+            xmlConfig = AddAppSetting(xmlConfig, "InstallVersion", Globals.FormatVersion(version), false);
+
+            return xmlConfig;
         }
     }
 }

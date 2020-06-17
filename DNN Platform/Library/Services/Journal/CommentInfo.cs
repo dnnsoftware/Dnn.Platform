@@ -45,6 +45,14 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
         public void Fill(System.Data.IDataReader dr)
         {
             this.CommentId = Null.SetNullInteger(dr["CommentId"]);
@@ -60,14 +68,6 @@ namespace DotNetNuke.Services.Journal
 
             this.UserId = Null.SetNullInteger(dr["UserId"]);
             this.DisplayName = Null.SetNullString(dr["DisplayName"]);
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
         }
 
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)

@@ -18,6 +18,8 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class SkinObject : SkinObjectBase
     {
+        private MenuBase menu;
+
         public string MenuStyle { get; set; }
 
         public string NodeXmlPath { get; set; }
@@ -41,8 +43,6 @@ namespace DotNetNuke.Web.DDRMenu
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<TemplateArgument> TemplateArguments { get; set; }
-
-        private MenuBase menu;
 
         protected override void OnPreRender(EventArgs e)
         {

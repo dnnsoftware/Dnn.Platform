@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Urls
 
         private const string DisableMobileRedirectQueryStringName = "nomo";
 
-                             // google uses the same name nomo=1 means do not redirect to mobile
+        // google uses the same name nomo=1 means do not redirect to mobile
         private const string MobileViewSiteCookieName = "dnn_IsMobile";
         private const string DisableMobileViewCookieName = "dnn_NoMobile";
 
@@ -694,117 +694,6 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             return tab;
         }
 
-        private static bool IsMobileClient()
-        {
-            return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
-        }
-
-        private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
-        {
-            var resultingCh = new StringBuilder(ch.Length);
-            foreach (char c in ch) // ch could contain several chars from the pre-defined replacement list
-            {
-                if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
-                {
-                    replacedUnwantedChars = true;
-                }
-                else
-                {
-                    resultingCh.Append(c);
-                }
-            }
-
-            ch = resultingCh.ToString();
-        }
-
-        private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
-            ref bool replacedUnwantedChars)
-        {
-            if (!options.ReplaceChars.ToUpperInvariant().Contains(ch.ToUpperInvariant()))
-            {
-                return;
-            }
-
-            if (ch != " ") // if not replacing spaces, which are implied
-            {
-                replacedUnwantedChars = true;
-            }
-
-            ch = options.PunctuationReplacement; // in list of replacment chars
-
-            // If we still have a space ensure it's encoded
-            if (ch == " ")
-            {
-                ch = options.SpaceEncoding;
-            }
-        }
-
-        internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
-        {
-            var canUseMobileDevice = true;
-            int val;
-            if (int.TryParse(request.QueryString[DisableMobileRedirectQueryStringName], out val))
-            {
-                // the nomo value is in the querystring
-                if (val == 1)
-                {
-                    // no, can't do it
-                    canUseMobileDevice = false;
-                    var cookie = new HttpCookie(DisableMobileViewCookieName)
-                    {
-                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
-                    };
-                    response.Cookies.Set(cookie);
-                }
-                else
-                {
-                    // check for disable mobile view cookie name
-                    var cookie = request.Cookies[DisableMobileViewCookieName];
-                    if (cookie != null)
-                    {
-                        // if exists, expire cookie to allow redirect
-                        cookie = new HttpCookie(DisableMobileViewCookieName)
-                        {
-                            Expires = DateTime.Now.AddMinutes(-1),
-                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
-                        };
-                        response.Cookies.Set(cookie);
-                    }
-
-                    // check the DotNetNuke cookies for allowed
-                    if (request.Cookies[DisableMobileRedirectCookieName] != null
-                        && request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
-                    {
-                        // cookies exist, can't use mobile device
-                        canUseMobileDevice = false;
-                    }
-                }
-            }
-            else
-            {
-                // look for disable mobile view cookie
-                var cookie = request.Cookies[DisableMobileViewCookieName];
-                if (cookie != null)
-                {
-                    canUseMobileDevice = false;
-                }
-            }
-
-            return canUseMobileDevice;
-        }
-
-        /// <summary>
-        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.
-        /// </summary>
-        /// <param name="tabPath">The path of the tab //admin//someothername.</param>
-        /// <param name="settings"></param>
-        /// <remarks>Duplicated in RewriteController.cs.</remarks>
-        /// <returns></returns>
-        internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
-        {
-            return RewriteController.IsAdminTab(portalId, tabPath, settings);
-        }
-
         public static string CleanNameForUrl(string urlName, FriendlyUrlOptions options, out bool replacedUnwantedChars)
         {
             replacedUnwantedChars = false;
@@ -939,6 +828,117 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             return path;
         }
 
+        internal static bool CanUseMobileDevice(HttpRequest request, HttpResponse response)
+        {
+            var canUseMobileDevice = true;
+            int val;
+            if (int.TryParse(request.QueryString[DisableMobileRedirectQueryStringName], out val))
+            {
+                // the nomo value is in the querystring
+                if (val == 1)
+                {
+                    // no, can't do it
+                    canUseMobileDevice = false;
+                    var cookie = new HttpCookie(DisableMobileViewCookieName)
+                    {
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
+                    };
+                    response.Cookies.Set(cookie);
+                }
+                else
+                {
+                    // check for disable mobile view cookie name
+                    var cookie = request.Cookies[DisableMobileViewCookieName];
+                    if (cookie != null)
+                    {
+                        // if exists, expire cookie to allow redirect
+                        cookie = new HttpCookie(DisableMobileViewCookieName)
+                        {
+                            Expires = DateTime.Now.AddMinutes(-1),
+                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/",
+                        };
+                        response.Cookies.Set(cookie);
+                    }
+
+                    // check the DotNetNuke cookies for allowed
+                    if (request.Cookies[DisableMobileRedirectCookieName] != null
+                        && request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
+                    {
+                        // cookies exist, can't use mobile device
+                        canUseMobileDevice = false;
+                    }
+                }
+            }
+            else
+            {
+                // look for disable mobile view cookie
+                var cookie = request.Cookies[DisableMobileViewCookieName];
+                if (cookie != null)
+                {
+                    canUseMobileDevice = false;
+                }
+            }
+
+            return canUseMobileDevice;
+        }
+
+        /// <summary>
+        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.
+        /// </summary>
+        /// <param name="tabPath">The path of the tab //admin//someothername.</param>
+        /// <param name="settings"></param>
+        /// <remarks>Duplicated in RewriteController.cs.</remarks>
+        /// <returns></returns>
+        internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
+        {
+            return RewriteController.IsAdminTab(portalId, tabPath, settings);
+        }
+
+        private static bool IsMobileClient()
+        {
+            return (HttpContext.Current.Request.Browser != null) && (ClientCapabilityProvider.Instance() != null) && ClientCapabilityProvider.CurrentClientCapability.IsMobile;
+        }
+
+        private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
+        {
+            var resultingCh = new StringBuilder(ch.Length);
+            foreach (char c in ch) // ch could contain several chars from the pre-defined replacement list
+            {
+                if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
+                {
+                    replacedUnwantedChars = true;
+                }
+                else
+                {
+                    resultingCh.Append(c);
+                }
+            }
+
+            ch = resultingCh.ToString();
+        }
+
+        private static void CheckCharsForReplace(FriendlyUrlOptions options, ref string ch,
+            ref bool replacedUnwantedChars)
+        {
+            if (!options.ReplaceChars.ToUpperInvariant().Contains(ch.ToUpperInvariant()))
+            {
+                return;
+            }
+
+            if (ch != " ") // if not replacing spaces, which are implied
+            {
+                replacedUnwantedChars = true;
+            }
+
+            ch = options.PunctuationReplacement; // in list of replacment chars
+
+            // If we still have a space ensure it's encoded
+            if (ch == " ")
+            {
+                ch = options.SpaceEncoding;
+            }
+        }
+
         public static string EnsureNotLeadingChar(string leading, string path)
         {
             if (leading != null && path != null
@@ -985,7 +985,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                             if (viewMobileCookie == null)
                             {
                                 response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
-                                    { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
+                                { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
                             else
                             {

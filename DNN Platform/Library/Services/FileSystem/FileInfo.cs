@@ -396,6 +396,20 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         public int ContentItemID { get; set; }
 
+        [XmlIgnore]
+        public int KeyID
+        {
+            get
+            {
+                return this.FileId;
+            }
+
+            set
+            {
+                this.FileId = value;
+            }
+        }
+
         public void Fill(IDataReader dr)
         {
             this.ContentType = Null.SetNullString(dr["ContentType"]);
@@ -424,20 +438,6 @@ namespace DotNetNuke.Services.FileSystem
             this.PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
             this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);
             this.FillBaseProperties(dr);
-        }
-
-        [XmlIgnore]
-        public int KeyID
-        {
-            get
-            {
-                return this.FileId;
-            }
-
-            set
-            {
-                this.FileId = value;
-            }
         }
 
         private void LoadImageProperties()

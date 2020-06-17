@@ -17,14 +17,9 @@ namespace DotNetNuke.Services.FileSystem.Internal
     /// </summary>
     public class FileSecurityController : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
-
         private const int BufferSize = 4096;
 
-        protected override Func<IFileSecurityController> GetFactory()
-        {
-            return () => new FileSecurityController();
-        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
 
         public bool Validate(string fileName, Stream fileContent)
         {
@@ -45,6 +40,11 @@ namespace DotNetNuke.Services.FileSystem.Internal
             {
                 return checker.Validate(copyStream);
             }
+        }
+
+        protected override Func<IFileSecurityController> GetFactory()
+        {
+            return () => new FileSecurityController();
         }
 
         private IFileSecurityChecker GetSecurityChecker(string extension)

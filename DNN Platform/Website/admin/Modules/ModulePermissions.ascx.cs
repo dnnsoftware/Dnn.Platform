@@ -30,13 +30,13 @@ namespace DotNetNuke.Modules.Admin.Modules
     {
         private readonly INavigationManager _navigationManager;
 
+        private int _moduleId = -1;
+        private ModuleInfo _module;
+
         public ModulePermissions()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private int _moduleId = -1;
-        private ModuleInfo _module;
 
         private ModuleInfo Module
         {

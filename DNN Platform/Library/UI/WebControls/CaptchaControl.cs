@@ -35,12 +35,12 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:CaptchaControl Runat=\"server\" CaptchaHeight=\"100px\" CaptchaWidth=\"300px\" />")]
     public class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
+        internal const string KEY = "captcha";
         private const int EXPIRATION_DEFAULT = 120;
         private const int LENGTH_DEFAULT = 6;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
         private const string RENDERURL_DEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARS_DEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        internal const string KEY = "captcha";
         private static readonly string[] _FontFamilies = { "Arial", "Comic Sans MS", "Courier New", "Georgia", "Lucida Console", "MS Sans Serif", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" };
 
         private static readonly Random _Rand = new Random();
@@ -67,13 +67,7 @@ namespace DotNetNuke.UI.WebControls
             this._Expiration = HostController.Instance.GetInteger("EXPIRATION_DEFAULT", EXPIRATION_DEFAULT);
         }
 
-        private bool IsDesignMode
-        {
-            get
-            {
-                return HttpContext.Current == null;
-            }
-        }
+        public event ServerValidateEventHandler UserValidated;
 
         /// <summary>
         /// Gets or sets and sets the BackGroundColor.
@@ -108,6 +102,14 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 this._BackGroundImage = value;
+            }
+        }
+
+        private bool IsDesignMode
+        {
+            get
+            {
+                return HttpContext.Current == null;
             }
         }
 
@@ -330,35 +332,127 @@ namespace DotNetNuke.UI.WebControls
         {
         }
 
-        public event ServerValidateEventHandler UserValidated;
-
         /// <summary>
-        /// Builds the url for the Handler.
+        /// Validates the posted back data.
         /// </summary>
-        private string GetUrl()
+        /// <param name="userData">The user entered data.</param>
+        /// <returns></returns>
+        public bool Validate(string userData)
         {
-            var url = this.ResolveUrl(this.RenderUrl);
-            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+            var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);
+            var cacheObj = DataCache.GetCache(cacheKey);
 
-            // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
-            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            url += "&alias=" + _portalSettings.PortalAlias.HTTPAlias;
-            return url;
+            if (cacheObj == null)
+            {
+                this._IsValid = false;
+            }
+            else
+            {
+                this._IsValid = true;
+                DataCache.RemoveCache(cacheKey);
+            }
+
+            this.OnUserValidated(new ServerValidateEventArgs(this._CaptchaText, this._IsValid));
+            return this._IsValid;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GenerateImage generates the Captch Image.
+        /// </summary>
+        /// <param name="encryptedText">The Encrypted Text to display.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        internal static Bitmap GenerateImage(string encryptedText)
+        {
+            string encodedText = Decrypt(encryptedText);
+            Bitmap bmp = null;
+            string[] Settings = Regex.Split(encodedText, _Separator);
+            try
+            {
+                int width;
+                int height;
+                if (int.TryParse(Settings[0], out width) && int.TryParse(Settings[1], out height))
+                {
+                    string text = Settings[2];
+                    string backgroundImage = Settings[3];
+
+                    Graphics g;
+                    Brush b = new SolidBrush(Color.LightGray);
+                    Brush b1 = new SolidBrush(Color.Black);
+                    if (string.IsNullOrEmpty(backgroundImage))
+                    {
+                        bmp = CreateImage(width, height);
+                    }
+                    else
+                    {
+                        bmp = (Bitmap)System.Drawing.Image.FromFile(HttpContext.Current.Request.MapPath(backgroundImage));
+                    }
+
+                    g = Graphics.FromImage(bmp);
+
+                    // Create Text
+                    GraphicsPath textPath = CreateText(text, width, height, g);
+                    if (string.IsNullOrEmpty(backgroundImage))
+                    {
+                        g.FillPath(b, textPath);
+                    }
+                    else
+                    {
+                        g.FillPath(b1, textPath);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+
+            return bmp;
         }
 
         /// <summary>
-        /// Encodes the querystring to pass to the Handler.
+        /// Creates the child controls.
         /// </summary>
-        private string EncodeTicket()
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
+
+            if (this.CaptchaWidth.IsEmpty || this.CaptchaWidth.Type != UnitType.Pixel || this.CaptchaHeight.IsEmpty || this.CaptchaHeight.Type != UnitType.Pixel)
+            {
+                throw new InvalidOperationException("Must specify size of control in pixels.");
+            }
+
+            this._image = new Image { BorderColor = this.BorderColor, BorderStyle = this.BorderStyle, BorderWidth = this.BorderWidth, ToolTip = this.ToolTip, EnableViewState = false };
+            this.Controls.Add(this._image);
+        }
+
+        /// <summary>
+        /// Gets the next Captcha.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual string GetNextCaptcha()
         {
             var sb = new StringBuilder();
+            var rand = new Random();
+            int n;
+            var intMaxLength = this.CaptchaChars.Length;
 
-            sb.Append(this.CaptchaWidth.Value.ToString());
-            sb.Append(_Separator + this.CaptchaHeight.Value);
-            sb.Append(_Separator + this._CaptchaText);
-            sb.Append(_Separator + this.BackGroundImage);
+            for (n = 0; n <= this.CaptchaLength - 1; n++)
+            {
+                sb.Append(this.CaptchaChars.Substring(rand.Next(intMaxLength), 1));
+            }
 
-            return sb.ToString();
+            var challenge = sb.ToString();
+
+            // NOTE: this could be a problem in a web farm using in-memory caching where
+            // the request might go to another server in the farm. Also, in a system
+            // with a single server or web-farm, the cache might be cleared
+            // which will cause a problem in such case unless sticky sessions are used.
+            var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
+            DataCache.SetCache(cacheKey, challenge, (DNNCacheDependency)null, DateTime.Now.AddSeconds(this._Expiration + 1),
+                Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+            return challenge;
         }
 
         /// <summary>
@@ -447,6 +541,35 @@ namespace DotNetNuke.UI.WebControls
             return textPath;
         }
 
+        /// <summary>
+        /// Builds the url for the Handler.
+        /// </summary>
+        private string GetUrl()
+        {
+            var url = this.ResolveUrl(this.RenderUrl);
+            url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
+
+            // Append the Alias to the url so that it doesn't lose track of the alias it's currently on
+            var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            url += "&alias=" + _portalSettings.PortalAlias.HTTPAlias;
+            return url;
+        }
+
+        /// <summary>
+        /// Encodes the querystring to pass to the Handler.
+        /// </summary>
+        private string EncodeTicket()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append(this.CaptchaWidth.Value.ToString());
+            sb.Append(_Separator + this.CaptchaHeight.Value);
+            sb.Append(_Separator + this._CaptchaText);
+            sb.Append(_Separator + this.BackGroundImage);
+
+            return sb.ToString();
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Decrypts the CAPTCHA Text.
@@ -521,61 +644,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GenerateImage generates the Captch Image.
-        /// </summary>
-        /// <param name="encryptedText">The Encrypted Text to display.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        internal static Bitmap GenerateImage(string encryptedText)
-        {
-            string encodedText = Decrypt(encryptedText);
-            Bitmap bmp = null;
-            string[] Settings = Regex.Split(encodedText, _Separator);
-            try
-            {
-                int width;
-                int height;
-                if (int.TryParse(Settings[0], out width) && int.TryParse(Settings[1], out height))
-                {
-                    string text = Settings[2];
-                    string backgroundImage = Settings[3];
-
-                    Graphics g;
-                    Brush b = new SolidBrush(Color.LightGray);
-                    Brush b1 = new SolidBrush(Color.Black);
-                    if (string.IsNullOrEmpty(backgroundImage))
-                    {
-                        bmp = CreateImage(width, height);
-                    }
-                    else
-                    {
-                        bmp = (Bitmap)System.Drawing.Image.FromFile(HttpContext.Current.Request.MapPath(backgroundImage));
-                    }
-
-                    g = Graphics.FromImage(bmp);
-
-                    // Create Text
-                    GraphicsPath textPath = CreateText(text, width, height, g);
-                    if (string.IsNullOrEmpty(backgroundImage))
-                    {
-                        g.FillPath(b, textPath);
-                    }
-                    else
-                    {
-                        g.FillPath(b1, textPath);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-
-            return bmp;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// GetFont gets a random font to use for the Captcha Text.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -639,50 +707,6 @@ namespace DotNetNuke.UI.WebControls
             var m = new Matrix();
             m.Translate(0, 0);
             textPath.Warp(points, rectF, m, WarpMode.Perspective, 0);
-        }
-
-        /// <summary>
-        /// Creates the child controls.
-        /// </summary>
-        protected override void CreateChildControls()
-        {
-            base.CreateChildControls();
-
-            if (this.CaptchaWidth.IsEmpty || this.CaptchaWidth.Type != UnitType.Pixel || this.CaptchaHeight.IsEmpty || this.CaptchaHeight.Type != UnitType.Pixel)
-            {
-                throw new InvalidOperationException("Must specify size of control in pixels.");
-            }
-
-            this._image = new Image { BorderColor = this.BorderColor, BorderStyle = this.BorderStyle, BorderWidth = this.BorderWidth, ToolTip = this.ToolTip, EnableViewState = false };
-            this.Controls.Add(this._image);
-        }
-
-        /// <summary>
-        /// Gets the next Captcha.
-        /// </summary>
-        /// <returns></returns>
-        protected virtual string GetNextCaptcha()
-        {
-            var sb = new StringBuilder();
-            var rand = new Random();
-            int n;
-            var intMaxLength = this.CaptchaChars.Length;
-
-            for (n = 0; n <= this.CaptchaLength - 1; n++)
-            {
-                sb.Append(this.CaptchaChars.Substring(rand.Next(intMaxLength), 1));
-            }
-
-            var challenge = sb.ToString();
-
-            // NOTE: this could be a problem in a web farm using in-memory caching where
-            // the request might go to another server in the farm. Also, in a system
-            // with a single server or web-farm, the cache might be cleared
-            // which will cause a problem in such case unless sticky sessions are used.
-            var cacheKey = string.Format(DataCache.CaptchaCacheKey, challenge);
-            DataCache.SetCache(cacheKey, challenge, (DNNCacheDependency)null, DateTime.Now.AddSeconds(this._Expiration + 1),
-                Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
-            return challenge;
         }
 
         /// <summary>
@@ -835,30 +859,6 @@ namespace DotNetNuke.UI.WebControls
             allStates[1] = this._CaptchaText;
 
             return allStates;
-        }
-
-        /// <summary>
-        /// Validates the posted back data.
-        /// </summary>
-        /// <param name="userData">The user entered data.</param>
-        /// <returns></returns>
-        public bool Validate(string userData)
-        {
-            var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);
-            var cacheObj = DataCache.GetCache(cacheKey);
-
-            if (cacheObj == null)
-            {
-                this._IsValid = false;
-            }
-            else
-            {
-                this._IsValid = true;
-                DataCache.RemoveCache(cacheKey);
-            }
-
-            this.OnUserValidated(new ServerValidateEventArgs(this._CaptchaText, this._IsValid));
-            return this._IsValid;
         }
     }
 }

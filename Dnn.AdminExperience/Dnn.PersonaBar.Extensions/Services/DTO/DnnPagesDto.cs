@@ -14,12 +14,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     [JsonObject]
     public class DnnPagesDto
     {
-        public bool HasMissingLanguages { get; set; }
-        public bool ErrorExists { get; set; }
-        public IList<LocaleInfoDto> Locales { get; }
-        public IList<DnnPageDto> Pages { get; }
-        public IList<DnnModulesDto> Modules { get; }
-
         public DnnPagesDto(IList<LocaleInfoDto> locales)
         {
             this.Locales = locales;
@@ -30,6 +24,12 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 this.Pages.Add(new DnnPageDto { CultureCode = locale.CultureCode });
             }
         }
+
+        public bool HasMissingLanguages { get; set; }
+        public bool ErrorExists { get; set; }
+        public IList<LocaleInfoDto> Locales { get; }
+        public IList<DnnPageDto> Pages { get; }
+        public IList<DnnModulesDto> Modules { get; }
 
         public DnnPageDto Page(string locale)
         {

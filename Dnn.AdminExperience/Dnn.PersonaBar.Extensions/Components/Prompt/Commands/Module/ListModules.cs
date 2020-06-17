@@ -18,10 +18,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
     [ConsoleCommand("list-modules", Constants.ModulesCategory, "Prompt_ListModules_Description")]
     public class ListModules : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("name", "Prompt_ListModules_FlagModuleName", "String")]
         private const string FlagModuleName = "name";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("title", "Prompt_ListModules_FlagModuleTitle", "String")]
         private const string FlagModuleTitle = "title";
@@ -46,10 +46,9 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         private bool? Deleted { get; set; }
         //public string PageName { get; }
 
-
         public override void Init(string[] args, DotNetNuke.Entities.Portals.PortalSettings portalSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int activeTabId)
         {
-            
+
             this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1);
             this.ModuleName = this.GetFlagValue(FlagModuleName, "Module Name", string.Empty);
             this.ModuleTitle = this.GetFlagValue(FlagModuleTitle, "Module Title", string.Empty);

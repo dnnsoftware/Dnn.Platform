@@ -10,12 +10,6 @@ namespace DotNetNuke.Data.PetaPoco
     [CLSCompliant(false)]
     public class FluentColumnMap
     {
-        public ColumnInfo ColumnInfo { get; set; }
-
-        public Func<object, object> FromDbConverter { get; set; }
-
-        public Func<object, object> ToDbConverter { get; set; }
-
         public FluentColumnMap()
         {
         }
@@ -29,6 +23,12 @@ namespace DotNetNuke.Data.PetaPoco
             : this(columnInfo, fromDbConverter, null)
         {
         }
+
+        public ColumnInfo ColumnInfo { get; set; }
+
+        public Func<object, object> FromDbConverter { get; set; }
+
+        public Func<object, object> ToDbConverter { get; set; }
 
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter, Func<object, object> toDbConverter)
         {

@@ -11,11 +11,6 @@ namespace DotNetNuke.Common.Controls
 
     public partial class Terms : PortalModuleBase
     {
-        // This call is required by the Web Form Designer.
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -40,6 +35,11 @@ namespace DotNetNuke.Common.Controls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        // This call is required by the Web Form Designer.
+        private void InitializeComponent()
+        {
         }
     }
 }

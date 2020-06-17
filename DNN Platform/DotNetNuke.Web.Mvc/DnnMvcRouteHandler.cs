@@ -23,6 +23,11 @@ namespace DotNetNuke.Web.Mvc
             this._controllerFactory = controllerFactory;
         }
 
+        IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
+        {
+            return this.GetHttpHandler(requestContext);
+        }
+
         protected virtual IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
             requestContext.HttpContext.SetSessionStateBehavior(this.GetSessionStateBehavior(requestContext));
@@ -39,11 +44,6 @@ namespace DotNetNuke.Web.Mvc
 
             IControllerFactory controllerFactory = this._controllerFactory ?? ControllerBuilder.Current.GetControllerFactory();
             return controllerFactory.GetControllerSessionBehavior(requestContext, controllerName);
-        }
-
-        IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
-        {
-            return this.GetHttpHandler(requestContext);
         }
     }
 }

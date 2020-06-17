@@ -29,17 +29,17 @@ namespace Dnn.PersonaBar.Library.Controllers
             return settings ?? GetDefaultSettings();
         }
 
+        protected override Func<IPersonaBarUserSettingsController> GetFactory()
+        {
+            return () => new PersonaBarUserSettingsController();
+        }
+
         private static UserSettings GetDefaultSettings()
         {
             return new UserSettings
             {
                 ExpandPersonaBar = false,
             };
-        }
-
-        protected override Func<IPersonaBarUserSettingsController> GetFactory()
-        {
-            return () => new PersonaBarUserSettingsController();
         }
     }
 }

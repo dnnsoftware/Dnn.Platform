@@ -15,11 +15,11 @@ namespace DotNetNuke.Entities.Urls
     [Serializable]
     public class FriendlyUrlOptions
     {
-        private static readonly object _regexLookupLock = new object();
-        private static readonly Dictionary<string, Regex> _regexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
-
         public bool ConvertDiacriticChars;
         public string IllegalChars;
+
+        private static readonly object _regexLookupLock = new object();
+        private static readonly Dictionary<string, Regex> _regexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
         public int MaxUrlPathLength;
         public string PageExtension;
         public string PunctuationReplacement;
@@ -60,6 +60,23 @@ namespace DotNetNuke.Entities.Urls
             get { return GetRegex(this.RegexMatch); }
         }
 
+        public FriendlyUrlOptions Clone()
+        {
+            var cloned = new FriendlyUrlOptions
+            {
+                PunctuationReplacement = this.PunctuationReplacement,
+                SpaceEncoding = this.SpaceEncoding,
+                MaxUrlPathLength = this.MaxUrlPathLength,
+                ConvertDiacriticChars = this.ConvertDiacriticChars,
+                PageExtension = this.PageExtension,
+                RegexMatch = this.RegexMatch,
+                ReplaceCharWithChar = this.ReplaceCharWithChar,
+                IllegalChars = this.IllegalChars,
+                ReplaceChars = this.ReplaceChars,
+            };
+            return cloned;
+        }
+
         private static Regex GetRegex(string regexText)
         {
             Regex compiledRegex;
@@ -77,23 +94,6 @@ namespace DotNetNuke.Entities.Urls
 
                 return _regexLookup[regexText] = RegexUtils.GetCachedRegex(regexText, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
-        }
-
-        public FriendlyUrlOptions Clone()
-        {
-            var cloned = new FriendlyUrlOptions
-                {
-                    PunctuationReplacement = this.PunctuationReplacement,
-                    SpaceEncoding = this.SpaceEncoding,
-                    MaxUrlPathLength = this.MaxUrlPathLength,
-                    ConvertDiacriticChars = this.ConvertDiacriticChars,
-                    PageExtension = this.PageExtension,
-                    RegexMatch = this.RegexMatch,
-                    ReplaceCharWithChar = this.ReplaceCharWithChar,
-                    IllegalChars = this.IllegalChars,
-                    ReplaceChars = this.ReplaceChars,
-                };
-            return cloned;
         }
     }
 }

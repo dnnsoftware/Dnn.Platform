@@ -144,9 +144,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-         /// <summary>
-         /// Gets or sets and Sets the ResourceFile to localize permissions.
-         /// </summary>
+        /// <summary>
+        /// Gets or sets and Sets the ResourceFile to localize permissions.
+        /// </summary>
         public string ResourceFile { get; set; }
 
         /// <summary>
@@ -210,6 +210,66 @@ namespace DotNetNuke.UI.WebControls
             {
                 this._selectedRoles = value;
             }
+        }
+
+        /// <summary>
+        /// Load the ViewState.
+        /// </summary>
+        /// <param name="savedState">The saved state.</param>
+        protected override void LoadViewState(object savedState)
+        {
+            if (savedState != null)
+            {
+                // Load State from the array of objects that was saved with SaveViewState.
+                var myState = (object[])savedState;
+
+                // Load Base Controls ViewState
+                if (myState[0] != null)
+                {
+                    base.LoadViewState(myState[0]);
+                }
+
+                // Load TabPermissions
+                if (myState[1] != null)
+                {
+                    string state = Convert.ToString(myState[1]);
+                    this.CurrentRoleSelection = state != string.Empty
+                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None))
+                                        : new List<string>();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves the ViewState.
+        /// </summary>
+        /// <returns></returns>
+        protected override object SaveViewState()
+        {
+            var allStates = new object[2];
+
+            // Save the Base Controls ViewState
+            allStates[0] = base.SaveViewState();
+
+            // Persist the TabPermisisons
+            var sb = new StringBuilder();
+            bool addDelimiter = false;
+            foreach (string role in this.CurrentRoleSelection)
+            {
+                if (addDelimiter)
+                {
+                    sb.Append("##");
+                }
+                else
+                {
+                    addDelimiter = true;
+                }
+
+                sb.Append(role);
+            }
+
+            allStates[1] = sb.ToString();
+            return allStates;
         }
 
         /// <summary>
@@ -314,66 +374,6 @@ namespace DotNetNuke.UI.WebControls
             checkCol.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             checkCol.HeaderStyle.Wrap = true;
             this.dgRoleSelection.Columns.Add(checkCol);
-        }
-
-        /// <summary>
-        /// Load the ViewState.
-        /// </summary>
-        /// <param name="savedState">The saved state.</param>
-        protected override void LoadViewState(object savedState)
-        {
-            if (savedState != null)
-            {
-                // Load State from the array of objects that was saved with SaveViewState.
-                var myState = (object[])savedState;
-
-                // Load Base Controls ViewState
-                if (myState[0] != null)
-                {
-                    base.LoadViewState(myState[0]);
-                }
-
-                // Load TabPermissions
-                if (myState[1] != null)
-                {
-                    string state = Convert.ToString(myState[1]);
-                    this.CurrentRoleSelection = state != string.Empty
-                                        ? new List<string>(state.Split(new[] { "##" }, StringSplitOptions.None))
-                                        : new List<string>();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Saves the ViewState.
-        /// </summary>
-        /// <returns></returns>
-        protected override object SaveViewState()
-        {
-            var allStates = new object[2];
-
-            // Save the Base Controls ViewState
-            allStates[0] = base.SaveViewState();
-
-            // Persist the TabPermisisons
-            var sb = new StringBuilder();
-            bool addDelimiter = false;
-            foreach (string role in this.CurrentRoleSelection)
-            {
-                if (addDelimiter)
-                {
-                    sb.Append("##");
-                }
-                else
-                {
-                    addDelimiter = true;
-                }
-
-                sb.Append(role);
-            }
-
-            allStates[1] = sb.ToString();
-            return allStates;
         }
 
         /// <summary>

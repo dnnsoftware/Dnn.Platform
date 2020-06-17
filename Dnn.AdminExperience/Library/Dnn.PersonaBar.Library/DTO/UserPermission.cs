@@ -10,6 +10,11 @@ namespace Dnn.PersonaBar.Library.DTO
     [DataContract]
     public class UserPermission
     {
+        public UserPermission()
+        {
+            this.Permissions = new List<Permission>();
+        }
+
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
 
@@ -18,10 +23,5 @@ namespace Dnn.PersonaBar.Library.DTO
 
         [DataMember(Name = "permissions")]
         public IList<Permission> Permissions { get; set; }
-
-        public UserPermission()
-        {
-            this.Permissions = new List<Permission>();
-        }
     }
 }

@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 // This is to avoid stack-overflow exception when a database connection exception occurs
                 // bercause the logger will try to write to the database and goes in a loop of failures.
-               Trace.TraceError(log.Serialize());
+                Trace.TraceError(log.Serialize());
             }
             else
             {

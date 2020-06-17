@@ -13,23 +13,6 @@ namespace DotNetNuke.Services.GeneratedImage
     /// </summary>
     public class ImageInfo
     {
-        /// <summary>
-        /// Gets image.
-        /// </summary>
-        public Image Image { get; private set; }
-
-        /// <summary>
-        /// Gets image byte buffer.
-        /// </summary>
-        public byte[] ImageByteBuffer { get; private set; }
-
-        /// <summary>
-        /// Gets http status code.
-        /// </summary>
-        public HttpStatusCode? HttpStatusCode { get; private set; }
-
-        public bool IsEmptyImage { get; set; } = false;
-
         public ImageInfo(HttpStatusCode statusCode)
         {
             this.HttpStatusCode = statusCode;
@@ -54,5 +37,22 @@ namespace DotNetNuke.Services.GeneratedImage
 
             this.ImageByteBuffer = imageBuffer;
         }
+
+        /// <summary>
+        /// Gets image.
+        /// </summary>
+        public Image Image { get; private set; }
+
+        /// <summary>
+        /// Gets image byte buffer.
+        /// </summary>
+        public byte[] ImageByteBuffer { get; private set; }
+
+        /// <summary>
+        /// Gets http status code.
+        /// </summary>
+        public HttpStatusCode? HttpStatusCode { get; private set; }
+
+        public bool IsEmptyImage { get; set; } = false;
     }
 }

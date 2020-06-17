@@ -18,6 +18,9 @@ namespace DotNetNuke.Services.Mobile
     {
         private int _id = -1;
 
+        [XmlIgnore]
+        private IList<IMatchRule> _matchRules;
+
         /// <summary>
         /// Gets or sets redirection's primary key.
         /// </summary>
@@ -66,9 +69,6 @@ namespace DotNetNuke.Services.Mobile
         /// </summary>
         [XmlAttribute]
         public RedirectionType Type { get; set; }
-
-        [XmlIgnore]
-        private IList<IMatchRule> _matchRules;
 
         /// <summary>
         /// Gets or sets when redirection type is RedirectionType.Other, should use this collection to match the request by capability info.

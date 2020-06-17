@@ -24,6 +24,14 @@ namespace DotNetNuke.UI.UserControls
         private string MyFileName = "LocaleSelectorControl.ascx";
         private string _ViewType = string.Empty;
 
+        public string CultureCode
+        {
+            get
+            {
+                return this.ddlPortalDefaultLanguage.SelectedValue;
+            }
+        }
+
         private CultureDropDownTypes DisplayType
         {
             get
@@ -63,14 +71,6 @@ namespace DotNetNuke.UI.UserControls
             if (this.Page.IsPostBack == false)
             {
                 Localization.LoadCultureDropDownList(this.ddlPortalDefaultLanguage, this.DisplayType, this.PortalSettings.DefaultLanguage, true);
-            }
-        }
-
-        public string CultureCode
-        {
-            get
-            {
-                return this.ddlPortalDefaultLanguage.SelectedValue;
             }
         }
 

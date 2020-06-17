@@ -31,24 +31,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        private void DeleteProvider()
-        {
-            try
-            {
-                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
-                if (tempUrlProvider != null)
-                {
-                    ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
-
-                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
-                }
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
@@ -96,6 +78,24 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        private void DeleteProvider()
+        {
+            try
+            {
+                ExtensionUrlProviderInfo tempUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger).Where(p => p.ProviderName == this._extensionUrlProvider.ProviderName && p.ProviderType == this._extensionUrlProvider.ProviderType).FirstOrDefault();
+                if (tempUrlProvider != null)
+                {
+                    ExtensionUrlProviderController.DeleteProvider(tempUrlProvider);
+
+                    this.Log.AddInfo(string.Format(Util.URLPROVIDER_UnRegistered, tempUrlProvider.ProviderName));
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadManifest method reads the manifest file for the compoent.
@@ -104,15 +104,15 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this._extensionUrlProvider = new ExtensionUrlProviderInfo
-                {
-                    ProviderName = Util.ReadElement(manifestNav, "urlProvider/name", this.Log, Util.URLPROVIDER_NameMissing),
-                    ProviderType = Util.ReadElement(manifestNav, "urlProvider/type", this.Log, Util.URLPROVIDER_TypeMissing),
-                    SettingsControlSrc = Util.ReadElement(manifestNav, "urlProvider/settingsControlSrc"),
-                    IsActive = true,
-                    RedirectAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/redirectAllUrls", "false")),
-                    ReplaceAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/replaceAllUrls", "false")),
-                    RewriteAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/rewriteAllUrls", "false")),
-                };
+            {
+                ProviderName = Util.ReadElement(manifestNav, "urlProvider/name", this.Log, Util.URLPROVIDER_NameMissing),
+                ProviderType = Util.ReadElement(manifestNav, "urlProvider/type", this.Log, Util.URLPROVIDER_TypeMissing),
+                SettingsControlSrc = Util.ReadElement(manifestNav, "urlProvider/settingsControlSrc"),
+                IsActive = true,
+                RedirectAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/redirectAllUrls", "false")),
+                ReplaceAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/replaceAllUrls", "false")),
+                RewriteAllUrls = Convert.ToBoolean(Util.ReadElement(manifestNav, "urlProvider/rewriteAllUrls", "false")),
+            };
 
             this._desktopModuleName = Util.ReadElement(manifestNav, "urlProvider/desktopModule");
             if (this.Log.Valid)

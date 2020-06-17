@@ -13,6 +13,15 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     /// </summary>
     public class ImageGammaTransform : ImageTransform
     {
+        public ImageGammaTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+            this.Gamma = 1;
+        }
+
         /// <summary>
         /// Gets or sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5.
         /// </summary>
@@ -22,15 +31,6 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Gamma;
-
-        public ImageGammaTransform()
-        {
-            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            this.SmoothingMode = SmoothingMode.HighQuality;
-            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            this.CompositingQuality = CompositingQuality.HighQuality;
-            this.Gamma = 1;
-        }
 
         /// <summary>
         /// Processes an input image applying a gamma image transformation.

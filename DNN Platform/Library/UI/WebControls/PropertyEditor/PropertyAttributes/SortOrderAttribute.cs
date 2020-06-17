@@ -17,8 +17,6 @@ namespace DotNetNuke.UI.WebControls
             this.Order = order;
         }
 
-        public int Order { get; set; }
-
         public static int DefaultOrder
         {
             get
@@ -26,5 +24,7 @@ namespace DotNetNuke.UI.WebControls
                 return int.MaxValue;
             }
         }
+
+        public int Order { get; set; }
     }
 }

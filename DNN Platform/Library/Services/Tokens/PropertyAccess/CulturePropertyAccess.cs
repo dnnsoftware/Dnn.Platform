@@ -11,6 +11,14 @@ namespace DotNetNuke.Services.Tokens
 
     public class CulturePropertyAccess : IPropertyAccess
     {
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             CultureInfo ci = formatProvider;
@@ -103,14 +111,6 @@ namespace DotNetNuke.Services.Tokens
 
             PropertyNotFound = true;
             return string.Empty;
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
-            }
         }
     }
 }

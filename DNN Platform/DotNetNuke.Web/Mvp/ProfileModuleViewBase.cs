@@ -20,8 +20,6 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
         where TModel : class, new()
     {
-        protected INavigationManager NavigationManager { get; }
-
         public ProfileModuleViewBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -43,6 +41,8 @@ namespace DotNetNuke.Web.Mvp
             }
         }
 
+        protected INavigationManager NavigationManager { get; }
+
         protected bool IsUser
         {
             get
@@ -54,6 +54,22 @@ namespace DotNetNuke.Web.Mvp
         protected UserInfo ProfileUser
         {
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            if (this.ProfileUserId == Null.NullInteger &&
+                            (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
+                                || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
+            {
+                // Clicked on breadcrumb - don't know which user
+                this.Response.Redirect(
+                    this.Request.IsAuthenticated
+                                      ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                      : this.GetRedirectUrl(), true);
+            }
+
+            base.OnInit(e);
         }
 
         private string GetRedirectUrl()
@@ -72,22 +88,6 @@ namespace DotNetNuke.Web.Mvp
             }
 
             return redirectUrl;
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            if (this.ProfileUserId == Null.NullInteger &&
-                            (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
-                                || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
-            {
-                // Clicked on breadcrumb - don't know which user
-                this.Response.Redirect(
-                    this.Request.IsAuthenticated
-                                      ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                      : this.GetRedirectUrl(), true);
-            }
-
-            base.OnInit(e);
         }
     }
 }

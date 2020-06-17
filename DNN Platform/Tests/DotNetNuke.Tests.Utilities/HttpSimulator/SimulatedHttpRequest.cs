@@ -61,10 +61,22 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this._physicalFilePath = physicalFilePath;
         }
 
-        internal void SetReferer(Uri referer)
-        {
-            this._referer = referer;
-        }
+        // public override string GetProtocol()
+        // {
+        //    return (_port == 443) ? "https:" : "http:";
+        // }
+
+        /// <summary>
+        /// Gets the headers.
+        /// </summary>
+        /// <value>The headers.</value>
+        public NameValueCollection Headers { get; private set; }
+
+        /// <summary>
+        /// Gets the format exception.
+        /// </summary>
+        /// <value>The format exception.</value>
+        public NameValueCollection Form { get; private set; }
 
         /// <summary>
         /// Returns the specified member of the request header.
@@ -87,6 +99,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return this._host;
         }
 
+        internal void SetReferer(Uri referer)
+        {
+            this._referer = referer;
+        }
+
         public override int GetLocalPort()
         {
             return this._port;
@@ -96,23 +113,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             return (this._port == 443) ? true : false;
         }
-
-        // public override string GetProtocol()
-        // {
-        //    return (_port == 443) ? "https:" : "http:";
-        // }
-
-        /// <summary>
-        /// Gets the headers.
-        /// </summary>
-        /// <value>The headers.</value>
-        public NameValueCollection Headers { get; private set; }
-
-        /// <summary>
-        /// Gets the format exception.
-        /// </summary>
-        /// <value>The format exception.</value>
-        public NameValueCollection Form { get; private set; }
 
         /// <summary>
         /// Get all nonstandard HTTP header name-value pairs.

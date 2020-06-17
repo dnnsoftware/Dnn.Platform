@@ -92,9 +92,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             Provider.DeleteTabVersionDetailByModule(moduleId);
         }
 
-        private void ClearCache(int tabId)
+        protected override Func<ITabVersionController> GetFactory()
         {
-            DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
+            return () => new TabVersionController();
         }
 
         private static string GetTabVersionsCacheKey(int tabId)
@@ -102,9 +102,9 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return string.Format(DataCache.TabVersionsCacheKey, tabId);
         }
 
-        protected override Func<ITabVersionController> GetFactory()
+        private void ClearCache(int tabId)
         {
-            return () => new TabVersionController();
+            DataCache.RemoveCache(GetTabVersionsCacheKey(tabId));
         }
     }
 }

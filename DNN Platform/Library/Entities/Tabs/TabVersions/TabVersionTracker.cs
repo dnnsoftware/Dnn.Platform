@@ -163,6 +163,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
+        protected override Func<ITabChangeTracker> GetFactory()
+        {
+            return () => new TabVersionTracker();
+        }
+
         private static void ProcessAdditionDetail(ModuleInfo module, int moduleVersion, int userId, TabVersion targetVersion)
         {
             if (IsHostModule(module))
@@ -258,11 +263,6 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 PaneName = paneName,
                 Action = action,
             };
-        }
-
-        protected override Func<ITabChangeTracker> GetFactory()
-        {
-            return () => new TabVersionTracker();
         }
     }
 }

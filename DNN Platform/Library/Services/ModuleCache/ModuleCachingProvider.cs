@@ -29,6 +29,10 @@ namespace DotNetNuke.Services.ModuleCache
             }
         }
 
+        public abstract string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy);
+
+        public abstract int GetItemCount(int tabModuleId);
+
         protected string ByteArrayToString(byte[] arrInput)
         {
             int i;
@@ -40,10 +44,6 @@ namespace DotNetNuke.Services.ModuleCache
 
             return sOutput.ToString();
         }
-
-        public abstract string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy);
-
-        public abstract int GetItemCount(int tabModuleId);
 
         public abstract byte[] GetModule(int tabModuleId, string cacheKey);
 

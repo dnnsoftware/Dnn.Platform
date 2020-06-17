@@ -73,6 +73,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             return visible;
         }
 
+        protected override Func<IPersonaBarController> GetFactory()
+        {
+            return () => new PersonaBarController();
+        }
+
         private bool GetPersonaBarMenuWithPermissionCheck(PortalSettings portalSettings, UserInfo user, IList<MenuItem> filterItems, IList<MenuItem> menuItems)
         {
             var menuFiltered = false;
@@ -193,11 +198,6 @@ namespace Dnn.PersonaBar.Library.Controllers
                 Logger.Error(ex);
                 return null;
             }
-        }
-
-        protected override Func<IPersonaBarController> GetFactory()
-        {
-            return () => new PersonaBarController();
         }
     }
 }

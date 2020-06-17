@@ -96,7 +96,7 @@ namespace DotNetNuke.Tests.Integration.Tests
 
         private bool LanguageEnabled(int portalId, string secondLanguage)
         {
-            var portalLanguages = CBO.FillDictionary<string, Locale>("CultureCode",  DataProvider.Instance().GetLanguagesByPortal(portalId));
+            var portalLanguages = CBO.FillDictionary<string, Locale>("CultureCode", DataProvider.Instance().GetLanguagesByPortal(portalId));
             if (!portalLanguages.ContainsKey(secondLanguage))
             {
                 var connector = WebApiTestHelper.LoginHost();

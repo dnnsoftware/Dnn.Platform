@@ -62,11 +62,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             MockComponentProvider.ResetContainer();
         }
 
-        private string GetValue(string key)
-        {
-            return this._hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
-        }
-
         [Test]
         public void HostController_GetSettings_GetList()
         {
@@ -108,6 +103,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             // Assert
             CollectionAssert.AreEquivalent(expectedDic.Values, settingsDic.Values);
+        }
+
+        private string GetValue(string key)
+        {
+            return this._hostSettingsTable.Rows.Find(key)["SettingValue"].ToString();
         }
 
         [Test]

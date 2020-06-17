@@ -193,6 +193,30 @@ namespace DotNetNuke.Services.Tokens
         public UserInfo User { get; set; }
 
         /// <summary>
+        /// Replaces tokens in sourceText parameter with the property values.
+        /// </summary>
+        /// <param name="sourceText">String with [Object:Property] tokens.</param>
+        /// <returns>string containing replaced values.</returns>
+        public string ReplaceEnvironmentTokens(string sourceText)
+        {
+            return this.ReplaceTokens(sourceText);
+        }
+
+        /// <summary>
+        /// Replaces tokens in sourceText parameter with the property values.
+        /// </summary>
+        /// <param name="sourceText">String with [Object:Property] tokens.</param>
+        /// <param name="row"></param>
+        /// <returns>string containing replaced values.</returns>
+        public string ReplaceEnvironmentTokens(string sourceText, DataRow row)
+        {
+            var rowProperties = new DataRowPropertyAccess(row);
+            this.PropertySource["field"] = rowProperties;
+            this.PropertySource["row"] = rowProperties;
+            return this.ReplaceTokens(sourceText);
+        }
+
+        /// <summary>
         /// setup context by creating appropriate objects.
         /// </summary>
         /// <remarks >
@@ -232,30 +256,6 @@ namespace DotNetNuke.Services.Tokens
                 this.PropertySource["membership"] = new MembershipPropertyAccess(this.User);
                 this.PropertySource["profile"] = new ProfilePropertyAccess(this.User);
             }
-        }
-
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <returns>string containing replaced values.</returns>
-        public string ReplaceEnvironmentTokens(string sourceText)
-        {
-            return this.ReplaceTokens(sourceText);
-        }
-
-        /// <summary>
-        /// Replaces tokens in sourceText parameter with the property values.
-        /// </summary>
-        /// <param name="sourceText">String with [Object:Property] tokens.</param>
-        /// <param name="row"></param>
-        /// <returns>string containing replaced values.</returns>
-        public string ReplaceEnvironmentTokens(string sourceText, DataRow row)
-        {
-            var rowProperties = new DataRowPropertyAccess(row);
-            this.PropertySource["field"] = rowProperties;
-            this.PropertySource["row"] = rowProperties;
-            return this.ReplaceTokens(sourceText);
         }
 
         /// <summary>

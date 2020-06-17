@@ -24,6 +24,11 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         }
 
         /// <summary>
+        /// This event gets fired when any activity gets recorded
+        /// </summary>
+        public event ActivityEventHandler Activity;
+
+        /// <summary>
         /// Gets or sets any details of the task while it's executing.
         /// </summary>
         public string Details
@@ -63,10 +68,5 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// Main method to execute the step.
         /// </summary>
         public abstract void Execute();
-
-        /// <summary>
-        /// This event gets fired when any activity gets recorded
-        /// </summary>
-        public event ActivityEventHandler Activity;
     }
 }

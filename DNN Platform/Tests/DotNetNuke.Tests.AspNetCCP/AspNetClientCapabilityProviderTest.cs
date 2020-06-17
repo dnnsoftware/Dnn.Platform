@@ -17,8 +17,8 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
     [TestFixture]
     public class AspNetClientCapabilityProviderTest
     {
-        private Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider _clientCapabilityProvider;
         private const string iphoneUserAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7";
+        private Providers.AspNetClientCapabilityProvider.AspNetClientCapabilityProvider _clientCapabilityProvider;
 
         [SetUp]
         public void Setup()

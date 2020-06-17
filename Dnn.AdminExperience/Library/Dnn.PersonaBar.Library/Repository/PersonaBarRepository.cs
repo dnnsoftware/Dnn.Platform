@@ -17,9 +17,9 @@ namespace Dnn.PersonaBar.Library.Repository
     public class PersonaBarRepository : ServiceLocator<IPersonaBarRepository, PersonaBarRepository>,
         IPersonaBarRepository
     {
-        private readonly IDataService _dataService = new DataService();
         private const string PersonaBarMenuCacheKey = "PersonaBarMenu";
         private static readonly object ThreadLocker = new object();
+        private readonly IDataService _dataService = new DataService();
 
         public PersonaBarMenu GetMenu()
         {
@@ -106,6 +106,11 @@ namespace Dnn.PersonaBar.Library.Repository
             this.ClearCache();
         }
 
+        protected override Func<IPersonaBarRepository> GetFactory()
+        {
+            return () => new PersonaBarRepository();
+        }
+
         private void InjectMenuItems(MenuItem parent, IList<MenuItem> menuItems)
         {
             foreach (var menuItem in menuItems.Where(m => m.ParentId == parent.MenuId))
@@ -118,11 +123,6 @@ namespace Dnn.PersonaBar.Library.Repository
         private void ClearCache()
         {
             DataCache.RemoveCache(PersonaBarMenuCacheKey);
-        }
-
-        protected override Func<IPersonaBarRepository> GetFactory()
-        {
-            return () => new PersonaBarRepository();
         }
     }
 }

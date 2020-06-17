@@ -27,20 +27,6 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Underlying DataSource.
-        /// </summary>
-        /// <value>An IEnumerable.</value>
-        /// -----------------------------------------------------------------------------
-        protected override IEnumerable UnderlyingDataSource
-        {
-            get
-            {
-                return this.GetSettings();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the CustomEditors that are used by this control.
         /// </summary>
         /// <value>The CustomEditors object.</value>
@@ -55,6 +41,32 @@ namespace DotNetNuke.UI.WebControls
         /// <value>The CustomEditors object.</value>
         /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Underlying DataSource.
+        /// </summary>
+        /// <value>An IEnumerable.</value>
+        /// -----------------------------------------------------------------------------
+        protected override IEnumerable UnderlyingDataSource
+        {
+            get
+            {
+                return this.GetSettings();
+            }
+        }
+
+        protected override void AddEditorRow(Table table, object obj)
+        {
+            var info = (SettingInfo)obj;
+            this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
+        }
+
+        protected override void AddEditorRow(Panel container, object obj)
+        {
+            var info = (SettingInfo)obj;
+            this.AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -79,18 +91,6 @@ namespace DotNetNuke.UI.WebControls
 
             arrSettings.Sort(new SettingNameComparer());
             return arrSettings;
-        }
-
-        protected override void AddEditorRow(Table table, object obj)
-        {
-            var info = (SettingInfo)obj;
-            this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
-        }
-
-        protected override void AddEditorRow(Panel container, object obj)
-        {
-            var info = (SettingInfo)obj;
-            this.AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
         protected override void AddEditorRow(object obj)

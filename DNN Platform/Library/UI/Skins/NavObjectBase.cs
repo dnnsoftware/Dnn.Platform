@@ -124,14 +124,6 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        protected NavigationProvider Control
-        {
-            get
-            {
-                return this.m_objControl;
-            }
-        }
-
         public string Level
         {
             get
@@ -155,6 +147,14 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.m_strToolTip = value;
+            }
+        }
+
+        protected NavigationProvider Control
+        {
+            get
+            {
+                return this.m_objControl;
             }
         }
 
@@ -2408,6 +2408,11 @@ namespace DotNetNuke.UI.Skins
             objParent.Controls.Add(this.Control.NavigationControl);
         }
 
+        protected void Bind(DNNNodeCollection objNodes)
+        {
+            this.Control.Bind(objNodes);
+        }
+
         private void AssignControlProperties()
         {
             if (!string.IsNullOrEmpty(this.m_strPathSystemImage))
@@ -2806,11 +2811,6 @@ namespace DotNetNuke.UI.Skins
             }
 
             this.Control.CustomAttributes = this.CustomAttributes;
-        }
-
-        protected void Bind(DNNNodeCollection objNodes)
-        {
-            this.Control.Bind(objNodes);
         }
 
         private string GetPath(string strPath)

@@ -86,37 +86,6 @@ namespace DotNetNuke.Entities.Portals
             return activeTab;
         }
 
-        protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
-        {
-            var breadCrumbs = new List<TabInfo>();
-            GetBreadCrumbs(breadCrumbs, tabId, portalId);
-            return breadCrumbs;
-        }
-
-        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
-        {
-            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
-            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-            while (true)
-            {
-                TabInfo tab;
-                if (portalTabs.TryGetValue(tabId, out tab) || hostTabs.TryGetValue(tabId, out tab))
-                {
-                    // add tab to breadcrumb collection
-                    breadCrumbs.Insert(0, tab.Clone());
-
-                    // get the tab parent
-                    if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
-                    {
-                        tabId = tab.ParentId;
-                        continue;
-                    }
-                }
-
-                break;
-            }
-        }
-
         public virtual PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId)
         {
             var aliasMapping = PortalSettings.PortalAliasMapping.None;
@@ -138,33 +107,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return aliasMapping;
-        }
-
-        private static TabInfo GetSpecialTab(int portalId, int tabId)
-        {
-            TabInfo activeTab = null;
-
-            if (tabId > 0)
-            {
-                var tab = TabController.Instance.GetTab(tabId, portalId, false);
-                if (tab != null)
-                {
-                    activeTab = tab.Clone();
-                }
-            }
-
-            return activeTab;
-        }
-
-        // This method is called few times wiht each request; it would be
-        // better to have it cache the "activeTab" for a short period.
-        private static TabInfo GetTab(int tabId, TabCollection tabs)
-        {
-            TabInfo tab;
-            var activeTab = tabId != Null.NullInteger && tabs.TryGetValue(tabId, out tab) && !tab.IsDeleted
-                ? tab.Clone()
-                : null;
-            return activeTab;
         }
 
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
@@ -215,6 +157,64 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.Pages = portal.Pages;
             portalSettings.Users = portal.Users;
             portalSettings.CultureCode = portal.CultureCode;
+        }
+
+        protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
+        {
+            var breadCrumbs = new List<TabInfo>();
+            GetBreadCrumbs(breadCrumbs, tabId, portalId);
+            return breadCrumbs;
+        }
+
+        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
+        {
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
+            while (true)
+            {
+                TabInfo tab;
+                if (portalTabs.TryGetValue(tabId, out tab) || hostTabs.TryGetValue(tabId, out tab))
+                {
+                    // add tab to breadcrumb collection
+                    breadCrumbs.Insert(0, tab.Clone());
+
+                    // get the tab parent
+                    if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
+                    {
+                        tabId = tab.ParentId;
+                        continue;
+                    }
+                }
+
+                break;
+            }
+        }
+
+        private static TabInfo GetSpecialTab(int portalId, int tabId)
+        {
+            TabInfo activeTab = null;
+
+            if (tabId > 0)
+            {
+                var tab = TabController.Instance.GetTab(tabId, portalId, false);
+                if (tab != null)
+                {
+                    activeTab = tab.Clone();
+                }
+            }
+
+            return activeTab;
+        }
+
+        // This method is called few times wiht each request; it would be
+        // better to have it cache the "activeTab" for a short period.
+        private static TabInfo GetTab(int tabId, TabCollection tabs)
+        {
+            TabInfo tab;
+            var activeTab = tabId != Null.NullInteger && tabs.TryGetValue(tabId, out tab) && !tab.IsDeleted
+                ? tab.Clone()
+                : null;
+            return activeTab;
         }
 
         public virtual void LoadPortalSettings(PortalSettings portalSettings)

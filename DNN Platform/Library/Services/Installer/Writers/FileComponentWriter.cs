@@ -41,6 +41,32 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Package = package;
         }
 
+        public int InstallOrder
+        {
+            get
+            {
+                return this._InstallOrder;
+            }
+
+            set
+            {
+                this._InstallOrder = value;
+            }
+        }
+
+        public int UnInstallOrder
+        {
+            get
+            {
+                return this._UnInstallOrder;
+            }
+
+            set
+            {
+                this._UnInstallOrder = value;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the name of the Collection Node ("files").
@@ -111,30 +137,43 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        public int InstallOrder
+        public virtual void WriteManifest(XmlWriter writer)
         {
-            get
+            // Start component Element
+            writer.WriteStartElement("component");
+            writer.WriteAttributeString("type", this.ComponentType);
+            if (this.InstallOrder > Null.NullInteger)
             {
-                return this._InstallOrder;
+                writer.WriteAttributeString("installOrder", this.InstallOrder.ToString());
             }
 
-            set
+            if (this.UnInstallOrder > Null.NullInteger)
             {
-                this._InstallOrder = value;
-            }
-        }
-
-        public int UnInstallOrder
-        {
-            get
-            {
-                return this._UnInstallOrder;
+                writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
             }
 
-            set
+            // Start files element
+            writer.WriteStartElement(this.CollectionNodeName);
+
+            // Write custom manifest items
+            this.WriteCustomManifest(writer);
+
+            // Write basePath Element
+            if (!string.IsNullOrEmpty(this._BasePath))
             {
-                this._UnInstallOrder = value;
+                writer.WriteElementString("basePath", this._BasePath);
             }
+
+            foreach (InstallFile file in this._Files.Values)
+            {
+                this.WriteFileElement(writer, file);
+            }
+
+            // End files Element
+            writer.WriteEndElement();
+
+            // End component Element
+            writer.WriteEndElement();
         }
 
         /// -----------------------------------------------------------------------------
@@ -180,45 +219,6 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 
             // Close file Element
-            writer.WriteEndElement();
-        }
-
-        public virtual void WriteManifest(XmlWriter writer)
-        {
-            // Start component Element
-            writer.WriteStartElement("component");
-            writer.WriteAttributeString("type", this.ComponentType);
-            if (this.InstallOrder > Null.NullInteger)
-            {
-                writer.WriteAttributeString("installOrder", this.InstallOrder.ToString());
-            }
-
-            if (this.UnInstallOrder > Null.NullInteger)
-            {
-                writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
-            }
-
-            // Start files element
-            writer.WriteStartElement(this.CollectionNodeName);
-
-            // Write custom manifest items
-            this.WriteCustomManifest(writer);
-
-            // Write basePath Element
-            if (!string.IsNullOrEmpty(this._BasePath))
-            {
-                writer.WriteElementString("basePath", this._BasePath);
-            }
-
-            foreach (InstallFile file in this._Files.Values)
-            {
-                this.WriteFileElement(writer, file);
-            }
-
-            // End files Element
-            writer.WriteEndElement();
-
-            // End component Element
             writer.WriteEndElement();
         }
     }

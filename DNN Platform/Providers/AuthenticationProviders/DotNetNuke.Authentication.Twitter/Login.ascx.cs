@@ -13,14 +13,14 @@ namespace DotNetNuke.Authentication.Twitter
 
     public partial class Login : OAuthLoginBase
     {
-        protected override string AuthSystemApplicationName
-        {
-            get { return "Twitter"; }
-        }
-
         public override bool SupportsRegistration
         {
             get { return true; }
+        }
+
+        protected override string AuthSystemApplicationName
+        {
+            get { return "Twitter"; }
         }
 
         protected override UserData GetCurrentUser()

@@ -22,6 +22,11 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {
+        public DnnSkinComboBox()
+        {
+            this.PortalId = Null.NullInteger;
+        }
+
         public int PortalId { get; set; }
 
         public string RootPath { get; set; }
@@ -35,11 +40,6 @@ namespace DotNetNuke.Web.UI.WebControls
         private PortalInfo Portal
         {
             get { return this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId); }
-        }
-
-        public DnnSkinComboBox()
-        {
-            this.PortalId = Null.NullInteger;
         }
 
         protected override void OnLoad(EventArgs e)

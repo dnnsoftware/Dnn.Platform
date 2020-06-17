@@ -98,6 +98,25 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public int KeyID
+        {
+            get
+            {
+                return this.WorkflowStatePermissionID;
+            }
+
+            set
+            {
+                this.WorkflowStatePermissionID = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.
         /// </summary>
         /// <param name = "obj">a WorkflowStatePermissionObject.</param>
@@ -166,25 +185,6 @@ namespace DotNetNuke.Security.Permissions
 
             this.WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);
             this.StateID = Null.SetNullInteger(dr["StateID"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        public int KeyID
-        {
-            get
-            {
-                return this.WorkflowStatePermissionID;
-            }
-
-            set
-            {
-                this.WorkflowStatePermissionID = value;
-            }
         }
     }
 }

@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                             (HttpContext.Current.Items["DDRMenuHostControl"] as Control).ResolveUrl(
                                 "~/Admin/Skins/" + Localization.LocalResourceDirectory + "/User.ascx"));
 
-// ReSharper restore PossibleNullReferenceException
+                // ReSharper restore PossibleNullReferenceException
             }
             catch (Exception exc)
             {

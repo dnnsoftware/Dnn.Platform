@@ -21,8 +21,10 @@ namespace DotNetNuke.UI.UserControls
     public abstract class User : UserControlBase
     {
         protected HtmlTableRow ConfirmPasswordRow;
-        private string MyFileName = "User.ascx";
         protected HtmlTableRow PasswordRow;
+        protected Label lblUsername;
+        protected Label lblUsernameAsterisk;
+        private string MyFileName = "User.ascx";
         private string _Confirm;
         private string _ControlColumnWidth = string.Empty;
         private string _Email;
@@ -36,8 +38,6 @@ namespace DotNetNuke.UI.UserControls
         private int _StartTabIndex = 1;
         private string _UserName;
         private string _Website;
-        protected Label lblUsername;
-        protected Label lblUsernameAsterisk;
         protected LabelControl plConfirm;
         protected LabelControl plEmail;
         protected LabelControl plFirstName;

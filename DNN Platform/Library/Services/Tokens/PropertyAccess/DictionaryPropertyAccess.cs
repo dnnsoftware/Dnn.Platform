@@ -18,6 +18,14 @@ namespace DotNetNuke.Services.Tokens
             this.NameValueCollection = list;
         }
 
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.notCacheable;
+            }
+        }
+
         public virtual string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             if (this.NameValueCollection == null)
@@ -54,14 +62,6 @@ namespace DotNetNuke.Services.Tokens
             {
                 PropertyNotFound = true;
                 return string.Empty;
-            }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
             }
         }
     }

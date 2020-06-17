@@ -25,14 +25,14 @@ namespace Dnn.ExportImport.Components.Providers
             Provider = new DataProvider();
         }
 
-        public static DataProvider Instance()
-        {
-            return Provider;
-        }
-
         private DataProvider()
         {
             // so it can't be instantiated outside this class
+        }
+
+        public static DataProvider Instance()
+        {
+            return Provider;
         }
 
         public void UpdateRecordChangers(string tableName, string primaryKeyName, int primaryKeyId, int? createdBy, int? modifiedBy)

@@ -10,6 +10,11 @@ namespace DotNetNuke.Web.Models
     [DataContract]
     public class SiteDetail
     {
+        public SiteDetail()
+        {
+            this.Modules = new List<ModuleDetail>();
+        }
+
         [DataMember]
         public string DnnVersion { get; set; }
 
@@ -24,10 +29,5 @@ namespace DotNetNuke.Web.Models
 
         [DataMember]
         public IList<ModuleDetail> Modules { get; set; }
-
-        public SiteDetail()
-        {
-            this.Modules = new List<ModuleDetail>();
-        }
     }
 }

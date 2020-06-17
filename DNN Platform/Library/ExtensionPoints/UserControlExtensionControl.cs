@@ -13,32 +13,6 @@ namespace DotNetNuke.ExtensionPoints
     [ToolboxData("<{0}:UserControlExtensionControl runat=server></{0}:UserControlExtensionControl>")]
     public class UserControlExtensionControl : DefaultExtensionControl
     {
-        private void LoadControl(IUserControlExtensionPoint extension)
-        {
-            var control = this.Page.LoadControl(extension.UserControlSrc);
-            control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
-            this.Controls.Add(control);
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            var extensionPointManager = new ExtensionPointManager();
-
-            if (!string.IsNullOrEmpty(this.Name))
-            {
-                var extension = extensionPointManager.GetUserControlExtensionPointFirstByPriority(this.Module, this.Name);
-                this.LoadControl(extension);
-            }
-            else
-            {
-                foreach (var extension in extensionPointManager.GetUserControlExtensionPoints(this.Module, this.Group))
-                {
-                    this.LoadControl(extension);
-                }
-            }
-        }
-
         public void BindAction(int portalId, int tabId, int moduleId)
         {
             foreach (var control in this.Controls)
@@ -61,6 +35,32 @@ namespace DotNetNuke.ExtensionPoints
                     actionsControl.SaveAction(portalId, tabId, moduleId);
                 }
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            var extensionPointManager = new ExtensionPointManager();
+
+            if (!string.IsNullOrEmpty(this.Name))
+            {
+                var extension = extensionPointManager.GetUserControlExtensionPointFirstByPriority(this.Module, this.Name);
+                this.LoadControl(extension);
+            }
+            else
+            {
+                foreach (var extension in extensionPointManager.GetUserControlExtensionPoints(this.Module, this.Group))
+                {
+                    this.LoadControl(extension);
+                }
+            }
+        }
+
+        private void LoadControl(IUserControlExtensionPoint extension)
+        {
+            var control = this.Page.LoadControl(extension.UserControlSrc);
+            control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
+            this.Controls.Add(control);
         }
 
         public void CancelAction(int portalId, int tabId, int moduleId)

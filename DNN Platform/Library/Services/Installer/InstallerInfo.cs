@@ -360,7 +360,7 @@ namespace DotNetNuke.Services.Installer
                                 }
                                 else if (file.Extension == "dnn6" && (this.ManifestFile.Extension == "dnn" || this.ManifestFile.Extension == "dnn5"))
                                 {
-                                   this.ManifestFile = file;
+                                    this.ManifestFile = file;
                                 }
                                 else if (file.Extension == "dnn5" && this.ManifestFile.Extension == "dnn")
                                 {

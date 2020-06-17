@@ -24,11 +24,6 @@ namespace DotNetNuke.Modules.RazorHost
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        private void DisplayExtension()
-        {
-            this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
-        }
-
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         protected override void OnInit(EventArgs e)
         {
@@ -45,6 +40,11 @@ namespace DotNetNuke.Modules.RazorHost
             base.OnLoad(e);
 
             this.DisplayExtension();
+        }
+
+        private void DisplayExtension()
+        {
+            this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]

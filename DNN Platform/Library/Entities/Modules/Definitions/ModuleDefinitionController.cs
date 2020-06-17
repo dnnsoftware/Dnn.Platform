@@ -31,15 +31,35 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleDefinitionsCallBack gets a Dictionary of Module Definitions from
-        /// the Database.
+        /// GetModuleDefinitionByID gets a Module Definition by its ID.
         /// </summary>
-        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call.</param>
+        /// <param name="moduleDefID">The ID of the Module Definition.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
-        private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
+        public static ModuleDefinitionInfo GetModuleDefinitionByID(int moduleDefID)
         {
-            return CBO.FillDictionary(key, dataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
+            return (from kvp in GetModuleDefinitions()
+                    where kvp.Value.ModuleDefID == moduleDefID
+                    select kvp.Value)
+                   .FirstOrDefault();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
+        /// Name (and DesktopModuleID).
+        /// </summary>
+        /// <param name="friendlyName">The friendly name.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
+        {
+            Requires.NotNullOrEmpty("friendlyName", friendlyName);
+
+            return (from kvp in GetModuleDefinitions()
+                    where kvp.Value.FriendlyName == friendlyName
+                    select kvp.Value)
+                   .FirstOrDefault();
         }
 
         /// -----------------------------------------------------------------------------
@@ -82,35 +102,15 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleDefinitionByID gets a Module Definition by its ID.
+        /// GetModuleDefinitionsCallBack gets a Dictionary of Module Definitions from
+        /// the Database.
         /// </summary>
-        /// <param name="moduleDefID">The ID of the Module Definition.</param>
-        /// <returns></returns>
+        /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
-        public static ModuleDefinitionInfo GetModuleDefinitionByID(int moduleDefID)
+        private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
         {
-            return (from kvp in GetModuleDefinitions()
-                    where kvp.Value.ModuleDefID == moduleDefID
-                    select kvp.Value)
-                   .FirstOrDefault();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
-        /// Name (and DesktopModuleID).
-        /// </summary>
-        /// <param name="friendlyName">The friendly name.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
-        {
-            Requires.NotNullOrEmpty("friendlyName", friendlyName);
-
-            return (from kvp in GetModuleDefinitions()
-                    where kvp.Value.FriendlyName == friendlyName
-                    select kvp.Value)
-                   .FirstOrDefault();
+            return CBO.FillDictionary(key, dataProvider.GetModuleDefinitions(), new Dictionary<int, ModuleDefinitionInfo>());
         }
 
         /// -----------------------------------------------------------------------------

@@ -32,11 +32,6 @@ namespace DotNetNuke.Web.Api
             return false;
         }
 
-        private bool ModuleIsSupported(ModuleInfo module)
-        {
-            return this._supportedModules.Contains(module.DesktopModule.ModuleName);
-        }
-
         protected virtual ModuleInfo FindModuleInfo(HttpRequestMessage request)
         {
             return request.FindModuleInfo();
@@ -45,6 +40,11 @@ namespace DotNetNuke.Web.Api
         protected override bool SkipAuthorization(HttpActionContext actionContext)
         {
             return false;
+        }
+
+        private bool ModuleIsSupported(ModuleInfo module)
+        {
+            return this._supportedModules.Contains(module.DesktopModule.ModuleName);
         }
     }
 }

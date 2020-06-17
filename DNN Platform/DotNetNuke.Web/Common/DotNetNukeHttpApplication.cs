@@ -44,6 +44,35 @@ namespace DotNetNuke.Web.Common.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
+        private static readonly string[] Endings =
+            {
+                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",
+            };
+
+        private static void RegisterIfNotAlreadyRegistered<TConcrete>()
+            where TConcrete : class, new()
+        {
+            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>(string.Empty);
+        }
+
+        private static void RegisterIfNotAlreadyRegistered<TAbstract, TConcrete>(string name)
+            where TAbstract : class
+            where TConcrete : class, new()
+        {
+            var provider = ComponentFactory.GetComponent<TAbstract>();
+            if (provider == null)
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    ComponentFactory.RegisterComponentInstance<TAbstract>(new TConcrete());
+                }
+                else
+                {
+                    ComponentFactory.RegisterComponentInstance<TAbstract>(name, new TConcrete());
+                }
+            }
+        }
+
         private void Application_Error(object sender, EventArgs eventArgs)
         {
             // Code that runs when an unhandled error occurs
@@ -80,9 +109,9 @@ namespace DotNetNuke.Web.Common.Internal
             ComponentFactory.InstallComponents(new ProviderInstaller("logging", typeof(LoggingProvider), typeof(DBLoggingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("scheduling", typeof(SchedulingProvider), typeof(DNNScheduler)));
             ComponentFactory.InstallComponents(new ProviderInstaller("searchIndex", typeof(IndexingProvider), typeof(ModuleIndexer)));
-            #pragma warning disable 0618
+#pragma warning disable 0618
             ComponentFactory.InstallComponents(new ProviderInstaller("searchDataStore", typeof(SearchDataStoreProvider), typeof(SearchDataStore)));
-            #pragma warning restore 0618
+#pragma warning restore 0618
             ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("roles", typeof(RoleProvider), typeof(DNNRoleProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("profiles", typeof(ProfileProvider), typeof(DNNProfileProvider)));
@@ -111,28 +140,16 @@ namespace DotNetNuke.Web.Common.Internal
             // DotNetNukeSecurity.Initialize();
         }
 
-        private static void RegisterIfNotAlreadyRegistered<TConcrete>()
-            where TConcrete : class, new()
+        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
         {
-            RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>(string.Empty);
-        }
+            var url = request.Url.LocalPath.ToLowerInvariant();
 
-        private static void RegisterIfNotAlreadyRegistered<TAbstract, TConcrete>(string name)
-            where TAbstract : class
-            where TConcrete : class, new()
-        {
-            var provider = ComponentFactory.GetComponent<TAbstract>();
-            if (provider == null)
-            {
-                if (string.IsNullOrEmpty(name))
-                {
-                    ComponentFactory.RegisterComponentInstance<TAbstract>(new TConcrete());
-                }
-                else
-                {
-                    ComponentFactory.RegisterComponentInstance<TAbstract>(name, new TConcrete());
-                }
-            }
+            return url.EndsWith("webresource.axd")
+                   || url.EndsWith("scriptresource.axd")
+                   || url.EndsWith("captcha.aspx")
+                   || url.Contains("upgradewizard.aspx")
+                   || url.Contains("installwizard.aspx")
+                   || url.EndsWith("install.aspx");
         }
 
         private void Application_End(object sender, EventArgs eventArgs)
@@ -184,11 +201,6 @@ namespace DotNetNuke.Web.Common.Internal
             Logger.Info("Application Ended");
         }
 
-        private static readonly string[] Endings =
-            {
-                ".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",
-            };
-
         private void Application_BeginRequest(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;
@@ -230,18 +242,6 @@ namespace DotNetNuke.Web.Common.Internal
         private bool IsInstallInProgress(HttpApplication app)
         {
             return InstallBlocker.Instance.IsInstallInProgress();
-        }
-
-        private static bool IsInstallOrUpgradeRequest(HttpRequest request)
-        {
-            var url = request.Url.LocalPath.ToLowerInvariant();
-
-            return url.EndsWith("webresource.axd")
-                   || url.EndsWith("scriptresource.axd")
-                   || url.EndsWith("captcha.aspx")
-                   || url.Contains("upgradewizard.aspx")
-                   || url.Contains("installwizard.aspx")
-                   || url.EndsWith("install.aspx");
         }
     }
 }

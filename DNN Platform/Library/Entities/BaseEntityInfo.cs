@@ -105,6 +105,16 @@ namespace DotNetNuke.Entities
             return null;
         }
 
+        /// <summary>
+        /// method used by cbo to fill readonly properties ignored by HydrateObject reflection.
+        /// </summary>
+        /// <param name="dr">the data reader to use.</param>
+        /// <remarks></remarks>
+        internal void FillBaseProperties(IDataReader dr)
+        {
+            this.FillInternal(dr);
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Fills a BaseEntityInfo from a Data Reader.
@@ -125,16 +135,6 @@ namespace DotNetNuke.Entities
             clonedItem.CreatedOnDate = originalItem.CreatedOnDate;
             clonedItem.LastModifiedByUserID = originalItem.LastModifiedByUserID;
             clonedItem.LastModifiedOnDate = originalItem.LastModifiedOnDate;
-        }
-
-        /// <summary>
-        /// method used by cbo to fill readonly properties ignored by HydrateObject reflection.
-        /// </summary>
-        /// <param name="dr">the data reader to use.</param>
-        /// <remarks></remarks>
-        internal void FillBaseProperties(IDataReader dr)
-        {
-            this.FillInternal(dr);
         }
     }
 }

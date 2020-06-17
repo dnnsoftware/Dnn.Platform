@@ -20,6 +20,8 @@ namespace DotNetNuke.Tests.Data
     [TestFixture]
     public class PetaPocoIntegrationTests
     {
+        private const string ConnectionStringName = "PetaPoco";
+
         private Dictionary<Type, IMapper> _mappers;
 
         // ReSharper disable InconsistentNaming
@@ -59,8 +61,6 @@ namespace DotNetNuke.Tests.Data
             DataUtil.DeleteDatabase(Constants.PETAPOCO_DatabaseName);
         }
 
-        private const string ConnectionStringName = "PetaPoco";
-
         [Test]
         public void PetaPoco_Add_Inserts_Item()
         {
@@ -68,10 +68,10 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             var dog = new Dog
-                          {
-                              Age = Constants.PETAPOCO_InsertDogAge,
-                              Name = Constants.PETAPOCO_InsertDogName,
-                          };
+            {
+                Age = Constants.PETAPOCO_InsertDogAge,
+                Name = Constants.PETAPOCO_InsertDogName,
+            };
 
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
             {
@@ -95,10 +95,10 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             var dog = new Dog
-                            {
-                                Age = Constants.PETAPOCO_InsertDogAge,
-                                Name = Constants.PETAPOCO_InsertDogName,
-                            };
+            {
+                Age = Constants.PETAPOCO_InsertDogAge,
+                Name = Constants.PETAPOCO_InsertDogName,
+            };
 
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))
             {
@@ -122,11 +122,11 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             var dog = new Dog
-                          {
-                              ID = Constants.PETAPOCO_DeleteDogId,
-                              Age = Constants.PETAPOCO_DeleteDogAge,
-                              Name = Constants.PETAPOCO_DeleteDogName,
-                          };
+            {
+                ID = Constants.PETAPOCO_DeleteDogId,
+                Age = Constants.PETAPOCO_DeleteDogAge,
+                Name = Constants.PETAPOCO_DeleteDogName,
+            };
 
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
             {
@@ -150,11 +150,11 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_DeleteDogId,
-                                Age = Constants.PETAPOCO_DeleteDogAge,
-                                Name = Constants.PETAPOCO_DeleteDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_DeleteDogId,
+                Age = Constants.PETAPOCO_DeleteDogAge,
+                Name = Constants.PETAPOCO_DeleteDogName,
+            };
 
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))
             {
@@ -307,11 +307,11 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             var dog = new Dog
-                          {
-                              ID = Constants.PETAPOCO_UpdateDogId,
-                              Age = Constants.PETAPOCO_UpdateDogAge,
-                              Name = Constants.PETAPOCO_UpdateDogName,
-                          };
+            {
+                ID = Constants.PETAPOCO_UpdateDogId,
+                Age = Constants.PETAPOCO_UpdateDogAge,
+                Name = Constants.PETAPOCO_UpdateDogName,
+            };
 
             // Act
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName))
@@ -344,11 +344,11 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             var dog = new Dog
-                            {
-                                ID = Constants.PETAPOCO_UpdateDogId,
-                                Age = Constants.PETAPOCO_UpdateDogAge,
-                                Name = Constants.PETAPOCO_UpdateDogName,
-                            };
+            {
+                ID = Constants.PETAPOCO_UpdateDogId,
+                Age = Constants.PETAPOCO_UpdateDogAge,
+                Name = Constants.PETAPOCO_UpdateDogName,
+            };
 
             // Act
             using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))

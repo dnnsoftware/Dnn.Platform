@@ -25,14 +25,6 @@ namespace DotNetNuke.Web
             this.Configure();
         }
 
-        private void Configure()
-        {
-            var services = new ServiceCollection();
-            services.AddSingleton<IScopeAccessor, ScopeAccessor>();
-            this.ConfigureServices(services);
-            this.DependencyProvider = services.BuildServiceProvider();
-        }
-
         public IServiceProvider DependencyProvider { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
@@ -61,6 +53,14 @@ namespace DotNetNuke.Web
             }
 
             services.AddWebApi();
+        }
+
+        private void Configure()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<IScopeAccessor, ScopeAccessor>();
+            this.ConfigureServices(services);
+            this.DependencyProvider = services.BuildServiceProvider();
         }
 
         private object CreateInstance(Type startupType)

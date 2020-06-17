@@ -12,9 +12,16 @@ namespace DotNetNuke.Web.DDRMenu
 
     internal class DDRMenuControl : WebControl, IPostBackEventHandler
     {
+        private MenuBase menu;
+
+        public delegate void MenuClickEventHandler(string id);
+
+        public event MenuClickEventHandler NodeClick;
+
         public override bool EnableViewState
         {
-            get { return false; } set { }
+            get { return false; }
+            set { }
         }
 
         internal MenuNode RootNode { get; set; }
@@ -23,11 +30,16 @@ namespace DotNetNuke.Web.DDRMenu
 
         internal Settings MenuSettings { get; set; }
 
-        public delegate void MenuClickEventHandler(string id);
-
-        public event MenuClickEventHandler NodeClick;
-
-        private MenuBase menu;
+        public void RaisePostBackEvent(string eventArgument)
+        {
+            using (new DNNContext(this))
+            {
+                if (this.NodeClick != null)
+                {
+                    this.NodeClick(eventArgument);
+                }
+            }
+        }
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -50,17 +62,6 @@ namespace DotNetNuke.Web.DDRMenu
             using (new DNNContext(this))
             {
                 this.menu.Render(htmlWriter);
-            }
-        }
-
-        public void RaisePostBackEvent(string eventArgument)
-        {
-            using (new DNNContext(this))
-            {
-                if (this.NodeClick != null)
-                {
-                    this.NodeClick(eventArgument);
-                }
             }
         }
     }

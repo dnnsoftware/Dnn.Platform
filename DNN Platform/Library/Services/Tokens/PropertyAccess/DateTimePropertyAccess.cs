@@ -10,6 +10,14 @@ namespace DotNetNuke.Services.Tokens
 
     public class DateTimePropertyAccess : IPropertyAccess
     {
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.secureforCaching;
+            }
+        }
+
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope AccessLevel, ref bool PropertyNotFound)
         {
             TimeZoneInfo userTimeZone = AccessingUser.Profile.PreferredTimeZone;
@@ -46,14 +54,6 @@ namespace DotNetNuke.Services.Tokens
                 default:
                     PropertyNotFound = true;
                     return string.Empty;
-            }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.secureforCaching;
             }
         }
     }

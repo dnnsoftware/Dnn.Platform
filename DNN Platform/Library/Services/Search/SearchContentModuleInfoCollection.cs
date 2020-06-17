@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Search
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
-    #pragma warning disable 0618
+#pragma warning disable 0618
     public class SearchContentModuleInfoCollection : CollectionBase
     {
         /// <summary>

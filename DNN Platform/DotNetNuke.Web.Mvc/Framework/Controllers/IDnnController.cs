@@ -19,13 +19,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         string LocalResourceFile { get; set; }
 
-        string LocalizeString(string key);
-
         ModuleActionCollection ModuleActions { get; set; }
 
         ModuleInstanceContext ModuleContext { get; set; }
 
         ActionResult ResultOfLastExecute { get; }
+
+        string LocalizeString(string key);
 
         bool ValidateRequest { get; set; }
 

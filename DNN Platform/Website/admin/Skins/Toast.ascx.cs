@@ -23,25 +23,25 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public partial class Toast : SkinObjectBase
     {
-        private readonly INavigationManager _navigationManager;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
-        private static readonly string ToastCacheKey = "DNN_Toast_Config";
-
         private const string MyFileName = "Toast.ascx";
 
-        protected string ServiceModuleName { get; private set; }
-
-        protected string ServiceAction { get; private set; }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
+        private static readonly string ToastCacheKey = "DNN_Toast_Config";
+        private readonly INavigationManager _navigationManager;
 
         public Toast()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        protected string ServiceModuleName { get; private set; }
+
+        protected string ServiceAction { get; private set; }
+
         public bool IsOnline()
         {
-             var userInfo = UserController.Instance.GetCurrentUserInfo();
-             return userInfo.UserID != -1;
+            var userInfo = UserController.Instance.GetCurrentUserInfo();
+            return userInfo.UserID != -1;
         }
 
         public string GetNotificationLink()
@@ -62,6 +62,19 @@ namespace DotNetNuke.UI.Skins.Controls
         public string GetNotificationLabel()
         {
             return Localization.GetString("SeeAllNotification", Localization.GetResourceFile(this, MyFileName));
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
+
+            this.InitializeConfig();
         }
 
         // This method is copied from user skin object
@@ -108,19 +121,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
             // default to User Profile Page
             return this.PortalSettings.UserTabId;
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.js", DotNetNuke.Web.Client.FileOrder.Js.jQuery);
-            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/Toast/jquery.toastmessage.css", DotNetNuke.Web.Client.FileOrder.Css.DefaultCss);
-
-            this.InitializeConfig();
         }
 
         private void InitializeConfig()

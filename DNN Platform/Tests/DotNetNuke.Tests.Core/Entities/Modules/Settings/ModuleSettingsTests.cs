@@ -17,6 +17,30 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class ModuleSettingsTests : BaseSettingsTests
     {
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ar-JO")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("ca-ES")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
+        [Test]
+        [TestCaseSource(nameof(SettingsCases))]
+        [SetCulture("zh-CN")]
+        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
+        {
+            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
+        }
+
         public class ModulesSettings
         {
             [ModuleSetting(Prefix = SettingNamePrefix)]
@@ -46,30 +70,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         public class ModulesSettingsRepository : SettingsRepository<ModulesSettings>
         {
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SettingsCases))]
-        [SetCulture("ar-JO")]
-        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ar_JO(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SettingsCases))]
-        [SetCulture("ca-ES")]
-        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_ca_ES(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
-        }
-
-        [Test]
-        [TestCaseSource(nameof(SettingsCases))]
-        [SetCulture("zh-CN")]
-        public void SaveSettings_CallsUpdateModuleSetting_WithRightParameters_zh_CN(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
-        {
-            this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
         [Test]
@@ -112,6 +112,40 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.SaveSettings_CallsUpdateModuleSetting_WithRightParameters(stringValue, integerValue, doubleValue, booleanValue, datetimeValue, timeSpanValue, enumValue, complexValue);
         }
 
+        [Test]
+        public void SaveSettings_UpdatesCache()
+        {
+            // Arrange
+            var moduleInfo = GetModuleInfo;
+            var settings = new ModulesSettings();
+
+            this.MockModuleSettings(moduleInfo, new Hashtable());
+            this.MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
+            var settingsRepository = new ModulesSettingsRepository();
+
+            // Act
+            settingsRepository.SaveSettings(moduleInfo, settings);
+
+            // Assert
+            this.MockRepository.VerifyAll();
+        }
+
+        [Test]
+        public void GetSettings_CallsGetCachedObject()
+        {
+            // Arrange
+            var moduleInfo = GetModuleInfo;
+
+            this.MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new ModulesSettings());
+            var settingsRepository = new ModulesSettingsRepository();
+
+            // Act
+            settingsRepository.GetSettings(moduleInfo);
+
+            // Assert
+            this.MockRepository.VerifyAll();
+        }
+
         private void SaveSettings_CallsUpdateModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
@@ -143,40 +177,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
-
-            // Assert
-            this.MockRepository.VerifyAll();
-        }
-
-        [Test]
-        public void SaveSettings_UpdatesCache()
-        {
-            // Arrange
-            var moduleInfo = GetModuleInfo;
-            var settings = new ModulesSettings();
-
-            this.MockModuleSettings(moduleInfo, new Hashtable());
-            this.MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
-            var settingsRepository = new ModulesSettingsRepository();
-
-            // Act
-            settingsRepository.SaveSettings(moduleInfo, settings);
-
-            // Assert
-            this.MockRepository.VerifyAll();
-        }
-
-        [Test]
-        public void GetSettings_CallsGetCachedObject()
-        {
-            // Arrange
-            var moduleInfo = GetModuleInfo;
-
-            this.MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new ModulesSettings());
-            var settingsRepository = new ModulesSettingsRepository();
-
-            // Act
-            settingsRepository.GetSettings(moduleInfo);
 
             // Assert
             this.MockRepository.VerifyAll();

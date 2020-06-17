@@ -13,14 +13,14 @@ namespace DotNetNuke.Authentication.Google
 
     public partial class Login : OAuthLoginBase
     {
-        protected override string AuthSystemApplicationName
-        {
-            get { return "Google"; }
-        }
-
         public override bool SupportsRegistration
         {
             get { return true; }
+        }
+
+        protected override string AuthSystemApplicationName
+        {
+            get { return "Google"; }
         }
 
         protected override UserData GetCurrentUser()

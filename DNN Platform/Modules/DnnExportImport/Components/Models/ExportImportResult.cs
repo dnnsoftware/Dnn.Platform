@@ -13,6 +13,11 @@ namespace Dnn.ExportImport.Components.Models
 
     public class ExportImportResult
     {
+        public ExportImportResult()
+        {
+            this.CompleteLog = this.CompleteLog = new List<LogItem>();
+        }
+
         public int JobId { get; set; }
 
         public IList<LogItem> CompleteLog { get; private set; }
@@ -20,11 +25,6 @@ namespace Dnn.ExportImport.Components.Models
         public IList<LogItem> Summary
         {
             get { return this.CompleteLog.Where(item => item.ReportLevel >= ReportLevel.Info).ToList(); }
-        }
-
-        public ExportImportResult()
-        {
-            this.CompleteLog = this.CompleteLog = new List<LogItem>();
         }
 
         public LogItem AddSummary(string name, string value)

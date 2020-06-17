@@ -12,14 +12,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
     public abstract class AuthorizeAttributeBase : FilterAttribute, IAuthorizationFilter
     {
-        protected virtual bool AuthorizeCore(HttpContextBase httpContext)
+        public static bool IsAnonymousAttributePresent(AuthorizationContext filterContext)
         {
-            return true;
-        }
-
-        private void CacheValidateHandler(HttpContext context, object data, ref HttpValidationStatus validationStatus)
-        {
-            validationStatus = this.OnCacheAuthorization(new HttpContextWrapper(context));
+            return filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true)
+                                     || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
         }
 
         public virtual void OnAuthorization(AuthorizationContext filterContext)
@@ -41,11 +37,21 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             }
         }
 
+        protected virtual bool AuthorizeCore(HttpContextBase httpContext)
+        {
+            return true;
+        }
+
         protected virtual void HandleAuthorizedRequest(AuthorizationContext filterContext)
         {
             HttpCachePolicyBase cachePolicy = filterContext.HttpContext.Response.Cache;
             cachePolicy.SetProxyMaxAge(new TimeSpan(0));
             cachePolicy.AddValidationCallback(this.CacheValidateHandler, null /* data */);
+        }
+
+        private void CacheValidateHandler(HttpContext context, object data, ref HttpValidationStatus validationStatus)
+        {
+            validationStatus = this.OnCacheAuthorization(new HttpContextWrapper(context));
         }
 
         protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext)
@@ -73,12 +79,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         protected virtual bool SkipAuthorization(AuthorizationContext filterContext)
         {
             return IsAnonymousAttributePresent(filterContext);
-        }
-
-        public static bool IsAnonymousAttributePresent(AuthorizationContext filterContext)
-        {
-            return filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true)
-                                     || filterContext.ActionDescriptor.ControllerDescriptor.IsDefined(typeof(AllowAnonymousAttribute), inherit: true);
         }
     }
 }

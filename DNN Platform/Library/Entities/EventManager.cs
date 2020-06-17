@@ -22,92 +22,6 @@ namespace DotNetNuke.Entities
 
     public class EventManager : ServiceLocator<IEventManager, EventManager>, IEventManager
     {
-        private event EventHandler<FileAddedEventArgs> FileAdded;
-
-        private event EventHandler<FileChangedEventArgs> FileChanged;
-
-        private event EventHandler<FileDeletedEventArgs> FileDeleted;
-
-        private event EventHandler<FileChangedEventArgs> FileMetadataChanged;
-
-        private event EventHandler<FileMovedEventArgs> FileMoved;
-
-        private event EventHandler<FileChangedEventArgs> FileOverwritten;
-
-        private event EventHandler<FileRenamedEventArgs> FileRenamed;
-
-        private event EventHandler<FileDownloadedEventArgs> FileDownloaded;
-
-        private event EventHandler<FolderChangedEventArgs> FolderAdded;
-
-        private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
-
-        private event EventHandler<FolderMovedEventArgs> FolderMoved;
-
-        private event EventHandler<FolderRenamedEventArgs> FolderRenamed;
-
-        private event EventHandler<RelationshipEventArgs> FollowRequested;
-
-        private event EventHandler<RelationshipEventArgs> UnfollowRequested;
-
-        private event EventHandler<RelationshipEventArgs> FriendshipAccepted;
-
-        private event EventHandler<RelationshipEventArgs> FriendshipDeleted;
-
-        private event EventHandler<RelationshipEventArgs> FriendshipRequested;
-
-        private event EventHandler<ModuleEventArgs> ModuleCreated;
-
-        private event EventHandler<ModuleEventArgs> ModuleUpdated;
-
-        private event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
-
-        private event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
-
-        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
-
-        private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
-
-        private event EventHandler<PortalSettingUpdatedEventArgs> PortalSettingUpdated;
-
-        private event EventHandler<ProfileEventArgs> ProfileUpdated;
-
-        private event EventHandler<RoleEventArgs> RoleCreated;
-
-        private event EventHandler<RoleEventArgs> RoleDeleted;
-
-        private event EventHandler<RoleEventArgs> RoleJoined;
-
-        private event EventHandler<RoleEventArgs> RoleLeft;
-
-        private event EventHandler<TabEventArgs> TabCreated;
-
-        private event EventHandler<TabEventArgs> TabUpdated;
-
-        private event EventHandler<TabEventArgs> TabRemoved; // soft delete
-
-        private event EventHandler<TabEventArgs> TabDeleted; // hard delete
-
-        private event EventHandler<TabEventArgs> TabRestored;
-
-        private event EventHandler<TabEventArgs> TabMarkedAsPublished;
-
-        private event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
-
-        private event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
-
-        private event EventHandler<UserEventArgs> UserApproved;
-
-        private event EventHandler<UserEventArgs> UserAuthenticated;
-
-        private event EventHandler<UserEventArgs> UserCreated;
-
-        private event EventHandler<UserEventArgs> UserDeleted;
-
-        private event EventHandler<UserEventArgs> UserRemoved;
-
-        private event EventHandler<UpdateUserEventArgs> UserUpdated;
-
         public EventManager()
         {
             foreach (var handler in EventHandlersContainer<IFileEventHandlers>.Instance.EventHandlers)
@@ -203,10 +117,91 @@ namespace DotNetNuke.Entities
             }
         }
 
-        protected override Func<IEventManager> GetFactory()
-        {
-            return () => new EventManager();
-        }
+        private event EventHandler<FileAddedEventArgs> FileAdded;
+
+        private event EventHandler<FileChangedEventArgs> FileChanged;
+
+        private event EventHandler<FileDeletedEventArgs> FileDeleted;
+
+        private event EventHandler<FileChangedEventArgs> FileMetadataChanged;
+
+        private event EventHandler<FileMovedEventArgs> FileMoved;
+
+        private event EventHandler<FileChangedEventArgs> FileOverwritten;
+
+        private event EventHandler<FileRenamedEventArgs> FileRenamed;
+
+        private event EventHandler<FileDownloadedEventArgs> FileDownloaded;
+
+        private event EventHandler<FolderChangedEventArgs> FolderAdded;
+
+        private event EventHandler<FolderDeletedEventArgs> FolderDeleted;
+
+        private event EventHandler<FolderMovedEventArgs> FolderMoved;
+
+        private event EventHandler<FolderRenamedEventArgs> FolderRenamed;
+
+        private event EventHandler<RelationshipEventArgs> FollowRequested;
+
+        private event EventHandler<RelationshipEventArgs> UnfollowRequested;
+
+        private event EventHandler<RelationshipEventArgs> FriendshipAccepted;
+
+        private event EventHandler<RelationshipEventArgs> FriendshipDeleted;
+
+        private event EventHandler<RelationshipEventArgs> FriendshipRequested;
+
+        private event EventHandler<ModuleEventArgs> ModuleCreated;
+
+        private event EventHandler<ModuleEventArgs> ModuleUpdated;
+
+        private event EventHandler<ModuleEventArgs> ModuleRemoved; // soft delete
+
+        private event EventHandler<ModuleEventArgs> ModuleDeleted; // hard delete
+
+        private event EventHandler<PortalCreatedEventArgs> PortalCreated;
+
+        private event EventHandler<PortalTemplateEventArgs> PortalTemplateCreated;
+
+        private event EventHandler<PortalSettingUpdatedEventArgs> PortalSettingUpdated;
+
+        private event EventHandler<ProfileEventArgs> ProfileUpdated;
+
+        private event EventHandler<RoleEventArgs> RoleCreated;
+
+        private event EventHandler<RoleEventArgs> RoleDeleted;
+
+        private event EventHandler<RoleEventArgs> RoleJoined;
+
+        private event EventHandler<RoleEventArgs> RoleLeft;
+
+        private event EventHandler<TabEventArgs> TabCreated;
+
+        private event EventHandler<TabEventArgs> TabUpdated;
+
+        private event EventHandler<TabEventArgs> TabRemoved; // soft delete
+
+        private event EventHandler<TabEventArgs> TabDeleted; // hard delete
+
+        private event EventHandler<TabEventArgs> TabRestored;
+
+        private event EventHandler<TabEventArgs> TabMarkedAsPublished;
+
+        private event EventHandler<TabSyncEventArgs> TabSerialize; // soft delete
+
+        private event EventHandler<TabSyncEventArgs> TabDeserialize; // hard delete
+
+        private event EventHandler<UserEventArgs> UserApproved;
+
+        private event EventHandler<UserEventArgs> UserAuthenticated;
+
+        private event EventHandler<UserEventArgs> UserCreated;
+
+        private event EventHandler<UserEventArgs> UserDeleted;
+
+        private event EventHandler<UserEventArgs> UserRemoved;
+
+        private event EventHandler<UpdateUserEventArgs> UserUpdated;
 
         public virtual void OnFileAdded(FileAddedEventArgs args)
         {
@@ -226,6 +221,11 @@ namespace DotNetNuke.Entities
             }
 
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_CHANGED);
+        }
+
+        protected override Func<IEventManager> GetFactory()
+        {
+            return () => new EventManager();
         }
 
         public virtual void OnFileDeleted(FileDeletedEventArgs args)

@@ -14,11 +14,6 @@ namespace DotNetNuke.Security.Roles.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use RoleController instead. Scheduled removal in v10.0.0.")]
     public class TestableRoleController : ServiceLocator<IRoleController, TestableRoleController>, IRoleController
     {
-        protected override Func<IRoleController> GetFactory()
-        {
-            return () => new TestableRoleController();
-        }
-
         public int AddRole(RoleInfo role)
         {
             return RoleController.Instance.AddRole(role);
@@ -27,6 +22,11 @@ namespace DotNetNuke.Security.Roles.Internal
         public int AddRole(RoleInfo role, bool addToExistUsers)
         {
             return RoleController.Instance.AddRole(role, addToExistUsers);
+        }
+
+        protected override Func<IRoleController> GetFactory()
+        {
+            return () => new TestableRoleController();
         }
 
         public void DeleteRole(RoleInfo role)

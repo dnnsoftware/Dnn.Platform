@@ -96,7 +96,7 @@ namespace log4net.Core
             }
 
             // Check that the type is a repository
-            if (! typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType))
+            if (!typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType))
             {
                 throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
             }
@@ -514,7 +514,7 @@ namespace log4net.Core
                     }
                 }
 
-                    // Check if the alias is already mapped to a repository
+                // Check if the alias is already mapped to a repository
                 else if (this.m_name2repositoryMap.Contains(repositoryAlias))
                 {
                     // Check if this is a duplicate of the current mapping
@@ -752,32 +752,32 @@ namespace log4net.Core
                     }
                     else
                     {
-                    // As we are not going to watch the config file it is easiest to just resolve it as a
-                    // URI and pass that to the Configurator
-                    Uri repositoryConfigUri = null;
-                    try
-                    {
-                        repositoryConfigUri = new Uri(repositoryConfigFilePath);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogLog.Error(declaringType, "Exception while parsing log4net.Config file path [" + repositoryConfigFile + "]", ex);
-                    }
-
-                    if (repositoryConfigUri != null)
-                    {
-                        LogLog.Debug(declaringType, "Loading configuration for default repository from AppSettings specified Config URI [" + repositoryConfigUri.ToString() + "]");
-
+                        // As we are not going to watch the config file it is easiest to just resolve it as a
+                        // URI and pass that to the Configurator
+                        Uri repositoryConfigUri = null;
                         try
                         {
-                            // TODO: Support other types of configurator
-                            XmlConfigurator.Configure(repository, repositoryConfigUri);
+                            repositoryConfigUri = new Uri(repositoryConfigFilePath);
                         }
                         catch (Exception ex)
                         {
-                            LogLog.Error(declaringType, "Exception calling XmlConfigurator.Configure method with ConfigUri [" + repositoryConfigUri + "]", ex);
+                            LogLog.Error(declaringType, "Exception while parsing log4net.Config file path [" + repositoryConfigFile + "]", ex);
                         }
-                    }
+
+                        if (repositoryConfigUri != null)
+                        {
+                            LogLog.Debug(declaringType, "Loading configuration for default repository from AppSettings specified Config URI [" + repositoryConfigUri.ToString() + "]");
+
+                            try
+                            {
+                                // TODO: Support other types of configurator
+                                XmlConfigurator.Configure(repository, repositoryConfigUri);
+                            }
+                            catch (Exception ex)
+                            {
+                                LogLog.Error(declaringType, "Exception calling XmlConfigurator.Configure method with ConfigUri [" + repositoryConfigUri + "]", ex);
+                            }
+                        }
                     }
                 }
             }

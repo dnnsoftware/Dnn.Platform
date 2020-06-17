@@ -21,6 +21,16 @@ namespace DotNetNuke.Entities.Content.Workflow
             this._workflowLogRepository = WorkflowLogRepository.Instance;
         }
 
+        public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
+        {
+            return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
+        }
+
+        public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
+        {
+            this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);
+        }
+
         private void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string action, string comment, int userId)
         {
             var workflowLog = new WorkflowLog
@@ -40,16 +50,6 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var logName = Enum.GetName(typeof(WorkflowLogType), logType);
             return Localization.GetString(logName + ".Action");
-        }
-
-        public IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId)
-        {
-            return this._workflowLogRepository.GetWorkflowLogs(contentItemId, workflowId);
-        }
-
-        public void AddWorkflowLog(int contentItemId, int workflowId, WorkflowLogType type, string comment, int userId)
-        {
-            this.AddWorkflowLog(contentItemId, workflowId, type, this.GetWorkflowActionText(type), comment, userId);
         }
 
         public void AddWorkflowLog(int contentItemId, int workflowId, string action, string comment, int userId)

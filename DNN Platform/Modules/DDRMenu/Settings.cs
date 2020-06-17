@@ -14,6 +14,10 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class Settings
     {
+        private List<ClientOption> clientOptions;
+
+        private List<TemplateArgument> templateArguments;
+
         public string MenuStyle { get; set; }
 
         public string NodeXmlPath { get; set; }
@@ -30,18 +34,16 @@ namespace DotNetNuke.Web.DDRMenu
 
         public bool IncludeHidden { get; set; }
 
-        private List<ClientOption> clientOptions;
-
         public List<ClientOption> ClientOptions
         {
-            get { return this.clientOptions ?? (this.clientOptions = new List<ClientOption>()); } set { this.clientOptions = value; }
+            get { return this.clientOptions ?? (this.clientOptions = new List<ClientOption>()); }
+            set { this.clientOptions = value; }
         }
-
-        private List<TemplateArgument> templateArguments;
 
         public List<TemplateArgument> TemplateArguments
         {
-            get { return this.templateArguments ?? (this.templateArguments = new List<TemplateArgument>()); } set { this.templateArguments = value; }
+            get { return this.templateArguments ?? (this.templateArguments = new List<TemplateArgument>()); }
+            set { this.templateArguments = value; }
         }
 
         public static Settings FromXml(string xml)
@@ -50,30 +52,6 @@ namespace DotNetNuke.Web.DDRMenu
             using (var reader = new StringReader(xml))
             {
                 return (Settings)ser.Deserialize(reader);
-            }
-        }
-
-        public string ToXml()
-        {
-            var sb = new StringBuilder();
-            var ser = new XmlSerializer(typeof(Settings));
-            using (var writer = new StringWriter(sb))
-            {
-                ser.Serialize(writer, this);
-            }
-
-            return sb.ToString();
-        }
-
-        public override string ToString()
-        {
-            try
-            {
-                return this.ToXml();
-            }
-            catch (Exception exc)
-            {
-                return exc.ToString();
             }
         }
 
@@ -105,6 +83,30 @@ namespace DotNetNuke.Web.DDRMenu
             }
 
             return result;
+        }
+
+        public string ToXml()
+        {
+            var sb = new StringBuilder();
+            var ser = new XmlSerializer(typeof(Settings));
+            using (var writer = new StringWriter(sb))
+            {
+                ser.Serialize(writer, this);
+            }
+
+            return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            try
+            {
+                return this.ToXml();
+            }
+            catch (Exception exc)
+            {
+                return exc.ToString();
+            }
         }
 
         public static string ToSettingString(List<ClientOption> clientOptions)

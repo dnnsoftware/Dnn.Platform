@@ -54,18 +54,6 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             return this.IsPageAdminUser() || this.CanViewPageList(menuItem.MenuId);
         }
 
-        private bool IsPageAdmin()
-        {
-            return //TabPermissionController.CanAddContentToPage() ||
-                    TabPermissionController.CanAddPage()
-                    || TabPermissionController.CanAdminPage()
-                    || TabPermissionController.CanCopyPage()
-                    || TabPermissionController.CanDeletePage()
-                    || TabPermissionController.CanExportPage()
-                    || TabPermissionController.CanImportPage()
-                    || TabPermissionController.CanManagePage();
-        }
-
         public virtual JObject GetCurrentPagePermissions()
         {
             var permissions = new JObject
@@ -81,6 +69,18 @@ namespace Dnn.PersonaBar.Pages.Components.Security
             };
 
             return permissions;
+        }
+
+        private bool IsPageAdmin()
+        {
+            return //TabPermissionController.CanAddContentToPage() ||
+                    TabPermissionController.CanAddPage()
+                    || TabPermissionController.CanAdminPage()
+                    || TabPermissionController.CanCopyPage()
+                    || TabPermissionController.CanDeletePage()
+                    || TabPermissionController.CanExportPage()
+                    || TabPermissionController.CanImportPage()
+                    || TabPermissionController.CanManagePage();
         }
 
         public virtual JObject GetPagePermissions(TabInfo tab)

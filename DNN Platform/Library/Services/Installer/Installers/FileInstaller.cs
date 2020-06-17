@@ -24,6 +24,40 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
+        /// package.
+        /// </summary>
+        /// <value>A Boolean value.</value>
+        /// -----------------------------------------------------------------------------
+        public bool DeleteFiles
+        {
+            get
+            {
+                return this._DeleteFiles;
+            }
+
+            set
+            {
+                this._DeleteFiles = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        public override bool SupportsManifestOnlyInstall
+        {
+            get
+            {
+                return Null.NullBoolean;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets the BasePath for the files.
         /// </summary>
         /// <remarks>The Base Path is relative to the WebRoot.</remarks>
@@ -109,35 +143,51 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
-        /// package.
+        /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <value>A Boolean value.</value>
+        /// <remarks>In the case of Files this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
-        public bool DeleteFiles
+        public override void Commit()
         {
-            get
+            try
             {
-                return this._DeleteFiles;
-            }
+                foreach (InstallFile file in this.Files)
+                {
+                    this.CommitFile(file);
+                }
 
-            set
+                this.Completed = true;
+            }
+            catch (Exception ex)
             {
-                this._DeleteFiles = value;
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
+        /// The Install method installs the file component.
         /// </summary>
-        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
-        public override bool SupportsManifestOnlyInstall
+        public override void Install()
         {
-            get
+            try
             {
-                return Null.NullBoolean;
+                bool bSuccess = true;
+                foreach (InstallFile file in this.Files)
+                {
+                    bSuccess = this.InstallFile(file);
+                    if (!bSuccess)
+                    {
+                        break;
+                    }
+                }
+
+                this.Completed = bSuccess;
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
             }
         }
 
@@ -346,56 +396,6 @@ namespace DotNetNuke.Services.Installer.Installers
         protected virtual void UnInstallFile(InstallFile unInstallFile)
         {
             this.DeleteFile(unInstallFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Commit method finalises the Install and commits any pending changes.
-        /// </summary>
-        /// <remarks>In the case of Files this is not neccessary.</remarks>
-        /// -----------------------------------------------------------------------------
-        public override void Commit()
-        {
-            try
-            {
-                foreach (InstallFile file in this.Files)
-                {
-                    this.CommitFile(file);
-                }
-
-                this.Completed = true;
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The Install method installs the file component.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void Install()
-        {
-            try
-            {
-                bool bSuccess = true;
-                foreach (InstallFile file in this.Files)
-                {
-                    bSuccess = this.InstallFile(file);
-                    if (!bSuccess)
-                    {
-                        break;
-                    }
-                }
-
-                this.Completed = bSuccess;
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(Util.EXCEPTION + " - " + ex.Message);
-            }
         }
 
         /// -----------------------------------------------------------------------------

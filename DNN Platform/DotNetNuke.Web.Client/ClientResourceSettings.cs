@@ -28,6 +28,9 @@ namespace DotNetNuke.Web.Client
         private static readonly Type _hostControllerType;
         private static readonly Type _commonGlobalsType;
 
+        private bool _statusChecked;
+        private UpgradeStatus _status;
+
         static ClientResourceSettings()
         {
             try
@@ -42,6 +45,35 @@ namespace DotNetNuke.Web.Client
             {
                 // ignore
             }
+        }
+
+        private enum UpgradeStatus
+        {
+            /// <summary>
+            /// The application need update to a higher version.
+            /// </summary>
+            Upgrade,
+
+            /// <summary>
+            /// The application need to install itself.
+            /// </summary>
+            Install,
+
+            /// <summary>
+            /// The application is normal running.
+            /// </summary>
+            None,
+
+            /// <summary>
+            /// The application occur error when running.
+            /// </summary>
+            Error,
+
+            /// <summary>
+            /// The application status is unknown,
+            /// </summary>
+            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
+            Unknown,
         }
 
         /// <summary>
@@ -96,6 +128,33 @@ namespace DotNetNuke.Web.Client
             return this.IsBooleanSettingEnabled(MinifyJsKey);
         }
 
+        private static bool? GetBooleanSetting(string dictionaryKey, string settingKey)
+        {
+            var setting = GetSetting(dictionaryKey, settingKey);
+            bool result;
+            if (setting != null && bool.TryParse(setting, out result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        private static int? GetIntegerSetting(string dictionaryKey, string settingKey)
+        {
+            var setting = GetSetting(dictionaryKey, settingKey);
+            int version;
+            if (setting != null && int.TryParse(setting, out version))
+            {
+                if (version > -1)
+                {
+                    return version;
+                }
+            }
+
+            return null;
+        }
+
         private bool? IsBooleanSettingEnabled(string settingKey)
         {
             if (this.Status != UpgradeStatus.None)
@@ -121,33 +180,6 @@ namespace DotNetNuke.Web.Client
             }
 
             // otherwise tell the calling method that nothing is set
-            return null;
-        }
-
-        private static bool? GetBooleanSetting(string dictionaryKey, string settingKey)
-        {
-            var setting = GetSetting(dictionaryKey, settingKey);
-            bool result;
-            if (setting != null && bool.TryParse(setting, out result))
-            {
-                return result;
-            }
-
-            return null;
-        }
-
-        private static int? GetIntegerSetting(string dictionaryKey, string settingKey)
-        {
-            var setting = GetSetting(dictionaryKey, settingKey);
-            int version;
-            if (setting != null && int.TryParse(setting, out version))
-            {
-                if (version > -1)
-                {
-                    return version;
-                }
-            }
-
             return null;
         }
 
@@ -242,9 +274,6 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private bool _statusChecked;
-        private UpgradeStatus _status;
-
         private UpgradeStatus Status
         {
             get
@@ -271,35 +300,6 @@ namespace DotNetNuke.Web.Client
             {
                 return UpgradeStatus.Unknown;
             }
-        }
-
-        private enum UpgradeStatus
-        {
-            /// <summary>
-            /// The application need update to a higher version.
-            /// </summary>
-            Upgrade,
-
-            /// <summary>
-            /// The application need to install itself.
-            /// </summary>
-            Install,
-
-            /// <summary>
-            /// The application is normal running.
-            /// </summary>
-            None,
-
-            /// <summary>
-            /// The application occur error when running.
-            /// </summary>
-            Error,
-
-            /// <summary>
-            /// The application status is unknown,
-            /// </summary>
-            /// <remarks>This status should never be returned. its is only used as a flag that Status hasn't been determined.</remarks>
-            Unknown,
         }
     }
 }

@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.WebControls
                     objProperty = this.DataSource.GetType().GetProperty(ValueDataField);
 
                     // Set the Value property to the new value
-                    if ((! ReferenceEquals(newValue, oldValue)) || changed)
+                    if ((!ReferenceEquals(newValue, oldValue)) || changed)
                     {
                         if (objProperty.PropertyType.FullName == "System.String")
                         {
@@ -217,9 +217,9 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Visibility Field
             editInfo.ProfileVisibility = new ProfileVisibility
-                                             {
-                                                 VisibilityMode = UserVisibilityMode.AllUsers,
-                                             };
+            {
+                VisibilityMode = UserVisibilityMode.AllUsers,
+            };
             if (!string.IsNullOrEmpty(VisibilityDataField))
             {
                 property = this.DataSource.GetType().GetProperty(VisibilityDataField);

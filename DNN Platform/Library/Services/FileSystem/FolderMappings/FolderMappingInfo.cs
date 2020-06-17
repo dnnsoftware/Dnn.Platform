@@ -20,6 +20,22 @@ namespace DotNetNuke.Services.FileSystem
     {
         private Hashtable _folderMappingSettings;
 
+        private string _imageUrl;
+
+        public FolderMappingInfo()
+        {
+            this.FolderMappingID = Null.NullInteger;
+            this.PortalID = Null.NullInteger;
+        }
+
+        public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
+        {
+            this.FolderMappingID = Null.NullInteger;
+            this.PortalID = portalID;
+            this.MappingName = mappingName;
+            this.FolderProviderType = folderProviderType;
+        }
+
         public int FolderMappingID { get; set; }
 
         public int PortalID { get; set; }
@@ -49,8 +65,6 @@ namespace DotNetNuke.Services.FileSystem
                 return this._folderMappingSettings;
             }
         }
-
-        private string _imageUrl;
 
         public string ImageUrl
         {
@@ -91,33 +105,6 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        public FolderMappingInfo()
-        {
-            this.FolderMappingID = Null.NullInteger;
-            this.PortalID = Null.NullInteger;
-        }
-
-        public FolderMappingInfo(int portalID, string mappingName, string folderProviderType)
-        {
-            this.FolderMappingID = Null.NullInteger;
-            this.PortalID = portalID;
-            this.MappingName = mappingName;
-            this.FolderProviderType = folderProviderType;
-        }
-
-        /// <summary>
-        ///   Fills a FolderInfo from a Data Reader.
-        /// </summary>
-        /// <param name = "dr">The Data Reader to use.</param>
-        public void Fill(IDataReader dr)
-        {
-            this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
-            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
-            this.MappingName = Null.SetNullString(dr["MappingName"]);
-            this.FolderProviderType = Null.SetNullString(dr["FolderProviderType"]);
-            this.Priority = Null.SetNullInteger(dr["Priority"]);
-        }
-
         /// <summary>
         ///   Gets or sets and sets the Key ID.
         /// </summary>
@@ -132,6 +119,19 @@ namespace DotNetNuke.Services.FileSystem
             {
                 this.FolderMappingID = value;
             }
+        }
+
+        /// <summary>
+        ///   Fills a FolderInfo from a Data Reader.
+        /// </summary>
+        /// <param name = "dr">The Data Reader to use.</param>
+        public void Fill(IDataReader dr)
+        {
+            this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.MappingName = Null.SetNullString(dr["MappingName"]);
+            this.FolderProviderType = Null.SetNullString(dr["FolderProviderType"]);
+            this.Priority = Null.SetNullInteger(dr["Priority"]);
         }
     }
 }

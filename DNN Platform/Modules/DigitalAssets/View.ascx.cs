@@ -56,6 +56,45 @@ namespace DotNetNuke.Modules.DigitalAssets
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                var actions = new ModuleActionCollection();
+                if (ModulePermissionController.CanManageModule(this.ModuleConfiguration))
+                {
+                    actions.Add(this.GetNextActionID(), Localization.GetString("ManageFolderTypes", this.LocalResourceFile), string.Empty, string.Empty, "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png", this.EditUrl("FolderMappings"), false, SecurityAccessLevel.Edit, true, false);
+
+                    foreach (var item in this.epm.GetMenuItemExtensionPoints("DigitalAssets", "ModuleActions", this.Filter))
+                    {
+                        actions.Add(this.GetNextActionID(), item.Text, string.Empty, string.Empty, item.Icon, this.EditUrl(item.Value), false, SecurityAccessLevel.Edit, true, false);
+                    }
+                }
+                else
+                {
+                    actions = new ModuleActionCollection();
+                }
+
+                return actions;
+            }
+        }
+
+        protected int InitialTab
+        {
+            get
+            {
+                return this.controller.GetInitialTab(this.Request.Params, this.DAMState);
+            }
+        }
+
+        protected bool IsHostPortal
+        {
+            get
+            {
+                return this.IsHostMenu || this.controller.GetCurrentPortalId(this.ModuleId) == Null.NullInteger;
+            }
+        }
+
         private IExtensionPointFilter Filter
         {
             get
@@ -77,22 +116,6 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
 
                 return this.damState;
-            }
-        }
-
-        protected int InitialTab
-        {
-            get
-            {
-                return this.controller.GetInitialTab(this.Request.Params, this.DAMState);
-            }
-        }
-
-        protected bool IsHostPortal
-        {
-            get
-            {
-                return this.IsHostMenu || this.controller.GetCurrentPortalId(this.ModuleId) == Null.NullInteger;
             }
         }
 
@@ -163,6 +186,125 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected string ActiveView { get; private set; }
 
+        protected FolderViewModel RootFolderViewModel { get; private set; }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            try
+            {
+                base.OnLoad(e);
+
+                // if (IsPostBack) return;
+                switch (SettingsRepository.GetMode(this.ModuleId))
+                {
+                    case DigitalAssestsMode.Group:
+                        int groupId;
+                        if (string.IsNullOrEmpty(this.Request["groupId"]) || !int.TryParse(this.Request["groupId"], out groupId))
+                        {
+                            Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
+
+                        var groupFolder = this.controller.GetGroupFolder(groupId, this.PortalSettings);
+                        if (groupFolder == null)
+                        {
+                            Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
+
+                        this.RootFolderViewModel = groupFolder;
+                        break;
+
+                    case DigitalAssestsMode.User:
+                        if (this.PortalSettings.UserId == Null.NullInteger)
+                        {
+                            Skin.AddModuleMessage(this, Localization.GetString("InvalidUser.Error", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                            return;
+                        }
+
+                        this.RootFolderViewModel = this.controller.GetUserFolder(this.PortalSettings.UserInfo);
+                        break;
+
+                    default:
+                        // handle upgrades where FilterCondition didn't exist
+                        SettingsRepository.SetDefaultFilterCondition(this.ModuleId);
+                        this.RootFolderViewModel = this.controller.GetRootFolder(this.ModuleId);
+                        break;
+                }
+
+                var initialPath = string.Empty;
+                int folderId;
+                if (int.TryParse(this.Request["folderId"] ?? this.DAMState["folderId"], out folderId))
+                {
+                    var folder = FolderManager.Instance.GetFolder(folderId);
+                    if (folder != null && folder.FolderPath.StartsWith(this.RootFolderViewModel.FolderPath))
+                    {
+                        initialPath = PathUtils.Instance.RemoveTrailingSlash(folder.FolderPath.Substring(this.RootFolderViewModel.FolderPath.Length));
+                    }
+                }
+
+                this.PageSize = this.Request["pageSize"] ?? this.DAMState["pageSize"] ?? "10";
+                this.ActiveView = this.Request["view"] ?? this.DAMState["view"] ?? "gridview";
+
+                this.Page.DataBind();
+                this.InitializeTreeViews(initialPath);
+                this.InitializeSearchBox();
+                this.InitializeFolderType();
+                this.InitializeGridContextMenu();
+                this.InitializeEmptySpaceContextMenu();
+
+                this.FolderNameRegExValidator.ErrorMessage = this.controller.GetInvalidCharsErrorText();
+                this.FolderNameRegExValidator.ValidationExpression = "^([^" + Regex.Escape(this.controller.GetInvalidChars()) + "]+)$";
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            try
+            {
+                base.OnInit(e);
+
+                this.fileUpload.ModuleId = this.ModuleId;
+                this.fileUpload.Options.Parameters.Add("isHostPortal", this.IsHostPortal ? "true" : "false");
+
+                ServicesFramework.Instance.RequestAjaxScriptSupport();
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
+                // register the telerik core js manually
+                var telerikCoreJs = this.Page.ClientScript.GetWebResourceUrl(typeof(RadGrid), "Telerik.Web.UI.Common.Core.js");
+                ClientResourceManager.RegisterScript(this.Page, telerikCoreJs, FileOrder.Js.jQuery + 3);
+
+                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
+                                   ? "~/js/Debug/dnn.modalpopup.js"
+                                   : "~/js/dnn.modalpopup.js";
+                ClientResourceManager.RegisterScript(this.Page, popupFilePath, FileOrder.Js.DnnModalPopup);
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
+
+                var i = 1;
+                foreach (var script in this.epm.GetScriptItemExtensionPoints("DigitalAssets"))
+                {
+                    ClientResourceManager.RegisterScript(this.Page, script.ScriptName, FileOrder.Js.DefaultPriority + i++);
+                }
+
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.js", FileOrder.Js.DefaultPriority + i);
+
+                this.InitializeGrid();
+                this.FolderTypeComboBox.ItemDataBound += this.OnItemDataBoundFolderTypeComboBox;
+
+                this.MainToolBar.ModuleContext = this.ModuleContext;
+                this.SelectionToolBar.ModuleContext = this.ModuleContext;
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         private static string GetNoControlCharsString(string text)
         {
             var result = new StringBuilder();
@@ -191,15 +333,15 @@ namespace DotNetNuke.Modules.DigitalAssets
             foreach (var columnExtension in this.epm.GetGridColumnExtensionPoints("DigitalAssets", "GridColumns", this.Filter))
             {
                 var column = new DnnGridBoundColumn
-                                    {
-                                        HeaderText = columnExtension.HeaderText,
-                                        DataField = columnExtension.DataField,
-                                        UniqueName = columnExtension.UniqueName,
-                                        ReadOnly = columnExtension.ReadOnly,
-                                        Reorderable = columnExtension.Reorderable,
-                                        SortExpression = columnExtension.SortExpression,
-                                        HeaderTooltip = columnExtension.HeaderText,
-                                    };
+                {
+                    HeaderText = columnExtension.HeaderText,
+                    DataField = columnExtension.DataField,
+                    UniqueName = columnExtension.UniqueName,
+                    ReadOnly = columnExtension.ReadOnly,
+                    Reorderable = columnExtension.Reorderable,
+                    SortExpression = columnExtension.SortExpression,
+                    HeaderTooltip = columnExtension.HeaderText,
+                };
                 column.HeaderStyle.Width = columnExtension.HeaderStyleWidth;
 
                 var index = Math.Min(columnExtension.ColumnAt, this.Grid.Columns.Count - 1);
@@ -450,12 +592,12 @@ namespace DotNetNuke.Modules.DigitalAssets
             foreach (var menuItem in this.epm.GetMenuItemExtensionPoints("DigitalAssets", "GridContextMenu", this.Filter))
             {
                 this.GridMenu.Items.Add(new DnnMenuItem
-                                       {
-                                           Text = menuItem.Text,
-                                           Value = menuItem.Value,
-                                           CssClass = menuItem.CssClass,
-                                           ImageUrl = menuItem.Icon,
-                                       });
+                {
+                    Text = menuItem.Text,
+                    Value = menuItem.Value,
+                    CssClass = menuItem.CssClass,
+                    ImageUrl = menuItem.Icon,
+                });
             }
         }
 
@@ -519,148 +661,6 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             var dataSource = (FolderMappingViewModel)e.Item.DataItem;
             e.Item.Attributes["SupportsMappedPaths"] = FolderProvider.GetProviderList()[dataSource.FolderTypeName].SupportsMappedPaths.ToString().ToLowerInvariant();
-        }
-
-        protected FolderViewModel RootFolderViewModel { get; private set; }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            try
-            {
-                base.OnLoad(e);
-
-                // if (IsPostBack) return;
-                switch (SettingsRepository.GetMode(this.ModuleId))
-                {
-                    case DigitalAssestsMode.Group:
-                        int groupId;
-                        if (string.IsNullOrEmpty(this.Request["groupId"]) || !int.TryParse(this.Request["groupId"], out groupId))
-                        {
-                            Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                            return;
-                        }
-
-                        var groupFolder = this.controller.GetGroupFolder(groupId, this.PortalSettings);
-                        if (groupFolder == null)
-                        {
-                            Skin.AddModuleMessage(this, Localization.GetString("InvalidGroup.Error", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                            return;
-                        }
-
-                        this.RootFolderViewModel = groupFolder;
-                        break;
-
-                    case DigitalAssestsMode.User:
-                        if (this.PortalSettings.UserId == Null.NullInteger)
-                        {
-                            Skin.AddModuleMessage(this, Localization.GetString("InvalidUser.Error", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                            return;
-                        }
-
-                        this.RootFolderViewModel = this.controller.GetUserFolder(this.PortalSettings.UserInfo);
-                        break;
-
-                    default:
-                        // handle upgrades where FilterCondition didn't exist
-                        SettingsRepository.SetDefaultFilterCondition(this.ModuleId);
-                        this.RootFolderViewModel = this.controller.GetRootFolder(this.ModuleId);
-                        break;
-                }
-
-                var initialPath = string.Empty;
-                int folderId;
-                if (int.TryParse(this.Request["folderId"] ?? this.DAMState["folderId"], out folderId))
-                {
-                    var folder = FolderManager.Instance.GetFolder(folderId);
-                    if (folder != null && folder.FolderPath.StartsWith(this.RootFolderViewModel.FolderPath))
-                    {
-                        initialPath = PathUtils.Instance.RemoveTrailingSlash(folder.FolderPath.Substring(this.RootFolderViewModel.FolderPath.Length));
-                    }
-                }
-
-                this.PageSize = this.Request["pageSize"] ?? this.DAMState["pageSize"] ?? "10";
-                this.ActiveView = this.Request["view"] ?? this.DAMState["view"] ?? "gridview";
-
-                this.Page.DataBind();
-                this.InitializeTreeViews(initialPath);
-                this.InitializeSearchBox();
-                this.InitializeFolderType();
-                this.InitializeGridContextMenu();
-                this.InitializeEmptySpaceContextMenu();
-
-                this.FolderNameRegExValidator.ErrorMessage = this.controller.GetInvalidCharsErrorText();
-                this.FolderNameRegExValidator.ValidationExpression = "^([^" + Regex.Escape(this.controller.GetInvalidChars()) + "]+)$";
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            try
-            {
-                base.OnInit(e);
-
-                this.fileUpload.ModuleId = this.ModuleId;
-                this.fileUpload.Options.Parameters.Add("isHostPortal", this.IsHostPortal ? "true" : "false");
-
-                ServicesFramework.Instance.RequestAjaxScriptSupport();
-                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-                JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-
-                // register the telerik core js manually
-                var telerikCoreJs = this.Page.ClientScript.GetWebResourceUrl(typeof(RadGrid), "Telerik.Web.UI.Common.Core.js");
-                ClientResourceManager.RegisterScript(this.Page, telerikCoreJs, FileOrder.Js.jQuery + 3);
-
-                var popupFilePath = HttpContext.Current.IsDebuggingEnabled
-                                   ? "~/js/Debug/dnn.modalpopup.js"
-                                   : "~/js/dnn.modalpopup.js";
-                ClientResourceManager.RegisterScript(this.Page, popupFilePath, FileOrder.Js.DnnModalPopup);
-                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssetsController.js", FileOrder.Js.DefaultPriority);
-
-                var i = 1;
-                foreach (var script in this.epm.GetScriptItemExtensionPoints("DigitalAssets"))
-                {
-                    ClientResourceManager.RegisterScript(this.Page, script.ScriptName, FileOrder.Js.DefaultPriority + i++);
-                }
-
-                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.js", FileOrder.Js.DefaultPriority + i);
-
-                this.InitializeGrid();
-                this.FolderTypeComboBox.ItemDataBound += this.OnItemDataBoundFolderTypeComboBox;
-
-                this.MainToolBar.ModuleContext = this.ModuleContext;
-                this.SelectionToolBar.ModuleContext = this.ModuleContext;
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        public ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                var actions = new ModuleActionCollection();
-                if (ModulePermissionController.CanManageModule(this.ModuleConfiguration))
-                {
-                    actions.Add(this.GetNextActionID(), Localization.GetString("ManageFolderTypes", this.LocalResourceFile), string.Empty, string.Empty, "../DesktopModules/DigitalAssets/Images/manageFolderTypes.png", this.EditUrl("FolderMappings"), false, SecurityAccessLevel.Edit, true, false);
-
-                    foreach (var item in this.epm.GetMenuItemExtensionPoints("DigitalAssets", "ModuleActions", this.Filter))
-                    {
-                        actions.Add(this.GetNextActionID(), item.Text, string.Empty, string.Empty, item.Icon, this.EditUrl(item.Value), false, SecurityAccessLevel.Edit, true, false);
-                    }
-                }
-                else
-                {
-                    actions = new ModuleActionCollection();
-                }
-
-                return actions;
-            }
         }
 
         protected void GridOnItemCreated(object sender, GridItemEventArgs e)

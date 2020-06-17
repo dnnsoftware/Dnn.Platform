@@ -30,14 +30,6 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        private static void VerifyContainer()
-        {
-            if (Container == null)
-            {
-                Container = new SimpleContainer();
-            }
-        }
-
         public static object GetComponent(string name)
         {
             VerifyContainer();
@@ -48,6 +40,14 @@ namespace DotNetNuke.ComponentModel
         {
             VerifyContainer();
             return Container.GetComponent<TContract>();
+        }
+
+        private static void VerifyContainer()
+        {
+            if (Container == null)
+            {
+                Container = new SimpleContainer();
+            }
         }
 
         public static object GetComponent(Type contractType)

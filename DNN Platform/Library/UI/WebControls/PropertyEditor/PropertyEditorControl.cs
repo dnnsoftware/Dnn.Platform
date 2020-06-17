@@ -52,24 +52,11 @@ namespace DotNetNuke.UI.WebControls
             this.AutoGenerate = true;
         }
 
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
+        public event PropertyChangedEventHandler ItemAdded;
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Underlying DataSource.
-        /// </summary>
-        /// <value>An IEnumerable Boolean.</value>
-        /// -----------------------------------------------------------------------------
-        protected virtual IEnumerable UnderlyingDataSource
-        {
-            get { return this.GetProperties(); }
-        }
+        public event EditorCreatedEventHandler ItemCreated;
+
+        public event PropertyChangedEventHandler ItemDeleted;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -89,6 +76,25 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(false)]
         [Category("Data")]
         public object DataSource { get; set; }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Underlying DataSource.
+        /// </summary>
+        /// <value>An IEnumerable Boolean.</value>
+        /// -----------------------------------------------------------------------------
+        protected virtual IEnumerable UnderlyingDataSource
+        {
+            get { return this.GetProperties(); }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -351,11 +357,85 @@ namespace DotNetNuke.UI.WebControls
         [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
-        public event PropertyChangedEventHandler ItemAdded;
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Binds the controls to the DataSource.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public override void DataBind()
+        {
+            // Invoke OnDataBinding so DataBinding Event is raised
+            this.OnDataBinding(EventArgs.Empty);
 
-        public event EditorCreatedEventHandler ItemCreated;
+            // Clear Existing Controls
+            this.Controls.Clear();
 
-        public event PropertyChangedEventHandler ItemDeleted;
+            // Clear Child View State as controls will be loaded from DataSource
+            this.ClearChildViewState();
+
+            // Start Tracking ViewState
+            this.TrackViewState();
+
+            // Create the Editor
+            this.CreateEditor();
+
+            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+            this.ChildControlsCreated = true;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
+        /// specified adapter.
+        /// </summary>
+        /// <param name="table">The Table Control to add the row to.</param>
+        /// <param name="name">The name of property being added.</param>
+        /// <param name="adapter">An IEditorInfoAdapter.</param>
+        /// -----------------------------------------------------------------------------
+        protected void AddEditorRow(Table table, string name, IEditorInfoAdapter adapter)
+        {
+            var row = new TableRow();
+            table.Rows.Add(row);
+
+            var cell = new TableCell();
+            row.Cells.Add(cell);
+
+            // Create a FieldEditor for this Row
+            var editor = new FieldEditorControl
+            {
+                DataSource = this.DataSource,
+                EditorInfoAdapter = adapter,
+                DataField = name,
+                EditorDisplayMode = this.DisplayMode,
+                EnableClientValidation = this.EnableClientValidation,
+                EditMode = this.EditMode,
+                HelpDisplayMode = this.HelpDisplayMode,
+                LabelMode = this.LabelMode,
+                LabelWidth = this.LabelWidth,
+            };
+            this.AddEditorRow(editor, cell);
+
+            this.Fields.Add(editor);
+        }
+
+        protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
+        {
+            var editor = new FieldEditorControl
+            {
+                DataSource = this.DataSource,
+                EditorInfoAdapter = adapter,
+                DataField = name,
+                EditorDisplayMode = this.DisplayMode,
+                EnableClientValidation = this.EnableClientValidation,
+                EditMode = this.EditMode,
+                HelpDisplayMode = this.HelpDisplayMode,
+                LabelMode = this.LabelMode,
+                LabelWidth = this.LabelWidth,
+            };
+            this.AddEditorRow(editor, container);
+
+            this.Fields.Add(editor);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -423,60 +503,6 @@ namespace DotNetNuke.UI.WebControls
 
             editor.DataBind();
             container.Controls.Add(editor);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
-        /// specified adapter.
-        /// </summary>
-        /// <param name="table">The Table Control to add the row to.</param>
-        /// <param name="name">The name of property being added.</param>
-        /// <param name="adapter">An IEditorInfoAdapter.</param>
-        /// -----------------------------------------------------------------------------
-        protected void AddEditorRow(Table table, string name, IEditorInfoAdapter adapter)
-        {
-            var row = new TableRow();
-            table.Rows.Add(row);
-
-            var cell = new TableCell();
-            row.Cells.Add(cell);
-
-            // Create a FieldEditor for this Row
-            var editor = new FieldEditorControl
-                             {
-                                 DataSource = this.DataSource,
-                                 EditorInfoAdapter = adapter,
-                                 DataField = name,
-                                 EditorDisplayMode = this.DisplayMode,
-                                 EnableClientValidation = this.EnableClientValidation,
-                                 EditMode = this.EditMode,
-                                 HelpDisplayMode = this.HelpDisplayMode,
-                                 LabelMode = this.LabelMode,
-                                 LabelWidth = this.LabelWidth,
-                             };
-            this.AddEditorRow(editor, cell);
-
-            this.Fields.Add(editor);
-        }
-
-        protected void AddEditorRow(WebControl container, string name, IEditorInfoAdapter adapter)
-        {
-            var editor = new FieldEditorControl
-            {
-                DataSource = this.DataSource,
-                EditorInfoAdapter = adapter,
-                DataField = name,
-                EditorDisplayMode = this.DisplayMode,
-                EnableClientValidation = this.EnableClientValidation,
-                EditMode = this.EditMode,
-                HelpDisplayMode = this.HelpDisplayMode,
-                LabelMode = this.LabelMode,
-                LabelWidth = this.LabelWidth,
-            };
-            this.AddEditorRow(editor, container);
-
-            this.Fields.Add(editor);
         }
 
         /// -----------------------------------------------------------------------------
@@ -919,32 +945,6 @@ namespace DotNetNuke.UI.WebControls
             }
 
             base.OnPreRender(e);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Binds the controls to the DataSource.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public override void DataBind()
-        {
-            // Invoke OnDataBinding so DataBinding Event is raised
-            this.OnDataBinding(EventArgs.Empty);
-
-            // Clear Existing Controls
-            this.Controls.Clear();
-
-            // Clear Child View State as controls will be loaded from DataSource
-            this.ClearChildViewState();
-
-            // Start Tracking ViewState
-            this.TrackViewState();
-
-            // Create the Editor
-            this.CreateEditor();
-
-            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
-            this.ChildControlsCreated = true;
         }
 
         /// -----------------------------------------------------------------------------

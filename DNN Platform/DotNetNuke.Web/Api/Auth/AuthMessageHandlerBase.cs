@@ -18,6 +18,12 @@ namespace DotNetNuke.Web.Api.Auth
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthMessageHandlerBase));
 
+        protected AuthMessageHandlerBase(bool includeByDefault, bool forceSsl)
+        {
+            this.DefaultInclude = includeByDefault;
+            this.ForceSsl = forceSsl;
+        }
+
         public abstract string AuthScheme { get; }
 
         public virtual bool BypassAntiForgeryToken => false;
@@ -25,24 +31,6 @@ namespace DotNetNuke.Web.Api.Auth
         public bool DefaultInclude { get; }
 
         public bool ForceSsl { get; }
-
-        protected AuthMessageHandlerBase(bool includeByDefault, bool forceSsl)
-        {
-            this.DefaultInclude = includeByDefault;
-            this.ForceSsl = forceSsl;
-        }
-
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            var response = this.OnInboundRequest(request, cancellationToken);
-            if (response != null)
-            {
-                response.RequestMessage = response.RequestMessage ?? request; // if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
-                return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
-            }
-
-            return base.SendAsync(request, cancellationToken).ContinueWith(x => this.OnOutboundResponse(x.Result, cancellationToken), cancellationToken);
-        }
 
         /// <summary>
         /// A chance to process inbound requests.
@@ -66,6 +54,37 @@ namespace DotNetNuke.Web.Api.Auth
             return response;
         }
 
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = this.OnInboundRequest(request, cancellationToken);
+            if (response != null)
+            {
+                response.RequestMessage = response.RequestMessage ?? request; // if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
+                return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
+            }
+
+            return base.SendAsync(request, cancellationToken).ContinueWith(x => this.OnOutboundResponse(x.Result, cancellationToken), cancellationToken);
+        }
+
+        protected static bool IsXmlHttpRequest(HttpRequestMessage request)
+        {
+            string value = null;
+            IEnumerable<string> values;
+            if (request != null && request.Headers.TryGetValues("X-REQUESTED-WITH", out values))
+            {
+                value = values.FirstOrDefault();
+            }
+
+            return !string.IsNullOrEmpty(value) &&
+                   value.Equals("XmlHttpRequest", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        protected static void SetCurrentPrincipal(IPrincipal principal, HttpRequestMessage request)
+        {
+            Thread.CurrentPrincipal = principal;
+            request.GetHttpContext().User = principal;
+        }
+
         protected bool NeedsAuthentication(HttpRequestMessage request)
         {
             if (this.MustEnforceSslInRequest(request))
@@ -82,19 +101,6 @@ namespace DotNetNuke.Web.Api.Auth
             return false;
         }
 
-        protected static bool IsXmlHttpRequest(HttpRequestMessage request)
-        {
-            string value = null;
-            IEnumerable<string> values;
-            if (request != null && request.Headers.TryGetValues("X-REQUESTED-WITH", out values))
-            {
-                value = values.FirstOrDefault();
-            }
-
-            return !string.IsNullOrEmpty(value) &&
-                   value.Equals("XmlHttpRequest", StringComparison.InvariantCultureIgnoreCase);
-        }
-
         /// <summary>
         /// Validated the <see cref="ForceSsl"/> setting of the instane against the HTTP(S) request.
         /// </summary>
@@ -102,12 +108,6 @@ namespace DotNetNuke.Web.Api.Auth
         private bool MustEnforceSslInRequest(HttpRequestMessage request)
         {
             return !this.ForceSsl || request.RequestUri.Scheme.Equals("HTTPS", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        protected static void SetCurrentPrincipal(IPrincipal principal, HttpRequestMessage request)
-        {
-            Thread.CurrentPrincipal = principal;
-            request.GetHttpContext().User = principal;
         }
     }
 }

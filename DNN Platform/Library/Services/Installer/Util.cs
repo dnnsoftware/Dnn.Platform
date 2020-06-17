@@ -33,6 +33,7 @@ namespace DotNetNuke.Services.Installer
     {
         // ReSharper disable InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
+        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
         public static string ASSEMBLY_Added = GetLocalizedString("ASSEMBLY_Added");
         public static string ASSEMBLY_AddedBindingRedirect = GetLocalizedString("ASSEMBLY_AddedBindingRedirect");
         public static string ASSEMBLY_RemovedBindingRedirect = GetLocalizedString("ASSEMBLY_RemovedBindingRedirect");
@@ -170,7 +171,54 @@ namespace DotNetNuke.Services.Installer
         public static string WRITER_SavedFile = GetLocalizedString("WRITER_SavedFile");
         public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
-        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The BackupFile method backs up a file to the backup folder.
+        /// </summary>
+        /// <param name="installFile">The file to backup.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
+        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
+        {
+            string fullFileName = Path.Combine(basePath, installFile.FullName);
+            string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
+
+            // create the backup folder if neccessary
+            if (!Directory.Exists(installFile.BackupPath))
+            {
+                Directory.CreateDirectory(installFile.BackupPath);
+            }
+
+            // Copy file to backup location
+            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
+            log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The CopyFile method copies a file from the temporary extract location.
+        /// </summary>
+        /// <param name="installFile">The file to copy.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
+        public static void CopyFile(InstallFile installFile, string basePath, Logger log)
+        {
+            string filePath = Path.Combine(basePath, installFile.Path);
+            string fullFileName = Path.Combine(basePath, installFile.FullName);
+
+            // create the folder if neccessary
+            if (!Directory.Exists(filePath))
+            {
+                log.AddInfo(string.Format(FOLDER_Created, filePath));
+                Directory.CreateDirectory(filePath);
+            }
+
+            // Copy file from temp location
+            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(installFile.TempFileName, fullFileName), "Copy file to " + fullFileName);
+
+            log.AddInfo(string.Format(FILE_Created, installFile.FullName));
+        }
 
         // ReSharper restore InconsistentNaming
 
@@ -223,54 +271,6 @@ namespace DotNetNuke.Services.Installer
             }
 
             return propValue;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The BackupFile method backs up a file to the backup folder.
-        /// </summary>
-        /// <param name="installFile">The file to backup.</param>
-        /// <param name="basePath">The basePath to the file.</param>
-        /// <param name="log">A Logger to log the result.</param>
-        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
-        {
-            string fullFileName = Path.Combine(basePath, installFile.FullName);
-            string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
-
-            // create the backup folder if neccessary
-            if (!Directory.Exists(installFile.BackupPath))
-            {
-                Directory.CreateDirectory(installFile.BackupPath);
-            }
-
-            // Copy file to backup location
-            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
-            log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CopyFile method copies a file from the temporary extract location.
-        /// </summary>
-        /// <param name="installFile">The file to copy.</param>
-        /// <param name="basePath">The basePath to the file.</param>
-        /// <param name="log">A Logger to log the result.</param>
-        public static void CopyFile(InstallFile installFile, string basePath, Logger log)
-        {
-            string filePath = Path.Combine(basePath, installFile.Path);
-            string fullFileName = Path.Combine(basePath, installFile.FullName);
-
-            // create the folder if neccessary
-            if (!Directory.Exists(filePath))
-            {
-                log.AddInfo(string.Format(FOLDER_Created, filePath));
-                Directory.CreateDirectory(filePath);
-            }
-
-            // Copy file from temp location
-            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(installFile.TempFileName, fullFileName), "Copy file to " + fullFileName);
-
-            log.AddInfo(string.Format(FILE_Created, installFile.FullName));
         }
 
         /// -----------------------------------------------------------------------------

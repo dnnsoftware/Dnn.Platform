@@ -25,9 +25,9 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public abstract class SkinThumbNailControl : UserControlBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
         protected HtmlGenericControl ControlContainer;
         protected RadioButtonList OptSkin;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
 
         public string Border
         {
@@ -137,42 +137,37 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddDefaultSkin adds the not-specified skin to the radio button list.
+        /// Clear clears the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void AddDefaultSkin()
+        public void Clear()
         {
-            var strDefault = Localization.GetString("Not_Specified") + "<br />";
-            strDefault += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
-            this.OptSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
+            this.OptSkin.Items.Clear();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddSkin adds the skin to the radio button list.
+        /// LoadAllSkins loads all the available skins (Host and Site) to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="root">Root Path.</param>
-        /// <param name="strFolder">The Skin Folder.</param>
-        /// <param name="strFile">The Skin File.</param>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         /// -----------------------------------------------------------------------------
-        private void AddSkin(string root, string strFolder, string strFile)
+        public void LoadAllSkins(bool includeNotSpecified)
         {
-            var strImage = string.Empty;
-            if (File.Exists(strFile.Replace(".ascx", ".jpg")))
+            // default value
+            if (includeNotSpecified)
             {
-                strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", string.Empty) + "\" target=\"_blank\"><img src=\"" +
-                            CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("\\", "/") + "\" border=\"1\"></a>";
-            }
-            else
-            {
-                strImage += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
+                this.AddDefaultSkin();
             }
 
-            this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
+            // load host skins (includeNotSpecified = false as we have already added it)
+            this.LoadHostSkins(false);
+
+            // load portal skins (includeNotSpecified = false as we have already added it)
+            this.LoadPortalSkins(false);
         }
 
         /// -----------------------------------------------------------------------------
@@ -286,37 +281,42 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clear clears the radio button list.
+        /// AddDefaultSkin adds the not-specified skin to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public void Clear()
+        private void AddDefaultSkin()
         {
-            this.OptSkin.Items.Clear();
+            var strDefault = Localization.GetString("Not_Specified") + "<br />";
+            strDefault += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/spacer.gif\" width=\"140\" height=\"135\" border=\"0\">";
+            this.OptSkin.Items.Insert(0, new ListItem(strDefault, string.Empty));
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadAllSkins loads all the available skins (Host and Site) to the radio button list.
+        /// AddSkin adds the skin to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
+        /// <param name="root">Root Path.</param>
+        /// <param name="strFolder">The Skin Folder.</param>
+        /// <param name="strFile">The Skin File.</param>
         /// -----------------------------------------------------------------------------
-        public void LoadAllSkins(bool includeNotSpecified)
+        private void AddSkin(string root, string strFolder, string strFile)
         {
-            // default value
-            if (includeNotSpecified)
+            var strImage = string.Empty;
+            if (File.Exists(strFile.Replace(".ascx", ".jpg")))
             {
-                this.AddDefaultSkin();
+                strImage += "<a href=\"" + CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("thumbnail_", string.Empty) + "\" target=\"_blank\"><img src=\"" +
+                            CreateThumbnail(strFile.Replace(".ascx", ".jpg")).Replace("\\", "/") + "\" border=\"1\"></a>";
+            }
+            else
+            {
+                strImage += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
             }
 
-            // load host skins (includeNotSpecified = false as we have already added it)
-            this.LoadHostSkins(false);
-
-            // load portal skins (includeNotSpecified = false as we have already added it)
-            this.LoadPortalSkins(false);
+            this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
         }
 
         /// -----------------------------------------------------------------------------

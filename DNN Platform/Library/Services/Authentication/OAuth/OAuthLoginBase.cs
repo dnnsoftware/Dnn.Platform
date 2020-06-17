@@ -11,6 +11,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
     public abstract class OAuthLoginBase : AuthenticationLoginBase
     {
+        public override bool Enabled
+        {
+            get { return OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId).Enabled; }
+        }
+
         protected virtual string AuthSystemApplicationName
         {
             get { return string.Empty; }
@@ -51,11 +56,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
                     this.OAuthClient.AuthenticateUser(this.GetCurrentUser(), this.PortalSettings, this.IPAddress, this.AddCustomProperties, this.OnUserAuthenticated);
                 }
             }
-        }
-
-        public override bool Enabled
-        {
-            get { return OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId).Enabled; }
         }
     }
 }

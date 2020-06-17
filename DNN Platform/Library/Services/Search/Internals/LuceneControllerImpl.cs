@@ -35,19 +35,22 @@ namespace DotNetNuke.Services.Search.Internals
     /// -----------------------------------------------------------------------------
     internal class LuceneControllerImpl : ILuceneController, IDisposable
     {
+        internal const int DefaultRereadTimeSpan = 30; // in seconds
         private const string DefaultSearchFolder = @"App_Data\Search";
         private const string WriteLockFile = "write.lock";
-        internal const int DefaultRereadTimeSpan = 30; // in seconds
         private const int DefaultSearchRetryTimes = 5;
         private const int DISPOSED = 1;
         private const int UNDISPOSED = 0;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
+        private const string HighlightPreTag = "[b]";
+        private const string HighlightPostTag = "[/b]";
 
-        internal string IndexFolder { get; private set; }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
 
         private IndexWriter _writer;
         private IndexReader _idxReader;
         private CachedReader _reader;
+
+        internal string IndexFolder { get; private set; }
         private FastVectorHighlighter _fastHighlighter;
         private readonly object _writerLock = new object();
         private readonly double _readerTimeSpan; // in seconds
@@ -55,11 +58,11 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly List<CachedReader> _oldReaders = new List<CachedReader>();
         private int _isDisposed = UNDISPOSED;
 
-        private const string HighlightPreTag = "[b]";
-        private const string HighlightPostTag = "[/b]";
-
         private const string HtmlPreTag = "<b>";
         private const string HtmlPostTag = "</b>";
+
+        private DateTime _lastReadTimeUtc;
+        private DateTime _lastDirModifyTimeUtc;
 
         public LuceneControllerImpl()
         {
@@ -74,14 +77,6 @@ namespace DotNetNuke.Services.Search.Internals
             this.IndexFolder = Path.Combine(Globals.ApplicationMapPath, folder);
             this._readerTimeSpan = hostController.GetDouble(Constants.SearchReaderRefreshTimeKey, DefaultRereadTimeSpan);
             this._searchRetryTimes = hostController.GetInteger(Constants.SearchRetryTimesKey, DefaultSearchRetryTimes);
-        }
-
-        private void CheckDisposed()
-        {
-            if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
-            {
-                throw new ObjectDisposedException(Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
-            }
         }
 
         private IndexWriter Writer
@@ -128,6 +123,16 @@ namespace DotNetNuke.Services.Search.Internals
             }
         }
 
+        private bool MustRereadIndex
+        {
+            get
+            {
+                return (DateTime.UtcNow - this._lastReadTimeUtc).TotalSeconds >= this._readerTimeSpan &&
+                    System.IO.Directory.Exists(this.IndexFolder) &&
+                    System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder) != this._lastDirModifyTimeUtc;
+            }
+        }
+
         // made internal to be used in unit tests only; otherwise could be made private
         internal IndexSearcher GetSearcher()
         {
@@ -139,6 +144,14 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             return this._reader.GetSearcher();
+        }
+
+        private void CheckDisposed()
+        {
+            if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
+            {
+                throw new ObjectDisposedException(Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
+            }
         }
 
         private void InstantiateReader()
@@ -172,52 +185,6 @@ namespace DotNetNuke.Services.Search.Internals
                 this._oldReaders.Add(reader);
                 Interlocked.Exchange(ref this._reader, reader);
             }
-        }
-
-        private DateTime _lastReadTimeUtc;
-        private DateTime _lastDirModifyTimeUtc;
-
-        private bool MustRereadIndex
-        {
-            get
-            {
-                return (DateTime.UtcNow - this._lastReadTimeUtc).TotalSeconds >= this._readerTimeSpan &&
-                    System.IO.Directory.Exists(this.IndexFolder) &&
-                    System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder) != this._lastDirModifyTimeUtc;
-            }
-        }
-
-        private void UpdateLastAccessTimes()
-        {
-            this._lastReadTimeUtc = DateTime.UtcNow;
-            if (System.IO.Directory.Exists(this.IndexFolder))
-            {
-                this._lastDirModifyTimeUtc = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder);
-            }
-        }
-
-        private void RescheduleAccessTimes()
-        {
-            // forces re-opening the reader within 30 seconds from now (used mainly by commit)
-            var now = DateTime.UtcNow;
-            if (this._readerTimeSpan > DefaultRereadTimeSpan && (now - this._lastReadTimeUtc).TotalSeconds > DefaultRereadTimeSpan)
-            {
-                this._lastReadTimeUtc = now - TimeSpan.FromSeconds(this._readerTimeSpan - DefaultRereadTimeSpan);
-            }
-        }
-
-        private void CheckValidIndexFolder()
-        {
-            if (!this.ValidateIndexFolder())
-            {
-                throw new SearchIndexEmptyException(Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid", "Search indexing directory is either empty or does not exist"));
-            }
-        }
-
-        private bool ValidateIndexFolder()
-        {
-            return System.IO.Directory.Exists(this.IndexFolder) &&
-                   System.IO.Directory.GetFiles(this.IndexFolder, "*.*").Length > 0;
         }
 
         private FastVectorHighlighter FastHighlighter
@@ -318,52 +285,6 @@ namespace DotNetNuke.Services.Search.Internals
             return luceneResults;
         }
 
-        private string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)
-        {
-            var s = highlighter.GetBestFragment(fieldQuery, searcher.IndexReader, match.Doc, tag, length);
-            if (!string.IsNullOrEmpty(s))
-            {
-                s = HttpUtility.HtmlEncode(s).Replace(HighlightPreTag, HtmlPreTag).Replace(HighlightPostTag, HtmlPostTag);
-            }
-
-            return s;
-        }
-
-        private static StringBuilder GetSearcResultExplanation(LuceneQuery luceneQuery, IEnumerable<ScoreDoc> scoreDocs, IndexSearcher searcher)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("Query: " + luceneQuery.Query.ToString());
-            foreach (var match in scoreDocs)
-            {
-                var explanation = searcher.Explain(luceneQuery.Query, match.Doc);
-                sb.AppendLine("-------------------");
-                var doc = searcher.Doc(match.Doc);
-                sb.AppendLine(doc.Get(Constants.TitleTag));
-                sb.AppendLine(explanation.ToString());
-            }
-
-            return sb;
-        }
-
-        /// <summary>
-        /// Extract the Score portion of the match.ToString().
-        /// </summary>
-        private string GetDisplayScoreFromMatch(string match)
-        {
-            var displayScore = string.Empty;
-            if (!string.IsNullOrEmpty(match))
-            {
-                var beginPos = match.IndexOf('[');
-                var endPos = match.LastIndexOf(']');
-                if (beginPos > 0 && endPos > 0 && endPos > beginPos)
-                {
-                    displayScore = match.Substring(beginPos + 1, endPos - beginPos - 1);
-                }
-            }
-
-            return displayScore;
-        }
-
         public void Add(Document doc)
         {
             Requires.NotNull("searchDocument", doc);
@@ -389,6 +310,85 @@ namespace DotNetNuke.Services.Search.Internals
         {
             Requires.NotNull("luceneQuery", query);
             this.Writer.DeleteDocuments(query);
+        }
+
+        private static StringBuilder GetSearcResultExplanation(LuceneQuery luceneQuery, IEnumerable<ScoreDoc> scoreDocs, IndexSearcher searcher)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("Query: " + luceneQuery.Query.ToString());
+            foreach (var match in scoreDocs)
+            {
+                var explanation = searcher.Explain(luceneQuery.Query, match.Doc);
+                sb.AppendLine("-------------------");
+                var doc = searcher.Doc(match.Doc);
+                sb.AppendLine(doc.Get(Constants.TitleTag));
+                sb.AppendLine(explanation.ToString());
+            }
+
+            return sb;
+        }
+
+        private void UpdateLastAccessTimes()
+        {
+            this._lastReadTimeUtc = DateTime.UtcNow;
+            if (System.IO.Directory.Exists(this.IndexFolder))
+            {
+                this._lastDirModifyTimeUtc = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder);
+            }
+        }
+
+        private void RescheduleAccessTimes()
+        {
+            // forces re-opening the reader within 30 seconds from now (used mainly by commit)
+            var now = DateTime.UtcNow;
+            if (this._readerTimeSpan > DefaultRereadTimeSpan && (now - this._lastReadTimeUtc).TotalSeconds > DefaultRereadTimeSpan)
+            {
+                this._lastReadTimeUtc = now - TimeSpan.FromSeconds(this._readerTimeSpan - DefaultRereadTimeSpan);
+            }
+        }
+
+        private void CheckValidIndexFolder()
+        {
+            if (!this.ValidateIndexFolder())
+            {
+                throw new SearchIndexEmptyException(Localization.GetExceptionMessage("SearchIndexingDirectoryNoValid", "Search indexing directory is either empty or does not exist"));
+            }
+        }
+
+        private bool ValidateIndexFolder()
+        {
+            return System.IO.Directory.Exists(this.IndexFolder) &&
+                   System.IO.Directory.GetFiles(this.IndexFolder, "*.*").Length > 0;
+        }
+
+        private string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)
+        {
+            var s = highlighter.GetBestFragment(fieldQuery, searcher.IndexReader, match.Doc, tag, length);
+            if (!string.IsNullOrEmpty(s))
+            {
+                s = HttpUtility.HtmlEncode(s).Replace(HighlightPreTag, HtmlPreTag).Replace(HighlightPostTag, HtmlPostTag);
+            }
+
+            return s;
+        }
+
+        /// <summary>
+        /// Extract the Score portion of the match.ToString().
+        /// </summary>
+        private string GetDisplayScoreFromMatch(string match)
+        {
+            var displayScore = string.Empty;
+            if (!string.IsNullOrEmpty(match))
+            {
+                var beginPos = match.IndexOf('[');
+                var endPos = match.LastIndexOf(']');
+                if (beginPos > 0 && endPos > 0 && endPos > beginPos)
+                {
+                    displayScore = match.Substring(beginPos + 1, endPos - beginPos - 1);
+                }
+            }
+
+            return displayScore;
         }
 
         public void Commit()
@@ -465,14 +465,14 @@ namespace DotNetNuke.Services.Search.Internals
             var size = files.Select(name => new FileInfo(name)).Select(fInfo => fInfo.Length).Sum();
 
             return new SearchStatistics
-                {
-                    // Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
-                    TotalActiveDocuments = searcher.IndexReader.NumDocs(),
-                    TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
-                    IndexLocation = this.IndexFolder,
-                    LastModifiedOn = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder),
-                    IndexDbSize = size,
-                };
+            {
+                // Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
+                TotalActiveDocuments = searcher.IndexReader.NumDocs(),
+                TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
+                IndexLocation = this.IndexFolder,
+                LastModifiedOn = System.IO.Directory.GetLastWriteTimeUtc(this.IndexFolder),
+                IndexDbSize = size,
+            };
         }
 
         public void Dispose()
@@ -557,8 +557,6 @@ namespace DotNetNuke.Services.Search.Internals
 
         private class CachedReader : IDisposable
         {
-            public DateTime LastUsed { get; private set; }
-
             private readonly IndexSearcher _searcher;
 
             public CachedReader(IndexSearcher searcher)
@@ -567,21 +565,23 @@ namespace DotNetNuke.Services.Search.Internals
                 this.UpdateLastUsed();
             }
 
+            public DateTime LastUsed { get; private set; }
+
             public IndexSearcher GetSearcher()
             {
                 this.UpdateLastUsed();
                 return this._searcher;
             }
 
-            private void UpdateLastUsed()
-            {
-                this.LastUsed = DateTime.Now;
-            }
-
             public void Dispose()
             {
                 this._searcher.Dispose();
                 this._searcher.IndexReader.Dispose();
+            }
+
+            private void UpdateLastUsed()
+            {
+                this.LastUsed = DateTime.Now;
             }
         }
     }

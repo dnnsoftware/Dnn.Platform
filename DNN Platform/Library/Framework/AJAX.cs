@@ -38,11 +38,11 @@ namespace DotNetNuke.Framework
                     try
                     {
                         using (var scriptManager = new ScriptManager // RadScriptManager
-                                {
-                                    ID = "ScriptManager",
-                                    EnableScriptGlobalization = true,
-                                    SupportsPartialRendering = true,
-                                })
+                        {
+                            ID = "ScriptManager",
+                            EnableScriptGlobalization = true,
+                            SupportsPartialRendering = true,
+                        })
                         {
                             if (checkCdn)
                             {
@@ -94,9 +94,9 @@ namespace DotNetNuke.Framework
             }
         }
 
-    /// <summary>Gets the current ScriptManager on the page.</summary>
-    /// <param name="objPage">the page instance.</param>
-    /// <returns>The ScriptManager instance, or <c>null</c>.</returns>
+        /// <summary>Gets the current ScriptManager on the page.</summary>
+        /// <param name="objPage">the page instance.</param>
+        /// <returns>The ScriptManager instance, or <c>null</c>.</returns>
         public static ScriptManager GetScriptManager(Page objPage)
         {
             return objPage.FindControl("ScriptManager") as ScriptManager;

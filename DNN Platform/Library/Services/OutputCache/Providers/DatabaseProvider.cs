@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 }
                 else
                 {
-                    if (! dr.Read())
+                    if (!dr.Read())
                     {
                         return null;
                     }
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 }
                 else
                 {
-                    if (! dr.Read())
+                    if (!dr.Read())
                     {
                         return false;
                     }

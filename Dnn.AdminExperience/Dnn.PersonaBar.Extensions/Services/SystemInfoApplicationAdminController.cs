@@ -22,6 +22,15 @@ namespace Dnn.PersonaBar.Servers.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoApplicationAdminController));
 
+        public static string FirstCharToUpper(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+        }
+
         [HttpGet]
         public HttpResponseMessage GetApplicationInfo()
         {
@@ -51,11 +60,6 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private string GetProviderConfiguration(string providerName)
-        {
-            return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
-        }
-
         private static string GetFriendlyUrlType(string friendlyUrlProvider)
         {
             var urlProvider = (Provider)ProviderConfiguration.GetProviderConfiguration("friendlyUrl").Providers[friendlyUrlProvider];
@@ -63,13 +67,9 @@ namespace Dnn.PersonaBar.Servers.Services
             return string.IsNullOrWhiteSpace(urlFormat) ? "SearchFriendly" : FirstCharToUpper(urlFormat);
         }
 
-        public static string FirstCharToUpper(string input)
+        private string GetProviderConfiguration(string providerName)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return input;
-            }
-            return input.First().ToString().ToUpper() + string.Join("", input.Skip(1));
+            return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
         }
     }
 }

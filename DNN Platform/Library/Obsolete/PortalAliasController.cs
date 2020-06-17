@@ -18,6 +18,27 @@ namespace DotNetNuke.Entities.Portals
     public partial class PortalAliasController
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in version 7.3.  Replaced by PortalAliasController.Instance.GetPortalAlias. Scheduled removal in v10.0.0.")]
+        public static PortalAliasInfo GetPortalAliasInfo(string httpAlias)
+        {
+            return Instance.GetPortalAlias(httpAlias);
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.GetPortalAliases. Scheduled removal in v10.0.0.")]
+        public static PortalAliasCollection GetPortalAliasLookup()
+        {
+            var portalAliasCollection = new PortalAliasCollection();
+            var aliasController = new PortalAliasController();
+            foreach (var kvp in aliasController.GetPortalAliasesInternal())
+            {
+                portalAliasCollection.Add(kvp.Key, kvp.Value);
+            }
+
+            return portalAliasCollection;
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.DeletePortalAlias. Scheduled removal in v10.0.0.")]
         public void DeletePortalAlias(int portalAliasId)
         {
@@ -49,27 +70,6 @@ namespace DotNetNuke.Entities.Portals
             foreach (PortalAliasInfo alias in GetPortalAliasLookup().Values.Cast<PortalAliasInfo>().Where(alias => alias.PortalID == PortalID))
             {
                 portalAliasCollection.Add(alias.HTTPAlias, alias);
-            }
-
-            return portalAliasCollection;
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in version 7.3.  Replaced by PortalAliasController.Instance.GetPortalAlias. Scheduled removal in v10.0.0.")]
-        public static PortalAliasInfo GetPortalAliasInfo(string httpAlias)
-        {
-            return Instance.GetPortalAlias(httpAlias);
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Obsolete("Deprecated in version 7.1.  Replaced by PortalAliasController.Instance.GetPortalAliases. Scheduled removal in v10.0.0.")]
-        public static PortalAliasCollection GetPortalAliasLookup()
-        {
-            var portalAliasCollection = new PortalAliasCollection();
-            var aliasController = new PortalAliasController();
-            foreach (var kvp in aliasController.GetPortalAliasesInternal())
-            {
-                portalAliasCollection.Add(kvp.Key, kvp.Value);
             }
 
             return portalAliasCollection;

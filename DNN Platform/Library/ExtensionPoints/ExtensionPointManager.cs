@@ -18,6 +18,8 @@ namespace DotNetNuke.ExtensionPoints
     {
         private static readonly object SyncRoot = new object();
 
+        private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
+
 #pragma warning disable 649
 
         [ImportMany]
@@ -51,16 +53,6 @@ namespace DotNetNuke.ExtensionPoints
             ComposeParts(this);
         }
 
-        private static readonly CompositionContainer MefCompositionContainer = InitializeMefCompositionContainer();
-
-        private static CompositionContainer InitializeMefCompositionContainer()
-        {
-            var catalog = new AggregateCatalog();
-            var path = Path.Combine(Globals.ApplicationMapPath, "bin");
-            catalog.Catalogs.Add(new SafeDirectoryCatalog(path));
-            return new CompositionContainer(catalog, true);
-        }
-
         public static void ComposeParts(params object[] attributeParts)
         {
             lock (SyncRoot)
@@ -72,6 +64,14 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module)
         {
             return this.GetEditPageTabExtensionPoints(module, null);
+        }
+
+        private static CompositionContainer InitializeMefCompositionContainer()
+        {
+            var catalog = new AggregateCatalog();
+            var path = Path.Combine(Globals.ApplicationMapPath, "bin");
+            catalog.Catalogs.Add(new SafeDirectoryCatalog(path));
+            return new CompositionContainer(catalog, true);
         }
 
         public IEnumerable<IEditPageTabExtensionPoint> GetEditPageTabExtensionPoints(string module, string group)
@@ -117,10 +117,10 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IScriptItemExtensionPoint> GetScriptItemExtensionPoints(string module, string group)
         {
             return from e in this._scripts
-                where e.Metadata.Module == module
-                    && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
-                orderby e.Value.Order
-                select e.Value;
+                   where e.Metadata.Module == module
+                       && (string.IsNullOrEmpty(@group) || e.Metadata.Group == @group)
+                   orderby e.Value.Order
+                   select e.Value;
         }
 
         public IEnumerable<IEditPagePanelExtensionPoint> GetEditPagePanelExtensionPoints(string module)
@@ -170,9 +170,9 @@ namespace DotNetNuke.ExtensionPoints
         public IEnumerable<IUserControlExtensionPoint> GetUserControlExtensionPoints(string module, string group)
         {
             return from e in this._userControlExtensionPoints
-                where e.Metadata.Module == module && e.Metadata.Group == @group
-                orderby e.Value.Order
-                select e.Value;
+                   where e.Metadata.Module == module && e.Metadata.Group == @group
+                   orderby e.Value.Order
+                   select e.Value;
         }
 
         public IEnumerable<IMenuItemExtensionPoint> GetMenuItemExtensionPoints(string module)

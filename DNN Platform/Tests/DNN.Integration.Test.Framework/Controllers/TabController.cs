@@ -11,6 +11,8 @@ namespace DNN.Integration.Test.Framework.Controllers
 
     public static class TabController
     {
+        private static int PortalId => DnnDataHelper.PortalId;
+
         public static int GetTabIdByTabName(string tabName)
         {
             var query = string.Format(
@@ -179,7 +181,5 @@ namespace DNN.Integration.Test.Framework.Controllers
         {
             DatabaseHelper.ExecuteStoredProcedure("DeleteTabSetting", tabId, settingName);
         }
-
-        private static int PortalId => DnnDataHelper.PortalId;
     }
 }

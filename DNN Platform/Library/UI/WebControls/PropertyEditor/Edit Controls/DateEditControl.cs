@@ -153,6 +153,21 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            this.EnsureChildControls();
+            bool dataChanged = false;
+            string presentValue = this.StringValue;
+            string postedValue = postCollection[postDataKey + "date"];
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
+                dataChanged = true;
+            }
+
+            return dataChanged;
+        }
+
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -177,21 +192,6 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.dateField.Text = this.DateValue.Date.ToString("d");
             }
-        }
-
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            this.EnsureChildControls();
-            bool dataChanged = false;
-            string presentValue = this.StringValue;
-            string postedValue = postCollection[postDataKey + "date"];
-            if (!presentValue.Equals(postedValue))
-            {
-                this.Value = DateTime.Parse(postedValue).ToString(CultureInfo.InvariantCulture);
-                dataChanged = true;
-            }
-
-            return dataChanged;
         }
 
         /// <summary>

@@ -20,21 +20,20 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
     /// </summary>
     public class AspNetClientCapability : Services.ClientCapability.ClientCapability
     {
+        // set all agent identifiers are in lowercase for faster comparison
+        private const string WindowsPcAgent = "windows nt";
+        private const string WindowsPhoneAgent = "windows phone";
+        private const string AndroidAgent = "android";
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetClientCapability));
+        private static readonly Regex MobileCheck =
+            new Regex(
+                @"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino",
+                RegexOptions.Compiled, TimeSpan.FromSeconds(2));
+
+        private static readonly Regex TabletRegex = new Regex("ipad|xoom|sch-i800|playbook|tablet|kindle|nexus", RegexOptions.Compiled, TimeSpan.FromSeconds(2));
+
         private readonly IDictionary<string, string> _properties;
-
-        public override string this[string name]
-        {
-            get
-            {
-                if (this._properties != null && this._properties.ContainsKey(name))
-                {
-                    return this._properties[name];
-                }
-
-                return (this.Capabilities != null && this.Capabilities.ContainsKey(name)) ? this.Capabilities[name] : string.Empty;
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
@@ -126,6 +125,19 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
+        public override string this[string name]
+        {
+            get
+            {
+                if (this._properties != null && this._properties.ContainsKey(name))
+                {
+                    return this._properties[name];
+                }
+
+                return (this.Capabilities != null && this.Capabilities.ContainsKey(name)) ? this.Capabilities[name] : string.Empty;
+            }
+        }
+
         /// <summary>
         /// Returns a dictionary of capability names and values as strings based on the object
         /// keys and values held in the browser capabilities provided. The value string may
@@ -187,13 +199,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         {
             return properties.ContainsKey(property) ? properties[property] : null;
         }
-
-        private static readonly Regex MobileCheck =
-            new Regex(
-                @"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino",
-                RegexOptions.Compiled, TimeSpan.FromSeconds(2));
-
-        private static readonly Regex TabletRegex = new Regex("ipad|xoom|sch-i800|playbook|tablet|kindle|nexus", RegexOptions.Compiled, TimeSpan.FromSeconds(2));
 
         private static bool GetIfMobile(string userAgent)
         {
@@ -308,11 +313,6 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     return "NT " + version;
             }
         }
-
-        // set all agent identifiers are in lowercase for faster comparison
-        private const string WindowsPcAgent = "windows nt";
-        private const string WindowsPhoneAgent = "windows phone";
-        private const string AndroidAgent = "android";
         private const string IphoneAgent = "iphone";
         private const string IpadAgent = "ipad";
         private const string MacOsxAgent = "mac os x";

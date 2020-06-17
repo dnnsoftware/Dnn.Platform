@@ -15,10 +15,10 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
     [ConsoleCommand("restore-page", Constants.RecylcleBinCategory, "Prompt_RestorePage_Description")]
     public class RestorePage : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("name", "Prompt_RestorePage_FlagName", "String")]
         private const string FlagName = "name";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         [FlagParameter("parentid", "Prompt_RestorePage_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
@@ -30,13 +30,13 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         private readonly IContentVerifier _contentVerifier;
         private readonly IRecyclebinController _recyclebinController;
 
-        private int PageId { get; set; }
-        private string PageName { get; set; }
-        private int ParentId { get; set; }
-
         public RestorePage() : this(TabController.Instance, RecyclebinController.Instance, new ContentVerifier())
         {
         }
+
+        private int PageId { get; set; }
+        private string PageName { get; set; }
+        private int ParentId { get; set; }
 
         public RestorePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {

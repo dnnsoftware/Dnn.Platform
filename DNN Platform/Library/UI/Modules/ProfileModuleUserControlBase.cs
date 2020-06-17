@@ -17,8 +17,6 @@ namespace DotNetNuke.UI.Modules
 
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
     {
-        protected INavigationManager NavigationManager { get; }
-
         public ProfileModuleUserControlBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -39,6 +37,8 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
+        protected INavigationManager NavigationManager { get; }
+
         protected bool IsUser
         {
             get { return this.ProfileUserId == this.ModuleContext.PortalSettings.UserId; }
@@ -47,25 +47,6 @@ namespace DotNetNuke.UI.Modules
         protected UserInfo ProfileUser
         {
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
-        }
-
-        private string GetRedirectUrl()
-        {
-            // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
-            var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
-            string redirectUrl;
-
-            if (homeTabId > Null.NullInteger)
-            {
-                redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
-            }
-            else
-            {
-                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
-                              "/" + Globals.glbDefaultPage;
-            }
-
-            return redirectUrl;
         }
 
         protected override void OnInit(EventArgs e)
@@ -89,6 +70,25 @@ namespace DotNetNuke.UI.Modules
             }
 
             base.OnInit(e);
+        }
+
+        private string GetRedirectUrl()
+        {
+            // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
+            var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
+            string redirectUrl;
+
+            if (homeTabId > Null.NullInteger)
+            {
+                redirectUrl = TestableGlobals.Instance.NavigateURL(homeTabId);
+            }
+            else
+            {
+                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) +
+                              "/" + Globals.glbDefaultPage;
+            }
+
+            return redirectUrl;
         }
     }
 }

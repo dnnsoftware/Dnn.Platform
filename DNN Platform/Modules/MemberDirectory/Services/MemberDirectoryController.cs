@@ -28,6 +28,53 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
 
+        [HttpGet]
+        public HttpResponseMessage AdvancedSearch(int userId, int groupId, int pageIndex, int pageSize, string searchTerm1, string searchTerm2, string searchTerm3, string searchTerm4)
+        {
+            try
+            {
+                if (userId < 0)
+                {
+                    userId = this.PortalSettings.UserId;
+                }
+
+                var searchField1 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
+                var searchField2 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField2", "Email");
+                var searchField3 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField3", "City");
+                var searchField4 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField4", "Country");
+
+                var propertyNames = string.Empty;
+                var propertyValues = string.Empty;
+                AddSearchTerm(ref propertyNames, ref propertyValues, searchField1, searchTerm1);
+                AddSearchTerm(ref propertyNames, ref propertyValues, searchField2, searchTerm2);
+                AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
+                AddSearchTerm(ref propertyNames, ref propertyValues, searchField4, searchTerm4);
+
+                var members = this.GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues);
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(members));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage BasicSearch(int groupId, string searchTerm, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var users = this.GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, string.Empty, string.Empty);
+                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+            }
+        }
+
         private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -55,6 +102,17 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             return $"${string.Join("$", listEntries)}$";
         }
 
+        private static string GetSetting(IDictionary settings, string key, string defaultValue)
+        {
+            var setting = defaultValue;
+            if (settings[key] != null)
+            {
+                setting = Convert.ToString(settings[key]);
+            }
+
+            return setting;
+        }
+
         private bool CanViewGroupMembers(int portalId, int groupId)
         {
             var group = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
@@ -79,17 +137,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private IList<Member> GetMembers(IEnumerable<UserInfo> users)
         {
             return users.Select(user => new Member(user, this.PortalSettings)).ToList();
-        }
-
-        private static string GetSetting(IDictionary settings, string key, string defaultValue)
-        {
-            var setting = defaultValue;
-            if (settings[key] != null)
-            {
-                setting = Convert.ToString(settings[key]);
-            }
-
-            return setting;
         }
 
         private IEnumerable<UserInfo> GetUsers(int userId, int groupId, string searchTerm, int pageIndex, int pageSize, string propertyNames, string propertyValues)
@@ -190,53 +237,6 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private IEnumerable<UserInfo> FilterExcludedUsers(IEnumerable<UserInfo> users)
         {
             return users.Where(u => !u.IsSuperUser).Select(u => u).ToList();
-        }
-
-        [HttpGet]
-        public HttpResponseMessage AdvancedSearch(int userId, int groupId, int pageIndex, int pageSize, string searchTerm1, string searchTerm2, string searchTerm3, string searchTerm4)
-        {
-            try
-            {
-                if (userId < 0)
-                {
-                    userId = this.PortalSettings.UserId;
-                }
-
-                var searchField1 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
-                var searchField2 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField2", "Email");
-                var searchField3 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField3", "City");
-                var searchField4 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField4", "Country");
-
-                var propertyNames = string.Empty;
-                var propertyValues = string.Empty;
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField1, searchTerm1);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField2, searchTerm2);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField4, searchTerm4);
-
-                var members = this.GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues);
-                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(members));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
-
-        [HttpGet]
-        public HttpResponseMessage BasicSearch(int groupId, string searchTerm, int pageIndex, int pageSize)
-        {
-            try
-            {
-                var users = this.GetUsers(-1, groupId, string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.Trim(), pageIndex, pageSize, string.Empty, string.Empty);
-                return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
         }
 
         [HttpGet]

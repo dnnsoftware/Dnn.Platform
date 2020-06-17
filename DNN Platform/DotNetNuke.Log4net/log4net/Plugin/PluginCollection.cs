@@ -613,7 +613,7 @@ namespace log4net.Plugin
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator) this.GetEnumerator();
+            return (IEnumerator)this.GetEnumerator();
         }
 
         /// <summary>

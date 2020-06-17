@@ -33,6 +33,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public override string AllowableFiles
+        {
+            get { return "resx, xml, tdf,template"; }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the name of the Collection Node ("languageFiles").
         /// </summary>
         /// <value>A String.</value>
@@ -61,85 +72,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
-        {
-            get { return "resx, xml, tdf,template"; }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The DeleteLanguage method deletes the Language
-        /// from the data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void DeleteLanguage()
-        {
-            try
-            {
-                // Attempt to get the LanguagePack
-                LanguagePackInfo tempLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
-
-                // Attempt to get the Locale
-                Locale language = LocaleController.Instance.GetLocale(tempLanguagePack.LanguageID);
-                if (tempLanguagePack != null)
-                {
-                    LanguagePackController.DeleteLanguagePack(tempLanguagePack);
-                }
-
-                // fix DNN-26330     Removing a language pack extension removes the language
-                // we should not delete language when deleting language pack, as there is just a loose relationship
-                // if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
-                // {
-                //    Localization.DeleteLanguage(language);
-                // }
-                this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
-            }
-            catch (Exception ex)
-            {
-                this.Log.AddFailure(ex);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The ReadCustomManifest method reads the custom manifest items.
-        /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void ReadCustomManifest(XPathNavigator nav)
-        {
-            this.Language = new Locale();
-            this.LanguagePack = new LanguagePackInfo();
-
-            // Get the Skin name
-            this.Language.Code = Util.ReadElement(nav, "code");
-            this.Language.Text = Util.ReadElement(nav, "displayName");
-            this.Language.Fallback = Util.ReadElement(nav, "fallback");
-
-            if (this.LanguagePackType == LanguagePackType.Core)
-            {
-                this.LanguagePack.DependentPackageID = -2;
-            }
-            else
-            {
-                string packageName = Util.ReadElement(nav, "package");
-                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
-                if (package != null)
-                {
-                    this.LanguagePack.DependentPackageID = package.PackageID;
-                }
-            }
-
-            // Call base class
-            base.ReadCustomManifest(nav);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
         /// <remarks>In the case of Modules this is not neccessary.</remarks>
@@ -148,7 +80,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             if (this.LanguagePackType == LanguagePackType.Core || this.LanguagePack.DependentPackageID > 0)
             {
-               base.Commit();
+                base.Commit();
             }
             else
             {
@@ -209,6 +141,74 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Completed = true;
                 this.Skipped = true;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The ReadCustomManifest method reads the custom manifest items.
+        /// </summary>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void ReadCustomManifest(XPathNavigator nav)
+        {
+            this.Language = new Locale();
+            this.LanguagePack = new LanguagePackInfo();
+
+            // Get the Skin name
+            this.Language.Code = Util.ReadElement(nav, "code");
+            this.Language.Text = Util.ReadElement(nav, "displayName");
+            this.Language.Fallback = Util.ReadElement(nav, "fallback");
+
+            if (this.LanguagePackType == LanguagePackType.Core)
+            {
+                this.LanguagePack.DependentPackageID = -2;
+            }
+            else
+            {
+                string packageName = Util.ReadElement(nav, "package");
+                PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.Name.Equals(packageName, StringComparison.OrdinalIgnoreCase));
+                if (package != null)
+                {
+                    this.LanguagePack.DependentPackageID = package.PackageID;
+                }
+            }
+
+            // Call base class
+            base.ReadCustomManifest(nav);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The DeleteLanguage method deletes the Language
+        /// from the data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void DeleteLanguage()
+        {
+            try
+            {
+                // Attempt to get the LanguagePack
+                LanguagePackInfo tempLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
+
+                // Attempt to get the Locale
+                Locale language = LocaleController.Instance.GetLocale(tempLanguagePack.LanguageID);
+                if (tempLanguagePack != null)
+                {
+                    LanguagePackController.DeleteLanguagePack(tempLanguagePack);
+                }
+
+                // fix DNN-26330     Removing a language pack extension removes the language
+                // we should not delete language when deleting language pack, as there is just a loose relationship
+                // if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
+                // {
+                //    Localization.DeleteLanguage(language);
+                // }
+                this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
+            }
+            catch (Exception ex)
+            {
+                this.Log.AddFailure(ex);
             }
         }
 

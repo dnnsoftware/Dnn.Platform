@@ -107,124 +107,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <summary>
-        /// method checks to see if its allowed to change the username
-        /// valid if a host, or an admin where the username is in only 1 portal.
-        /// </summary>
-        /// <returns></returns>
-        private bool CanUpdateUsername()
-        {
-            // do not allow for non-logged in users
-            if (this.Request.IsAuthenticated == false || this.AddUser)
-            {
-                return false;
-            }
-
-            // can only update username if a host/admin and account being managed is not a superuser
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
-            {
-                // only allow updates for non-superuser accounts
-                if (this.User.IsSuperUser == false)
-                {
-                    return true;
-                }
-            }
-
-            // if an admin, check if the user is only within this portal
-            if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
-            {
-                // only allow updates for non-superuser accounts
-                if (this.User.IsSuperUser)
-                {
-                    return false;
-                }
-
-                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 1)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void UpdateDisplayName()
-        {
-            // Update DisplayName to conform to Format
-            if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
-            {
-                this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Validate validates the User.
-        /// </summary>
-        private bool Validate()
-        {
-            // Check User Editor
-            bool _IsValid = this.userForm.IsValid;
-
-            // Check Password is valid
-            if (this.AddUser && this.ShowPassword)
-            {
-                this.CreateStatus = UserCreateStatus.AddUser;
-                if (!this.chkRandom.Checked)
-                {
-                    // 1. Check Password is Valid
-                    if (this.CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(this.txtPassword.Text))
-                    {
-                        this.CreateStatus = UserCreateStatus.InvalidPassword;
-                    }
-
-                    if (this.CreateStatus == UserCreateStatus.AddUser)
-                    {
-                        this.User.Membership.Password = this.txtPassword.Text;
-                    }
-                }
-                else
-                {
-                    // Generate a random password for the user
-                    this.User.Membership.Password = UserController.GeneratePassword();
-                }
-
-                // Check Question/Answer
-                if (this.CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
-                {
-                    if (string.IsNullOrEmpty(this.txtQuestion.Text))
-                    {
-                        // Invalid Question
-                        this.CreateStatus = UserCreateStatus.InvalidQuestion;
-                    }
-                    else
-                    {
-                        this.User.Membership.PasswordQuestion = this.txtQuestion.Text;
-                    }
-
-                    if (this.CreateStatus == UserCreateStatus.AddUser)
-                    {
-                        if (string.IsNullOrEmpty(this.txtAnswer.Text))
-                        {
-                            // Invalid Question
-                            this.CreateStatus = UserCreateStatus.InvalidAnswer;
-                        }
-                        else
-                        {
-                            this.User.Membership.PasswordAnswer = this.txtAnswer.Text;
-                        }
-                    }
-                }
-
-                if (this.CreateStatus != UserCreateStatus.AddUser)
-                {
-                    _IsValid = false;
-                }
-            }
-
-            return _IsValid;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateUser creates a new user in the Database.
@@ -400,6 +282,124 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.userForm.DataBind();
                 this.renameUserName.Value = this.User.Username;
             }
+        }
+
+        /// <summary>
+        /// method checks to see if its allowed to change the username
+        /// valid if a host, or an admin where the username is in only 1 portal.
+        /// </summary>
+        /// <returns></returns>
+        private bool CanUpdateUsername()
+        {
+            // do not allow for non-logged in users
+            if (this.Request.IsAuthenticated == false || this.AddUser)
+            {
+                return false;
+            }
+
+            // can only update username if a host/admin and account being managed is not a superuser
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
+            {
+                // only allow updates for non-superuser accounts
+                if (this.User.IsSuperUser == false)
+                {
+                    return true;
+                }
+            }
+
+            // if an admin, check if the user is only within this portal
+            if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
+            {
+                // only allow updates for non-superuser accounts
+                if (this.User.IsSuperUser)
+                {
+                    return false;
+                }
+
+                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void UpdateDisplayName()
+        {
+            // Update DisplayName to conform to Format
+            if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
+            {
+                this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Validate validates the User.
+        /// </summary>
+        private bool Validate()
+        {
+            // Check User Editor
+            bool _IsValid = this.userForm.IsValid;
+
+            // Check Password is valid
+            if (this.AddUser && this.ShowPassword)
+            {
+                this.CreateStatus = UserCreateStatus.AddUser;
+                if (!this.chkRandom.Checked)
+                {
+                    // 1. Check Password is Valid
+                    if (this.CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(this.txtPassword.Text))
+                    {
+                        this.CreateStatus = UserCreateStatus.InvalidPassword;
+                    }
+
+                    if (this.CreateStatus == UserCreateStatus.AddUser)
+                    {
+                        this.User.Membership.Password = this.txtPassword.Text;
+                    }
+                }
+                else
+                {
+                    // Generate a random password for the user
+                    this.User.Membership.Password = UserController.GeneratePassword();
+                }
+
+                // Check Question/Answer
+                if (this.CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
+                {
+                    if (string.IsNullOrEmpty(this.txtQuestion.Text))
+                    {
+                        // Invalid Question
+                        this.CreateStatus = UserCreateStatus.InvalidQuestion;
+                    }
+                    else
+                    {
+                        this.User.Membership.PasswordQuestion = this.txtQuestion.Text;
+                    }
+
+                    if (this.CreateStatus == UserCreateStatus.AddUser)
+                    {
+                        if (string.IsNullOrEmpty(this.txtAnswer.Text))
+                        {
+                            // Invalid Question
+                            this.CreateStatus = UserCreateStatus.InvalidAnswer;
+                        }
+                        else
+                        {
+                            this.User.Membership.PasswordAnswer = this.txtAnswer.Text;
+                        }
+                    }
+                }
+
+                if (this.CreateStatus != UserCreateStatus.AddUser)
+                {
+                    _IsValid = false;
+                }
+            }
+
+            return _IsValid;
         }
 
         /// -----------------------------------------------------------------------------

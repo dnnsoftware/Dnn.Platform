@@ -20,18 +20,6 @@ namespace Dnn.PersonaBar.Users.Tests
 
         protected override string CommandName => "Set-User";
 
-        protected override void ChildSetup()
-        {
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._usersControllerMock = new Mock<IUsersController>();
-            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
-        }
-
-        protected override SetUser CreateCommand()
-        {
-            return new SetUser(this._userValidatorMock.Object, this._usersControllerMock.Object, this._userControllerWrapperMock.Object);
-        }
-
         [Test]
         public void Run_UserIdNull_ReturnErrorResponse()
         {
@@ -76,6 +64,18 @@ namespace Dnn.PersonaBar.Users.Tests
             // Assert
             Assert.IsFalse(result.IsError);
             Assert.AreEqual(1, result.Records);
+        }
+
+        protected override void ChildSetup()
+        {
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._usersControllerMock = new Mock<IUsersController>();
+            this._userControllerWrapperMock = new Mock<IUserControllerWrapper>();
+        }
+
+        protected override SetUser CreateCommand()
+        {
+            return new SetUser(this._userValidatorMock.Object, this._usersControllerMock.Object, this._userControllerWrapperMock.Object);
         }
     }
 }

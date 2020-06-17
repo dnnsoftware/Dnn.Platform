@@ -13,6 +13,20 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
+        /// </summary>
+        /// <value>A String.</value>
+        /// -----------------------------------------------------------------------------
+        public override string AllowableFiles
+        {
+            get
+            {
+                return "js";
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the name of the Collection Node ("jsfiles").
         /// </summary>
         /// <value>A String.</value>
@@ -36,20 +50,6 @@ namespace DotNetNuke.Services.Installer.Installers
             get
             {
                 return "jsfile";
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List).
-        /// </summary>
-        /// <value>A String.</value>
-        /// -----------------------------------------------------------------------------
-        public override string AllowableFiles
-        {
-            get
-            {
-                return "js";
             }
         }
 

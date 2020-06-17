@@ -25,15 +25,6 @@ namespace DotNetNuke.Tests.UI.Validation
             }
         }
 
-        public class TestClass
-        {
-            [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
-            public object Foo { get; set; }
-
-            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
-            public string Bar { get; set; }
-        }
-
         [Test]
         public void ValidateObject_Returns_Successful_Result_If_All_Attributes_On_All_Properties_Validate()
         {
@@ -76,6 +67,15 @@ namespace DotNetNuke.Tests.UI.Validation
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual("Dude, you forgot to enter a Foo", result.Errors.Where(e => e.PropertyName == "Foo").Single().ErrorMessage);
             Assert.AreEqual("Yo, you have to specify 5 characters for Bar", result.Errors.Where(e => e.PropertyName == "Bar").Single().ErrorMessage);
+        }
+
+        public class TestClass
+        {
+            [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
+            public object Foo { get; set; }
+
+            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
+            public string Bar { get; set; }
         }
 
         [Test]

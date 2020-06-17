@@ -14,12 +14,12 @@ namespace DotNetNuke.Modules.Journal.Components
     {
         private readonly int _userId;
 
-        public int Size { get; set; } = 32;
-
         public ProfilePicPropertyAccess(int userId)
         {
             this._userId = userId;
         }
+
+        public int Size { get; set; } = 32;
 
         public CacheLevel Cacheability => CacheLevel.notCacheable;
 

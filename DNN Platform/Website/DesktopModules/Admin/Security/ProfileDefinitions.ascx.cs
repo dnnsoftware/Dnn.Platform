@@ -32,45 +32,19 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
+        private const int COLUMN_REQUIRED = 11;
+        private const int COLUMN_VISIBLE = 12;
+        private const int COLUMN_MOVE_DOWN = 2;
+
         private readonly INavigationManager _navigationManager;
 
         public ProfileDefinitions()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private const int COLUMN_REQUIRED = 11;
-        private const int COLUMN_VISIBLE = 12;
-        private const int COLUMN_MOVE_DOWN = 2;
         private const int COLUMN_MOVE_UP = 3;
         private ProfilePropertyDefinitionCollection _profileProperties;
         private bool _requiredColumnHidden = false;
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets whether we are dealing with SuperUsers.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected bool IsSuperUser
-        {
-            get
-            {
-                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the collection of Profile Proeprties.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected ProfilePropertyDefinitionCollection ProfileProperties
-        {
-            get
-            {
-                return this._profileProperties ?? (this._profileProperties = ProfileController.GetPropertyDefinitionsByPortal(this.UsersPortalId, false, false));
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -107,25 +81,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Portal Id whose Users we are managing.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        protected int UsersPortalId
-        {
-            get
-            {
-                int intPortalId = this.PortalId;
-                if (this.IsSuperUser)
-                {
-                    intPortalId = Null.NullInteger;
-                }
-
-                return intPortalId;
-            }
-        }
-
         public ModuleActionCollection ModuleActions
         {
             get
@@ -155,6 +110,107 @@ namespace DotNetNuke.Modules.Admin.Users
                     false);
                 return actions;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets whether we are dealing with SuperUsers.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected bool IsSuperUser
+        {
+            get
+            {
+                return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the collection of Profile Proeprties.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected ProfilePropertyDefinitionCollection ProfileProperties
+        {
+            get
+            {
+                return this._profileProperties ?? (this._profileProperties = ProfileController.GetPropertyDefinitionsByPortal(this.UsersPortalId, false, false));
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Portal Id whose Users we are managing.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected int UsersPortalId
+        {
+            get
+            {
+                int intPortalId = this.PortalId;
+                if (this.IsSuperUser)
+                {
+                    intPortalId = Null.NullInteger;
+                }
+
+                return intPortalId;
+            }
+        }
+
+        public string DisplayDataType(ProfilePropertyDefinition definition)
+        {
+            string retValue = Null.NullString;
+            var listController = new ListController();
+            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", definition.DataType);
+            if (definitionEntry != null)
+            {
+                retValue = definitionEntry.Value;
+            }
+
+            return retValue;
+        }
+
+        public string DisplayDefaultVisibility(ProfilePropertyDefinition definition)
+        {
+            string retValue = Null.NullString;
+            if (!string.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
+            {
+                retValue = this.LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
+            }
+
+            return retValue;
+        }
+
+        protected override void LoadViewState(object savedState)
+        {
+            if (savedState != null)
+            {
+                // Load State from the array of objects that was saved with SaveViewState.
+                var myState = (object[])savedState;
+
+                // Load Base Controls ViewState
+                if (myState[0] != null)
+                {
+                    base.LoadViewState(myState[0]);
+                }
+
+                // Load ModuleID
+                if (myState[1] != null)
+                {
+                    this._profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
+                }
+            }
+        }
+
+        protected override object SaveViewState()
+        {
+            var allStates = new object[2];
+
+            // Save the Base Controls ViewState
+            allStates[0] = base.SaveViewState();
+            allStates[1] = this.ProfileProperties;
+
+            return allStates;
         }
 
         /// -----------------------------------------------------------------------------
@@ -338,62 +394,6 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ProfileProperties.Sort();
         }
 
-        protected override void LoadViewState(object savedState)
-        {
-            if (savedState != null)
-            {
-                // Load State from the array of objects that was saved with SaveViewState.
-                var myState = (object[])savedState;
-
-                // Load Base Controls ViewState
-                if (myState[0] != null)
-                {
-                    base.LoadViewState(myState[0]);
-                }
-
-                // Load ModuleID
-                if (myState[1] != null)
-                {
-                    this._profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
-                }
-            }
-        }
-
-        protected override object SaveViewState()
-        {
-            var allStates = new object[2];
-
-            // Save the Base Controls ViewState
-            allStates[0] = base.SaveViewState();
-            allStates[1] = this.ProfileProperties;
-
-            return allStates;
-        }
-
-        public string DisplayDataType(ProfilePropertyDefinition definition)
-        {
-            string retValue = Null.NullString;
-            var listController = new ListController();
-            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", definition.DataType);
-            if (definitionEntry != null)
-            {
-                retValue = definitionEntry.Value;
-            }
-
-            return retValue;
-        }
-
-        public string DisplayDefaultVisibility(ProfilePropertyDefinition definition)
-        {
-            string retValue = Null.NullString;
-            if (!string.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
-            {
-                retValue = this.LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
-            }
-
-            return retValue;
-        }
-
         public void Update()
         {
             try
@@ -488,6 +488,41 @@ namespace DotNetNuke.Modules.Admin.Users
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
+        /// Grid.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected void grdProfileProperties_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            DataGridItem item = e.Item;
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                Control imgColumnControl = item.Controls[1].Controls[0];
+                if (imgColumnControl is ImageButton)
+                {
+                    var delImage = (ImageButton)imgColumnControl;
+                    var profProperty = (ProfilePropertyDefinition)item.DataItem;
+
+                    switch (profProperty.PropertyName.ToLowerInvariant())
+                    {
+                        case "lastname":
+                        case "firstname":
+                        case "preferredtimezone":
+                        case "preferredlocale":
+                            delImage.Visible = false;
+                            break;
+                        default:
+                            delImage.Visible = true;
+                            break;
+                    }
+                }
             }
         }
 
@@ -607,41 +642,6 @@ namespace DotNetNuke.Modules.Admin.Users
                         ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_DOWN].Controls[0], this.Page, false, this.grdProfileProperties.ClientID);
                         ClientAPI.EnableClientSideReorder(e.Item.Cells[COLUMN_MOVE_UP].Controls[0], this.Page, true, this.grdProfileProperties.ClientID);
                         break;
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
-        /// Grid.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected void grdProfileProperties_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            DataGridItem item = e.Item;
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                Control imgColumnControl = item.Controls[1].Controls[0];
-                if (imgColumnControl is ImageButton)
-                {
-                    var delImage = (ImageButton)imgColumnControl;
-                    var profProperty = (ProfilePropertyDefinition)item.DataItem;
-
-                    switch (profProperty.PropertyName.ToLowerInvariant())
-                    {
-                        case "lastname":
-                        case "firstname":
-                        case "preferredtimezone":
-                        case "preferredlocale":
-                            delImage.Visible = false;
-                            break;
-                        default:
-                            delImage.Visible = true;
-                            break;
-                    }
                 }
             }
         }

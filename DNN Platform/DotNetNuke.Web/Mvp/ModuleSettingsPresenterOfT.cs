@@ -23,16 +23,6 @@ namespace DotNetNuke.Web.Mvp
             view.OnSaveSettings += this.OnSaveSettingsInternal;
         }
 
-        private void OnLoadSettingsInternal(object sender, EventArgs e)
-        {
-            this.LoadSettings();
-        }
-
-        private void OnSaveSettingsInternal(object sender, EventArgs e)
-        {
-            this.SaveSettings();
-        }
-
         protected override void OnLoad()
         {
             base.OnLoad();
@@ -56,6 +46,16 @@ namespace DotNetNuke.Web.Mvp
                                             this.ModuleContext.Configuration.TabModuleSettings
                                             .Cast<DictionaryEntry>()
                                             .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value));
+        }
+
+        private void OnLoadSettingsInternal(object sender, EventArgs e)
+        {
+            this.LoadSettings();
+        }
+
+        private void OnSaveSettingsInternal(object sender, EventArgs e)
+        {
+            this.SaveSettings();
         }
 
         protected virtual void SaveSettings()

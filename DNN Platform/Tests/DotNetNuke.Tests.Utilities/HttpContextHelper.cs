@@ -14,6 +14,20 @@ namespace DotNetNuke.Tests.Utilities
 
     public class HttpContextHelper
     {
+        /// <summary>
+        /// Return Response object with default values for missing ones
+        /// _mockRequest = Mock.Get(_mockhttpContext.Object.Request);
+        /// syntax _mockRequest.SetupGet(x => x.[PropertyName]).Returns(...);
+        /// e.g. SetupGet(x => x.ServerVariables).Returns(new NameValueCollection()).
+        /// </summary>
+        /// <returns>HttpResponseBase.</returns>
+        public static Mock<HttpContextBase> RegisterMockHttpContext()
+        {
+            var mock = CrateMockHttpContext();
+            HttpContextSource.RegisterInstance(mock.Object);
+            return mock;
+        }
+
         private static Mock<HttpContextBase> CrateMockHttpContext()
         {
             var context = new Mock<HttpContextBase>();
@@ -59,20 +73,6 @@ namespace DotNetNuke.Tests.Utilities
             request.SetupGet(x => x.UserHostAddress).Returns(string.Empty);
             request.SetupGet(x => x.UserLanguages).Returns(new[] { string.Empty });
             return request.Object;
-        }
-
-        /// <summary>
-        /// Return Response object with default values for missing ones
-        /// _mockRequest = Mock.Get(_mockhttpContext.Object.Request);
-        /// syntax _mockRequest.SetupGet(x => x.[PropertyName]).Returns(...);
-        /// e.g. SetupGet(x => x.ServerVariables).Returns(new NameValueCollection()).
-        /// </summary>
-        /// <returns>HttpResponseBase.</returns>
-        public static Mock<HttpContextBase> RegisterMockHttpContext()
-        {
-            var mock = CrateMockHttpContext();
-            HttpContextSource.RegisterInstance(mock.Object);
-            return mock;
         }
     }
 }

@@ -18,6 +18,11 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     public interface IInstallationStep
     {
         /// <summary>
+        /// This event gets fired when any activity gets recorded
+        /// </summary>
+        event ActivityEventHandler Activity;
+
+        /// <summary>
         /// Gets any details of the task while it's executing.
         /// </summary>
         string Details { get; }
@@ -41,10 +46,5 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// Main method to execute the step.
         /// </summary>
         void Execute();
-
-        /// <summary>
-        /// This event gets fired when any activity gets recorded
-        /// </summary>
-        event ActivityEventHandler Activity;
     }
 }

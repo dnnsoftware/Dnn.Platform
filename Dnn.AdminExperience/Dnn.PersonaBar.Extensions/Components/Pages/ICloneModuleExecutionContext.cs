@@ -5,7 +5,7 @@
 namespace Dnn.PersonaBar.Pages.Components
 {
     /// <summary>
-    /// Provides an abstraction over the current context of the Clone Module thread
+    /// Provides an abstraction over the current context of the Clone Module thread.
     /// </summary>
     public interface ICloneModuleExecutionContext
     {

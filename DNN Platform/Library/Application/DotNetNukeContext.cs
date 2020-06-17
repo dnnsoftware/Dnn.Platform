@@ -39,6 +39,27 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
+        /// Gets or sets the current app context.
+        /// </summary>
+        public static DotNetNukeContext Current
+        {
+            get
+            {
+                if (_current == null)
+                {
+                    _current = new DotNetNukeContext();
+                }
+
+                return _current;
+            }
+
+            set
+            {
+                _current = value;
+            }
+        }
+
+        /// <summary>
         /// Gets get the application.
         /// </summary>
         public Application Application
@@ -78,27 +99,6 @@ namespace DotNetNuke.Application
             get
             {
                 return this._skinEventListeners;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the current app context.
-        /// </summary>
-        public static DotNetNukeContext Current
-        {
-            get
-            {
-                if (_current == null)
-                {
-                    _current = new DotNetNukeContext();
-                }
-
-                return _current;
-            }
-
-            set
-            {
-                _current = value;
             }
         }
     }

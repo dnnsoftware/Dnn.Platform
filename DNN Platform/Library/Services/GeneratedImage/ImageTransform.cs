@@ -34,19 +34,19 @@ namespace DotNetNuke.Services.GeneratedImage
         /// </summary>
         public CompositingQuality CompositingQuality { get; set; }
 
-        /// <summary>
-        /// Process an input image applying the image transformation.
-        /// </summary>
-        /// <param name="image">Input image.</param>
-        /// <returns>Image processed.</returns>
-        public abstract Image ProcessImage(Image image);
-
         // REVIEW: should this property be abstract?
 
         /// <summary>
         /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public virtual string UniqueString => this.GetType().FullName;
+
+        /// <summary>
+        /// Process an input image applying the image transformation.
+        /// </summary>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image processed.</returns>
+        public abstract Image ProcessImage(Image image);
 
         /// <summary>
         /// Creates a new image from stream. The created image is independent of the stream.

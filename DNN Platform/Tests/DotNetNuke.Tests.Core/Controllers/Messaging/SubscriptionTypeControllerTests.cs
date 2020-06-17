@@ -20,11 +20,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     [TestFixture]
     public class SubscriptionTypeControllerTests
     {
+        private const string SubscriptionTypesCacheKey = "DNN_" + DataCache.SubscriptionTypesCacheKey;
+
         private SubscriptionTypeController subscriptionTypeController;
         private Mock<IDataService> mockDataService;
         private Mock<CachingProvider> mockCacheProvider;
-
-        private const string SubscriptionTypesCacheKey = "DNN_" + DataCache.SubscriptionTypesCacheKey;
 
         [SetUp]
         public void SetUp()

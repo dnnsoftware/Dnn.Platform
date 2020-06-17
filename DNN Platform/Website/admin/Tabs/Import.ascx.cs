@@ -28,12 +28,12 @@ namespace DotNetNuke.Modules.Admin.Tabs
     {
         private readonly INavigationManager _navigationManager;
 
+        private TabInfo _tab;
+
         public Import()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private TabInfo _tab;
 
         public TabInfo Tab
         {
@@ -45,6 +45,50 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
 
                 return this._tab;
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (!TabPermissionController.CanImportPage())
+            {
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cboFolders.SelectionChanged += this.OnFolderIndexChanged;
+            this.cmdImport.Click += this.OnImportClick;
+            this.cboParentTab.SelectionChanged += this.OnParentTabIndexChanged;
+            this.cboTemplate.SelectedIndexChanged += this.OnTemplateIndexChanged;
+            this.optMode.SelectedIndexChanged += this.OptModeSelectedIndexChanged;
+
+            try
+            {
+                if (!this.Page.IsPostBack)
+                {
+                    this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
+                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
+                    var folders = FolderManager.Instance.GetFolders(this.UserInfo, "BROWSE, ADD");
+                    var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
+                    if (templateFolder != null)
+                    {
+                        this.cboFolders.SelectedFolder = templateFolder;
+                    }
+
+                    this.BindFiles();
+                    this.BindTabControls();
+                    this.DisplayNewRows();
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -104,50 +148,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
             this.divParentTab.Visible = this.optMode.SelectedIndex == 0;
             this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
             this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (!TabPermissionController.CanImportPage())
-            {
-                this.Response.Redirect(Globals.AccessDeniedURL(), true);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cboFolders.SelectionChanged += this.OnFolderIndexChanged;
-            this.cmdImport.Click += this.OnImportClick;
-            this.cboParentTab.SelectionChanged += this.OnParentTabIndexChanged;
-            this.cboTemplate.SelectedIndexChanged += this.OnTemplateIndexChanged;
-            this.optMode.SelectedIndexChanged += this.OptModeSelectedIndexChanged;
-
-            try
-            {
-                if (!this.Page.IsPostBack)
-                {
-                    this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
-                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
-                    var folders = FolderManager.Instance.GetFolders(this.UserInfo, "BROWSE, ADD");
-                    var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
-                    if (templateFolder != null)
-                    {
-                        this.cboFolders.SelectedFolder = templateFolder;
-                    }
-
-                    this.BindFiles();
-                    this.BindTabControls();
-                    this.DisplayNewRows();
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
 
         protected void OnFolderIndexChanged(object sender, EventArgs e)

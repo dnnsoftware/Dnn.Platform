@@ -16,21 +16,6 @@ namespace DotNetNuke.Services.ModuleCache
     {
         private const string cachePrefix = "ModuleCache:";
 
-        private List<string> GetCacheKeys(int tabModuleId)
-        {
-            var keys = new List<string>();
-            IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
-            while (CacheEnum.MoveNext())
-            {
-                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
-                {
-                    keys.Add(CacheEnum.Key.ToString());
-                }
-            }
-
-            return keys;
-        }
-
         public override string GenerateCacheKey(int tabModuleId, SortedDictionary<string, string> varyBy)
         {
             var cacheKey = new StringBuilder();
@@ -48,6 +33,21 @@ namespace DotNetNuke.Services.ModuleCache
         public override int GetItemCount(int tabModuleId)
         {
             return this.GetCacheKeys(tabModuleId).Count;
+        }
+
+        private List<string> GetCacheKeys(int tabModuleId)
+        {
+            var keys = new List<string>();
+            IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
+            while (CacheEnum.MoveNext())
+            {
+                if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
+                {
+                    keys.Add(CacheEnum.Key.ToString());
+                }
+            }
+
+            return keys;
         }
 
         public override byte[] GetModule(int tabModuleId, string cacheKey)

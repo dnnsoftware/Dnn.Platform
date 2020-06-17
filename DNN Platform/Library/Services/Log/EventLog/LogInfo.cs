@@ -62,6 +62,27 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public ExceptionInfo Exception { get; set; }
 
+        public static bool IsSystemType(string PropName)
+        {
+            switch (PropName)
+            {
+                case "LogGUID":
+                case "LogFileID":
+                case "LogTypeKey":
+                case "LogCreateDate":
+                case "LogCreateDateNum":
+                case "LogPortalID":
+                case "LogPortalName":
+                case "LogUserID":
+                case "LogUserName":
+                case "BypassBuffering":
+                case "LogServerName":
+                    return true;
+            }
+
+            return false;
+        }
+
         public void AddProperty(string PropertyName, string PropertyValue)
         {
             try
@@ -172,27 +193,6 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 this.Exception.ReadXml(reader);
             }
-        }
-
-        public static bool IsSystemType(string PropName)
-        {
-            switch (PropName)
-            {
-                case "LogGUID":
-                case "LogFileID":
-                case "LogTypeKey":
-                case "LogCreateDate":
-                case "LogCreateDateNum":
-                case "LogPortalID":
-                case "LogPortalName":
-                case "LogUserID":
-                case "LogUserName":
-                case "BypassBuffering":
-                case "LogServerName":
-                    return true;
-            }
-
-            return false;
         }
 
         public string Serialize()

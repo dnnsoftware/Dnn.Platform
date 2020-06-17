@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
         public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, object htmlAttributes)
         {
-            return html.HtmlHelper.Label(expression,  htmlAttributes);
+            return html.HtmlHelper.Label(expression, htmlAttributes);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="expression">An expression that identifies the property to display.</param><param name="htmlAttributes">An object that contains the HTML attributes to set for the element.</param>
         public static MvcHtmlString Label(this DnnHtmlHelper html, string expression, IDictionary<string, object> htmlAttributes)
         {
-            return html.HtmlHelper.Label(expression,  htmlAttributes);
+            return html.HtmlHelper.Label(expression, htmlAttributes);
         }
 
         /// <summary>

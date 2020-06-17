@@ -40,6 +40,17 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Raises the MembershipAuthorized Event
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public event EventHandler MembershipAuthorized;
+
+        public event EventHandler MembershipPasswordUpdateChanged;
+
+        public event EventHandler MembershipUnAuthorized;
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets the UserMembership associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -56,17 +67,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 return membership;
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Raises the MembershipAuthorized Event
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public event EventHandler MembershipAuthorized;
-
-        public event EventHandler MembershipPasswordUpdateChanged;
-
-        public event EventHandler MembershipUnAuthorized;
 
         public event EventHandler MembershipUnLocked;
 

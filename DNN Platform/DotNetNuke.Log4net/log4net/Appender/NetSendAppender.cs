@@ -389,7 +389,7 @@ namespace log4net.Appender
         /// If the function succeeds, the return value is zero.
         /// </para>
         /// </returns>
-        [DllImport("netapi32.dll", SetLastError=true)]
+        [DllImport("netapi32.dll", SetLastError = true)]
         protected static extern int NetMessageBufferSend(
             [MarshalAs(UnmanagedType.LPWStr)] string serverName,
             [MarshalAs(UnmanagedType.LPWStr)] string msgName,

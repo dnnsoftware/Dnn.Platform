@@ -25,7 +25,21 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "initialState")]
         public DnnDropDownListState InitialState;
 
+        [DataMember(Name = "services")]
+        public ItemListServicesOptions Services;
+
+        [DataMember(Name = "itemList")]
+        public ItemListOptions ItemList;
+
         private List<string> _onClientSelectionChanged;
+
+        public DnnDropDownListOptions()
+        {
+            this.SelectedItemCss = "selected-item";
+            this.SelectItemDefaultText = string.Empty;
+            this.Services = new ItemListServicesOptions();
+            this.ItemList = new ItemListOptions();
+        }
 
         [DataMember(Name = "onSelectionChanged")]
         public List<string> OnClientSelectionChanged
@@ -34,20 +48,6 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._onClientSelectionChanged ?? (this._onClientSelectionChanged = new List<string>());
             }
-        }
-
-        [DataMember(Name = "services")]
-        public ItemListServicesOptions Services;
-
-        [DataMember(Name = "itemList")]
-        public ItemListOptions ItemList;
-
-        public DnnDropDownListOptions()
-        {
-            this.SelectedItemCss = "selected-item";
-            this.SelectItemDefaultText = string.Empty;
-            this.Services = new ItemListServicesOptions();
-            this.ItemList = new ItemListOptions();
         }
     }
 }

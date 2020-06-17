@@ -82,17 +82,17 @@ namespace DotNetNuke.Modules.Groups.Components
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
                 actions.Add(new NotificationTypeAction
-                                {
-                                    NameResourceKey = "Approve",
-                                    DescriptionResourceKey = "ApproveGroup",
-                                    APICall = "API/SocialGroups/ModerationService/ApproveGroup",
-                                });
+                {
+                    NameResourceKey = "Approve",
+                    DescriptionResourceKey = "ApproveGroup",
+                    APICall = "API/SocialGroups/ModerationService/ApproveGroup",
+                });
                 actions.Add(new NotificationTypeAction
-                                {
-                                    NameResourceKey = "RejectGroup",
-                                    DescriptionResourceKey = "RejectGroup",
-                                    APICall = "API/SocialGroups/ModerationService/RejectGroup",
-                                });
+                {
+                    NameResourceKey = "RejectGroup",
+                    DescriptionResourceKey = "RejectGroup",
+                    APICall = "API/SocialGroups/ModerationService/RejectGroup",
+                });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
             }
@@ -110,12 +110,12 @@ namespace DotNetNuke.Modules.Groups.Components
             {
                 actions.Clear();
                 actions.Add(new NotificationTypeAction
-                                {
-                                    NameResourceKey = "RejectGroup",
-                                    DescriptionResourceKey = "RejectGroup",
-                                    ConfirmResourceKey = "DeleteItem",
-                                    APICall = "API/SocialGroups/ModerationService/RejectGroup",
-                                });
+                {
+                    NameResourceKey = "RejectGroup",
+                    DescriptionResourceKey = "RejectGroup",
+                    ConfirmResourceKey = "DeleteItem",
+                    APICall = "API/SocialGroups/ModerationService/RejectGroup",
+                });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
             }
@@ -133,18 +133,18 @@ namespace DotNetNuke.Modules.Groups.Components
             {
                 actions.Clear();
                 actions.Add(new NotificationTypeAction
-                                {
-                                    NameResourceKey = "Approve",
-                                    DescriptionResourceKey = "ApproveGroupMember",
-                                    ConfirmResourceKey = string.Empty,
-                                    APICall = "API/SocialGroups/ModerationService/ApproveMember",
-                                });
+                {
+                    NameResourceKey = "Approve",
+                    DescriptionResourceKey = "ApproveGroupMember",
+                    ConfirmResourceKey = string.Empty,
+                    APICall = "API/SocialGroups/ModerationService/ApproveMember",
+                });
                 actions.Add(new NotificationTypeAction
-                                {
-                                    NameResourceKey = "RejectMember",
-                                    DescriptionResourceKey = "RejectGroupMember",
-                                    APICall = "API/SocialGroups/ModerationService/RejectMember",
-                                });
+                {
+                    NameResourceKey = "RejectMember",
+                    DescriptionResourceKey = "RejectGroupMember",
+                    APICall = "API/SocialGroups/ModerationService/RejectMember",
+                });
                 NotificationsController.Instance.CreateNotificationType(type);
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
             }

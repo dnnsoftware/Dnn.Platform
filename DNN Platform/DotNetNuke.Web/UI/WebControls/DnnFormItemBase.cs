@@ -31,6 +31,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Validators = new List<IValidator>();
         }
 
+        public object Value
+        {
+            get { return this._value; }
+            set { this._value = value; }
+        }
+
+        public string DataField { get; set; }
+
         protected PropertyInfo ChildProperty
         {
             get
@@ -66,21 +74,13 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public object Value
-        {
-            get { return this._value; }
-            set { this._value = value; }
-        }
-
-        public string DataField { get; set; }
-
         public string DataMember { get; set; }
-
-        internal object DataSource { get; set; }
 
         public DnnFormMode FormMode { get; set; }
 
         public bool IsValid { get; private set; }
+
+        internal object DataSource { get; set; }
 
         public string OnClientClicked { get; set; }
 
@@ -123,6 +123,75 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string ValidationExpression { get; set; }
 
+        public void CheckIsValid()
+        {
+            this.IsValid = true;
+            foreach (BaseValidator validator in this.Validators)
+            {
+                validator.Validate();
+                if (!validator.IsValid)
+                {
+                    this.IsValid = false;
+                    break;
+                }
+            }
+        }
+
+        public void DataBindItem(bool useDataSource)
+        {
+            if (useDataSource)
+            {
+                this.OnDataBinding(EventArgs.Empty);
+                this.Controls.Clear();
+                this.ClearChildViewState();
+                this.TrackViewState();
+
+                this.DataBindInternal();
+
+                this.CreateControlHierarchy();
+                this.ChildControlsCreated = true;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(this.DataField))
+                {
+                    this.UpdateDataSourceInternal(null, this._value, this.DataField);
+                }
+            }
+        }
+
+        protected virtual void CreateControlHierarchy()
+        {
+            // Load Item Style
+            this.CssClass = "dnnFormItem";
+            this.CssClass += (this.FormMode == DnnFormMode.Long) ? string.Empty : " dnnFormShort";
+
+            if (string.IsNullOrEmpty(this.ResourceKey))
+            {
+                this.ResourceKey = this.DataField;
+            }
+
+            // Add Label
+            var label = new DnnFormLabel
+            {
+                LocalResourceFile = this.LocalResourceFile,
+                ResourceKey = this.ResourceKey + ".Text",
+                ToolTipKey = this.ResourceKey + ".Help",
+                ViewStateMode = ViewStateMode.Disabled,
+            };
+
+            if (this.Required)
+            {
+                label.RequiredField = true;
+            }
+
+            this.Controls.Add(label);
+
+            WebControl inputControl = this.CreateControlInternal(this);
+            label.AssociatedControlID = inputControl.ID;
+            this.AddValidators(inputControl.ID);
+        }
+
         private void AddValidators(string controlId)
         {
             var value = this.Value as string;
@@ -132,21 +201,21 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.Required)
             {
                 var requiredValidator = new RequiredFieldValidator
-                                            {
-                                                ID = this.ID + "_Required",
-                                                ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
-                                            };
+                {
+                    ID = this.ID + "_Required",
+                    ErrorMessage = this.ResourceKey + this.RequiredMessageSuffix,
+                };
                 this.Validators.Add(requiredValidator);
             }
 
             if (!string.IsNullOrEmpty(this.ValidationExpression))
             {
                 var regexValidator = new RegularExpressionValidator
-                                         {
-                                             ID = this.ID + "_RegEx",
-                                             ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
-                                             ValidationExpression = this.ValidationExpression,
-                                         };
+                {
+                    ID = this.ID + "_RegEx",
+                    ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
+                    ValidationExpression = this.ValidationExpression,
+                };
                 if (!string.IsNullOrEmpty(value))
                 {
                     regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
@@ -167,52 +236,6 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.Controls.Add(validator);
                 }
             }
-        }
-
-        public void CheckIsValid()
-        {
-            this.IsValid = true;
-            foreach (BaseValidator validator in this.Validators)
-            {
-                validator.Validate();
-                if (!validator.IsValid)
-                {
-                    this.IsValid = false;
-                    break;
-                }
-            }
-        }
-
-        protected virtual void CreateControlHierarchy()
-        {
-            // Load Item Style
-            this.CssClass = "dnnFormItem";
-            this.CssClass += (this.FormMode == DnnFormMode.Long) ? string.Empty : " dnnFormShort";
-
-            if (string.IsNullOrEmpty(this.ResourceKey))
-            {
-                this.ResourceKey = this.DataField;
-            }
-
-            // Add Label
-            var label = new DnnFormLabel
-                                {
-                                    LocalResourceFile = this.LocalResourceFile,
-                                    ResourceKey = this.ResourceKey + ".Text",
-                                    ToolTipKey = this.ResourceKey + ".Help",
-                                    ViewStateMode = ViewStateMode.Disabled,
-                                };
-
-            if (this.Required)
-            {
-                label.RequiredField = true;
-            }
-
-            this.Controls.Add(label);
-
-            WebControl inputControl = this.CreateControlInternal(this);
-            label.AssociatedControlID = inputControl.ID;
-            this.AddValidators(inputControl.ID);
         }
 
         /// <summary>
@@ -282,27 +305,18 @@ namespace DotNetNuke.Web.UI.WebControls
             this.DataBindInternal(this.DataField, ref this._value);
         }
 
-        public void DataBindItem(bool useDataSource)
+        protected void UpdateDataSource(object oldValue, object newValue, string dataField)
         {
-            if (useDataSource)
-            {
-                this.OnDataBinding(EventArgs.Empty);
-                this.Controls.Clear();
-                this.ClearChildViewState();
-                this.TrackViewState();
+            this.CheckIsValid();
 
-                this.DataBindInternal();
+            this._value = newValue;
 
-                this.CreateControlHierarchy();
-                this.ChildControlsCreated = true;
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(this.DataField))
-                {
-                    this.UpdateDataSourceInternal(null, this._value, this.DataField);
-                }
-            }
+            this.UpdateDataSourceInternal(oldValue, newValue, dataField);
+        }
+
+        protected override void LoadControlState(object state)
+        {
+            this._value = state;
         }
 
         private void UpdateDataSourceInternal(object oldValue, object newValue, string dataField)
@@ -377,20 +391,6 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
             }
-        }
-
-        protected void UpdateDataSource(object oldValue, object newValue, string dataField)
-        {
-            this.CheckIsValid();
-
-            this._value = newValue;
-
-            this.UpdateDataSourceInternal(oldValue, newValue, dataField);
-        }
-
-        protected override void LoadControlState(object state)
-        {
-            this._value = state;
         }
 
         protected string LocalizeString(string key)

@@ -38,17 +38,6 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
-        /// </summary>
-        protected bool UseCaptcha
-        {
-            get
-            {
-                return AuthenticationConfig.GetConfig(this.PortalId).UseCaptcha;
-            }
-        }
-
-        /// <summary>
         /// Gets a value indicating whether check if the Auth System is Enabled (for the Portal).
         /// </summary>
         /// <remarks></remarks>
@@ -57,6 +46,17 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             get
             {
                 return AuthenticationConfig.GetConfig(this.PortalId).Enabled;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
+        /// </summary>
+        protected bool UseCaptcha
+        {
+            get
+            {
+                return AuthenticationConfig.GetConfig(this.PortalId).UseCaptcha;
             }
         }
 
@@ -225,6 +225,46 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             this.divCaptcha2.Visible = this.UseCaptcha;
         }
 
+        protected string GetRedirectUrl(bool checkSettings = true)
+        {
+            var redirectUrl = string.Empty;
+            var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
+            if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
+            {
+                redirectUrl = this._navigationManager.NavigateURL(redirectAfterLogin);
+            }
+            else
+            {
+                if (this.Request.QueryString["returnurl"] != null)
+                {
+                    // return to the url passed to register
+                    redirectUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
+
+                    // clean the return url to avoid possible XSS attack.
+                    redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
+
+                    if (redirectUrl.Contains("?returnurl"))
+                    {
+                        string baseURL = redirectUrl.Substring(
+                            0,
+                            redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
+                        string returnURL =
+                            redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
+
+                        redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
+                    }
+                }
+
+                if (string.IsNullOrEmpty(redirectUrl))
+                {
+                    // redirect to current page
+                    redirectUrl = this._navigationManager.NavigateURL();
+                }
+            }
+
+            return redirectUrl;
+        }
+
         private void OnLoginClick(object sender, EventArgs e)
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
@@ -273,53 +313,13 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                 // Raise UserAuthenticated Event
                 var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
-                                    {
-                                        Authenticated = authenticated,
-                                        Message = message,
-                                        RememberMe = this.chkCookie.Checked,
-                                    };
+                {
+                    Authenticated = authenticated,
+                    Message = message,
+                    RememberMe = this.chkCookie.Checked,
+                };
                 this.OnUserAuthenticated(eventArgs);
             }
-        }
-
-        protected string GetRedirectUrl(bool checkSettings = true)
-        {
-            var redirectUrl = string.Empty;
-            var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
-            if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
-            {
-                redirectUrl = this._navigationManager.NavigateURL(redirectAfterLogin);
-            }
-            else
-            {
-                if (this.Request.QueryString["returnurl"] != null)
-                {
-                    // return to the url passed to register
-                    redirectUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
-
-                    // clean the return url to avoid possible XSS attack.
-                    redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
-
-                    if (redirectUrl.Contains("?returnurl"))
-                    {
-                        string baseURL = redirectUrl.Substring(
-                            0,
-                            redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal));
-                        string returnURL =
-                            redirectUrl.Substring(redirectUrl.IndexOf("?returnurl", StringComparison.Ordinal) + 11);
-
-                        redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
-                    }
-                }
-
-                if (string.IsNullOrEmpty(redirectUrl))
-                {
-                    // redirect to current page
-                    redirectUrl = this._navigationManager.NavigateURL();
-                }
-            }
-
-            return redirectUrl;
         }
     }
 }

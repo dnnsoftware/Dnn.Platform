@@ -35,23 +35,6 @@ namespace DNN.Integration.Test.Framework.Controllers
             return -1;
         }
 
-        private static int CreateRole(string roleName, string roleDescription, int portalId = 0)
-        {
-            var fileContent = SqlScripts.SingleRoleCreation;
-            var masterScript = new StringBuilder(fileContent)
-                .Replace(PortalIdMarker, portalId.ToString(CultureInfo.InvariantCulture))
-                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
-                .ToString();
-
-            var script = new StringBuilder(masterScript)
-                .Replace(RoleNameMarker, roleName.Replace("'", "''"))
-                .Replace(RoleDescriptionMarker, roleDescription.Replace("'", "''"));
-
-            DatabaseHelper.ExecuteQuery(script.ToString());
-            WebApiTestHelper.ClearHostCache();
-            return GetRoleId(roleName);
-        }
-
         /// <summary>
         /// Get RoleId for role "Registered Users".
         /// </summary>
@@ -68,6 +51,23 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static int GetAdministratorsRoleId(int portalId = 0)
         {
             return GetRoleId("Administrators", portalId);
+        }
+
+        private static int CreateRole(string roleName, string roleDescription, int portalId = 0)
+        {
+            var fileContent = SqlScripts.SingleRoleCreation;
+            var masterScript = new StringBuilder(fileContent)
+                .Replace(PortalIdMarker, portalId.ToString(CultureInfo.InvariantCulture))
+                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
+                .ToString();
+
+            var script = new StringBuilder(masterScript)
+                .Replace(RoleNameMarker, roleName.Replace("'", "''"))
+                .Replace(RoleDescriptionMarker, roleDescription.Replace("'", "''"));
+
+            DatabaseHelper.ExecuteQuery(script.ToString());
+            WebApiTestHelper.ClearHostCache();
+            return GetRoleId(roleName);
         }
 
         public static int GetRoleId(string roleName, int portalId = 0)

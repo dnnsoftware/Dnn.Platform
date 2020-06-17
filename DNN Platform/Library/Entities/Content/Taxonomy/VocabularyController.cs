@@ -18,8 +18,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     /// <seealso cref="TermController"/>
     public class VocabularyController : IVocabularyController
     {
-        private readonly IDataService _DataService;
         private const int _CacheTimeOut = 20;
+        private readonly IDataService _DataService;
 
         public VocabularyController()
             : this(Util.GetDataService())
@@ -29,11 +29,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public VocabularyController(IDataService dataService)
         {
             this._DataService = dataService;
-        }
-
-        private object GetVocabulariesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillQueryable<Vocabulary>(this._DataService.GetVocabularies()).ToList();
         }
 
         public int AddVocabulary(Vocabulary vocabulary)
@@ -54,6 +49,11 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public void ClearVocabularyCache()
         {
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
+        }
+
+        private object GetVocabulariesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillQueryable<Vocabulary>(this._DataService.GetVocabularies()).ToList();
         }
 
         public void DeleteVocabulary(Vocabulary vocabulary)

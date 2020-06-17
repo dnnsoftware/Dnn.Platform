@@ -260,6 +260,19 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
+        public int KeyID
+        {
+            get
+            {
+                return this.TermId;
+            }
+
+            set
+            {
+                this.TermId = value;
+            }
+        }
+
         public virtual void Fill(IDataReader dr)
         {
             this.TermId = Null.SetNullInteger(dr["TermID"]);
@@ -285,19 +298,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             // Fill base class properties
             this.FillInternal(dr);
-        }
-
-        public int KeyID
-        {
-            get
-            {
-                return this.TermId;
-            }
-
-            set
-            {
-                this.TermId = value;
-            }
         }
 
         public string GetTermPath()

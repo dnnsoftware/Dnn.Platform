@@ -71,6 +71,52 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DisplayControl determines whether the associated Action control should be
+        /// displayed.
+        /// </summary>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public bool DisplayControl(DNNNodeCollection objNodes)
+        {
+            if (objNodes != null && objNodes.Count > 0 && this.PortalSettings.UserMode != PortalSettings.Mode.View)
+            {
+                DNNNode objRootNode = objNodes[0];
+                if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
+                {
+                    // if has pending node then display control
+                    return true;
+                }
+                else if (objRootNode.DNNNodes.Count > 0)
+                {
+                    // verify that at least one child is not a break
+                    foreach (DNNNode childNode in objRootNode.DNNNodes)
+                    {
+                        if (!childNode.IsBreak)
+                        {
+                            // Found a child so make Visible
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetAction gets the action associated with the commandName.
+        /// </summary>
+        /// <param name="commandName">The command name.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public ModuleAction GetAction(string commandName)
+        {
+            return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
+        }
+
         private void ClearCache(ModuleAction Command)
         {
             // synchronize cache
@@ -184,52 +230,6 @@ namespace DotNetNuke.UI.Containers
 
             // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DisplayControl determines whether the associated Action control should be
-        /// displayed.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public bool DisplayControl(DNNNodeCollection objNodes)
-        {
-            if (objNodes != null && objNodes.Count > 0 && this.PortalSettings.UserMode != PortalSettings.Mode.View)
-            {
-                DNNNode objRootNode = objNodes[0];
-                if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
-                {
-                    // if has pending node then display control
-                    return true;
-                }
-                else if (objRootNode.DNNNodes.Count > 0)
-                {
-                    // verify that at least one child is not a break
-                    foreach (DNNNode childNode in objRootNode.DNNNodes)
-                    {
-                        if (!childNode.IsBreak)
-                        {
-                            // Found a child so make Visible
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetAction gets the action associated with the commandName.
-        /// </summary>
-        /// <param name="commandName">The command name.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public ModuleAction GetAction(string commandName)
-        {
-            return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
         }
 
         /// -----------------------------------------------------------------------------

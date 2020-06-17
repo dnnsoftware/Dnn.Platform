@@ -31,14 +31,14 @@ namespace DotNetNuke.Security
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
 
+        private const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
+
+        private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
+
         private static readonly DateTime OldExpiryTime = new DateTime(1999, 1, 1);
 
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
-
-        private const string BadStatementExpression = ";|--|\bcreate\b|\bdrop\b|\bselect\b|\binsert\b|\bdelete\b|\bupdate\b|\bunion\b|sp_|xp_|\bexec\b|\bexecute\b|/\\*.*\\*/|\bdeclare\b|\bwaitfor\b|%|&";
         private static readonly Regex BadStatementRegex = new Regex(BadStatementExpression, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-        private const RegexOptions RxOptions = RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled;
         private static readonly Regex[] RxListStrings = new[]
         {
             new Regex("<script[^>]*>.*?</script[^><]*>", RxOptions),
@@ -132,6 +132,86 @@ namespace DotNetNuke.Security
             Friend,
             Follower,
             Owner,
+        }
+
+        public static void ForceSecureConnection()
+        {
+            // get current url
+            var url = HttpContext.Current.Request.Url.ToString();
+
+            // if unsecure connection
+            if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            {
+                // switch to secure connection
+                url = "https://" + url.Substring("http://".Length);
+
+                // append ssl parameter to querystring to indicate secure connection processing has already occurred
+                if (url.IndexOf("?", StringComparison.Ordinal) == -1)
+                {
+                    url = url + "?ssl=1";
+                }
+                else
+                {
+                    url = url + "&ssl=1";
+                }
+
+                // redirect to secure connection
+                HttpContext.Current.Response.Redirect(url, true);
+            }
+        }
+
+        public static string GetCookieDomain(int portalId)
+        {
+            string cookieDomain = string.Empty;
+            if (PortalController.IsMemberOfPortalGroup(portalId))
+            {
+                // set cookie domain for portal group
+                var groupController = new PortalGroupController();
+                var group = groupController.GetPortalGroups().SingleOrDefault(p => p.MasterPortalId == PortalController.GetEffectivePortalId(portalId));
+
+                if (@group != null
+                        && !string.IsNullOrEmpty(@group.AuthenticationDomain)
+                        && PortalSettings.Current.PortalAlias.HTTPAlias.Contains(@group.AuthenticationDomain))
+                {
+                    cookieDomain = @group.AuthenticationDomain;
+                }
+
+                if (string.IsNullOrEmpty(cookieDomain))
+                {
+                    cookieDomain = FormsAuthentication.CookieDomain;
+                }
+            }
+            else
+            {
+                // set cookie domain to be consistent with domain specification in web.config
+                cookieDomain = FormsAuthentication.CookieDomain;
+            }
+
+            return cookieDomain;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// This function creates a random key.
+        /// </summary>
+        /// <param name="numBytes">This is the number of bytes for the key.</param>
+        /// <returns>A random string.</returns>
+        /// <remarks>
+        /// This is a public function used for generating SHA1 keys.
+        /// </remarks>
+        public string CreateKey(int numBytes)
+        {
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var buff = new byte[numBytes];
+                rng.GetBytes(buff);
+                return BytesToHexString(buff);
+            }
+        }
+
+        public string Decrypt(string strKey, string strData)
+        {
+            return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
         }
 
         private static void ProcessRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
@@ -311,25 +391,6 @@ namespace DotNetNuke.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This function uses Regex search strings to remove HTML tags which are
-        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
-        /// to provide more robust checking as additional holes are found.
-        /// </summary>
-        /// <param name="strInput">This is the string to be filtered.</param>
-        /// <returns>Filtered UserInput.</returns>
-        /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function.
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private string FormatDisableScripting(string strInput)
-        {
-            return string.IsNullOrWhiteSpace(strInput)
-                ? strInput
-                : FilterStrings(strInput);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// This filter removes angle brackets i.e.
         /// </summary>
         /// <param name="strInput">This is the string to be filtered.</param>
@@ -363,6 +424,25 @@ namespace DotNetNuke.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// This function uses Regex search strings to remove HTML tags which are
+        /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
+        /// to provide more robust checking as additional holes are found.
+        /// </summary>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
+        /// <remarks>
+        /// This is a private function that is used internally by the InputFilter function.
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private string FormatDisableScripting(string strInput)
+        {
+            return string.IsNullOrWhiteSpace(strInput)
+                ? strInput
+                : FilterStrings(strInput);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// This function verifies raw SQL statements to prevent SQL injection attacks
         /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module.
         /// </summary>
@@ -391,30 +471,6 @@ namespace DotNetNuke.Security
         private static bool IncludesMarkup(string strInput)
         {
             return StripTagsRegex.IsMatch(strInput);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// This function creates a random key.
-        /// </summary>
-        /// <param name="numBytes">This is the number of bytes for the key.</param>
-        /// <returns>A random string.</returns>
-        /// <remarks>
-        /// This is a public function used for generating SHA1 keys.
-        /// </remarks>
-        public string CreateKey(int numBytes)
-        {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                var buff = new byte[numBytes];
-                rng.GetBytes(buff);
-                return BytesToHexString(buff);
-            }
-        }
-
-        public string Decrypt(string strKey, string strData)
-        {
-            return CryptographyProvider.Instance().DecryptParameter(strData, strKey);
         }
 
         public string DecryptString(string message, string passphrase)
@@ -785,16 +841,6 @@ namespace DotNetNuke.Security
             }
         }
 
-        private static void InvalidateAspNetSession(HttpContext context)
-        {
-            if (context.Session != null && !context.Session.IsNewSession)
-            {
-                // invalidate existing session so a new one is created
-                context.Session.Clear();
-                context.Session.Abandon();
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function applies security filtering to the UserInput string, and reports
@@ -836,60 +882,14 @@ namespace DotNetNuke.Security
             }
         }
 
-        public static void ForceSecureConnection()
+        private static void InvalidateAspNetSession(HttpContext context)
         {
-            // get current url
-            var url = HttpContext.Current.Request.Url.ToString();
-
-            // if unsecure connection
-            if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            if (context.Session != null && !context.Session.IsNewSession)
             {
-                // switch to secure connection
-                url = "https://" + url.Substring("http://".Length);
-
-                // append ssl parameter to querystring to indicate secure connection processing has already occurred
-                if (url.IndexOf("?", StringComparison.Ordinal) == -1)
-                {
-                    url = url + "?ssl=1";
-                }
-                else
-                {
-                    url = url + "&ssl=1";
-                }
-
-                // redirect to secure connection
-                HttpContext.Current.Response.Redirect(url, true);
+                // invalidate existing session so a new one is created
+                context.Session.Clear();
+                context.Session.Abandon();
             }
-        }
-
-        public static string GetCookieDomain(int portalId)
-        {
-            string cookieDomain = string.Empty;
-            if (PortalController.IsMemberOfPortalGroup(portalId))
-            {
-                // set cookie domain for portal group
-                var groupController = new PortalGroupController();
-                var group = groupController.GetPortalGroups().SingleOrDefault(p => p.MasterPortalId == PortalController.GetEffectivePortalId(portalId));
-
-                if (@group != null
-                        && !string.IsNullOrEmpty(@group.AuthenticationDomain)
-                        && PortalSettings.Current.PortalAlias.HTTPAlias.Contains(@group.AuthenticationDomain))
-                {
-                    cookieDomain = @group.AuthenticationDomain;
-                }
-
-                if (string.IsNullOrEmpty(cookieDomain))
-                {
-                    cookieDomain = FormsAuthentication.CookieDomain;
-                }
-            }
-            else
-            {
-                // set cookie domain to be consistent with domain specification in web.config
-                cookieDomain = FormsAuthentication.CookieDomain;
-            }
-
-            return cookieDomain;
         }
 
         public static bool IsDenied(string roles)

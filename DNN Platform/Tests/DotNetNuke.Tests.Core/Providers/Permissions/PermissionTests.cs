@@ -308,6 +308,14 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             return portalSettings;
         }
 
+        private static void AddModulePermission(ModulePermissionCollection permissions, string key, int roleId)
+        {
+            var permissionController = new PermissionController();
+            var permission = (PermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", key)[0];
+            var modulePermission = new ModulePermissionInfo { PermissionID = permission.PermissionID, RoleID = roleId, AllowAccess = true };
+            permissions.Add(modulePermission);
+        }
+
         private void CreateUser(bool isSuperUser, IEnumerable<string> Roles)
         {
             var user = new UserInfo { IsSuperUser = isSuperUser, UserID = UserId };
@@ -324,14 +332,6 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
             HttpContextSource.RegisterInstance(httpContextBase);
             HttpContext.Current.Items["UserInfo"] = user;
-        }
-
-        private static void AddModulePermission(ModulePermissionCollection permissions, string key, int roleId)
-        {
-            var permissionController = new PermissionController();
-            var permission = (PermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", key)[0];
-            var modulePermission = new ModulePermissionInfo { PermissionID = permission.PermissionID, RoleID = roleId, AllowAccess = true };
-            permissions.Add(modulePermission);
         }
     }
 }

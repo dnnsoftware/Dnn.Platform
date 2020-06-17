@@ -22,6 +22,31 @@ namespace DotNetNuke.Web.UI.WebControls
     [ToolboxData("<{0}:DnnFolderDropDownList runat='server'></{0}:DnnFolderDropDownList>")]
     public class DnnFolderDropDownList : DnnDropDownList
     {
+        /// <summary>
+        /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public IFolderInfo SelectedFolder
+        {
+            get
+            {
+                var folderId = this.SelectedItemValueAsInt;
+                return (folderId == Null.NullInteger) ? null : FolderManager.Instance.GetFolder(folderId);
+            }
+
+            set
+            {
+                var folderName = value != null ? value.FolderName : null;
+                if (folderName == string.Empty)
+                {
+                    folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
+                }
+
+                this.SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -55,31 +80,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 this.ExpandPath = folderLevel.TrimEnd(',');
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the selected Folder in the control, or selects the Folder in the control.
-        /// </summary>
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IFolderInfo SelectedFolder
-        {
-            get
-            {
-                var folderId = this.SelectedItemValueAsInt;
-                return (folderId == Null.NullInteger) ? null : FolderManager.Instance.GetFolder(folderId);
-            }
-
-            set
-            {
-                var folderName = value != null ? value.FolderName : null;
-                if (folderName == string.Empty)
-                {
-                    folderName = PortalSettings.Current.ActiveTab.IsSuperTab ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder;
-                }
-
-                this.SelectedItem = (value != null) ? new ListItem() { Text = folderName, Value = value.FolderID.ToString(CultureInfo.InvariantCulture) } : null;
             }
         }
     }

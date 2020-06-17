@@ -24,10 +24,6 @@ namespace DotNetNuke.Modules.Admin.Sales
 
     public partial class PayPalIPN : PageBase
     {
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -42,15 +38,15 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 bool blnValid = true;
 
-// string strTransactionID;
+                // string strTransactionID;
                 int intRoleID = 0;
                 int intPortalID = this.PortalSettings.PortalId;
                 int intUserID = 0;
 
-// string strDescription;
+                // string strDescription;
                 double dblAmount = 0;
 
-// string strEmail;
+                // string strEmail;
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
                 string strPost = "cmd=_notify-validate";
@@ -84,7 +80,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                             break;
                         case "txn_id": // verify the transaction id for duplicates
-//                            strTransactionID = strValue;
+                                       //                            strTransactionID = strValue;
                             break;
                         case "receiver_email": // verify the PayPalId
                             strPayPalID = strValue;
@@ -98,13 +94,13 @@ namespace DotNetNuke.Modules.Admin.Sales
                             // RoleInfo objRole = objRoles.GetRole(intRoleID, intPortalID);
                             break;
                         case "item_name": // get the product description
-//                            strDescription = strValue;
+                                          //                            strDescription = strValue;
                             break;
                         case "custom": // get the UserID
                             intUserID = int.Parse(strValue);
                             break;
                         case "email": // get the email
-//                            strEmail = strValue;
+                                      //                            strEmail = strValue;
                             break;
                     }
 
@@ -217,6 +213,10 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 Exceptions.ProcessPageLoadException(exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

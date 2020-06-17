@@ -55,42 +55,42 @@ namespace DotNetNuke.UI.Containers
         }
 
         private void DisplayAction(ModuleAction action)
-    {
-        if (action.CommandName == ModuleActionType.PrintModule)
         {
-        if (action.Visible)
-        {
-            if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+            if (action.CommandName == ModuleActionType.PrintModule)
             {
-            if (this.ModuleContext.Configuration.DisplayPrint)
+                if (action.Visible)
+                {
+                    if ((this.PortalSettings.UserMode == PortalSettings.Mode.Edit) || (action.Secure == SecurityAccessLevel.Anonymous || action.Secure == SecurityAccessLevel.View))
+                    {
+                        if (this.ModuleContext.Configuration.DisplayPrint)
+                        {
+                            var ModuleActionIcon = new ImageButton();
+                            if (!string.IsNullOrEmpty(this.PrintIcon))
+                            {
+                                ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
+                            }
+                            else
+                            {
+                                ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
+                            }
+
+                            ModuleActionIcon.ToolTip = action.Title;
+                            ModuleActionIcon.ID = "ico" + action.ID;
+                            ModuleActionIcon.CausesValidation = false;
+
+                            ModuleActionIcon.Click += this.IconAction_Click;
+
+                            this.Controls.Add(ModuleActionIcon);
+                        }
+                    }
+                }
+            }
+
+            foreach (ModuleAction subAction in action.Actions)
             {
-                var ModuleActionIcon = new ImageButton();
-                if (!string.IsNullOrEmpty(this.PrintIcon))
-                {
-                ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
-                }
-                else
-                {
-                ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
-                }
-
-                ModuleActionIcon.ToolTip = action.Title;
-                ModuleActionIcon.ID = "ico" + action.ID;
-                ModuleActionIcon.CausesValidation = false;
-
-                ModuleActionIcon.Click += this.IconAction_Click;
-
-                this.Controls.Add(ModuleActionIcon);
-            }
+                this.DisplayAction(subAction);
             }
         }
-        }
-
-        foreach (ModuleAction subAction in action.Actions)
-        {
-            this.DisplayAction(subAction);
-        }
-    }
 
         private void IconAction_Click(object sender, ImageClickEventArgs e)
         {

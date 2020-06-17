@@ -20,6 +20,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
     public abstract class BaseSettingsTests
     {
+        public readonly object[] SettingsCases =
+        {
+            new object[] { "AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1, default(ComplexType), },
+            new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1, 5, 6, 7), TestingEnum.Value2, new ComplexType(8, -10), },
+        };
+
         protected const string SettingNamePrefix = "UnitTestSetting_";
         protected const int ModuleId = 1234;
         protected const int TabModuleId = 653;
@@ -32,6 +38,14 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         protected Mock<IHostController> MockHostController;
         protected Mock<IModuleController> MockModuleController;
         protected Mock<IPortalController> MockPortalController;
+
+        public enum TestingEnum
+        {
+            Value1,
+            Value2,
+        }
+
+        protected static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId, PortalID = PortalId, };
 
         [TestFixtureSetUp]
         public virtual void TestFixtureSetUp()
@@ -72,20 +86,6 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             PortalController.ClearInstance();
             ModuleController.ClearInstance();
         }
-
-        public enum TestingEnum
-        {
-            Value1,
-            Value2,
-        }
-
-        public readonly object[] SettingsCases =
-        {
-            new object[] { "AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1, default(ComplexType), },
-            new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1, 5, 6, 7), TestingEnum.Value2, new ComplexType(8, -10), },
-        };
-
-        protected static ModuleInfo GetModuleInfo => new ModuleInfo { ModuleID = ModuleId, TabModuleID = TabModuleId, TabID = TabId, PortalID = PortalId, };
 
         protected static string CacheKey(ModuleInfo moduleInfo) => $"SettingsModule{moduleInfo.TabModuleID}";
 

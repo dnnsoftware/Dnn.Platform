@@ -16,6 +16,14 @@ namespace DotNetNuke.Services.UserProfile
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserProfilePageHandler));
 
+        public bool IsReusable
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   This handler handles requests for LinkClick.aspx, but only those specifc
@@ -91,14 +99,6 @@ namespace DotNetNuke.Services.UserProfile
 
             // Redirect to Userprofile Page
             context.Response.Redirect(Globals.UserProfileURL(UserId), true);
-        }
-
-        public bool IsReusable
-        {
-            get
-            {
-                return true;
-            }
         }
 
         private static int GetUserId(string username, int PortalId)

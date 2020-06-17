@@ -176,8 +176,8 @@ namespace log4net.Util
             return count;
         }
 
-        private const string CDATA_END  = "]]>";
-        private const string CDATA_UNESCAPABLE_TOKEN    = "]]";
+        private const string CDATA_END = "]]>";
+        private const string CDATA_UNESCAPABLE_TOKEN = "]]";
 
         /// <summary>
         /// Characters illegal in XML 1.0.

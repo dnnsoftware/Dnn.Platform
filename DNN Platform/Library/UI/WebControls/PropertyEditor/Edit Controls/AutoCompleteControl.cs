@@ -28,18 +28,6 @@ namespace DotNetNuke.UI.WebControls
             this.Load += this.AutoCompleteControl_Load;
         }
 
-        private void AutoCompleteControl_Init(object sender, System.EventArgs e)
-        {
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/ProfileAutoComplete/dnn.ProfileAutoComplete.js");
-            ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/ProfileAutoComplete/dnn.AutoComplete.css");
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
-        }
-
-        private void AutoCompleteControl_Load(object sender, System.EventArgs e)
-        {
-        }
-
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;
@@ -71,6 +59,18 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute("data-editor", "AutoCompleteControl");
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
+        }
+
+        private void AutoCompleteControl_Init(object sender, System.EventArgs e)
+        {
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/ProfileAutoComplete/dnn.ProfileAutoComplete.js");
+            ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/ProfileAutoComplete/dnn.AutoComplete.css");
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+        }
+
+        private void AutoCompleteControl_Load(object sender, System.EventArgs e)
+        {
         }
     }
 }

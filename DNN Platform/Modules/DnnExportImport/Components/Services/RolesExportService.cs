@@ -192,6 +192,26 @@ namespace Dnn.ExportImport.Components.Services
                    this.Repository.GetCount<ExportRoleSetting>();
         }
 
+        private static void RefreshRecordsUserIds(IEnumerable<RoleGroupItem> roleGroupItems)
+        {
+            var provider = DataProvider.Instance();
+            foreach (var roleGroupItem in roleGroupItems)
+            {
+                provider.UpdateRecordChangers("RoleGroups", "RoleGroupID",
+                    roleGroupItem.RoleGroupId, roleGroupItem.CreatedBy, roleGroupItem.ModifiedBy);
+            }
+        }
+
+        private static void RefreshRecordsUserIds(IEnumerable<RoleItem> roleItems)
+        {
+            var provider = DataProvider.Instance();
+            foreach (var roleItem in roleItems)
+            {
+                provider.UpdateRecordChangers("Roles", "RoleID",
+                    roleItem.RoleId, roleItem.CreatedBy, roleItem.ModifiedBy);
+            }
+        }
+
         private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportRoleGroup> otherRoleGroups)
         {
@@ -417,26 +437,6 @@ namespace Dnn.ExportImport.Components.Services
             RoleController.Instance.ClearRoleCache(importJob.PortalId);
         }
 
-        private static void RefreshRecordsUserIds(IEnumerable<RoleGroupItem> roleGroupItems)
-        {
-            var provider = DataProvider.Instance();
-            foreach (var roleGroupItem in roleGroupItems)
-            {
-                provider.UpdateRecordChangers("RoleGroups", "RoleGroupID",
-                    roleGroupItem.RoleGroupId, roleGroupItem.CreatedBy, roleGroupItem.ModifiedBy);
-            }
-        }
-
-        private static void RefreshRecordsUserIds(IEnumerable<RoleItem> roleItems)
-        {
-            var provider = DataProvider.Instance();
-            foreach (var roleItem in roleItems)
-            {
-                provider.UpdateRecordChangers("Roles", "RoleID",
-                    roleItem.RoleId, roleItem.CreatedBy, roleItem.ModifiedBy);
-            }
-        }
-
         private static void RefreshRecordsUserIds(IEnumerable<SettingItem> settingItems)
         {
             var provider = DataProvider.Instance();
@@ -449,46 +449,38 @@ namespace Dnn.ExportImport.Components.Services
 
         private struct RoleGroupItem
         {
-            public int RoleGroupId { get; }
-
-            public int CreatedBy { get; }
-
-            public int ModifiedBy { get; }
-
             public RoleGroupItem(int roleGroupId, int createdBy, int modifiedBy)
             {
                 this.RoleGroupId = roleGroupId;
                 this.CreatedBy = createdBy;
                 this.ModifiedBy = modifiedBy;
             }
-        }
 
-        private struct RoleItem
-        {
-            public int RoleId { get; }
+            public int RoleGroupId { get; }
 
             public int CreatedBy { get; }
 
             public int ModifiedBy { get; }
+        }
 
+        private struct RoleItem
+        {
             public RoleItem(int roleId, int createdBy, int modifiedBy)
             {
                 this.RoleId = roleId;
                 this.CreatedBy = createdBy;
                 this.ModifiedBy = modifiedBy;
             }
-        }
 
-        private struct SettingItem
-        {
             public int RoleId { get; }
-
-            public string Name { get; }
 
             public int CreatedBy { get; }
 
             public int ModifiedBy { get; }
+        }
 
+        private struct SettingItem
+        {
             public SettingItem(int roleId, string settingName, int createdBy, int modifiedBy)
             {
                 this.RoleId = roleId;
@@ -496,6 +488,14 @@ namespace Dnn.ExportImport.Components.Services
                 this.CreatedBy = createdBy;
                 this.ModifiedBy = modifiedBy;
             }
+
+            public int RoleId { get; }
+
+            public string Name { get; }
+
+            public int CreatedBy { get; }
+
+            public int ModifiedBy { get; }
         }
     }
 }

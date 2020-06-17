@@ -27,11 +27,6 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        protected override sealed ControlCollection CreateControlCollection()
-        {
-            return new TypedControlCollection<DnnUnsortedListItem>(this);
-        }
-
         [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
         [MergableProperty(false)]
         public virtual UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> ListItems
@@ -39,15 +34,6 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 return this._listItems ?? (this._listItems = new UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem>(this));
-            }
-        }
-
-        protected override void AddAttributesToRender(HtmlTextWriter writer)
-        {
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
-            if (!string.IsNullOrEmpty(this.CssClass))
-            {
-                writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             }
         }
 
@@ -62,6 +48,20 @@ namespace DotNetNuke.Web.UI.WebControls
             var listItem = new DnnUnsortedListItem();
             listItem.AddControls(listItemControls);
             this.ListItems.Add(listItem);
+        }
+
+        protected override sealed ControlCollection CreateControlCollection()
+        {
+            return new TypedControlCollection<DnnUnsortedListItem>(this);
+        }
+
+        protected override void AddAttributesToRender(HtmlTextWriter writer)
+        {
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
+            if (!string.IsNullOrEmpty(this.CssClass))
+            {
+                writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
+            }
         }
     }
 }

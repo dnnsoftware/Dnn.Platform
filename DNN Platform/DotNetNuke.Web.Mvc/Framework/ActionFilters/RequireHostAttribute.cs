@@ -16,6 +16,20 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     {
         private UserInfo _user;
 
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            var controller = filterContext.Controller as IDnnController;
+
+            if (controller == null)
+            {
+                throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
+            }
+
+            this._user = controller.ModuleContext.PortalSettings.UserInfo;
+
+            base.OnAuthorization(filterContext);
+        }
+
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var principal = Thread.CurrentPrincipal;
@@ -30,20 +44,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             }
 
             return false;
-        }
-
-        public override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            var controller = filterContext.Controller as IDnnController;
-
-            if (controller == null)
-            {
-                throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
-            }
-
-            this._user = controller.ModuleContext.PortalSettings.UserInfo;
-
-            base.OnAuthorization(filterContext);
         }
     }
 }

@@ -12,17 +12,6 @@ namespace Dnn.PersonaBar.Library.DTO
     [DataContract]
     public abstract class Permissions
     {
-        [DataMember(Name = "permissionDefinitions")]
-        public IList<Permission> PermissionDefinitions { get; set; }
-
-        [DataMember(Name = "rolePermissions")]
-        public IList<RolePermission> RolePermissions { get; set; }
-
-        [DataMember(Name = "userPermissions")]
-        public IList<UserPermission> UserPermissions { get; set; }
-
-        protected abstract void LoadPermissionDefinitions();
-
         protected Permissions()
             : this(false)
         {
@@ -40,5 +29,16 @@ namespace Dnn.PersonaBar.Library.DTO
                 this.EnsureDefaultRoles();
             }
         }
+
+        [DataMember(Name = "permissionDefinitions")]
+        public IList<Permission> PermissionDefinitions { get; set; }
+
+        [DataMember(Name = "rolePermissions")]
+        public IList<RolePermission> RolePermissions { get; set; }
+
+        [DataMember(Name = "userPermissions")]
+        public IList<UserPermission> UserPermissions { get; set; }
+
+        protected abstract void LoadPermissionDefinitions();
     }
 }

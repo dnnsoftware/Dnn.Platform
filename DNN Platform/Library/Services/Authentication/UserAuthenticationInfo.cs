@@ -55,23 +55,6 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a UserAuthenticationInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public virtual void Fill(IDataReader dr)
-        {
-            this.UserAuthenticationID = Null.SetNullInteger(dr["UserAuthenticationID"]);
-            this.UserID = Null.SetNullInteger(dr["UserID"]);
-            this.AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
-            this.AuthenticationToken = Null.SetNullString(dr["AuthenticationToken"]);
-
-            // Fill base class fields
-            this.FillInternal(dr);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -87,6 +70,23 @@ namespace DotNetNuke.Services.Authentication
             {
                 this.UserAuthenticationID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a UserAuthenticationInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public virtual void Fill(IDataReader dr)
+        {
+            this.UserAuthenticationID = Null.SetNullInteger(dr["UserAuthenticationID"]);
+            this.UserID = Null.SetNullInteger(dr["UserID"]);
+            this.AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
+            this.AuthenticationToken = Null.SetNullString(dr["AuthenticationToken"]);
+
+            // Fill base class fields
+            this.FillInternal(dr);
         }
     }
 }

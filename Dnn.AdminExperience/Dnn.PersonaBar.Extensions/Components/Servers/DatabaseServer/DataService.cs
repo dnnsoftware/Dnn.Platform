@@ -15,14 +15,14 @@ namespace Dnn.PersonaBar.Servers.Components.DatabaseServer
         private static readonly DataProvider Provider = DataProvider.Instance();
         private static string moduleQualifier = "PersonaBar_";
 
-        private static string GetFullyQualifiedName(string name)
-        {
-            return String.Concat(moduleQualifier, name);
-        }
-
         public static IDataReader GetDbInfo()
         {
             return Provider.ExecuteReader(GetFullyQualifiedName("GetDbInfo"));
+        }
+
+        private static string GetFullyQualifiedName(string name)
+        {
+            return String.Concat(moduleQualifier, name);
         }
 
         public static IDataReader GetDbFileInfo()

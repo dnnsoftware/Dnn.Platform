@@ -20,6 +20,90 @@ namespace DotNetNuke.Services.FileSystem
 
     public class DatabaseFolderProvider : SecureFolderProvider
     {
+        /// <summary>
+        /// Clears the content of the file in the database.
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        public static void ClearFileContent(int fileId)
+        {
+            DataProvider.Instance().ClearFileContent(fileId);
+            DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
+        }
+
+        /// <summary>
+        /// Updates the content of the file in the database.
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        /// <param name="content">The new content.</param>
+        public static void UpdateFileContent(int fileId, Stream content)
+        {
+            if (content != null)
+            {
+                byte[] fileContent;
+                var buffer = new byte[16 * 1024];
+                using (var ms = new MemoryStream())
+                {
+                    int read;
+                    while ((read = content.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        ms.Write(buffer, 0, read);
+                    }
+
+                    fileContent = ms.ToArray();
+                }
+
+                UpdateFileContent(fileId, fileContent);
+            }
+            else
+            {
+                ClearFileContent(fileId);
+            }
+
+            DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
+        }
+
+        public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
+        {
+            Requires.PropertyNotNull("folderPath", folderPath);
+            Requires.NotNullOrEmpty("fileName", fileName);
+            Requires.PropertyNotNull("newFolderPath", newFolderPath);
+            Requires.NotNull("folderMapping", folderMapping);
+
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
+
+            var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
+            var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
+
+            Requires.NotNull("sourceFolder", sourceFolder);
+            Requires.NotNull("destinationFolder", destinationFolder);
+
+            using (var fileContent = this.GetFileStream(sourceFolder, fileName))
+            {
+                if (!fileContent.CanSeek)
+                {
+                    using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
+                    {
+                        this.AddFile(destinationFolder, fileName, seekableStream);
+                    }
+                }
+                else
+                {
+                    this.AddFile(destinationFolder, fileName, fileContent);
+                }
+            }
+        }
+
+        public override void AddFile(IFolderInfo folder, string fileName, Stream content)
+        {
+            Requires.NotNull("folder", folder);
+            Requires.NotNullOrEmpty("fileName", fileName);
+
+            this.UpdateFile(folder, fileName, content);
+        }
+
         private Stream GetFileStreamInternal(IDataReader dr)
         {
             byte[] bytes = null;
@@ -74,48 +158,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             UpdateFileContent(fileId, fileContent);
-        }
-
-        public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
-        {
-            Requires.PropertyNotNull("folderPath", folderPath);
-            Requires.NotNullOrEmpty("fileName", fileName);
-            Requires.PropertyNotNull("newFolderPath", newFolderPath);
-            Requires.NotNull("folderMapping", folderMapping);
-
-            if (folderPath == newFolderPath)
-            {
-                return;
-            }
-
-            var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
-            var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
-
-            Requires.NotNull("sourceFolder", sourceFolder);
-            Requires.NotNull("destinationFolder", destinationFolder);
-
-            using (var fileContent = this.GetFileStream(sourceFolder, fileName))
-            {
-                if (!fileContent.CanSeek)
-                {
-                    using (var seekableStream = FileManager.Instance.GetSeekableStream(fileContent))
-                    {
-                        this.AddFile(destinationFolder, fileName, seekableStream);
-                    }
-                }
-                else
-                {
-                    this.AddFile(destinationFolder, fileName, fileContent);
-                }
-            }
-        }
-
-        public override void AddFile(IFolderInfo folder, string fileName, Stream content)
-        {
-            Requires.NotNull("folder", folder);
-            Requires.NotNullOrEmpty("fileName", fileName);
-
-            this.UpdateFile(folder, fileName, content);
         }
 
         public override void DeleteFile(IFileInfo file)
@@ -252,48 +294,6 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             this.UpdateFileInternal(file.FileId, content);
-        }
-
-        /// <summary>
-        /// Clears the content of the file in the database.
-        /// </summary>
-        /// <param name="fileId">The file identifier.</param>
-        public static void ClearFileContent(int fileId)
-        {
-            DataProvider.Instance().ClearFileContent(fileId);
-            DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
-        }
-
-        /// <summary>
-        /// Updates the content of the file in the database.
-        /// </summary>
-        /// <param name="fileId">The file identifier.</param>
-        /// <param name="content">The new content.</param>
-        public static void UpdateFileContent(int fileId, Stream content)
-        {
-            if (content != null)
-            {
-                byte[] fileContent;
-                var buffer = new byte[16 * 1024];
-                using (var ms = new MemoryStream())
-                {
-                    int read;
-                    while ((read = content.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        ms.Write(buffer, 0, read);
-                    }
-
-                    fileContent = ms.ToArray();
-                }
-
-                UpdateFileContent(fileId, fileContent);
-            }
-            else
-            {
-                ClearFileContent(fileId);
-            }
-
-            DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
         }
 
         /// <summary>

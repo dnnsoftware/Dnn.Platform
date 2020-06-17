@@ -29,12 +29,6 @@ namespace DotNetNuke.Web.InternalServices
                 x => x.NormalizedFullName.IndexOf(searchString, StringComparison.CurrentCulture) > -1).OrderBy(x => x.NormalizedFullName));
         }
 
-        public struct Region
-        {
-            public string Text;
-            public string Value;
-        }
-
         [HttpGet]
         public HttpResponseMessage Regions(int country)
         {
@@ -49,6 +43,12 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
+        }
+
+        public struct Region
+        {
+            public string Text;
+            public string Value;
         }
     }
 }

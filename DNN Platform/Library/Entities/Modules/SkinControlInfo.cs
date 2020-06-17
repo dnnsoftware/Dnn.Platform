@@ -47,19 +47,6 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a SkinControlInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.SkinControlID = Null.SetNullInteger(dr["SkinControlID"]);
-            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
-            this.FillInternal(dr);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -75,6 +62,19 @@ namespace DotNetNuke.Entities.Modules
             {
                 this.SkinControlID = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a SkinControlInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.SkinControlID = Null.SetNullInteger(dr["SkinControlID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------

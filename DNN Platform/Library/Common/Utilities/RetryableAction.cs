@@ -17,6 +17,35 @@ namespace DotNetNuke.Common.Utilities.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
+        static RetryableAction()
+        {
+            SleepAction = GoToSleep;
+        }
+
+        public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay)
+            : this(action, description, maxRetries, delay, 1)
+        {
+        }
+
+        public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay, float delayMultiplier)
+        {
+            if (delay.TotalMilliseconds > int.MaxValue)
+            {
+                throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
+            }
+
+            this.Action = action;
+            this.Description = description;
+            this.MaxRetries = maxRetries;
+            this.Delay = delay;
+            this.DelayMultiplier = delayMultiplier;
+        }
+
+        /// <summary>
+        /// Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes.
+        /// </summary>
+        public static Action<int> SleepAction { get; set; }
+
         /// <summary>
         /// Gets or sets the Action to execute.
         /// </summary>
@@ -53,40 +82,6 @@ namespace DotNetNuke.Common.Utilities.Internal
         public static void Retry5TimesWith2SecondsDelay(Action action, string description)
         {
             new RetryableAction(action, description, 5, TimeSpan.FromSeconds(2)).TryIt();
-        }
-
-        /// <summary>
-        /// Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes.
-        /// </summary>
-        public static Action<int> SleepAction { get; set; }
-
-        static RetryableAction()
-        {
-            SleepAction = GoToSleep;
-        }
-
-        private static void GoToSleep(int delay)
-        {
-            Thread.Sleep(delay);
-        }
-
-        public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay)
-            : this(action, description, maxRetries, delay, 1)
-        {
-        }
-
-        public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay, float delayMultiplier)
-        {
-            if (delay.TotalMilliseconds > int.MaxValue)
-            {
-                throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
-            }
-
-            this.Action = action;
-            this.Description = description;
-            this.MaxRetries = maxRetries;
-            this.Delay = delay;
-            this.DelayMultiplier = delayMultiplier;
         }
 
         public void TryIt()
@@ -131,6 +126,11 @@ namespace DotNetNuke.Common.Utilities.Internal
                 retrysRemaining--;
             }
             while (true);
+        }
+
+        private static void GoToSleep(int delay)
+        {
+            Thread.Sleep(delay);
         }
     }
 }

@@ -36,15 +36,23 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public class LanguagePropertyAccess : IPropertyAccess
     {
+        public LanguageTokenReplace objParent;
         private const string FlagIconPhysicalLocation = @"~\images\Flags";
         private const string NonExistingFlagIconFileName = "none.gif";
         private readonly PortalSettings objPortal;
-        public LanguageTokenReplace objParent;
 
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)
         {
             this.objPortal = settings;
             this.objParent = parent;
+        }
+
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
         }
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo AccessingUser, Scope CurrentScope, ref bool PropertyNotFound)
@@ -71,14 +79,6 @@ namespace DotNetNuke.UI.Skins.Controls
                 default:
                     PropertyNotFound = true;
                     return string.Empty;
-            }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
             }
         }
 

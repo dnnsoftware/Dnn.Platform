@@ -8,12 +8,12 @@ namespace DotNetNuke.Web.ConfigSection
 
     public class AuthServicesConfiguration : ConfigurationSection
     {
+        [ConfigurationProperty("messageHandlers", IsRequired = true)]
+        public MessageHandlersCollection MessageHandlers => this["messageHandlers"] as MessageHandlersCollection;
+
         public static AuthServicesConfiguration GetConfig()
         {
             return ConfigurationManager.GetSection("dotnetnuke/authServices") as AuthServicesConfiguration;
         }
-
-        [ConfigurationProperty("messageHandlers", IsRequired = true)]
-        public MessageHandlersCollection MessageHandlers => this["messageHandlers"] as MessageHandlersCollection;
     }
 }

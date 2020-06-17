@@ -28,12 +28,6 @@ namespace DotNetNuke.Security.Permissions
     {
         private static readonly PermissionProvider _provider = PermissionProvider.Instance();
 
-        private static void ClearPermissionCache(int moduleId)
-        {
-            ModuleInfo objModule = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
-            DataCache.ClearModulePermissionsCache(objModule.TabID);
-        }
-
         /// <summary>
         /// Returns a list with all roles with implicit permissions on Modules.
         /// </summary>
@@ -52,6 +46,12 @@ namespace DotNetNuke.Security.Permissions
         public static bool CanAdminModule(ModuleInfo module)
         {
             return _provider.CanAdminModule(module);
+        }
+
+        private static void ClearPermissionCache(int moduleId)
+        {
+            ModuleInfo objModule = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
+            DataCache.ClearModulePermissionsCache(objModule.TabID);
         }
 
         /// <summary>

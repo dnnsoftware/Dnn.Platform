@@ -116,15 +116,6 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             Assert.AreEqual(true, request.IsValid);
         }
 
-        private void SetReadonly(NameValueCollection collection, bool readOnly)
-        {
-            var readOnlyProperty = collection.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (readOnlyProperty != null)
-            {
-                readOnlyProperty.SetValue(collection, readOnly, null);
-            }
-        }
-
         /// <summary>
         /// method for converting a System.DateTime value to a UNIX Timestamp.
         /// </summary>
@@ -136,6 +127,15 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
             // the Unix Epoch
             DateTime epoc = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return epoc.AddSeconds((double)value);
+        }
+
+        private void SetReadonly(NameValueCollection collection, bool readOnly)
+        {
+            var readOnlyProperty = collection.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
+            if (readOnlyProperty != null)
+            {
+                readOnlyProperty.SetValue(collection, readOnly, null);
+            }
         }
     }
 }

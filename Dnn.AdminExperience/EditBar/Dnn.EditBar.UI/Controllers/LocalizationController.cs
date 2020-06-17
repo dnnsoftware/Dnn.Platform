@@ -23,11 +23,6 @@ namespace Dnn.EditBar.UI.Controllers
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
-
         public string CultureName
         {
             get { return Thread.CurrentThread.CurrentUICulture.Name; }
@@ -45,6 +40,11 @@ namespace Dnn.EditBar.UI.Controllers
             }
 
             return dictionary;
+        }
+
+        protected override Func<ILocalizationController> GetFactory()
+        {
+            return () => new LocalizationController();
         }
 
         private static string GetNameAttribute(XmlNode node)

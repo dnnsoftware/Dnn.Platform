@@ -20,10 +20,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
     [ConsoleCommand("set-user", Constants.UsersCategory, "Prompt_SetUser_Description")]
     public class SetUser : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_SetUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("email", "Prompt_SetUser_FlagEmail", "String")]
         private const string FlagEmail = "email";
         [FlagParameter("username", "Prompt_SetUser_FlagUsername", "String")]
@@ -43,6 +43,10 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private readonly IUsersController _usersController;
         private readonly IUserControllerWrapper _userControllerWrapper;
 
+        public SetUser() : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
+        {
+        }
+
         private int? UserId { get; set; }
         private string Email { get; set; }
         private string Username { get; set; }
@@ -51,10 +55,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         private string LastName { get; set; }
         private bool? Approved { get; set; }
         private string Password { get; set; }
-
-        public SetUser() : this(new UserValidator(), UsersController.Instance, new UserControllerWrapper())
-        {
-        }
 
         public SetUser(IUserValidator userValidator, IUsersController usersController, IUserControllerWrapper userControllerWrapper)
         {
@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.UserId = this.GetFlagValue(FlagId, "User Id", -1, true, true, true);
             this.Email = this.GetFlagValue(FlagEmail, "Email", string.Empty);
             this.Username = this.GetFlagValue(FlagUsername, "Username", string.Empty);
@@ -105,14 +105,14 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                )
             {
                 return errorResultModel;
-            }                        
-          
+            }
+
             // Update the User
             // process the password first. If invalid, we can abort other changes to the user
             if (!string.IsNullOrEmpty(this.Password))
             {
                 try
-                {                    
+                {
                     this._usersController.ChangePassword(userInfo.PortalID, userInfo.UserID, this.Password);
                     sbResults.Append(this.LocalizeString("ChangeSuccessful"));
                 }

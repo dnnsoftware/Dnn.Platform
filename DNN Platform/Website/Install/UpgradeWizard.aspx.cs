@@ -37,15 +37,20 @@ namespace DotNetNuke.Services.Install
     /// -----------------------------------------------------------------------------
     public partial class UpgradeWizard : PageBase
     {
-        private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
         protected static new string LocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
+        private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
         private static string _culture;
         private static string[] _supportedLanguages;
 
         private static IInstallationStep _currentStep;
         private static bool _upgradeRunning;
         private static int _upgradeProgress;
+
+        // steps shown in UI
+        private static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
+        private static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
+        private static IInstallationStep iisVerification = new IISVerificationStep();
 
         protected Version ApplicationVersion
         {
@@ -78,25 +83,15 @@ namespace DotNetNuke.Services.Install
 
         private static bool IsAuthenticated { get; set; }
 
-        private void LocalizePage()
+        protected string LocalizeString(string key)
         {
-            this.SetBrowserLanguage();
-            this.Page.Title = this.LocalizeString("Title");
-            if (Globals.FormatVersion(this.ApplicationVersion) == Globals.FormatVersion(this.CurrentVersion))
-            {
-                this.versionLabel.Visible = false;
-                this.currentVersionLabel.Visible = false;
-                this.versionsMatch.Text = this.LocalizeString("VersionsMatch");
-                if (Globals.IncrementalVersionExists(this.CurrentVersion))
-                {
-                    this.versionsMatch.Text = this.LocalizeString("VersionsMatchButIncrementalExists");
-                }
-            }
-            else
-            {
-                this.versionLabel.Text = string.Format(this.LocalizeString("Version"), Globals.FormatVersion(this.ApplicationVersion));
-                this.currentVersionLabel.Text = string.Format(this.LocalizeString("CurrentVersion"), Globals.FormatVersion(this.CurrentVersion));
-            }
+            return Localization.GetString(key, LocalResourceFile, _culture);
+        }
+
+        protected override void OnError(EventArgs e)
+        {
+            HttpContext.Current.Response.Clear();
+            HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
         }
 
         private static void GetInstallerLocales()
@@ -133,28 +128,6 @@ namespace DotNetNuke.Services.Install
                 _supportedLanguages = new string[1];
                 _supportedLanguages.SetValue("en-US", 0);
             }
-        }
-
-        private void SetBrowserLanguage()
-        {
-            string cultureCode;
-            if (string.IsNullOrEmpty(this.PageLocale.Value) && string.IsNullOrEmpty(_culture))
-            {
-                cultureCode = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(_supportedLanguages);
-            }
-            else if (string.IsNullOrEmpty(this.PageLocale.Value) && !string.IsNullOrEmpty(_culture))
-            {
-                cultureCode = _culture;
-            }
-            else
-            {
-                cultureCode = this.PageLocale.Value;
-            }
-
-            this.PageLocale.Value = cultureCode;
-            _culture = cultureCode;
-
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
         }
 
         private static string LocalizeStringStatic(string key)
@@ -253,6 +226,49 @@ namespace DotNetNuke.Services.Install
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
         }
 
+        private void LocalizePage()
+        {
+            this.SetBrowserLanguage();
+            this.Page.Title = this.LocalizeString("Title");
+            if (Globals.FormatVersion(this.ApplicationVersion) == Globals.FormatVersion(this.CurrentVersion))
+            {
+                this.versionLabel.Visible = false;
+                this.currentVersionLabel.Visible = false;
+                this.versionsMatch.Text = this.LocalizeString("VersionsMatch");
+                if (Globals.IncrementalVersionExists(this.CurrentVersion))
+                {
+                    this.versionsMatch.Text = this.LocalizeString("VersionsMatchButIncrementalExists");
+                }
+            }
+            else
+            {
+                this.versionLabel.Text = string.Format(this.LocalizeString("Version"), Globals.FormatVersion(this.ApplicationVersion));
+                this.currentVersionLabel.Text = string.Format(this.LocalizeString("CurrentVersion"), Globals.FormatVersion(this.CurrentVersion));
+            }
+        }
+
+        private void SetBrowserLanguage()
+        {
+            string cultureCode;
+            if (string.IsNullOrEmpty(this.PageLocale.Value) && string.IsNullOrEmpty(_culture))
+            {
+                cultureCode = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(_supportedLanguages);
+            }
+            else if (string.IsNullOrEmpty(this.PageLocale.Value) && !string.IsNullOrEmpty(_culture))
+            {
+                cultureCode = _culture;
+            }
+            else
+            {
+                cultureCode = this.PageLocale.Value;
+            }
+
+            this.PageLocale.Value = cultureCode;
+            _culture = cultureCode;
+
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
+        }
+
         private static void CurrentStepActivity(string status)
         {
             var percentage = (_currentStep == null) ? _upgradeProgress : _upgradeProgress + (_currentStep.Percentage / _steps.Count);
@@ -324,17 +340,6 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, LocalResourceFile, _culture);
-        }
-
-        protected override void OnError(EventArgs e)
-        {
-            HttpContext.Current.Response.Clear();
-            HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Init runs when the Page is initialised.
@@ -393,11 +398,6 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        // steps shown in UI
-        private static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
-        private static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
-        private static IInstallationStep iisVerification = new IISVerificationStep();
-
         // Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
             {
@@ -420,35 +420,6 @@ namespace DotNetNuke.Services.Install
             var result = VerifyHostUser(accountInfo, out errorMsg);
 
             return new Tuple<bool, string>(result, errorMsg);
-        }
-
-        private static bool VerifyHostUser(Dictionary<string, string> accountInfo, out string errorMsg)
-        {
-            var result = true;
-            errorMsg = string.Empty;
-
-            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
-            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
-            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
-
-            if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
-            {
-                result = false;
-                errorMsg = LocalizeStringStatic("InvalidCredentials");
-            }
-            else
-            {
-                IsAuthenticated = true;
-            }
-
-            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
-            {
-                result = false;
-                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
-            }
-
-            return result;
         }
 
         [System.Web.Services.WebMethod]
@@ -512,6 +483,35 @@ namespace DotNetNuke.Services.Install
             }
 
             return data;
+        }
+
+        private static bool VerifyHostUser(Dictionary<string, string> accountInfo, out string errorMsg)
+        {
+            var result = true;
+            errorMsg = string.Empty;
+
+            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
+            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
+
+            if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
+            {
+                result = false;
+                errorMsg = LocalizeStringStatic("InvalidCredentials");
+            }
+            else
+            {
+                IsAuthenticated = true;
+            }
+
+            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
+            {
+                result = false;
+                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
+            }
+
+            return result;
         }
     }
 }

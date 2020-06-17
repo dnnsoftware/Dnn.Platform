@@ -24,9 +24,11 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class UserResultController : BaseResultController
     {
+        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+
         private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
 
-        private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
+        public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
 
         private PortalSettings PortalSettings
         {
@@ -96,7 +98,11 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
-        public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
+        private static int GetUserId(SearchDocumentToDelete searchResult)
+        {
+            var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
+            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
+        }
 
         private bool HasSocialReplationship(UserInfo targetUser, UserInfo accessingUser, string extendedVisibility)
         {
@@ -143,12 +149,6 @@ namespace DotNetNuke.Services.Search.Controllers
             }
 
             return isVisible;
-        }
-
-        private static int GetUserId(SearchDocumentToDelete searchResult)
-        {
-            var match = SearchResultMatchRegex.Match(searchResult.UniqueKey);
-            return match.Success ? Convert.ToInt32(match.Groups[1].Value) : Null.NullInteger;
         }
     }
 }

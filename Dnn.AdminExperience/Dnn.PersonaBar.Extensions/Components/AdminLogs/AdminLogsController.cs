@@ -28,21 +28,21 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
         private PortalSettings _portalSettings;
 
-        private PortalSettings PortalSettings
-        {
-            get
-            {
-                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-                return this._portalSettings;
-            }
-        }
-
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary
         {
             get
             {
                 this._logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
                 return this._logTypeDictionary;
+            }
+        }
+
+        private PortalSettings PortalSettings
+        {
+            get
+            {
+                this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                return this._portalSettings;
             }
         }
 
@@ -85,7 +85,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
                 {
                     str.Append(objLogInfo.Exception);
                 }
-                str.Append("<p>" + Localization.GetString("ServerName",Constants.LocalResourcesFile) +
+                str.Append("<p>" + Localization.GetString("ServerName", Constants.LocalResourcesFile) +
                            HttpUtility.HtmlEncode(objLogInfo.LogServerName) + "</p>");
             }
             return str.ToString();
@@ -253,8 +253,6 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             return returnMsg;
         }
 
-        #region Private Methods
-
         private XmlDocument GetExceptions(IEnumerable<string> logIds)
         {
             var objXml = new XmlDocument { XmlResolver = null };
@@ -270,7 +268,5 @@ namespace Dnn.PersonaBar.AdminLogs.Components
             }
             return objXml;
         }
-
-        #endregion
     }
 }

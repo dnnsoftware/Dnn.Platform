@@ -11,9 +11,9 @@ namespace DotNetNuke.Framework
     {
         bool IsAjaxAntiForgerySupportRequired { get; }
 
-        void RegisterAjaxAntiForgery(Page page);
-
         bool IsAjaxScriptSupportRequired { get; }
+
+        void RegisterAjaxAntiForgery(Page page);
 
         void RegisterAjaxScript(Page page);
     }

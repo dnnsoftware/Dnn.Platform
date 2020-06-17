@@ -23,17 +23,17 @@ namespace DotNetNuke.ComponentModel
             this._Type = type;
         }
 
-        public object BuildComponent()
-        {
-            return Reflection.CreateObject(this._Type);
-        }
-
         public string Name
         {
             get
             {
                 return this._Name;
             }
+        }
+
+        public object BuildComponent()
+        {
+            return Reflection.CreateObject(this._Type);
         }
     }
 }

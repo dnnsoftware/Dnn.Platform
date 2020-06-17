@@ -27,9 +27,9 @@ namespace DotNetNuke.Tests.Urls
     public class UrlRewriteTests : UrlTestBase
     {
         private const string _defaultPage = Globals.glbDefaultPage;
-        private int _tabId;
         private const string _testPage = "Test Page";
         private const string _aboutUsPageName = "About Us";
+        private int _tabId;
         private string _redirectMode;
         private Locale _customLocale;
         private string _securePageName;
@@ -40,6 +40,67 @@ namespace DotNetNuke.Tests.Urls
         public UrlRewriteTests()
             : base(0)
         {
+        }
+
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            this.DeleteTab(_testPage);
+            this.CreateTab(_testPage);
+            this.UpdateTabName(this._tabId, "About Us");
+            this.UpdateTabSkin(this._tabId, string.Empty);
+            CacheController.FlushPageIndexFromCache();
+            this.GetDefaultAlias();
+            this._redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", this.PortalId, "CANONICALURL");
+            this._sslEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
+            this._sslEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
+            this._primaryAlias = null;
+            this._customLocale = null;
+            DataCache.ClearCache();
+        }
+
+        [TearDown]
+        public override void TearDown()
+        {
+            base.TearDown();
+
+            this.DeleteTab(_testPage);
+            this.UpdateTabName(this._tabId, "About Us");
+            this.UpdateTabSkin(this._tabId, "[G]Skins/Xcillion/Inner.ascx");
+
+            if (!string.IsNullOrEmpty(this._securePageName))
+            {
+                var tab = TabController.Instance.GetTabByName(this._securePageName, this.PortalId);
+                if (tab != null)
+                {
+                    tab.IsSecure = false;
+
+                    this.UpdateTab(tab);
+                }
+            }
+
+            if (this._customLocale != null)
+            {
+                Localization.RemoveLanguageFromPortals(this._customLocale.LanguageId, true);
+                Localization.DeleteLanguage(this._customLocale, true);
+            }
+
+            if (this._primaryAlias != null)
+            {
+                PortalAliasController.Instance.DeletePortalAlias(this._primaryAlias);
+            }
+
+            this.SetDefaultAlias(this.DefaultAlias);
+            PortalController.UpdatePortalSetting(this.PortalId, "PortalAliasMapping", this._redirectMode, true, "en-us");
+            PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", this._sslEnforced.ToString(), true, "en-us");
+            PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", this._sslEnabled.ToString(), true, "en-us");
+
+            foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(this.PortalId)))
+            {
+                TabController.Instance.DeleteTabUrl(tabUrl, this.PortalId, true);
+            }
         }
 
         private void CreateSimulatedRequest(Uri url)
@@ -91,67 +152,6 @@ namespace DotNetNuke.Tests.Urls
                             .Replace("{vanityUrl}", vanityUrl)
                             .Replace("{userId}", userId)
                             .Replace("{defaultPage}", _defaultPage);
-        }
-
-        [SetUp]
-        public override void SetUp()
-        {
-            base.SetUp();
-
-            this.DeleteTab(_testPage);
-            this.CreateTab(_testPage);
-            this.UpdateTabName(this._tabId, "About Us");
-            this.UpdateTabSkin(this._tabId,  string.Empty);
-            CacheController.FlushPageIndexFromCache();
-            this.GetDefaultAlias();
-            this._redirectMode = PortalController.GetPortalSetting("PortalAliasMapping", this.PortalId, "CANONICALURL");
-            this._sslEnforced = PortalController.GetPortalSettingAsBoolean("SSLEnforced", this.PortalId, false);
-            this._sslEnabled = PortalController.GetPortalSettingAsBoolean("SSLEnabled", this.PortalId, false);
-            this._primaryAlias = null;
-            this._customLocale = null;
-            DataCache.ClearCache();
-        }
-
-        [TearDown]
-        public override void TearDown()
-        {
-            base.TearDown();
-
-            this.DeleteTab(_testPage);
-            this.UpdateTabName(this._tabId, "About Us");
-            this.UpdateTabSkin(this._tabId, "[G]Skins/Xcillion/Inner.ascx");
-
-            if (!string.IsNullOrEmpty(this._securePageName))
-            {
-                var tab = TabController.Instance.GetTabByName(this._securePageName, this.PortalId);
-                if (tab != null)
-                {
-                    tab.IsSecure = false;
-
-                    this.UpdateTab(tab);
-                }
-            }
-
-            if (this._customLocale != null)
-            {
-                Localization.RemoveLanguageFromPortals(this._customLocale.LanguageId, true);
-                Localization.DeleteLanguage(this._customLocale, true);
-            }
-
-            if (this._primaryAlias != null)
-            {
-                PortalAliasController.Instance.DeletePortalAlias(this._primaryAlias);
-            }
-
-            this.SetDefaultAlias(this.DefaultAlias);
-            PortalController.UpdatePortalSetting(this.PortalId, "PortalAliasMapping", this._redirectMode, true, "en-us");
-            PortalController.UpdatePortalSetting(this.PortalId, "SSLEnforced", this._sslEnforced.ToString(), true, "en-us");
-            PortalController.UpdatePortalSetting(this.PortalId, "SSLEnabled", this._sslEnabled.ToString(), true, "en-us");
-
-            foreach (var tabUrl in CBO.FillCollection<TabUrlInfo>(DataProvider.Instance().GetTabUrls(this.PortalId)))
-            {
-                TabController.Instance.DeleteTabUrl(tabUrl, this.PortalId, true);
-            }
         }
 
         [TestFixtureSetUp]
@@ -212,6 +212,60 @@ namespace DotNetNuke.Tests.Urls
                             });
         }
 
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_BasicTestCases")]
+        public void AdvancedUrlRewriter_BasicTest(Dictionary<string, string> testFields)
+        {
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
+
+            this.ExecuteTest(settings, testFields, true);
+        }
+
+        [Test]
+        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_DeletedTabHandlingTestCases")]
+        public void AdvancedUrlRewriter_DeletedTabHandling(Dictionary<string, string> testFields)
+        {
+            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
+
+            var tab = TabController.Instance.GetTabByName(_testPage, this.PortalId);
+            if (Convert.ToBoolean(testFields["HardDeleted"]))
+            {
+                this.DeleteTab(_testPage);
+                CacheController.FlushPageIndexFromCache();
+            }
+            else
+            {
+                tab.IsDeleted = Convert.ToBoolean(testFields["SoftDeleted"]);
+                tab.DisableLink = Convert.ToBoolean(testFields["Disabled"]);
+                if (Convert.ToBoolean(testFields["Expired"]))
+                {
+                    tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
+                }
+
+                this.UpdateTab(tab);
+                CacheController.FlushPageIndexFromCache();
+            }
+
+            string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
+
+            if (!string.IsNullOrEmpty(deletedTabHandling))
+            {
+                switch (deletedTabHandling)
+                {
+                    case "Do404Error":
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
+                        break;
+                    default:
+                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
+                        break;
+                }
+            }
+
+            this.SetDefaultAlias(testFields);
+
+            this.ExecuteTest(settings, testFields, true);
+        }
+
         private void DeleteTab(string tabName)
         {
             var tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
@@ -242,16 +296,16 @@ namespace DotNetNuke.Tests.Urls
 
             var request = HttpContext.Current.Request;
             var testHelper = new UrlTestHelper
-                    {
-                        HttpAliasFull = scheme + httpAlias + "/",
-                        Result = new UrlAction(request)
-                                        {
-                                            IsSecureConnection = request.IsSecureConnection,
-                                            RawUrl = request.RawUrl,
-                                        },
-                        RequestUri = new Uri(testurl),
-                        QueryStringCol = new NameValueCollection(),
-                    };
+            {
+                HttpAliasFull = scheme + httpAlias + "/",
+                Result = new UrlAction(request)
+                {
+                    IsSecureConnection = request.IsSecureConnection,
+                    RawUrl = request.RawUrl,
+                },
+                RequestUri = new Uri(testurl),
+                QueryStringCol = new NameValueCollection(),
+            };
 
             this.ProcessRequest(settings, testHelper);
 
@@ -310,60 +364,6 @@ namespace DotNetNuke.Tests.Urls
             var tab = TabController.Instance.GetTab(tabId, this.PortalId, false);
             tab.SkinSrc = newSkin;
             TabController.Instance.UpdateTab(tab);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_BasicTestCases")]
-        public void AdvancedUrlRewriter_BasicTest(Dictionary<string, string> testFields)
-        {
-            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
-
-            this.ExecuteTest(settings, testFields, true);
-        }
-
-        [Test]
-        [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_DeletedTabHandlingTestCases")]
-        public void AdvancedUrlRewriter_DeletedTabHandling(Dictionary<string, string> testFields)
-        {
-            var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
-
-            var tab = TabController.Instance.GetTabByName(_testPage, this.PortalId);
-            if (Convert.ToBoolean(testFields["HardDeleted"]))
-            {
-                this.DeleteTab(_testPage);
-                CacheController.FlushPageIndexFromCache();
-            }
-            else
-            {
-                tab.IsDeleted = Convert.ToBoolean(testFields["SoftDeleted"]);
-                tab.DisableLink = Convert.ToBoolean(testFields["Disabled"]);
-                if (Convert.ToBoolean(testFields["Expired"]))
-                {
-                    tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
-                }
-
-                this.UpdateTab(tab);
-                CacheController.FlushPageIndexFromCache();
-            }
-
-            string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
-
-            if (!string.IsNullOrEmpty(deletedTabHandling))
-            {
-                switch (deletedTabHandling)
-                {
-                    case "Do404Error":
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do404Error;
-                        break;
-                    default:
-                        settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
-                        break;
-                }
-            }
-
-            this.SetDefaultAlias(testFields);
-
-            this.ExecuteTest(settings, testFields, true);
         }
 
         [Test]

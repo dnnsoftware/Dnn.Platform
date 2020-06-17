@@ -37,8 +37,6 @@ namespace DotNetNuke.Tests.Utilities
 
     public class DnnWebTest : DnnUnitTest
     {
-        public int PortalId { get; private set; }
-
         private static bool alreadyLoaded = false;
 
         public DnnWebTest(int portalId)
@@ -75,6 +73,8 @@ namespace DotNetNuke.Tests.Utilities
 
             this.PortalId = portalId;
         }
+
+        public int PortalId { get; private set; }
 
         private static void InstallComponents()
         {

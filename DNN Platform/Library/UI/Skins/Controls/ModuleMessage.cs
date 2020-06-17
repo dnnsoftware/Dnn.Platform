@@ -15,6 +15,10 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <remarks></remarks>
     public class ModuleMessage : SkinObjectBase
     {
+        protected Panel dnnSkinMessage;
+        protected Label lblHeading;
+        protected Label lblMessage;
+
         public enum ModuleMessageType
         {
             GreenSuccess,
@@ -22,10 +26,6 @@ namespace DotNetNuke.UI.Skins.Controls
             RedError,
             BlueInfo,
         }
-
-        protected Panel dnnSkinMessage;
-        protected Label lblHeading;
-        protected Label lblMessage;
         protected Control scrollScript;
 
         public string Text { get; set; }

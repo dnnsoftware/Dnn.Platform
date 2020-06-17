@@ -178,6 +178,35 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            bool dataChanged = false;
+            string postedValue;
+            var newDictionaryValue = new Dictionary<int, string>();
+            foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
+            {
+                postedValue = postCollection[this.UniqueID + "_skin" + kvp.Key];
+                if (kvp.Value.Equals(postedValue))
+                {
+                    newDictionaryValue[kvp.Key] = kvp.Value;
+                }
+                else
+                {
+                    newDictionaryValue[kvp.Key] = postedValue;
+                    dataChanged = true;
+                }
+            }
+
+            postedValue = postCollection[this.UniqueID + "_skinnew"];
+            if (!string.IsNullOrEmpty(postedValue))
+            {
+                this.AddedItem = postedValue;
+            }
+
+            this.DictionaryValue = newDictionaryValue;
+            return dataChanged;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
@@ -318,35 +347,6 @@ namespace DotNetNuke.UI.Skins.Controls
                     writer.WriteBreak();
                 }
             }
-        }
-
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            bool dataChanged = false;
-            string postedValue;
-            var newDictionaryValue = new Dictionary<int, string>();
-            foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
-            {
-                postedValue = postCollection[this.UniqueID + "_skin" + kvp.Key];
-                if (kvp.Value.Equals(postedValue))
-                {
-                    newDictionaryValue[kvp.Key] = kvp.Value;
-                }
-                else
-                {
-                    newDictionaryValue[kvp.Key] = postedValue;
-                    dataChanged = true;
-                }
-            }
-
-            postedValue = postCollection[this.UniqueID + "_skinnew"];
-            if (!string.IsNullOrEmpty(postedValue))
-            {
-                this.AddedItem = postedValue;
-            }
-
-            this.DictionaryValue = newDictionaryValue;
-            return dataChanged;
         }
     }
 }

@@ -29,6 +29,16 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
+        public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
+        {
+            return _filters.All(filter => filter.CanInjectModule(module, portalSettings));
+        }
+
+        internal static bool IsValidModuleInjectionFilter(Type t)
+        {
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
+        }
+
         private static IEnumerable<IModuleInjectionFilter> GetFilters()
         {
             var typeLocator = new TypeLocator();
@@ -53,16 +63,6 @@ namespace DotNetNuke.UI.Modules
                     yield return filter;
                 }
             }
-        }
-
-        internal static bool IsValidModuleInjectionFilter(Type t)
-        {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IModuleInjectionFilter).IsAssignableFrom(t);
-        }
-
-        public static bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
-        {
-            return _filters.All(filter => filter.CanInjectModule(module, portalSettings));
         }
     }
 }

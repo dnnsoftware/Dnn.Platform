@@ -102,20 +102,6 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader.
-        /// </summary>
-        /// <param name="dr">The Data Reader to use.</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            this.FillInternal(dr);
-            this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
-            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
-            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Key ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -132,6 +118,20 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 this.MenuPermissionId = value;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a MenuPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
+            this.MenuId = Null.SetNullInteger(dr["MenuId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
         }
 
         /// -----------------------------------------------------------------------------

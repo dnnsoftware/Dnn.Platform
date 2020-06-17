@@ -23,11 +23,6 @@ namespace Dnn.PersonaBar.Library.Controllers
         public static readonly TimeSpan FiveMinutes = TimeSpan.FromMinutes(5);
         public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
 
-        protected override Func<ILocalizationController> GetFactory()
-        {
-            return () => new LocalizationController();
-        }
-
         public string CultureName
         {
             get { return Thread.CurrentThread.CurrentUICulture.Name; }
@@ -61,6 +56,39 @@ namespace Dnn.PersonaBar.Library.Controllers
                                Cache.NoAbsoluteExpiration, FiveMinutes, CacheItemPriority.Normal, null);
 
             return dictionary;
+        }
+
+        protected override Func<ILocalizationController> GetFactory()
+        {
+            return () => new LocalizationController();
+        }
+
+        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
+        {
+            Requires.NotNullOrEmpty("resourceFile", resourceFile);
+            Requires.NotNullOrEmpty("culture", culture);
+
+            var dictionary = new Dictionary<string, string>();
+            foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
+            {
+                dictionary[kvp.Key] = kvp.Value;
+            }
+
+            return dictionary;
+        }
+
+        private static string GetNameAttribute(XmlNode node)
+        {
+            if (node.Attributes != null)
+            {
+                var attribute = node.Attributes.GetNamedItem("name");
+                if (attribute != null)
+                {
+                    return attribute.Value;
+                }
+            }
+
+            return null;
         }
 
         private DateTime GetLastModifiedTime(string resourceFile, string culture, Dto.Localization localization)
@@ -101,34 +129,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
 
             return lastModifiedDate;
-        }
-
-        public Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture)
-        {
-            Requires.NotNullOrEmpty("resourceFile", resourceFile);
-            Requires.NotNullOrEmpty("culture", culture);
-
-            var dictionary = new Dictionary<string, string>();
-            foreach (var kvp in GetLocalizationValues(resourceFile, culture).Where(kvp => !dictionary.ContainsKey(kvp.Key)))
-            {
-                dictionary[kvp.Key] = kvp.Value;
-            }
-
-            return dictionary;
-        }
-
-        private static string GetNameAttribute(XmlNode node)
-        {
-            if (node.Attributes != null)
-            {
-                var attribute = node.Attributes.GetNamedItem("name");
-                if (attribute != null)
-                {
-                    return attribute.Value;
-                }
-            }
-
-            return null;
         }
 
         private static string GetNameAttribute(XPathNavigator navigator)

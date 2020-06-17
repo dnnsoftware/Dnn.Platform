@@ -86,11 +86,6 @@ namespace DotNetNuke.Services.Search
             this.SchedulerItem.AddLogNote("<br/><b>Total Items Indexed: " + indexedSearchDocumentCount + "</b>");
         }
 
-        private void AddIdexingResults(string description, int count)
-        {
-            this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
-        }
-
         internal bool CompactSearchIndexIfNeeded(ScheduleHistoryItem scheduleItem)
         {
             var shelper = SearchHelper.Instance;
@@ -121,6 +116,11 @@ namespace DotNetNuke.Services.Search
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId);
                 controller.DeleteAllDocuments(portalId, SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId);
             }
+        }
+
+        private void AddIdexingResults(string description, int count)
+        {
+            this.SchedulerItem.AddLogNote(string.Format("<br/>&nbsp;&nbsp;{0}: {1}", description, count));
         }
 
         /// <summary>
@@ -155,6 +155,72 @@ namespace DotNetNuke.Services.Search
         internal void Commit()
         {
             InternalSearchController.Instance.Commit();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// Used for Legacy Search (ISearchable)
+        ///
+        /// GetContent gets all the content and passes it to the Indexer.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
+        protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
+        {
+            var searchItems = new SearchItemInfoCollection();
+            var portals = PortalController.Instance.GetPortals();
+            for (var index = 0; index <= portals.Count - 1; index++)
+            {
+                var portal = (PortalInfo)portals[index];
+                searchItems.AddRange(indexer.GetSearchIndexItems(portal.PortalID));
+            }
+
+            return searchItems;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
+        /// Used for Legacy Search (ISearchable)
+        ///
+        /// GetContent gets the Portal's content and passes it to the Indexer.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
+        protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
+        {
+            var searchItems = new SearchItemInfoCollection();
+            searchItems.AddRange(indexer.GetSearchIndexItems(portalId));
+            return searchItems;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Ensures all SearchDocuments have a SearchTypeId.
+        /// </summary>
+        /// <param name="searchDocs"></param>
+        /// -----------------------------------------------------------------------------
+        private static void StoreSearchDocuments(IEnumerable<SearchDocument> searchDocs)
+        {
+            var defaultSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
+
+            var searchDocumentList = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
+            foreach (var searchDocument in searchDocumentList.Where(searchDocument => searchDocument.SearchTypeId <= 0))
+            {
+                searchDocument.SearchTypeId = defaultSearchTypeId;
+            }
+
+            InternalSearchController.Instance.AddSearchDocuments(searchDocumentList);
         }
 
         /// -----------------------------------------------------------------------------
@@ -239,25 +305,6 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Ensures all SearchDocuments have a SearchTypeId.
-        /// </summary>
-        /// <param name="searchDocs"></param>
-        /// -----------------------------------------------------------------------------
-        private static void StoreSearchDocuments(IEnumerable<SearchDocument> searchDocs)
-        {
-            var defaultSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
-
-            var searchDocumentList = searchDocs as IList<SearchDocument> ?? searchDocs.ToList();
-            foreach (var searchDocument in searchDocumentList.Where(searchDocument => searchDocument.SearchTypeId <= 0))
-            {
-                searchDocument.SearchTypeId = defaultSearchTypeId;
-            }
-
-            InternalSearchController.Instance.AddSearchDocuments(searchDocumentList);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Adjusts the re-index date/time to account for the portal reindex value.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -271,53 +318,6 @@ namespace DotNetNuke.Services.Search
             }
 
             return startDate;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable)
-        ///
-        /// GetContent gets all the content and passes it to the Indexer.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
-        {
-            var searchItems = new SearchItemInfoCollection();
-            var portals = PortalController.Instance.GetPortals();
-            for (var index = 0; index <= portals.Count - 1; index++)
-            {
-                var portal = (PortalInfo)portals[index];
-                searchItems.AddRange(indexer.GetSearchIndexItems(portal.PortalID));
-            }
-
-            return searchItems;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
-        /// Used for Legacy Search (ISearchable)
-        ///
-        /// GetContent gets the Portal's content and passes it to the Indexer.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
-        protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)
-        {
-            var searchItems = new SearchItemInfoCollection();
-            searchItems.AddRange(indexer.GetSearchIndexItems(portalId));
-            return searchItems;
         }
     }
 }

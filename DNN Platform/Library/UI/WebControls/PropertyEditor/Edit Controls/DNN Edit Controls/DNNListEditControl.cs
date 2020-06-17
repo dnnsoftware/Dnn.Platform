@@ -41,6 +41,8 @@ namespace DotNetNuke.UI.WebControls
             this.SortAlphabetically = false;
         }
 
+        public event PropertyChangedEventHandler ItemChanged;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether determines whether the List Auto Posts Back.
@@ -248,28 +250,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public event PropertyChangedEventHandler ItemChanged;
-
-        private PropertyEditorEventArgs GetEventArgs()
-        {
-            var args = new PropertyEditorEventArgs(this.Name);
-            if (this.ValueField == ListBoundField.Id)
-            {
-                // This is an Integer Value
-                args.Value = this.IntegerValue;
-                args.OldValue = this.OldIntegerValue;
-            }
-            else
-            {
-                // This is a String Value
-                args.Value = this.StringValue;
-                args.OldValue = this.OldStringValue;
-            }
-
-            args.StringValue = this.StringValue;
-            return args;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnAttributesChanged runs when the CustomAttributes property has changed.
@@ -304,6 +284,26 @@ namespace DotNetNuke.UI.WebControls
         protected override void OnDataChanged(EventArgs e)
         {
             this.OnValueChanged(this.GetEventArgs());
+        }
+
+        private PropertyEditorEventArgs GetEventArgs()
+        {
+            var args = new PropertyEditorEventArgs(this.Name);
+            if (this.ValueField == ListBoundField.Id)
+            {
+                // This is an Integer Value
+                args.Value = this.IntegerValue;
+                args.OldValue = this.OldIntegerValue;
+            }
+            else
+            {
+                // This is a String Value
+                args.Value = this.StringValue;
+                args.OldValue = this.OldStringValue;
+            }
+
+            args.StringValue = this.StringValue;
+            return args;
         }
 
         /// -----------------------------------------------------------------------------

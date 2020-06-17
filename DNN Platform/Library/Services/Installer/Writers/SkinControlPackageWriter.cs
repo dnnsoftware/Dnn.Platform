@@ -63,6 +63,19 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
 
+        protected override void WriteManifestComponent(XmlWriter writer)
+        {
+            // Start component Element
+            writer.WriteStartElement("component");
+            writer.WriteAttributeString("type", "SkinObject");
+
+            // Write SkinControl Manifest
+            CBO.SerializeObject(this.SkinControl, writer);
+
+            // End component Element
+            writer.WriteEndElement();
+        }
+
         private void ReadLegacyManifest(XPathNavigator legacyManifest, bool processModule)
         {
             XPathNavigator folderNav = legacyManifest.SelectSingleNode("folders/folder");
@@ -99,19 +112,6 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.AddFile(Util.ReadElement(folderNav, "resourcefile"));
             }
-        }
-
-        protected override void WriteManifestComponent(XmlWriter writer)
-        {
-            // Start component Element
-            writer.WriteStartElement("component");
-            writer.WriteAttributeString("type", "SkinObject");
-
-            // Write SkinControl Manifest
-            CBO.SerializeObject(this.SkinControl, writer);
-
-            // End component Element
-            writer.WriteEndElement();
         }
     }
 }

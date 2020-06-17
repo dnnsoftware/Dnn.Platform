@@ -24,42 +24,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
     public class ModuleDefinitionValidator : XmlValidatorBase
     {
-        private string GetDnnSchemaPath(Stream xmlStream)
-        {
-            ModuleDefinitionVersion Version = this.GetModuleDefinitionVersion(xmlStream);
-            string schemaPath = string.Empty;
-            switch (Version)
-            {
-                case ModuleDefinitionVersion.V2:
-                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V2.xsd";
-                    break;
-                case ModuleDefinitionVersion.V3:
-                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V3.xsd";
-                    break;
-                case ModuleDefinitionVersion.V2_Skin:
-                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V2Skin.xsd";
-                    break;
-                case ModuleDefinitionVersion.V2_Provider:
-                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V2Provider.xsd";
-                    break;
-                case ModuleDefinitionVersion.VUnknown:
-                    throw new Exception(GetLocalizedString("EXCEPTION_LoadFailed"));
-            }
-
-            return Path.Combine(Globals.ApplicationMapPath, schemaPath);
-        }
-
-        private static string GetLocalizedString(string key)
-        {
-            var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
-            if (objPortalSettings == null)
-            {
-                return key;
-            }
-
-            return Localization.GetString(key, objPortalSettings);
-        }
-
         public ModuleDefinitionVersion GetModuleDefinitionVersion(Stream xmlStream)
         {
             ModuleDefinitionVersion retValue;
@@ -118,6 +82,42 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             this.SchemaSet.Add(string.Empty, this.GetDnnSchemaPath(XmlStream));
             return base.Validate(XmlStream);
+        }
+
+        private static string GetLocalizedString(string key)
+        {
+            var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+            if (objPortalSettings == null)
+            {
+                return key;
+            }
+
+            return Localization.GetString(key, objPortalSettings);
+        }
+
+        private string GetDnnSchemaPath(Stream xmlStream)
+        {
+            ModuleDefinitionVersion Version = this.GetModuleDefinitionVersion(xmlStream);
+            string schemaPath = string.Empty;
+            switch (Version)
+            {
+                case ModuleDefinitionVersion.V2:
+                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V2.xsd";
+                    break;
+                case ModuleDefinitionVersion.V3:
+                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V3.xsd";
+                    break;
+                case ModuleDefinitionVersion.V2_Skin:
+                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V2Skin.xsd";
+                    break;
+                case ModuleDefinitionVersion.V2_Provider:
+                    schemaPath = "components\\ResourceInstaller\\ModuleDef_V2Provider.xsd";
+                    break;
+                case ModuleDefinitionVersion.VUnknown:
+                    throw new Exception(GetLocalizedString("EXCEPTION_LoadFailed"));
+            }
+
+            return Path.Combine(Globals.ApplicationMapPath, schemaPath);
         }
     }
 }

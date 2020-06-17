@@ -14,30 +14,6 @@ namespace DotNetNuke.Services.Localization
     {
         private DictionaryEntry _de;
 
-        public DictionaryEntry this[int index]
-        {
-            get
-            {
-                this._de.Key = this.BaseGetKey(index);
-                this._de.Value = this.BaseGet(index);
-                return this._de;
-            }
-        }
-
-        // Gets or sets the value associated with the specified key.
-        public Locale this[string key]
-        {
-            get
-            {
-                return (Locale)this.BaseGet(key);
-            }
-
-            set
-            {
-                this.BaseSet(key, value);
-            }
-        }
-
         // Gets a String array that contains all the keys in the collection.
         public string[] AllKeys
         {
@@ -62,6 +38,30 @@ namespace DotNetNuke.Services.Localization
             get
             {
                 return this.BaseHasKeys();
+            }
+        }
+
+        public DictionaryEntry this[int index]
+        {
+            get
+            {
+                this._de.Key = this.BaseGetKey(index);
+                this._de.Value = this.BaseGet(index);
+                return this._de;
+            }
+        }
+
+        // Gets or sets the value associated with the specified key.
+        public Locale this[string key]
+        {
+            get
+            {
+                return (Locale)this.BaseGet(key);
+            }
+
+            set
+            {
+                this.BaseSet(key, value);
             }
         }
 

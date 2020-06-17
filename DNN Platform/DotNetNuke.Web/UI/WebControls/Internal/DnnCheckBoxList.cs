@@ -18,12 +18,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     /// </remarks>
     public class DnnCheckBoxList : CheckBoxList
     {
-        protected override void OnInit(EventArgs e)
-        {
-            this.RepeatColumns = 1;
-            base.OnInit(e);
-        }
-
         private string _initValue;
 
         public override string SelectedValue
@@ -46,14 +40,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        protected override void OnPreRender(EventArgs e)
-        {
-            Utilities.ApplySkin(this);
-            this.RegisterRequestResources();
-
-            base.OnPreRender(e);
-        }
-
         public override void DataBind()
         {
             if (!string.IsNullOrEmpty(this._initValue))
@@ -69,6 +55,20 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public void AddItem(string text, string value)
         {
             this.Items.Add(new ListItem(text, value));
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.RepeatColumns = 1;
+            base.OnInit(e);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            Utilities.ApplySkin(this);
+            this.RegisterRequestResources();
+
+            base.OnPreRender(e);
         }
 
         public void InsertItem(int index, string text, string value)

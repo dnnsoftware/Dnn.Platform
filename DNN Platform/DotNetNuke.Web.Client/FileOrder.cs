@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.Client
 // ReSharper disable InconsistentNaming
             jQueryUI = 10,
 
-// ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
 
             /// <summary>
             /// /js/dnn.xml.js has the priority of 15

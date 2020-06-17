@@ -28,13 +28,6 @@ namespace Dnn.PersonaBar.Users.Tests
             get { return "Add-roles"; }
         }
 
-        protected override void ChildSetup()
-        {
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._usersControllerMock = new Mock<IUsersController>();
-            this._rolesControllerMock = new Mock<IRolesController>();
-        }
-
         [TestCase]
         public void Run_AddRolesWithValidArguments_ReturnSuccessResponse()
         {
@@ -101,6 +94,13 @@ namespace Dnn.PersonaBar.Users.Tests
 
             // Assert
             Assert.IsTrue(result.IsError);
+        }
+
+        protected override void ChildSetup()
+        {
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._usersControllerMock = new Mock<IUsersController>();
+            this._rolesControllerMock = new Mock<IRolesController>();
         }
 
         [TestCase]

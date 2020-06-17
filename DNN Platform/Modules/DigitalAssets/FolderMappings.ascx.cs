@@ -26,12 +26,12 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         private readonly INavigationManager _navigationManager;
 
+        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
+
         public FolderMappings()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private readonly IFolderMappingController _folderMappingController = FolderMappingController.Instance;
 
         public int FolderPortalID
         {

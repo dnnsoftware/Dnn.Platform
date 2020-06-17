@@ -82,6 +82,14 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(desktopModule.FolderName);
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the associated Desktop Module.
+        /// </summary>
+        /// <value>A DesktopModuleInfo object.</value>
+        /// -----------------------------------------------------------------------------
+        public DesktopModuleInfo DesktopModule { get; set; }
+
         protected override Dictionary<string, string> Dependencies
         {
             get
@@ -101,19 +109,10 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Desktop Module.
-        /// </summary>
-        /// <value>A DesktopModuleInfo object.</value>
-        /// -----------------------------------------------------------------------------
-        public DesktopModuleInfo DesktopModule { get; set; }
-
-        private void Initialize(string folder)
+        protected override void WriteManifestComponent(XmlWriter writer)
         {
-            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", "\\");
-            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", "\\");
-            this.AssemblyPath = "bin";
+            // Write Module Component
+            this.WriteModuleComponent(writer);
         }
 
         private static void ProcessControls(XPathNavigator controlNav, string moduleFolder, ModuleDefinitionInfo definition)
@@ -172,6 +171,13 @@ namespace DotNetNuke.Services.Installer.Writers
             }
 
             definition.ModuleControls[moduleControl.ControlKey] = moduleControl;
+        }
+
+        private void Initialize(string folder)
+        {
+            this.BasePath = Path.Combine("DesktopModules", folder).Replace("/", "\\");
+            this.AppCodePath = Path.Combine("App_Code", folder).Replace("/", "\\");
+            this.AssemblyPath = "bin";
         }
 
         private void ProcessModuleFiles(string folder, string basePath)
@@ -385,12 +391,6 @@ namespace DotNetNuke.Services.Installer.Writers
 
             // End component Element
             writer.WriteEndElement();
-        }
-
-        protected override void WriteManifestComponent(XmlWriter writer)
-        {
-            // Write Module Component
-            this.WriteModuleComponent(writer);
         }
     }
 }

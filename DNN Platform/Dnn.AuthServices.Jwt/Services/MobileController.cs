@@ -59,22 +59,6 @@ namespace Dnn.AuthServices.Jwt.Services
             return this.ReplyWith(result);
         }
 
-        private IHttpActionResult ReplyWith(LoginResultData result)
-        {
-            if (result == null)
-            {
-                return this.Unauthorized();
-            }
-
-            if (!string.IsNullOrEmpty(result.Error))
-            {
-                // HACK: this will return the scheme with the error message as a challenge; non-standard method
-                return this.Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
-            }
-
-            return this.Ok(result);
-        }
-
         // Test API Method 1
         [HttpGet]
         public IHttpActionResult TestGet()
@@ -93,6 +77,22 @@ namespace Dnn.AuthServices.Jwt.Services
             var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}." +
                         $" You said: ({something.Text})";
             return this.Ok(new { reply });
+        }
+
+        private IHttpActionResult ReplyWith(LoginResultData result)
+        {
+            if (result == null)
+            {
+                return this.Unauthorized();
+            }
+
+            if (!string.IsNullOrEmpty(result.Error))
+            {
+                // HACK: this will return the scheme with the error message as a challenge; non-standard method
+                return this.Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
+            }
+
+            return this.Ok(result);
         }
 
         [JsonObject]

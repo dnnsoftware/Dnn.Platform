@@ -35,15 +35,6 @@ namespace DotNetNuke.Security.Roles
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
-        private void AddDNNUserRole(UserRoleInfo userRole)
-        {
-            // Add UserRole to DNN
-            userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
-                                                                (int)userRole.Status, userRole.IsOwner,
-                                                                userRole.EffectiveDate, userRole.ExpiryDate,
-                                                                UserController.Instance.GetCurrentUserInfo().UserID));
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateRole persists a Role to the Data Store.
@@ -97,6 +88,15 @@ namespace DotNetNuke.Security.Roles
         public override void DeleteRole(RoleInfo role)
         {
             this.dataProvider.DeleteRole(role.RoleID);
+        }
+
+        private void AddDNNUserRole(UserRoleInfo userRole)
+        {
+            // Add UserRole to DNN
+            userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
+                                                                (int)userRole.Status, userRole.IsOwner,
+                                                                userRole.EffectiveDate, userRole.ExpiryDate,
+                                                                UserController.Instance.GetCurrentUserInfo().UserID));
         }
 
         /// -----------------------------------------------------------------------------
@@ -306,16 +306,6 @@ namespace DotNetNuke.Security.Roles
                 UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        private void ClearRoleGroupCache(int portalId)
-        {
-            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
-        }
-
-        private string GetRoleGroupsCacheKey(int portalId)
-        {
-            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateRoleGroup persists a RoleGroup to the Data Store.
@@ -344,6 +334,16 @@ namespace DotNetNuke.Security.Roles
         {
             this.dataProvider.DeleteRoleGroup(roleGroup.RoleGroupID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
+        }
+
+        private void ClearRoleGroupCache(int portalId)
+        {
+            DataCache.ClearCache(this.GetRoleGroupsCacheKey(portalId));
+        }
+
+        private string GetRoleGroupsCacheKey(int portalId)
+        {
+            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -378,17 +378,6 @@ namespace DotNetNuke.Security.Roles
             return new ArrayList(this.GetRoleGroupsInternal(portalId).ToList());
         }
 
-        private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
-        {
-            var cacheArgs = new CacheItemArgs(
-                this.GetRoleGroupsCacheKey(portalId),
-                DataCache.RoleGroupsCacheTimeOut,
-                DataCache.RoleGroupsCachePriority);
-
-            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c =>
-                                            CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Update a RoleGroup.
@@ -400,6 +389,17 @@ namespace DotNetNuke.Security.Roles
             this.dataProvider.UpdateRoleGroup(roleGroup.RoleGroupID, roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(), UserController.Instance.GetCurrentUserInfo().UserID);
             this.ClearRoleGroupCache(roleGroup.PortalID);
+        }
+
+        private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
+        {
+            var cacheArgs = new CacheItemArgs(
+                this.GetRoleGroupsCacheKey(portalId),
+                DataCache.RoleGroupsCacheTimeOut,
+                DataCache.RoleGroupsCachePriority);
+
+            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c =>
+                                            CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));
         }
     }
 }

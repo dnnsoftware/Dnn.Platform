@@ -20,65 +20,17 @@ namespace DotNetNuke.Entities.Urls
 
     public class AdvancedFriendlyUrlProvider : FriendlyUrlProviderBase
     {
+        private const string CodePattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2,3}-[A-Za-z0-9]{2,4}(-[A-Za-z]{2}){0,1})";
+
         private static readonly Regex FriendlyPathRegex = new Regex("(.[^\\\\?]*)\\\\?(.*)", RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex DefaultPageRegex = new Regex(Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex AumDebugRegex = new Regex("/_aumdebug/(?:true|false)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex LangMatchRegex = new Regex("/language/(?<code>.[^/]+)(?:/|$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-
-        private const string CodePattern = @"(?:\&|\?)language=(?<cc>[A-Za-z]{2,3}-[A-Za-z0-9]{2,4}(-[A-Za-z]{2}){0,1})";
         private static readonly Regex CodePatternRegex = new Regex(CodePattern, RegexOptions.Compiled);
 
         internal AdvancedFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path)
-        {
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
-        {
-            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
-        {
-            if (portalSettings == null)
-            {
-                throw new ArgumentNullException("portalSettings");
-            }
-
-            return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
-        }
-
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
-        {
-            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
-        }
-
-        /// <summary>
-        /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.
-        /// </summary>
-        /// <returns></returns>
-        internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
-        {
-            bool cultureSpecificAlias;
-
-            // Call GetFriendlyAlias to get the Alias part of the url
-            string friendlyPath = GetFriendlyAlias(
-                path,
-                ref httpAlias,
-                tab.PortalID,
-                settings,
-                null,
-                out cultureSpecificAlias);
-
-            // Call GetFriendlyQueryString to get the QueryString part of the url
-            friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, settings);
-
-            return friendlyPath;
         }
 
         /// <summary>
@@ -111,6 +63,29 @@ namespace DotNetNuke.Entities.Urls
                 settings,
                 out messages,
                 parentTraceId);
+        }
+
+        /// <summary>
+        /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.
+        /// </summary>
+        /// <returns></returns>
+        internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
+        {
+            bool cultureSpecificAlias;
+
+            // Call GetFriendlyAlias to get the Alias part of the url
+            string friendlyPath = GetFriendlyAlias(
+                path,
+                ref httpAlias,
+                tab.PortalID,
+                settings,
+                null,
+                out cultureSpecificAlias);
+
+            // Call GetFriendlyQueryString to get the QueryString part of the url
+            friendlyPath = GetFriendlyQueryString(tab, friendlyPath, pageName, settings);
+
+            return friendlyPath;
         }
 
         internal static string ImprovedFriendlyUrlWithMessages(
@@ -160,6 +135,88 @@ namespace DotNetNuke.Entities.Urls
 
             OutputFriendlyUrlMessages(tab, path, "base/messages", messages, friendlyPath, settings);
             return friendlyPath;
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path)
+        {
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
+        {
+            return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentPortalSettings());
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
+        {
+            if (portalSettings == null)
+            {
+                throw new ArgumentNullException("portalSettings");
+            }
+
+            return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
+        }
+
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
+        {
+            return this.FriendlyUrlInternal(tab, path, pageName, portalAlias, null);
+        }
+
+        internal static string GetCultureOfPath(string path)
+        {
+            string code = string.Empty;
+            MatchCollection matches = CodePatternRegex.Matches(path);
+            if (matches.Count > 0)
+            {
+                foreach (Match langMatch in matches)
+                {
+                    if (langMatch.Success)
+                    {
+                        Group langGroup = langMatch.Groups["cc"];
+                        if (langGroup.Success)
+                        {
+                            code = langGroup.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return code;
+        }
+
+        internal static string ForceLowerCaseIfAllowed(TabInfo tab, string url, FriendlyUrlSettings settings)
+        {
+            // 606 : include regex to stop lower case in certain circumstances
+            // 840 : change to re-introduce lower case restrictions on admin / host tabs
+            if (tab != null)
+            {
+                if (!(tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
+                {
+                    bool forceLowerCase = settings.ForceLowerCase;
+                    if (forceLowerCase)
+                    {
+                        if (!string.IsNullOrEmpty(settings.ForceLowerCaseRegex))
+                        {
+                            var rx = RegexUtils.GetCachedRegex(settings.ForceLowerCaseRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                            forceLowerCase = !rx.IsMatch(url);
+                        }
+                    }
+
+                    if (forceLowerCase)
+                    {
+                        // don't force lower case for Urls excluded from being 'friendly'
+                        forceLowerCase = !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false);
+                    }
+
+                    if (forceLowerCase)
+                    {
+                        url = url.ToLowerInvariant();
+                    }
+                }
+            }
+
+            return url;
         }
 
         private static string AddPage(string path, string pageName)
@@ -398,6 +455,43 @@ namespace DotNetNuke.Entities.Urls
             return pageAndExtension;
         }
 
+        private static PortalAliasInfo GetAliasForPortal(string httpAlias, int portalId, ref List<string> messages)
+        {
+            // if no match found, then call database to find (don't rely on cache for this one, because it is an exception event, not an expected event)
+            PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(httpAlias, portalId);
+            if (alias == null)
+            {
+                // no match between alias and portal id
+                var aliasArray = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+                if (aliasArray.Count > 0)
+                {
+                    alias = aliasArray[0]; // nab the first one here
+                    messages.Add("Portal Id " + portalId.ToString() + " does not match http alias " + httpAlias +
+                                 " - " + alias.HTTPAlias + " was used instead");
+                }
+                else
+                {
+                    messages.Add("Portal Id " + portalId.ToString() +
+                                 " does not match http alias and no usable alias could be found");
+                }
+            }
+
+            return alias;
+        }
+
+        private static string GetCultureOfSettings(PortalSettings portalSettings)
+        {
+            // note! should be replaced with compiled call to portalSettings.CultureCode property when base supported version is increased.
+            string cultureCode = string.Empty;
+            PropertyInfo cultureCodePi = portalSettings.GetType().GetProperty("CultureCode");
+            if (cultureCodePi != null)
+            {
+                cultureCode = (string)cultureCodePi.GetValue(portalSettings, null);
+            }
+
+            return cultureCode;
+        }
+
         private string FriendlyUrlInternal(TabInfo tab, string path, string pageName, string portalAlias, PortalSettings portalSettings)
         {
             Guid parentTraceId = Guid.Empty;
@@ -461,77 +555,17 @@ namespace DotNetNuke.Entities.Urls
             if (tab != null && portalSettings.SSLEnabled && tab.IsSecure &&
                 friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-               friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
+                friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
                 // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
-               var sslUrl = portalSettings.SSLURL;
-               if (!string.IsNullOrEmpty(sslUrl))
+                var sslUrl = portalSettings.SSLURL;
+                if (!string.IsNullOrEmpty(sslUrl))
                 {
                     friendlyPath = friendlyPath.Replace("https://" + portalAlias, "https://" + sslUrl);
                 }
             }
 
             return friendlyPath;
-        }
-
-        private static PortalAliasInfo GetAliasForPortal(string httpAlias, int portalId, ref List<string> messages)
-        {
-            // if no match found, then call database to find (don't rely on cache for this one, because it is an exception event, not an expected event)
-            PortalAliasInfo alias = PortalAliasController.Instance.GetPortalAlias(httpAlias, portalId);
-            if (alias == null)
-            {
-                // no match between alias and portal id
-                var aliasArray = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
-                if (aliasArray.Count > 0)
-                {
-                    alias = aliasArray[0]; // nab the first one here
-                    messages.Add("Portal Id " + portalId.ToString() + " does not match http alias " + httpAlias +
-                                 " - " + alias.HTTPAlias + " was used instead");
-                }
-                else
-                {
-                    messages.Add("Portal Id " + portalId.ToString() +
-                                 " does not match http alias and no usable alias could be found");
-                }
-            }
-
-            return alias;
-        }
-
-        internal static string GetCultureOfPath(string path)
-        {
-            string code = string.Empty;
-            MatchCollection matches = CodePatternRegex.Matches(path);
-            if (matches.Count > 0)
-            {
-                foreach (Match langMatch in matches)
-                {
-                    if (langMatch.Success)
-                    {
-                        Group langGroup = langMatch.Groups["cc"];
-                        if (langGroup.Success)
-                        {
-                            code = langGroup.Value;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return code;
-        }
-
-        private static string GetCultureOfSettings(PortalSettings portalSettings)
-        {
-            // note! should be replaced with compiled call to portalSettings.CultureCode property when base supported version is increased.
-            string cultureCode = string.Empty;
-            PropertyInfo cultureCodePi = portalSettings.GetType().GetProperty("CultureCode");
-            if (cultureCodePi != null)
-            {
-                cultureCode = (string)cultureCodePi.GetValue(portalSettings, null);
-            }
-
-            return cultureCode;
         }
 
         private static string GetFriendlyAlias(
@@ -1429,40 +1463,6 @@ namespace DotNetNuke.Entities.Urls
             }
 
             return builtInUrl;
-        }
-
-        internal static string ForceLowerCaseIfAllowed(TabInfo tab, string url, FriendlyUrlSettings settings)
-        {
-            // 606 : include regex to stop lower case in certain circumstances
-            // 840 : change to re-introduce lower case restrictions on admin / host tabs
-            if (tab != null)
-            {
-                if (!(tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
-                {
-                    bool forceLowerCase = settings.ForceLowerCase;
-                    if (forceLowerCase)
-                    {
-                        if (!string.IsNullOrEmpty(settings.ForceLowerCaseRegex))
-                        {
-                            var rx = RegexUtils.GetCachedRegex(settings.ForceLowerCaseRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                            forceLowerCase = !rx.IsMatch(url);
-                        }
-                    }
-
-                    if (forceLowerCase)
-                    {
-                        // don't force lower case for Urls excluded from being 'friendly'
-                        forceLowerCase = !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false);
-                    }
-
-                    if (forceLowerCase)
-                    {
-                        url = url.ToLowerInvariant();
-                    }
-                }
-            }
-
-            return url;
         }
     }
 }

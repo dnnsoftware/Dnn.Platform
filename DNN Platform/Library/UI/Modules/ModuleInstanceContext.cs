@@ -275,6 +275,44 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
+        public string EditUrl()
+        {
+            return this.EditUrl(string.Empty, string.Empty, "Edit");
+        }
+
+        public string EditUrl(string controlKey)
+        {
+            return this.EditUrl(string.Empty, string.Empty, controlKey);
+        }
+
+        private static string FilterUrl(HttpRequest request)
+        {
+            return request.RawUrl.Replace("\"", string.Empty);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetActionsCount gets the current number of actions.
+        /// </summary>
+        /// <param name="actions">The actions collection to count.</param>
+        /// <param name="count">The current count.</param>
+        /// -----------------------------------------------------------------------------
+        private static int GetActionsCount(int count, ModuleActionCollection actions)
+        {
+            foreach (ModuleAction action in actions)
+            {
+                if (action.HasChildren())
+                {
+                    count += action.Actions.Count;
+
+                    // Recursively call to see if this collection has any child actions that would affect the count
+                    count = GetActionsCount(count, action.Actions);
+                }
+            }
+
+            return count;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddHelpActions Adds the Help actions to the Action Menu.
@@ -305,29 +343,29 @@ namespace DotNetNuke.UI.Modules
             }
 
             var helpAction = new ModuleAction(this.GetNextActionID())
-                                 {
-                                     Title = Localization.GetString(ModuleActionType.ModuleHelp, Localization.GlobalResourceFile),
-                                     CommandName = ModuleActionType.ModuleHelp,
-                                     CommandArgument = string.Empty,
-                                     Icon = "action_help.gif",
-                                     Url = url,
-                                     Secure = SecurityAccessLevel.Edit,
-                                     Visible = true,
-                                     NewWindow = showInNewWindow,
-                                     UseActionEvent = true,
-                                 };
+            {
+                Title = Localization.GetString(ModuleActionType.ModuleHelp, Localization.GlobalResourceFile),
+                CommandName = ModuleActionType.ModuleHelp,
+                CommandArgument = string.Empty,
+                Icon = "action_help.gif",
+                Url = url,
+                Secure = SecurityAccessLevel.Edit,
+                Visible = true,
+                NewWindow = showInNewWindow,
+                UseActionEvent = true,
+            };
             this._moduleGenericActions.Actions.Add(helpAction);
         }
 
         private void AddPrintAction()
         {
             var action = new ModuleAction(this.GetNextActionID())
-                             {
-                                 Title = Localization.GetString(ModuleActionType.PrintModule, Localization.GlobalResourceFile),
-                                 CommandName = ModuleActionType.PrintModule,
-                                 CommandArgument = string.Empty,
-                                 Icon = "action_print.gif",
-                                 Url = this.NavigateUrl(
+            {
+                Title = Localization.GetString(ModuleActionType.PrintModule, Localization.GlobalResourceFile),
+                CommandName = ModuleActionType.PrintModule,
+                CommandArgument = string.Empty,
+                Icon = "action_print.gif",
+                Url = this.NavigateUrl(
                                      this.TabId,
                                      string.Empty,
                                      false,
@@ -335,28 +373,28 @@ namespace DotNetNuke.UI.Modules
                                      "SkinSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootSkin + "/" + Globals.glbHostSkinFolder + "/" + "No Skin"),
                                      "ContainerSrc=" + Globals.QueryStringEncode("[G]" + SkinController.RootContainer + "/" + Globals.glbHostSkinFolder + "/" + "No Container"),
                                      "dnnprintmode=true"),
-                                 Secure = SecurityAccessLevel.Anonymous,
-                                 UseActionEvent = true,
-                                 Visible = true,
-                                 NewWindow = true,
-                             };
+                Secure = SecurityAccessLevel.Anonymous,
+                UseActionEvent = true,
+                Visible = true,
+                NewWindow = true,
+            };
             this._moduleGenericActions.Actions.Add(action);
         }
 
         private void AddSyndicateAction()
         {
             var action = new ModuleAction(this.GetNextActionID())
-                             {
-                                 Title = Localization.GetString(ModuleActionType.SyndicateModule, Localization.GlobalResourceFile),
-                                 CommandName = ModuleActionType.SyndicateModule,
-                                 CommandArgument = string.Empty,
-                                 Icon = "action_rss.gif",
-                                 Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, "RSS.aspx", false, "moduleid=" + this.ModuleId),
-                                 Secure = SecurityAccessLevel.Anonymous,
-                                 UseActionEvent = true,
-                                 Visible = true,
-                                 NewWindow = true,
-                             };
+            {
+                Title = Localization.GetString(ModuleActionType.SyndicateModule, Localization.GlobalResourceFile),
+                CommandName = ModuleActionType.SyndicateModule,
+                CommandArgument = string.Empty,
+                Icon = "action_rss.gif",
+                Url = this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, string.Empty, "RSS.aspx", false, "moduleid=" + this.ModuleId),
+                Secure = SecurityAccessLevel.Anonymous,
+                UseActionEvent = true,
+                Visible = true,
+                NewWindow = true,
+            };
             this._moduleGenericActions.Actions.Add(action);
         }
 
@@ -447,34 +485,6 @@ namespace DotNetNuke.UI.Modules
                         false);
                 }
             }
-        }
-
-        private static string FilterUrl(HttpRequest request)
-        {
-            return request.RawUrl.Replace("\"", string.Empty);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetActionsCount gets the current number of actions.
-        /// </summary>
-        /// <param name="actions">The actions collection to count.</param>
-        /// <param name="count">The current count.</param>
-        /// -----------------------------------------------------------------------------
-        private static int GetActionsCount(int count, ModuleActionCollection actions)
-        {
-            foreach (ModuleAction action in actions)
-            {
-                if (action.HasChildren())
-                {
-                    count += action.Actions.Count;
-
-                    // Recursively call to see if this collection has any child actions that would affect the count
-                    count = GetActionsCount(count, action.Actions);
-                }
-            }
-
-            return count;
         }
 
         /// -----------------------------------------------------------------------------
@@ -737,16 +747,6 @@ namespace DotNetNuke.UI.Modules
             var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
             return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                    || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public string EditUrl()
-        {
-            return this.EditUrl(string.Empty, string.Empty, "Edit");
-        }
-
-        public string EditUrl(string controlKey)
-        {
-            return this.EditUrl(string.Empty, string.Empty, controlKey);
         }
 
         public string EditUrl(string keyName, string keyValue)

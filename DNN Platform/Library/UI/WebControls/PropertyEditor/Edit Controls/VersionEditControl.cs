@@ -47,6 +47,23 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
+        {
+            string majorVersion = postCollection[postDataKey + "_Major"];
+            string minorVersion = postCollection[postDataKey + "_Minor"];
+            string buildVersion = postCollection[postDataKey + "_Build"];
+            bool dataChanged = false;
+            Version presentValue = this.Version;
+            var postedValue = new Version(majorVersion + "." + minorVersion + "." + buildVersion);
+            if (!postedValue.Equals(presentValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
+
+            return dataChanged;
+        }
+
         protected void RenderDropDownList(HtmlTextWriter writer, string type, int val)
         {
             // Render the Select Tag
@@ -151,23 +168,6 @@ namespace DotNetNuke.UI.WebControls
             }
 
             writer.RenderEndTag();
-        }
-
-        public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
-        {
-            string majorVersion = postCollection[postDataKey + "_Major"];
-            string minorVersion = postCollection[postDataKey + "_Minor"];
-            string buildVersion = postCollection[postDataKey + "_Build"];
-            bool dataChanged = false;
-            Version presentValue = this.Version;
-            var postedValue = new Version(majorVersion + "." + minorVersion + "." + buildVersion);
-            if (!postedValue.Equals(presentValue))
-            {
-                this.Value = postedValue;
-                dataChanged = true;
-            }
-
-            return dataChanged;
         }
     }
 }

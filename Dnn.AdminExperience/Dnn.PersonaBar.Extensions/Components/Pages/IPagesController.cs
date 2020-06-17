@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Pages.Components
         bool IsValidTabPath(TabInfo tab, string newTabPath, string newTabName, out string errorMessage);
 
         IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, int parentId = -1, string searchKey = "", bool includeHidden = true, bool includeDeleted = false, bool includeSubpages = false);
-        
+
         IEnumerable<TabInfo> GetPageList(PortalSettings portalSettings, bool? deleted, string tabName, string tabTitle, string tabPath,
             string tabSkin, bool? visible, int parentId, out int total, string searchKey = "", int pageIndex = -1, int pageSize = 10, bool includeSubpages = false);
 
@@ -43,23 +43,23 @@ namespace Dnn.PersonaBar.Pages.Components
         void DeleteTabModule(int pageId, int moduleId);
 
         /// <summary>
-        /// Returns a clean tab relative url based on Advanced Management Url settings
+        /// Returns a clean tab relative url based on Advanced Management Url settings.
         /// </summary>
-        /// <param name="url">Url not cleaned, this could containes blank space or invalid characters</param>
-        /// <returns>Cleaned Url</returns>
+        /// <param name="url">Url not cleaned, this could containes blank space or invalid characters.</param>
+        /// <returns>Cleaned Url.</returns>
         string CleanTabUrl(string url);
 
         /// <summary>
-        /// Copy the given theme to all descendant pages
+        /// Copy the given theme to all descendant pages.
         /// </summary>
-        /// <param name="pageId">page identifier</param>
-        /// <param name="theme">Theme</param>
+        /// <param name="pageId">page identifier.</param>
+        /// <param name="theme">Theme.</param>
         void CopyThemeToDescendantPages(int pageId, Theme theme);
 
         /// <summary>
-        /// Copy the current page permissions to all descendant pages
+        /// Copy the current page permissions to all descendant pages.
         /// </summary>
-        /// <param name="pageId">page identifier</param>
+        /// <param name="pageId">page identifier.</param>
         void CopyPermissionsToDescendantPages(int pageId);
 
         IEnumerable<Url> GetPageUrls(int tabId);
@@ -67,6 +67,6 @@ namespace Dnn.PersonaBar.Pages.Components
         PageUrlResult CreateCustomUrl(SeoUrl dto);
         PageUrlResult UpdateCustomUrl(SeoUrl dto);
         PageUrlResult DeleteCustomUrl(UrlIdDto dto);
-        PagePermissions GetPermissionsData(int pageId);        
+        PagePermissions GetPermissionsData(int pageId);
     }
 }

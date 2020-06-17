@@ -425,7 +425,7 @@ namespace log4net.Appender
 #if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
-        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode=true)]
+        [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
         public override void ActivateOptions()
         {
             base.ActivateOptions();
@@ -504,32 +504,32 @@ namespace log4net.Appender
         /// </remarks>
         private System.IO.StreamWriter m_consoleOutputWriter = null;
 
-        [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+        [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern int GetConsoleOutputCP();
 
-        [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+        [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern bool SetConsoleTextAttribute(
             IntPtr consoleHandle,
             ushort attributes);
 
-        [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+        [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern bool GetConsoleScreenBufferInfo(
             IntPtr consoleHandle,
             out CONSOLE_SCREEN_BUFFER_INFO bufferInfo);
 
-// [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)]
-// private static extern bool WriteConsoleW(
-// IntPtr hConsoleHandle,
-// [MarshalAs(UnmanagedType.LPWStr)] string strBuffer,
-// UInt32 bufferLen,
-// out UInt32 written,
-// IntPtr reserved);
+        // [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)]
+        // private static extern bool WriteConsoleW(
+        // IntPtr hConsoleHandle,
+        // [MarshalAs(UnmanagedType.LPWStr)] string strBuffer,
+        // UInt32 bufferLen,
+        // out UInt32 written,
+        // IntPtr reserved);
 
         // private const UInt32 STD_INPUT_HANDLE = unchecked((UInt32)(-10));
         private const uint STD_OUTPUT_HANDLE = unchecked((uint)(-11));
         private const uint STD_ERROR_HANDLE = unchecked((uint)(-12));
 
-        [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
+        [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
         private static extern IntPtr GetStdHandle(
             uint type);
 

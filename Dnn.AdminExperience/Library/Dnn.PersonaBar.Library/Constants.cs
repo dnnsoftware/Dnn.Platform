@@ -17,6 +17,8 @@ namespace Dnn.PersonaBar.Library
         public const int AvatarWidth = 64;
         public const int AvatarHeight = 64;
 
+        public const string AdminsRoleName = "Administrators";
+
         public static readonly TimeSpan ThreeSeconds = TimeSpan.FromSeconds(3);
         public static readonly TimeSpan ThirtySeconds = TimeSpan.FromSeconds(30);
         public static readonly TimeSpan OneMinute = TimeSpan.FromMinutes(1);
@@ -28,7 +30,5 @@ namespace Dnn.PersonaBar.Library
         public static readonly TimeSpan TwelveHours = TimeSpan.FromHours(12);
         public static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
         public static readonly TimeSpan OneWeek = TimeSpan.FromDays(7);
-
-        public const string AdminsRoleName = "Administrators";
     }
 }

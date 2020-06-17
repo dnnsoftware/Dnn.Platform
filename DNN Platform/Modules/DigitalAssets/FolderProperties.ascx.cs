@@ -130,6 +130,38 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            try
+            {
+                if (!this.Page.IsPostBack)
+                {
+                    this.SetupPermissionGrid();
+                    this.PrepareFolderProperties();
+                    this.SetPropertiesAvailability(FolderPermissionController.CanManageFolder((FolderInfo)this.Folder));
+                }
+
+                if (!FolderPermissionController.CanViewFolder((FolderInfo)this.Folder))
+                {
+                    this.SaveButton.Visible = false;
+                    this.SetPropertiesVisibility(false);
+                    UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("UserCannotReadFolderError"), ModuleMessage.ModuleMessageType.RedError);
+                }
+                else
+                {
+                    this.SaveButton.Visible = FolderPermissionController.CanViewFolder((FolderInfo)this.Folder) && FolderPermissionController.CanManageFolder((FolderInfo)this.Folder);
+                }
+            }
+            catch (DotNetNukeException dnnex)
+            {
+                UI.Skins.Skin.AddModuleMessage(this, dnnex.Message, ModuleMessage.ModuleMessageType.RedError);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
         private void OnSaveClick(object sender, EventArgs e)
         {
             try
@@ -206,38 +238,6 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("PermissionCopyError"), ModuleMessage.ModuleMessageType.RedError);
                 Exceptions.ProcessModuleLoadException(this, ex);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            try
-            {
-                if (!this.Page.IsPostBack)
-                {
-                    this.SetupPermissionGrid();
-                    this.PrepareFolderProperties();
-                    this.SetPropertiesAvailability(FolderPermissionController.CanManageFolder((FolderInfo)this.Folder));
-                }
-
-                if (!FolderPermissionController.CanViewFolder((FolderInfo)this.Folder))
-                {
-                    this.SaveButton.Visible = false;
-                    this.SetPropertiesVisibility(false);
-                    UI.Skins.Skin.AddModuleMessage(this, this.LocalizeString("UserCannotReadFolderError"), ModuleMessage.ModuleMessageType.RedError);
-                }
-                else
-                {
-                    this.SaveButton.Visible = FolderPermissionController.CanViewFolder((FolderInfo)this.Folder) && FolderPermissionController.CanManageFolder((FolderInfo)this.Folder);
-                }
-            }
-            catch (DotNetNukeException dnnex)
-            {
-                UI.Skins.Skin.AddModuleMessage(this, dnnex.Message, ModuleMessage.ModuleMessageType.RedError);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 

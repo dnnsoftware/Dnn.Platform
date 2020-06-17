@@ -516,6 +516,48 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        public string Biography
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_Biography);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_Biography, value);
+            }
+        }
+
+        public object this[string name]
+        {
+            get
+            {
+                return this.GetPropertyValue(name);
+            }
+
+            set
+            {
+                string stringValue;
+                if (value is DateTime)
+                {
+                    var dateValue = (DateTime)value;
+                    stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
+                }
+                else if (value is TimeZoneInfo)
+                {
+                    var timezoneValue = (TimeZoneInfo)value;
+                    stringValue = timezoneValue.Id;
+                }
+                else
+                {
+                    stringValue = Convert.ToString(value);
+                }
+
+                this.SetProfileProperty(name, stringValue);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Clears the IsDirty Flag.
@@ -573,22 +615,6 @@ namespace DotNetNuke.Entities.Users
             return propValue;
         }
 
-        private string GetListValue(string listName, string value)
-        {
-            ListController lc = new ListController();
-            int entryId;
-            if (int.TryParse(value, out entryId))
-            {
-                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
-                if (item != null)
-                {
-                    return item.Text;
-                }
-            }
-
-            return value;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initialises the Profile with an empty collection of profile properties.
@@ -622,6 +648,22 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
+        private string GetListValue(string listName, string value)
+        {
+            ListController lc = new ListController();
+            int entryId;
+            if (int.TryParse(value, out entryId))
+            {
+                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
+                if (item != null)
+                {
+                    return item.Text;
+                }
+            }
+
+            return value;
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Sets a Profile Property Value in the Profile.
@@ -642,48 +684,6 @@ namespace DotNetNuke.Entities.Users
                 {
                     this._IsDirty = true;
                 }
-            }
-        }
-
-        public string Biography
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_Biography);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_Biography, value);
-            }
-        }
-
-        public object this[string name]
-        {
-            get
-            {
-                return this.GetPropertyValue(name);
-            }
-
-            set
-            {
-                string stringValue;
-                if (value is DateTime)
-                {
-                    var dateValue = (DateTime)value;
-                    stringValue = dateValue.ToString(CultureInfo.InvariantCulture);
-                }
-                else if (value is TimeZoneInfo)
-                {
-                    var timezoneValue = (TimeZoneInfo)value;
-                    stringValue = timezoneValue.Id;
-                }
-                else
-                {
-                    stringValue = Convert.ToString(value);
-                }
-
-                this.SetProfileProperty(name, stringValue);
             }
         }
     }

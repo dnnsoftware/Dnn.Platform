@@ -14,11 +14,6 @@ namespace DotNetNuke.Entities.Portals.Internal
     [Obsolete("This class has been obsoleted in 7.3.0 - please use PortalAliasController instead. Scheduled removal in v10.0.0.")]
     public class TestablePortalAliasController : ServiceLocator<IPortalAliasController, TestablePortalAliasController>, IPortalAliasController
     {
-        protected override Func<IPortalAliasController> GetFactory()
-        {
-            return () => new TestablePortalAliasController();
-        }
-
         public int AddPortalAlias(PortalAliasInfo portalAlias)
         {
             return PortalAliasController.Instance.AddPortalAlias(portalAlias);
@@ -27,6 +22,11 @@ namespace DotNetNuke.Entities.Portals.Internal
         public void DeletePortalAlias(PortalAliasInfo portalAlias)
         {
             PortalAliasController.Instance.DeletePortalAlias(portalAlias);
+        }
+
+        protected override Func<IPortalAliasController> GetFactory()
+        {
+            return () => new TestablePortalAliasController();
         }
 
         public PortalAliasInfo GetPortalAlias(string alias)

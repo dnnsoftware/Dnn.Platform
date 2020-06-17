@@ -28,6 +28,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     [TestFixture]
     public class InternalSearchControllerTests
     {
+        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
+        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
+        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
+
         public enum SearchTypeIds
         {
             ModuleSearchTypeId = 1,
@@ -37,10 +41,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             OtherSearchTypeId,
             UnknownSearchTypeId,
         }
-
-        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
-        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
-        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
         private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
         private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
         private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
@@ -124,6 +124,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             SearchHelper.ClearInstance();
             LuceneController.ClearInstance();
             this._luceneController = null;
+        }
+
+        [Test]
+        public void SearchController_Add_Throws_On_Null_SearchDocument()
+        {
+            // Arrange
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => this._internalSearchController.AddSearchDocument(null));
+        }
+
+        [Test]
+        public void SearchController_Add_Throws_On_Null_Or_Empty_UniqueuKey()
+        {
+            // Arrange
+
+            // Act, Assert
+            Assert.Throws<ArgumentException>(() => this._internalSearchController.AddSearchDocument(new SearchDocument()));
         }
 
         private void CreateNewLuceneControllerInstance()
@@ -346,24 +364,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Console.WriteLine(ex);
             }
-        }
-
-        [Test]
-        public void SearchController_Add_Throws_On_Null_SearchDocument()
-        {
-            // Arrange
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => this._internalSearchController.AddSearchDocument(null));
-        }
-
-        [Test]
-        public void SearchController_Add_Throws_On_Null_Or_Empty_UniqueuKey()
-        {
-            // Arrange
-
-            // Act, Assert
-            Assert.Throws<ArgumentException>(() => this._internalSearchController.AddSearchDocument(new SearchDocument()));
         }
 
         [Test]

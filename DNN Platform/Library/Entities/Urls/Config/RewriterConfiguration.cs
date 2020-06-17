@@ -59,10 +59,10 @@ namespace DotNetNuke.Entities.Urls.Config
                             foreach (XPathNavigator nav in doc.CreateNavigator().Select("RewriterConfig/Rules/RewriterRule"))
                             {
                                 var rule = new RewriterRule
-                                           {
-                                               LookFor = nav.SelectSingleNode("LookFor").Value,
-                                               SendTo = nav.SelectSingleNode("SendTo").Value,
-                                           };
+                                {
+                                    LookFor = nav.SelectSingleNode("LookFor").Value,
+                                    SendTo = nav.SelectSingleNode("SendTo").Value,
+                                };
                                 config.Rules.Add(rule);
                             }
 

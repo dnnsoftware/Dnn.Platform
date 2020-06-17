@@ -13,13 +13,8 @@ namespace DotNetNuke.Services.Social.Notifications.Data
 
     internal class DataService : ComponentBase<IDataService, DataService>, IDataService
     {
-        private readonly DataProvider _provider = DataProvider.Instance();
         private const string Prefix = "CoreMessaging_";
-
-        private static string GetFullyQualifiedName(string procedureName)
-        {
-            return Prefix + procedureName;
-        }
+        private readonly DataProvider _provider = DataProvider.Instance();
 
         public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask)
         {
@@ -29,6 +24,11 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         public void DeleteNotificationType(int notificationTypeId)
         {
             this._provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotificationType"), notificationTypeId);
+        }
+
+        private static string GetFullyQualifiedName(string procedureName)
+        {
+            return Prefix + procedureName;
         }
 
         public IDataReader GetNotificationType(int notificationTypeId)

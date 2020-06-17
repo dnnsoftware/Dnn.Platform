@@ -19,6 +19,10 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         private IServiceProvider _serviceProvider;
         private IDependencyResolver _dependencyResolver;
 
+        private interface ITestService
+        {
+        }
+
         [TestFixtureSetUp]
         public void FixtureSetUp()
         {
@@ -108,10 +112,6 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             Assert.NotNull(actual);
             Assert.AreEqual(1, actual.Length);
             Assert.AreEqual(expected.GetType(), actual[0].GetType());
-        }
-
-        private interface ITestService
-        {
         }
 
         private class TestService : ITestService

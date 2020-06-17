@@ -24,9 +24,27 @@ namespace DotNetNuke.Services.Sitemap
         private const int SITEMAP_MAXURLS = 50000;
 
         private const string SITEMAP_VERSION = "0.9";
+        private static readonly object _lock = new object();
+
+        private static List<SitemapProvider> _providers;
+
         private readonly PortalSettings PortalSettings;
         private string _cacheFileName;
         private string _cacheIndexFileNameFormat;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
+        ///   Creates an instance of the sitemap builder class.
+        /// </summary>
+        /// <param name = "ps">Current PortalSettings for the portal being processed.</param>
+        /// <remarks>
+        /// </remarks>
+        public SitemapBuilder(PortalSettings ps)
+        {
+            this.PortalSettings = ps;
+
+            LoadProviders();
+        }
 
         public string CacheFileName
         {
@@ -61,18 +79,12 @@ namespace DotNetNuke.Services.Sitemap
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
-        ///   Creates an instance of the sitemap builder class.
-        /// </summary>
-        /// <param name = "ps">Current PortalSettings for the portal being processed.</param>
-        /// <remarks>
-        /// </remarks>
-        public SitemapBuilder(PortalSettings ps)
+        public List<SitemapProvider> Providers
         {
-            this.PortalSettings = ps;
-
-            LoadProviders();
+            get
+            {
+                return _providers;
+            }
         }
 
         /// <summary>
@@ -416,18 +428,6 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             return isChild;
-        }
-
-        private static List<SitemapProvider> _providers;
-
-        private static readonly object _lock = new object();
-
-        public List<SitemapProvider> Providers
-        {
-            get
-            {
-                return _providers;
-            }
         }
 
         private static void LoadProviders()

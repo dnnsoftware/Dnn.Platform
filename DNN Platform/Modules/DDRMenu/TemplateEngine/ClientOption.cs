@@ -11,10 +11,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     [XmlInclude(typeof(ClientString))]
     public class ClientOption
     {
-        public string Name { get; set; }
-
-        public string Value { get; set; }
-
         public ClientOption()
         {
         }
@@ -24,6 +20,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             this.Name = name;
             this.Value = value;
         }
+
+        public string Name { get; set; }
+
+        public string Value { get; set; }
     }
 
     public class ClientString : ClientOption

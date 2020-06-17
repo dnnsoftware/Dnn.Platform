@@ -19,10 +19,6 @@ namespace DotNetNuke.Common.Controls
     /// -----------------------------------------------------------------------------
     public partial class Privacy : PortalModuleBase
     {
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -53,6 +49,10 @@ namespace DotNetNuke.Common.Controls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

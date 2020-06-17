@@ -27,17 +27,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected override void CreateChildControls()
-        {
-            this.TimeZones = new DnnTimeZoneComboBox();
-            this.TimeZones.ViewStateMode = ViewStateMode.Disabled;
-
-            this.Controls.Clear();
-            this.Controls.Add(this.TimeZones);
-
-            base.CreateChildControls();
-        }
-
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -50,6 +39,17 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             return dataChanged;
+        }
+
+        protected override void CreateChildControls()
+        {
+            this.TimeZones = new DnnTimeZoneComboBox();
+            this.TimeZones.ViewStateMode = ViewStateMode.Disabled;
+
+            this.Controls.Clear();
+            this.Controls.Add(this.TimeZones);
+
+            base.CreateChildControls();
         }
 
         protected override void OnDataChanged(EventArgs e)

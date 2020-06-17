@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         public static IEnumerable<ListItemDto> GetAllLanguagesList()
         {
             var locales = LocaleController.Instance.GetLocales(Null.NullInteger).Values;
-            return locales.Select(l => new ListItemDto {Id = l.LanguageId, Name = l.EnglishName});
+            return locales.Select(l => new ListItemDto { Id = l.LanguageId, Name = l.EnglishName });
         }
 
         public static IEnumerable<ListItemDto> GetAllPackagesListExceptLangPacks()

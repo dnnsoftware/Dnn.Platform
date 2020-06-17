@@ -33,6 +33,28 @@ namespace DotNetNuke.Services.FileSystem
         {
         }
 
+        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
+        public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
+            : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
+        {
+        }
+
+        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
+        public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
+        {
+            this.FolderID = Null.NullInteger;
+            this.UniqueId = uniqueId;
+            this.VersionGuid = Guid.NewGuid();
+            this.WorkflowID = Null.NullInteger;
+
+            this.PortalID = portalId;
+            this.FolderPath = folderpath;
+            this.StorageLocation = storageLocation;
+            this.IsProtected = isProtected;
+            this.IsCached = isCached;
+            this.LastUpdated = lastUpdated;
+        }
+
         internal FolderInfo(bool initialiseEmptyPermissions)
         {
             this.FolderID = Null.NullInteger;
@@ -248,6 +270,26 @@ namespace DotNetNuke.Services.FileSystem
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        ///   Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public int KeyID
+        {
+            get
+            {
+                return this.FolderID;
+            }
+
+            set
+            {
+                this.FolderID = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         ///   Fills a FolderInfo from a Data Reader.
         /// </summary>
         /// <param name = "dr">The Data Reader to use.</param>
@@ -269,48 +311,6 @@ namespace DotNetNuke.Services.FileSystem
             this.WorkflowID = Null.SetNullInteger(dr["WorkflowID"]);
             this.ParentID = Null.SetNullInteger(dr["ParentID"]);
             this.FillBaseProperties(dr);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public int KeyID
-        {
-            get
-            {
-                return this.FolderID;
-            }
-
-            set
-            {
-                this.FolderID = value;
-            }
-        }
-
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
-        public FolderInfo(int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-            : this(Guid.NewGuid(), portalId, folderpath, storageLocation, isProtected, isCached, lastUpdated)
-        {
-        }
-
-        [Obsolete("Deprecated in DNN 7.1.  Use the parameterless constructor and object initializers. Scheduled removal in v10.0.0.")]
-        public FolderInfo(Guid uniqueId, int portalId, string folderpath, int storageLocation, bool isProtected, bool isCached, DateTime lastUpdated)
-        {
-            this.FolderID = Null.NullInteger;
-            this.UniqueId = uniqueId;
-            this.VersionGuid = Guid.NewGuid();
-            this.WorkflowID = Null.NullInteger;
-
-            this.PortalID = portalId;
-            this.FolderPath = folderpath;
-            this.StorageLocation = storageLocation;
-            this.IsProtected = isProtected;
-            this.IsCached = isCached;
-            this.LastUpdated = lastUpdated;
         }
     }
 }

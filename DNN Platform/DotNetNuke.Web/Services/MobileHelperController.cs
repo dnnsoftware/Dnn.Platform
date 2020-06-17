@@ -77,43 +77,6 @@ namespace DotNetNuke.Web.Services
             return monikers.Where(kpv => resultIds.Contains(kpv.Key));
         }
 
-        private SiteDetail GetSiteDetails(string moduleList)
-        {
-            var siteDetails = new SiteDetail
-            {
-                SiteName = this.PortalSettings.PortalName,
-                DnnVersion = this._dnnVersion,
-                IsHost = this.UserInfo.IsSuperUser,
-                IsAdmin = this.UserInfo.IsInRole("Administrators"),
-            };
-
-            foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                var modulesCollection = GetTabModules((moduleName ?? string.Empty).Trim())
-                    .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&
-                                        ModulePermissionController.CanViewModule(tabmodule.ModuleInfo));
-                foreach (var tabmodule in modulesCollection)
-                {
-                    var moduleDetail = new ModuleDetail
-                    {
-                        ModuleName = moduleName,
-                        ModuleVersion = tabmodule.ModuleVersion,
-                    };
-
-                    moduleDetail.ModuleInstances.Add(new ModuleInstance
-                    {
-                        TabId = tabmodule.TabInfo.TabID,
-                        ModuleId = tabmodule.ModuleInfo.ModuleID,
-                        PageName = tabmodule.TabInfo.TabName,
-                        PagePath = tabmodule.TabInfo.TabPath,
-                    });
-                    siteDetails.Modules.Add(moduleDetail);
-                }
-            }
-
-            return siteDetails;
-        }
-
         private static IEnumerable<TabModule> GetTabModules(string moduleName)
         {
             var portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
@@ -163,6 +126,43 @@ namespace DotNetNuke.Web.Services
             }
 
             return tabModules;
+        }
+
+        private SiteDetail GetSiteDetails(string moduleList)
+        {
+            var siteDetails = new SiteDetail
+            {
+                SiteName = this.PortalSettings.PortalName,
+                DnnVersion = this._dnnVersion,
+                IsHost = this.UserInfo.IsSuperUser,
+                IsAdmin = this.UserInfo.IsInRole("Administrators"),
+            };
+
+            foreach (var moduleName in (moduleList ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var modulesCollection = GetTabModules((moduleName ?? string.Empty).Trim())
+                    .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&
+                                        ModulePermissionController.CanViewModule(tabmodule.ModuleInfo));
+                foreach (var tabmodule in modulesCollection)
+                {
+                    var moduleDetail = new ModuleDetail
+                    {
+                        ModuleName = moduleName,
+                        ModuleVersion = tabmodule.ModuleVersion,
+                    };
+
+                    moduleDetail.ModuleInstances.Add(new ModuleInstance
+                    {
+                        TabId = tabmodule.TabInfo.TabID,
+                        ModuleId = tabmodule.ModuleInfo.ModuleID,
+                        PageName = tabmodule.TabInfo.TabName,
+                        PagePath = tabmodule.TabInfo.TabPath,
+                    });
+                    siteDetails.Modules.Add(moduleDetail);
+                }
+            }
+
+            return siteDetails;
         }
 
         private static void AddChildTabsToList(TabInfo currentTab, TabCollection allPortalTabs,

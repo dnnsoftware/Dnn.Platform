@@ -19,6 +19,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
     /// </remarks>
     public interface IInstallController
     {
+        string InstallerLogName { get; }
+
         bool IsValidSqlServerVersion(string connectionString);
 
         bool IsAbleToPerformDatabaseActions(string connectionString);
@@ -57,7 +59,5 @@ namespace DotNetNuke.Services.Upgrade.Internals
         string TestDatabaseConnection(ConnectionConfig connectionConfig);
 
         CultureInfo GetCultureFromCookie();
-
-        string InstallerLogName { get; }
     }
 }

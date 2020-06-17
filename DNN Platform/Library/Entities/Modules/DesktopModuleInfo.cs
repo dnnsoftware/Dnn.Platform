@@ -33,6 +33,20 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
     {
+        private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
+        private PageInfo _pageInfo;
+
+        public DesktopModuleInfo()
+        {
+            this.IsPremium = Null.NullBoolean;
+            this.IsAdmin = Null.NullBoolean;
+            this.CodeSubDirectory = Null.NullString;
+            this.PackageID = Null.NullInteger;
+            this.DesktopModuleID = Null.NullInteger;
+            this.SupportedFeatures = Null.NullInteger;
+            this.Shareable = ModuleSharing.Unknown;
+        }
+
         [Serializable]
         public class PageInfo : IXmlSerializable
         {
@@ -137,20 +151,6 @@ namespace DotNetNuke.Entities.Modules
                 // Write end of main element
                 writer.WriteEndElement();
             }
-        }
-
-        private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
-        private PageInfo _pageInfo;
-
-        public DesktopModuleInfo()
-        {
-            this.IsPremium = Null.NullBoolean;
-            this.IsAdmin = Null.NullBoolean;
-            this.CodeSubDirectory = Null.NullString;
-            this.PackageID = Null.NullInteger;
-            this.DesktopModuleID = Null.NullInteger;
-            this.SupportedFeatures = Null.NullInteger;
-            this.Shareable = ModuleSharing.Unknown;
         }
 
         /// -----------------------------------------------------------------------------

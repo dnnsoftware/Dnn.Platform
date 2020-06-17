@@ -14,6 +14,13 @@ namespace DotNetNuke.Web.Api
 
     public abstract class AuthorizeAttributeBase : AuthorizationFilterAttribute
     {
+        public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
+        {
+            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
+                   || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
+                         && actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().All(t => t is SupportedModulesAttribute));
+        }
+
         /// <summary>
         /// Tests if the request passes the authorization requirements.
         /// </summary>
@@ -50,13 +57,6 @@ namespace DotNetNuke.Web.Api
         protected virtual bool SkipAuthorization(HttpActionContext actionContext)
         {
             return IsAnonymousAttributePresent(actionContext);
-        }
-
-        public static bool IsAnonymousAttributePresent(HttpActionContext actionContext)
-        {
-            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                   || (actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                         && actionContext.ActionDescriptor.GetCustomAttributes<AuthorizeAttributeBase>().All(t => t is SupportedModulesAttribute));
         }
     }
 }

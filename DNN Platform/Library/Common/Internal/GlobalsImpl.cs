@@ -17,8 +17,6 @@ namespace DotNetNuke.Common.Internal
 
     public class GlobalsImpl : IGlobals
     {
-        protected INavigationManager NavigationManager { get; }
-
         public GlobalsImpl()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -33,6 +31,8 @@ namespace DotNetNuke.Common.Internal
         {
             get { return Globals.HostMapPath; }
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         public string GetSubFolderPath(string strFileNamePath, int portalId)
         {

@@ -18,14 +18,16 @@ namespace DotNetNuke.UI.WebControls
     public class PagingControl : WebControl, IPostBackEventHandler
     {
         protected Repeater PageNumbers;
+        protected TableCell cellDisplayLinks;
+        protected TableCell cellDisplayStatus;
         private int _totalPages = -1;
         private string _CSSClassLinkActive;
         private string _CSSClassLinkInactive;
         private string _CSSClassPagingStatus;
         private PagingControlMode _Mode = PagingControlMode.URL;
-        protected TableCell cellDisplayLinks;
-        protected TableCell cellDisplayStatus;
         protected Table tablePageNumbers;
+
+        public event EventHandler PageChanged;
 
         [Bindable(true)]
         [Category("Behavior")]
@@ -119,7 +121,46 @@ namespace DotNetNuke.UI.WebControls
             this.OnPageChanged(new EventArgs());
         }
 
-        public event EventHandler PageChanged;
+        protected override void CreateChildControls()
+        {
+            this.tablePageNumbers = new Table();
+            this.cellDisplayStatus = new TableCell();
+            this.cellDisplayLinks = new TableCell();
+
+            // cellDisplayStatus.CssClass = "Normal";
+            // cellDisplayLinks.CssClass = "Normal";
+            this.tablePageNumbers.CssClass = string.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
+            var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
+            this.PageNumbers = new Repeater();
+            var I = new PageNumberLinkTemplate(this);
+            this.PageNumbers.ItemTemplate = I;
+            this.BindPageNumbers(this.TotalRecords, this.PageSize);
+            this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
+
+            // cellDisplayStatus.Width = new Unit("50%");
+            this.cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
+
+            // cellDisplayLinks.Width = new Unit("50%");
+            var intTotalPages = this._totalPages;
+            if (intTotalPages == 0)
+            {
+                intTotalPages = 1;
+            }
+
+            var str = string.Format(Localization.GetString("Pages"), this.CurrentPage, intTotalPages);
+            var lit = new LiteralControl(str);
+            this.cellDisplayStatus.Controls.Add(lit);
+            this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayStatus);
+            this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayLinks);
+        }
+
+        protected void OnPageChanged(EventArgs e)
+        {
+            if (this.PageChanged != null)
+            {
+                this.PageChanged(this, e);
+            }
+        }
 
         private void BindPageNumbers(int TotalRecords, int RecordsPerPage)
         {
@@ -291,47 +332,6 @@ namespace DotNetNuke.UI.WebControls
             return this.CSSClassLinkInactive.Trim().Length > 0
                        ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>"
                        : "<span>" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>";
-        }
-
-        protected override void CreateChildControls()
-        {
-            this.tablePageNumbers = new Table();
-            this.cellDisplayStatus = new TableCell();
-            this.cellDisplayLinks = new TableCell();
-
-            // cellDisplayStatus.CssClass = "Normal";
-            // cellDisplayLinks.CssClass = "Normal";
-            this.tablePageNumbers.CssClass = string.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
-            var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
-            this.PageNumbers = new Repeater();
-            var I = new PageNumberLinkTemplate(this);
-            this.PageNumbers.ItemTemplate = I;
-            this.BindPageNumbers(this.TotalRecords, this.PageSize);
-            this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
-
-            // cellDisplayStatus.Width = new Unit("50%");
-            this.cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
-
-            // cellDisplayLinks.Width = new Unit("50%");
-            var intTotalPages = this._totalPages;
-            if (intTotalPages == 0)
-            {
-                intTotalPages = 1;
-            }
-
-            var str = string.Format(Localization.GetString("Pages"), this.CurrentPage, intTotalPages);
-            var lit = new LiteralControl(str);
-            this.cellDisplayStatus.Controls.Add(lit);
-            this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayStatus);
-            this.tablePageNumbers.Rows[intRowIndex].Cells.Add(this.cellDisplayLinks);
-        }
-
-        protected void OnPageChanged(EventArgs e)
-        {
-            if (this.PageChanged != null)
-            {
-                this.PageChanged(this, e);
-            }
         }
 
         protected override void Render(HtmlTextWriter output)

@@ -136,16 +136,21 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(GetWorkflowItemKey(workflow.WorkflowID));
         }
 
+        internal static string GetWorkflowItemKey(int workflowId)
+        {
+            return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
+        }
+
+        protected override Func<IWorkflowRepository> GetFactory()
+        {
+            return () => new WorkflowRepository();
+        }
+
         private static bool DoesExistWorkflow(Entities.Workflow workflow, IRepository<Entities.Workflow> rep)
         {
             return rep.Find(
                 "WHERE IsDeleted = 0 AND (PortalId = @0 OR PortalId IS NULL) AND WorkflowName = @1 AND WorkflowID != @2",
                 workflow.PortalID, workflow.WorkflowName, workflow.WorkflowID).SingleOrDefault() != null;
-        }
-
-        internal static string GetWorkflowItemKey(int workflowId)
-        {
-            return string.Format(DataCache.ContentWorkflowCacheKey, workflowId);
         }
 
         private static void CacheWorkflow(Entities.Workflow workflow)
@@ -157,11 +162,6 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                     GetWorkflowItemKey(workflow.WorkflowID),
                     DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority), _ => workflow);
             }
-        }
-
-        protected override Func<IWorkflowRepository> GetFactory()
-        {
-            return () => new WorkflowRepository();
         }
     }
 }

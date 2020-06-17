@@ -50,6 +50,18 @@ namespace DotNetNuke.Framework
             }
         }
 
+        public static bool HasAspNetHostingPermission()
+        {
+            GetPermissions();
+            return m_AspNetHostingPermission;
+        }
+
+        public static bool HasReflectionPermission()
+        {
+            GetPermissions();
+            return m_ReflectionPermission;
+        }
+
         private static void GetPermissions()
         {
             if (!m_Initialized)
@@ -108,18 +120,6 @@ namespace DotNetNuke.Framework
                     m_UnManagedCodePermission = false;
                 }
             }
-        }
-
-        public static bool HasAspNetHostingPermission()
-        {
-            GetPermissions();
-            return m_AspNetHostingPermission;
-        }
-
-        public static bool HasReflectionPermission()
-        {
-            GetPermissions();
-            return m_ReflectionPermission;
         }
 
         public static bool HasWebPermission()

@@ -19,10 +19,6 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class DnnApiControllerTests
     {
-        internal class DnnApiControllerHelper : DnnApiController
-        {
-        }
-
         [TearDown]
         public void TearDown()
         {
@@ -69,25 +65,29 @@ namespace DotNetNuke.Tests.Web.Api
             Assert.AreEqual(expectedPortalSettings, result);
         }
 
+        internal class DnnApiControllerHelper : DnnApiController
+        {
+        }
+
         // A test that would be nice to run, but I see not good way to test the source of the
         // userinfo
-//        [Test]
-//        public void UserInfoComesFromPortalSettings()
-//        {
-//            //Arrange
-//            var controller = new DnnApiControllerHelper();
-//            var mockPortalController = new Mock<IPortalController>();
-//            var expectedPortalSettings = new PortalSettings();
-              // expectedPortalSettings.UserInfo = ??????
-//            mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
-//            TestablePortalController.SetTestableInstance(mockPortalController.Object);
-//
-//            //Act
-//            var result = controller.PortalSettings;
-//
-//            //Assert
-//            mockPortalController.Verify(x => x.GetCurrentPortalSettings(), Times.Once());
-//            Assert.AreEqual(expectedPortalSettings, result);
-//        }
+        //        [Test]
+        //        public void UserInfoComesFromPortalSettings()
+        //        {
+        //            //Arrange
+        //            var controller = new DnnApiControllerHelper();
+        //            var mockPortalController = new Mock<IPortalController>();
+        //            var expectedPortalSettings = new PortalSettings();
+        // expectedPortalSettings.UserInfo = ??????
+        //            mockPortalController.Setup(x => x.GetCurrentPortalSettings()).Returns(expectedPortalSettings);
+        //            TestablePortalController.SetTestableInstance(mockPortalController.Object);
+        //
+        //            //Act
+        //            var result = controller.PortalSettings;
+        //
+        //            //Assert
+        //            mockPortalController.Verify(x => x.GetCurrentPortalSettings(), Times.Once());
+        //            Assert.AreEqual(expectedPortalSettings, result);
+        //        }
     }
 }

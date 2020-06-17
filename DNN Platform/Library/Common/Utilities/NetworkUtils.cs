@@ -10,6 +10,15 @@ namespace DotNetNuke.Common.Utils
     using System.Web;
 
     /// <summary>
+    /// Enumration of IP AddressTyes.
+    /// </summary>
+    public enum AddressType
+    {
+        IPv4,
+        IPv6,
+    }
+
+    /// <summary>
     /// Utility functions for network information.
     /// </summary>
     public class NetworkUtils
@@ -105,16 +114,6 @@ namespace DotNetNuke.Common.Utils
         }
 
         /// <summary>
-        /// Masks from cidr.
-        /// </summary>
-        /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
-        /// <returns></returns>
-        private static long MaskFromCidr(int cidr)
-        {
-            return Convert.ToInt64(Math.Pow(2, 32 - cidr) - 1) ^ 4294967295L;
-        }
-
-        /// <summary>
         /// Formats as cidr.
         /// </summary>
         /// <param name="startIP">The start ip.</param>
@@ -193,6 +192,16 @@ namespace DotNetNuke.Common.Utils
                 startIP = 0;
                 endIP = 0;
             }
+        }
+
+        /// <summary>
+        /// Masks from cidr.
+        /// </summary>
+        /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
+        /// <returns></returns>
+        private static long MaskFromCidr(int cidr)
+        {
+            return Convert.ToInt64(Math.Pow(2, 32 - cidr) - 1) ^ 4294967295L;
         }
 
         /// <summary>
@@ -278,14 +287,5 @@ namespace DotNetNuke.Common.Utils
 
             return ipAddress;
         }
-    }
-
-    /// <summary>
-    /// Enumration of IP AddressTyes.
-    /// </summary>
-    public enum AddressType
-    {
-        IPv4,
-        IPv6,
     }
 }

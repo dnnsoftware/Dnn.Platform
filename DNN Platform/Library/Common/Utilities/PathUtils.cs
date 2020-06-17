@@ -145,35 +145,6 @@ namespace DotNetNuke.Common.Utilities
             return this.GetUserFolderPathElementInternal(userID, mode);
         }
 
-        internal string GetUserFolderPathElementInternal(int userId, UserFolderElement mode)
-        {
-            const int subfolderSeedLength = 2;
-            const int byteOffset = 255;
-            var element = string.Empty;
-
-            switch (mode)
-            {
-                case UserFolderElement.Root:
-                    element = (Convert.ToInt32(userId) & byteOffset).ToString("000");
-                    break;
-                case UserFolderElement.SubFolder:
-                    element = userId.ToString("00").Substring(userId.ToString("00").Length - subfolderSeedLength, subfolderSeedLength);
-                    break;
-            }
-
-            return element;
-        }
-
-        internal string GetUserFolderPathInternal(UserInfo user)
-        {
-            var rootFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.Root);
-            var subFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.SubFolder);
-
-            var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), user.UserID.ToString(CultureInfo.InvariantCulture));
-
-            return string.Format("Users/{0}/", fullPath.Replace("\\", "/"));
-        }
-
         /// <summary>
         /// Checks if a folder is a default protected folder.
         /// </summary>
@@ -228,6 +199,35 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return convertedPath;
+        }
+
+        internal string GetUserFolderPathElementInternal(int userId, UserFolderElement mode)
+        {
+            const int subfolderSeedLength = 2;
+            const int byteOffset = 255;
+            var element = string.Empty;
+
+            switch (mode)
+            {
+                case UserFolderElement.Root:
+                    element = (Convert.ToInt32(userId) & byteOffset).ToString("000");
+                    break;
+                case UserFolderElement.SubFolder:
+                    element = userId.ToString("00").Substring(userId.ToString("00").Length - subfolderSeedLength, subfolderSeedLength);
+                    break;
+            }
+
+            return element;
+        }
+
+        internal string GetUserFolderPathInternal(UserInfo user)
+        {
+            var rootFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.Root);
+            var subFolder = this.GetUserFolderPathElementInternal(user.UserID, UserFolderElement.SubFolder);
+
+            var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), user.UserID.ToString(CultureInfo.InvariantCulture));
+
+            return string.Format("Users/{0}/", fullPath.Replace("\\", "/"));
         }
 
         /// <summary>

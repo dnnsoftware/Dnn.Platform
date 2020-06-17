@@ -22,6 +22,9 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class StandardTabAndModuleInfoProviderTests
     {
+        private const int ValidPortalId = 0;
+        private const int ValidTabModuleId = 999;
+
         private Mock<IModuleController> _mockModuleController;
         private IModuleController _moduleController;
         private Mock<ITabController> _mockTabController;
@@ -32,9 +35,6 @@ namespace DotNetNuke.Tests.Web.Api
         private ITabModulesController _tabModuleController;
         private TabInfo _tabInfo;
         private ModuleInfo _moduleInfo;
-
-        private const int ValidPortalId = 0;
-        private const int ValidTabModuleId = 999;
         private const int ValidModuleId = 456;
         private const int ValidTabId = 46;
 
@@ -56,7 +56,10 @@ namespace DotNetNuke.Tests.Web.Api
             this._tabInfo = new TabInfo { TabID = ValidTabId };
             this._moduleInfo = new ModuleInfo
             {
-                TabModuleID = ValidTabModuleId, TabID = ValidTabId, ModuleID = ValidModuleId, PortalID = ValidPortalId,
+                TabModuleID = ValidTabModuleId,
+                TabID = ValidTabId,
+                ModuleID = ValidModuleId,
+                PortalID = ValidPortalId,
             };
 
             this._mockTabController.Setup(x => x.GetTab(ValidTabId, ValidPortalId)).Returns(this._tabInfo);
@@ -66,6 +69,46 @@ namespace DotNetNuke.Tests.Web.Api
                 new List<int> { ValidTabModuleId });
             this._mockTabModuleController.Setup(x => x.GetTabModuleSettingsByName(MonikerSettingName)).Returns(
                 new Dictionary<int, string> { { ValidTabModuleId, MonikerSettingValue } });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            ModuleController.ClearInstance();
+            TabController.ClearInstance();
+        }
+
+        [Test]
+        public void ValidTabAndModuleIdLoadsActiveModule()
+        {
+            // Arrange
+            var request = new HttpRequestMessage();
+            request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
+            request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
+
+            // Act
+            ModuleInfo returnedModuleInfo;
+            var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
+        }
+
+        [Test]
+        public void ExistingMonikerValueInHeaderShouldFindTheCorrectModuleInfo()
+        {
+            // Arrange
+            var request = new HttpRequestMessage();
+            request.Headers.Add("X-DNN-MONIKER", MonikerSettingValue);
+
+            // Act
+            ModuleInfo returnedModuleInfo;
+            var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
         }
 
         private static IDataReader GetPortalsCallBack(string culture)
@@ -107,52 +150,12 @@ namespace DotNetNuke.Tests.Web.Api
             return table.CreateDataReader();
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            ModuleController.ClearInstance();
-            TabController.ClearInstance();
-        }
-
         private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance)
             where T : class
         {
             mock = new Mock<T>();
             instance = mock.Object;
             register(instance);
-        }
-
-        [Test]
-        public void ValidTabAndModuleIdLoadsActiveModule()
-        {
-            // Arrange
-            var request = new HttpRequestMessage();
-            request.Headers.Add("tabid", ValidTabId.ToString(CultureInfo.InvariantCulture));
-            request.Headers.Add("moduleid", ValidModuleId.ToString(CultureInfo.InvariantCulture));
-
-            // Act
-            ModuleInfo returnedModuleInfo;
-            var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
-        }
-
-        [Test]
-        public void ExistingMonikerValueInHeaderShouldFindTheCorrectModuleInfo()
-        {
-            // Arrange
-            var request = new HttpRequestMessage();
-            request.Headers.Add("X-DNN-MONIKER", MonikerSettingValue);
-
-            // Act
-            ModuleInfo returnedModuleInfo;
-            var result = new StandardTabAndModuleInfoProvider().TryFindModuleInfo(request, out returnedModuleInfo);
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreSame(this._moduleInfo, returnedModuleInfo);
         }
 
         [Test]

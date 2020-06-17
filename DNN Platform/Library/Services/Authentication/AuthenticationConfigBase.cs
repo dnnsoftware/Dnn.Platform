@@ -18,15 +18,6 @@ namespace DotNetNuke.Services.Authentication
     [Serializable]
     public abstract class AuthenticationConfigBase
     {
-        /// <summary>
-        /// Gets the Dependency Provider to resolve registered
-        /// services with the container.
-        /// </summary>
-        /// <value>
-        /// The Dependency Service.
-        /// </value>
-        protected IServiceProvider DependencyProvider { get; }
-
         public AuthenticationConfigBase()
         {
             this.DependencyProvider = Globals.DependencyProvider;
@@ -40,5 +31,14 @@ namespace DotNetNuke.Services.Authentication
 
         [Browsable(false)]
         public int PortalID { get; set; }
+
+        /// <summary>
+        /// Gets the Dependency Provider to resolve registered
+        /// services with the container.
+        /// </summary>
+        /// <value>
+        /// The Dependency Service.
+        /// </value>
+        protected IServiceProvider DependencyProvider { get; }
     }
 }

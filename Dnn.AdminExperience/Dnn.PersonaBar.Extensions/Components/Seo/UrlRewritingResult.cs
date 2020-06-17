@@ -10,6 +10,16 @@ namespace Dnn.PersonaBar.Seo.Components
     [JsonObject]
     public class UrlRewritingResult
     {
+        public UrlRewritingResult()
+        {
+            var noneText = Localization.GetString("None", Localization.GlobalResourceFile);
+            this.RewritingResult = noneText;
+            this.Culture = noneText;
+            this.IdentifiedPage = noneText;
+            this.RedirectionResult = noneText;
+            this.OperationMessages = noneText;
+        }
+
         [JsonProperty("rewritingResult")]
         public string RewritingResult { get; set; }
 
@@ -30,15 +40,5 @@ namespace Dnn.PersonaBar.Seo.Components
 
         [JsonIgnore]
         public int Status { get; set; }
-
-        public UrlRewritingResult()
-        {
-            var noneText = Localization.GetString("None", Localization.GlobalResourceFile);
-            this.RewritingResult = noneText;
-            this.Culture = noneText;
-            this.IdentifiedPage = noneText;
-            this.RedirectionResult = noneText;
-            this.OperationMessages = noneText;
-        }
     }
 }

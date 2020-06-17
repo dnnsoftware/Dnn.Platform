@@ -19,21 +19,17 @@ namespace DotNetNuke.UI.Skins.Controls
     /// -----------------------------------------------------------------------------
     public partial class Privacy : SkinObjectBase
     {
-        private readonly INavigationManager _navigationManager;
         private const string MyFileName = "Privacy.ascx";
-
-        public string Text { get; set; }
-
-        public string CssClass { get; set; }
+        private readonly INavigationManager _navigationManager;
 
         public Privacy()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        private void InitializeComponent()
-        {
-        }
+        public string Text { get; set; }
+
+        public string CssClass { get; set; }
 
         protected override void OnInit(EventArgs e)
         {
@@ -68,6 +64,10 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

@@ -638,7 +638,7 @@ namespace log4net.Repository.Hierarchy
                         IDictionary environmentVariables = Environment.GetEnvironmentVariables();
                         if (this.HasCaseInsensitiveEnvironment)
                         {
-                        environmentVariables = this.CreateCaseInsensitiveWrapper(environmentVariables);
+                            environmentVariables = this.CreateCaseInsensitiveWrapper(environmentVariables);
                         }
 
                         propertyValue = OptionConverter.SubstituteVariables(propertyValue, environmentVariables);
@@ -1063,7 +1063,7 @@ namespace log4net.Repository.Hierarchy
 
 #if !(NETCF || NETSTANDARD1_3) // NETSTANDARD1_3: System.Runtime.InteropServices.RuntimeInformation not available on desktop 4.6
         private bool HasCaseInsensitiveEnvironment
-            {
+        {
             get
             {
 #if NET_1_0 || NET_1_1 || CLI_1_0
@@ -1073,23 +1073,23 @@ namespace log4net.Repository.Hierarchy
 			// see above
 			return false;
 #else
-            PlatformID platform = Environment.OSVersion.Platform;
-            return platform != PlatformID.Unix && platform != PlatformID.MacOSX;
+                PlatformID platform = Environment.OSVersion.Platform;
+                return platform != PlatformID.Unix && platform != PlatformID.MacOSX;
 #endif
             }
         }
 
         private IDictionary CreateCaseInsensitiveWrapper(IDictionary dict)
-            {
+        {
             if (dict == null)
             {
-            return dict;
+                return dict;
             }
 
             Hashtable hash = SystemInfo.CreateCaseInsensitiveHashtable();
             foreach (DictionaryEntry entry in dict)
             {
-            hash[entry.Key] = entry.Value;
+                hash[entry.Key] = entry.Value;
             }
 
             return hash;
@@ -1121,7 +1121,7 @@ namespace log4net.Repository.Hierarchy
         private const string CONFIG_DEBUG_ATTR = "configDebug";
         private const string INTERNAL_DEBUG_ATTR = "debug";
         private const string EMIT_INTERNAL_DEBUG_ATTR = "emitDebug";
-        private const string CONFIG_UPDATE_MODE_ATTR    = "update";
+        private const string CONFIG_UPDATE_MODE_ATTR = "update";
         private const string RENDERING_TYPE_ATTR = "renderingClass";
         private const string RENDERED_TYPE_ATTR = "renderedClass";
 

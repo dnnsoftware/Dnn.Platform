@@ -760,9 +760,9 @@ namespace log4net.Appender
         /// </remarks>
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public virtual bool Flush(int millisecondsTimeout)
-            {
+        {
             return true;
-            }
+        }
 
         /// <summary>
         /// The layout of this appender.

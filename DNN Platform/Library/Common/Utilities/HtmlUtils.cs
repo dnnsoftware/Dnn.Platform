@@ -25,6 +25,9 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class HtmlUtils
     {
+        // Create Regular Expression objects
+        private const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
+
         private static readonly Regex HtmlDetectionRegex = new Regex("<(.*\\s*)>", RegexOptions.Compiled);
         private static readonly Regex StripWhiteSpaceRegex = new Regex("\\s+", RegexOptions.Compiled);
         private static readonly Regex StripNonWordRegex = new Regex("\\W*", RegexOptions.Compiled);
@@ -33,9 +36,6 @@ namespace DotNetNuke.Common.Utilities
 
         // Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
         private static readonly Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
-
-        // Create Regular Expression objects
-        private const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
         private static readonly Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
         private static readonly Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
         private static readonly Regex EntityRegEx = new Regex("&[^;]+;", RegexOptions.Compiled);

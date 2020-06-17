@@ -23,6 +23,8 @@ namespace DotNetNuke.Services.FileSystem
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
 
+        public bool IsReusable => true;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This handler handles requests for LinkClick.aspx, but only those specifc
@@ -137,7 +139,7 @@ namespace DotNetNuke.Services.FileSystem
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
-                     bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
+                    bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
 
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
@@ -264,7 +266,5 @@ namespace DotNetNuke.Services.FileSystem
                 UrlUtils.Handle404Exception(context.Response, PortalController.Instance.GetCurrentPortalSettings());
             }
         }
-
-        public bool IsReusable => true;
     }
 }

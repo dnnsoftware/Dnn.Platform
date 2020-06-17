@@ -15,8 +15,6 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 
     internal class DnnRedirecttoRouteResult : RedirectToRouteResult
     {
-        protected INavigationManager NavigationManager { get; }
-
         public DnnRedirecttoRouteResult(string actionName, string controllerName, string routeName, RouteValueDictionary routeValues, bool permanent)
             : base(routeName, routeValues, permanent)
         {
@@ -32,6 +30,8 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
         }
 
         public DnnUrlHelper Url { get; private set; }
+
+        protected INavigationManager NavigationManager { get; }
 
         public string ActionName { get; private set; }
 

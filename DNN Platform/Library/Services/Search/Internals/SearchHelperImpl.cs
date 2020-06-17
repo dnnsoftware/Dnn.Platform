@@ -53,13 +53,6 @@ namespace DotNetNuke.Services.Search.Internals
             return this.GetSearchTypes().Single(t => t.SearchTypeName == searchTypeName);
         }
 
-        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
-        {
-            var cacheKey = string.Format("{0}_{1}_{2}", SynonymTermsCacheKey, portalId, cultureCode);
-            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
-            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cachArg, this.SynonymTermsCallBack);
-        }
-
         public IEnumerable<string> GetSynonyms(int portalId, string cultureCode, string term)
         {
             var terms = this.GetSynonymTerms(portalId, cultureCode);
@@ -77,6 +70,13 @@ namespace DotNetNuke.Services.Search.Internals
             var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
             var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
             return CBO.GetCachedObject<IList<SynonymsGroup>>(cachArg, this.GetSynonymsGroupsCallBack);
+        }
+
+        private IDictionary<string, IList<string>> GetSynonymTerms(int portalId, string cultureCode)
+        {
+            var cacheKey = string.Format("{0}_{1}_{2}", SynonymTermsCacheKey, portalId, cultureCode);
+            var cachArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default);
+            return CBO.GetCachedObject<IDictionary<string, IList<string>>>(cachArg, this.SynonymTermsCallBack);
         }
 
         public int AddSynonymsGroup(string synonymsTags, int portalId, string cultureCode, out string duplicateWord)

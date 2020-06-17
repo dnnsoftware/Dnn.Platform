@@ -13,13 +13,13 @@ namespace DotNetNuke.Tests.Core.Collections
     [TestFixture]
     public class PageSelectorTests
     {
+        private IEnumerable<int> list;
+
         [SetUp]
         public void SetUp()
         {
             this.list = Util.CreateIntegerList(Constants.PAGE_TotalCount);
         }
-
-        private IEnumerable<int> list;
 
         [Test]
         [TestCase(0)]

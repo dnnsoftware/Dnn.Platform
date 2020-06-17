@@ -112,6 +112,19 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
+        public int KeyID
+        {
+            get
+            {
+                return this.SkinPackageID;
+            }
+
+            set
+            {
+                this.SkinPackageID = value;
+            }
+        }
+
         public void Fill(IDataReader dr)
         {
             this.SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
@@ -132,19 +145,6 @@ namespace DotNetNuke.UI.Skins
                         this._Skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
                     }
                 }
-            }
-        }
-
-        public int KeyID
-        {
-            get
-            {
-                return this.SkinPackageID;
-            }
-
-            set
-            {
-                this.SkinPackageID = value;
             }
         }
     }

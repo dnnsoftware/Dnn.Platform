@@ -28,13 +28,13 @@ namespace DotNetNuke.Modules.Admin.Modules
     {
         private readonly INavigationManager _navigationManager;
 
+        private new int ModuleId = -1;
+        private ModuleInfo _module;
+
         public Import()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private new int ModuleId = -1;
-        private ModuleInfo _module;
 
         private ModuleInfo Module
         {
@@ -49,6 +49,45 @@ namespace DotNetNuke.Modules.Admin.Modules
             get
             {
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (this.Request.QueryString["moduleid"] != null)
+            {
+                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+            }
+
+            // Verify that the current user has access to edit this module
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "IMPORT", this.Module))
+            {
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cboFolders.SelectionChanged += this.OnFoldersIndexChanged;
+            this.cboFiles.SelectedIndexChanged += this.OnFilesIndexChanged;
+            this.cmdImport.Click += this.OnImportClick;
+
+            try
+            {
+                if (!this.Page.IsPostBack)
+                {
+                    this.cmdCancel.NavigateUrl = this.ReturnURL;
+                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
+                    this.cboFolders.Services.Parameters.Add("permission", "ADD");
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -119,45 +158,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
 
             return strMessage;
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (this.Request.QueryString["moduleid"] != null)
-            {
-                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
-            }
-
-            // Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "IMPORT", this.Module))
-            {
-                this.Response.Redirect(Globals.AccessDeniedURL(), true);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cboFolders.SelectionChanged += this.OnFoldersIndexChanged;
-            this.cboFiles.SelectedIndexChanged += this.OnFilesIndexChanged;
-            this.cmdImport.Click += this.OnImportClick;
-
-            try
-            {
-                if (!this.Page.IsPostBack)
-                {
-                    this.cmdCancel.NavigateUrl = this.ReturnURL;
-                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
-                    this.cboFolders.Services.Parameters.Add("permission", "ADD");
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
 
         protected void OnFoldersIndexChanged(object sender, EventArgs e)

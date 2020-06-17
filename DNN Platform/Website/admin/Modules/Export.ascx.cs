@@ -38,13 +38,13 @@ namespace DotNetNuke.Modules.Admin.Modules
     {
         private readonly INavigationManager _navigationManager;
 
+        private new int ModuleId = -1;
+        private ModuleInfo _module;
+
         public Export()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        private new int ModuleId = -1;
-        private ModuleInfo _module;
 
         private ModuleInfo Module
         {
@@ -60,6 +60,66 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 return UrlUtils.ValidReturnUrl(this.Request.Params["ReturnURL"]) ?? this._navigationManager.NavigateURL();
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (this.Request.QueryString["moduleid"] != null)
+            {
+                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+            }
+
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", this.Module))
+            {
+                this.Response.Redirect(Globals.AccessDeniedURL(), true);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.cmdExport.Click += this.OnExportClick;
+
+            try
+            {
+                if (this.Request.QueryString["moduleid"] != null)
+                {
+                    int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                }
+
+                if (!this.Page.IsPostBack)
+                {
+                    this.cmdCancel.NavigateUrl = this.ReturnURL;
+
+                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
+                    this.cboFolders.Services.Parameters.Add("permission", "ADD");
+                    if (this.Module != null)
+                    {
+                        this.txtFile.Text = CleanName(this.Module.ModuleTitle);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        private static string CleanName(string name)
+        {
+            var strName = name;
+            const string strBadChars = ". ~`!@#$%^&*()-_+={[}]|\\:;<,>?/\"'";
+
+            int intCounter;
+            for (intCounter = 0; intCounter <= strBadChars.Length - 1; intCounter++)
+            {
+                strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
+            }
+
+            return strName;
         }
 
         private string ExportModule(int moduleID, string fileName, IFolderInfo folder)
@@ -144,66 +204,6 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
 
             return strMessage;
-        }
-
-        private static string CleanName(string name)
-        {
-            var strName = name;
-            const string strBadChars = ". ~`!@#$%^&*()-_+={[}]|\\:;<,>?/\"'";
-
-            int intCounter;
-            for (intCounter = 0; intCounter <= strBadChars.Length - 1; intCounter++)
-            {
-                strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
-            }
-
-            return strName;
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (this.Request.QueryString["moduleid"] != null)
-            {
-                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
-            }
-
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", this.Module))
-            {
-                this.Response.Redirect(Globals.AccessDeniedURL(), true);
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.cmdExport.Click += this.OnExportClick;
-
-            try
-            {
-                if (this.Request.QueryString["moduleid"] != null)
-                {
-                    int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
-                }
-
-                if (!this.Page.IsPostBack)
-                {
-                    this.cmdCancel.NavigateUrl = this.ReturnURL;
-
-                    this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
-                    this.cboFolders.Services.Parameters.Add("permission", "ADD");
-                    if (this.Module != null)
-                    {
-                        this.txtFile.Text = CleanName(this.Module.ModuleTitle);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
         }
 
         protected void OnExportClick(object sender, EventArgs e)

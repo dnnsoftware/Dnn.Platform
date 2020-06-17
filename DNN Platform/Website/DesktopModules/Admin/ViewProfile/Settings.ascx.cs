@@ -40,12 +40,6 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.cmdLoadDefault.Click += this.cmdLoadDefault_Click;
-        }
-
         public override void UpdateSettings()
         {
             try
@@ -58,6 +52,12 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.cmdLoadDefault.Click += this.cmdLoadDefault_Click;
         }
 
         protected void cmdLoadDefault_Click(object sender, EventArgs e)

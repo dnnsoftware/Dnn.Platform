@@ -33,22 +33,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ViewStateMode = ViewStateMode.Disabled;
         }
 
-        protected string LocalResourceFile
-        {
-            get
-            {
-                return Utilities.GetLocalResourceFile(this);
-            }
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
         public object DataSource
         {
             get
@@ -70,6 +54,22 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         public DnnFormMode FormMode { get; set; }
+
+        protected string LocalResourceFile
+        {
+            get
+            {
+                return Utilities.GetLocalResourceFile(this);
+            }
+        }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
         public bool EncryptIds { get; set; }
 
@@ -107,6 +107,35 @@ namespace DotNetNuke.Web.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormTab> Tabs { get; private set; }
 
+        public override void DataBind()
+        {
+            this.OnDataBinding(EventArgs.Empty);
+            this.Controls.Clear();
+            this.ClearChildViewState();
+            this.TrackViewState();
+            this.CreateControlHierarchy(true);
+            this.ChildControlsCreated = true;
+        }
+
+        [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
+        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
+        {
+            SetUpItems(items, parentControl, localResourceFile, false);
+        }
+
+        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
+        {
+            foreach (DnnFormItemBase item in items)
+            {
+                if (encryptIds)
+                {
+                    item.ID = (Host.GUID.Substring(0, 7) + item.ID + DateTime.Now.Day).GenerateHash();
+                }
+
+                parentControl.Controls.Add(item);
+            }
+        }
+
         private List<DnnFormItemBase> GetAllItems()
         {
             var items = new List<DnnFormItemBase>();
@@ -134,22 +163,39 @@ namespace DotNetNuke.Web.UI.WebControls
             return items;
         }
 
-        [Obsolete("Obsoleted in Platform 7.4.1, please add encryptIds. Scheduled removal in v10.0.0.")]
-        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile)
+        protected override void CreateChildControls()
         {
-            SetUpItems(items, parentControl, localResourceFile, false);
+            // CreateChildControls re-creates the children (the items)
+            // using the saved view state.
+            // First clear any existing child controls.
+            this.Controls.Clear();
+
+            // Create the items only if there is view state
+            // corresponding to the children.
+            if (this._itemCount > 0)
+            {
+                this.CreateControlHierarchy(false);
+            }
         }
 
-        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
+        protected virtual void CreateControlHierarchy(bool useDataSource)
         {
-            foreach (DnnFormItemBase item in items)
-            {
-                if (encryptIds)
-                {
-                    item.ID = (Host.GUID.Substring(0, 7) + item.ID + DateTime.Now.Day).GenerateHash();
-                }
+            this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
 
-                parentControl.Controls.Add(item);
+            this.SetUpTabs();
+
+            this.SetUpSections(this.Sections, this);
+
+            SetUpItems(this.Items, this, this.LocalResourceFile, this.EncryptIds);
+
+            this.DataBindItems(useDataSource);
+        }
+
+        protected override void LoadControlState(object state)
+        {
+            if (state != null)
+            {
+                this._itemCount = (int)state;
             }
         }
 
@@ -224,21 +270,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        protected override void CreateChildControls()
-        {
-            // CreateChildControls re-creates the children (the items)
-            // using the saved view state.
-            // First clear any existing child controls.
-            this.Controls.Clear();
-
-            // Create the items only if there is view state
-            // corresponding to the children.
-            if (this._itemCount > 0)
-            {
-                this.CreateControlHierarchy(false);
-            }
-        }
-
         private void DataBindItems(bool useDataSource)
         {
             var items = this.GetAllItems();
@@ -263,37 +294,6 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             this._itemCount = this.GetAllItems().Count;
-        }
-
-        protected virtual void CreateControlHierarchy(bool useDataSource)
-        {
-            this.CssClass = string.IsNullOrEmpty(this.CssClass) ? "dnnForm" : this.CssClass.Contains("dnnForm") ? this.CssClass : string.Format("dnnForm {0}", this.CssClass);
-
-            this.SetUpTabs();
-
-            this.SetUpSections(this.Sections, this);
-
-            SetUpItems(this.Items, this, this.LocalResourceFile, this.EncryptIds);
-
-            this.DataBindItems(useDataSource);
-        }
-
-        public override void DataBind()
-        {
-            this.OnDataBinding(EventArgs.Empty);
-            this.Controls.Clear();
-            this.ClearChildViewState();
-            this.TrackViewState();
-            this.CreateControlHierarchy(true);
-            this.ChildControlsCreated = true;
-        }
-
-        protected override void LoadControlState(object state)
-        {
-            if (state != null)
-            {
-                this._itemCount = (int)state;
-            }
         }
 
         protected override void OnInit(EventArgs e)

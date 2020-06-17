@@ -22,16 +22,48 @@ namespace DotNetNuke.Services.Log.EventLog
 
     public class DBLoggingProvider : LoggingProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
+        public const string LogTypeCacheKey = "LogTypes";
+        public const string LogTypeInfoCacheKey = "GetLogTypeConfigInfo";
+
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
         private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
-
-        public const string LogTypeCacheKey = "LogTypes";
-        public const string LogTypeInfoCacheKey = "GetLogTypeConfigInfo";
         public const string LogTypeInfoByKeyCacheKey = "GetLogTypeConfigInfoByKey";
+
+        public override void AddLog(LogInfo logInfo)
+        {
+            string configPortalID = logInfo.LogPortalID != Null.NullInteger
+                                        ? logInfo.LogPortalID.ToString()
+                                        : "*";
+            var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
+            if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
+            {
+                return;
+            }
+
+            logInfo.LogConfigID = logTypeConfigInfo.ID;
+            var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
+            SchedulingProvider scheduler = SchedulingProvider.Instance();
+            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false
+                || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
+            {
+                WriteLog(logQueueItem);
+            }
+            else
+            {
+                LogQueue.Add(logQueueItem);
+            }
+        }
+
+        // ReSharper disable once InconsistentNaming
+        public override void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
+        {
+            DataProvider.Instance().AddLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
+            DataCache.RemoveCache(LogTypeCacheKey);
+        }
 
         private static Hashtable FillLogTypeConfigInfoByKey(ArrayList arr)
         {
@@ -55,38 +87,6 @@ namespace DotNetNuke.Services.Log.EventLog
 
             DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
             return ht;
-        }
-
-        private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
-        {
-            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
-            var logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|" + logTypePortalID];
-            if (logTypeConfigInfo == null)
-            {
-                logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|" + logTypePortalID];
-                if (logTypeConfigInfo == null)
-                {
-                    logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|*"];
-                    if (logTypeConfigInfo == null)
-                    {
-                        logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|*"];
-                    }
-                    else
-                    {
-                        return logTypeConfigInfo;
-                    }
-                }
-                else
-                {
-                    return logTypeConfigInfo;
-                }
-            }
-            else
-            {
-                return logTypeConfigInfo;
-            }
-
-            return logTypeConfigInfo;
         }
 
         private static LogInfo FillLogInfo(IDataReader dr)
@@ -154,6 +154,38 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 CBO.CloseDataReader(dr, true);
             }
+        }
+
+        private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
+        {
+            var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
+            var logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|" + logTypePortalID];
+            if (logTypeConfigInfo == null)
+            {
+                logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|" + logTypePortalID];
+                if (logTypeConfigInfo == null)
+                {
+                    logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|*"];
+                    if (logTypeConfigInfo == null)
+                    {
+                        logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|*"];
+                    }
+                    else
+                    {
+                        return logTypeConfigInfo;
+                    }
+                }
+                else
+                {
+                    return logTypeConfigInfo;
+                }
+            }
+            else
+            {
+                return logTypeConfigInfo;
+            }
+
+            return logTypeConfigInfo;
         }
 
         private static void WriteError(LogTypeConfigInfo logTypeConfigInfo, Exception exc, string header, string message)
@@ -234,38 +266,6 @@ namespace DotNetNuke.Services.Log.EventLog
                 Logger.Error(exc);
                 WriteError(logTypeConfigInfo, exc, "Unhandled Error", exc.Message);
             }
-        }
-
-        public override void AddLog(LogInfo logInfo)
-        {
-            string configPortalID = logInfo.LogPortalID != Null.NullInteger
-                                        ? logInfo.LogPortalID.ToString()
-                                        : "*";
-            var logTypeConfigInfo = this.GetLogTypeConfigInfoByKey(logInfo.LogTypeKey, configPortalID);
-            if (logTypeConfigInfo == null || logTypeConfigInfo.LoggingIsActive == false)
-            {
-                return;
-            }
-
-            logInfo.LogConfigID = logTypeConfigInfo.ID;
-            var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
-            SchedulingProvider scheduler = SchedulingProvider.Instance();
-            if (scheduler == null || logInfo.BypassBuffering || SchedulingProvider.Enabled == false
-                || scheduler.GetScheduleStatus() == ScheduleStatus.STOPPED || !Host.EventLogBuffer)
-            {
-                WriteLog(logQueueItem);
-            }
-            else
-            {
-                LogQueue.Add(logQueueItem);
-            }
-        }
-
-        // ReSharper disable once InconsistentNaming
-        public override void AddLogType(string logTypeKey, string logTypeFriendlyName, string logTypeDescription, string logTypeCSSClass, string logTypeOwner)
-        {
-            DataProvider.Instance().AddLogType(logTypeKey, logTypeFriendlyName, logTypeDescription, logTypeCSSClass, logTypeOwner);
-            DataCache.RemoveCache(LogTypeCacheKey);
         }
 
         public override void AddLogTypeConfigInfo(string id, bool loggingIsActive, string logTypeKey, string logTypePortalID, string keepMostRecent, string logFileName, bool emailNotificationIsActive,

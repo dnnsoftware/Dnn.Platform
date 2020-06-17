@@ -24,12 +24,6 @@ namespace Dnn.AuthServices.Jwt.Auth
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
-        public override string AuthScheme => this._jwtController.SchemeType;
-
-        public override bool BypassAntiForgeryToken => true;
-
-        internal static bool IsEnabled { get; set; }
-
         private readonly IJwtController _jwtController = JwtController.Instance;
 
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)
@@ -40,6 +34,12 @@ namespace Dnn.AuthServices.Jwt.Auth
             // this scheme gets marked as enabled.
             IsEnabled = true;
         }
+
+        public override string AuthScheme => this._jwtController.SchemeType;
+
+        public override bool BypassAntiForgeryToken => true;
+
+        internal static bool IsEnabled { get; set; }
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {

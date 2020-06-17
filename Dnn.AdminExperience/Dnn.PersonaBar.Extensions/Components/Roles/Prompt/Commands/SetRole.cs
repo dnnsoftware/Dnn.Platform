@@ -22,11 +22,11 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     [ConsoleCommand("set-role", Constants.RolesCategory, "Prompt_SetRole_Description")]
     public class SetRole : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
         [FlagParameter("id", "Prompt_SetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("public", "Prompt_SetRole_FlagIsPublic", "Boolean")]
         private const string FlagIsPublic = "public";
         [FlagParameter("autoassign", "Prompt_SetRole_FlagAutoAssign", "Boolean")]
@@ -38,7 +38,6 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("status", "Prompt_SetRole_FlagStatus", "Boolean")]
         private const string FlagStatus = "status";
 
-
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
@@ -46,10 +45,9 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         public bool? AutoAssign { get; set; }
         public RoleStatus? Status { get; set; }
 
-
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
+
             this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true, true);
             this.RoleName = this.GetFlagValue(FlagRoleName, "Role Name", string.Empty);
             this.Description = this.GetFlagValue(FlagDescription, "Description", string.Empty);
@@ -71,7 +69,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
                     this.Status = null;
                     break;
             }
-            
+
             if ((string.IsNullOrEmpty(this.RoleName)) && string.IsNullOrEmpty(this.Description) && !this.IsPublic.HasValue && !this.AutoAssign.HasValue && string.IsNullOrEmpty(status))
             {
                 this.AddMessage(this.LocalizeString("Prompt_NothingToUpdate"));

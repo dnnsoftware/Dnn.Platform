@@ -50,6 +50,25 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the Key ID.
+        /// </summary>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public int KeyID
+        {
+            get
+            {
+                return this.ServerID;
+            }
+
+            set
+            {
+                this.ServerID = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Fills a ServerInfo from a Data Reader.
         /// </summary>
         /// <param name="dr">The Data Reader to use.</param>
@@ -81,25 +100,6 @@ namespace DotNetNuke.Entities.Host
                 {
                     this.UniqueId = Null.SetNullString(dr["UniqueId"]);
                 }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Key ID.
-        /// </summary>
-        /// <returns>An Integer.</returns>
-        /// -----------------------------------------------------------------------------
-        public int KeyID
-        {
-            get
-            {
-                return this.ServerID;
-            }
-
-            set
-            {
-                this.ServerID = value;
             }
         }
     }

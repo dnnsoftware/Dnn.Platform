@@ -39,6 +39,40 @@ namespace DotNetNuke.Web.Mvc
             this._controlKey = controlKey;
         }
 
+        public ModuleActionCollection ModuleActions { get; private set; }
+
+        protected bool ExecuteModuleImmediately { get; set; } = true;
+
+        protected void ExecuteModule()
+        {
+            try
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+
+                var moduleExecutionEngine = this.GetModuleExecutionEngine();
+
+                this._result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
+
+                this.ModuleActions = this.LoadActions(this._result);
+
+                httpContext.SetModuleRequestResult(this._result);
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (this.ExecuteModuleImmediately)
+            {
+                this.ExecuteModule();
+            }
+        }
+
         private ModuleApplication GetModuleApplication(DesktopModuleInfo desktopModule, RouteData defaultRouteData)
         {
             ModuleApplication moduleApplication = null;
@@ -67,13 +101,13 @@ namespace DotNetNuke.Web.Mvc
                 var defaultNamespaces = (string[])defaultRouteData.DataTokens["namespaces"];
 
                 moduleApplication = new ModuleApplication
-                                            {
-                                                DefaultActionName = defaultControllerName,
-                                                DefaultControllerName = defaultActionName,
-                                                DefaultNamespaces = defaultNamespaces,
-                                                ModuleName = desktopModule.ModuleName,
-                                                FolderPath = desktopModule.FolderName,
-                                            };
+                {
+                    DefaultActionName = defaultControllerName,
+                    DefaultControllerName = defaultActionName,
+                    DefaultNamespaces = defaultNamespaces,
+                    ModuleName = desktopModule.ModuleName,
+                    FolderPath = desktopModule.FolderName,
+                };
             }
 
             return moduleApplication;
@@ -131,13 +165,13 @@ namespace DotNetNuke.Web.Mvc
             }
 
             var moduleRequestContext = new ModuleRequestContext
-                                            {
-                                                DnnPage = this.Page,
-                                                HttpContext = httpContext,
-                                                ModuleContext = this.ModuleContext,
-                                                ModuleApplication = moduleApplication,
-                                                RouteData = routeData,
-                                            };
+            {
+                DnnPage = this.Page,
+                HttpContext = httpContext,
+                ModuleContext = this.ModuleContext,
+                ModuleApplication = moduleApplication,
+                RouteData = routeData,
+            };
 
             return moduleRequestContext;
         }
@@ -171,40 +205,6 @@ namespace DotNetNuke.Web.Mvc
             }
 
             return moduleOutput;
-        }
-
-        protected void ExecuteModule()
-        {
-            try
-            {
-                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
-
-                var moduleExecutionEngine = this.GetModuleExecutionEngine();
-
-                this._result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
-
-                this.ModuleActions = this.LoadActions(this._result);
-
-                httpContext.SetModuleRequestResult(this._result);
-            }
-            catch (Exception exc)
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        public ModuleActionCollection ModuleActions { get; private set; }
-
-        protected bool ExecuteModuleImmediately { get; set; } = true;
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (this.ExecuteModuleImmediately)
-            {
-                this.ExecuteModule();
-            }
         }
 
         protected override void OnPreRender(EventArgs e)

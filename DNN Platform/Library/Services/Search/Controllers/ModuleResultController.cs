@@ -31,6 +31,10 @@ namespace DotNetNuke.Services.Search.Controllers
     [Serializable]
     public class ModuleResultController : BaseResultController
     {
+        private const string ModuleByIdCacheKey = "ModuleById{0}";
+        private const CacheItemPriority ModuleByIdCachePriority = CacheItemPriority.Normal;
+        private const int ModuleByIdCacheTimeOut = 20;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
         private static Hashtable _moduleSearchControllers = new Hashtable();
@@ -126,10 +130,6 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return url;
         }
-
-        private const string ModuleByIdCacheKey = "ModuleById{0}";
-        private const CacheItemPriority ModuleByIdCachePriority = CacheItemPriority.Normal;
-        private const int ModuleByIdCacheTimeOut = 20;
 
         private static ArrayList GetModuleTabs(int moduleID)
         {

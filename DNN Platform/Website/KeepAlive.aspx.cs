@@ -8,11 +8,6 @@ namespace DotNetNuke.Common.Utilities
 
     public partial class KeepAlive : Page
     {
-        // This call is required by the Web Form Designer.
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -25,6 +20,11 @@ namespace DotNetNuke.Common.Utilities
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+        }
+
+        // This call is required by the Web Form Designer.
+        private void InitializeComponent()
+        {
         }
     }
 }

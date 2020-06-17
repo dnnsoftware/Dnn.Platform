@@ -26,16 +26,16 @@ using log4net.Core;
 
 namespace log4net.Util
 {
-        /// <summary>
+    /// <summary>
     /// Delegate type used for LogicalThreadContextStack's callbacks.
     /// </summary>
-    #if NET_2_0 || MONO_2_0
+#if NET_2_0 || MONO_2_0
     public delegate void TwoArgAction<T1, T2>(T1 t1, T2 t2);
-    #else
+#else
 	public delegate void TwoArgAction(string t1, LogicalThreadContextStack t2);
-    #endif
+#endif
 
-        /// <summary>
+    /// <summary>
     /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>.
     /// </summary>
     /// <remarks>
@@ -61,7 +61,7 @@ namespace log4net.Util
         /// The callback used to let the <see cref="log4net.Util.LogicalThreadContextStacks"/> register a
         /// new instance of a <see cref="log4net.Util.LogicalThreadContextStack"/>.
         /// </summary>
-        #if NET_2_0 || MONO_2_0
+#if NET_2_0 || MONO_2_0
         private TwoArgAction<string, LogicalThreadContextStack> m_registerNew;
 #else
 		private TwoArgAction m_registerNew;
@@ -78,9 +78,9 @@ namespace log4net.Util
         /// </remarks>
 #if NET_2_0 || MONO_2_0
         internal LogicalThreadContextStack(string propertyKey, TwoArgAction<string, LogicalThreadContextStack> registerNew)
-                #else
+#else
 		internal LogicalThreadContextStack(string propertyKey, TwoArgAction registerNew)
-        #endif
+#endif
         {
             this.m_propertyKey = propertyKey;
             this.m_registerNew = registerNew;
@@ -142,7 +142,7 @@ namespace log4net.Util
             string result = string.Empty;
             if (stack.Count > 0)
             {
-                result = ((StackFrame) stack.Pop()).Message;
+                result = ((StackFrame)stack.Pop()).Message;
             }
 
             LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew);
@@ -195,7 +195,7 @@ namespace log4net.Util
             Stack stack = this.m_stack;
             if (stack.Count > 0)
             {
-                return ((StackFrame) stack.Peek()).FullMessage;
+                return ((StackFrame)stack.Peek()).FullMessage;
             }
 
             return null;

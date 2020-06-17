@@ -29,6 +29,29 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// AddModuleControl adds a new Module Control to the database.
+        /// </summary>
+        /// <param name="objModuleControl">The Module Control to save.</param>
+        /// -----------------------------------------------------------------------------
+        public static void AddModuleControl(ModuleControlInfo objModuleControl)
+        {
+            SaveModuleControl(objModuleControl, true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// DeleteModuleControl deletes a Module Control in the database.
+        /// </summary>
+        /// <param name="moduleControlID">The ID of the Module Control to delete.</param>
+        /// -----------------------------------------------------------------------------
+        public static void DeleteModuleControl(int moduleControlID)
+        {
+            dataProvider.DeleteModuleControl(moduleControlID);
+            DataCache.ClearHostCache(true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// GetModuleControls gets a Dictionary of Module Controls from
         /// the Cache.
         /// </summary>
@@ -54,29 +77,6 @@ namespace DotNetNuke.Entities.Modules
         private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
         {
             return CBO.FillDictionary(key, dataProvider.GetModuleControls(), new Dictionary<int, ModuleControlInfo>());
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// AddModuleControl adds a new Module Control to the database.
-        /// </summary>
-        /// <param name="objModuleControl">The Module Control to save.</param>
-        /// -----------------------------------------------------------------------------
-        public static void AddModuleControl(ModuleControlInfo objModuleControl)
-        {
-            SaveModuleControl(objModuleControl, true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// DeleteModuleControl deletes a Module Control in the database.
-        /// </summary>
-        /// <param name="moduleControlID">The ID of the Module Control to delete.</param>
-        /// -----------------------------------------------------------------------------
-        public static void DeleteModuleControl(int moduleControlID)
-        {
-            dataProvider.DeleteModuleControl(moduleControlID);
-            DataCache.ClearHostCache(true);
         }
 
         /// -----------------------------------------------------------------------------

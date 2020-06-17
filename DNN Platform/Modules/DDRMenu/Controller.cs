@@ -19,11 +19,11 @@ namespace DotNetNuke.Web.DDRMenu
 
     public class Controller : IUpgradeable, IPortable
     {
-        private const string ddrMenuModuleName = "DDRMenu";
-        private const string ddrMenuMmoduleDefinitionName = "DDR Menu";
-
         public static readonly Regex AscxText1Regex = new Regex(Regex.Escape(@"Namespace=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex AscxText2Regex = new Regex(Regex.Escape(@"Namespace=""DNNGarden.TemplateEngine"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        private const string ddrMenuModuleName = "DDRMenu";
+        private const string ddrMenuMmoduleDefinitionName = "DDR Menu";
         public static readonly Regex AscxText3Regex = new Regex(Regex.Escape(@"Assembly=""DNNDoneRight.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
         public static readonly Regex AscxText4Regex = new Regex(Regex.Escape(@"Assembly=""DNNGarden.DDRMenu"""), RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -46,19 +46,19 @@ namespace DotNetNuke.Web.DDRMenu
             var moduleSettings = module.ModuleSettings;
 
             var settings = new Settings
-                           {
-                            MenuStyle = Convert.ToString(moduleSettings["MenuStyle"]),
-                            NodeXmlPath = Convert.ToString(moduleSettings["NodeXmlPath"]),
-                            NodeSelector = Convert.ToString(moduleSettings["NodeSelector"]),
-                            IncludeNodes = Convert.ToString(moduleSettings["IncludeNodes"]),
-                            ExcludeNodes = Convert.ToString(moduleSettings["ExcludeNodes"]),
-                            NodeManipulator = Convert.ToString(moduleSettings["NodeManipulator"]),
-                            IncludeContext = Convert.ToBoolean(moduleSettings["IncludeContext"]),
-                            IncludeHidden = Convert.ToBoolean(moduleSettings["IncludeHidden"]),
-                            ClientOptions = Settings.ClientOptionsFromSettingString(Convert.ToString(moduleSettings["ClientOptions"])),
-                            TemplateArguments =
+            {
+                MenuStyle = Convert.ToString(moduleSettings["MenuStyle"]),
+                NodeXmlPath = Convert.ToString(moduleSettings["NodeXmlPath"]),
+                NodeSelector = Convert.ToString(moduleSettings["NodeSelector"]),
+                IncludeNodes = Convert.ToString(moduleSettings["IncludeNodes"]),
+                ExcludeNodes = Convert.ToString(moduleSettings["ExcludeNodes"]),
+                NodeManipulator = Convert.ToString(moduleSettings["NodeManipulator"]),
+                IncludeContext = Convert.ToBoolean(moduleSettings["IncludeContext"]),
+                IncludeHidden = Convert.ToBoolean(moduleSettings["IncludeHidden"]),
+                ClientOptions = Settings.ClientOptionsFromSettingString(Convert.ToString(moduleSettings["ClientOptions"])),
+                TemplateArguments =
                                 Settings.TemplateArgumentsFromSettingString(Convert.ToString(moduleSettings["TemplateArguments"])),
-                           };
+            };
             return settings.ToXml();
         }
 
@@ -90,10 +90,10 @@ namespace DotNetNuke.Web.DDRMenu
             configXml.Load(webConfig);
             var navProviders = configXml.SelectSingleNode("/configuration/dotnetnuke/navigationControl/providers") as XmlElement;
 
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             var addProvider = navProviders.SelectSingleNode("add[@name='" + navName + "']") as XmlElement;
 
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper restore PossibleNullReferenceException
             var needsUpdate = true;
             if (addProvider == null)
             {

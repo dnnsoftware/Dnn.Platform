@@ -37,21 +37,23 @@ namespace DotNetNuke.UI.WebControls
             this.ItemType = itemType;
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
- /// changed.
- /// </summary>
- /// <value>A Boolean.</value>
- /// -----------------------------------------------------------------------------
+        public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
+        /// changed.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound).
- /// </summary>
- /// <value>A Boolean.</value>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound).
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
         public bool Checked { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -73,12 +75,12 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
- /// -----------------------------------------------------------------------------
- /// <summary>
- /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
- /// </summary>
- /// <value>A Boolean.</value>
- /// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -202,8 +204,6 @@ namespace DotNetNuke.UI.WebControls
                 container.Controls.Add(box);
             }
         }
-
-        public event DNNDataGridCheckedColumnEventHandler CheckedChanged;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

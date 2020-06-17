@@ -12,9 +12,14 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
     public class Localiser
     {
-        private readonly int portalId;
         private static bool apiChecked;
         private static ILocalisation _LocalisationApi;
+        private readonly int portalId;
+
+        public Localiser(int portalId)
+        {
+            this.portalId = portalId;
+        }
 
         private static ILocalisation LocalisationApi
         {
@@ -41,11 +46,6 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         public static DNNNodeCollection LocaliseDNNNodeCollection(DNNNodeCollection nodes)
         {
             return (LocalisationApi == null) ? nodes : (LocalisationApi.LocaliseNodes(nodes) ?? nodes);
-        }
-
-        public Localiser(int portalId)
-        {
-            this.portalId = portalId;
         }
 
         public void LocaliseNode(MenuNode node)

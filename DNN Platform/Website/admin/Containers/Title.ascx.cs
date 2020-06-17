@@ -26,17 +26,6 @@ namespace DotNetNuke.UI.Containers
 
         public string CssClass { get; set; }
 
-        private bool CanEditModule()
-        {
-            var canEdit = false;
-            if (this.ModuleControl != null && this.ModuleControl.ModuleContext.ModuleId > Null.NullInteger)
-            {
-                canEdit = (this.PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
-            }
-
-            return canEdit;
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -74,6 +63,17 @@ namespace DotNetNuke.UI.Containers
                 this.titleLabel.EditEnabled = true;
                 this.titleToolbar.Visible = true;
             }
+        }
+
+        private bool CanEditModule()
+        {
+            var canEdit = false;
+            if (this.ModuleControl != null && this.ModuleControl.ModuleContext.ModuleId > Null.NullInteger)
+            {
+                canEdit = (this.PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
+            }
+
+            return canEdit;
         }
 
         private void UpdateTitle(object source, DNNLabelEditEventArgs e)
