@@ -337,8 +337,14 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         TermsTabName = this.TabSanitizer(portal.TermsTabId, pid)?.TabName,
                         PrivacyTabId = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabID,
                         PrivacyTabName = this.TabSanitizer(portal.PrivacyTabId, pid)?.TabName,
-                        portalSettings.PageHeadText
-                    }
+                        RedirectAfterLoginTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogin, pid)?.TabID,
+                        RedirectAfterLoginTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogin, pid)?.TabName,
+                        RedirectAfterLogoutTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogout, pid)?.TabID,
+                        RedirectAfterLogoutTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterLogout, pid)?.TabName,
+                        RedirectAfterRegistrationTabId = this.TabSanitizer(portalSettings.Registration.RedirectAfterRegistration, pid)?.TabID,
+                        RedirectAfterRegistrationTabName = this.TabSanitizer(portalSettings.Registration.RedirectAfterRegistration, pid)?.TabName,
+                        portalSettings.PageHeadText,
+                    },
                 });
             }
             catch (Exception exc)
@@ -386,8 +392,11 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 portalInfo.Custom500TabId = this.ValidateTabId(request.Custom500TabId, pid);
                 portalInfo.TermsTabId = this.ValidateTabId(request.TermsTabId, pid);
                 portalInfo.PrivacyTabId = this.ValidateTabId(request.PrivacyTabId, pid);
-
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
+
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), false, cultureCode);
+                PortalController.UpdatePortalSetting(pid, "Redirect_AfterRegistration", request.RedirectAfterRegistrationTabId.ToString(), false, cultureCode);
                 PortalController.UpdatePortalSetting(pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });

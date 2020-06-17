@@ -400,7 +400,7 @@
     <Compile Include="Services\Dto\SiteSettings\LocalizationEntry.cs" />
     <Compile Include="Services\Dto\SiteSettings\LocalizationProgress.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateBasicSearchSettingsRequest.cs" />
-    <Compile Include="Services\Dto\SiteSettings\UpdateDefaultPagesSettings.cs" />
+    <Compile Include="Services\Dto\SiteSettings\UpdateDefaultPagesSettingsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateIgnoreWordsRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateLanguageRequest.cs" />
     <Compile Include="Services\Dto\SiteSettings\UpdateLanguageSettingsRequest.cs" />

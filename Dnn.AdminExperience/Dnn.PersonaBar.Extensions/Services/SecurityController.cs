@@ -87,12 +87,6 @@ namespace Dnn.PersonaBar.Security.Services
                 dynamic settings = new ExpandoObject();
                 settings.DefaultAuthProvider = PortalController.GetPortalSetting("DefaultAuthProvider", this.PortalId, "DNN");
                 settings.PrimaryAdministratorId = PortalSettings.Current.AdministratorId;
-                settings.RedirectAfterLoginTabId = this.ValidateTabId(portalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLoginTabName = this.GetTabName(portalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLoginTabPath = this.GetTabPath(portalSettings.Registration.RedirectAfterLogin);
-                settings.RedirectAfterLogoutTabId = this.ValidateTabId(portalSettings.Registration.RedirectAfterLogout);
-                settings.RedirectAfterLogoutTabName = this.GetTabName(portalSettings.Registration.RedirectAfterLogout);
-                settings.RedirectAfterLogoutTabPath = this.GetTabPath(portalSettings.Registration.RedirectAfterLogout);
                 settings.RequireValidProfileAtLogin = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfileAtLogin", this.PortalId, true);
                 settings.CaptchaLogin = PortalController.GetPortalSettingAsBoolean("Security_CaptchaLogin", this.PortalId, false);
                 settings.CaptchaRetrivePassword = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRetrivePassword", this.PortalId, false);
@@ -159,8 +153,6 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.Instance.UpdatePortalInfo(portalInfo);
 
                 PortalController.UpdatePortalSetting(this.PortalId, "DefaultAuthProvider", request.DefaultAuthProvider);
-                PortalController.UpdatePortalSetting(this.PortalId, "Redirect_AfterLogin", request.RedirectAfterLoginTabId.ToString(), cultureCode);
-                PortalController.UpdatePortalSetting(this.PortalId, "Redirect_AfterLogout", request.RedirectAfterLogoutTabId.ToString(), cultureCode);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_RequireValidProfile", request.RequireValidProfileAtLogin.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaLogin", request.CaptchaLogin.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRetrivePassword", request.CaptchaRetrivePassword.ToString(), false);
@@ -457,9 +449,6 @@ namespace Dnn.PersonaBar.Security.Services
                             RequirePasswordConfirmation = PortalController.GetPortalSettingAsBoolean("Registration_RequireConfirmPassword", this.PortalId, true),
                             RequireValidProfile = PortalController.GetPortalSettingAsBoolean("Security_RequireValidProfile", this.PortalId, false),
                             UseCaptchaRegister = PortalController.GetPortalSettingAsBoolean("Security_CaptchaRegister", this.PortalId, false),
-                            RedirectAfterRegistrationTabId = this.ValidateTabId(this.PortalSettings.Registration.RedirectAfterRegistration),
-                            RedirectAfterRegistrationTabName = this.GetTabName(this.PortalSettings.Registration.RedirectAfterRegistration),
-                            RedirectAfterRegistrationTabPath = this.GetTabPath(this.PortalSettings.Registration.RedirectAfterRegistration),
                             RequiresUniqueEmail = MembershipProviderConfig.RequiresUniqueEmail.ToString(CultureInfo.InvariantCulture),
                             PasswordFormat = MembershipProviderConfig.PasswordFormat.ToString(),
                             PasswordRetrievalEnabled = MembershipProviderConfig.PasswordRetrievalEnabled.ToString(CultureInfo.InvariantCulture),
@@ -469,11 +458,11 @@ namespace Dnn.PersonaBar.Security.Services
                             RequiresQuestionAndAnswer = MembershipProviderConfig.RequiresQuestionAndAnswer.ToString(CultureInfo.InvariantCulture),
                             MembershipProviderConfig.PasswordStrengthRegularExpression,
                             MaxInvalidPasswordAttempts = MembershipProviderConfig.MaxInvalidPasswordAttempts.ToString(CultureInfo.InvariantCulture),
-                            PasswordAttemptWindow = MembershipProviderConfig.PasswordAttemptWindow.ToString(CultureInfo.InvariantCulture)
+                            PasswordAttemptWindow = MembershipProviderConfig.PasswordAttemptWindow.ToString(CultureInfo.InvariantCulture),
                         },
                         UserRegistrationOptions = userRegistrationOptions,
-                        RegistrationFormTypeOptions = registrationFormTypeOptions
-                    }
+                        RegistrationFormTypeOptions = registrationFormTypeOptions,
+                    },
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -556,7 +545,6 @@ namespace Dnn.PersonaBar.Security.Services
                 PortalController.UpdatePortalSetting(this.PortalId, "Registration_RequireConfirmPassword", request.RequirePasswordConfirmation.ToString(), true);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_RequireValidProfile", request.RequireValidProfile.ToString(), false);
                 PortalController.UpdatePortalSetting(this.PortalId, "Security_CaptchaRegister", request.UseCaptchaRegister.ToString(), false);
-                PortalController.UpdatePortalSetting(this.PortalId, "Redirect_AfterRegistration", request.RedirectAfterRegistrationTabId.ToString(), LocaleController.Instance.GetCurrentLocale(this.PortalId).Code);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
