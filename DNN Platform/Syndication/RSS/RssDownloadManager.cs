@@ -1,29 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Web;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Instrumentation;
+
     /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds
+    ///   Helper class that provides memory and disk caching of the downloaded feeds.
     /// </summary>
     internal class RssDownloadManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RssDownloadManager));
         private const string RSS_Dir = "/RSS/";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
         private static readonly RssDownloadManager _theManager = new RssDownloadManager();
 
         private readonly Dictionary<string, RssChannelDom> _cache;
@@ -33,18 +28,40 @@ namespace DotNetNuke.Services.Syndication
         private RssDownloadManager()
         {
             // create in-memory cache
-            _cache = new Dictionary<string, RssChannelDom>();
+            this._cache = new Dictionary<string, RssChannelDom>();
 
-            _defaultTtlMinutes = 2;
+            this._defaultTtlMinutes = 2;
 
             // prepare disk directory
-            _directoryOnDisk = PrepareTempDir();
+            this._directoryOnDisk = PrepareTempDir();
+        }
+
+        public static RssChannelDom GetChannel(string url)
+        {
+            return _theManager.GetChannelDom(url);
+        }
+
+        private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
+        {
+            if (!string.IsNullOrEmpty(ttlString))
+            {
+                int ttlMinutes;
+                if (int.TryParse(ttlString, out ttlMinutes))
+                {
+                    if (ttlMinutes >= 0)
+                    {
+                        return ttlMinutes;
+                    }
+                }
+            }
+
+            return defaultTtlMinutes;
         }
 
         private RssChannelDom DownloadChannelDom(string url)
         {
             // look for disk cache first
-            RssChannelDom dom = TryLoadFromDisk(url);
+            RssChannelDom dom = this.TryLoadFromDisk(url);
 
             if (dom != null)
             {
@@ -64,19 +81,19 @@ namespace DotNetNuke.Services.Syndication
             // set expiry
             string ttlString = null;
             dom.Channel.TryGetValue("ttl", out ttlString);
-            int ttlMinutes = GetTtlFromString(ttlString, _defaultTtlMinutes);
+            int ttlMinutes = GetTtlFromString(ttlString, this._defaultTtlMinutes);
             DateTime utcExpiry = DateTime.UtcNow.AddMinutes(ttlMinutes);
             dom.SetExpiry(utcExpiry);
 
             // save to disk
-            TrySaveToDisk(doc, url, utcExpiry);
+            this.TrySaveToDisk(doc, url, utcExpiry);
 
             return dom;
         }
 
         private RssChannelDom TryLoadFromDisk(string url)
         {
-            if (_directoryOnDisk == null)
+            if (this._directoryOnDisk == null)
             {
                 return null; // no place to cache
             }
@@ -85,7 +102,7 @@ namespace DotNetNuke.Services.Syndication
             // looking for the one matching url that is not expired
             // removing expired (or invalid) ones
             string pattern = GetTempFileNamePrefixFromUrl(url) + "_*.rss.resources";
-            string[] files = Directory.GetFiles(_directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(this._directoryOnDisk, pattern, SearchOption.TopDirectoryOnly);
 
             foreach (string rssFilename in files)
             {
@@ -129,10 +146,10 @@ namespace DotNetNuke.Services.Syndication
                     {
                         File.Delete(rssFilename);
                     }
-					catch (Exception ex)
-					{
-						Logger.Error(ex);
-					}
+                    catch (Exception ex)
+                    {
+                        Logger.Error(ex);
+                    }
 
                     // try next file
                     continue;
@@ -154,7 +171,7 @@ namespace DotNetNuke.Services.Syndication
 
         private void TrySaveToDisk(XmlDocument doc, string url, DateTime utcExpiry)
         {
-            if (_directoryOnDisk == null)
+            if (this._directoryOnDisk == null)
             {
                 return;
             }
@@ -165,7 +182,7 @@ namespace DotNetNuke.Services.Syndication
 
             try
             {
-                doc.Save(Path.Combine(_directoryOnDisk, fileName));
+                doc.Save(Path.Combine(this._directoryOnDisk, fileName));
             }
             catch
             {
@@ -177,13 +194,13 @@ namespace DotNetNuke.Services.Syndication
         {
             RssChannelDom dom = null;
 
-            lock (_cache)
+            lock (this._cache)
             {
-                if (_cache.TryGetValue(url, out dom))
+                if (this._cache.TryGetValue(url, out dom))
                 {
                     if (DateTime.UtcNow > dom.UtcExpiry)
                     {
-                        _cache.Remove(url);
+                        this._cache.Remove(url);
                         dom = null;
                     }
                 }
@@ -191,37 +208,15 @@ namespace DotNetNuke.Services.Syndication
 
             if (dom == null)
             {
-                dom = DownloadChannelDom(url);
+                dom = this.DownloadChannelDom(url);
 
-                lock (_cache)
+                lock (this._cache)
                 {
-                    _cache[url] = dom;
+                    this._cache[url] = dom;
                 }
             }
 
             return dom;
-        }
-
-        public static RssChannelDom GetChannel(string url)
-        {
-            return _theManager.GetChannelDom(url);
-        }
-
-        private static int GetTtlFromString(string ttlString, int defaultTtlMinutes)
-        {
-            if (!string.IsNullOrEmpty(ttlString))
-            {
-                int ttlMinutes;
-                if (int.TryParse(ttlString, out ttlMinutes))
-                {
-                    if (ttlMinutes >= 0)
-                    {
-                        return ttlMinutes;
-                    }
-                }
-            }
-
-            return defaultTtlMinutes;
         }
 
         private static string PrepareTempDir()

@@ -1,77 +1,73 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public class DnnFormRadioButtonListItem : DnnFormListItemBase
     {
         private RadioButtonList _radioButtonList;
 
         protected override void BindList()
         {
-            if (_radioButtonList != null)
+            if (this._radioButtonList != null)
             {
-                string selectedValue = !_radioButtonList.Page.IsPostBack ? Convert.ToString(Value) : _radioButtonList.Page.Request.Form[_radioButtonList.UniqueID];
+                string selectedValue = !this._radioButtonList.Page.IsPostBack ? Convert.ToString(this.Value) : this._radioButtonList.Page.Request.Form[this._radioButtonList.UniqueID];
 
-                if (ListSource is Dictionary<string, string>)
+                if (this.ListSource is Dictionary<string, string>)
                 {
-                    var items = ListSource as Dictionary<string, string>;
+                    var items = this.ListSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
                         var listItem = new ListItem(item.Key, item.Value);
-                        listItem.Attributes.Add("onClick", OnClientClicked);
+                        listItem.Attributes.Add("onClick", this.OnClientClicked);
 
-                        _radioButtonList.Items.Add(listItem);
+                        this._radioButtonList.Items.Add(listItem);
                     }
                 }
                 else
                 {
-                    _radioButtonList.DataTextField = ListTextField;
-                    _radioButtonList.DataValueField = ListValueField;
-                    _radioButtonList.DataSource = ListSource;
+                    this._radioButtonList.DataTextField = this.ListTextField;
+                    this._radioButtonList.DataValueField = this.ListValueField;
+                    this._radioButtonList.DataSource = this.ListSource;
 
-                    _radioButtonList.DataBind();
-                }
-                if (String.IsNullOrEmpty(selectedValue))
-                {
-                    selectedValue = DefaultValue;
+                    this._radioButtonList.DataBind();
                 }
 
-                //Reset SelectedValue
-                if (_radioButtonList.Items.FindByValue(selectedValue) != null)
+                if (string.IsNullOrEmpty(selectedValue))
                 {
-                    _radioButtonList.Items.FindByValue(selectedValue).Selected = true;
+                    selectedValue = this.DefaultValue;
                 }
 
-                if (selectedValue != Convert.ToString(Value))
+                // Reset SelectedValue
+                if (this._radioButtonList.Items.FindByValue(selectedValue) != null)
                 {
-                    UpdateDataSource(Value, selectedValue, DataField);
+                    this._radioButtonList.Items.FindByValue(selectedValue).Selected = true;
+                }
+
+                if (selectedValue != Convert.ToString(this.Value))
+                {
+                    this.UpdateDataSource(this.Value, selectedValue, this.DataField);
                 }
             }
         }
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            _radioButtonList = new RadioButtonList  { ID = ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow};
+            this._radioButtonList = new RadioButtonList { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
 
-            container.Controls.Add(_radioButtonList);
+            container.Controls.Add(this._radioButtonList);
 
-            if (ListSource != null)
+            if (this.ListSource != null)
             {
-                BindList();
+                this.BindList();
             }
 
-            return _radioButtonList;
+            return this._radioButtonList;
         }
     }
 }

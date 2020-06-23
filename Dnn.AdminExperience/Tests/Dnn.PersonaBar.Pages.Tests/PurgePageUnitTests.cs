@@ -1,32 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using NUnit.Framework;
-using Moq;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Recyclebin.Components;
-using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using Dnn.PersonaBar.Library.Helper;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Tests
 {
+    using System;
+
+    using Dnn.PersonaBar.Library.Helper;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Recyclebin.Components;
+    using Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PurgePageUnitTests
     {
-        Mock<ITabController> _tabControllerMock;
-        Mock<IRecyclebinController> _recyclebinControllerMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IRecyclebinController> _recyclebinControllerMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
 
         [SetUp]
         public void RunBeforeAnyTest()
         {
-            _tabControllerMock = new Mock<ITabController>();
-            _recyclebinControllerMock = new Mock<IRecyclebinController>();
-            _contentVerifierMock = new Mock<IContentVerifier>();
+            this._tabControllerMock = new Mock<ITabController>();
+            this._recyclebinControllerMock = new Mock<IRecyclebinController>();
+            this._contentVerifierMock = new Mock<IContentVerifier>();
         }
 
         [Test]
@@ -41,10 +42,10 @@ namespace Dnn.PersonaBar.Pages.Tests
             PortalSettings portalSettings = new PortalSettings();
             portalSettings.PortalId = testPortalId;
 
-            _tabControllerMock.Setup(t => t.GetTab(tabId, testPortalId)).Returns(tab);
-            _contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(testPortalId, portalSettings, It.IsAny<Boolean>())).Returns(true);
+            this._tabControllerMock.Setup(t => t.GetTab(tabId, testPortalId)).Returns(tab);
+            this._contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(testPortalId, portalSettings, It.IsAny<bool>())).Returns(true);
 
-            IConsoleCommand purgeCommand = new PurgePage(_tabControllerMock.Object, _recyclebinControllerMock.Object, _contentVerifierMock.Object);
+            IConsoleCommand purgeCommand = new PurgePage(this._tabControllerMock.Object, this._recyclebinControllerMock.Object, this._contentVerifierMock.Object);
 
             var args = new[] { "purge-page", tabId.ToString() };
             purgeCommand.Initialize(args, portalSettings, null, 0);
@@ -68,10 +69,10 @@ namespace Dnn.PersonaBar.Pages.Tests
             PortalSettings portalSettings = new PortalSettings();
             portalSettings.PortalId = portalId;
 
-            _tabControllerMock.Setup(t => t.GetTab(tabId, portalId)).Returns(tab);
-            _contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(portalId, portalSettings, It.IsAny<Boolean>())).Returns(false);
+            this._tabControllerMock.Setup(t => t.GetTab(tabId, portalId)).Returns(tab);
+            this._contentVerifierMock.Setup(p => p.IsContentExistsForRequestedPortal(portalId, portalSettings, It.IsAny<bool>())).Returns(false);
 
-            IConsoleCommand purgeCommand = new PurgePage(_tabControllerMock.Object, _recyclebinControllerMock.Object, _contentVerifierMock.Object);
+            IConsoleCommand purgeCommand = new PurgePage(this._tabControllerMock.Object, this._recyclebinControllerMock.Object, this._contentVerifierMock.Object);
 
             var args = new[] { "purge-page", tabId.ToString() };
             purgeCommand.Initialize(args, portalSettings, null, 0);
@@ -90,7 +91,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             int tabId = 919;
             PortalSettings portalSettings = new PortalSettings();
 
-            IConsoleCommand purgeCommand = new PurgePage(_tabControllerMock.Object, _recyclebinControllerMock.Object, _contentVerifierMock.Object);
+            IConsoleCommand purgeCommand = new PurgePage(this._tabControllerMock.Object, this._recyclebinControllerMock.Object, this._contentVerifierMock.Object);
 
             var args = new[] { "purge-page", tabId.ToString() };
             purgeCommand.Initialize(args, portalSettings, null, 0);
@@ -100,7 +101,7 @@ namespace Dnn.PersonaBar.Pages.Tests
 
             // Assert
             Assert.IsTrue(result.IsError);
-            _tabControllerMock.Verify(t => t.GetTab(tabId, portalSettings.PortalId));
+            this._tabControllerMock.Verify(t => t.GetTab(tabId, portalSettings.PortalId));
         }
     }
 }

@@ -97,3 +97,43 @@ BEGIN
 	DROP TABLE #ScheduleHistoryIDsToDelete
 END
 GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}GetTabCustomAliases') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}GetTabCustomAliases
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}GetTabCustomAliases
+(
+	 @PortalID		int 
+)
+AS
+	SELECT 
+		t.TabId, 
+		Coalesce(trp.CultureCode, '') as CultureCode, 
+		pa.HttpAlias
+	FROM {databaseOwner}{objectQualifier}Tabs t
+		INNER JOIN {databaseOwner}{objectQualifier}TabUrls trp ON trp.TabId = t.ParentId	
+		INNER JOIN {databaseOwner}{objectQualifier}PortalAlias pa ON trp.PortalAliasId = pa.PortalAliasId
+		WHERE trp.PortalAliasUsage = 1 /* child tabs inherit */
+		  AND (@portalId = t.PortalId OR @portalId = -1)
+		  AND NOT EXISTS (SELECT tr2.TabId 
+							FROM {databaseOwner}{objectQualifier}TabUrls tr2 
+							WHERE tr2.TabId = t.TabId 
+								AND tr2.CultureCode = trp.CultureCode
+							)
+    UNION
+	SELECT 
+		t.TabId, 
+		Coalesce(trp.CultureCode, '') as CultureCode, 
+		pa.HttpAlias
+	FROM {databaseOwner}{objectQualifier}Tabs t
+		INNER JOIN {databaseOwner}{objectQualifier}TabUrls trp ON trp.TabId = t.Tabid	
+		INNER JOIN {databaseOwner}{objectQualifier}PortalAlias pa ON trp.PortalAliasId = pa.PortalAliasId
+		WHERE (@portalId = t.PortalId OR @portalId = -1)
+          AND t.CultureCode IS NULL OR t.CultureCode = trp.CultureCode
+GO

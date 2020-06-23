@@ -1,24 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using DotNetNuke.UI.WebControls;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Authentication.OAuth
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.UI.WebControls;
+
     public class OAuthSettingsBase : AuthenticationSettingsBase
     {
         protected PropertyEditorControl SettingsEditor;
 
-        protected virtual string AuthSystemApplicationName { get { return String.Empty; } }
+        protected virtual string AuthSystemApplicationName
+        {
+            get { return string.Empty; }
+        }
 
         public override void UpdateSettings()
         {
-            if (SettingsEditor.IsValid && SettingsEditor.IsDirty)
+            if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
             {
-                var config = (OAuthConfigBase)SettingsEditor.DataSource;
+                var config = (OAuthConfigBase)this.SettingsEditor.DataSource;
                 OAuthConfigBase.UpdateConfig(config);
             }
         }
@@ -27,9 +31,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             base.OnLoad(e);
 
-            OAuthConfigBase config = OAuthConfigBase.GetConfig(AuthSystemApplicationName, PortalId);
-            SettingsEditor.DataSource = config;
-            SettingsEditor.DataBind();
+            OAuthConfigBase config = OAuthConfigBase.GetConfig(this.AuthSystemApplicationName, this.PortalId);
+            this.SettingsEditor.DataSource = config;
+            this.SettingsEditor.DataBind();
         }
     }
 }

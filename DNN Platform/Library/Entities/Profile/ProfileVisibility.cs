@@ -1,57 +1,58 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Users.Social;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Roles.Internal;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Profile
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Text;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Security.Roles.Internal;
+
     [Serializable]
     public class ProfileVisibility
     {
         public ProfileVisibility()
         {
-            RoleVisibilities = new List<RoleInfo>();
-            RelationshipVisibilities = new List<Relationship>();
+            this.RoleVisibilities = new List<RoleInfo>();
+            this.RelationshipVisibilities = new List<Relationship>();
         }
 
-        public ProfileVisibility(int portalId, string extendedVisibility) : this()
+        public ProfileVisibility(int portalId, string extendedVisibility)
+            : this()
         {
-            if (!String.IsNullOrEmpty(extendedVisibility))
+            if (!string.IsNullOrEmpty(extendedVisibility))
             {
                 var relationshipController = new RelationshipController();
 
                 var lists = extendedVisibility.Split(';');
 
-                if (!String.IsNullOrEmpty(lists[0].Substring(2).TrimEnd(',')))
+                if (!string.IsNullOrEmpty(lists[0].Substring(2).TrimEnd(',')))
                 {
                     var roles = lists[0].Substring(2).TrimEnd(',').Split(',');
                     foreach (var role in roles)
                     {
-                        int roleId = Int32.Parse(role);
+                        int roleId = int.Parse(role);
                         RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
-                        RoleVisibilities.Add(userRole);
+                        this.RoleVisibilities.Add(userRole);
                     }
                 }
-                if (!String.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
+
+                if (!string.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
                 {
                     var relationships = lists[1].Substring(2).TrimEnd(',').Split(',');
                     foreach (var relationship in relationships)
                     {
-                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(Int32.Parse(relationship));
-                        RelationshipVisibilities.Add(userRelationship);
+                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(int.Parse(relationship));
+                        this.RelationshipVisibilities.Add(userRelationship);
                     }
                 }
             }
-            
         }
 
         public UserVisibilityMode VisibilityMode { get; set; }
@@ -63,26 +64,27 @@ namespace DotNetNuke.Entities.Profile
         public ProfileVisibility Clone()
         {
             var pv = new ProfileVisibility()
-                         {
-                             VisibilityMode = VisibilityMode,
-                             RoleVisibilities = new List<RoleInfo>(RoleVisibilities),
-                             RelationshipVisibilities = new List<Relationship>(RelationshipVisibilities)
-                         };
+            {
+                VisibilityMode = this.VisibilityMode,
+                RoleVisibilities = new List<RoleInfo>(this.RoleVisibilities),
+                RelationshipVisibilities = new List<Relationship>(this.RelationshipVisibilities),
+            };
             return pv;
         }
 
         public string ExtendedVisibilityString()
         {
-            if (VisibilityMode == UserVisibilityMode.FriendsAndGroups)
+            if (this.VisibilityMode == UserVisibilityMode.FriendsAndGroups)
             {
                 var sb = new StringBuilder();
                 sb.Append("G:");
-                foreach (var role in RoleVisibilities)
+                foreach (var role in this.RoleVisibilities)
                 {
                     sb.Append(role.RoleID.ToString(CultureInfo.InvariantCulture) + ",");
                 }
+
                 sb.Append(";R:");
-                foreach (var relationship in RelationshipVisibilities)
+                foreach (var relationship in this.RelationshipVisibilities)
                 {
                     sb.Append(relationship.RelationshipId.ToString(CultureInfo.InvariantCulture) + ",");
                 }
@@ -90,7 +92,7 @@ namespace DotNetNuke.Entities.Profile
                 return sb.ToString();
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

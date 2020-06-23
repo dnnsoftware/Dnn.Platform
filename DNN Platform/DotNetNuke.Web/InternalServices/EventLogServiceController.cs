@@ -1,22 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+
     [DnnAuthorize]
     public class EventLogServiceController : DnnApiController
     {
@@ -29,28 +28,28 @@ namespace DotNetNuke.Web.InternalServices
             Guid logId;
             if (string.IsNullOrEmpty(guid) || !Guid.TryParse(guid, out logId))
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             try
             {
-                var logInfo = new LogInfo {LogGUID = guid};
+                var logInfo = new LogInfo { LogGUID = guid };
                 logInfo = EventLogController.Instance.GetSingleLog(logInfo, LoggingProvider.ReturnType.LogInfoObjects) as LogInfo;
                 if (logInfo == null)
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, new
-                                                                     {
-                                                                         Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
-                                                                         Content = GetPropertiesText(logInfo)
-                                                                     });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new
+                {
+                    Title = Localization.GetSafeJSString("CriticalError.Error", Localization.SharedResourceFile),
+                    Content = this.GetPropertiesText(logInfo),
+                });
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 
@@ -61,7 +60,7 @@ namespace DotNetNuke.Web.InternalServices
             int i;
             for (i = 0; i <= objLogProperties.Count - 1; i++)
             {
-                //display the values in the Panel child controls.
+                // display the values in the Panel child controls.
                 var ldi = (LogDetailInfo)objLogProperties[i];
                 if (ldi.PropertyName == "Message")
                 {
@@ -72,6 +71,7 @@ namespace DotNetNuke.Web.InternalServices
                     str.Append("<p><strong>" + ldi.PropertyName + "</strong>:" + HttpUtility.HtmlEncode(ldi.PropertyValue) + "</p>");
                 }
             }
+
             str.Append("<p><b>Server Name</b>: " + HttpUtility.HtmlEncode(logInfo.LogServerName) + "</p>");
             return str.ToString();
         }

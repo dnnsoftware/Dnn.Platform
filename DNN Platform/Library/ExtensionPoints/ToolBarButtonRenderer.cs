@@ -1,13 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Text;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.Text;
+
+    using DotNetNuke.Common;
+
     public class ToolBarButtonRenderer : IExtensionControlRenderer
     {
         public string GetOutput(IExtensionPoint extensionPoint)
@@ -37,8 +38,8 @@ namespace DotNetNuke.ExtensionPoints
             str.AppendFormat(
                 "<span id='{0}_text' style='{1} background-image: url(\"{2}\");'>{3}</span>",
                 extension.ButtonId,
-                !extension.ShowText ? "text-indent: -10000000px;" : "",
-                extension.ShowIcon ? icon : "",
+                !extension.ShowText ? "text-indent: -10000000px;" : string.Empty,
+                extension.ShowIcon ? icon : string.Empty,
                 extension.Text);
 
             str.AppendLine("</button>");

@@ -1,65 +1,63 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.GeneratedImage.FilterTransform;
-using DotNetNuke.Services.GeneratedImage.StartTransform;
-using DotNetNuke.Services.Localization.Internal;
-using Assembly = System.Reflection.Assembly;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Configuration;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.GeneratedImage.FilterTransform;
+    using DotNetNuke.Services.GeneratedImage.StartTransform;
+    using DotNetNuke.Services.Localization.Internal;
+
+    using Assembly = System.Reflection.Assembly;
+
     public class DnnImageHandler : ImageHandler
     {
         /// <summary>
-        /// While list of server folders where the system allow the dnn image handler to 
-        /// read to serve image files from it and its subfolders
+        /// While list of server folders where the system allow the dnn image handler to
+        /// read to serve image files from it and its subfolders.
         /// </summary>
-        private static readonly string[] WhiteListFolderPaths = {
+        private static readonly string[] WhiteListFolderPaths =
+        {
             Globals.DesktopModulePath,
             Globals.ImagePath,
-            Globals.ApplicationPath + "/Portals/"
+            Globals.ApplicationPath + "/Portals/",
         };
 
-        private static bool IsAllowedFilePathImage(string filePath)
-        {
-            var normalizeFilePath = NormalizeFilePath(filePath.Trim());
-
-            // Resources file cannot be served
-            if (filePath.EndsWith(".resources"))
-            {
-                return false;
-            }
-
-            // File outside the white list cannot be served
-            return WhiteListFolderPaths.Any(normalizeFilePath.StartsWith);
-        }
-
-        private static string NormalizeFilePath(string filePath)
-        {
-            var normalizeFilePath = filePath.Replace("\\", "/");
-            if (!normalizeFilePath.StartsWith("/"))
-            {
-                normalizeFilePath = "/" + normalizeFilePath;
-            }
-            return normalizeFilePath;
-        }
-
         private string _defaultImageFile = string.Empty;
+
+        public DnnImageHandler()
+        {
+            // Set default settings here
+            this.EnableClientCache = true;
+            this.EnableServerCache = true;
+            this.AllowStandalone = true;
+            this.LogSecurity = false;
+            this.EnableIPCount = false;
+            this.ImageCompression = 95;
+            DiskImageStore.PurgeInterval = new TimeSpan(0, 3, 0);
+            this.IPCountPurgeInterval = new TimeSpan(0, 5, 0);
+            this.IPCountMaxCount = 500;
+            this.ClientCacheExpiration = new TimeSpan(0, 10, 0);
+            this.AllowedDomains = new[] { string.Empty };
+
+            // read settings from web.config
+            this.ReadSettings();
+        }
 
         private Image EmptyImage
         {
@@ -67,24 +65,24 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 var emptyBmp = new Bitmap(1, 1, PixelFormat.Format1bppIndexed);
                 emptyBmp.MakeTransparent();
-                ContentType = ImageFormat.Png;
+                this.ContentType = ImageFormat.Png;
 
-                if (string.IsNullOrEmpty(_defaultImageFile))
+                if (string.IsNullOrEmpty(this._defaultImageFile))
                 {
                     return emptyBmp;
                 }
 
                 try
                 {
-                    var fullFilePath = HttpContext.Current.Server.MapPath(_defaultImageFile);
+                    var fullFilePath = HttpContext.Current.Server.MapPath(this._defaultImageFile);
 
-                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(_defaultImageFile))
+                    if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(this._defaultImageFile))
                     {
                         return emptyBmp;
                     }
 
-                    var fi = new System.IO.FileInfo(_defaultImageFile);
-                    ContentType = GetImageFormat(fi.Extension);
+                    var fi = new System.IO.FileInfo(this._defaultImageFile);
+                    this.ContentType = GetImageFormat(fi.Extension);
 
                     using (var stream = new FileStream(fullFilePath, FileMode.Open))
                     {
@@ -99,34 +97,15 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        public DnnImageHandler()
-        {
-            // Set default settings here
-            EnableClientCache = true;
-            EnableServerCache = true;
-            AllowStandalone = true;
-            LogSecurity = false;
-            EnableIPCount = false;
-            ImageCompression = 95;
-            DiskImageStore.PurgeInterval = new TimeSpan(0, 3, 0);
-            IPCountPurgeInterval = new TimeSpan(0, 5, 0);
-            IPCountMaxCount = 500;
-            ClientCacheExpiration = new TimeSpan(0, 10, 0);
-            AllowedDomains = new[] { string.Empty };
-
-            // read settings from web.config
-            ReadSettings();
-        }
-
         // Add image generation logic here and return an instance of ImageInfo
         public override ImageInfo GenerateImage(NameValueCollection parameters)
         {
-            SetupCulture();
+            this.SetupCulture();
 
-            //which type of image should be generated ?
+            // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
-            // We need to determine the output format		
+            // We need to determine the output format
             string format = string.IsNullOrEmpty(parameters["format"]) ? "jpg" : parameters["format"].ToLowerInvariant();
 
             // Lets retrieve the color
@@ -139,26 +118,26 @@ namespace DotNetNuke.Services.GeneratedImage
             // Do we have a resizemode defined ?
             var resizeMode = string.IsNullOrEmpty(parameters["resizemode"]) ? ImageResizeMode.Fit : (ImageResizeMode)Enum.Parse(typeof(ImageResizeMode), parameters["ResizeMode"], true);
 
-            // Maximum sizes 
+            // Maximum sizes
             int maxWidth = string.IsNullOrEmpty(parameters["MaxWidth"]) ? 0 : Convert.ToInt32(parameters["MaxWidth"]);
             int maxHeight = string.IsNullOrEmpty(parameters["MaxHeight"]) ? 0 : Convert.ToInt32(parameters["MaxHeight"]);
 
             // Any text ?
-            string text = string.IsNullOrEmpty(parameters["text"]) ? "" : parameters["text"];
+            string text = string.IsNullOrEmpty(parameters["text"]) ? string.Empty : parameters["text"];
 
             // Default Image
-            _defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
+            this._defaultImageFile = string.IsNullOrEmpty(parameters["NoImage"]) ? string.Empty : parameters["NoImage"];
 
             // Do we override caching for this image ?
             if (!string.IsNullOrEmpty(parameters["NoCache"]))
             {
-                EnableClientCache = false;
-                EnableServerCache = false;
+                this.EnableClientCache = false;
+                this.EnableServerCache = false;
             }
 
             try
             {
-                ContentType = GetImageFormat(format);
+                this.ContentType = GetImageFormat(format);
 
                 switch (mode)
                 {
@@ -168,34 +147,49 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             uid = -1;
                         }
+
                         var uppTrans = new UserProfilePicTransform
                         {
-                            UserID = uid
+                            UserID = uid,
                         };
 
                         IFileInfo photoFile;
-                        ContentType = !uppTrans.TryGetPhotoFile(out photoFile)
+                        this.ContentType = !uppTrans.TryGetPhotoFile(out photoFile)
                             ? ImageFormat.Gif
                             : GetImageFormat(photoFile?.Extension ?? "jpg");
 
-                        ImageTransforms.Add(uppTrans);
+                        this.ImageTransforms.Add(uppTrans);
                         break;
 
                     case "placeholder":
                         var placeHolderTrans = new PlaceholderTransform();
                         int width, height;
                         if (TryParseDimension(parameters["w"], out width))
+                        {
                             placeHolderTrans.Width = width;
-                        if (TryParseDimension(parameters["h"], out height))
-                            placeHolderTrans.Height = height;
-                        if (!string.IsNullOrEmpty(parameters["Color"]))
-                            placeHolderTrans.Color = color;
-                        if (!string.IsNullOrEmpty(parameters["Text"]))
-                            placeHolderTrans.Text = text;
-                        if (!string.IsNullOrEmpty(parameters["BackColor"]))
-                            placeHolderTrans.BackColor = backColor;
+                        }
 
-                        ImageTransforms.Add(placeHolderTrans);
+                        if (TryParseDimension(parameters["h"], out height))
+                        {
+                            placeHolderTrans.Height = height;
+                        }
+
+                        if (!string.IsNullOrEmpty(parameters["Color"]))
+                        {
+                            placeHolderTrans.Color = color;
+                        }
+
+                        if (!string.IsNullOrEmpty(parameters["Text"]))
+                        {
+                            placeHolderTrans.Text = text;
+                        }
+
+                        if (!string.IsNullOrEmpty(parameters["BackColor"]))
+                        {
+                            placeHolderTrans.BackColor = backColor;
+                        }
+
+                        this.ImageTransforms.Add(placeHolderTrans);
                         break;
 
                     case "securefile":
@@ -206,25 +200,28 @@ namespace DotNetNuke.Services.GeneratedImage
                             var file = FileManager.Instance.GetFile(fileId);
                             if (file == null)
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
+
                             var folder = FolderManager.Instance.GetFolder(file.FolderId);
                             if (!secureFileTrans.DoesHaveReadFolderPermission(folder))
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
-                            ContentType = GetImageFormat(file.Extension);
+
+                            this.ContentType = GetImageFormat(file.Extension);
                             secureFileTrans.SecureFile = file;
-                            secureFileTrans.EmptyImage = EmptyImage;
-                            ImageTransforms.Add(secureFileTrans);
+                            secureFileTrans.EmptyImage = this.EmptyImage;
+                            this.ImageTransforms.Add(secureFileTrans);
                         }
+
                         break;
 
                     case "file":
                         var imgFile = string.Empty;
                         var imgUrl = string.Empty;
 
-                        // Lets determine the 2 types of Image Source: Single file, file url  
+                        // Lets determine the 2 types of Image Source: Single file, file url
                         var filePath = parameters["File"];
                         if (!string.IsNullOrEmpty(filePath))
                         {
@@ -232,17 +229,19 @@ namespace DotNetNuke.Services.GeneratedImage
                             var fullFilePath = HttpContext.Current.Server.MapPath(filePath);
                             if (!File.Exists(fullFilePath) || !IsAllowedFilePathImage(filePath))
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
+
                             imgFile = fullFilePath;
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
                             var url = parameters["Url"];
+
                             // allow only site resources when using the url parameter
                             if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
                             {
-                                return GetEmptyImageInfo();
+                                return this.GetEmptyImageInfo();
                             }
 
                             imgUrl = url;
@@ -261,10 +260,12 @@ namespace DotNetNuke.Services.GeneratedImage
                                 string[] parts = parameters["Url"].Split('.');
                                 extension = parts[parts.Length - 1].ToLowerInvariant();
                             }
-                            ContentType = GetImageFormat(extension);
+
+                            this.ContentType = GetImageFormat(extension);
                         }
-                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl};
-                        ImageTransforms.Add(imageFileTrans);
+
+                        var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl };
+                        this.ImageTransforms.Add(imageFileTrans);
                         break;
 
                     default:
@@ -302,18 +303,20 @@ namespace DotNetNuke.Services.GeneratedImage
                                                 pi.SetValue(imageTransform, parameters[key], null);
                                                 break;
                                         }
+
                                         break;
                                 }
                             }
                         }
-                        ImageTransforms.Add(imageTransform);
+
+                        this.ImageTransforms.Add(imageTransform);
                         break;
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return GetEmptyImageInfo();
+                return this.GetEmptyImageInfo();
             }
 
             // Resize-Transformation
@@ -324,7 +327,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 TryParseDimension(parameters["w"], out width);
                 TryParseDimension(parameters["h"], out height);
 
-                var size = string.IsNullOrEmpty(parameters["size"]) ? "" : parameters["size"];
+                var size = string.IsNullOrEmpty(parameters["size"]) ? string.Empty : parameters["size"];
 
                 switch (size)
                 {
@@ -357,7 +360,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (mode == "profilepic")
                 {
                     resizeMode = ImageResizeMode.FitSquare;
-                    if (width>0 && height>0 && width != height)
+                    if (width > 0 && height > 0 && width != height)
                     {
                         resizeMode = ImageResizeMode.Fill;
                     }
@@ -373,9 +376,9 @@ namespace DotNetNuke.Services.GeneratedImage
                         Height = height,
                         MaxWidth = maxWidth,
                         MaxHeight = maxHeight,
-                        Border = border
+                        Border = border,
                     };
-                    ImageTransforms.Add(resizeTrans);
+                    this.ImageTransforms.Add(resizeTrans);
                 }
             }
 
@@ -387,7 +390,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (double.TryParse(parameters["Gamma"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out gamma) && gamma >= 0.2 && gamma <= 5)
                 {
                     gammaTrans.Gamma = gamma;
-                    ImageTransforms.Add(gammaTrans);
+                    this.ImageTransforms.Add(gammaTrans);
                 }
             }
 
@@ -399,7 +402,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (int.TryParse(parameters["Brightness"], out brightness))
                 {
                     brightnessTrans.Brightness = brightness;
-                    ImageTransforms.Add(brightnessTrans);
+                    this.ImageTransforms.Add(brightnessTrans);
                 }
             }
 
@@ -411,7 +414,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 if (double.TryParse(parameters["Contrast"], NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out contrast) && (contrast >= -100 && contrast <= 100))
                 {
                     contrastTrans.Contrast = contrast;
-                    ImageTransforms.Add(contrastTrans);
+                    this.ImageTransforms.Add(contrastTrans);
                 }
             }
 
@@ -419,41 +422,57 @@ namespace DotNetNuke.Services.GeneratedImage
             if (!string.IsNullOrEmpty(parameters["Greyscale"]))
             {
                 var greyscaleTrans = new ImageGreyScaleTransform();
-                ImageTransforms.Add(greyscaleTrans);
+                this.ImageTransforms.Add(greyscaleTrans);
             }
 
             // Invert
             if (!string.IsNullOrEmpty(parameters["Invert"]))
             {
                 var invertTrans = new ImageInvertTransform();
-                ImageTransforms.Add(invertTrans);
+                this.ImageTransforms.Add(invertTrans);
             }
 
-            // Rotate / Flip 
+            // Rotate / Flip
             if (!string.IsNullOrEmpty(parameters["RotateFlip"]))
             {
                 var rotateFlipTrans = new ImageRotateFlipTransform();
                 var rotateFlipType = (RotateFlipType)Enum.Parse(typeof(RotateFlipType), parameters["RotateFlip"]);
                 rotateFlipTrans.RotateFlip = rotateFlipType;
-                ImageTransforms.Add(rotateFlipTrans);
-
+                this.ImageTransforms.Add(rotateFlipTrans);
             }
 
             // We start the chain with an empty image
             var dummy = new Bitmap(1, 1);
             using (var ms = new MemoryStream())
             {
-                dummy.Save(ms, ContentType);
+                dummy.Save(ms, this.ContentType);
                 return new ImageInfo(ms.ToArray());
             }
         }
 
-        private ImageInfo GetEmptyImageInfo()
+        private static bool IsAllowedFilePathImage(string filePath)
         {
-            return new ImageInfo(EmptyImage)
+            var normalizeFilePath = NormalizeFilePath(filePath.Trim());
+
+            // Resources file cannot be served
+            if (filePath.EndsWith(".resources"))
             {
-                IsEmptyImage = true
-            };
+                return false;
+            }
+
+            // File outside the white list cannot be served
+            return WhiteListFolderPaths.Any(normalizeFilePath.StartsWith);
+        }
+
+        private static string NormalizeFilePath(string filePath)
+        {
+            var normalizeFilePath = filePath.Replace("\\", "/");
+            if (!normalizeFilePath.StartsWith("/"))
+            {
+                normalizeFilePath = "/" + normalizeFilePath;
+            }
+
+            return normalizeFilePath;
         }
 
         private static bool TryParseDimension(string value, out int dimension)
@@ -477,71 +496,8 @@ namespace DotNetNuke.Services.GeneratedImage
                 dimension = 0;
                 return false;
             }
+
             return true;
-        }
-
-        private void ReadSettings()
-        {
-            var settings = ConfigurationManager.AppSettings["DnnImageHandler"];
-            if (string.IsNullOrEmpty(settings))
-            {
-                return;
-            }
-
-            string[] values = settings.Split(';');
-            foreach (string value in values)
-            {
-                string[] setting = value.Split('=');
-                string name = setting[0].ToLowerInvariant();
-                switch (name)
-                {
-                    case "enableclientcache":
-                        EnableClientCache = Convert.ToBoolean(setting[1]);
-                        break;
-                    case "clientcacheexpiration":
-                        ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
-                        break;
-                    case "enableservercache":
-                        EnableServerCache = Convert.ToBoolean(setting[1]);
-                        break;
-                    case "servercacheexpiration":
-                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
-                        break;
-                    case "allowstandalone":
-                        AllowStandalone = Convert.ToBoolean(setting[1]);
-                        break;
-                    case "logsecurity":
-                        LogSecurity = Convert.ToBoolean(setting[1]);
-                        break;
-                    case "imagecompression":
-                        ImageCompression = Convert.ToInt32(setting[1]);
-                        break;
-                    case "alloweddomains":
-                        AllowedDomains = setting[1].Split(',');
-                        break;
-                    case "enableipcount":
-                        EnableIPCount = Convert.ToBoolean(setting[1]);
-                        break;
-                    case "ipcountmax":
-                        IPCountMaxCount = Convert.ToInt32(setting[1]);
-                        break;
-                    case "ipcountpurgeinterval":
-                        IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
-                        break;
-                }
-            }
-        }
-
-        private void SetupCulture()
-        {
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null) return;
-
-            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
-            if (pageLocale != null)
-            {
-                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
-            }
         }
 
         private static ImageFormat GetImageFormat(string extension)
@@ -569,7 +525,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             IEnumerable<string> hostAliases =
                 from PortalAliasInfo alias in PortalAliasController.Instance.GetPortalAliases().Values
-                 select alias.HTTPAlias.ToLowerInvariant();
+                select alias.HTTPAlias.ToLowerInvariant();
 
             // if URI, for example, = "http(s)://myDomain:80/DNNDev/myPage?var=name" , then the two strings will be
             // uriNoScheme1 = "mydomain/dnndev/mypage"  -- lower case
@@ -577,6 +533,81 @@ namespace DotNetNuke.Services.GeneratedImage
             var uriNoScheme1 = (uri.DnsSafeHost + uri.LocalPath).ToLowerInvariant();
             var uriNoScheme2 = (uri.Authority + uri.LocalPath).ToLowerInvariant();
             return hostAliases.Any(alias => uriNoScheme1.StartsWith(alias) || uriNoScheme2.StartsWith(alias));
+        }
+
+        private ImageInfo GetEmptyImageInfo()
+        {
+            return new ImageInfo(this.EmptyImage)
+            {
+                IsEmptyImage = true,
+            };
+        }
+
+        private void ReadSettings()
+        {
+            var settings = ConfigurationManager.AppSettings["DnnImageHandler"];
+            if (string.IsNullOrEmpty(settings))
+            {
+                return;
+            }
+
+            string[] values = settings.Split(';');
+            foreach (string value in values)
+            {
+                string[] setting = value.Split('=');
+                string name = setting[0].ToLowerInvariant();
+                switch (name)
+                {
+                    case "enableclientcache":
+                        this.EnableClientCache = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "clientcacheexpiration":
+                        this.ClientCacheExpiration = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        break;
+                    case "enableservercache":
+                        this.EnableServerCache = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "servercacheexpiration":
+                        DiskImageStore.PurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        break;
+                    case "allowstandalone":
+                        this.AllowStandalone = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "logsecurity":
+                        this.LogSecurity = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "imagecompression":
+                        this.ImageCompression = Convert.ToInt32(setting[1]);
+                        break;
+                    case "alloweddomains":
+                        this.AllowedDomains = setting[1].Split(',');
+                        break;
+                    case "enableipcount":
+                        this.EnableIPCount = Convert.ToBoolean(setting[1]);
+                        break;
+                    case "ipcountmax":
+                        this.IPCountMaxCount = Convert.ToInt32(setting[1]);
+                        break;
+                    case "ipcountpurgeinterval":
+                        this.IPCountPurgeInterval = TimeSpan.FromSeconds(Convert.ToInt32(setting[1]));
+                        break;
+                }
+            }
+        }
+
+        private void SetupCulture()
+        {
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            if (settings == null)
+            {
+                return;
+            }
+
+            var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
+            if (pageLocale != null)
+            {
+                TestableLocalization.Instance.SetThreadCultures(pageLocale, settings);
+            }
         }
     }
 }

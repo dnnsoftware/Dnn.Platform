@@ -1,77 +1,66 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class FolderPermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
-        //local property declarations
+        // local property declarations
         private int _folderID;
         private string _folderPath;
         private int _folderPermissionID;
         private int _portalID;
-		
-		#endregion
-		
-		#region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new FolderPermissionInfo
+        /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
+        /// Constructs a new FolderPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public FolderPermissionInfo()
         {
-            _folderPermissionID = Null.NullInteger;
-            _folderPath = Null.NullString;
-            _portalID = Null.NullInteger;
-            _folderID = Null.NullInteger;
+            this._folderPermissionID = Null.NullInteger;
+            this._folderPath = Null.NullString;
+            this._portalID = Null.NullInteger;
+            this._folderID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new FolderPermissionInfo
+        /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
+        /// Constructs a new FolderPermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
-        public FolderPermissionInfo(PermissionInfo permission) : this()
+        public FolderPermissionInfo(PermissionInfo permission)
+            : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
 
         [XmlIgnore]
         public int FolderPermissionID
         {
             get
             {
-                return _folderPermissionID;
+                return this._folderPermissionID;
             }
+
             set
             {
-                _folderPermissionID = value;
+                this._folderPermissionID = value;
             }
         }
 
@@ -80,11 +69,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _folderID;
+                return this._folderID;
             }
+
             set
             {
-                _folderID = value;
+                this._folderID = value;
             }
         }
 
@@ -93,11 +83,12 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _portalID;
+                return this._portalID;
             }
+
             set
             {
-                _portalID = value;
+                this._portalID = value;
             }
         }
 
@@ -106,52 +97,48 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return _folderPath;
+                return this._folderPath;
             }
+
             set
             {
-                _folderPath = value;
+                this._folderPath = value;
             }
         }
-		
-		#endregion
-
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a FolderPermissionInfo from a Data Reader
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            base.FillInternal(dr);
-            FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
-            FolderID = Null.SetNullInteger(dr["FolderID"]);
-            PortalID = Null.SetNullInteger(dr["PortalID"]);
-            FolderPath = Null.SetNullString(dr["FolderPath"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Key ID
-        /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
         {
             get
             {
-                return FolderPermissionID;
+                return this.FolderPermissionID;
             }
+
             set
             {
-                FolderPermissionID = value;
+                this.FolderPermissionID = value;
             }
         }
 
-        #endregion
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a FolderPermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
+            this.FolderID = Null.SetNullInteger(dr["FolderID"]);
+            this.PortalID = Null.SetNullInteger(dr["PortalID"]);
+            this.FolderPath = Null.SetNullString(dr["FolderPath"]);
+        }
     }
 }

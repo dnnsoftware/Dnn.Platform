@@ -1,43 +1,40 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Tests.Content.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Content
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Content.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
-    ///   Summary description for TermTests
+    ///   Summary description for TermTests.
     /// </summary>
     [TestFixture]
     public class TermControllerTests
     {
         private Mock<CachingProvider> mockCache;
 
-        #region Test Initialize
-
         [SetUp]
         public void SetUp()
         {
             Mock<IVocabularyController> vocabularyController = MockHelper.CreateMockVocabularyController();
-            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
-            //Register MockCachingProvider
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
+
+            // Register MockCachingProvider
+            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
         }
 
         [TearDown]
@@ -46,52 +43,48 @@ namespace DotNetNuke.Tests.Content
             MockComponentProvider.ResetContainer();
         }
 
-        #endregion
-
-        #region AddTerm
-
         [Test]
         public void TermController_AddTerm_Throws_On_Null_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => termController.AddTerm(null));
         }
 
         [Test]
         public void TermController_AddTerm_Throws_On_Invalid_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
             term.Name = Constants.TERM_InValidName;
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentException>(() => termController.AddTerm(term));
         }
 
         [Test]
         public void TermController_AddTerm_Throws_On_Negative_VocabularyId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Null.NullInteger);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.AddTerm(term));
         }
 
         [Test]
         public void TermController_AddTerm_Should_Call_DataService_AddSimpleTerm_If_Term_Is_Simple_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -107,7 +100,7 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_AddTerm_Should_Call_DataService_AddHeirarchicalTerm_If_Term_Is_Heirarchical_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -123,121 +116,117 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_AddTerm_Returns_Valid_Id_On_Valid_Term_If_Term_Is_Simple_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
             mockDataService.Setup(ds => ds.AddSimpleTerm(It.IsAny<Term>(), It.IsAny<int>())).Returns(Constants.TERM_AddTermId);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
 
-            //Act
+            // Act
             int termId = termController.AddTerm(term);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_AddTermId, termId);
         }
 
         [Test]
         public void TermController_AddTerm_Sets_Valid_Id_On_Valid_Term_If_Term_Is_Simple_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
             mockDataService.Setup(ds => ds.AddSimpleTerm(It.IsAny<Term>(), It.IsAny<int>())).Returns(Constants.TERM_AddTermId);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
 
-            //Act
+            // Act
             termController.AddTerm(term);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_AddTermId, term.TermId);
         }
 
         [Test]
         public void TermController_AddTerm_Returns_Valid_Id_On_Valid_Term_If_Term_Is_Heirarchical_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
             mockDataService.Setup(ds => ds.AddHeirarchicalTerm(It.IsAny<Term>(), It.IsAny<int>())).Returns(Constants.TERM_AddTermId);
 
             Term term = ContentTestHelper.CreateValidHeirarchicalTerm(Constants.VOCABULARY_HierarchyVocabularyId, Constants.TERM_ValidParentTermId);
 
-            //Act
+            // Act
             int termId = termController.AddTerm(term);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_AddTermId, termId);
         }
 
         [Test]
         public void TermController_AddTerm_Sets_Valid_Id_On_Valid_Term_If_Term_Is_Heirarchical_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
             mockDataService.Setup(ds => ds.AddHeirarchicalTerm(It.IsAny<Term>(), It.IsAny<int>())).Returns(Constants.TERM_AddTermId);
 
             Term term = ContentTestHelper.CreateValidHeirarchicalTerm(Constants.VOCABULARY_HierarchyVocabularyId, Constants.TERM_ValidParentTermId);
 
-            //Act
+            // Act
             termController.AddTerm(term);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_AddTermId, term.TermId);
         }
 
         [Test]
         public void TermController_AddTerm_Clears_Term_Cache_On_Valid_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
 
-            //Act
+            // Act
             termController.AddTerm(term);
 
-            //Assert
-            mockCache.Verify(cache => cache.Remove(String.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
+            // Assert
+            this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
-
-        #endregion
-
-        #region AddTermToContent
 
         [Test]
         public void TermController_AddTermToContent_Throws_On_Null_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => termController.AddTermToContent(null, content));
         }
 
         [Test]
         public void TermController_AddTermToContent_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => termController.AddTermToContent(term, null));
         }
 
         [Test]
         public void TermController_AddTermToContent_Should_Call_DataService_If_Valid_Params()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -251,39 +240,35 @@ namespace DotNetNuke.Tests.Content
             mockDataService.Verify(ds => ds.AddTermToContent(term, content));
         }
 
-        #endregion
-
-        #region DeleteTerm
-
         [Test]
         public void TermController_DeleteTerm_Throws_On_Null_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => termController.DeleteTerm(null));
         }
 
         [Test]
         public void TermController_DeleteTerm_Throws_On_Negative_TermId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             var term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
             term.TermId = Null.NullInteger;
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.DeleteTerm(term));
         }
 
         [Test]
         public void TermController_DeleteTerm_Should_Call_DataService_DeleteSimpleTerm_If_Term_Is_Simple_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -300,7 +285,7 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_DeleteTerm_Should_Call_DataService_DeleteHeirarchicalTerm_If_Term_Is_Heirarchical_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -317,129 +302,123 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_DeleteTerm_Clears_Term_Cache_On_Valid_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            var term = new Term(Constants.VOCABULARY_ValidVocabularyId) {TermId = Constants.TERM_DeleteTermId};
+            var term = new Term(Constants.VOCABULARY_ValidVocabularyId) { TermId = Constants.TERM_DeleteTermId };
 
-            //Act
+            // Act
             termController.DeleteTerm(term);
 
-            //Assert
-            mockCache.Verify(cache => cache.Remove(String.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
+            // Assert
+            this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
-
-        #endregion
-
-        #region GetTerm
 
         [Test]
         public void TermController_GetTerm_Throws_On_Negative_TermId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.GetTerm(Null.NullInteger));
         }
 
         [Test]
         public void TermController_GetTerm_Returns_Null_On_InValidTermId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetTerm(Constants.TERM_InValidTermId)).Returns(MockHelper.CreateEmptyTermReader());
 
             var termController = new TermController(mockDataService.Object);
 
-            //Act
+            // Act
             Term term = termController.GetTerm(Constants.TERM_InValidTermId);
 
-            //Assert
+            // Assert
             Assert.IsNull(term);
         }
 
         [Test]
         public void TermController_GetTerm_Calls_DataService()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetTerm(Constants.TERM_ValidTermId)).Returns(MockHelper.CreateValidTermReader());
             var termController = new TermController(mockDataService.Object);
 
-            //Act
+            // Act
             Term term = termController.GetTerm(Constants.TERM_ValidTermId);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.GetTerm(Constants.TERM_ValidTermId));
         }
 
         [Test]
         public void TermController_GetTerm_Returns_Term_On_Valid_TermId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetTerm(Constants.TERM_ValidTermId)).Returns(MockHelper.CreateValidTermReader());
 
             var termController = new TermController(mockDataService.Object);
 
-            //Act
+            // Act
             var term = termController.GetTerm(Constants.TERM_ValidTermId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_ValidTermId, term.TermId);
             Assert.AreEqual(Constants.TERM_ValidName, term.Name);
         }
 
-        #endregion
-
-        #region GetTermsByContent
-
         [Test]
         public void TermController_GetTermsByContent_Throws_On_Invalid_ContentItemId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.GetTermsByContent(Null.NullInteger));
         }
 
         [Test]
         public void TermController_GetTermsByContent_Calls_DataService()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(Constants.TERM_ValidCountForContent1,
-                                                                                                                                      v => Constants.TERM_ValidVocabularyId,
-                                                                                                                                      c => Constants.TERM_ValidContent1));
+            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(
+                Constants.TERM_ValidCountForContent1,
+                v => Constants.TERM_ValidVocabularyId,
+                c => Constants.TERM_ValidContent1));
             var termController = new TermController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<Term> terms = termController.GetTermsByContent(Constants.TERM_ValidContent1);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1));
         }
 
         [Test]
         public void TermController_GetTermsByContent_Returns_Terms_On_Valid_ContentItemId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(Constants.TERM_ValidCountForContent1,
-                                                                                                                                      v => Constants.TERM_ValidVocabularyId,
-                                                                                                                                      c => Constants.TERM_ValidContent1));
+            mockDataService.Setup(ds => ds.GetTermsByContent(Constants.TERM_ValidContent1)).Returns(MockHelper.CreateValidTermsReader(
+                Constants.TERM_ValidCountForContent1,
+                v => Constants.TERM_ValidVocabularyId,
+                c => Constants.TERM_ValidContent1));
 
             var termController = new TermController(mockDataService.Object);
 
-            //Act
+            // Act
             var terms = termController.GetTermsByContent(Constants.TERM_ValidContent1).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_ValidCountForContent1, terms.Count);
 
             for (int i = 0; i < Constants.TERM_ValidCountForContent1; i++)
@@ -449,38 +428,35 @@ namespace DotNetNuke.Tests.Content
             }
         }
 
-        #endregion
-
-        #region GetTermsByVocabulary
-
         [Test]
         public void TermController_GetTermsByVocabulary_Throws_On_Invalid_VocabularyId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
-            MockComponentProvider.CreateDataProvider().Setup(c=>c.GetProviderPath()).Returns(String.Empty);
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.GetTermsByVocabulary(Null.NullInteger));
         }
 
         [Test]
         public void TermController_GetTermsByVocabulary_Returns_Terms_On_Valid_VocabularyId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
-            mockDataService.Setup(ds => ds.GetTermsByVocabulary(Constants.TERM_ValidVocabulary1)).Returns(MockHelper.CreateValidTermsReader(Constants.TERM_ValidCountForVocabulary1,
-                                                                                                                                            v => Constants.TERM_ValidVocabulary1,
-                                                                                                                                            c => Constants.TERM_ValidContent1));
-            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            mockDataService.Setup(ds => ds.GetTermsByVocabulary(Constants.TERM_ValidVocabulary1)).Returns(MockHelper.CreateValidTermsReader(
+                Constants.TERM_ValidCountForVocabulary1,
+                v => Constants.TERM_ValidVocabulary1,
+                c => Constants.TERM_ValidContent1));
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
 
             var termController = new TermController(mockDataService.Object);
 
-            //Act
+            // Act
             var terms = termController.GetTermsByVocabulary(Constants.TERM_ValidVocabulary1).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TERM_ValidCountForVocabulary1, terms.Count);
 
             for (int i = 0; i < Constants.TERM_ValidCountForVocabulary1; i++)
@@ -493,33 +469,29 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_GetTermsByVocabulary_Throws_On_Invalid_VocabularyName()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentException>(() => termController.GetTermsByVocabulary(Null.NullString));
         }
-
-        #endregion
-
-        #region RemoveTermsFromContent
 
         [Test]
         public void TermController_RemoveTermsFromContent_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => termController.RemoveTermsFromContent(null));
         }
 
         [Test]
         public void TermController_RemoveTermsFromContent_Should_Call_DataService_If_Valid_Params()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -532,65 +504,61 @@ namespace DotNetNuke.Tests.Content
             mockDataService.Verify(ds => ds.RemoveTermsFromContent(content));
         }
 
-        #endregion
-
-        #region UpdateTerm
-
         [Test]
         public void TermController_UpdateTerm_Throws_On_Null_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => termController.UpdateTerm(null));
         }
 
         [Test]
         public void TermController_UpdateTerm_Throws_On_Negative_TermId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Null.NullInteger);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.UpdateTerm(term));
         }
 
         [Test]
         public void TermController_UpdateTerm_Throws_On_Invalid_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Constants.VOCABULARY_ValidVocabularyId);
             term.Name = Constants.TERM_InValidName;
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.UpdateTerm(term));
         }
 
         [Test]
         public void TermController_UpdateTerm_Throws_On_Negative_VocabularyId()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
             Term term = ContentTestHelper.CreateValidSimpleTerm(Null.NullInteger);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => termController.UpdateTerm(term));
         }
 
         [Test]
         public void TermController_UpdateTerm_Should_Call_DataService_UpdateSimpleTerm_If_Term_Is_Simple_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -609,7 +577,7 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_UpdateTerm_Should_Call_DataService_UpdateHeirarchicalTerm_If_Term_Is_Heirarchical_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -628,7 +596,7 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void TermController_UpdateTerm_Clears_Term_Cache_On_Valid_Term()
         {
-            //Arrange
+            // Arrange
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
@@ -637,13 +605,11 @@ namespace DotNetNuke.Tests.Content
             term.Name = Constants.TERM_UpdateName;
             term.Weight = Constants.TERM_UpdateWeight;
 
-            //Act
+            // Act
             termController.UpdateTerm(term);
 
-            //Assert
-            mockCache.Verify(cache => cache.Remove(String.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
+            // Assert
+            this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
-
-        #endregion
     }
 }

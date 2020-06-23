@@ -1,33 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-using System.Text.RegularExpressions;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.Prompt.Common
 {
+    using System;
+    using System.Globalization;
+    using System.Text.RegularExpressions;
+
     public class EmailValidator
     {
         private bool _invalid;
+
         public bool IsValid(string emailToTest)
         {
             if (string.IsNullOrEmpty(emailToTest))
+            {
                 return false;
+            }
 
             // Use IdnMapping class to convert unicode domain names (https://msdn.microsoft.com/en-us/library/system.globalization.idnmapping(v=vs.110).aspx)
             try
             {
-                emailToTest = Regex.Replace(emailToTest, "(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
+                emailToTest = Regex.Replace(emailToTest, "(@)(.+)$", this.DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
             }
             catch (RegexMatchTimeoutException)
             {
                 return false;
             }
 
-            if (_invalid)
+            if (this._invalid)
+            {
                 return false;
+            }
 
             // Return True if valid email format
             try
@@ -52,8 +57,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             }
             catch (Exception)
             {
-                _invalid = true;
+                this._invalid = true;
             }
+
             return match.Groups[1].Value + domainName;
         }
     }

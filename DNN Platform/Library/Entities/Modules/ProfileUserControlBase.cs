@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 :  DotNetNuke
+    /// Project  :  DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Modules
-    /// Class	 :  ProfileUserControlBase
+    /// Class    :  ProfileUserControlBase
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileUserControlBase class defines a custom base class for the profile Control.
@@ -24,31 +19,32 @@ namespace DotNetNuke.Entities.Modules
     public class ProfileUserControlBase : UserModuleBase
     {
         public event EventHandler ProfileUpdated;
+
         public event EventHandler ProfileUpdateCompleted;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the OnProfileUpdateCompleted Event
+        /// Raises the OnProfileUpdateCompleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdateCompleted(EventArgs e)
         {
-            if (ProfileUpdateCompleted != null)
+            if (this.ProfileUpdateCompleted != null)
             {
-                ProfileUpdateCompleted(this, e);
+                this.ProfileUpdateCompleted(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the ProfileUpdated Event
+        /// Raises the ProfileUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdated(EventArgs e)
         {
-            if (ProfileUpdated != null)
+            if (this.ProfileUpdated != null)
             {
-                ProfileUpdated(this, e);
+                this.ProfileUpdated(this, e);
             }
         }
     }

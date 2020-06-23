@@ -1,17 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Users;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using DotNetNuke.Entities.Users;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <returns></returns>
@@ -23,26 +18,27 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string DateFormat { get; set; }
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                lblDate.CssClass = CssClass;
+                this.lblDate.CssClass = this.CssClass;
             }
+
             var user = UserController.Instance.GetCurrentUserInfo();
-            lblDate.Text = !String.IsNullOrEmpty(DateFormat) ? user.LocalTime().ToString(DateFormat) : user.LocalTime().ToLongDateString();
+            this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

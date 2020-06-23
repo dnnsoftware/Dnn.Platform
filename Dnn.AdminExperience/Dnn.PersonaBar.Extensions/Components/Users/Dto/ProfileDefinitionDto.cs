@@ -1,20 +1,26 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Web;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Profile;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using System.Web;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Entities.Profile;
+
     [DataContract]
     public class ProfileDefinitionDto
     {
+        public ProfileDefinitionDto()
+        {
+
+        }
+
         [DataMember(Name = "propertyCategory")]
         public string PropertyCategory { get; set; }
 
@@ -39,31 +45,26 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "length")]
         public int Length { get; set; }
 
-        public ProfileDefinitionDto()
-        {
-            
-        }
-
         public ProfileDefinitionDto(ProfilePropertyDefinition definition)
         {
-            PropertyCategory = definition.PropertyCategory;
-            PropertyName = definition.PropertyName;
-            Required = definition.Required;
-            ValidationExpression = definition.ValidationExpression;
-            PropertyValue = definition.PropertyValue;
-            Visible = definition.Visible;
-            Length = definition.Length;
+            this.PropertyCategory = definition.PropertyCategory;
+            this.PropertyName = definition.PropertyName;
+            this.Required = definition.Required;
+            this.ValidationExpression = definition.ValidationExpression;
+            this.PropertyValue = definition.PropertyValue;
+            this.Visible = definition.Visible;
+            this.Length = definition.Length;
 
             var dataTypeId = definition.DataType;
             var listController = new ListController();
             var dataTypes = listController.GetListEntryInfoDictionary("DataType");
             if (dataTypes.Any(i => i.Value.EntryID == dataTypeId))
             {
-                DataType = dataTypes.First(i => i.Value.EntryID == dataTypeId).Key.ToLowerInvariant().Substring(9);
+                this.DataType = dataTypes.First(i => i.Value.EntryID == dataTypeId).Key.ToLowerInvariant().Substring(9);
             }
             else
             {
-                DataType = "unknown";
+                this.DataType = "unknown";
             }
         }
     }

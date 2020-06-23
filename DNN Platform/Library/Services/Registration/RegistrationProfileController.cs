@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Framework;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Entities.Profile;
-using System.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Registration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Framework;
+
     public class RegistrationProfileController : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
     {
         public IEnumerable<string> Search(int portalId, string searchTerm)
@@ -24,31 +25,31 @@ namespace DotNetNuke.Services.Registration
                                         .Cast<ProfilePropertyDefinition>()
                                         .Where(definition => definition.DataType != imageType.EntryID))
             {
-                AddProperty(results, definition.PropertyName, searchTerm);
+                this.AddProperty(results, definition.PropertyName, searchTerm);
             }
 
-            AddProperty(results, "Email", searchTerm);
-            AddProperty(results, "DisplayName", searchTerm);
-            AddProperty(results, "Username", searchTerm);
-            AddProperty(results, "Password", searchTerm);
-            AddProperty(results, "PasswordConfirm", searchTerm);
-            AddProperty(results, "PasswordQuestion", searchTerm);
-            AddProperty(results, "PasswordAnswer", searchTerm);
+            this.AddProperty(results, "Email", searchTerm);
+            this.AddProperty(results, "DisplayName", searchTerm);
+            this.AddProperty(results, "Username", searchTerm);
+            this.AddProperty(results, "Password", searchTerm);
+            this.AddProperty(results, "PasswordConfirm", searchTerm);
+            this.AddProperty(results, "PasswordQuestion", searchTerm);
+            this.AddProperty(results, "PasswordAnswer", searchTerm);
 
-            return results;            
-        }
-
-        private void AddProperty(List<string> results, string field, string searchTerm)
-        {         
-            if (field.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant().Trim()))
-            {
-                results.Add(field);
-            }
+            return results;
         }
 
         protected override Func<IRegistrationProfileController> GetFactory()
         {
             return () => new RegistrationProfileController();
+        }
+
+        private void AddProperty(List<string> results, string field, string searchTerm)
+        {
+            if (field.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant().Trim()))
+            {
+                results.Add(field);
+            }
         }
     }
 }

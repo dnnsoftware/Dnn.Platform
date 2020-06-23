@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Profile
 {
+    using System.Collections;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Profile
@@ -17,28 +12,24 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfilePropertyDefinitionComparer class provides an implementation of
-    /// IComparer to sort the ProfilePropertyDefinitionCollection by ViewOrder
+    /// IComparer to sort the ProfilePropertyDefinitionCollection by ViewOrder.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class ProfilePropertyDefinitionComparer : IComparer
     {
-        #region IComparer Members
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares two ProfilePropertyDefinition objects
+        /// Compares two ProfilePropertyDefinition objects.
         /// </summary>
-        /// <param name="x">A ProfilePropertyDefinition object</param>
-        /// <param name="y">A ProfilePropertyDefinition object</param>
-        /// <returns>An integer indicating whether x greater than y, x=y or x less than y</returns>
+        /// <param name="x">A ProfilePropertyDefinition object.</param>
+        /// <param name="y">A ProfilePropertyDefinition object.</param>
+        /// <returns>An integer indicating whether x greater than y, x=y or x less than y.</returns>
         /// -----------------------------------------------------------------------------
         public int Compare(object x, object y)
         {
-            return ((ProfilePropertyDefinition) x).ViewOrder.CompareTo(((ProfilePropertyDefinition) y).ViewOrder);
+            return ((ProfilePropertyDefinition)x).ViewOrder.CompareTo(((ProfilePropertyDefinition)y).ViewOrder);
         }
-
-        #endregion
     }
 }

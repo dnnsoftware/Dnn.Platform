@@ -1,23 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Security.Cryptography;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 // ReSharper disable InconsistentNaming
-
-#endregion
-
 namespace DotNetNuke.Common.Utilities
 {
+    using System.Security.Cryptography;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Common.Utilities
     /// Project:    DotNetNuke
     /// Class:      CryptographyUtils
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// CryptographyUtils is a Utility class that provides Cryptography Utility constants
+    /// CryptographyUtils is a Utility class that provides Cryptography Utility constants.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -39,7 +34,7 @@ namespace DotNetNuke.Common.Utilities
         private const string _SHA512Cng = "System.Security.Cryptography.SHA512Cng";
 
         private const string _SHA512CryptoServiceProvider = "System.Security.Cryptography.SHA512CryptoServiceProvider";
-        
+
         public static SHA1 CreateSHA1()
         {
             return SHA1.Create(CryptoConfig.AllowOnlyFipsAlgorithms ? _SHA1CryptoServiceProvider : _SHA1Cng);

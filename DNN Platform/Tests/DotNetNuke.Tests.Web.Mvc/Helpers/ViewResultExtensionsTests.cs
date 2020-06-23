@@ -1,56 +1,57 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Web.Mvc;
-using System.Web.Routing;
-using DotNetNuke.Web.Mvc.Framework.ActionResults;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Mvc.Helpers
 {
+    using System;
+    using System.IO;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    using DotNetNuke.Web.Mvc.Framework.ActionResults;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnViewResultTests
     {
         [Test]
         public void ExecuteResult_Throws_With_Null_ControllerContext()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
-            
-            //Act, Assert
+
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => result.ExecuteResult(null, new StringWriter()));
         }
 
         [Test]
         public void ExecuteResult_Throws_With_Null_TextWriter()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
             var context = MockHelper.CreateMockControllerContext();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => result.ExecuteResult(context, null));
         }
 
         [Test]
         public void ExecuteResult_Throws_With_Empty_ViewName_And_No_Action()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
             var context = MockHelper.CreateMockControllerContext();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<InvalidOperationException>(() => result.ExecuteResult(context, new StringWriter()));
         }
 
         [Test]
         public void ExecuteResult_Calls_ViewEngine_FindView_If_View_Is_Null()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
 
             var routeData = new RouteData();
@@ -66,10 +67,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             result.ViewEngineCollection.Clear();
             result.ViewEngineCollection.Add(mockViewEngine.Object);
 
-            //Act
+            // Act
             result.ExecuteResult(context, new StringWriter());
 
-            //Assert
+            // Assert
             Assert.AreSame(mockView.Object, result.View);
         }
     }

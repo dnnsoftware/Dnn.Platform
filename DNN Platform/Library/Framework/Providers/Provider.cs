@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Specialized;
-using System.Xml;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework.Providers
 {
+    using System.Collections.Specialized;
+    using System.Xml;
+
     public class Provider
     {
         private readonly NameValueCollection _ProviderAttributes = new NameValueCollection();
@@ -19,18 +14,18 @@ namespace DotNetNuke.Framework.Providers
 
         public Provider(XmlAttributeCollection Attributes)
         {
-            //Set the name of the provider
-            _ProviderName = Attributes["name"].Value;
+            // Set the name of the provider
+            this._ProviderName = Attributes["name"].Value;
 
-            //Set the type of the provider
-            _ProviderType = Attributes["type"].Value;
+            // Set the type of the provider
+            this._ProviderType = Attributes["type"].Value;
 
-            //Store all the attributes in the attributes bucket
+            // Store all the attributes in the attributes bucket
             foreach (XmlAttribute Attribute in Attributes)
             {
                 if (Attribute.Name != "name" && Attribute.Name != "type")
                 {
-                    _ProviderAttributes.Add(Attribute.Name, Attribute.Value);
+                    this._ProviderAttributes.Add(Attribute.Name, Attribute.Value);
                 }
             }
         }
@@ -39,7 +34,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _ProviderName;
+                return this._ProviderName;
             }
         }
 
@@ -47,7 +42,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _ProviderType;
+                return this._ProviderType;
             }
         }
 
@@ -55,7 +50,7 @@ namespace DotNetNuke.Framework.Providers
         {
             get
             {
-                return _ProviderAttributes;
+                return this._ProviderAttributes;
             }
         }
     }

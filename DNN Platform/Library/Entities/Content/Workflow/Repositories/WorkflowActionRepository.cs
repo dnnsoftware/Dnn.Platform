@@ -1,25 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Actions;
-using DotNetNuke.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow.Repositories
 {
+    using System;
+    using System.Linq;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Actions;
+    using DotNetNuke.Framework;
+
     internal class WorkflowActionRepository : ServiceLocator<IWorkflowActionRepository, WorkflowActionRepository>, IWorkflowActionRepository
     {
-        #region Service Locator
-        protected override Func<IWorkflowActionRepository> GetFactory()
-        {
-            return () => new WorkflowActionRepository();
-        }
-        #endregion
-
-        #region Public Methods
         public WorkflowAction GetWorkflowAction(int contentTypeId, string type)
         {
             using (var context = DataContext.Instance())
@@ -37,6 +30,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(action);
             }
         }
-        #endregion
+
+        protected override Func<IWorkflowActionRepository> GetFactory()
+        {
+            return () => new WorkflowActionRepository();
+        }
     }
 }

@@ -1,24 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Upgrade;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.CoreMessaging.Components
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Upgrade;
+
     public class CoreMessagingBusinessController : IUpgradeable
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (CoreMessagingBusinessController));
-        #region Implementation of IUpgradeable
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreMessagingBusinessController));
 
         public string UpgradeModule(string Version)
         {
@@ -35,7 +34,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                             {
                                 if (portal.UserTabId > Null.NullInteger)
                                 {
-                                    //Find TabInfo
+                                    // Find TabInfo
                                     var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
                                     if (tab != null)
                                     {
@@ -43,11 +42,11 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                         {
                                             if (module.DesktopModule.FriendlyName == "Messaging")
                                             {
-                                                //Delete the Module from the Modules list
+                                                // Delete the Module from the Modules list
                                                 ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
 
-                                                //Add new module to the page
-                                                Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);
+                                                // Add new module to the page
+                                                Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", string.Empty, true);
 
                                                 break;
                                             }
@@ -56,8 +55,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                 }
                             }
                         }
+
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception exc)
@@ -67,7 +68,5 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                 return "Failed";
             }
         }
-
-        #endregion
     }
 }

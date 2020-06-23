@@ -626,6 +626,9 @@
     <Content Include="Licenses\PetaPoco %28Apache%29.txt.resources" />
     <Content Include="Licenses\Pikaday %28MIT%29.txt.resources" />
     <Content Include="Licenses\QuickIO.NET %28Ms-PL%29.txt.resources" />
+    <AdditionalFiles Include="..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
     <None Include="compilerconfig.json" />
     <Compile Include="DesktopModules\Admin\EditExtension\AuthenticationEditor.ascx.cs">
       <DependentUpon>AuthenticationEditor.ascx</DependentUpon>
@@ -2765,6 +2768,12 @@
     <Content Include="images\xml.gif" />
     <Content Include="images\yellow-warning.gif" />
     <Content Include="images\yellow-warning_16px.gif" />
+    <None Include="DesktopModules\Admin\Portals\portal.template.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="DesktopModules\Admin\Portals\portal.template.xsx">
+      <DependentUpon>portal.template.xsd</DependentUpon>
+    </Content>
     <None Include="Install\App_LocalResources\Locales.xml" />
     <Content Include="Install\AuthSystem\PlaceHolder.txt" />
     <Content Include="Install\Cleanup\PlaceHolder.txt" />
@@ -3400,6 +3409,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DesktopModules\Admin\Security\App_LocalResources\DataConsent.ascx.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

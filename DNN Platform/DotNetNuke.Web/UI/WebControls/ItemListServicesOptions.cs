@@ -1,16 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+
     [DataContract]
     public class ItemListServicesOptions
     {
-
         [DataMember(Name = "moduleId")]
         public string ModuleId = string.Empty;
 
@@ -32,6 +31,9 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "getTreeWithNodeMethod")]
         public string GetTreeWithNodeMethod;
 
+        [DataMember(Name = "rootId")]
+        public string RootId = "Root"; // should not be (-1), as (-1) can be treated as Null.Integer
+
         private Dictionary<string, string> _parameters;
 
         [DataMember(Name = "parameters")]
@@ -39,12 +41,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _parameters ?? (_parameters = new Dictionary<string, string>());
+                return this._parameters ?? (this._parameters = new Dictionary<string, string>());
             }
         }
-
-        [DataMember(Name = "rootId")]
-        public string RootId = "Root"; // should not be (-1), as (-1) can be treated as Null.Integer
-
     }
 }

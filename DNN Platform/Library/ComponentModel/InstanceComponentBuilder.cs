@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.ComponentModel
 {
     internal class InstanceComponentBuilder : IComponentBuilder
@@ -10,31 +10,27 @@ namespace DotNetNuke.ComponentModel
         private readonly string _Name;
 
         /// <summary>
-        /// Initializes a new instance of the InstanceComponentBuilder class.
+        /// Initializes a new instance of the <see cref="InstanceComponentBuilder"/> class.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="instance"></param>
         public InstanceComponentBuilder(string name, object instance)
         {
-            _Name = name;
-            _Instance = instance;
-        }
-
-        #region IComponentBuilder Members
-
-        public object BuildComponent()
-        {
-            return _Instance;
+            this._Name = name;
+            this._Instance = instance;
         }
 
         public string Name
         {
             get
             {
-                return _Name;
+                return this._Name;
             }
         }
 
-        #endregion
+        public object BuildComponent()
+        {
+            return this._Instance;
+        }
     }
 }

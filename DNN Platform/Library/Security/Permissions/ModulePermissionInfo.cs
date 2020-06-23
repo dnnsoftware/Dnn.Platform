@@ -1,158 +1,141 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Security.Permissions
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Security.Permissions
-    /// Class	 : ModulePermissionInfo
+    /// Class    : ModulePermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModulePermissionInfo provides the Entity Layer for Module Permissions
+    /// ModulePermissionInfo provides the Entity Layer for Module Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class ModulePermissionInfo : PermissionInfoBase, IHydratable
     {
-		#region "Private Members"
-		
         private int _moduleID;
 
-        //local property declarations
+        // local property declarations
         private int _modulePermissionID;
-		
-		#endregion
-		
-		#region "Constructors"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ModulePermissionInfo
+        /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
+        /// Constructs a new ModulePermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo()
         {
-            _modulePermissionID = Null.NullInteger;
-            _moduleID = Null.NullInteger;
+            this._modulePermissionID = Null.NullInteger;
+            this._moduleID = Null.NullInteger;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ModulePermissionInfo
+        /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
+        /// Constructs a new ModulePermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
-        public ModulePermissionInfo(PermissionInfo permission) : this()
+        public ModulePermissionInfo(PermissionInfo permission)
+            : this()
         {
-            ModuleDefID = permission.ModuleDefID;
-            PermissionCode = permission.PermissionCode;
-            PermissionID = permission.PermissionID;
-            PermissionKey = permission.PermissionKey;
-            PermissionName = permission.PermissionName;
+            this.ModuleDefID = permission.ModuleDefID;
+            this.PermissionCode = permission.PermissionCode;
+            this.PermissionID = permission.PermissionID;
+            this.PermissionKey = permission.PermissionKey;
+            this.PermissionName = permission.PermissionName;
         }
-		
-		#endregion
-		
-		#region "Public Properties"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Permission ID
+        /// Gets or sets and sets the Module Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("modulepermissionid")]
         public int ModulePermissionID
         {
             get
             {
-                return _modulePermissionID;
+                return this._modulePermissionID;
             }
+
             set
             {
-                _modulePermissionID = value;
+                this._modulePermissionID = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module ID
+        /// Gets or sets and sets the Module ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("moduleid")]
         public int ModuleID
         {
             get
             {
-                return _moduleID;
+                return this._moduleID;
             }
+
             set
             {
-                _moduleID = value;
+                this._moduleID = value;
             }
         }
-		
-		#endregion
-
-        #region IHydratable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModulePermissionInfo from a Data Reader
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// -----------------------------------------------------------------------------
-        public void Fill(IDataReader dr)
-        {
-            base.FillInternal(dr);
-            ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
-            ModuleID = Null.SetNullInteger(dr["ModuleID"]);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Key ID
-        /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
         {
             get
             {
-                return ModulePermissionID;
+                return this.ModulePermissionID;
             }
+
             set
             {
-                ModulePermissionID = value;
+                this.ModulePermissionID = value;
             }
         }
 
-        #endregion
-		
-		#region "Public Methods"
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Fills a ModulePermissionInfo from a Data Reader.
+        /// </summary>
+        /// <param name="dr">The Data Reader to use.</param>
+        /// -----------------------------------------------------------------------------
+        public void Fill(IDataReader dr)
+        {
+            this.FillInternal(dr);
+            this.ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
+            this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two ModulePermissionInfo objects are equivalent/equal
+        /// Compares if two ModulePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="other">a ModulePermissionObject</param>
+        /// <param name="other">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
@@ -166,20 +149,22 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
-            return (AllowAccess == other.AllowAccess) && (ModuleID == other.ModuleID) && (RoleID == other.RoleID) && (PermissionID == other.PermissionID);
+
+            return (this.AllowAccess == other.AllowAccess) && (this.ModuleID == other.ModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two ModulePermissionInfo objects are equivalent/equal
+        /// Compares if two ModulePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="obj">a ModulePermissionObject</param>
+        /// <param name="obj">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
@@ -193,25 +178,26 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             if (ReferenceEquals(this, obj))
             {
                 return true;
             }
-            if (obj.GetType() != typeof (ModulePermissionInfo))
+
+            if (obj.GetType() != typeof(ModulePermissionInfo))
             {
                 return false;
             }
-            return Equals((ModulePermissionInfo) obj);
+
+            return this.Equals((ModulePermissionInfo)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (_moduleID*397) ^ _modulePermissionID;
+                return (this._moduleID * 397) ^ this._modulePermissionID;
             }
         }
-		
-		#endregion
     }
 }

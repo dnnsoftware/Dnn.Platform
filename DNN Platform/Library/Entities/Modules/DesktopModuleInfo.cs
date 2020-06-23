@@ -1,44 +1,51 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Web.UI;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Services.Installer.Packages;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Services.Installer.Packages;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.Entities.Modules
-    /// Class	 : DesktopModuleInfo
+    /// Class    : DesktopModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// DesktopModuleInfo provides the Entity Layer for Desktop Modules
+    /// DesktopModuleInfo provides the Entity Layer for Desktop Modules.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class DesktopModuleInfo : ContentItem, IXmlSerializable
     {
-        #region Inner Classes
+        private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
+        private PageInfo _pageInfo;
+
+        public DesktopModuleInfo()
+        {
+            this.IsPremium = Null.NullBoolean;
+            this.IsAdmin = Null.NullBoolean;
+            this.CodeSubDirectory = Null.NullString;
+            this.PackageID = Null.NullInteger;
+            this.DesktopModuleID = Null.NullInteger;
+            this.SupportedFeatures = Null.NullInteger;
+            this.Shareable = ModuleSharing.Unknown;
+        }
 
         [Serializable]
         public class PageInfo : IXmlSerializable
@@ -63,14 +70,13 @@ namespace DotNetNuke.Entities.Modules
 
             public bool HasAdminPage()
             {
-                return Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+                return this.Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
 
             public bool HasHostPage()
             {
-                return Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+                return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
             }
-
 
             public XmlSchema GetSchema()
             {
@@ -101,26 +107,26 @@ namespace DotNetNuke.Entities.Modules
                     switch (reader.Name)
                     {
                         case "page":
-                            Type = reader.GetAttribute("type");
+                            this.Type = reader.GetAttribute("type");
                             var commonValue = reader.GetAttribute("common");
                             if (!string.IsNullOrEmpty(commonValue))
                             {
-                                IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                                this.IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
                             }
 
                             reader.Read();
                             break;
                         case "name":
-                            Name = reader.ReadElementContentAsString();
+                            this.Name = reader.ReadElementContentAsString();
                             break;
                         case "icon":
-                            Icon = reader.ReadElementContentAsString();
+                            this.Icon = reader.ReadElementContentAsString();
                             break;
                         case "largeIcon":
-                            LargeIcon = reader.ReadElementContentAsString();
+                            this.LargeIcon = reader.ReadElementContentAsString();
                             break;
                         case "description":
-                            Description = reader.ReadElementContentAsString();
+                            this.Description = reader.ReadElementContentAsString();
                             break;
                         default:
                             reader.Read();
@@ -131,66 +137,48 @@ namespace DotNetNuke.Entities.Modules
 
             public void WriteXml(XmlWriter writer)
             {
-                //Write start of main elemenst
+                // Write start of main elemenst
                 writer.WriteStartElement("page");
-                writer.WriteAttributeString("type", Type);
-                writer.WriteAttributeString("common", IsCommon.ToString().ToLowerInvariant());
+                writer.WriteAttributeString("type", this.Type);
+                writer.WriteAttributeString("common", this.IsCommon.ToString().ToLowerInvariant());
 
-                //write out properties
-                writer.WriteElementString("name", Name);
-                writer.WriteElementString("icon", Icon);
-                writer.WriteElementString("largeIcon", LargeIcon);
-                writer.WriteElementString("description", Description);
+                // write out properties
+                writer.WriteElementString("name", this.Name);
+                writer.WriteElementString("icon", this.Icon);
+                writer.WriteElementString("largeIcon", this.LargeIcon);
+                writer.WriteElementString("description", this.Description);
 
-                //Write end of main element
+                // Write end of main element
                 writer.WriteEndElement();
             }
         }
 
-        #endregion
-
-        private Dictionary<string, ModuleDefinitionInfo> _moduleDefinitions;
-        private PageInfo _pageInfo;
-
-        public DesktopModuleInfo()
-        {
-            IsPremium = Null.NullBoolean;
-            IsAdmin = Null.NullBoolean;
-            CodeSubDirectory = Null.NullString;
-            PackageID = Null.NullInteger;
-            DesktopModuleID = Null.NullInteger;
-            SupportedFeatures = Null.NullInteger;
-            Shareable = ModuleSharing.Unknown;
-        }
-
-		#region "Public Properties"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ID of the Desktop Module
+        /// Gets or sets and sets the ID of the Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int DesktopModuleID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ID of the Package for this Desktop Module
+        /// Gets or sets and sets the ID of the Package for this Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
         /// <summary>
-        /// returns whether this has an associated Admin page
+        /// Gets or sets whether this has an associated Admin page.
         /// </summary>
         public string AdminPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the BusinessControllerClass of the Desktop Module
+        /// Gets or sets and sets the BusinessControllerClass of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string BusinessControllerClass { get; set; }
 
@@ -198,211 +186,216 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                Term term = (from Term t in Terms select t).FirstOrDefault();
-                return (term != null) ? term.Name : String.Empty;
-            } 
+                Term term = (from Term t in this.Terms select t).FirstOrDefault();
+                return (term != null) ? term.Name : string.Empty;
+            }
+
             set
             {
-                Terms.Clear();
+                this.Terms.Clear();
                 ITermController termController = Util.GetTermController();
-                var term = (from Term t in termController.GetTermsByVocabulary("Module_Categories") 
-                            where t.Name == value 
+                var term = (from Term t in termController.GetTermsByVocabulary("Module_Categories")
+                            where t.Name == value
                             select t)
                             .FirstOrDefault();
                 if (term != null)
                 {
-                    Terms.Add(term);
+                    this.Terms.Add(term);
                 }
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the AppCode Folder Name of the Desktop Module
+        /// Gets or sets and sets the AppCode Folder Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string CodeSubDirectory { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a Regular Expression that matches the versions of the core
-        /// that this module is compatible with
+        /// Gets or sets and sets a Regular Expression that matches the versions of the core
+        /// that this module is compatible with.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string CompatibleVersions { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a list of Dependencies for the module
+        /// Gets or sets and sets a list of Dependencies for the module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Dependencies { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the  Description of the Desktop Module
+        /// Gets or sets and sets the  Description of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Folder Name of the Desktop Module
+        /// Gets or sets and sets the Folder Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string FolderName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Friendly Name of the Desktop Module
+        /// Gets or sets the Friendly Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
         /// <summary>
-        /// returns whether this has an associated hostpage
+        /// Gets or sets whether this has an associated hostpage.
         /// </summary>
         public string HostPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Module is an Admin Module
+        /// Gets or sets a value indicating whether gets and sets whether the Module is an Admin Module.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsAdmin { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Module is Portable
+        /// Gets or sets a value indicating whether gets and sets whether the Module is Portable.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsPortable
         {
             get
             {
-                return GetFeature(DesktopModuleSupportedFeature.IsPortable);
+                return this.GetFeature(DesktopModuleSupportedFeature.IsPortable);
             }
+
             set
             {
-                UpdateFeature(DesktopModuleSupportedFeature.IsPortable, value);
+                this.UpdateFeature(DesktopModuleSupportedFeature.IsPortable, value);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Module is a Premium Module
+        /// Gets or sets a value indicating whether gets and sets whether the Module is a Premium Module.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsPremium { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Module is Searchable
+        /// Gets or sets a value indicating whether gets and sets whether the Module is Searchable.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsSearchable
         {
             get
             {
-                return GetFeature(DesktopModuleSupportedFeature.IsSearchable);
+                return this.GetFeature(DesktopModuleSupportedFeature.IsSearchable);
             }
+
             set
             {
-                UpdateFeature(DesktopModuleSupportedFeature.IsSearchable, value);
+                this.UpdateFeature(DesktopModuleSupportedFeature.IsSearchable, value);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Module is Upgradable
+        /// Gets or sets a value indicating whether gets and sets whether the Module is Upgradable.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsUpgradeable
         {
             get
             {
-                return GetFeature(DesktopModuleSupportedFeature.IsUpgradeable);
+                return this.GetFeature(DesktopModuleSupportedFeature.IsUpgradeable);
             }
+
             set
             {
-                UpdateFeature(DesktopModuleSupportedFeature.IsUpgradeable, value);
+                this.UpdateFeature(DesktopModuleSupportedFeature.IsUpgradeable, value);
             }
         }
 
         /// <summary>
-        /// Is the module allowed to be shared across sites?
+        /// Gets or sets is the module allowed to be shared across sites?.
         /// </summary>
         public ModuleSharing Shareable
         {
             get;
-            set; 
+            set;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Module Definitions for this Desktop Module
+        /// Gets the Module Definitions for this Desktop Module.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, ModuleDefinitionInfo> ModuleDefinitions
         {
             get
             {
-                if (_moduleDefinitions == null)
+                if (this._moduleDefinitions == null)
                 {
-                    if (DesktopModuleID > Null.NullInteger)
+                    if (this.DesktopModuleID > Null.NullInteger)
                     {
-                        _moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(DesktopModuleID);
+                        this._moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(this.DesktopModuleID);
                     }
                     else
                     {
-                        _moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
+                        this._moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
                     }
                 }
-                return _moduleDefinitions;
+
+                return this._moduleDefinitions;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the  Name of the Desktop Module
+        /// Gets or sets and sets the  Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ModuleName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a list of Permissions for the module
+        /// Gets or sets and sets a list of Permissions for the module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Permissions { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Supported Features of the Module
+        /// Gets or sets and sets the Supported Features of the Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int SupportedFeatures { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Version of the Desktop Module
+        /// Gets or sets and sets the Version of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Version { get; set; }
 
@@ -410,9 +403,9 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (_pageInfo == null && PackageID > Null.NullInteger)
+                if (this._pageInfo == null && this.PackageID > Null.NullInteger)
                 {
-                    var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == PackageID);
+                    var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID);
                     if (package != null && !string.IsNullOrEmpty(package.Manifest))
                     {
                         var xmlDocument = new XmlDocument { XmlResolver = null };
@@ -420,61 +413,56 @@ namespace DotNetNuke.Entities.Modules
                         var pageNode = xmlDocument.SelectSingleNode("//package//components//component[@type=\"Module\"]//page");
                         if (pageNode != null)
                         {
-                            _pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
+                            this._pageInfo = CBO.DeserializeObject<PageInfo>(new StringReader(pageNode.OuterXml));
                         }
                     }
                 }
 
-                return _pageInfo;
+                return this._pageInfo;
             }
+
             set
             {
-                _pageInfo = value;
+                this._pageInfo = value;
             }
         }
 
-		#endregion
-
-		#region IHydratable Members
-
-		/// -----------------------------------------------------------------------------
+        /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a DesktopModuleInfo from a Data Reader
+        /// Fills a DesktopModuleInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
-            DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            ModuleName = Null.SetNullString(dr["ModuleName"]);
-            FriendlyName = Null.SetNullString(dr["FriendlyName"]);
-            Description = Null.SetNullString(dr["Description"]);
-            FolderName = Null.SetNullString(dr["FolderName"]);
-            Version = Null.SetNullString(dr["Version"]);
-            Description = Null.SetNullString(dr["Description"]);
-            IsPremium = Null.SetNullBoolean(dr["IsPremium"]);
-            IsAdmin = Null.SetNullBoolean(dr["IsAdmin"]);
-            BusinessControllerClass = Null.SetNullString(dr["BusinessControllerClass"]);
-            SupportedFeatures = Null.SetNullInteger(dr["SupportedFeatures"]);
-            CompatibleVersions = Null.SetNullString(dr["CompatibleVersions"]);
-            Dependencies = Null.SetNullString(dr["Dependencies"]);
-            Permissions = Null.SetNullString(dr["Permissions"]);
-		    Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
-            AdminPage = Null.SetNullString(dr["AdminPage"]);
-            HostPage = Null.SetNullString(dr["HostPage"]);
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.ModuleName = Null.SetNullString(dr["ModuleName"]);
+            this.FriendlyName = Null.SetNullString(dr["FriendlyName"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.FolderName = Null.SetNullString(dr["FolderName"]);
+            this.Version = Null.SetNullString(dr["Version"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.IsPremium = Null.SetNullBoolean(dr["IsPremium"]);
+            this.IsAdmin = Null.SetNullBoolean(dr["IsAdmin"]);
+            this.BusinessControllerClass = Null.SetNullString(dr["BusinessControllerClass"]);
+            this.SupportedFeatures = Null.SetNullInteger(dr["SupportedFeatures"]);
+            this.CompatibleVersions = Null.SetNullString(dr["CompatibleVersions"]);
+            this.Dependencies = Null.SetNullString(dr["Dependencies"]);
+            this.Permissions = Null.SetNullString(dr["Permissions"]);
+            this.Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
+            this.AdminPage = Null.SetNullString(dr["AdminPage"]);
+            this.HostPage = Null.SetNullString(dr["HostPage"]);
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
         }
-
-        #endregion
-
-        #region IXmlSerializable Members
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the DesktopModule
+        /// Gets an XmlSchema for the DesktopModule.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {
@@ -483,9 +471,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a DesktopModuleInfo from an XmlReader
+        /// Reads a DesktopModuleInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -495,25 +483,27 @@ namespace DotNetNuke.Entities.Modules
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleDefinitions" && !reader.IsEmptyElement)
                 {
-                    ReadModuleDefinitions(reader);
+                    this.ReadModuleDefinitions(reader);
                 }
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "supportedFeatures" && !reader.IsEmptyElement)
                 {
-                    ReadSupportedFeatures(reader);
+                    this.ReadSupportedFeatures(reader);
                 }
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "shareable" && !reader.IsEmptyElement)
                 {
-                    ReadModuleSharing(reader);
+                    this.ReadModuleSharing(reader);
                 }
                 else if (reader.NodeType == XmlNodeType.Element && reader.Name == "page" && !reader.IsEmptyElement)
                 {
-                    ReadPageInfo(reader);
+                    this.ReadPageInfo(reader);
                 }
                 else
                 {
@@ -522,108 +512,110 @@ namespace DotNetNuke.Entities.Modules
                         case "desktopModule":
                             break;
                         case "moduleName":
-                            ModuleName = reader.ReadElementContentAsString();
+                            this.ModuleName = reader.ReadElementContentAsString();
                             break;
                         case "foldername":
-                            FolderName = reader.ReadElementContentAsString();
+                            this.FolderName = reader.ReadElementContentAsString();
                             break;
                         case "businessControllerClass":
-                            BusinessControllerClass = reader.ReadElementContentAsString();
+                            this.BusinessControllerClass = reader.ReadElementContentAsString();
                             break;
                         case "codeSubDirectory":
-                            CodeSubDirectory = reader.ReadElementContentAsString();
+                            this.CodeSubDirectory = reader.ReadElementContentAsString();
                             break;
                         case "page":
-                            ReadPageInfo(reader);
+                            this.ReadPageInfo(reader);
 
-                            if (Page.HasAdminPage())
+                            if (this.Page.HasAdminPage())
                             {
-                                AdminPage = Page.Name;
+                                this.AdminPage = this.Page.Name;
                             }
 
-                            if (Page.HasHostPage())
+                            if (this.Page.HasHostPage())
                             {
-                                HostPage = Page.Name;
+                                this.HostPage = this.Page.Name;
                             }
+
                             break;
                         case "isAdmin":
                             bool isAdmin;
-                            Boolean.TryParse(reader.ReadElementContentAsString(), out isAdmin);
-                            IsAdmin = isAdmin;
+                            bool.TryParse(reader.ReadElementContentAsString(), out isAdmin);
+                            this.IsAdmin = isAdmin;
                             break;
                         case "isPremium":
                             bool isPremium;
-                            Boolean.TryParse(reader.ReadElementContentAsString(), out isPremium);
-                            IsPremium = isPremium;
+                            bool.TryParse(reader.ReadElementContentAsString(), out isPremium);
+                            this.IsPremium = isPremium;
                             break;
                         default:
-                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }
             }
         }
 
-		/// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a DesktopModuleInfo to an XmlWriter
-        /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
         /// -----------------------------------------------------------------------------
-
+        /// <summary>
+        /// Writes a DesktopModuleInfo to an XmlWriter.
+        /// </summary>
+        /// <param name="writer">The XmlWriter to use.</param>
+        /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("desktopModule");
 
-            //write out properties
-            writer.WriteElementString("moduleName", ModuleName);
-            writer.WriteElementString("foldername", FolderName);
-            writer.WriteElementString("businessControllerClass", BusinessControllerClass);
-            if (!string.IsNullOrEmpty(CodeSubDirectory))
+            // write out properties
+            writer.WriteElementString("moduleName", this.ModuleName);
+            writer.WriteElementString("foldername", this.FolderName);
+            writer.WriteElementString("businessControllerClass", this.BusinessControllerClass);
+            if (!string.IsNullOrEmpty(this.CodeSubDirectory))
             {
-                writer.WriteElementString("codeSubDirectory", CodeSubDirectory);
+                writer.WriteElementString("codeSubDirectory", this.CodeSubDirectory);
             }
-			
-            //Write out Supported Features
+
+            // Write out Supported Features
             writer.WriteStartElement("supportedFeatures");
-            if (IsPortable)
+            if (this.IsPortable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Portable");
                 writer.WriteEndElement();
             }
-            if (IsSearchable)
+
+            if (this.IsSearchable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Searchable");
                 writer.WriteEndElement();
             }
-            if (IsUpgradeable)
+
+            if (this.IsUpgradeable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Upgradeable");
                 writer.WriteEndElement();
             }
 
-            //Write end of Supported Features
+            // Write end of Supported Features
             writer.WriteEndElement();
 
-            //Write admin/host page info.
-            if (Page != null)
+            // Write admin/host page info.
+            if (this.Page != null)
             {
-                Page.WriteXml(writer);
+                this.Page.WriteXml(writer);
             }
 
             // Module sharing
-
-            if(Shareable != ModuleSharing.Unknown)
+            if (this.Shareable != ModuleSharing.Unknown)
             {
                 writer.WriteStartElement("shareable");
-                switch (Shareable)
+                switch (this.Shareable)
                 {
                     case ModuleSharing.Supported:
                         writer.WriteString("Supported");
@@ -632,90 +624,88 @@ namespace DotNetNuke.Entities.Modules
                         writer.WriteString("Unsupported");
                         break;
                 }
+
                 writer.WriteEndElement();
             }
 
-            //Write start of Module Definitions
+            // Write start of Module Definitions
             writer.WriteStartElement("moduleDefinitions");
 
-            //Iterate through definitions
-            foreach (ModuleDefinitionInfo definition in ModuleDefinitions.Values)
+            // Iterate through definitions
+            foreach (ModuleDefinitionInfo definition in this.ModuleDefinitions.Values)
             {
                 definition.WriteXml(writer);
             }
-            //Write end of Module Definitions
+
+            // Write end of Module Definitions
             writer.WriteEndElement();
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 
-        #endregion
-
-		#region "Private Helper Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears a Feature from the Features
+        /// Clears a Feature from the Features.
         /// </summary>
-        /// <param name="feature">The feature to Clear</param>
+        /// <param name="feature">The feature to Clear.</param>
         /// -----------------------------------------------------------------------------
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
-			//And with the 1's complement of Feature to Clear the Feature flag
-            SupportedFeatures = SupportedFeatures & ~((int) feature);
+            // And with the 1's complement of Feature to Clear the Feature flag
+            this.SupportedFeatures = this.SupportedFeatures & ~((int)feature);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Feature from the Features
+        /// Gets a Feature from the Features.
         /// </summary>
-        /// <param name="feature">The feature to Get</param>
+        /// <param name="feature">The feature to Get.</param>
         /// -----------------------------------------------------------------------------
         private bool GetFeature(DesktopModuleSupportedFeature feature)
         {
-            return SupportedFeatures > Null.NullInteger && (SupportedFeatures & (int) feature) == (int) feature;
+            return this.SupportedFeatures > Null.NullInteger && (this.SupportedFeatures & (int)feature) == (int)feature;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets a Feature in the Features
+        /// Sets a Feature in the Features.
         /// </summary>
-        /// <param name="feature">The feature to Set</param>
+        /// <param name="feature">The feature to Set.</param>
         /// -----------------------------------------------------------------------------
         private void SetFeature(DesktopModuleSupportedFeature feature)
         {
-            SupportedFeatures |= (int) feature;
+            this.SupportedFeatures |= (int)feature;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Feature in the Features
+        /// Updates a Feature in the Features.
         /// </summary>
-        /// <param name="feature">The feature to Set</param>
-        /// <param name="isSet">A Boolean indicating whether to set or clear the feature</param>
+        /// <param name="feature">The feature to Set.</param>
+        /// <param name="isSet">A Boolean indicating whether to set or clear the feature.</param>
         /// -----------------------------------------------------------------------------
         private void UpdateFeature(DesktopModuleSupportedFeature feature, bool isSet)
         {
             if (isSet)
             {
-                SetFeature(feature);
+                this.SetFeature(feature);
             }
             else
             {
-                ClearFeature(feature);
+                this.ClearFeature(feature);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a Supported Features from an XmlReader
+        /// Reads a Supported Features from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         private void ReadSupportedFeatures(XmlReader reader)
         {
-            SupportedFeatures = 0;
+            this.SupportedFeatures = 0;
             reader.ReadStartElement("supportedFeatures");
             do
             {
@@ -725,17 +715,18 @@ namespace DotNetNuke.Entities.Modules
                     switch (reader.ReadContentAsString())
                     {
                         case "Portable":
-                            IsPortable = true;
+                            this.IsPortable = true;
                             break;
                         case "Searchable":
-                            IsSearchable = true;
+                            this.IsSearchable = true;
                             break;
                         case "Upgradeable":
-                            IsUpgradeable = true;
+                            this.IsUpgradeable = true;
                             break;
                     }
                 }
-            } while (reader.ReadToNextSibling("supportedFeature"));
+            }
+            while (reader.ReadToNextSibling("supportedFeature"));
         }
 
         private void ReadModuleSharing(XmlReader reader)
@@ -744,21 +735,21 @@ namespace DotNetNuke.Entities.Modules
 
             if (string.IsNullOrEmpty(sharing))
             {
-                Shareable = ModuleSharing.Unknown;
+                this.Shareable = ModuleSharing.Unknown;
             }
             else
             {
                 switch (sharing.ToLowerInvariant())
                 {
                     case "supported":
-                        Shareable = ModuleSharing.Supported;
+                        this.Shareable = ModuleSharing.Supported;
                         break;
                     case "unsupported":
-                        Shareable = ModuleSharing.Unsupported;
+                        this.Shareable = ModuleSharing.Unsupported;
                         break;
                     default:
                     case "unknown":
-                        Shareable = ModuleSharing.Unknown;
+                        this.Shareable = ModuleSharing.Unknown;
                         break;
                 }
             }
@@ -766,9 +757,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a Module Definitions from an XmlReader
+        /// Reads a Module Definitions from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         private void ReadModuleDefinitions(XmlReader reader)
         {
@@ -777,34 +768,34 @@ namespace DotNetNuke.Entities.Modules
             {
                 reader.ReadStartElement("moduleDefinition");
 
-				//Create new ModuleDefinition object
+                // Create new ModuleDefinition object
                 var moduleDefinition = new ModuleDefinitionInfo();
 
-				//Load it from the Xml
+                // Load it from the Xml
                 moduleDefinition.ReadXml(reader);
 
-				//Add to the collection
-                ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
-            } while (reader.ReadToNextSibling("moduleDefinition"));
-		}
+                // Add to the collection
+                this.ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
+            }
+            while (reader.ReadToNextSibling("moduleDefinition"));
+        }
 
         private void ReadPageInfo(XmlReader reader)
         {
-            Page = new PageInfo();
-            //Load it from the Xml
-            Page.ReadXml(reader.ReadSubtree());
+            this.Page = new PageInfo();
 
-            if (Page.HasAdminPage())
+            // Load it from the Xml
+            this.Page.ReadXml(reader.ReadSubtree());
+
+            if (this.Page.HasAdminPage())
             {
-                AdminPage = Page.Name;
+                this.AdminPage = this.Page.Name;
             }
 
-            if (Page.HasHostPage())
+            if (this.Page.HasHostPage())
             {
-                HostPage = Page.Name;
+                this.HostPage = this.Page.Name;
             }
         }
-
-		#endregion
-	}
+    }
 }

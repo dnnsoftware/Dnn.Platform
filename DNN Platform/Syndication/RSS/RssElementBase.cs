@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Syndication
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     ///   The base class for all RSS elements (item, image, channel)
-    ///   has collection of attributes
+    ///   has collection of attributes.
     /// </summary>
     public abstract class RssElementBase
     {
@@ -23,7 +18,7 @@ namespace DotNetNuke.Services.Syndication
         {
             get
             {
-                return _attributes;
+                return this._attributes;
             }
         }
 
@@ -33,14 +28,14 @@ namespace DotNetNuke.Services.Syndication
 
         internal void SetAttributes(Dictionary<string, string> attributes)
         {
-            _attributes = attributes;
+            this._attributes = attributes;
         }
 
         protected string GetAttributeValue(string attributeName)
         {
             string attributeValue;
 
-            if (!_attributes.TryGetValue(attributeName, out attributeValue))
+            if (!this._attributes.TryGetValue(attributeName, out attributeValue))
             {
                 attributeValue = string.Empty;
             }
@@ -50,7 +45,7 @@ namespace DotNetNuke.Services.Syndication
 
         protected void SetAttributeValue(string attributeName, string attributeValue)
         {
-            _attributes[attributeName] = attributeValue;
+            this._attributes[attributeName] = attributeValue;
         }
     }
 }

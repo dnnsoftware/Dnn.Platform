@@ -1,20 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using Telerik.Web.UI;
-
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using Telerik.Web.UI;
+
     [ParseChildrenAttribute(true)]
     public class DnnTabPanel : WebControl
     {
@@ -22,16 +16,29 @@ namespace DotNetNuke.Web.UI.WebControls
         private RadMultiPage _TelerikPages;
         private RadTabStrip _TelerikTabs;
 
+        public DnnTabCollection Tabs
+        {
+            get
+            {
+                if (this._Tabs == null)
+                {
+                    this._Tabs = new DnnTabCollection(this);
+                }
+
+                return this._Tabs;
+            }
+        }
+
         private RadTabStrip TelerikTabs
         {
             get
             {
-                if (_TelerikTabs == null)
+                if (this._TelerikTabs == null)
                 {
-                    _TelerikTabs = new RadTabStrip();
+                    this._TelerikTabs = new RadTabStrip();
                 }
 
-                return _TelerikTabs;
+                return this._TelerikTabs;
             }
         }
 
@@ -39,59 +46,46 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                if (_TelerikPages == null)
+                if (this._TelerikPages == null)
                 {
-                    _TelerikPages = new RadMultiPage();
+                    this._TelerikPages = new RadMultiPage();
                 }
 
-                return _TelerikPages;
-            }
-        }
-
-        public DnnTabCollection Tabs
-        {
-            get
-            {
-                if (_Tabs == null)
-                {
-                    _Tabs = new DnnTabCollection(this);
-                }
-
-                return _Tabs;
+                return this._TelerikPages;
             }
         }
 
         protected override void OnLoad(EventArgs e)
         {
-            base.EnsureChildControls();
+            this.EnsureChildControls();
         }
 
         protected override void CreateChildControls()
         {
-            Controls.Clear();
+            this.Controls.Clear();
 
-            TelerikTabs.ID = ID + "_Tabs";
-            TelerikTabs.Skin = "Office2007";
-            TelerikTabs.EnableEmbeddedSkins = true;
+            this.TelerikTabs.ID = this.ID + "_Tabs";
+            this.TelerikTabs.Skin = "Office2007";
+            this.TelerikTabs.EnableEmbeddedSkins = true;
 
-            TelerikPages.ID = ID + "_Pages";
+            this.TelerikPages.ID = this.ID + "_Pages";
 
-            TelerikTabs.MultiPageID = TelerikPages.ID;
+            this.TelerikTabs.MultiPageID = this.TelerikPages.ID;
 
-            Controls.Add(TelerikTabs);
-            Controls.Add(TelerikPages);
+            this.Controls.Add(this.TelerikTabs);
+            this.Controls.Add(this.TelerikPages);
         }
 
         protected override void OnPreRender(EventArgs e)
         {
-            if ((!Page.IsPostBack))
+            if (!this.Page.IsPostBack)
             {
-                TelerikTabs.SelectedIndex = 0;
-                TelerikPages.SelectedIndex = 0;
+                this.TelerikTabs.SelectedIndex = 0;
+                this.TelerikPages.SelectedIndex = 0;
 
                 int idIndex = 0;
 
-                foreach (DnnTab t in Tabs)
+                foreach (DnnTab t in this.Tabs)
                 {
                     RadTab tab = new RadTab();
                     tab.TabTemplate = t.Header;
@@ -101,8 +95,8 @@ namespace DotNetNuke.Web.UI.WebControls
                     tab.PageViewID = "PV_" + idIndex;
                     pageView.ID = "PV_" + idIndex;
 
-                    TelerikTabs.Tabs.Add(tab);
-                    TelerikPages.PageViews.Add(pageView);
+                    this.TelerikTabs.Tabs.Add(tab);
+                    this.TelerikPages.PageViews.Add(pageView);
 
                     idIndex = idIndex + 1;
                 }

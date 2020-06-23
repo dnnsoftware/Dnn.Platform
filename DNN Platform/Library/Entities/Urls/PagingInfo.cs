@@ -1,18 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// Class used as a utility to help manage paging in database queries
+    /// Class used as a utility to help manage paging in database queries.
     /// </summary>
     public class PagingInfo
     {
         public PagingInfo(int pageNumber, int pageSize)
         {
-            PageNumber = pageNumber;
-            PageSize = pageSize;
+            this.PageNumber = pageNumber;
+            this.PageSize = pageSize;
         }
 
         public int PageNumber { get; private set; }
@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (LastRow >= (TotalRows))
+                if (this.LastRow >= this.TotalRows)
                 {
                     return true;
                 }
@@ -44,10 +44,10 @@ namespace DotNetNuke.Entities.Urls
 
         public void UpdatePageResults(int firstRow, int lastRow, int totalRows, int totalPages)
         {
-            FirstRow = firstRow;
-            LastRow = lastRow;
-            TotalRows = totalRows;
-            TotalPages = totalPages;
+            this.FirstRow = firstRow;
+            this.LastRow = lastRow;
+            this.TotalRows = totalRows;
+            this.TotalPages = totalPages;
         }
     }
 }

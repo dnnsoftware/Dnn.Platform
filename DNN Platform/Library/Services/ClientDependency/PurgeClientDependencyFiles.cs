@@ -1,22 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using DotNetNuke.Services.Scheduling;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.ClientDependency
 {
-    class PurgeClientDependencyFiles : SchedulerClient
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Services.Scheduling;
+
+    internal class PurgeClientDependencyFiles : SchedulerClient
     {
         public PurgeClientDependencyFiles(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
+            this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
         public override void DoWork()
@@ -28,20 +24,21 @@ namespace DotNetNuke.Services.ClientDependency
                 {
                     File.Delete(filePath);
                 }
-                ScheduleHistoryItem.Succeeded = true; //REQUIRED
-                ScheduleHistoryItem.AddLogNote("Purging client dependency files task succeeded");
+
+                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
+                this.ScheduleHistoryItem.AddLogNote("Purging client dependency files task succeeded");
             }
-            catch (Exception exc) //REQUIRED
+            catch (Exception exc) // REQUIRED
             {
-                ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                ScheduleHistoryItem.AddLogNote(string.Format("Purging client dependency files task failed: {0}.", exc.ToString()));
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging client dependency files task failed: {0}.", exc.ToString()));
 
-                //notification that we have errored
-                Errored(ref exc); //REQUIRED
+                // notification that we have errored
+                this.Errored(ref exc); // REQUIRED
 
-                //log the exception
-                Exceptions.Exceptions.LogException(exc); //OPTIONAL
+                // log the exception
+                Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }
     }

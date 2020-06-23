@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -17,7 +12,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditControlFactory control provides a factory for creating the
-    /// appropriate Edit Control
+    /// appropriate Edit Control.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -27,9 +22,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateEditControl creates the appropriate Control based on the EditorField or
-        /// TypeDataField
+        /// TypeDataField.
         /// </summary>
-        /// <param name="editorInfo">An EditorInfo object</param>
+        /// <param name="editorInfo">An EditorInfo object.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static EditControl CreateEditControl(EditorInfo editorInfo)
         {
@@ -37,12 +33,12 @@ namespace DotNetNuke.UI.WebControls
 
             if (editorInfo.Editor == "UseSystemType")
             {
-                //Use System Type
+                // Use System Type
                 propEditor = CreateEditControlInternal(editorInfo.Type);
             }
             else
             {
-                //Use Editor
+                // Use Editor
                 try
                 {
                     Type editType = Type.GetType(editorInfo.Editor, true, true);
@@ -50,10 +46,11 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (TypeLoadException)
                 {
-                    //Use System Type
+                    // Use System Type
                     propEditor = CreateEditControlInternal(editorInfo.Type);
                 }
             }
+
             propEditor.ID = editorInfo.Name;
             propEditor.Name = editorInfo.Name;
             propEditor.DataField = editorInfo.Name;
@@ -95,16 +92,17 @@ namespace DotNetNuke.UI.WebControls
                             {
                                 propEditor = new EnumEditControl(systemType);
                             }
+
                             break;
                     }
                 }
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
+
             return propEditor ?? new TextEditControl(systemType);
         }
     }
 }
-

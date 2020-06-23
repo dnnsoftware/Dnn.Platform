@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Framework.JavaScriptLibraries
 {
     /// <summary>
-    /// determine whereabouts in the page the script (and fallback script when CDN is enabled) is emitted
+    /// determine whereabouts in the page the script (and fallback script when CDN is enabled) is emitted.
     /// </summary>
     public enum ScriptLocation
     {
         PageHead,
         BodyTop,
-        BodyBottom
+        BodyBottom,
     }
 }

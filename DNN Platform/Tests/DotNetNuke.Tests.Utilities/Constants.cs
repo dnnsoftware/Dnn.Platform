@@ -1,27 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Web.Caching;
-using DotNetNuke.Entities.Content.Taxonomy;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // ReSharper disable InconsistentNaming
-
 namespace DotNetNuke.Tests.Utilities
 {
+    using System.Web.Caching;
+
+    using DotNetNuke.Entities.Content.Taxonomy;
+
     public class Constants
     {
-        #region Cacheing Constants
-
         public const string CACHEING_InValidKey = "InValidKey";
         public const string CACHEING_ParamCacheKey = "CacheKey";
         public const string CACHEING_ValidKey = "ValidKey";
         public const string CACHEING_ValidValue = "ValidValue";
-
-        #endregion
-
-        #region User Constants
-
         public const int USER_Null = -1;
         public const int USER_ValidId = 200;
         public const int USER_InValidId = 42;
@@ -29,7 +22,7 @@ namespace DotNetNuke.Tests.Utilities
         public const int USER_TenId = 10;
         public const string USER_TenName = "user10";
         public const int USER_ElevenId = 11;
-        public const string USER_ElevenName = "user11";        
+        public const string USER_ElevenName = "user11";
         public const int UserID_Host = 1;
         public const int UserID_Admin = 2;
         public const int UserID_User12 = 12;
@@ -44,12 +37,6 @@ namespace DotNetNuke.Tests.Utilities
         public const string RuFirstName = "TestUser";
         public const string RuLastName = "Automation";
         public const string DefaultPassword = "dnnhost";
-
-
-        #endregion
-
-        #region Role Constants
-
         public const int RoleID_Administrators = 0;
         public const int RoleID_RegisteredUsers = 1;
         public const int RoleID_Subscribers = 2;
@@ -61,21 +48,11 @@ namespace DotNetNuke.Tests.Utilities
         public const string RoleName_Subscribers = "Subscribers";
         public const string RoleName_Translator_EN_US = "translator_EN_US";
         public const string RoleName_FirstSocialGroup = "First Social Group";
-
-        #endregion
-
-        #region Portal Constants
-
         public const int PORTAL_Zero = 0;
         public const int PORTAL_One = 1;
         public const int PORTAL_Null = -1;
         public const int PORTAL_InValidPortalId = -1;
         public const int PORTAL_ValidPortalId = 1;
-
-
-        #endregion
-
-        #region PortalSettings Constants
 
         /// <summary>The setting name that stores whether attachments are allowed.</summary>
         public const string PORTALSETTING_MessagingAllowAttachments_Name = "MessagingAllowAttachments";
@@ -85,21 +62,12 @@ namespace DotNetNuke.Tests.Utilities
 
         public const string PORTALSETTING_MessagingAllowAttachments_Value_YES = "YES";
         public const string PORTALSETTING_MessagingAllowAttachments_Value_NO = "NO";
-
-        #endregion
-
-        #region Culture Constants
-
         public const string CULTURE_EN_US = "en-US";
-        #endregion
-
-        #region PortalGroup Constants
-
         public const int PORTALGROUP_ValidPortalGroupId = 1;
         public const int PORTALGROUP_AddPortalGroupId = 2;
         public const int PORTALGROUP_DeletePortalGroupId = 3;
-        public const int PORTALGROUP_InValidPortalGroupId = 999; 
-        
+        public const int PORTALGROUP_InValidPortalGroupId = 999;
+
         public const string PORTALGROUP_ValidName = "PortalGroupName";
         public const string PORTALGROUP_ValidDescription = "PortalGroupDescription";
         public const int PORTALGROUP_UpdatePortalGroupId = 4;
@@ -109,12 +77,9 @@ namespace DotNetNuke.Tests.Utilities
 
         public const int PORTALGROUP_ValidPortalGroupCount = 5;
         public const string PORTALGROUP_ValidNameFormat = "PortalGroupName {0}";
-        public const string PORTALGROUP_ValidDescriptionFormat = "PortalGroupDescription {0}";        
-        #endregion
+        public const string PORTALGROUP_ValidDescriptionFormat = "PortalGroupDescription {0}";
 
-        #region ContentItem Constants
-
-        //Valid Content values
+        // Valid Content values
         public const int CONTENT_ValidContentItemId = 1;
         public const string CONTENT_ValidContent = "Content";
         public const string CONTENT_ValidContentKey = "ContentKey";
@@ -130,7 +95,7 @@ namespace DotNetNuke.Tests.Utilities
         public const int CONTENT_ValidStartTabId = 10;
         public const int CONTENT_ValidStartModuleId = 100;
 
-        //InValid Content values
+        // InValid Content values
         public const int CONTENT_InValidContentItemId = 999;
         public const string CONTENT_InValidContent = "";
         public const int CONTENT_InValidModuleId = 888;
@@ -157,11 +122,6 @@ namespace DotNetNuke.Tests.Utilities
         public const string CONTENT_InValidMetaDataName = "InvalidName";
         public const string CONTENT_InValidMetaDataValue = "InvalidValue";
         public const int CONTENT_MetaDataCount = 4;
-
-        #endregion
-
-        #region ContentType Constants
-
         public const int CONTENTTYPE_ValidContentTypeId = 1;
         public const string CONTENTTYPE_ValidContentType = "ContentType Name";
 
@@ -211,11 +171,6 @@ namespace DotNetNuke.Tests.Utilities
         public const int CONTENTTYPE_ValidContentTemplateCount = 7;
         public const int CONTENTTYPE_InValidContentTemplateId = -1;
         public const int CONTENTTYPE_UpdateContentTemplateId = 4;
-
-        #endregion
-
-        #region ScopeType Constants
-
         public const int SCOPETYPE_ValidScopeTypeId = 1;
         public const string SCOPETYPE_ValidScopeType = "ScopeType Name";
 
@@ -233,21 +188,11 @@ namespace DotNetNuke.Tests.Utilities
         public const string SCOPETYPE_OriginalUpdateScopeType = "TestUpdate";
 
         public const string SCOPETYPE_UpdateScopeType = "Update Name";
-
-        #endregion
-
-        #region Tag Constants
-
         public const int TAG_DuplicateContentItemId = 1;
         public const int TAG_DuplicateTermId = 6;
         public const int TAG_NoContentContentId = 99;
         public const int TAG_ValidContentId = 1;
         public const int TAG_ValidContentCount = 2;
-
-        #endregion
-
-        #region Term Constants
-
         public const string TERM_CacheKey = "DNN_Terms_{0}";
 
         public const int TERM_ValidTermId = 1;
@@ -280,11 +225,6 @@ namespace DotNetNuke.Tests.Utilities
         public const int TERM_ValidCountForContent1 = 2;
         public const int TERM_ValidContent1 = 1;
         public const int TERM_ValidContent2 = 2;
-
-        #endregion
-
-        #region Vocabulary Constants
-
         public const string VOCABULARY_CacheKey = "DNN_Vocabularies";
 
         public const int VOCABULARY_ValidVocabularyId = 1;
@@ -319,11 +259,6 @@ namespace DotNetNuke.Tests.Utilities
         public const int VOCABULARY_ValidCountForScope1 = 2;
         public const int VOCABULARY_ValidScope1 = 1;
         public const int VOCABULARY_ValidScope2 = 2;
-
-        #endregion
-
-        #region Folder Constants
-
         public const int FOLDER_ValidFileId = 1;
         public const int FOLDER_InvalidFileId = -1;
         public const int FOLDER_ValidFileSize = 16;
@@ -360,11 +295,6 @@ namespace DotNetNuke.Tests.Utilities
         public const string FOLDER_ModifiedFileHash = "0123456789X";
         public const string FOLDER_UnmodifiedFileHash = "0123456789";
         public const string FOLDER_FileStartDate = "2010-01-01T00:00:00";
-
-        #endregion        
-
-        #region Social constants
-
         public const int SOCIAL_InValidRelationshipType = 999;
         public const int SOCIAL_InValidRelationship = 999;
         public const int SOCIAL_InValidUserRelationship = 999;
@@ -400,18 +330,12 @@ namespace DotNetNuke.Tests.Utilities
         public const string LOCALIZATION_UserRelationship_Updated_Key = "UserRelationship_Updated";
         public const string LOCALIZATION_UserRelationship_Updated = "Updated UserRelationship ID {0}, UserID {1}, RelatedUserID {2}";
 
-
         public const string LOCALIZATION_UserRelationshipPreference_Deleted_Key = "UserRelationshipPreference_Deleted";
         public const string LOCALIZATION_UserRelationshipPreference_Deleted = "Deleted UserRelationshipPreference ID {0} for User ID {1} and Relationship ID {2}";
         public const string LOCALIZATION_UserRelationshipPreference_Added_Key = "UserRelationshipPreference_Added";
         public const string LOCALIZATION_UserRelationshipPreference_Added = "Added UserRelationshipPreference ID {0} for User ID {1} and Relationship ID {2}";
         public const string LOCALIZATION_UserRelationshipPreference_Updated_Key = "UserRelationshipPreference_Updated";
         public const string LOCALIZATION_UserRelationshipPreference_Updated = "UpdatedUserRelationshipPreference ID {0} for User ID {1} and Relationship ID {2}";
-
-        #endregion
-
-        #region SocialMessaging constants
-
         public const bool Messaging_ReadMessage = true;
         public const bool Messaging_UnReadMessage = false;
         public const bool Messaging_ArchivedMessage = true;
@@ -435,11 +359,6 @@ namespace DotNetNuke.Tests.Utilities
         public const string Messaging_NotificationBody = "You've received a new friend request from {0}";
         public const bool Messaging_IncludeDismissAction = true;
         public const string Messaging_NotificationContext = "context";
-
-        #endregion
-
-        #region Data Constants
-
         public const string COLUMNNAME_Name = "Name";
         public const string COLUMNNAME_PersonName = "PersonName";
 
@@ -477,17 +396,11 @@ namespace DotNetNuke.Tests.Utilities
         public const int CACHE_TimeOut = 10;
         public const CacheItemPriority CACHE_Priority = CacheItemPriority.High;
 
-
         public const string TABLENAME_Dog = "Dogs";
         public const string TABLENAME_Key = "ID";
         public const string TABLENAME_Prefix = "dnn_";
         public const string TABLENAME_Person = "People";
         public const string TABLENAME_Person_Key = "PersonID";
-
-        #endregion
-
-        #region PagedLists Constants
-
         public const int PAGE_First = 0;
         public const int PAGE_Second = 1;
         public const int PAGE_Last = 4;
@@ -496,9 +409,6 @@ namespace DotNetNuke.Tests.Utilities
 
         public const int PAGE_NegativeIndex = -1;
         public const int PAGE_OutOfRange = 5;
-
-        #endregion
-
         public const int TAB_ValidId = 10;
         public const int TAB_InValidId = -1;
         public const int MODULE_ValidId = 100;

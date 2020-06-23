@@ -1,15 +1,10 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Communications
 {
+    using System;
+
     public class ModuleCommunicationEventArgs : EventArgs
     {
         public ModuleCommunicationEventArgs()
@@ -18,15 +13,15 @@ namespace DotNetNuke.Entities.Modules.Communications
 
         public ModuleCommunicationEventArgs(string text)
         {
-            Text = text;
+            this.Text = text;
         }
 
         public ModuleCommunicationEventArgs(string type, object value, string sender, string target)
         {
-            Type = type;
-            Value = value;
-            Sender = sender;
-            Target = target;
+            this.Type = type;
+            this.Value = value;
+            this.Sender = sender;
+            this.Target = target;
         }
 
         public string Sender { get; set; }

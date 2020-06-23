@@ -1,33 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Lists
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
-        public ListInfo() : this(String.Empty) { }
+        public ListInfo()
+            : this(string.Empty)
+        {
+        }
 
         public ListInfo(string Name)
         {
-            SystemList = Null.NullBoolean;
-            EnableSortOrder = Null.NullBoolean;
-            IsPopulated = Null.NullBoolean;
-            ParentList = Null.NullString;
-            Parent = Null.NullString;
-            ParentKey = Null.NullString;
-            PortalID = Null.NullInteger;
-            DefinitionID = Null.NullInteger;
+            this.SystemList = Null.NullBoolean;
+            this.EnableSortOrder = Null.NullBoolean;
+            this.IsPopulated = Null.NullBoolean;
+            this.ParentList = Null.NullString;
+            this.Parent = Null.NullString;
+            this.ParentKey = Null.NullString;
+            this.PortalID = Null.NullInteger;
+            this.DefinitionID = Null.NullInteger;
             this.Name = Name;
         }
 
@@ -37,12 +35,13 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                string _DisplayName = Parent;
+                string _DisplayName = this.Parent;
                 if (!string.IsNullOrEmpty(_DisplayName))
                 {
                     _DisplayName += ":";
                 }
-                return _DisplayName + Name;
+
+                return _DisplayName + this.Name;
             }
         }
 
@@ -56,12 +55,13 @@ namespace DotNetNuke.Common.Lists
         {
             get
             {
-                string _Key = ParentKey;
+                string _Key = this.ParentKey;
                 if (!string.IsNullOrEmpty(_Key))
                 {
                     _Key += ":";
                 }
-                return _Key + Name;
+
+                return _Key + this.Name;
             }
         }
 

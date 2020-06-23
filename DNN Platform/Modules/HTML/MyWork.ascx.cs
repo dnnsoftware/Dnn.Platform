@@ -1,63 +1,53 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Exceptions;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.Html
 {
+    using System;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Exceptions;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    ///   MyWork allows a user to view any outstanding workflow items
+    ///   MyWork allows a user to view any outstanding workflow items.
     /// </summary>
     /// <remarks>
     /// </remarks>
     public partial class MyWork : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public MyWork()
         {
-            _navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region Protected Methods
 
         public string FormatURL(object dataItem)
         {
-            var objHtmlTextUser = (HtmlTextUserInfo) dataItem;
-            return "<a href=\"" + _navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
+            var objHtmlTextUser = (HtmlTextUserInfo)dataItem;
+            return "<a href=\"" + this._navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 
-        #endregion
-
-        #region Event Handlers
-
         /// <summary>
-        ///   Page_Load runs when the control is loaded
+        ///   Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            hlCancel.NavigateUrl = _navigationManager.NavigateURL();
+            this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
 
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
                     var objHtmlTextUsers = new HtmlTextUserController();
-                    dgTabs.DataSource = objHtmlTextUsers.GetHtmlTextUser(UserInfo.UserID);
-                    dgTabs.DataBind();
+                    this.dgTabs.DataSource = objHtmlTextUsers.GetHtmlTextUser(this.UserInfo.UserID);
+                    this.dgTabs.DataBind();
                 }
             }
             catch (Exception exc)
@@ -65,8 +55,5 @@ namespace DotNetNuke.Modules.Html
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
-
-        #endregion
-
     }
 }

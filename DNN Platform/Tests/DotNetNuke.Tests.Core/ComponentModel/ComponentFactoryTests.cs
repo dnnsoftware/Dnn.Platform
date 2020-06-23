@@ -1,26 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Tests.Utilities.Mocks;
-
-using Moq;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.ComponentModel
 {
+    using System;
+    using System.Collections;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
     /// <summary>
-    ///   Summary description for ComponentFactoryTests
+    ///   Summary description for ComponentFactoryTests.
     /// </summary>
     [TestFixture]
     public class ComponentFactoryTests
     {
-        #region InstallComponents
+        public static IContainer CreateMockContainer()
+        {
+            var mockContainer = new Mock<IContainer>();
+            IContainer container = mockContainer.Object;
+            ComponentFactory.Container = container;
+            return container;
+        }
 
         [TearDown]
         public void TearDown()
@@ -33,7 +37,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
         {
             IContainer container = CreateMockContainer();
 
-            ComponentFactory.InstallComponents(new IComponentInstaller[0] {});
+            ComponentFactory.InstallComponents(new IComponentInstaller[0] { });
         }
 
         [Test]
@@ -58,30 +62,20 @@ namespace DotNetNuke.Tests.Core.ComponentModel
         [Test]
         public void DNNPRO_13443_ComponentFactory_DuplicatedInsert()
         {
-            //Setup
+            // Setup
             var testComp1 = new ArrayList();
             var testComp2 = new ArrayList();
 
             testComp1.Add("testComp1");
             testComp2.Add("testComp2");
 
-            //Act
+            // Act
             ComponentFactory.RegisterComponentInstance<IList>(testComp1);
             ComponentFactory.RegisterComponentInstance<IList>(testComp2);
 
-            //Assert
+            // Assert
             var retreivedComponent = ComponentFactory.GetComponent<IList>();
             Assert.AreEqual(testComp1, retreivedComponent);
-        }
-
-        #endregion
-
-        public static IContainer CreateMockContainer()
-        {
-            var mockContainer = new Mock<IContainer>();
-            IContainer container = mockContainer.Object;
-            ComponentFactory.Container = container;
-            return container;
         }
     }
 }

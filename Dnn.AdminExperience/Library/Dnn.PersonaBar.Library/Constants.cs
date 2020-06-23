@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library
 {
+    using System;
+
     public static class Constants
     {
         public const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Prompt/App_LocalResources/Prompt.resx";
@@ -16,6 +16,8 @@ namespace Dnn.PersonaBar.Library
 
         public const int AvatarWidth = 64;
         public const int AvatarHeight = 64;
+
+        public const string AdminsRoleName = "Administrators";
 
         public static readonly TimeSpan ThreeSeconds = TimeSpan.FromSeconds(3);
         public static readonly TimeSpan ThirtySeconds = TimeSpan.FromSeconds(30);
@@ -28,7 +30,5 @@ namespace Dnn.PersonaBar.Library
         public static readonly TimeSpan TwelveHours = TimeSpan.FromHours(12);
         public static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
         public static readonly TimeSpan OneWeek = TimeSpan.FromDays(7);
-        
-        public const string AdminsRoleName = "Administrators";
     }
 }

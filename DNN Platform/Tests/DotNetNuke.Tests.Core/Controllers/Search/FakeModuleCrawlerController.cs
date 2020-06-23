@@ -1,26 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Services.Search.Controllers;
-using DotNetNuke.Services.Search.Entities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
+    using System;
+
+    using DotNetNuke.Services.Search.Controllers;
+    using DotNetNuke.Services.Search.Entities;
+
     /// <summary>
-    /// Search Crawler for Module Content
+    /// Search Crawler for Module Content.
     /// </summary>
     /// <remarks></remarks>
     public class FakeResultController : BaseResultController
     {
-        #region Abstract Class Implmentation
-
         public override bool HasViewPermission(SearchResult searchResult)
         {
             return true;
@@ -29,10 +22,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         // Returns the URL to the first instance of the module the user has access to view
         public override string GetDocUrl(SearchResult searchResult)
         {
-           return "http://www.google.com";
+            return "http://www.google.com";
         }
-
-        #endregion
     }
 
     public class NoPermissionFakeResultController : FakeResultController
@@ -42,7 +33,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             // This logic tests that based on ID we give permission to test recursive
             // search in SearchControllerImpl.GetSecurityTrimmedResults() method.
-            //The logic here is all documents with AuthorUserId's 6-9, 16-19, 26-29, etc. have
+            // The logic here is all documents with AuthorUserId's 6-9, 16-19, 26-29, etc. have
             // permission, while the rest don't
             return (searchResult.AuthorUserId % 10) > 5;
         }

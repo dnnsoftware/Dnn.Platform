@@ -1,22 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
-using System.Web.Http.Hosting;
-using System.Web.Http.Routing;
-using DotNetNuke.Web.Api;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Dispatcher;
+    using System.Web.Http.Hosting;
+    using System.Web.Http.Routing;
+
+    using DotNetNuke.Web.Api;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class DnnHttpControllerSelectorTests
     {
@@ -39,7 +40,7 @@ namespace DotNetNuke.Tests.Web.Api
             var request = new HttpRequestMessage();
             IHttpRouteData routeData = GetRouteData();
             routeData.Values["controller"] = controllerTypeName;
-            routeData.Route.SetNameSpaces(new[] {expectedNamespace});
+            routeData.Route.SetNameSpaces(new[] { expectedNamespace });
             request.Properties[HttpPropertyKeys.HttpRouteDataKey] = routeData;
 
             var selector = new DnnHttpControllerSelector(configuration);
@@ -62,7 +63,7 @@ namespace DotNetNuke.Tests.Web.Api
             var configuration = new HttpConfiguration();
             var controllerTypeResolver = new Mock<IHttpControllerTypeResolver>();
             configuration.Services.Replace(typeof(IHttpControllerTypeResolver), controllerTypeResolver.Object);
-            
+
             Type controllerType = GetMockControllerType(controllerName, unexpectedNamespace);
             controllerTypeResolver
                 .Setup(c => c.GetControllerTypes(It.IsAny<IAssembliesResolver>()))

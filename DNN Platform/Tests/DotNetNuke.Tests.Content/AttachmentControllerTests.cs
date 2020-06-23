@@ -1,30 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Content;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-using DotNetNuke.Services.Cache;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Tests.Content.Mocks;
-using DotNetNuke.Tests.Utilities;
-using DotNetNuke.Tests.Utilities.Mocks;
-using Moq;
-
-using NUnit.Framework;
-using FileController = DotNetNuke.Entities.Content.AttachmentController;
-using Util = DotNetNuke.Entities.Content.Common.Util;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Content
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Tests.Content.Mocks;
+    using DotNetNuke.Tests.Utilities;
+    using DotNetNuke.Tests.Utilities.Mocks;
+    using Moq;
+    using NUnit.Framework;
+
+    using FileController = DotNetNuke.Entities.Content.AttachmentController;
+    using Util = DotNetNuke.Entities.Content.Common.Util;
+
     [TestFixture]
     public class AttachmentControllerTests
     {
@@ -33,8 +33,8 @@ namespace DotNetNuke.Tests.Content
         [SetUp]
         public void SetUp()
         {
-            //Register MockCachingProvider
-            mockCache = MockComponentProvider.CreateNew<CachingProvider>();
+            // Register MockCachingProvider
+            this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
         }
 
@@ -44,7 +44,66 @@ namespace DotNetNuke.Tests.Content
             MockComponentProvider.ResetContainer();
         }
 
-        #region Utility methods
+        [Test]
+        public void Test_Add_File_To_Content_Item_Without_Metadata()
+        {
+            var dataService = DataServiceFactory();
+
+            dataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>()))
+                .Returns(Constants.CONTENT_AddContentItemId);
+
+            // Return empty set of metadata.
+            dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(MockHelper.CreateEmptyMetaDataReader);
+
+            var content = ContentTestHelper.CreateValidContentItem();
+            content.Metadata.Clear();
+
+            var contentId = Util.GetContentController().AddContentItem(content);
+            Assert.AreEqual(contentId, Constants.CONTENT_AddContentItemId);
+            Assert.IsEmpty(content.Metadata);
+
+            dataService.Setup(ds => ds.GetContentItem(It.IsAny<int>()))
+                .Returns<int>(y => MockHelper.CreateValidContentItemReader(content));
+
+            var fileController = ComponentFactory.GetComponent<IAttachmentController>();
+
+            fileController.AddFileToContent(contentId, ContentTestHelper.CreateValidFile(0));
+
+            dataService.Verify(
+                ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, new[] { 0 }.ToJson()));
+        }
+
+        [Test]
+        public void Test_Load_Attachments_From_DataService()
+        {
+            var files = new List<IFileInfo>
+                {
+                    ContentTestHelper.CreateValidFile(0),
+                    ContentTestHelper.CreateValidFile(1),
+                    ContentTestHelper.CreateValidFile(2),
+                };
+
+            var dataService = DataServiceFactory();
+
+            dataService.Setup(ds => ds.GetContentItem(It.IsAny<int>())).Returns(MockHelper.CreateValidContentItemReader);
+
+            dataService.Setup(
+                ds =>
+                    ds.GetMetaData(It.IsAny<int>())).Returns(
+                        () => MockHelper.CreateMetaDataReaderWithFiles(files, new IFileInfo[0], new IFileInfo[0]));
+
+            var contentItem = Util.GetContentController().GetContentItem(Constants.CONTENT_ValidContentItemId);
+            Assert.IsNotNull(contentItem);
+
+            var serialized = contentItem.Metadata[FileController.FilesKey];
+            Assert.IsNotEmpty(serialized);
+
+            Assert.IsNotEmpty(contentItem.Files);
+            Assert.AreEqual(contentItem.Files.Count, 3);
+            Assert.AreEqual(contentItem.Files[0].FileId, 0);
+            Assert.AreEqual(contentItem.Files[1].FileId, 1);
+            Assert.AreEqual(contentItem.Files[2].FileId, 2);
+        }
 
         private static Mock<IDataService> DataServiceFactory()
         {
@@ -90,71 +149,6 @@ namespace DotNetNuke.Tests.Content
             return dataService;
         }
 
-        #endregion
-
-        #region FileController Tests
-
-        [Test]
-        public void Test_Add_File_To_Content_Item_Without_Metadata()
-        {
-            var dataService = DataServiceFactory();
-
-            dataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>()))
-                .Returns(Constants.CONTENT_AddContentItemId);
-
-            // Return empty set of metadata.
-            dataService.Setup(ds => ds.GetMetaData(It.IsAny<int>())).Returns(MockHelper.CreateEmptyMetaDataReader);
-            
-            var content = ContentTestHelper.CreateValidContentItem();
-            content.Metadata.Clear();
-
-            var contentId = Util.GetContentController().AddContentItem(content);
-            Assert.AreEqual(contentId, Constants.CONTENT_AddContentItemId);
-            Assert.IsEmpty(content.Metadata);
-
-            dataService.Setup(ds => ds.GetContentItem(It.IsAny<int>()))
-                .Returns<int>(y => MockHelper.CreateValidContentItemReader(content));
-
-            var fileController = ComponentFactory.GetComponent<IAttachmentController>();
-
-            fileController.AddFileToContent(contentId, ContentTestHelper.CreateValidFile(0));
-
-            dataService.Verify(
-                ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, new[] {0}.ToJson()));
-        }
-
-        [Test]
-        public void Test_Load_Attachments_From_DataService()
-        {
-            var files = new List<IFileInfo>
-                {
-                    ContentTestHelper.CreateValidFile(0),
-                    ContentTestHelper.CreateValidFile(1),
-                    ContentTestHelper.CreateValidFile(2)
-                };
-
-            var dataService = DataServiceFactory();
-
-            dataService.Setup(ds => ds.GetContentItem(It.IsAny<int>())).Returns(MockHelper.CreateValidContentItemReader);
-
-            dataService.Setup(
-                ds =>
-                    ds.GetMetaData(It.IsAny<int>())).Returns(
-                        () => MockHelper.CreateMetaDataReaderWithFiles(files, new IFileInfo[0], new IFileInfo[0]));
-            
-            var contentItem = Util.GetContentController().GetContentItem(Constants.CONTENT_ValidContentItemId);
-            Assert.IsNotNull(contentItem);
-
-            var serialized = contentItem.Metadata[FileController.FilesKey];
-            Assert.IsNotEmpty(serialized);
-
-            Assert.IsNotEmpty(contentItem.Files);
-            Assert.AreEqual(contentItem.Files.Count, 3);
-            Assert.AreEqual(contentItem.Files[0].FileId, 0);
-            Assert.AreEqual(contentItem.Files[1].FileId, 1);
-            Assert.AreEqual(contentItem.Files[2].FileId, 2);
-        }
-
         [Test]
         public void Test_Add_Attachments_With_FileController()
         {
@@ -166,7 +160,7 @@ namespace DotNetNuke.Tests.Content
 
             // Use a closure to store the metadata locally in this method.
             var data = new Dictionary<string, string>();
-            
+
             dataService.Setup(
                 ds =>
                     ds.GetMetaData(It.IsAny<int>())).Returns(
@@ -207,7 +201,7 @@ namespace DotNetNuke.Tests.Content
 
             dataService.Verify(
                 ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0]"), Times.Once());
-            
+
             dataService.Verify(
                 ds => ds.AddMetaData(It.IsAny<ContentItem>(), FileController.FilesKey, "[0,1]"), Times.Once());
         }
@@ -257,7 +251,7 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(0, emptyFiles.Count);
         }
 
-        /// <remarks>This test should be moved elsewhere (cb)</remarks>
+        /// <remarks>This test should be moved elsewhere (cb).</remarks>
         [Test]
         public void Set_MetaData_To_Same_Value_Doesnt_Update_Database_Entry()
         {
@@ -275,7 +269,7 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Never());
 
             contentItem.ContentTitle = "Foobar";
-            
+
             contentController.UpdateContentItem(contentItem);
 
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
@@ -289,7 +283,6 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Never());
 
-
             // Really update
             contentItem.ContentTitle = "SNAFU";
 
@@ -298,7 +291,5 @@ namespace DotNetNuke.Tests.Content
             dataService.Verify(ds => ds.AddMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Exactly(2));
             dataService.Verify(ds => ds.DeleteMetaData(contentItem, FileController.TitleKey, It.IsAny<string>()), Times.Once());
         }
-        
-        #endregion
     }
 }

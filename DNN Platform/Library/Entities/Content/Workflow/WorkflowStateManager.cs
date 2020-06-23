@@ -1,49 +1,45 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Content.Workflow.Entities;
-using DotNetNuke.Entities.Content.Workflow.Exceptions;
-using DotNetNuke.Entities.Content.Workflow.Repositories;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Content.Workflow
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Content.Workflow.Exceptions;
+    using DotNetNuke.Entities.Content.Workflow.Repositories;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class WorkflowStateManager : ServiceLocator<IWorkflowStateManager, WorkflowStateManager>, IWorkflowStateManager
     {
-        #region Members
         private readonly DataProvider _dataProvider;
         private readonly IWorkflowRepository _workflowRepository = WorkflowRepository.Instance;
         private readonly IWorkflowStateRepository _workflowStateRepository = WorkflowStateRepository.Instance;
         private readonly IWorkflowStatePermissionsRepository _workflowStatePermissionsRepository = WorkflowStatePermissionsRepository.Instance;
-        #endregion
 
-        #region Constructor
         public WorkflowStateManager()
         {
-            _dataProvider = DataProvider.Instance();
+            this._dataProvider = DataProvider.Instance();
         }
-        #endregion
 
-        #region Public Methods
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
-            return _workflowStateRepository.GetWorkflowStates(workflowId);
+            return this._workflowStateRepository.GetWorkflowStates(workflowId);
         }
 
         public WorkflowState GetWorkflowState(int stateId)
         {
-            return _workflowStateRepository.GetWorkflowStateByID(stateId);
+            return this._workflowStateRepository.GetWorkflowStateByID(stateId);
         }
 
         public void AddWorkflowState(WorkflowState state)
         {
-            var workflow = _workflowRepository.GetWorkflow(state.WorkflowID);
+            var workflow = this._workflowRepository.GetWorkflow(state.WorkflowID);
             if (workflow == null)
             {
                 throw new WorkflowDoesNotExistException();
@@ -60,13 +56,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             state.Order = lastState.Order;
 
             lastState.Order++;
-            _workflowStateRepository.AddWorkflowState(state);
-            _workflowStateRepository.UpdateWorkflowState(lastState); // Update last state order
+            this._workflowStateRepository.AddWorkflowState(state);
+            this._workflowStateRepository.UpdateWorkflowState(lastState); // Update last state order
         }
 
         public void DeleteWorkflowState(WorkflowState state)
         {
-            var stateToDelete = _workflowStateRepository.GetWorkflowStateByID(state.StateID);
+            var stateToDelete = this._workflowStateRepository.GetWorkflowStateByID(state.StateID);
             if (stateToDelete == null)
             {
                 return;
@@ -77,12 +73,12 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowSystemWorkflowStateCannotBeDeleted", Localization.ExceptionsResourceFile));
             }
 
-            if (_dataProvider.GetContentWorkflowStateUsageCount(state.StateID) > 0)
+            if (this._dataProvider.GetContentWorkflowStateUsageCount(state.StateID) > 0)
             {
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateInUsageException", Localization.ExceptionsResourceFile));
             }
 
-            _workflowStateRepository.DeleteWorkflowState(stateToDelete);
+            this._workflowStateRepository.DeleteWorkflowState(stateToDelete);
 
             // Reorder states order
             using (var context = DataContext.Instance())
@@ -94,23 +90,24 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         public void UpdateWorkflowState(WorkflowState state)
         {
-            var workflowState = _workflowStateRepository.GetWorkflowStateByID(state.StateID);
+            var workflowState = this._workflowStateRepository.GetWorkflowStateByID(state.StateID);
             if (workflowState == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
-            _workflowStateRepository.UpdateWorkflowState(state);
+
+            this._workflowStateRepository.UpdateWorkflowState(state);
         }
 
         public void MoveWorkflowStateDown(int stateId)
         {
-            var state = _workflowStateRepository.GetWorkflowStateByID(stateId);
+            var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            var states = _workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            var states = this._workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
 
             if (states.Length == 3)
             {
@@ -122,7 +119,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             for (var i = 0; i < states.Length; i++)
             {
-                if (states[i].StateID != stateId) continue;
+                if (states[i].StateID != stateId)
+                {
+                    continue;
+                }
 
                 // First and Second workflow state cannot be moved down
                 if (i <= 1)
@@ -144,19 +144,19 @@ namespace DotNetNuke.Entities.Content.Workflow
             stateToMoveDown.Order = stateToMoveUp.Order;
             stateToMoveUp.Order = orderTmp;
 
-            _workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
-            _workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
+            this._workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
+            this._workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
         public void MoveWorkflowStateUp(int stateId)
         {
-            var state = _workflowStateRepository.GetWorkflowStateByID(stateId);
+            var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            var states = _workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            var states = this._workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
 
             if (states.Length == 3)
             {
@@ -168,7 +168,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             for (var i = 0; i < states.Length; i++)
             {
-                if (states[i].StateID != stateId) continue;
+                if (states[i].StateID != stateId)
+                {
+                    continue;
+                }
 
                 // Last and Next to Last workflow state cannot be moved up
                 if (i >= states.Length - 2)
@@ -190,25 +193,25 @@ namespace DotNetNuke.Entities.Content.Workflow
             stateToMoveDown.Order = stateToMoveUp.Order;
             stateToMoveUp.Order = orderTmp;
 
-            _workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
-            _workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
+            this._workflowStateRepository.UpdateWorkflowState(stateToMoveUp);
+            this._workflowStateRepository.UpdateWorkflowState(stateToMoveDown);
         }
 
         public void MoveState(int stateId, int index)
         {
-            var state = _workflowStateRepository.GetWorkflowStateByID(stateId);
+            var state = this._workflowStateRepository.GetWorkflowStateByID(stateId);
             if (state == null)
             {
                 throw new WorkflowDoesNotExistException();
             }
 
-            var states = _workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
+            var states = this._workflowStateRepository.GetWorkflowStates(state.WorkflowID).ToArray();
             if (index < 1 || index > states.Length - 2)
             {
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
 
-            var currentIndex = GetStateIndex(states, state);
+            var currentIndex = this.GetStateIndex(states, state);
 
             if (currentIndex == 0
                 || currentIndex == states.Length - 1)
@@ -216,31 +219,34 @@ namespace DotNetNuke.Entities.Content.Workflow
                 throw new WorkflowInvalidOperationException(Localization.GetString("WorkflowStateCannotBeMoved", Localization.ExceptionsResourceFile));
             }
 
-            MoveState(state, index, currentIndex);
+            this.MoveState(state, index, currentIndex);
         }
 
         public IEnumerable<WorkflowStatePermission> GetWorkflowStatePermissionByState(int stateId)
         {
-            return _workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
+            return this._workflowStatePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
         }
 
         public void AddWorkflowStatePermission(WorkflowStatePermission permission, int userId)
         {
-            permission.WorkflowStatePermissionID = _workflowStatePermissionsRepository.AddWorkflowStatePermission(permission, userId);
+            permission.WorkflowStatePermissionID = this._workflowStatePermissionsRepository.AddWorkflowStatePermission(permission, userId);
         }
 
         public void DeleteWorkflowStatePermission(int workflowStatePermissionId)
         {
-            _workflowStatePermissionsRepository.DeleteWorkflowStatePermission(workflowStatePermissionId);
+            this._workflowStatePermissionsRepository.DeleteWorkflowStatePermission(workflowStatePermissionId);
         }
 
         public int GetContentWorkflowStateUsageCount(int stateId)
         {
-            return _dataProvider.GetContentWorkflowStateUsageCount(stateId);
+            return this._dataProvider.GetContentWorkflowStateUsageCount(stateId);
         }
-        #endregion
 
-        #region Private Methods
+        protected override Func<IWorkflowStateManager> GetFactory()
+        {
+            return () => new WorkflowStateManager();
+        }
+
         private int GetStateIndex(WorkflowState[] states, WorkflowState currentState)
         {
             int i = 0;
@@ -251,11 +257,13 @@ namespace DotNetNuke.Entities.Content.Workflow
                 {
                     return i;
                 }
+
                 i++;
             }
 
             return i;
         }
+
         private void MoveState(WorkflowState state, int targetIndex, int currentIndex)
         {
             if (currentIndex == targetIndex)
@@ -270,20 +278,13 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 if (moveUp)
                 {
-                    MoveWorkflowStateUp(state.StateID);
+                    this.MoveWorkflowStateUp(state.StateID);
                 }
                 else
                 {
-                    MoveWorkflowStateDown(state.StateID);
+                    this.MoveWorkflowStateDown(state.StateID);
                 }
             }
         }
-        #endregion
-        #region Service Locator
-        protected override Func<IWorkflowStateManager> GetFactory()
-        {
-            return () => new WorkflowStateManager();
-        }
-        #endregion
     }
 }

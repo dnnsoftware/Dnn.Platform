@@ -1,29 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
-    /// Class	 : SkinPackageInfo
-    /// 
+    /// Project  : DotNetNuke
+    /// Class    : SkinPackageInfo
+    ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///     Handles the Business Object for Skins
+    ///     Handles the Business Object for Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,28 +26,23 @@ namespace DotNetNuke.UI.Skins
     [Serializable]
     public class SkinPackageInfo : BaseEntityInfo, IHydratable
     {
-		#region "Private Members"
-
         private int _PackageID = Null.NullInteger;
         private int _PortalID = Null.NullInteger;
         private string _SkinName;
         private int _SkinPackageID = Null.NullInteger;
         private string _SkinType;
         private Dictionary<int, string> _Skins = new Dictionary<int, string>();
-		
-		#endregion
-
-		#region "Public Properties"
 
         public int PackageID
         {
             get
             {
-                return _PackageID;
+                return this._PackageID;
             }
+
             set
             {
-                _PackageID = value;
+                this._PackageID = value;
             }
         }
 
@@ -60,11 +50,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinPackageID;
+                return this._SkinPackageID;
             }
+
             set
             {
-                _SkinPackageID = value;
+                this._SkinPackageID = value;
             }
         }
 
@@ -72,11 +63,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _PortalID;
+                return this._PortalID;
             }
+
             set
             {
-                _PortalID = value;
+                this._PortalID = value;
             }
         }
 
@@ -84,11 +76,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinName;
+                return this._SkinName;
             }
+
             set
             {
-                _SkinName = value;
+                this._SkinName = value;
             }
         }
 
@@ -97,11 +90,12 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _Skins;
+                return this._Skins;
             }
+
             set
             {
-                _Skins = value;
+                this._Skins = value;
             }
         }
 
@@ -109,26 +103,37 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return _SkinType;
+                return this._SkinType;
             }
+
             set
             {
-                _SkinType = value;
+                this._SkinType = value;
             }
         }
-		
-		#endregion
 
-        #region IHydratable Members
+        public int KeyID
+        {
+            get
+            {
+                return this.SkinPackageID;
+            }
+
+            set
+            {
+                this.SkinPackageID = value;
+            }
+        }
 
         public void Fill(IDataReader dr)
         {
-            SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
-            PackageID = Null.SetNullInteger(dr["PackageID"]);
-            SkinName = Null.SetNullString(dr["SkinName"]);
-            SkinType = Null.SetNullString(dr["SkinType"]);
-            //Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.SkinPackageID = Null.SetNullInteger(dr["SkinPackageID"]);
+            this.PackageID = Null.SetNullInteger(dr["PackageID"]);
+            this.SkinName = Null.SetNullString(dr["SkinName"]);
+            this.SkinType = Null.SetNullString(dr["SkinType"]);
+
+            // Call the base classes fill method to populate base class proeprties
+            this.FillInternal(dr);
 
             if (dr.NextResult())
             {
@@ -137,24 +142,10 @@ namespace DotNetNuke.UI.Skins
                     int skinID = Null.SetNullInteger(dr["SkinID"]);
                     if (skinID > Null.NullInteger)
                     {
-                        _Skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
+                        this._Skins[skinID] = Null.SetNullString(dr["SkinSrc"]);
                     }
                 }
             }
         }
-
-        public int KeyID
-        {
-            get
-            {
-                return SkinPackageID;
-            }
-            set
-            {
-                SkinPackageID = value;
-            }
-        }
-
-        #endregion
     }
 }

@@ -1,26 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// Class of Vocabulary.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+
+    /// <summary>
+    /// Class of Vocabulary.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     [Serializable]
     public class Vocabulary : BaseEntityInfo, IHydratable
     {
@@ -38,49 +33,48 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private int _Weight;
 
-        #region "Constructors"
-
-        public Vocabulary() : this(Null.NullString, Null.NullString, VocabularyType.Simple)
+        public Vocabulary()
+            : this(Null.NullString, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        public Vocabulary(string name) : this(name, Null.NullString, VocabularyType.Simple)
+        public Vocabulary(string name)
+            : this(name, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        public Vocabulary(string name, string description) : this(name, description, VocabularyType.Simple)
+        public Vocabulary(string name, string description)
+            : this(name, description, VocabularyType.Simple)
         {
         }
 
-        public Vocabulary(VocabularyType type) : this(Null.NullString, Null.NullString, type)
+        public Vocabulary(VocabularyType type)
+            : this(Null.NullString, Null.NullString, type)
         {
         }
 
         public Vocabulary(string name, string description, VocabularyType type)
         {
-            Description = description;
-            Name = name;
-            Type = type;
+            this.Description = description;
+            this.Name = name;
+            this.Type = type;
 
-            ScopeId = Null.NullInteger;
-            ScopeTypeId = Null.NullInteger;
-            VocabularyId = Null.NullInteger;
-            Weight = 0;
+            this.ScopeId = Null.NullInteger;
+            this.ScopeTypeId = Null.NullInteger;
+            this.VocabularyId = Null.NullInteger;
+            this.Weight = 0;
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         public string Description
         {
             get
             {
-                return _Description;
+                return this._Description;
             }
+
             set
             {
-                _Description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                this._Description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -88,7 +82,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return (Type == VocabularyType.Hierarchy);
+                return this.Type == VocabularyType.Hierarchy;
             }
         }
 
@@ -96,11 +90,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _IsSystem;
+                return this._IsSystem;
             }
+
             set
             {
-                _IsSystem = value;
+                this._IsSystem = value;
             }
         }
 
@@ -108,13 +103,17 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _Name;
+                return this._Name;
             }
+
             set
             {
                 if (HtmlUtils.ContainsEntity(value))
+                {
                     value = System.Net.WebUtility.HtmlDecode(value);
-                _Name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+                }
+
+                this._Name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -122,11 +121,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _ScopeId;
+                return this._ScopeId;
             }
+
             set
             {
-                _ScopeId = value;
+                this._ScopeId = value;
             }
         }
 
@@ -134,12 +134,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                if (_ScopeType == null)
+                if (this._ScopeType == null)
                 {
-                    _ScopeType = this.GetScopeType(_ScopeTypeId);
+                    this._ScopeType = this.GetScopeType(this._ScopeTypeId);
                 }
 
-                return _ScopeType;
+                return this._ScopeType;
             }
         }
 
@@ -147,11 +147,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _ScopeTypeId;
+                return this._ScopeTypeId;
             }
+
             set
             {
-                _ScopeTypeId = value;
+                this._ScopeTypeId = value;
             }
         }
 
@@ -159,11 +160,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                if (_Terms == null)
+                if (this._Terms == null)
                 {
-                    _Terms = this.GetTerms(_VocabularyId);
+                    this._Terms = this.GetTerms(this._VocabularyId);
                 }
-                return _Terms;
+
+                return this._Terms;
             }
         }
 
@@ -171,11 +173,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _Type;
+                return this._Type;
             }
+
             set
             {
-                _Type = value;
+                this._Type = value;
             }
         }
 
@@ -183,11 +186,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _VocabularyId;
+                return this._VocabularyId;
             }
+
             set
             {
-                _VocabularyId = value;
+                this._VocabularyId = value;
             }
         }
 
@@ -195,53 +199,50 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return _Weight;
+                return this._Weight;
             }
+
             set
             {
-                _Weight = value;
+                this._Weight = value;
             }
-        }
-
-        #endregion
-
-        #region "IHydratable Implementation"
-
-        public virtual void Fill(IDataReader dr)
-        {
-            VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
-            switch (Convert.ToInt16(dr["VocabularyTypeID"]))
-            {
-                case 1:
-                    Type = VocabularyType.Simple;
-                    break;
-                case 2:
-                    Type = VocabularyType.Hierarchy;
-                    break;
-            }
-            IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
-            Name = Null.SetNullString(dr["Name"]);
-            Description = Null.SetNullString(dr["Description"]);
-            ScopeId = Null.SetNullInteger(dr["ScopeID"]);
-            ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
-            Weight = Null.SetNullInteger(dr["Weight"]);
-
-            //Fill base class properties
-            FillInternal(dr);
         }
 
         public virtual int KeyID
         {
             get
             {
-                return VocabularyId;
+                return this.VocabularyId;
             }
+
             set
             {
-                VocabularyId = value;
+                this.VocabularyId = value;
             }
         }
 
-        #endregion
+        public virtual void Fill(IDataReader dr)
+        {
+            this.VocabularyId = Null.SetNullInteger(dr["VocabularyID"]);
+            switch (Convert.ToInt16(dr["VocabularyTypeID"]))
+            {
+                case 1:
+                    this.Type = VocabularyType.Simple;
+                    break;
+                case 2:
+                    this.Type = VocabularyType.Hierarchy;
+                    break;
+            }
+
+            this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
+            this.Name = Null.SetNullString(dr["Name"]);
+            this.Description = Null.SetNullString(dr["Description"]);
+            this.ScopeId = Null.SetNullInteger(dr["ScopeID"]);
+            this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
+            this.Weight = Null.SetNullInteger(dr["Weight"]);
+
+            // Fill base class properties
+            this.FillInternal(dr);
+        }
     }
 }

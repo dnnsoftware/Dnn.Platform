@@ -1,26 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Framework;
-using DotNetNuke.UI.Skins;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabModulesController: ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
-    {
-        #region Public Methods
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.UI.Skins;
+
+    public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
+    {
         public ArrayList GetTabModules(TabInfo tab)
         {
             var objPaneModules = new Dictionary<string, int>();
@@ -35,14 +34,17 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     objPaneModules.Add(configuringModule.PaneName, 0);
                 }
+
                 configuringModule.PaneModuleCount = 0;
                 if (!configuringModule.IsDeleted)
                 {
                     objPaneModules[configuringModule.PaneName] = objPaneModules[configuringModule.PaneName] + 1;
                     configuringModule.PaneModuleIndex = objPaneModules[configuringModule.PaneName] - 1;
                 }
+
                 configuredModules.Add(configuringModule);
             }
+
             foreach (ModuleInfo module in configuredModules)
             {
                 module.PaneModuleCount = objPaneModules[module.PaneName];
@@ -51,7 +53,7 @@ namespace DotNetNuke.Entities.Tabs
             return configuredModules;
         }
 
-        public Dictionary<int,string> GetTabModuleSettingsByName(string settingName)
+        public Dictionary<int, string> GetTabModuleSettingsByName(string settingName)
         {
             var portalId = PortalSettings.Current.PortalId;
             var dataProvider = DataProvider.Instance();
@@ -67,6 +69,7 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             result[dr.GetInt32(0)] = dr.GetString(1);
                         }
+
                         return result;
                     }
                 });
@@ -76,7 +79,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue)
         {
-            var items = GetTabModuleSettingsByName(settingName);
+            var items = this.GetTabModuleSettingsByName(settingName);
             var matches = items.Where(e => e.Value.Equals(expectedValue, StringComparison.CurrentCultureIgnoreCase));
             var keyValuePairs = matches as KeyValuePair<int, string>[] ?? matches.ToArray();
             if (keyValuePairs.Any())
@@ -93,24 +96,29 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     result.Add(dr.GetInt32(0));
                 }
+
                 return result;
             }
         }
 
-        #endregion
+        protected override Func<ITabModulesController> GetFactory()
+        {
+            return () => new TabModulesController();
+        }
 
-        #region Private Methods
         private static void ConfigureModule(ModuleInfo cloneModule, TabInfo tab)
         {
             if (Null.IsNull(cloneModule.StartDate))
             {
                 cloneModule.StartDate = DateTime.MinValue;
             }
+
             if (Null.IsNull(cloneModule.EndDate))
             {
                 cloneModule.EndDate = DateTime.MaxValue;
             }
-            if (String.IsNullOrEmpty(cloneModule.ContainerSrc))
+
+            if (string.IsNullOrEmpty(cloneModule.ContainerSrc))
             {
                 cloneModule.ContainerSrc = tab.ContainerSrc;
             }
@@ -126,19 +134,13 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return TabVersionBuilder.Instance.GetVersionModules(tab.TabID, urlVersion);
             }
-            
+
             if (Globals.IsEditMode())
             {
                 return TabVersionBuilder.Instance.GetUnPublishedVersionModules(tab.TabID);
             }
 
             return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
-        }
-        #endregion
-
-        protected override Func<ITabModulesController> GetFactory()
-        {
-            return ()  => new TabModulesController();
         }
     }
 }

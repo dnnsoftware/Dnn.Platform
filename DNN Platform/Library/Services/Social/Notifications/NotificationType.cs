@@ -1,17 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Social.Notifications
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Services.Social.Notifications
@@ -29,35 +29,36 @@ namespace DotNetNuke.Services.Social.Notifications
         private int _desktopModuleId = -1;
 
         /// <summary>
-        /// The notification type identifier.
+        /// Gets or sets the notification type identifier.
         /// </summary>
         [XmlAttribute]
         public int NotificationTypeId
         {
             get
             {
-                return _notificationTypeId;
+                return this._notificationTypeId;
             }
+
             set
             {
-                _notificationTypeId = value;
+                this._notificationTypeId = value;
             }
         }
 
         /// <summary>
-        /// The notification type name.
+        /// Gets or sets the notification type name.
         /// </summary>
         [XmlAttribute]
         public string Name { get; set; }
 
         /// <summary>
-        /// The notification type description.
+        /// Gets or sets the notification type description.
         /// </summary>
         [XmlAttribute]
         public string Description { get; set; }
 
         /// <summary>
-        /// The amount of time to add to the creation date of the message to calculate the expiration date.
+        /// Gets or sets the amount of time to add to the creation date of the message to calculate the expiration date.
         /// </summary>
         /// <remarks>
         /// Minutes precision. Seconds won't be considered.
@@ -66,7 +67,7 @@ namespace DotNetNuke.Services.Social.Notifications
         public TimeSpan TimeToLive { get; set; }
 
         /// <summary>
-        /// If the message type is related to a specific module, this field is used to localize actions by getting the resource file from the module folder.
+        /// Gets or sets if the message type is related to a specific module, this field is used to localize actions by getting the resource file from the module folder.
         /// </summary>
         /// <remarks>
         /// The resource file used will be SharedResources by convention.
@@ -76,16 +77,17 @@ namespace DotNetNuke.Services.Social.Notifications
         {
             get
             {
-                return _desktopModuleId;
+                return this._desktopModuleId;
             }
+
             set
             {
-                _desktopModuleId = value;
+                this._desktopModuleId = value;
             }
         }
 
         /// <summary>
-        /// Is this of a Task type. Default is false.
+        /// Gets or sets a value indicating whether is this of a Task type. Default is false.
         /// </summary>
         /// <remarks>
         /// Tasks are primarily notifications where an action must be taken. Dismiss is usually not enough.
@@ -93,16 +95,14 @@ namespace DotNetNuke.Services.Social.Notifications
         [XmlAttribute]
         public bool IsTask { get; set; }
 
-        #region Implementation of IHydratable
-
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID
         {
-            get { return NotificationTypeId; }
-            set { NotificationTypeId = value; }
+            get { return this.NotificationTypeId; }
+            set { this.NotificationTypeId = value; }
         }
 
         /// <summary>
@@ -111,21 +111,20 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="dr">the data reader.</param>
         public void Fill(IDataReader dr)
         {
-            NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
-            Name = dr["Name"].ToString();
-            Description = Null.SetNullString(dr["Description"]);
+            this.NotificationTypeId = Convert.ToInt32(dr["NotificationTypeID"]);
+            this.Name = dr["Name"].ToString();
+            this.Description = Null.SetNullString(dr["Description"]);
             var timeToLive = Null.SetNullInteger(dr["TTL"]);
             if (timeToLive != Null.NullInteger)
             {
-                TimeToLive = new TimeSpan(0, timeToLive, 0);
+                this.TimeToLive = new TimeSpan(0, timeToLive, 0);
             }
-            DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
-            IsTask = Null.SetNullBoolean(dr["IsTask"]);
 
-            //add audit column data
-            FillInternal(dr);
+            this.DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
+            this.IsTask = Null.SetNullBoolean(dr["IsTask"]);
+
+            // add audit column data
+            this.FillInternal(dr);
         }
-
-        #endregion
     }
 }

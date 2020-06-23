@@ -1,14 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Utilities
 {
+    using System;
+    using System.Collections.Generic;
+
+    using NUnit.Framework;
+
     public static class EnumerableAssert
     {
         public static void ElementsAreEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual)
@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static void ElementsMatch<TExpected, TActual>(IEnumerable<TExpected> expected, IEnumerable<TActual> actual, Func<TExpected, TActual, bool> matcher)
         {
-            ElementsMatch(expected, actual, matcher, String.Empty, new string[0]);
+            ElementsMatch(expected, actual, matcher, string.Empty, new string[0]);
         }
 
         public static void ElementsMatch<TExpected, TActual>(IEnumerable<TExpected> expected, IEnumerable<TActual> actual, Func<TExpected, TActual, bool> matcher, string message)

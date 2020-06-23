@@ -1,54 +1,49 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-using System.Net;
-using System.Text;
-using System.Web;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Framework
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Text;
+    using System.Web;
+
     public abstract class BaseHttpHandler : IHttpHandler
     {
         private HttpContext _context;
 
         /// <summary>
-        ///   Returns the <see cref = "HttpContext" /> object for the incoming HTTP request.
+        ///   Gets the <see cref = "HttpContext" /> object for the incoming HTTP request.
         /// </summary>
         public HttpContext Context
         {
             get
             {
-                return _context;
+                return this._context;
             }
         }
 
         /// <summary>
-        ///   Returns the <see cref = "HttpRequest" /> object for the incoming HTTP request.
+        ///   Gets the <see cref = "HttpRequest" /> object for the incoming HTTP request.
         /// </summary>
         public HttpRequest Request
         {
             get
             {
-                return Context.Request;
+                return this.Context.Request;
             }
         }
 
         /// <summary>
-        ///   Gets the <see cref = "HttpResponse" /> object associated with the Page object. This object 
+        ///   Gets the <see cref = "HttpResponse" /> object associated with the Page object. This object
         ///   allows you to send HTTP response data to a client and contains information about that response.
         /// </summary>
         public HttpResponse Response
         {
             get
             {
-                return Context.Response;
+                return this.Context.Response;
             }
         }
 
@@ -59,8 +54,8 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                Request.InputStream.Position = 0;
-                using (var Reader = new StreamReader(Request.InputStream))
+                this.Request.InputStream.Position = 0;
+                using (var Reader = new StreamReader(this.Request.InputStream))
                 {
                     return Reader.ReadToEnd();
                 }
@@ -88,8 +83,8 @@ namespace DotNetNuke.Framework
         ///   has the necessary permissions.
         /// </summary>
         /// <remarks>
-        ///   By default all authenticated users have permssions.  
-        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>
+        ///   By default all authenticated users have permssions.
+        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>.
         /// </remarks>
         /// <value>
         ///   <c>true</c> if the user has the appropriate permissions
@@ -99,14 +94,16 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                return Context.User.Identity.IsAuthenticated;
+                return this.Context.User.Identity.IsAuthenticated;
             }
         }
 
         /// <summary>
         ///   Gets the content MIME type for the response object.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The content MIME type for the response object.</placeholder>
+        /// </value>
         public virtual string ContentMimeType
         {
             get
@@ -118,43 +115,15 @@ namespace DotNetNuke.Framework
         /// <summary>
         ///   Gets the content encoding for the response object.
         /// </summary>
-        /// <value></value>
+        /// <value>
+        /// <placeholder>The content encoding for the response object.</placeholder>
+        /// </value>
         public virtual Encoding ContentEncoding
         {
             get
             {
                 return Encoding.UTF8;
             }
-        }
-
-        #region IHttpHandler Members
-
-        /// <summary>
-        ///   Processs the incoming HTTP request.
-        /// </summary>
-        /// <param name = "context">Context.</param>
-        public void ProcessRequest(HttpContext context)
-        {
-            _context = context;
-
-            SetResponseCachePolicy(Response.Cache);
-
-            if (!ValidateParameters())
-            {
-                RespondInternalError();
-                return;
-            }
-
-            if (RequiresAuthentication && !HasPermission)
-            {
-                RespondForbidden();
-                return;
-            }
-
-            Response.ContentType = ContentMimeType;
-            Response.ContentEncoding = ContentEncoding;
-
-            HandleRequest();
         }
 
         public virtual bool IsReusable
@@ -165,14 +134,40 @@ namespace DotNetNuke.Framework
             }
         }
 
-        #endregion
+        /// <summary>
+        ///   Processs the incoming HTTP request.
+        /// </summary>
+        /// <param name = "context">Context.</param>
+        public void ProcessRequest(HttpContext context)
+        {
+            this._context = context;
+
+            this.SetResponseCachePolicy(this.Response.Cache);
+
+            if (!this.ValidateParameters())
+            {
+                this.RespondInternalError();
+                return;
+            }
+
+            if (this.RequiresAuthentication && !this.HasPermission)
+            {
+                this.RespondForbidden();
+                return;
+            }
+
+            this.Response.ContentType = this.ContentMimeType;
+            this.Response.ContentEncoding = this.ContentEncoding;
+
+            this.HandleRequest();
+        }
 
         /// <summary>
         ///   Handles the request.  This is where you put your
         ///   business logic.
         /// </summary>
         /// <remarks>
-        ///   <p>This method should result in a call to one 
+        ///   <p>This method should result in a call to one
         ///     (or more) of the following methods:</p>
         ///   <p><code>context.Response.BinaryWrite();</code></p>
         ///   <p><code>context.Response.Write();</code></p>
@@ -184,8 +179,8 @@ namespace DotNetNuke.Framework
         ///   </p>
         ///   <p>etc...</p>
         ///   <p>
-        ///     If you want a download box to show up with a 
-        ///     pre-populated filename, add this call here 
+        ///     If you want a download box to show up with a
+        ///     pre-populated filename, add this call here
         ///     (supplying a real filename).
         ///   </p>
         ///   <p>
@@ -201,7 +196,7 @@ namespace DotNetNuke.Framework
         ///   valid, otherwise false.
         /// </summary>
         /// <returns><c>true</c> if the parameters are valid,
-        ///   otherwise <c>false</c></returns>
+        ///   otherwise <c>false</c>.</returns>
         public abstract bool ValidateParameters();
 
         /// <summary>
@@ -223,8 +218,8 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondFileNotFound()
         {
-            Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
-            Response.End();
+            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
+            this.Response.End();
         }
 
         /// <summary>
@@ -235,8 +230,8 @@ namespace DotNetNuke.Framework
         {
             // It's really too bad that StatusCode property
             // is not of type HttpStatusCode.
-            Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
-            Response.End();
+            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
+            this.Response.End();
         }
 
         /// <summary>
@@ -246,8 +241,8 @@ namespace DotNetNuke.Framework
         /// </summary>
         protected void RespondForbidden()
         {
-            Response.StatusCode = Convert.ToInt32(HttpStatusCode.Forbidden);
-            Response.End();
+            this.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Forbidden);
+            this.Response.End();
         }
     }
 }

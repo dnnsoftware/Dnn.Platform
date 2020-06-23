@@ -1,43 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common
 {
-	/// <summary>
-	/// Assert Class.
-	/// </summary>
+    using System;
+
+    using DotNetNuke.Services.Localization;
+
+    /// <summary>
+    /// Assert Class.
+    /// </summary>
     public static class Requires
     {
-		/// <summary>
-		/// Determines whether argValue is type of T.
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="argName">Name of the arg.</param>
-		/// <param name="argValue">The arg value.</param>
-		/// <exception cref="ArgumentException"></exception>
+        /// <summary>
+        /// Determines whether argValue is type of T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argValue">The arg value.</param>
+        /// <exception cref="ArgumentException"></exception>
         public static void IsTypeOf<T>(string argName, object argValue)
         {
-            if (!((argValue) is T))
+            if (!(argValue is T))
             {
-                throw new ArgumentException(Localization.GetExceptionMessage("ValueMustBeOfType", "The argument '{0}' must be of type '{1}'.", argName, typeof (T).FullName));
+                throw new ArgumentException(Localization.GetExceptionMessage("ValueMustBeOfType", "The argument '{0}' must be of type '{1}'.", argName, typeof(T).FullName));
             }
         }
 
-		/// <summary>
-		/// Determines whether argValue is less than zero.
-		/// </summary>
-		/// <param name="argName">Name of the arg.</param>
-		/// <param name="argValue">The arg value.</param>
-		/// <exception cref="ArgumentException"></exception>
+        /// <summary>
+        /// Determines whether argValue is less than zero.
+        /// </summary>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argValue">The arg value.</param>
+        /// <exception cref="ArgumentException"></exception>
         public static void NotNegative(string argName, int argValue)
         {
             if (argValue < 0)
@@ -73,12 +68,12 @@ namespace DotNetNuke.Common
             }
         }
 
-		/// <summary>
-		/// Determines whether the argValue is null or empty.
-		/// </summary>
-		/// <param name="argName">Name of the arg.</param>
-		/// <param name="argValue">The arg value.</param>
-		/// <exception cref="ArgumentException"></exception>
+        /// <summary>
+        /// Determines whether the argValue is null or empty.
+        /// </summary>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argValue">The arg value.</param>
+        /// <exception cref="ArgumentException"></exception>
         public static void NotNullOrEmpty(string argName, string argValue)
         {
             if (string.IsNullOrEmpty(argValue))
@@ -109,7 +104,7 @@ namespace DotNetNuke.Common
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void PropertyNotNegative<T>(T item, string propertyName)
         {
-            //Check first if the item is null
+            // Check first if the item is null
             NotNull(item);
 
             var type = typeof(T);
@@ -120,7 +115,8 @@ namespace DotNetNuke.Common
 
             if (intValue < 0)
             {
-                throw new ArgumentOutOfRangeException(propertyName,
+                throw new ArgumentOutOfRangeException(
+                    propertyName,
                     Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", typeof(T).Name, propertyName));
             }
         }
@@ -136,8 +132,9 @@ namespace DotNetNuke.Common
         {
             if (propertyValue < 0)
             {
-                throw new ArgumentOutOfRangeException(argName,
-                                                      Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", argName, argProperty));
+                throw new ArgumentOutOfRangeException(
+                    argName,
+                    Localization.GetExceptionMessage("PropertyCannotBeNegative", "The property '{1}' in object '{0}' cannot be negative.", argName, argProperty));
             }
         }
 
@@ -158,9 +155,10 @@ namespace DotNetNuke.Common
         /// <param name="item">The object to test.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void PropertyNotNull<T>(T item, string propertyName) where T : class
+        public static void PropertyNotNull<T>(T item, string propertyName)
+            where T : class
         {
-            //Check first if the item is null
+            // Check first if the item is null
             NotNull(item);
 
             var type = typeof(T);
@@ -181,7 +179,7 @@ namespace DotNetNuke.Common
         /// <exception cref="ArgumentException"></exception>
         public static void PropertyNotNullOrEmpty<T>(T item, string propertyName)
         {
-            //Check first if the item is null
+            // Check first if the item is null
             NotNull(item);
 
             var type = typeof(T);
@@ -206,21 +204,23 @@ namespace DotNetNuke.Common
         {
             if (string.IsNullOrEmpty(propertyValue))
             {
-                throw new ArgumentException(argName,
-                                            Localization.GetExceptionMessage("PropertyCannotBeNullOrEmpty", "The property '{1}' in object '{0}' cannot be null or empty.", argName, argProperty));
+                throw new ArgumentException(
+                    argName,
+                    Localization.GetExceptionMessage("PropertyCannotBeNullOrEmpty", "The property '{1}' in object '{0}' cannot be null or empty.", argName, argProperty));
             }
         }
 
-		/// <summary>
-		/// Determines whether propertyValue equal to testValue.
-		/// </summary>
-		/// <typeparam name="TValue">The type of the value.</typeparam>
-		/// <param name="argName">Name of the arg.</param>
-		/// <param name="argProperty">The arg property.</param>
-		/// <param name="propertyValue">The property value.</param>
-		/// <param name="testValue">The test value.</param>
-		/// <exception cref="ArgumentException"></exception>
-        public static void PropertyNotEqualTo<TValue>(string argName, string argProperty, TValue propertyValue, TValue testValue) where TValue : IEquatable<TValue>
+        /// <summary>
+        /// Determines whether propertyValue equal to testValue.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="argName">Name of the arg.</param>
+        /// <param name="argProperty">The arg property.</param>
+        /// <param name="propertyValue">The property value.</param>
+        /// <param name="testValue">The test value.</param>
+        /// <exception cref="ArgumentException"></exception>
+        public static void PropertyNotEqualTo<TValue>(string argName, string argProperty, TValue propertyValue, TValue testValue)
+            where TValue : IEquatable<TValue>
         {
             if (propertyValue.Equals(testValue))
             {

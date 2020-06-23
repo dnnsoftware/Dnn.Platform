@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using DotNetNuke.Application;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Components.Checks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+
+    using DotNetNuke.Application;
+    using DotNetNuke.Common;
+
     public class CheckDefaultPage : IAuditCheck
     {
         public string Id => "CheckDefaultPage";
@@ -19,11 +20,11 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         public CheckResult Execute()
         {
-            var result = new CheckResult(SeverityEnum.Unverified, Id);
+            var result = new CheckResult(SeverityEnum.Unverified, this.Id);
             try
             {
                 IList<string> modifiedFiles;
-                var fileModified = CheckDefaultPageModified(out modifiedFiles);
+                var fileModified = this.CheckDefaultPageModified(out modifiedFiles);
                 if (fileModified)
                 {
                     if (modifiedFiles.Count == 0)

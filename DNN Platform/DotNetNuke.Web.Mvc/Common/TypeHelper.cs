@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Web.Routing;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Common
 {
+    using System.Web.Routing;
+
     public static class TypeHelper
     {
         /// <summary>
@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Mvc.Common
         /// This helper will cache accessors and types, and is intended when the anonymous object is accessed multiple
         /// times throughout the lifetime of the web application.
         /// </summary>
+        /// <returns></returns>
         public static RouteValueDictionary ObjectToDictionary(object value)
         {
             RouteValueDictionary dictionary = new RouteValueDictionary();

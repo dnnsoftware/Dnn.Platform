@@ -1,26 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.ComponentModel;
-using DotNetNuke.Common;
-using DotNetNuke.UI.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.UI.Modules;
+
     public class ModuleSettingsBase : PortalModuleBase, ISettingsControl
     {
         public Hashtable ModuleSettings
         {
             get
             {
-                return ModuleContext.Configuration.ModuleSettings;
+                return this.ModuleContext.Configuration.ModuleSettings;
             }
         }
 
@@ -28,11 +24,9 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return ModuleContext.Configuration.TabModuleSettings;
+                return this.ModuleContext.Configuration.TabModuleSettings;
             }
         }
-
-        #region ISettingsControl Members
 
         public virtual void LoadSettings()
         {
@@ -41,7 +35,5 @@ namespace DotNetNuke.Entities.Modules
         public virtual void UpdateSettings()
         {
         }
-
-        #endregion
     }
 }

@@ -1,18 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Analytics.Config;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Analytics
 {
+    using System;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Analytics.Config;
+
     public class GoogleAnalyticsEngine : AnalyticsEngineBase
     {
         public override string EngineName
@@ -25,15 +21,15 @@ namespace DotNetNuke.Services.Analytics
 
         public override string RenderScript(string scriptTemplate)
         {
-            AnalyticsConfiguration config = GetConfig();
+            AnalyticsConfiguration config = this.GetConfig();
 
             if (config == null)
             {
-                return "";
+                return string.Empty;
             }
 
-            var trackingId = "";
-            var urlParameter = "";
+            var trackingId = string.Empty;
+            var urlParameter = string.Empty;
             var trackForAdmin = true;
 
             foreach (AnalyticsSetting setting in config.Settings)
@@ -51,36 +47,37 @@ namespace DotNetNuke.Services.Analytics
                         {
                             trackForAdmin = true;
                         }
+
                         break;
                 }
             }
 
-            if (String.IsNullOrEmpty(trackingId))
+            if (string.IsNullOrEmpty(trackingId))
             {
-                return "";
+                return string.Empty;
             }
 
-            //check whether setting to not track traffic if current user is host user or website administrator.
+            // check whether setting to not track traffic if current user is host user or website administrator.
             if (!trackForAdmin &&
                 (UserController.Instance.GetCurrentUserInfo().IsSuperUser
                  ||
                  (PortalSettings.Current != null &&
                   UserController.Instance.GetCurrentUserInfo().IsInRole(PortalSettings.Current.AdministratorRoleName))))
             {
-                return "";
+                return string.Empty;
             }
 
             scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
-            if ((!String.IsNullOrEmpty(urlParameter)))
+            if (!string.IsNullOrEmpty(urlParameter))
             {
                 scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", urlParameter);
             }
             else
             {
-                scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", "");
+                scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", string.Empty);
             }
 
-            scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", RenderCustomScript(config));
+            scriptTemplate = scriptTemplate.Replace("[CUSTOM_SCRIPT]", this.RenderCustomScript(config));
 
             return scriptTemplate;
         }
@@ -97,18 +94,18 @@ namespace DotNetNuke.Services.Analytics
                     switch (setting.SettingName.ToLowerInvariant())
                     {
                         case "anonymizeip":
-                        {
-                            bool.TryParse(setting.SettingValue, out anonymize);
-                            break;
-                        }
+                            {
+                                bool.TryParse(setting.SettingValue, out anonymize);
+                                break;
+                            }
+
                         case "trackinguser":
-                        {
-                            bool.TryParse(setting.SettingValue, out trackingUserId);
-                            break;
-                        }
+                            {
+                                bool.TryParse(setting.SettingValue, out trackingUserId);
+                                break;
+                            }
                     }
                 }
-
 
                 var customScripts = new System.Text.StringBuilder();
 
@@ -131,6 +128,5 @@ namespace DotNetNuke.Services.Analytics
                 return string.Empty;
             }
         }
-
     }
 }

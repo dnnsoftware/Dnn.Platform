@@ -1,21 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
-using DotNetNuke.Services.Assets;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.DigitalAssets
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Modules.DigitalAssets.Components.Controllers;
+    using DotNetNuke.Services.Assets;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Settings : ModuleSettingsBase
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 DigitalAssestsMode mode;
-                Enum.TryParse(ModeComboBox.SelectedValue, true, out mode);
+                Enum.TryParse(this.ModeComboBox.SelectedValue, true, out mode);
                 return mode;
             }
         }
@@ -35,42 +35,37 @@ namespace DotNetNuke.Modules.DigitalAssets
             get
             {
                 FilterCondition filterCondition;
-                Enum.TryParse(FilterOptionsRadioButtonsList.SelectedValue, true, out filterCondition);
+                Enum.TryParse(this.FilterOptionsRadioButtonsList.SelectedValue, true, out filterCondition);
                 return filterCondition;
             }
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FilterViewSettings.js", FileOrder.Js.DefaultPriority);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them
+        /// LoadSettings loads the settings from the Database and displays them.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void LoadSettings()
         {
-            if (Page.IsPostBack)
+            if (this.Page.IsPostBack)
             {
                 return;
             }
 
             try
             {
-                DefaultFolderTypeComboBox.DataSource = FolderMappingController.Instance.GetFolderMappings(PortalId);
-                DefaultFolderTypeComboBox.DataBind();
+                this.DefaultFolderTypeComboBox.DataSource = FolderMappingController.Instance.GetFolderMappings(this.PortalId);
+                this.DefaultFolderTypeComboBox.DataBind();
 
-                var defaultFolderTypeId = new DigitalAssetsController().GetDefaultFolderTypeId(ModuleId);
+                var defaultFolderTypeId = new DigitalAssetsController().GetDefaultFolderTypeId(this.ModuleId);
                 if (defaultFolderTypeId.HasValue)
                 {
-                    DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();
+                    this.DefaultFolderTypeComboBox.SelectedValue = defaultFolderTypeId.ToString();
                 }
 
-                ModeComboBox.SelectedValue = SettingsRepository.GetMode(ModuleId).ToString();
+                this.ModeComboBox.SelectedValue = SettingsRepository.GetMode(this.ModuleId).ToString();
 
-                LoadFilterViewSettings();
+                this.LoadFilterViewSettings();
             }
             catch (Exception exc)
             {
@@ -80,21 +75,24 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// UpdateSettings saves the modified settings to the Database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()
         {
-            Page.Validate();
-            if (!Page.IsValid) return;
+            this.Page.Validate();
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
             try
             {
-                SettingsRepository.SaveDefaultFolderTypeId(ModuleId, Convert.ToInt32(DefaultFolderTypeComboBox.SelectedValue));
-                
-                SettingsRepository.SaveMode(ModuleId, SelectedDigitalAssestsMode);
+                SettingsRepository.SaveDefaultFolderTypeId(this.ModuleId, Convert.ToInt32(this.DefaultFolderTypeComboBox.SelectedValue));
 
-                UpdateFilterViewSettings();
+                SettingsRepository.SaveMode(this.ModuleId, this.SelectedDigitalAssestsMode);
+
+                this.UpdateFilterViewSettings();
             }
             catch (Exception exc)
             {
@@ -102,9 +100,14 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/DigitalAssets/ClientScripts/dnn.DigitalAssets.FilterViewSettings.js", FileOrder.Js.DefaultPriority);
+        }
+
         protected void ValidateFolderIsSelected(object source, ServerValidateEventArgs args)
         {
-            if (SelectedFilterCondition == FilterCondition.FilterByFolder && FilterByFolderDropDownList.SelectedFolder == null)
+            if (this.SelectedFilterCondition == FilterCondition.FilterByFolder && this.FilterByFolderDropDownList.SelectedFolder == null)
             {
                 args.IsValid = false;
                 return;
@@ -115,39 +118,39 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void LoadFilterViewSettings()
         {
-            //handle upgrades where FilterCondition didn't exist
-            SettingsRepository.SetDefaultFilterCondition(ModuleId);
+            // handle upgrades where FilterCondition didn't exist
+            SettingsRepository.SetDefaultFilterCondition(this.ModuleId);
 
-            FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(ModuleId).ToString();
-            SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(ModuleId).ToString();
-            
-            if (FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
+            this.FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(this.ModuleId).ToString();
+            this.SubfolderFilterRadioButtonList.SelectedValue = SettingsRepository.GetSubfolderFilter(this.ModuleId).ToString();
+
+            if (this.FilterOptionsRadioButtonsList.SelectedValue == FilterCondition.FilterByFolder.ToString())
             {
-                var folderId = SettingsRepository.GetRootFolderId(ModuleId);
+                var folderId = SettingsRepository.GetRootFolderId(this.ModuleId);
                 if (folderId.HasValue)
                 {
                     var folder = FolderManager.Instance.GetFolder(folderId.Value);
-                    FilterByFolderDropDownList.SelectedFolder = folder;
+                    this.FilterByFolderDropDownList.SelectedFolder = folder;
                 }
             }
         }
 
         private void UpdateFilterViewSettings()
         {
-            var filterCondition = SelectedDigitalAssestsMode != DigitalAssestsMode.Normal ? FilterCondition.NotSet : SelectedFilterCondition;
+            var filterCondition = this.SelectedDigitalAssestsMode != DigitalAssestsMode.Normal ? FilterCondition.NotSet : this.SelectedFilterCondition;
 
-            SettingsRepository.SaveFilterCondition(ModuleId, filterCondition);
+            SettingsRepository.SaveFilterCondition(this.ModuleId, filterCondition);
 
             switch (filterCondition)
             {
                 case FilterCondition.NotSet:
-                    SettingsRepository.SaveExcludeSubfolders(ModuleId, SubfolderFilter.IncludeSubfoldersFolderStructure);
+                    SettingsRepository.SaveExcludeSubfolders(this.ModuleId, SubfolderFilter.IncludeSubfoldersFolderStructure);
                     break;
                 case FilterCondition.FilterByFolder:
                     SubfolderFilter subfolderFilter;
-                    Enum.TryParse(SubfolderFilterRadioButtonList.SelectedValue, true, out subfolderFilter);
-                    SettingsRepository.SaveExcludeSubfolders(ModuleId, subfolderFilter);
-                    SettingsRepository.SaveRootFolderId(ModuleId, FilterByFolderDropDownList.SelectedFolder.FolderID);
+                    Enum.TryParse(this.SubfolderFilterRadioButtonList.SelectedValue, true, out subfolderFilter);
+                    SettingsRepository.SaveExcludeSubfolders(this.ModuleId, subfolderFilter);
+                    SettingsRepository.SaveRootFolderId(this.ModuleId, this.FilterByFolderDropDownList.SelectedFolder.FolderID);
                     break;
             }
         }

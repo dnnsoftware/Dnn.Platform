@@ -1,31 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabPublishingController: ServiceLocator<ITabPublishingController,TabPublishingController>, ITabPublishingController
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
+    public class TabPublishingController : ServiceLocator<ITabPublishingController, TabPublishingController>, ITabPublishingController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
 
         public bool IsTabPublished(int tabID, int portalID)
         {
-            var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
             var tab = TabController.Instance.GetTab(tabID, portalID);
 
-            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             return existPermission != null && existPermission.AllowAccess;
         }
 
@@ -42,11 +43,11 @@ namespace DotNetNuke.Entities.Tabs
 
             if (publish)
             {
-                PublishTabInternal(tab);
+                this.PublishTabInternal(tab);
             }
             else
             {
-                UnpublishTabInternal(tab);
+                this.UnpublishTabInternal(tab);
             }
         }
 
@@ -55,39 +56,42 @@ namespace DotNetNuke.Entities.Tabs
             var tab = TabController.Instance.GetTab(tabID, portalID);
             if (!TabPermissionController.CanAdminPage(tab))
             {
-                return false; //User has no permission
+                return false; // User has no permission
             }
-            
+
             Hashtable settings = TabController.Instance.GetTabSettings(tabID);
             if (settings["WorkflowID"] != null)
             {
-                return Convert.ToInt32(settings["WorkflowID"]) == 1; //If workflowID is 1, then the Page workflow is Direct Publish
+                return Convert.ToInt32(settings["WorkflowID"]) == 1; // If workflowID is 1, then the Page workflow is Direct Publish
             }
 
-            //If workflowID is 1, then the Page workflow is Direct Publish
-            //If WorkflowID is -1, then there is no Workflow setting
+            // If workflowID is 1, then the Page workflow is Direct Publish
+            // If WorkflowID is -1, then there is no Workflow setting
             var workflowID = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"));
 
             return (workflowID == 1) || (workflowID == -1);
-
         }
 
-        #region private Methods
+        protected override Func<ITabPublishingController> GetFactory()
+        {
+            return () => new TabPublishingController();
+        }
+
         private void PublishTabInternal(TabInfo tab)
         {
-            var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
 
-            var existPermission = GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
+            var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             if (existPermission != null)
             {
                 tab.TabPermissions.Remove(existPermission);
             }
 
-            tab.TabPermissions.Add(GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
+            tab.TabPermissions.Add(this.GetTabPermissionByRole(tab.TabID, "VIEW", allUsersRoleId));
             TabPermissionController.SaveTabPermissions(tab);
-            ClearTabCache(tab);   
+            this.ClearTabCache(tab);
         }
-        
+
         private void UnpublishTabInternal(TabInfo tab)
         {
             var administratorsRoleID = PortalController.Instance.GetPortal(tab.PortalID).AdministratorRoleId;
@@ -97,14 +101,16 @@ namespace DotNetNuke.Entities.Tabs
             {
                 tab.TabPermissions.Remove(tab.TabPermissions.Cast<TabPermissionInfo>().SingleOrDefault(p => p.TabPermissionID == tabPermissionId));
             }
+
             TabPermissionController.SaveTabPermissions(tab);
-            ClearTabCache(tab);
+            this.ClearTabCache(tab);
         }
 
         private void ClearTabCache(TabInfo tabInfo)
         {
             TabController.Instance.ClearCache(tabInfo.PortalID);
-            //Clear the Tab's Cached modules
+
+            // Clear the Tab's Cached modules
             DataCache.ClearModuleCache(tabInfo.TabID);
         }
 
@@ -121,22 +127,16 @@ namespace DotNetNuke.Entities.Tabs
         {
             var permission = PermissionController.GetPermissionsByTab().Cast<PermissionInfo>().SingleOrDefault<PermissionInfo>(p => p.PermissionKey == permissionKey);
             var tabPermission = new TabPermissionInfo
-                        {
-                            TabID = tabID,
-                            PermissionID = permission.PermissionID,
-                            PermissionKey = permission.PermissionKey,
-                            PermissionName = permission.PermissionName,
-                            RoleID = roleID,
-                            UserID = Null.NullInteger,
-                            AllowAccess = true
-                        };
+            {
+                TabID = tabID,
+                PermissionID = permission.PermissionID,
+                PermissionKey = permission.PermissionKey,
+                PermissionName = permission.PermissionName,
+                RoleID = roleID,
+                UserID = Null.NullInteger,
+                AllowAccess = true,
+            };
             return tabPermission;
-        }
-        #endregion
-
-        protected override Func<ITabPublishingController> GetFactory()
-        {
-            return () => new TabPublishingController();
         }
     }
 }

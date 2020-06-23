@@ -1,8 +1,6 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Web.Client.ClientResourceManagement;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
 {
@@ -18,20 +16,21 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
     using DotNetNuke.Modules.HtmlEditorManager.Views;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Mvp;
     using DotNetNuke.Web.UI;
     using DotNetNuke.Web.UI.WebControls;
 
     /// <summary>
-    /// Presenter for Provider Configuration
+    /// Presenter for Provider Configuration.
     /// </summary>
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
     public class ProviderConfigurationPresenter : ModulePresenter<IProviderConfigurationView, ProviderConfigurationViewModel>
     {
-        /// <summary>The HTML editor node</summary>
+        /// <summary>The HTML editor node.</summary>
         private const string HtmlEditorNode = "/configuration/dotnetnuke/htmlEditor";
 
-        /// <summary>The dot net nuke document</summary>
+        /// <summary>The dot net nuke document.</summary>
         private XmlDocument dotnetNukeDocument;
 
         /// <summary>Initializes a new instance of the <see cref="ProviderConfigurationPresenter" /> class.</summary>
@@ -73,13 +72,13 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
             this.View.Editor.Controls.Add(this.LoadCurrentEditor());
 
             // hack: force DNN to load the Telerik Combobox skin. Needed for the RadEditor provider
-            //TODO: Remove as the included file path isn't distributed with installs
-            ClientResourceManager.RegisterStyleSheet(View.Editor.Page, "~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css");
+            // TODO: Remove as the included file path isn't distributed with installs
+            ClientResourceManager.RegisterStyleSheet(this.View.Editor.Page, "~/Portals/_default/Skins/_default/WebControlSkin/Default/ComboBox.Default.css");
         }
 
         /// <summary>Loads the current editor.</summary>
         /// <param name="editorName">Name of the editor.</param>
-        /// <returns>The editor based on the current editor settings in the web configuration</returns>
+        /// <returns>The editor based on the current editor settings in the web configuration.</returns>
         private Control LoadCurrentEditor(string editorName)
         {
             XmlDocument dnnConfiguration = this.DNNConfiguration;
@@ -109,7 +108,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         }
 
         /// <summary>Loads the current editor.</summary>
-        /// <returns>The editor based on the current editor settings in the web configuration</returns>
+        /// <returns>The editor based on the current editor settings in the web configuration.</returns>
         private Control LoadCurrentEditor()
         {
             return this.LoadCurrentEditor(this.GetSelectedEditor());
@@ -165,7 +164,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         }
 
         /// <summary>Gets the provider list.</summary>
-        /// <returns>A list of the installed providers</returns>
+        /// <returns>A list of the installed providers.</returns>
         private List<string> GetAvailableEditors()
         {
             var editors = new List<string>();
@@ -193,7 +192,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Presenters
         }
 
         /// <summary>Gets the selected editor.</summary>
-        /// <returns>The currently configured editor</returns>
+        /// <returns>The currently configured editor.</returns>
         private string GetSelectedEditor()
         {
             XmlDocument xmlConfig = this.DNNConfiguration;

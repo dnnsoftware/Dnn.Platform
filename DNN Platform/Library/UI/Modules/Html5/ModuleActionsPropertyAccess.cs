@@ -1,17 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Tokens;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Tokens;
+    using Newtonsoft.Json;
+
     public class ModuleActionDto
     {
         [JsonProperty("controlkey")]
@@ -43,19 +44,19 @@ namespace DotNetNuke.UI.Modules.Html5
 
         public ModuleActionsPropertyAccess(ModuleInstanceContext moduleContext, ModuleActionCollection moduleActions)
         {
-            _moduleContext = moduleContext;
-            _moduleActions = moduleActions;
+            this._moduleContext = moduleContext;
+            this._moduleActions = moduleActions;
         }
 
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            var title = (!String.IsNullOrEmpty(model.TitleKey) && !String.IsNullOrEmpty(model.LocalResourceFile))
+            var title = (!string.IsNullOrEmpty(model.TitleKey) && !string.IsNullOrEmpty(model.LocalResourceFile))
                                 ? Localization.GetString(model.TitleKey, model.LocalResourceFile)
                                 : model.Title;
 
             SecurityAccessLevel securityAccessLevel = SecurityAccessLevel.View;
 
-            if (!String.IsNullOrEmpty(model.SecurityAccessLevel))
+            if (!string.IsNullOrEmpty(model.SecurityAccessLevel))
             {
                 switch (model.SecurityAccessLevel)
                 {
@@ -74,27 +75,27 @@ namespace DotNetNuke.UI.Modules.Html5
                 }
             }
 
-            var moduleAction = new ModuleAction(_moduleContext.GetNextActionID())
+            var moduleAction = new ModuleAction(this._moduleContext.GetNextActionID())
             {
                 Title = title,
                 Icon = model.Icon,
-                Secure = securityAccessLevel
+                Secure = securityAccessLevel,
             };
 
             if (string.IsNullOrEmpty(model.Script))
             {
-                moduleAction.Url = _moduleContext.EditUrl(model.ControlKey);
+                moduleAction.Url = this._moduleContext.EditUrl(model.ControlKey);
             }
             else
             {
-                moduleAction.Url = model.Script.StartsWith("javascript:", StringComparison.InvariantCultureIgnoreCase) ? 
-                                    model.Script : 
+                moduleAction.Url = model.Script.StartsWith("javascript:", StringComparison.InvariantCultureIgnoreCase) ?
+                                    model.Script :
                                     string.Format("javascript:{0}", model.Script);
             }
 
-            _moduleActions.Add(moduleAction);
+            this._moduleActions.Add(moduleAction);
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

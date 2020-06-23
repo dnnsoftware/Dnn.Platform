@@ -1,13 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
-    class SubscriptionTypeBuilder
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+
+    internal class SubscriptionTypeBuilder
     {
         private int subscriptionTypeId;
         private string subscriptionName;
@@ -16,10 +16,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 
         internal SubscriptionTypeBuilder()
         {
-            subscriptionTypeId = 1;
-            subscriptionName = "MySubscriptionType";
-            friendlyName = "My Subscription Type";
-            desktopModuleId = Null.NullInteger;
+            this.subscriptionTypeId = 1;
+            this.subscriptionName = "MySubscriptionType";
+            this.friendlyName = "My Subscription Type";
+            this.desktopModuleId = Null.NullInteger;
         }
 
         internal SubscriptionTypeBuilder WithSubscriptionTypeId(int subscriptionTypeId)
@@ -37,12 +37,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         internal SubscriptionType Build()
         {
             return new SubscriptionType
-                       {
-                           SubscriptionTypeId = subscriptionTypeId,
-                           SubscriptionName = subscriptionName,
-                           DesktopModuleId = desktopModuleId,
-                           FriendlyName = friendlyName
-                       };
+            {
+                SubscriptionTypeId = this.subscriptionTypeId,
+                SubscriptionName = this.subscriptionName,
+                DesktopModuleId = this.desktopModuleId,
+                FriendlyName = this.friendlyName,
+            };
         }
     }
 }

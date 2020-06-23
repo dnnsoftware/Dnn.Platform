@@ -1,23 +1,19 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Library.DTO.Tabs
 {
+    using System.Collections.Generic;
+
     public class TabDto
     {
         public TabDto()
         {
-            CheckedState= NodeCheckedState.UnChecked;
-            IsOpen = false;
-            Selectable = true;
+            this.CheckedState = NodeCheckedState.UnChecked;
+            this.IsOpen = false;
+            this.Selectable = true;
         }
+
         public string Name { get; set; }
 
         public string TabId { get; set; }
@@ -28,7 +24,7 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
 
         public int ParentTabId { get; set; }
 
-        public  bool HasChildren { get; set; }
+        public bool HasChildren { get; set; }
 
         public bool IsOpen { get; set; }
 

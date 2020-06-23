@@ -1,18 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-// ReSharper disable once CheckNamespace
-using System;
-using System.Web.UI;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 // ReSharper disable once CheckNamespace
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using Newtonsoft.Json;
+
     public class StylesheetDto
     {
         [JsonProperty("path")]
@@ -31,29 +31,31 @@ namespace DotNetNuke.Services.Tokens
 
         public CssPropertyAccess(Page page)
         {
-            _page = page;
+            this._page = page;
         }
 
         protected override string ProcessToken(StylesheetDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            if (String.IsNullOrEmpty(model.Path))
+            if (string.IsNullOrEmpty(model.Path))
             {
                 throw new ArgumentException("The Css token must specify a path or property.");
             }
+
             if (model.Priority == 0)
             {
                 model.Priority = (int)FileOrder.Css.DefaultPriority;
             }
-            if (String.IsNullOrEmpty(model.Provider))
+
+            if (string.IsNullOrEmpty(model.Provider))
             {
-                ClientResourceManager.RegisterStyleSheet(_page, model.Path, model.Priority);
+                ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority);
             }
             else
             {
-                ClientResourceManager.RegisterStyleSheet(_page, model.Path, model.Priority, model.Provider);
+                ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority, model.Provider);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

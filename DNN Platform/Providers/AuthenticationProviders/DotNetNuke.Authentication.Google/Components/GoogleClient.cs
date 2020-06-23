@@ -1,43 +1,34 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Script.Serialization;
-
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Authentication.Google.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web;
+    using System.Web.Script.Serialization;
+
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+
     public class GoogleClient : OAuthClientBase
     {
-        #region Constructors
-
-        public GoogleClient(int portalId, AuthMode mode) 
+        public GoogleClient(int portalId, AuthMode mode)
             : base(portalId, mode, "Google")
         {
-            TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
-            TokenMethod = HttpMethod.POST;
-            AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth");
-            MeGraphEndpoint = new Uri("https://www.googleapis.com/oauth2/v1/userinfo");
+            this.TokenEndpoint = new Uri("https://accounts.google.com/o/oauth2/token");
+            this.TokenMethod = HttpMethod.POST;
+            this.AuthorizationEndpoint = new Uri("https://accounts.google.com/o/oauth2/auth");
+            this.MeGraphEndpoint = new Uri("https://www.googleapis.com/oauth2/v1/userinfo");
 
-            Scope = HttpUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
+            this.Scope = HttpUtility.UrlEncode("https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email");
 
-            AuthTokenName = "GoogleUserToken";
+            this.AuthTokenName = "GoogleUserToken";
 
-            OAuthVersion = "2.0";
+            this.OAuthVersion = "2.0";
 
-            LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
-
-        #endregion
 
         protected override TimeSpan GetExpiry(string responseText)
         {

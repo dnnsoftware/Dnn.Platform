@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Services.Dto
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using Newtonsoft.Json;
+
     [JsonObject]
     public class DnnModuleDto
     {
@@ -41,101 +42,101 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [JsonIgnore]
         public bool CanAdminModule { get; set; }
 
-        public bool TranslatedVisible => !ErrorVisible && CultureCode != null
-                                         && DefaultLanguageGuid != Null.NullGuid && ModuleId != DefaultModuleId;
+        public bool TranslatedVisible => !this.ErrorVisible && this.CultureCode != null
+                                         && this.DefaultLanguageGuid != Null.NullGuid && this.ModuleId != this.DefaultModuleId;
 
-        public bool LocalizedVisible => !ErrorVisible && CultureCode != null && DefaultLanguageGuid != Null.NullGuid;
+        public bool LocalizedVisible => !this.ErrorVisible && this.CultureCode != null && this.DefaultLanguageGuid != Null.NullGuid;
 
-        public bool Exist => TabModuleId > 0;
-
-        public void SetModuleInfoHelp()
-        {
-            var returnValue = "";
-            var moduleInfo = ModuleController.Instance.GetModule(ModuleId, Null.NullInteger, true);
-            if (moduleInfo != null)
-            {
-                if (moduleInfo.IsDeleted)
-                {
-                    returnValue = LocalizeString("ModuleDeleted.Text");
-                }
-                else
-                {
-                    returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
-                        ? string.Format(LocalizeString("ModuleInfo.Text"),
-                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
-                        : LocalizeString("ModuleInfoForNonAdmins.Text");
-                }
-            }
-
-            ModuleInfoHelp = returnValue;
-        }
+        public bool Exist => this.TabModuleId > 0;
 
         public string TranslatedTooltip
         {
             get
             {
-                if (CultureCode == null)
+                if (this.CultureCode == null)
                     return "";
-                if (DefaultLanguageGuid == Null.NullGuid)
+                if (this.DefaultLanguageGuid == Null.NullGuid)
                 {
                     return "";
                 }
                 var pageName = "";
-                if (DefaultTabName != null)
-                    pageName = " / " + DefaultTabName;
+                if (this.DefaultTabName != null)
+                    pageName = " / " + this.DefaultTabName;
 
-                if (ModuleId == DefaultModuleId)
+                if (this.ModuleId == this.DefaultModuleId)
                 {
-                    return string.Format(LocalizeString("Reference.Text"), pageName);
+                    return string.Format(this.LocalizeString("Reference.Text"), pageName);
                 }
-                if (IsTranslated)
+                if (this.IsTranslated)
                 {
-                    return string.Format(LocalizeString("Translated.Text"), pageName);
+                    return string.Format(this.LocalizeString("Translated.Text"), pageName);
 
                 }
-                return string.Format(LocalizeString("NotTranslated.Text"), pageName);
+                return string.Format(this.LocalizeString("NotTranslated.Text"), pageName);
             }
+        }
+
+        public void SetModuleInfoHelp()
+        {
+            var returnValue = "";
+            var moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
+            if (moduleInfo != null)
+            {
+                if (moduleInfo.IsDeleted)
+                {
+                    returnValue = this.LocalizeString("ModuleDeleted.Text");
+                }
+                else
+                {
+                    returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
+                        ? string.Format(this.LocalizeString("ModuleInfo.Text"),
+                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
+                        : this.LocalizeString("ModuleInfoForNonAdmins.Text");
+                }
+            }
+
+            this.ModuleInfoHelp = returnValue;
         }
 
         public string LocalizedTooltip
         {
             get
             {
-                if (CultureCode == null || DefaultLanguageGuid == Null.NullGuid)
+                if (this.CultureCode == null || this.DefaultLanguageGuid == Null.NullGuid)
                 {
                     return "";
                 }
 
                 var pageName = "";
-                if (DefaultTabName != null)
-                    pageName = " / " + DefaultTabName;
+                if (this.DefaultTabName != null)
+                    pageName = " / " + this.DefaultTabName;
 
-                if (ModuleId == DefaultModuleId)
+                if (this.ModuleId == this.DefaultModuleId)
                 {
-                    return string.Format(LocalizeString("ReferenceDefault.Text"), pageName);
+                    return string.Format(this.LocalizeString("ReferenceDefault.Text"), pageName);
                 }
 
-                return string.Format(LocalizeString("Detached.Text"), pageName);
+                return string.Format(this.LocalizeString("Detached.Text"), pageName);
             }
         }
 
-        public bool ErrorVisible => ErrorDefaultOnOtherTab || ErrorCultureOfModuleNotCultureOfTab || ErrorDuplicateModule;
+        public bool ErrorVisible => this.ErrorDefaultOnOtherTab || this.ErrorCultureOfModuleNotCultureOfTab || this.ErrorDuplicateModule;
 
         public string ErrorToolTip
         {
             get
             {
-                if (ErrorDefaultOnOtherTab)
+                if (this.ErrorDefaultOnOtherTab)
                 {
                     return "Default module on other tab";
                 }
 
-                if (ErrorCultureOfModuleNotCultureOfTab)
+                if (this.ErrorCultureOfModuleNotCultureOfTab)
                 {
                     return "Culture of module # culture of tab";
                 }
 
-                if (ErrorDuplicateModule)
+                if (this.ErrorDuplicateModule)
                 {
                     return "Duplicate module";
                 }
@@ -146,7 +147,7 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         private string LocalizeString(string localizationKey)
         {
-            return Localization.GetString(localizationKey, LocalResourceFile) ?? "";
+            return Localization.GetString(localizationKey, this.LocalResourceFile) ?? "";
         }
     }
 }

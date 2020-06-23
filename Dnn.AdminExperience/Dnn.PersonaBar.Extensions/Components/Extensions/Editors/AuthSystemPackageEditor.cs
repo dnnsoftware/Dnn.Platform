@@ -1,27 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Authentication.OAuth;
-using DotNetNuke.Services.Installer.Packages;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
+    using System;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Authentication.OAuth;
+    using DotNetNuke.Services.Installer.Packages;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class AuthSystemPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthSystemPackageEditor));
         private static readonly INavigationManager NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        #region IPackageEditor Implementation
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
@@ -94,10 +94,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 return false;
             }
         }
-
-        #endregion
-
-        #region Private Methods
 
         private static string GetSettingUrl(int portalId, int authSystemPackageId)
         {
@@ -175,7 +171,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 }
             }
         }
-
-        #endregion
     }
 }

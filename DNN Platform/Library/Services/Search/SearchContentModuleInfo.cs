@@ -1,17 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search
 {
+    using System;
+
+    using DotNetNuke.Entities.Modules;
+
     /// -----------------------------------------------------------------------------
     /// Namespace:  DotNetNuke.Services.Search
     /// Project:    DotNetNuke.Search.Index
@@ -19,7 +14,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchContentModuleInfo class represents an extendension (by containment)
-    /// of ModuleInfo to add a parametere that determines whether a module is Searchable
+    /// of ModuleInfo to add a parametere that determines whether a module is Searchable.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -37,11 +32,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return MModControllerType;
+                return this.MModControllerType;
             }
+
             set
             {
-                MModControllerType = value;
+                this.MModControllerType = value;
             }
         }
 #pragma warning restore 0618
@@ -50,11 +46,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return SearchBaseControllerType;
+                return this.SearchBaseControllerType;
             }
+
             set
             {
-                SearchBaseControllerType = value;
+                this.SearchBaseControllerType = value;
             }
         }
 
@@ -62,11 +59,12 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return MModInfo;
+                return this.MModInfo;
             }
+
             set
             {
-                MModInfo = value;
+                this.MModInfo = value;
             }
         }
     }

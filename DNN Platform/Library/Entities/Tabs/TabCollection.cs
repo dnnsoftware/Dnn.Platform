@@ -1,190 +1,87 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Security;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Tabs
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
+    using System.Security;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Localization;
+
     /// <summary>
-    /// Represents the collection of Tabs for a portal
+    /// Represents the collection of Tabs for a portal.
     /// </summary>
     /// <remarks></remarks>
     [Serializable]
     public class TabCollection : Dictionary<int, TabInfo>
     {
-		//This is used to provide a collection of children
+        // This is used to provide a collection of children
         [NonSerialized]
         private readonly Dictionary<int, List<TabInfo>> _children;
 
-        //This is used to return a sorted List
+        // This is used to return a sorted List
         [NonSerialized]
         private readonly List<TabInfo> _list;
-        
-        //This is used to provide a culture based set of tabs
-        [NonSerialized]
-        private readonly Dictionary<String, List<TabInfo>> _localizedTabs;
 
-        #region Constructors
+        // This is used to provide a culture based set of tabs
+        [NonSerialized]
+        private readonly Dictionary<string, List<TabInfo>> _localizedTabs;
 
         public TabCollection()
         {
-            _list = new List<TabInfo>();
-            _children = new Dictionary<int, List<TabInfo>>();
-            _localizedTabs = new Dictionary<string, List<TabInfo>>();
+            this._list = new List<TabInfo>();
+            this._children = new Dictionary<int, List<TabInfo>>();
+            this._localizedTabs = new Dictionary<string, List<TabInfo>>();
         }
 
         // The special constructor is used to deserialize values.
         public TabCollection(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-            _list = new List<TabInfo>();
-            _children = new Dictionary<int, List<TabInfo>>();
-            _localizedTabs = new Dictionary<string, List<TabInfo>>();
+            this._list = new List<TabInfo>();
+            this._children = new Dictionary<int, List<TabInfo>>();
+            this._localizedTabs = new Dictionary<string, List<TabInfo>>();
+        }
+
+        public TabCollection(IEnumerable<TabInfo> tabs)
+            : this()
+        {
+            this.AddRange(tabs);
         }
 
         public override void OnDeserialization(object sender)
         {
             base.OnDeserialization(sender);
 
-            foreach (var tab in Values)
+            foreach (var tab in this.Values)
             {
-                //Update all child collections
-                AddInternal(tab);
+                // Update all child collections
+                this.AddInternal(tab);
             }
         }
 
-        public TabCollection(IEnumerable<TabInfo> tabs) : this()
+        public void Add(TabInfo tab)
         {
-            AddRange(tabs);
+            // Call base class to add to base Dictionary
+            this.Add(tab.TabID, tab);
+
+            // Update all child collections
+            this.AddInternal(tab);
         }
 
-        #endregion
-
-        #region Private Methods
-
-        private void AddInternal(TabInfo tab)
+        public void AddRange(IEnumerable<TabInfo> tabs)
         {
-            if (tab.ParentId == Null.NullInteger)
+            foreach (TabInfo tab in tabs)
             {
-                //Add tab to Children collection
-                AddToChildren(tab);
-
-                //Add to end of List as all zero-level tabs are returned in order first
-                _list.Add(tab);
+                this.Add(tab);
             }
-            else
-            {
-                //Find Parent in list
-                for (int index = 0; index <= _list.Count - 1; index++)
-                {
-                    TabInfo parentTab = _list[index];
-                    if (parentTab.TabID == tab.ParentId)
-                    {
-                        int childCount = AddToChildren(tab);
-
-                        //Insert tab in master List
-                        _list.Insert(index + childCount, tab);
-                    }
-                }
-            }
-            //Add to localized tabs
-            if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
-            {
-                AddToLocalizedTabs(tab);
-            }            
-        }
-
-        private int AddToChildren(TabInfo tab)
-        {
-            List<TabInfo> childList;
-            if (!_children.TryGetValue(tab.ParentId, out childList))
-            {
-                childList = new List<TabInfo>();
-                _children.Add(tab.ParentId, childList);
-            }
-			
-            //Add tab to end of child list as children are returned in order
-            childList.Add(tab);
-            return childList.Count;
-        }
-
-        private void AddToLocalizedTabCollection(TabInfo tab, string cultureCode)
-        {
-            List<TabInfo> localizedTabCollection;
-
-            var key = cultureCode.ToLowerInvariant();
-            if (!_localizedTabs.TryGetValue(key, out localizedTabCollection))
-            {
-                localizedTabCollection = new List<TabInfo>();
-                _localizedTabs.Add(key, localizedTabCollection);
-            }
-
-            //Add tab to end of localized tabs
-            localizedTabCollection.Add(tab);
-        }
-
-        private void AddToLocalizedTabs(TabInfo tab)
-        {
-            if (string.IsNullOrEmpty(tab.CultureCode))
-            {
-                //Add to all cultures
-                foreach (var locale in LocaleController.Instance.GetLocales(tab.PortalID).Values)
-                {
-                    AddToLocalizedTabCollection(tab, locale.Code);
-                }
-            }
-            else
-            {
-                AddToLocalizedTabCollection(tab, tab.CultureCode);
-            }
-        }
-
-        private List<TabInfo> GetDescendants(int tabId, int tabLevel)
-        {
-            var descendantTabs = new List<TabInfo>();
-            for (int index = 0; index <= _list.Count - 1; index++)
-            {
-                TabInfo parentTab = _list[index];
-                if (parentTab.TabID == tabId)
-                {
-                    //Found Parent - so add descendents
-                    for (int descendantIndex = index + 1; descendantIndex <= _list.Count - 1; descendantIndex++)
-                    {
-                        TabInfo descendantTab = _list[descendantIndex];
-
-                        if ((tabLevel == Null.NullInteger))
-                        {
-                            tabLevel = parentTab.Level;
-                        }
-
-                        if (descendantTab.Level > tabLevel)
-                        {
-                            //Descendant so add to collection
-                            descendantTabs.Add(descendantTab);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-            return descendantTabs;
         }
 
         private static bool IsLocalizationEnabled()
@@ -198,146 +95,243 @@ namespace DotNetNuke.Entities.Tabs
             return PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false);
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public void Add(TabInfo tab)
+        private void AddInternal(TabInfo tab)
         {
-			//Call base class to add to base Dictionary
-            Add(tab.TabID, tab);
+            if (tab.ParentId == Null.NullInteger)
+            {
+                // Add tab to Children collection
+                this.AddToChildren(tab);
 
-            //Update all child collections
-            AddInternal(tab);
+                // Add to end of List as all zero-level tabs are returned in order first
+                this._list.Add(tab);
+            }
+            else
+            {
+                // Find Parent in list
+                for (int index = 0; index <= this._list.Count - 1; index++)
+                {
+                    TabInfo parentTab = this._list[index];
+                    if (parentTab.TabID == tab.ParentId)
+                    {
+                        int childCount = this.AddToChildren(tab);
+
+                        // Insert tab in master List
+                        this._list.Insert(index + childCount, tab);
+                    }
+                }
+            }
+
+            // Add to localized tabs
+            if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
+            {
+                this.AddToLocalizedTabs(tab);
+            }
         }
 
-        public void AddRange(IEnumerable<TabInfo> tabs)
+        private int AddToChildren(TabInfo tab)
         {
-            foreach (TabInfo tab in tabs)
+            List<TabInfo> childList;
+            if (!this._children.TryGetValue(tab.ParentId, out childList))
             {
-                Add(tab);
+                childList = new List<TabInfo>();
+                this._children.Add(tab.ParentId, childList);
             }
+
+            // Add tab to end of child list as children are returned in order
+            childList.Add(tab);
+            return childList.Count;
+        }
+
+        private void AddToLocalizedTabCollection(TabInfo tab, string cultureCode)
+        {
+            List<TabInfo> localizedTabCollection;
+
+            var key = cultureCode.ToLowerInvariant();
+            if (!this._localizedTabs.TryGetValue(key, out localizedTabCollection))
+            {
+                localizedTabCollection = new List<TabInfo>();
+                this._localizedTabs.Add(key, localizedTabCollection);
+            }
+
+            // Add tab to end of localized tabs
+            localizedTabCollection.Add(tab);
+        }
+
+        private void AddToLocalizedTabs(TabInfo tab)
+        {
+            if (string.IsNullOrEmpty(tab.CultureCode))
+            {
+                // Add to all cultures
+                foreach (var locale in LocaleController.Instance.GetLocales(tab.PortalID).Values)
+                {
+                    this.AddToLocalizedTabCollection(tab, locale.Code);
+                }
+            }
+            else
+            {
+                this.AddToLocalizedTabCollection(tab, tab.CultureCode);
+            }
+        }
+
+        private List<TabInfo> GetDescendants(int tabId, int tabLevel)
+        {
+            var descendantTabs = new List<TabInfo>();
+            for (int index = 0; index <= this._list.Count - 1; index++)
+            {
+                TabInfo parentTab = this._list[index];
+                if (parentTab.TabID == tabId)
+                {
+                    // Found Parent - so add descendents
+                    for (int descendantIndex = index + 1; descendantIndex <= this._list.Count - 1; descendantIndex++)
+                    {
+                        TabInfo descendantTab = this._list[descendantIndex];
+
+                        if (tabLevel == Null.NullInteger)
+                        {
+                            tabLevel = parentTab.Level;
+                        }
+
+                        if (descendantTab.Level > tabLevel)
+                        {
+                            // Descendant so add to collection
+                            descendantTabs.Add(descendantTab);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            return descendantTabs;
         }
 
         public List<TabInfo> AsList()
         {
-            return _list;
+            return this._list;
         }
 
         public List<TabInfo> DescendentsOf(int tabId)
         {
-            return GetDescendants(tabId, Null.NullInteger);
+            return this.GetDescendants(tabId, Null.NullInteger);
         }
 
         public List<TabInfo> DescendentsOf(int tabId, int originalTabLevel)
         {
-            return GetDescendants(tabId, originalTabLevel);
+            return this.GetDescendants(tabId, originalTabLevel);
         }
 
         public bool IsDescendentOf(int ancestorId, int testTabId)
         {
-            return DescendentsOf(ancestorId).Any(tab => tab.TabID == testTabId);
+            return this.DescendentsOf(ancestorId).Any(tab => tab.TabID == testTabId);
         }
 
         public ArrayList ToArrayList()
         {
-            return new ArrayList(_list);
+            return new ArrayList(this._list);
         }
 
-		public TabCollection WithCulture(string cultureCode, bool includeNeutral)
-		{
-			return WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
-		}
+        public TabCollection WithCulture(string cultureCode, bool includeNeutral)
+        {
+            return this.WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
+        }
+
         public TabCollection WithCulture(string cultureCode, bool includeNeutral, bool localizationEnabled)
         {
             TabCollection collection;
-			if (localizationEnabled)
+            if (localizationEnabled)
             {
                 if (string.IsNullOrEmpty(cultureCode))
                 {
-                    //No culture passed in - so return all tabs
+                    // No culture passed in - so return all tabs
                     collection = this;
                 }
                 else
                 {
                     cultureCode = cultureCode.ToLowerInvariant();
                     List<TabInfo> tabs;
-                    if (!_localizedTabs.TryGetValue(cultureCode, out tabs))
+                    if (!this._localizedTabs.TryGetValue(cultureCode, out tabs))
                     {
                         collection = new TabCollection(new List<TabInfo>());
                     }
                     else
                     {
-                        collection = !includeNeutral 
-                                        ? new TabCollection(from t in tabs 
+                        collection = !includeNeutral
+                                        ? new TabCollection(from t in tabs
                                                             where t.CultureCode.ToLowerInvariant() == cultureCode
-                                                            select t) 
+                                                            select t)
                                         : new TabCollection(tabs);
                     }
                 }
             }
             else
             {
-                //Return all tabs
+                // Return all tabs
                 collection = this;
             }
+
             return collection;
         }
 
         public List<TabInfo> WithParentId(int parentId)
         {
             List<TabInfo> tabs;
-            if (!_children.TryGetValue(parentId, out tabs))
+            if (!this._children.TryGetValue(parentId, out tabs))
             {
                 tabs = new List<TabInfo>();
             }
+
             return tabs;
         }
 
         public TabInfo WithTabId(int tabId)
         {
             TabInfo t = null;
-            if (ContainsKey(tabId))
+            if (this.ContainsKey(tabId))
             {
                 t = this[tabId];
             }
+
             return t;
         }
 
         public TabInfo WithTabNameAndParentId(string tabName, int parentId)
         {
-            return (from t in _list where t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
+            return (from t in this._list where t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) && t.ParentId == parentId select t).SingleOrDefault();
         }
 
         public TabInfo WithTabName(string tabName)
         {
-            return (from t in _list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
+            return (from t in this._list where !string.IsNullOrEmpty(t.TabName) && t.TabName.Equals(tabName, StringComparison.InvariantCultureIgnoreCase) select t).FirstOrDefault();
         }
 
         internal void RefreshCache(int tabId, TabInfo updatedTab)
         {
-            if (ContainsKey(tabId))
+            if (this.ContainsKey(tabId))
             {
-                if (updatedTab == null) //the tab has been deleted
+                if (updatedTab == null) // the tab has been deleted
                 {
-                    Remove(tabId);
-                    _list.RemoveAll(t => t.TabID == tabId);
-                    _localizedTabs.ForEach(kvp =>
+                    this.Remove(tabId);
+                    this._list.RemoveAll(t => t.TabID == tabId);
+                    this._localizedTabs.ForEach(kvp =>
                     {
                         kvp.Value.RemoveAll(t => t.TabID == tabId);
                     });
-                    _children.Remove(tabId);
+                    this._children.Remove(tabId);
                 }
                 else
                 {
                     this[tabId] = updatedTab;
-                    var index = _list.FindIndex(t => t.TabID == tabId);
+                    var index = this._list.FindIndex(t => t.TabID == tabId);
                     if (index > Null.NullInteger)
                     {
-                        _list[index] = updatedTab;
+                        this._list[index] = updatedTab;
                     }
 
-                    _localizedTabs.ForEach(kvp =>
+                    this._localizedTabs.ForEach(kvp =>
                     {
                         var localizedIndex = kvp.Value.FindIndex(t => t.TabID == tabId);
                         if (localizedIndex > Null.NullInteger)
@@ -348,7 +342,5 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
         }
-
-        #endregion
     }
 }

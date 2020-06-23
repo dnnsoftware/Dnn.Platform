@@ -1,52 +1,49 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Authentication
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationConfig class providesa configuration class for the DNN
-    /// Authentication provider
+    /// Authentication provider.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
     public class AuthenticationConfig : AuthenticationConfigBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AuthenticationConfig));
         private const string CACHEKEY = "Authentication.DNN";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
 
-        protected AuthenticationConfig(int portalID) : base(portalID)
+        protected AuthenticationConfig(int portalID)
+            : base(portalID)
         {
-            UseCaptcha = Null.NullBoolean;
-            Enabled = true;
+            this.UseCaptcha = Null.NullBoolean;
+            this.Enabled = true;
             try
             {
                 string setting = Null.NullString;
                 if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_Enabled", out setting))
                 {
-                    Enabled = bool.Parse(setting);
+                    this.Enabled = bool.Parse(setting);
                 }
+
                 setting = Null.NullString;
                 if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_UseCaptcha", out setting))
                 {
-                    UseCaptcha = bool.Parse(setting);
+                    this.UseCaptcha = bool.Parse(setting);
                 }
             }
-			catch (Exception ex)
-			{
-				Logger.Error(ex);
-			}
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         public bool Enabled { get; set; }
@@ -62,12 +59,13 @@ namespace DotNetNuke.Services.Authentication
         public static AuthenticationConfig GetConfig(int portalId)
         {
             string key = CACHEKEY + "_" + portalId;
-            var config = (AuthenticationConfig) DataCache.GetCache(key);
+            var config = (AuthenticationConfig)DataCache.GetCache(key);
             if (config == null)
             {
                 config = new AuthenticationConfig(portalId);
                 DataCache.SetCache(key, config);
             }
+
             return config;
         }
 

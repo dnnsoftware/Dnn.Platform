@@ -1,22 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Dispatcher;
-using System.Web.Http.Routing;
-using DotNetNuke.Common;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Dispatcher;
+    using System.Web.Http.Routing;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Localization;
+
     internal class DnnHttpControllerSelector : IHttpControllerSelector
     {
         private const string ControllerSuffix = "Controller";
@@ -29,47 +30,49 @@ namespace DotNetNuke.Web.Api
         {
             Requires.NotNull("configuration", configuration);
 
-            _configuration = configuration;
-            _descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(InitTypeCache,
-                                                                                                isThreadSafe: true);
+            this._configuration = configuration;
+            this._descriptorCache = new Lazy<ConcurrentDictionary<string, HttpControllerDescriptor>>(
+                this.InitTypeCache,
+                isThreadSafe: true);
         }
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache
         {
-            get { return _descriptorCache.Value; }
+            get { return this._descriptorCache.Value; }
         }
 
         public HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
             Requires.NotNull("request", request);
 
-            string controllerName = GetControllerName(request);
-            IEnumerable<string> namespaces = GetNameSpaces(request);
-            if (namespaces == null || !namespaces.Any() || String.IsNullOrEmpty(controllerName))
+            string controllerName = this.GetControllerName(request);
+            IEnumerable<string> namespaces = this.GetNameSpaces(request);
+            if (namespaces == null || !namespaces.Any() || string.IsNullOrEmpty(controllerName))
             {
-                throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound,
-                                                                            "Unable to locate a controller for " +
+                throw new HttpResponseException(request.CreateErrorResponse(
+                    HttpStatusCode.NotFound,
+                    "Unable to locate a controller for " +
                                                                             request.RequestUri));
             }
 
             var matches = new List<HttpControllerDescriptor>();
             foreach (string ns in namespaces)
             {
-                string fullName = GetFullName(controllerName, ns);
+                string fullName = this.GetFullName(controllerName, ns);
 
                 HttpControllerDescriptor descriptor;
-                if (DescriptorCache.TryGetValue(fullName, out descriptor))
+                if (this.DescriptorCache.TryGetValue(fullName, out descriptor))
                 {
                     matches.Add(descriptor);
                 }
             }
 
-            if(matches.Count == 1)
+            if (matches.Count == 1)
             {
                 return matches.First();
             }
 
-            //only errors thrown beyond this point
+            // only errors thrown beyond this point
             if (matches.Count == 0)
             {
                 throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(Localization.GetString("ControllerNotFound", Localization.ExceptionsResourceFile), request.RequestUri, string.Join(", ", namespaces))));
@@ -80,7 +83,7 @@ namespace DotNetNuke.Web.Api
 
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping()
         {
-            return DescriptorCache;
+            return this.DescriptorCache;
         }
 
         private string GetFullName(string controllerName, string ns)
@@ -115,8 +118,8 @@ namespace DotNetNuke.Web.Api
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> InitTypeCache()
         {
-            IAssembliesResolver assembliesResolver = _configuration.Services.GetAssembliesResolver();
-            IHttpControllerTypeResolver controllersResolver = _configuration.Services.GetHttpControllerTypeResolver();
+            IAssembliesResolver assembliesResolver = this._configuration.Services.GetAssembliesResolver();
+            IHttpControllerTypeResolver controllersResolver = this._configuration.Services.GetHttpControllerTypeResolver();
 
             ICollection<Type> controllerTypes = controllersResolver.GetControllerTypes(assembliesResolver);
 
@@ -127,7 +130,7 @@ namespace DotNetNuke.Web.Api
                 if (type.FullName != null)
                 {
                     string controllerName = type.Name.Substring(0, type.Name.Length - ControllerSuffix.Length);
-                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(_configuration, controllerName, type));
+                    dict.TryAdd(type.FullName.ToLowerInvariant(), new HttpControllerDescriptor(this._configuration, controllerName, type));
                 }
             }
 

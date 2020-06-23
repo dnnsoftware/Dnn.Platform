@@ -1,16 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Web.Mvc;
-using System.Web.Routing;
-// ReSharper disable ConvertPropertyToExpressionBody
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
+// ReSharper disable ConvertPropertyToExpressionBody
 namespace DotNetNuke.Web.Mvc.Helpers
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     public class DnnHelper<TModel> : DnnHelper
     {
-        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer) 
+        public DnnHelper(ViewContext viewContext, IViewDataContainer viewDataContainer)
             : this(viewContext, viewDataContainer, RouteTable.Routes)
         {
         }
@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public new ViewDataDictionary<TModel> ViewData
         {
-            get { return ((HtmlHelper<TModel>)HtmlHelper).ViewData; }
+            get { return ((HtmlHelper<TModel>)this.HtmlHelper).ViewData; }
         }
     }
 }

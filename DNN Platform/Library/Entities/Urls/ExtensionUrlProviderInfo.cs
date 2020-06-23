@@ -1,33 +1,36 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Urls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+
     [Serializable]
     public class ExtensionUrlProviderInfo : IHydratable
     {
         public ExtensionUrlProviderInfo()
         {
-            ExtensionUrlProviderId = -1;
-            Settings = new Dictionary<string, string>();
-            TabIds = new List<int>();
+            this.ExtensionUrlProviderId = -1;
+            this.Settings = new Dictionary<string, string>();
+            this.TabIds = new List<int>();
         }
 
         /// <summary>
-        /// When true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
+        /// Gets a value indicating whether when true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
         /// </summary>
-        public bool AllTabs { get { return TabIds.Count == 0; } }
+        public bool AllTabs
+        {
+            get { return this.TabIds.Count == 0; }
+        }
 
         /// <summary>
-        /// The DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.
+        /// Gets or sets the DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.
         /// </summary>
         /// <remarks>
         /// If the Extension provider is not associated with any particular DotNetNuke extension, return null.
@@ -37,7 +40,7 @@ namespace DotNetNuke.Entities.Urls
         public int ExtensionUrlProviderId { get; set; }
 
         /// <summary>
-        /// When true, provider is active
+        /// Gets or sets a value indicating whether when true, provider is active.
         /// </summary>
         public bool IsActive { get; set; }
 
@@ -48,20 +51,20 @@ namespace DotNetNuke.Entities.Urls
         public string ProviderType { get; set; }
 
         /// <summary>
-        /// When true, TransformFriendlyUrl is called for every Url in the portal
-        /// When false, TransformFriendlyUrl is called only for tabs in the TabIds list
+        /// Gets or sets a value indicating whether when true, TransformFriendlyUrl is called for every Url in the portal
+        /// When false, TransformFriendlyUrl is called only for tabs in the TabIds list.
         /// </summary>
         public bool RewriteAllUrls { get; set; }
 
         /// <summary>
-        /// When true, CheckForRedirect is called for every Url in the portal
-        /// When false, CheckForRedirect is called only for tabs in the TabIds list
+        /// Gets or sets a value indicating whether when true, CheckForRedirect is called for every Url in the portal
+        /// When false, CheckForRedirect is called only for tabs in the TabIds list.
         /// </summary>
         public bool RedirectAllUrls { get; set; }
 
         /// <summary>
-        /// When true, ChangeFriendlyUrl is called for every generated Url called through the NavigateUrl API
-        /// When false, ChangeFriendlyUrl is called only for tabs in the TabIds list
+        /// Gets or sets a value indicating whether when true, ChangeFriendlyUrl is called for every generated Url called through the NavigateUrl API
+        /// When false, ChangeFriendlyUrl is called only for tabs in the TabIds list.
         /// </summary>
         public bool ReplaceAllUrls { get; set; }
 
@@ -70,7 +73,7 @@ namespace DotNetNuke.Entities.Urls
         public Dictionary<string, string> Settings { get; private set; }
 
         /// <summary>
-        /// Returns a list of TabIds where the module provider should be called when generating friendly urls
+        /// Gets a list of TabIds where the module provider should be called when generating friendly urls.
         /// </summary>
         public List<int> TabIds { get; private set; }
 
@@ -78,17 +81,16 @@ namespace DotNetNuke.Entities.Urls
 
         public void Fill(IDataReader dr)
         {
-            ExtensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderId"]);
-            PortalId = Null.SetNullInteger(dr["PortalId"]);
-            DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleId"]);
-            ProviderName = Null.SetNullString(dr["ProviderName"]);
-            ProviderType = Null.SetNullString(dr["ProviderType"]);
-            SettingsControlSrc = Null.SetNullString(dr["SettingsControlSrc"]);
-            IsActive = Null.SetNullBoolean(dr["IsActive"]);
-            RewriteAllUrls = Null.SetNullBoolean(dr["RewriteAllUrls"]);
-            RedirectAllUrls = Null.SetNullBoolean(dr["RedirectAllUrls"]);
-            ReplaceAllUrls = Null.SetNullBoolean(dr["ReplaceAllUrls"]);
+            this.ExtensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
+            this.DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleId"]);
+            this.ProviderName = Null.SetNullString(dr["ProviderName"]);
+            this.ProviderType = Null.SetNullString(dr["ProviderType"]);
+            this.SettingsControlSrc = Null.SetNullString(dr["SettingsControlSrc"]);
+            this.IsActive = Null.SetNullBoolean(dr["IsActive"]);
+            this.RewriteAllUrls = Null.SetNullBoolean(dr["RewriteAllUrls"]);
+            this.RedirectAllUrls = Null.SetNullBoolean(dr["RedirectAllUrls"]);
+            this.ReplaceAllUrls = Null.SetNullBoolean(dr["ReplaceAllUrls"]);
         }
-
     }
 }

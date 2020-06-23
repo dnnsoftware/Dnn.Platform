@@ -1,42 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Xml;
-using Microsoft.Extensions.DependencyInjection;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Upgrade;
-using DotNetNuke.Services.Upgrade.Internals;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Extensions.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Upgrade;
+    using DotNetNuke.Services.Upgrade.Internals;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class ExtensionsController
     {
         private const string OwnerUpdateService = "DotNetNuke Update Service";
-        protected INavigationManager NavigationManager { get; }
         public ExtensionsController()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+        protected INavigationManager NavigationManager { get; }
 
         public IDictionary<string, PackageType> GetPackageTypes()
         {
@@ -124,7 +120,7 @@ namespace Dnn.PersonaBar.Extensions.Components
         {
             var packages = new List<AvailablePackagesDto>();
             string packagePath;
-            if (HasAvailablePackage(packageType, out packagePath))
+            if (this.HasAvailablePackage(packageType, out packagePath))
             {
                 var validpackages = new Dictionary<string, PackageInfo>();
                 var invalidPackages = new List<string>();
@@ -139,7 +135,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
                 if (packageType.ToLowerInvariant() == "corelanguagepack")
                 {
-                    GetAvaialableLanguagePacks(validpackages);
+                    this.GetAvaialableLanguagePacks(validpackages);
                 }
 
                 packages.Add(new AvailablePackagesDto()
@@ -150,6 +146,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                 });
             }
             return packages;
+        }
+
+        public List<TabInfo> GetPackageUsage(int portalId, int packageId)
+        {
+            IDictionary<int, TabInfo> tabs = BuildData(portalId, packageId);
+            if (tabs != null && tabs.Count > 0)
+            {
+                return tabs.Values.ToList();
+            }
+            return null;
         }
 
         private void GetAvaialableLanguagePacks(IDictionary<string, PackageInfo> validPackages)
@@ -226,16 +232,6 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
         }
 
-        public List<TabInfo> GetPackageUsage(int portalId, int packageId)
-        {
-            IDictionary<int, TabInfo> tabs = BuildData(portalId, packageId);
-            if (tabs != null && tabs.Count > 0)
-            {
-                return tabs.Values.ToList();
-            }
-            return null;
-        }
-
         public string GetFormattedTabLink(int portalId, TabInfo tab)
         {
             var returnValue = new StringBuilder();
@@ -260,25 +256,13 @@ namespace Dnn.PersonaBar.Extensions.Components
                                     : PortalAliasController.Instance.GetPortalAliasesByPortalId(t.PortalID)
                                                             .OrderBy(pa => pa.IsPrimary ? 0 : 1)
                                                             .First();
-                    var url = NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
+                    var url = this.NavigationManager.NavigateURL(t.TabID, new PortalSettings(t.PortalID, alias), string.Empty);
                     returnValue.AppendFormat("<a href=\"{0}\">{1}</a>", url, t.LocalizedTabName);
                 }
                 index = index + 1;
             }
 
             return returnValue.ToString();
-        }
-
-        #region Private Functions
-
-        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
-        {
-            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
-            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
-                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
-                              from portalModule in portalModules.Values
-                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
-                              select modulePackage);
         }
 
         internal static string IsPackageInUse(PackageInfo packageInfo, int portalId)
@@ -300,6 +284,16 @@ namespace Dnn.PersonaBar.Extensions.Components
                 }
             }
             return string.Empty;
+        }
+
+        private static void AddModulesToList(int portalId, List<PackageInfo> packages)
+        {
+            Dictionary<int, PortalDesktopModuleInfo> portalModules = DesktopModuleController.GetPortalDesktopModulesByPortalID(portalId);
+            packages.AddRange(from modulePackage in PackageController.Instance.GetExtensionPackages(Null.NullInteger, p => p.PackageType == "Module")
+                              let desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(modulePackage.PackageID)
+                              from portalModule in portalModules.Values
+                              where desktopModule != null && portalModule.DesktopModuleID == desktopModule.DesktopModuleID
+                              select modulePackage);
         }
 
         internal static string UpgradeRedirect(Version version, string packageType, string packageName)
@@ -333,7 +327,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultAuthenicationImage;
                 case "corelanguagepack":
                 case "extensionlanguagepack":
-                    return package.IconFile != "N\\A"  && IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLanguageImage;
+                    return package.IconFile != "N\\A" && IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultLanguageImage;
                 case "provider":
                     return IconExists(package.IconFile) ? FixIconUrl(package.IconFile) : Globals.ImagePath + Constants.DefaultProviderImage;
                 case "widget":
@@ -347,16 +341,16 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
         }
 
+        internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
+        {
+            return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
+        }
+
         private static string FixIconUrl(string url)
         {
             return !string.IsNullOrEmpty(Globals.ApplicationPath)
                 ? $"{Globals.ApplicationPath}/{url.TrimStart('~').TrimStart('/')}"
                 : url;
-        }
-
-        internal static IDictionary<int, PackageInfo> GetPackagesInUse(bool forHost)
-        {
-            return PackageController.GetModulePackagesInUse(PortalController.Instance.GetCurrentPortalSettings().PortalId, forHost);
         }
 
         private static IDictionary<int, TabInfo> BuildData(int portalId, int packageId)
@@ -405,7 +399,5 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
 
         }
-
-        #endregion
     }
 }

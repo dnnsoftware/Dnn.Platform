@@ -1,40 +1,35 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Tests.Integration.Executers;
-using DotNetNuke.Tests.Integration.Executers.Builders;
-using DotNetNuke.Tests.Integration.Executers.Dto;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 {
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using System.Net;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Tests.Integration.Executers;
+    using DotNetNuke.Tests.Integration.Executers.Builders;
+    using DotNetNuke.Tests.Integration.Executers.Dto;
+    using NUnit.Framework;
+
     [TestFixture]
     public class PagesManagementTests : IntegrationTestBase
     {
-        #region Fields
-
         private readonly string _hostName;
         private readonly string _hostPass;
 
         private readonly int PortalId = 0;
 
-        #endregion
-
-        #region SetUp
-
         public PagesManagementTests()
         {
             var url = ConfigurationManager.AppSettings["siteUrl"];
-            _hostName = ConfigurationManager.AppSettings["hostUsername"];
-            _hostPass = ConfigurationManager.AppSettings["hostPassword"];
+            this._hostName = ConfigurationManager.AppSettings["hostUsername"];
+            this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
         [TestFixtureSetUp]
@@ -44,9 +39,9 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            UpdateSslSettings(true);
+            this.UpdateSslSettings(true);
 
-            UpdateContentLocalization(true);
+            this.UpdateContentLocalization(true);
         }
 
         [TestFixtureTearDown]
@@ -54,22 +49,18 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
         {
             base.TestFixtureTearDown();
 
-            UpdateSslSettings(false);
+            this.UpdateSslSettings(false);
 
-            UpdateContentLocalization(false);
+            this.UpdateContentLocalization(false);
         }
-
-        #endregion
-
-        #region Tests
 
         [Test]
         public void Page_Marked_As_Secure_Should_Able_To_Management_In_Insecure_Channel()
         {
             int tabId;
-            var connector = CreateNewSecurePage(out tabId);
+            var connector = this.CreateNewSecurePage(out tabId);
 
-            //Try to request the GetLocalization API
+            // Try to request the GetLocalization API
             var response = connector.GetContent($"API/PersonaBar/Pages/GetTabLocalization?pageId={tabId}", null, true, false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
@@ -80,7 +71,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             var postData = new
             {
-                PortalId = PortalId,
+                PortalId = this.PortalId,
                 ContentLocalizationEnabled = false,
                 SystemDefaultLanguage = "English (United States)",
                 SystemDefaultLanguageIcon = "/images/Flags/en-US.gif",
@@ -90,28 +81,24 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
                 EnableBrowserLanguage = true,
                 AllowUserUICulture = false,
                 CultureCode = "en-US",
-                AllowContentLocalization = enabled
+                AllowContentLocalization = enabled,
             };
 
             connector.PostJson("API/PersonaBar/SiteSettings/UpdateLanguageSettings", postData);
 
             connector.PostJson(
                 enabled
-                    ? $"API/PersonaBar/Languages/EnableLocalizedContent?portalId={PortalId}&translatePages=false"
-                    : $"API/PersonaBar/Languages/DisableLocalizedContent?portalId={PortalId}", new {});
+                    ? $"API/PersonaBar/Languages/EnableLocalizedContent?portalId={this.PortalId}&translatePages=false"
+                    : $"API/PersonaBar/Languages/DisableLocalizedContent?portalId={this.PortalId}", new { });
         }
 
         private void UpdateSslSettings(bool sslEnabled)
         {
             var connector = WebApiTestHelper.LoginHost();
 
-            var postData = new {SSLEnabled = sslEnabled, SSLEnforced = false, SSLURL = "", STDURL = "", SSLOffloadHeader = ""};
+            var postData = new { SSLEnabled = sslEnabled, SSLEnforced = false, SSLURL = string.Empty, STDURL = string.Empty, SSLOffloadHeader = string.Empty };
             connector.PostJson("API/PersonaBar/Security/UpdateSslSettings", postData);
         }
-
-        #endregion
-
-        #region Private Methods
 
         private IWebApiConnector CreateNewSecurePage(out int tabId)
         {
@@ -129,7 +116,5 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
 
             return pagesExecuter.Connector;
         }
-
-        #endregion
     }
 }

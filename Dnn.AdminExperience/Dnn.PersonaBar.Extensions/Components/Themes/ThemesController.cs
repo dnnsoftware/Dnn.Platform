@@ -1,42 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml;
-using Dnn.PersonaBar.Themes.Components.DTO;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Skins;
-using Image = System.Drawing.Image;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Themes.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Themes.Components.DTO;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Skins;
+
+    using Image = System.Drawing.Image;
+
     public class ThemesController : ServiceLocator<IThemesController, ThemesController>, IThemesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
+        internal static readonly IList<string> ImageExtensions = new List<string>() { ".jpg", ".png", ".jpeg" };
 
-        internal static readonly IList<string> ImageExtensions = new List<string>() {".jpg", ".png", ".jpeg"};
-        internal static readonly IList<string> DefaultLayoutNames = new List<string>() {"Default", "2-Col", "Home", "Index", "Main"};
-        internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default"};
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
+        internal static readonly IList<string> DefaultLayoutNames = new List<string>() { "Default", "2-Col", "Home", "Index", "Main" };
+        internal static readonly IList<string> DefaultContainerNames = new List<string>() { "Title-h2", "NoTitle", "Main", "Default" };
 
         private static readonly object _threadLocker = new object();
-
-        protected override Func<IThemesController> GetFactory()
-        {
-            return () => new ThemesController();
-        }
-
-        #region Public Methods
 
         /// <summary>
         /// Get Skins.
@@ -63,6 +58,11 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             return themes;
+        }
+
+        protected override Func<IThemesController> GetFactory()
+        {
+            return () => new ThemesController();
         }
 
         /// <summary>
@@ -145,7 +145,6 @@ namespace Dnn.PersonaBar.Themes.Components
                         themeFile.Thumbnail = CreateThumbnail(imagePath);
                     }
 
-
                     themeFile.Name = Path.GetFileNameWithoutExtension(file);
                     themeFile.Path = FormatThemePath(portalSettings, themePath, Path.GetFileName(strFile), theme.Type);
                     themeFile.CanDelete = (UserController.Instance.GetCurrentUserInfo().IsSuperUser || strSkinType == "L")
@@ -165,13 +164,13 @@ namespace Dnn.PersonaBar.Themes.Components
                             .Replace("/", string.Empty);
             var themeLevel = GetThemeLevel(filePath);
 
-            var themeInfo = (type == ThemeType.Skin ? GetLayouts(portalSettings, ThemeLevel.All)
-                                                    : GetContainers(portalSettings, ThemeLevel.All))
+            var themeInfo = (type == ThemeType.Skin ? this.GetLayouts(portalSettings, ThemeLevel.All)
+                                                    : this.GetContainers(portalSettings, ThemeLevel.All))
                             .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == themeLevel);
 
             if (themeInfo != null)
             {
-                return GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.OrdinalIgnoreCase));
+                return this.GetThemeFiles(portalSettings, themeInfo).FirstOrDefault(f => (f.Path + ".ascx").Equals(filePath, StringComparison.OrdinalIgnoreCase));
             }
 
             return null;
@@ -222,25 +221,25 @@ namespace Dnn.PersonaBar.Themes.Components
         /// <param name="level"></param>
         public void ApplyDefaultTheme(PortalSettings portalSettings, string themeName, ThemeLevel level)
         {
-            var skin = GetLayouts(portalSettings, ThemeLevel.All)
+            var skin = this.GetLayouts(portalSettings, ThemeLevel.All)
                 .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             if (skin != null)
             {
-                var skinFile = GetThemeFiles(portalSettings, skin).FirstOrDefault(t => t.Path == skin.DefaultThemeFile);
+                var skinFile = this.GetThemeFiles(portalSettings, skin).FirstOrDefault(t => t.Path == skin.DefaultThemeFile);
                 if (skinFile != null)
                 {
-                    ApplyTheme(portalSettings.PortalId, skinFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
+                    this.ApplyTheme(portalSettings.PortalId, skinFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
                 }
             }
 
-            var container = GetContainers(portalSettings, ThemeLevel.All)
+            var container = this.GetContainers(portalSettings, ThemeLevel.All)
                 .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == level);
             if (container != null)
             {
-                var containerFile = GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);
+                var containerFile = this.GetThemeFiles(portalSettings, container).FirstOrDefault(t => t.Path == container.DefaultThemeFile);
                 if (containerFile != null)
                 {
-                    ApplyTheme(portalSettings.PortalId, containerFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
+                    this.ApplyTheme(portalSettings.PortalId, containerFile, ApplyThemeScope.Site | ApplyThemeScope.Edit);
                 }
             }
         }
@@ -274,7 +273,7 @@ namespace Dnn.PersonaBar.Themes.Components
             var themePath = Path.Combine(Globals.ApplicationMapPath, theme.Path);
             var user = UserController.Instance.GetCurrentUserInfo();
 
-            if (!user.IsSuperUser  && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
+            if (!user.IsSuperUser && themePath.IndexOf("\\portals\\_default\\", StringComparison.OrdinalIgnoreCase) != Null.NullInteger)
             {
                 throw new SecurityException("NoPermission");
             }
@@ -346,7 +345,7 @@ namespace Dnn.PersonaBar.Themes.Components
                 objStream.WriteLine(strSkin);
                 objStream.Close();
 
-                UpdateManifest(portalSettings, updateTheme);
+                this.UpdateManifest(portalSettings, updateTheme);
             }
         }
 
@@ -407,9 +406,140 @@ namespace Dnn.PersonaBar.Themes.Components
             }
         }
 
-        #endregion
+        internal static string CreateThumbnail(string strImage)
+        {
+            var imageFileName = Path.GetFileName(strImage);
+            if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
+            {
+                strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
+                strImage = strImage.Replace("\\", "/");
+                return strImage;
+            }
 
-        #region Private Methods
+            var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + imageFileName);
+
+            if (NeedCreateThumbnail(strThumbnail, strImage))
+            {
+                lock (_threadLocker)
+                {
+                    if (NeedCreateThumbnail(strThumbnail, strImage))
+                    {
+                        const int intSize = 150; //size of the thumbnail 
+                        try
+                        {
+                            var objImage = Image.FromFile(strImage);
+
+                            //scale the image to prevent distortion
+                            int intHeight;
+                            int intWidth;
+                            double dblScale;
+                            if (objImage.Height > objImage.Width)
+                            {
+                                //The height was larger, so scale the width 
+                                dblScale = (double)intSize / objImage.Height;
+                                intHeight = intSize;
+                                intWidth = Convert.ToInt32(objImage.Width * dblScale);
+                            }
+                            else
+                            {
+                                //The width was larger, so scale the height 
+                                dblScale = (double)intSize / objImage.Width;
+                                intWidth = intSize;
+                                intHeight = Convert.ToInt32(objImage.Height * dblScale);
+                            }
+
+                            //create the thumbnail image
+                            var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
+
+                            //delete the old file ( if it exists )
+                            if (File.Exists(strThumbnail))
+                            {
+                                File.Delete(strThumbnail);
+                            }
+
+                            //save the thumbnail image 
+                            objThumbnail.Save(strThumbnail, objImage.RawFormat);
+
+                            //set the file attributes
+                            File.SetAttributes(strThumbnail, FileAttributes.Normal);
+                            File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
+
+                            //tidy up
+                            objImage.Dispose();
+                            objThumbnail.Dispose();
+                        }
+                        catch (Exception ex) //problem creating thumbnail
+                        {
+                            Logger.Error(ex);
+                        }
+                    }
+                }
+            }
+
+            strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
+            strThumbnail = strThumbnail.Replace("\\", "/");
+
+            //return thumbnail filename
+            return strThumbnail;
+        }
+
+        internal static ThemeLevel GetThemeLevel(string themeFilePath)
+        {
+            themeFilePath = themeFilePath.Replace("\\", "/");
+            if (!string.IsNullOrEmpty(Globals.ApplicationPath)
+                && !themeFilePath.StartsWith("[")
+                && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
+                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : "")}{themeFilePath}";
+            }
+
+            if (themeFilePath.IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
+                || themeFilePath.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
+            {
+                return ThemeLevel.Global;
+            }
+            else if ((PortalSettings.Current != null &&
+                        themeFilePath.IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
+                        || themeFilePath.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
+            {
+                return ThemeLevel.SiteSystem;
+            }
+            else
+            {
+                return ThemeLevel.Site;
+            }
+        }
+
+        private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
+        {
+            var themes = new List<ThemeInfo>();
+            if (Directory.Exists(strRoot))
+            {
+                foreach (var strFolder in Directory.GetDirectories(strRoot))
+                {
+                    var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
+                    if (strName != "_default")
+                    {
+                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
+                        var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
+                        var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
+                        var defaultThemeFile = GetDefaultThemeFileName(themePath, type);
+                        themes.Add(new ThemeInfo()
+                        {
+                            PackageName = strName,
+                            Type = type,
+                            Path = themePath,
+                            DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
+                            Thumbnail = GetThumbnail(themePath, defaultThemeFile),
+                            CanDelete = canDelete
+                        });
+                    }
+                }
+            }
+
+            return themes;
+        }
 
         private void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
         {
@@ -479,36 +609,6 @@ namespace Dnn.PersonaBar.Themes.Components
 
         }
 
-        private static IList<ThemeInfo> GetThemes(ThemeType type, string strRoot)
-        {
-            var themes = new List<ThemeInfo>();
-            if (Directory.Exists(strRoot))
-            {
-                foreach (var strFolder in Directory.GetDirectories(strRoot))
-                {
-                    var strName = strFolder.Substring(strFolder.LastIndexOf("\\") + 1);
-                    if (strName != "_default")
-                    {
-                        var themePath = strFolder.Replace(Globals.ApplicationMapPath, "").TrimStart('\\').ToLowerInvariant();
-                        var isFallback = type == ThemeType.Skin ? IsFallbackSkin(themePath) : IsFallbackContainer(themePath);
-                        var canDelete = !isFallback && SkinController.CanDeleteSkin(strFolder, PortalSettings.Current.HomeDirectoryMapPath);
-                        var defaultThemeFile = GetDefaultThemeFileName(themePath, type);
-                        themes.Add(new ThemeInfo()
-                        {
-                            PackageName = strName,
-                            Type = type,
-                            Path = themePath,
-                            DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
-                            Thumbnail = GetThumbnail(themePath, defaultThemeFile),
-                            CanDelete = canDelete
-                        });
-                    }
-                }
-            }
-
-            return themes;
-        }
-
         private static string GetDefaultThemeFileName(string themePath, ThemeType type)
         {
             var themeFiles = new List<string>();
@@ -546,83 +646,6 @@ namespace Dnn.PersonaBar.Themes.Components
             }
 
             return !string.IsNullOrEmpty(imagePath) ? CreateThumbnail(imagePath) : string.Empty;
-        }
-
-        internal static string CreateThumbnail(string strImage)
-        {
-            var imageFileName = Path.GetFileName(strImage);
-            if (string.IsNullOrEmpty(imageFileName) || imageFileName.StartsWith("thumbnail_"))
-            {
-               strImage = Globals.ApplicationPath + "/" + strImage.Substring(strImage.IndexOf("portals\\"));
-               strImage = strImage.Replace("\\", "/");
-                                return strImage;
-            }
-            
-            var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + imageFileName);
-
-            if (NeedCreateThumbnail(strThumbnail, strImage))
-            {
-                lock (_threadLocker)
-                {
-                    if (NeedCreateThumbnail(strThumbnail, strImage))
-                    {
-                        const int intSize = 150; //size of the thumbnail 
-                        try
-                        {
-                            var objImage = Image.FromFile(strImage);
-
-                            //scale the image to prevent distortion
-                            int intHeight;
-                            int intWidth;
-                            double dblScale;
-                            if (objImage.Height > objImage.Width)
-                            {
-                                //The height was larger, so scale the width 
-                                dblScale = (double)intSize / objImage.Height;
-                                intHeight = intSize;
-                                intWidth = Convert.ToInt32(objImage.Width * dblScale);
-                            }
-                            else
-                            {
-                                //The width was larger, so scale the height 
-                                dblScale = (double)intSize / objImage.Width;
-                                intWidth = intSize;
-                                intHeight = Convert.ToInt32(objImage.Height * dblScale);
-                            }
-
-                            //create the thumbnail image
-                            var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
-
-                            //delete the old file ( if it exists )
-                            if (File.Exists(strThumbnail))
-                            {
-                                File.Delete(strThumbnail);
-                            }
-
-                            //save the thumbnail image 
-                            objThumbnail.Save(strThumbnail, objImage.RawFormat);
-
-                            //set the file attributes
-                            File.SetAttributes(strThumbnail, FileAttributes.Normal);
-                            File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
-
-                            //tidy up
-                            objImage.Dispose();
-                            objThumbnail.Dispose();
-                        }
-                        catch (Exception ex) //problem creating thumbnail
-                        {
-                            Logger.Error(ex);
-                        }
-                    }
-                }
-            }
-            
-            strThumbnail = Globals.ApplicationPath + "/" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\"));
-            strThumbnail = strThumbnail.Replace("\\", "/");
-
-            //return thumbnail filename
-            return strThumbnail;
         }
 
         private static bool NeedCreateThumbnail(string thumbnailPath, string imagePath)
@@ -677,39 +700,5 @@ namespace Dnn.PersonaBar.Themes.Components
 
             return "[" + strSkinType + "]" + strUrl;
         }
-
-        #endregion
-
-        #region Internal Static Methods
-
-        internal static ThemeLevel GetThemeLevel(string themeFilePath)
-        {
-            themeFilePath = themeFilePath.Replace("\\", "/");
-            if (!string.IsNullOrEmpty(Globals.ApplicationPath)
-                && !themeFilePath.StartsWith("[")
-                && !themeFilePath.StartsWith(Globals.ApplicationPath, StringComparison.InvariantCultureIgnoreCase))
-            {
-                var needSlash = !Globals.ApplicationPath.EndsWith("/") && !themeFilePath.StartsWith("/");
-                themeFilePath = $"{Globals.ApplicationPath}{(needSlash ? "/" : "")}{themeFilePath}";
-            }
-
-            if (themeFilePath.IndexOf(Globals.HostPath.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger
-                || themeFilePath.StartsWith("[G]", StringComparison.OrdinalIgnoreCase))
-            {
-                return ThemeLevel.Global;
-            }
-            else if ((PortalSettings.Current != null &&
-                        themeFilePath.IndexOf(PortalSettings.Current.HomeSystemDirectory.TrimStart('/'), StringComparison.OrdinalIgnoreCase) > Null.NullInteger)
-                        || themeFilePath.StartsWith("[S]", StringComparison.OrdinalIgnoreCase))
-            {
-                return ThemeLevel.SiteSystem;
-            }
-            else
-            {
-                return ThemeLevel.Site;
-            }
-        }
-
-        #endregion
     }
 }

@@ -1,31 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Globalization;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvp
 {
+    using System;
+    using System.Globalization;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in DNN 9.2.0. Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead. Scheduled removal in v11.0.0.")]
-    public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule where TModel : class, new()
+    public abstract class ProfileModuleViewBase<TModel> : ModuleView<TModel>, IProfileModule
+        where TModel : class, new()
     {
-        protected INavigationManager NavigationManager { get; }
         public ProfileModuleViewBase()
         {
-            NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
-
-        #region IProfileModule Members
 
         public abstract bool DisplayModule { get; }
 
@@ -34,39 +32,50 @@ namespace DotNetNuke.Web.Mvp
             get
             {
                 int UserId = Null.NullInteger;
-                if (!string.IsNullOrEmpty(Request.Params["UserId"]))
+                if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    UserId = Int32.Parse(Request.Params["UserId"]);
+                    UserId = int.Parse(this.Request.Params["UserId"]);
                 }
+
                 return UserId;
             }
         }
 
-        #endregion
-
-        #region Protected Properties
+        protected INavigationManager NavigationManager { get; }
 
         protected bool IsUser
         {
             get
             {
-                return ProfileUserId == ModuleContext.PortalSettings.UserId;
+                return this.ProfileUserId == this.ModuleContext.PortalSettings.UserId;
             }
         }
 
         protected UserInfo ProfileUser
         {
-            get { return UserController.GetUserById(ModuleContext.PortalId, ProfileUserId); }
+            get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
-        #endregion
+        protected override void OnInit(EventArgs e)
+        {
+            if (this.ProfileUserId == Null.NullInteger &&
+                            (this.ModuleContext.PortalSettings.ActiveTab.TabID == this.ModuleContext.PortalSettings.UserTabId
+                                || this.ModuleContext.PortalSettings.ActiveTab.ParentId == this.ModuleContext.PortalSettings.UserTabId))
+            {
+                // Clicked on breadcrumb - don't know which user
+                this.Response.Redirect(
+                    this.Request.IsAuthenticated
+                                      ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, string.Empty, "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
+                                      : this.GetRedirectUrl(), true);
+            }
 
-        #region Private Methods
+            base.OnInit(e);
+        }
 
         private string GetRedirectUrl()
         {
-            //redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
-            var homeTabId = ModuleContext.PortalSettings.HomeTabId;
+            // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
+            var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
             string redirectUrl;
 
             if (homeTabId > Null.NullInteger)
@@ -75,31 +84,10 @@ namespace DotNetNuke.Web.Mvp
             }
             else
             {
-                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, Request, true) + "/" + Globals.glbDefaultPage;
+                redirectUrl = TestableGlobals.Instance.GetPortalDomainName(PortalSettings.Current.PortalAlias.HTTPAlias, this.Request, true) + "/" + Globals.glbDefaultPage;
             }
 
             return redirectUrl;
         }
-
-        #endregion
-
-        #region Protected Methods
-
-        protected override void OnInit(EventArgs e)
-        {
-            if (ProfileUserId == Null.NullInteger &&
-                            (ModuleContext.PortalSettings.ActiveTab.TabID == ModuleContext.PortalSettings.UserTabId
-                                || ModuleContext.PortalSettings.ActiveTab.ParentId == ModuleContext.PortalSettings.UserTabId))
-            {
-                //Clicked on breadcrumb - don't know which user
-                Response.Redirect(Request.IsAuthenticated
-                                      ? NavigationManager.NavigateURL(ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
-                                      : GetRedirectUrl(), true);
-            }
-
-            base.OnInit(e);
-        }
-
-        #endregion
     }
 }

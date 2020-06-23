@@ -1,42 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+
     [Serializable]
     public class PortalAliasCollection : DictionaryBase
     {
-		/// <summary>
-		/// Gets or sets the value associated with the specified key.
-		/// </summary>
-        public PortalAliasInfo this[string key]
+        /// <summary>
+        /// Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.
+        /// </summary>
+        public bool HasKeys
         {
             get
             {
-                return (PortalAliasInfo) Dictionary[key];
-            }
-            set
-            {
-                Dictionary[key] = value;
-            }
-        }
-
-		/// <summary>
-		/// Gets a value indicating if the collection contains keys that are not null.
-		/// </summary>
-        public Boolean HasKeys
-        {
-            get
-            {
-                return Dictionary.Keys.Count > 0;
+                return this.Dictionary.Keys.Count > 0;
             }
         }
 
@@ -44,7 +24,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return Dictionary.Keys;
+                return this.Dictionary.Keys;
             }
         }
 
@@ -52,21 +32,37 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return Dictionary.Values;
+                return this.Dictionary.Values;
             }
         }
 
-        public bool Contains(String key)
+        /// <summary>
+        /// Gets or sets the value associated with the specified key.
+        /// </summary>
+        public PortalAliasInfo this[string key]
         {
-            return Dictionary.Contains(key);
+            get
+            {
+                return (PortalAliasInfo)this.Dictionary[key];
+            }
+
+            set
+            {
+                this.Dictionary[key] = value;
+            }
         }
 
-		/// <summary>
-		/// Adds an entry to the collection.
-		/// </summary>
-        public void Add(String key, PortalAliasInfo value)
+        public bool Contains(string key)
         {
-            Dictionary.Add(key, value);
+            return this.Dictionary.Contains(key);
+        }
+
+        /// <summary>
+        /// Adds an entry to the collection.
+        /// </summary>
+        public void Add(string key, PortalAliasInfo value)
+        {
+            this.Dictionary.Add(key, value);
         }
     }
 }

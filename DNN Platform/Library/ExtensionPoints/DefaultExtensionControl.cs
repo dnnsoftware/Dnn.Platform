@@ -1,14 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke.UI.Modules;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.UI.Modules;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:DefaultExtensionControl runat=server></{0}:DefaultExtensionControl>")]
     public class DefaultExtensionControl : WebControl
@@ -19,12 +20,13 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (string)ViewState["Module"];
+                var s = (string)this.ViewState["Module"];
                 return s ?? string.Empty;
             }
+
             set
             {
-                ViewState["Module"] = value;
+                this.ViewState["Module"] = value;
             }
         }
 
@@ -34,12 +36,13 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (string)ViewState["Group"];
+                var s = (string)this.ViewState["Group"];
                 return s ?? string.Empty;
             }
+
             set
             {
-                ViewState["Group"] = value;
+                this.ViewState["Group"] = value;
             }
         }
 
@@ -49,12 +52,13 @@ namespace DotNetNuke.ExtensionPoints
         {
             get
             {
-                var s = (string)ViewState["Name"];
+                var s = (string)this.ViewState["Name"];
                 return s ?? string.Empty;
             }
+
             set
             {
-                ViewState["Name"] = value;
+                this.ViewState["Name"] = value;
             }
         }
 

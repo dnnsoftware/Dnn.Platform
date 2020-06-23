@@ -1,16 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -27,20 +22,21 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new DualListBoxEventArgs
+        /// Initializes a new instance of the <see cref="DualListBoxEventArgs"/> class.
+        /// Constructs a new DualListBoxEventArgs.
         /// </summary>
-        /// <param name="items">The items</param>
+        /// <param name="items">The items.</param>
         /// -----------------------------------------------------------------------------
         public DualListBoxEventArgs(List<string> items)
         {
-            Items = items;
+            this.Items = items;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Items
+        /// Gets or sets and sets the Items.
         /// </summary>
-        /// <value>A List(Of String)</value>
+        /// <value>A List(Of String).</value>
         /// -----------------------------------------------------------------------------
         public List<string> Items { get; set; }
     }

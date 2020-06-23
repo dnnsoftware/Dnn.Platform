@@ -1,26 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Xml.Serialization;
-using DotNetNuke.Entities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Entities;
+
     [Serializable]
     public class FileVersionInfo : BaseEntityInfo
     {
-        #region "Constructors"
-
         public FileVersionInfo()
         {
-            Version = 1;
+            this.Version = 1;
         }
-
-        #endregion
-
-        #region "Properties"
 
         [XmlElement("fileid")]
         public int FileId { get; set; }
@@ -36,7 +31,7 @@ namespace DotNetNuke.Services.FileSystem
 
         [XmlElement("extension")]
         public string Extension { get; set; }
-        
+
         [XmlElement("size")]
         public int Size { get; set; }
 
@@ -48,7 +43,5 @@ namespace DotNetNuke.Services.FileSystem
 
         [XmlElement("sha1hash")]
         public string SHA1Hash { get; set; }
-
-        #endregion
     }
 }

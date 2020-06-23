@@ -1,28 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Profile;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Profile;
+    using DotNetNuke.Entities.Users;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
     /// Class:      EditorInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The EditorInfo class provides a helper class for the Property Editor
+    /// The EditorInfo class provides a helper class for the Property Editor.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,7 +26,7 @@ namespace DotNetNuke.UI.WebControls
     {
         public EditorInfo()
         {
-            Visible = true;
+            this.Visible = true;
         }
 
         public object[] Attributes { get; set; }
@@ -67,9 +62,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetEditor gets the appropriate Editor based on ID
-        /// properties
+        /// properties.
         /// </summary>
-        /// <param name="editorType">The Id of the Editor</param>
+        /// <param name="editorType">The Id of the Editor.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetEditor(int editorType)
         {
@@ -83,6 +79,7 @@ namespace DotNetNuke.UI.WebControls
                     editor = definitionEntry.TextNonLocalized;
                 }
             }
+
             return editor;
         }
 
@@ -95,6 +92,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 editor = definitionEntry.TextNonLocalized;
             }
+
             return editor;
         }
     }

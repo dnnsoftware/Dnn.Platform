@@ -1,14 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Social.Subscriptions.Entities;
-using DotNetNuke.Tests.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
+    using System;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Social.Subscriptions.Entities;
+    using DotNetNuke.Tests.Utilities;
+
     public class SubscriptionBuilder
     {
         private int subscriptionId;
@@ -23,15 +24,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 
         internal SubscriptionBuilder()
         {
-            subscriptionId = 1;
-            userId = Constants.USER_InValidId;
-            subscriptionTypeId = 1;
-            portalId = Constants.PORTAL_ValidPortalId;
-            moduleId = Null.NullInteger;
-            tabId = Null.NullInteger;
-            objectKey = "content";
-            description = "my content description";
-            objectData = "";
+            this.subscriptionId = 1;
+            this.userId = Constants.USER_InValidId;
+            this.subscriptionTypeId = 1;
+            this.portalId = Constants.PORTAL_ValidPortalId;
+            this.moduleId = Null.NullInteger;
+            this.tabId = Null.NullInteger;
+            this.objectKey = "content";
+            this.description = "my content description";
+            this.objectData = string.Empty;
         }
 
         internal SubscriptionBuilder WithSubscriptionId(int subscriptionId)
@@ -69,7 +70,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
             this.description = description;
             return this;
         }
-        
+
         internal SubscriptionBuilder WithModuleId(int moduleId)
         {
             this.moduleId = moduleId;
@@ -80,24 +81,23 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
         {
             this.tabId = tabId;
             return this;
-        } 
+        }
 
         internal Subscription Build()
         {
             return new Subscription
-                       {
-                           SubscriptionTypeId = subscriptionTypeId,
-                           SubscriptionId = subscriptionId,
-                           CreatedOnDate = DateTime.UtcNow,
-                           ModuleId = moduleId,
-                           ObjectKey = objectKey,
-                           Description = description,
-                           PortalId = portalId,
-                           TabId = tabId,
-                           UserId = userId,
-                           ObjectData = objectData
-                       };
-
+            {
+                SubscriptionTypeId = this.subscriptionTypeId,
+                SubscriptionId = this.subscriptionId,
+                CreatedOnDate = DateTime.UtcNow,
+                ModuleId = this.moduleId,
+                ObjectKey = this.objectKey,
+                Description = this.description,
+                PortalId = this.portalId,
+                TabId = this.tabId,
+                UserId = this.userId,
+                ObjectData = this.objectData,
+            };
         }
     }
 }
