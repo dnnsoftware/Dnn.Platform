@@ -489,16 +489,19 @@ namespace DotNetNuke.Web.InternalServices
             Stream fileContent = null;
             try
             {
-                var extensionList = new List<string>();
-                if (!string.IsNullOrWhiteSpace(filter))
+                if (!userInfo.IsSuperUser)
                 {
-                    extensionList = filter.Split(',').Select(i => i.Trim()).ToList();
-                }
+                    var extensionList = new List<string>();
+                    if (!string.IsNullOrWhiteSpace(filter))
+                    {
+                        extensionList = filter.Split(',').Select(i => i.Trim()).ToList();
+                    }
 
-                var validateParams = new List<object> { extensionList, portalId, userInfo.UserID };
-                if (!ValidationUtils.ValidationCodeMatched(validateParams, validationCode))
-                {
-                    throw new InvalidOperationException("Bad Request");
+                    var validateParams = new List<object> { extensionList, portalId, userInfo.UserID };
+                    if (!ValidationUtils.ValidationCodeMatched(validateParams, validationCode))
+                    {
+                        throw new InvalidOperationException("Bad Request");
+                    }
                 }
 
                 var extension = Path.GetExtension(fileName).ValueOrEmpty().Replace(".", string.Empty);
