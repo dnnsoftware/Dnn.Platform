@@ -2,13 +2,13 @@
   <packages>
     <package name="ResourceManager" type="Module" version="09.06.00">
       <friendlyName>Resource Manager</friendlyName>
-      <description>DNN Software, Inc. ResourceManager module</description>
-      <iconFile>~/Images/icon_extensions_32px.png</iconFile>
+      <description>This module allows you to manage files on the server</description>
+      <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
       <owner>
-        <name>DNN Software, Inc.</name>
-        <organization>DNN Software, Inc.</organization>
-        <url>http://www.dnnsoftware.com</url>
-        <email>noreply@dnnsoftware.com</email>
+        <name>DNN</name>
+        <organization>.NET Foundation</organization>
+        <url>https://dnncommunity.org</url>
+        <email>info@dnncommunity.org</email>
       </owner>
       <license src="License.txt"></license>
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
