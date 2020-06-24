@@ -64,12 +64,8 @@ class DropZoneContainer extends React.Component {
 
     render() {
         const { hasPermission, style, activeStyle, className } = this.props;
-
         return hasPermission ? (
             <DropZone
-                onClick={(e) => {
-                    if (this.props.disableClick) e.preventDefault();
-                }}
                 style={style}
                 activeStyle={activeStyle}
                 className={className}
