@@ -41,7 +41,7 @@ CREATE NONCLUSTERED INDEX [IX_{objectQualifier}Users_PasswordResetToken] ON {dat
 )
 GO
 
-IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseowner}[{objectqualifier}PurgeScheduleHistory]'))
+IF  EXISTS (SELECT * FROM sys.Procedures WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}PurgeScheduleHistory]'))
 	DROP PROCEDURE {databaseOwner}[{objectQualifier}PurgeScheduleHistory]
 GO
 
@@ -63,13 +63,13 @@ BEGIN
 				PARTITION BY ScheduleID
 				ORDER BY StartDate
 			)
-		FROM {databaseowner}[{objectqualifier}ScheduleHistory]
+		FROM {databaseOwner}[{objectQualifier}ScheduleHistory]
 	)
 	INSERT INTO #ScheduleHistoryIDsToDelete (ScheduleHistoryID)
 	SELECT ScheduleHistoryID FROM (
 		   SELECT s.ScheduleID, COUNT(*) - s.RetainHistoryNum AS ItemsToDelete
-		   FROM {databaseowner}[{objectqualifier}Schedule] s
-		   INNER JOIN {databaseowner}[{objectqualifier}ScheduleHistory] sh ON s.ScheduleID = sh.ScheduleID
+		   FROM {databaseOwner}[{objectQualifier}Schedule] s
+		   INNER JOIN {databaseOwner}[{objectQualifier}ScheduleHistory] sh ON s.ScheduleID = sh.ScheduleID
 		   WHERE s.Enabled = 1 AND s.RetainHistoryNum <> -1
 		   GROUP BY s.ScheduleID, s.RetainHistoryNum
 		   HAVING COUNT(*) > s.RetainHistoryNum
@@ -84,7 +84,7 @@ BEGIN
 	BEGIN
 		BEGIN TRANSACTION;
 
-		DELETE FROM {databaseowner}[{objectqualifier}ScheduleHistory]
+		DELETE FROM {databaseOwner}[{objectQualifier}ScheduleHistory]
 		WHERE ScheduleHistoryID IN (SELECT TOP (1000) ScheduleHistoryID FROM #ScheduleHistoryIDsToDelete);
 
 		DELETE TOP (1000) FROM #ScheduleHistoryIDsToDelete;
