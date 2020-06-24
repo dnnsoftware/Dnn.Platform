@@ -3,7 +3,7 @@
     <package name="ResourceManager" type="Module" version="09.06.00">
       <friendlyName>Resource Manager</friendlyName>
       <description>This module allows you to manage files on the server</description>
-      <iconFile>~/Images/icon_filemanager_32px.png</iconFile>
+      <iconFile>~/Images/icon_filemanager_32px.gif</iconFile>
       <owner>
         <name>DNN</name>
         <organization>.NET Foundation</organization>
