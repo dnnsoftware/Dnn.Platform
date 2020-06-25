@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DNN.Connectors.GoogleAnalytics" type="Connector" isSystem="false" version="09.06.01">
+        <package name="DNN.Connectors.GoogleAnalytics" type="Connector" isSystem="false" version="09.06.02">
             <friendlyName>Google Analytics Connector</friendlyName>
             <description>Configure your sites Google Analytics settings.</description>
             <iconFile>~/DesktopModules/Connectors/GoogleAnalytics/Images/GoogleAnalytics_32X32_Standard.png</iconFile>

@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.ClientAPI" type="Library" version="09.06.01" >
+        <package name="DotNetNuke.ClientAPI" type="Library" version="09.06.02" >
             <friendlyName>DotNetNuke ClientAPI</friendlyName>
             <description>The DotNetNuke Client API is composed of both server-side and client-side code that works together to enable a simple and reliable interface for the developer to provide a rich client-side experience.</description>
             <dependencies/>

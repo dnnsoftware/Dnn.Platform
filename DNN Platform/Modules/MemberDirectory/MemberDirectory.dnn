@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="6.0">
   <packages>
-    <package name="DotNetNuke.Modules.MemberDirectory" type="Module"  isSystem="true" version="09.06.01">
+    <package name="DotNetNuke.Modules.MemberDirectory" type="Module"  isSystem="true" version="09.06.02">
       <friendlyName>Member Directory</friendlyName>      
       <description>The Member Directory module displays a list of Members based on role, profile property or relationship.</description>
       <iconFile>~/DesktopModules/MemberDirectory/Images/member_list_32X32.png</iconFile>

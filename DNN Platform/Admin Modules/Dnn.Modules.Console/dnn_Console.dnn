@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="DotNetNuke.Console" type="Module" version="09.06.01">
+        <package name="DotNetNuke.Console" type="Module" version="09.06.02">
             <friendlyName>Console</friendlyName>
             <description>Display children pages as icon links for navigation.</description>
             <iconFile>~/DesktopModules/Admin/Console/console.png</iconFile>
