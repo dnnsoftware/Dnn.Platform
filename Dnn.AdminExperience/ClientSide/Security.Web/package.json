@@ -1,6 +1,6 @@
 {
   "name": "security_settings",
-  "version": "9.6.1",
+  "version": "9.6.2",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack -p",
@@ -15,7 +15,7 @@
     "@babel/plugin-transform-react-jsx": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
     "@babel/preset-react": "^7.0.0",
-    "@dnnsoftware/dnn-react-common": "9.6.1",
+    "@dnnsoftware/dnn-react-common": "9.6.2",
     "babel-loader": "8.0.6",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "create-react-class": "^15.6.3",

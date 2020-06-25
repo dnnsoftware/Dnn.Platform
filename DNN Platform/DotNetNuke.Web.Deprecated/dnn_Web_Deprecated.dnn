@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.Web.Deprecated" type="Library" isSystem="true" version="09.06.01">
+    <package name="DotNetNuke.Web.Deprecated" type="Library" isSystem="true" version="09.06.02">
       <friendlyName>DNN Deprecated Web Controls Library</friendlyName>
       <description>DNN Deprecated Web Controls library for legacy Telerik depepndency</description>
       <dependencies/>
