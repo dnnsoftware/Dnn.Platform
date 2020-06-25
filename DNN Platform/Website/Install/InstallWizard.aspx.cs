@@ -339,7 +339,7 @@ namespace DotNetNuke.Services.Install
                     default:
                         if (_currentStep.Status != StepStatus.Done)
                         {
-                            CurrentStepActivity(string.Format(Localization.GetString("ErrorInStep", "~/Install/App_LocalResources/InstallWizard.aspx.resx")
+                            CurrentStepActivity(string.Format(Localization.Localization.GetString("ErrorInStep", "~/Install/App_LocalResources/InstallWizard.aspx.resx")
                                                                                                   , _currentStep.Errors.Count > 0 ? string.Join(",", _currentStep.Errors.ToArray()) : _currentStep.Details));
 
 							_installerRunning = false;
@@ -356,7 +356,7 @@ namespace DotNetNuke.Services.Install
             _currentStep = null;
 
             _installerProgress = 100;
-            CurrentStepActivity(Localization.GetString("InstallationDone", "~/Install/App_LocalResources/InstallWizard.aspx.resx"));
+            CurrentStepActivity(Localization.Localization.GetString("InstallationDone", "~/Install/App_LocalResources/InstallWizard.aspx.resx"));
 
             //indicate we are done
             _installerRunning = false;
@@ -484,7 +484,7 @@ namespace DotNetNuke.Services.Install
 
         private static string LocalizeStringStatic(string key)
         {
-            return Localization.GetString(key, LocalResourceFile, _culture);
+            return Localization.Localization.GetString(key, LocalResourceFile, _culture);
         }
         
         /// <summary>
@@ -556,14 +556,14 @@ namespace DotNetNuke.Services.Install
                 return _connectionResult;
 
             var connectionString = _connectionResult;            
-            var details = Localization.GetString("IsAbleToPerformDatabaseActionsCheck", LocalResourceFile);
+            var details = Localization.Localization.GetString("IsAbleToPerformDatabaseActionsCheck", LocalResourceFile);
             if (!InstallController.Instance.IsAbleToPerformDatabaseActions(connectionString))
-                _connectionResult = "ERROR: " + string.Format(Localization.GetString("IsAbleToPerformDatabaseActions", LocalResourceFile), details);
+                _connectionResult = "ERROR: " + string.Format(Localization.Localization.GetString("IsAbleToPerformDatabaseActions", LocalResourceFile), details);
 
             //database actions check-running sql 2008 or higher
-            details = Localization.GetString("IsValidSqlServerVersionCheck", LocalResourceFile);
+            details = Localization.Localization.GetString("IsValidSqlServerVersionCheck", LocalResourceFile);
             if (!InstallController.Instance.IsValidSqlServerVersion(connectionString))
-                _connectionResult = "ERROR: " + string.Format(Localization.GetString("IsValidSqlServerVersion", LocalResourceFile), details);
+                _connectionResult = "ERROR: " + string.Format(Localization.Localization.GetString("IsValidSqlServerVersion", LocalResourceFile), details);
 
             return _connectionResult;
         }
@@ -831,7 +831,7 @@ namespace DotNetNuke.Services.Install
         /// -----------------------------------------------------------------------------
         protected string LocalizeString(string key)
         {
-            return Localization.GetString(key, LocalResourceFile, _culture);
+            return Localization.Localization.GetString(key, LocalResourceFile, _culture);
         }
         
         protected override void OnError(EventArgs e)
@@ -991,7 +991,7 @@ namespace DotNetNuke.Services.Install
                     if (!Regex.IsMatch(Request.Url.Host, "^([a-zA-Z0-9.-]+)$"))
                     {
                         lblError.Visible = true;
-                        lblError.Text = Localization.GetString("HostWarning", LocalResourceFile);
+                        lblError.Text = Localization.Localization.GetString("HostWarning", LocalResourceFile);
                     }
 
                     //ensure web.config is not read-only
@@ -1167,7 +1167,7 @@ namespace DotNetNuke.Services.Install
                 }
                 if (errorLogged ==false)
                 {
-                    Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                    Localization.Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
                 }
             }
             catch (Exception)
