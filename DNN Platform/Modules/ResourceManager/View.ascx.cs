@@ -67,11 +67,8 @@ namespace Dnn.Modules.ResourceManager
                 if (string.IsNullOrEmpty(_validationCode))
                 {
                     var parameters = new List<object>() { ExtensionWhitelist.Split(',').Select(i => i.Trim()).ToList() };
+                    parameters.Add(PortalSettings.PortalId);
                     parameters.Add(PortalSettings.UserInfo.UserID);
-                    if (!PortalSettings.UserInfo.IsSuperUser)
-                    {
-                        parameters.Add(PortalSettings.PortalId);
-                    }
                     _validationCode = ValidationUtils.ComputeValidationCode(parameters);
                 }
                 return _validationCode;
