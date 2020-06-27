@@ -36,7 +36,7 @@ namespace Dnn.PersonaBar.Pages.Services
     using DotNetNuke.Services.OutputCache;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
-
+    using DotNetNuke.Web.UI.WebControls;
     using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace Dnn.PersonaBar.Pages.Services
             try
             {
                 var page = this.pagesController.GetPageSettings(pageId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, page);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { page, new DnnFileUploadOptions().ValidationCode });
             }
             catch (PageNotFoundException)
             {

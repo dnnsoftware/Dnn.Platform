@@ -5,6 +5,7 @@ import PageStandard from "./PageStandard/PageStandard";
 import PageUrl from "./PageUrl/PageUrl";
 import PageDetailsFooter from "./PageDetailsFooter/PageDetailsFooter";
 import PageIcons from "./PageIcons/PageIcons";
+import { propTypes } from "react-widgets/lib/selectlist";
 
 class PageDetail extends Component {
 
@@ -28,7 +29,7 @@ class PageDetail extends Component {
         return (
             <div>
                 <DetailComponent onChangeField={this.props.onChangeField} errors={this.props.errors} onSelectParentPageId={this.props.onSelectParentPageId}/>
-                <PageIcons components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} page={this.props.page} />
+                <PageIcons components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} page={this.props.page} validationCode={this.props.validationCode} />
                 <PageDetailsFooter components={this.props.components} onChangeField={this.props.onChangeField} errors={this.props.errors} />
             </div>
         );
@@ -37,6 +38,7 @@ class PageDetail extends Component {
 
 PageDetail.propTypes = {
     page: PropTypes.object.isRequired,
+    validationCode: propTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
     onChangeField: PropTypes.func.isRequired,
     components: PropTypes.array.isRequired,
