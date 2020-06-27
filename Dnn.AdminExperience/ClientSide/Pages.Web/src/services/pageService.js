@@ -118,7 +118,7 @@ const PageService = function () {
     const toFrontEndPage = function (pageResult) {
         return {
             ...pageResult.page,
-            schedulingEnabled: pageResult.page.startDate || page.endDate,
+            schedulingEnabled: pageResult.page.startDate || pageResult.page.endDate,
             validationCode: pageResult.page.ValidationCode,
         };
     };
