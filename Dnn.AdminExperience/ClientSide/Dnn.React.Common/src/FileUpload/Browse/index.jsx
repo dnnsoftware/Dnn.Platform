@@ -133,7 +133,7 @@ export default class Browse extends Component {
 
         fileFormats.map(fileFormat => {
             if (extensions[fileFormat]) {
-                results += extensions[fileFormat] + ",";
+                result += extensions[fileFormat] + ",";
             }
             else {
                 result += fileFormat.split("/")[1] + ",";
