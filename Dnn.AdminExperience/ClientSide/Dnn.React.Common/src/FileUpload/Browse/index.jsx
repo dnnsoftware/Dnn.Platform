@@ -98,8 +98,8 @@ export default class Browse extends Component {
 
     getExtensions(fileFormats) {
         let result = "";
-
-        const extenstions = {
+        
+        const extensions = {
             "text/html": "htm,html",
             "text/css": "css",
             "text/xml": "xml",
@@ -139,8 +139,6 @@ export default class Browse extends Component {
                 result += fileFormat.split("/")[1] + ",";
             }
         });
-        console.log("getExtensions called with: ", fileFormats);
-        console.log("getExtensions returning: ", result);
         return result;
     }
 
