@@ -111,7 +111,7 @@ export default class Browse extends Component {
             "image/tiff": "tif,tiff",
             "image/x-icon": "ico",
             "image/x-ms-bmp": "bmp",
-            "image/xvg+xml": "svg",
+            "image/svg+xml": "svg",
             "image/webp": "webp",
             "application/msword": "doc",
             "application/pdf": "pdf",
@@ -129,23 +129,25 @@ export default class Browse extends Component {
             "video/x-ms-wmv": "wmv",
             "video/x-msvideo": "avi",
             "video/mp4": "m4v,mp4",
-        }
+        };
 
         fileFormats.map(fileFormat => {
             if (extensions[fileFormat]) {
-                results += extensions[fileFormat] + ',';
+                results += extensions[fileFormat] + ",";
             }
             else {
-                result += fileFormat.split('/')[1] + ',';
+                result += fileFormat.split("/")[1] + ",";
             }
         });
+        console.log("getExtensions called with: ", fileFormats);
+        console.log("getExtensions returning: ", result);
         return result;
     }
 
     getFiles() {
         const sf = this.getServiceFramework();
         let parentId = this.state.selectedFolder ? this.state.selectedFolder.key : null;
-        const extensions = this.getExtensions(fileFormats);
+        const extensions = this.getExtensions(this.props.fileFormats);
         if (parentId) {
             sf.get("GetFiles", { parentId, filter: extensions }, this.setFiles.bind(this), this.handleError.bind(this));
         } else if (this.state.selectedFolder) {
@@ -157,7 +159,7 @@ export default class Browse extends Component {
 
     setFolderId(result) {
         const selectedFolder = result.Tree.children[0].data;
-        const extensions = this.getExtensions(fileFormats);
+        const extensions = this.getExtensions(this.props.fileFormats);
         const sf = this.getServiceFramework();
         sf.get("GetFiles", { parentId: selectedFolder.key, filter: extensions }, this.setFiles.bind(this), this.handleError.bind(this));
     }

@@ -119,7 +119,7 @@ const PageService = function () {
         return {
             ...pageResult.page,
             schedulingEnabled: pageResult.page.startDate || pageResult.page.endDate,
-            validationCode: pageResult.page.ValidationCode,
+            validationCode: pageResult.ValidationCode,
         };
     };
 
