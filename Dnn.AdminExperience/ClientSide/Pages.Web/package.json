@@ -26,7 +26,6 @@
     "@dnnsoftware/dnn-react-common": "9.6.2",
     "@types/knockout": "^3.4.66",
     "@types/redux": "3.6.31",
-    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.6",
