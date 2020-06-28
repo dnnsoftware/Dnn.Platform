@@ -828,7 +828,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
             catch (Exception ex)
             {
-                var errorMessage = "An unexpected error occurrfed trying to get this page localization, consolt the logs for more details.";
+                var errorMessage = "An unexpected error occurrfed trying to get this page localization, consult the logs for more details.";
                 Logger.Error(errorMessage, ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMessage);
             }
