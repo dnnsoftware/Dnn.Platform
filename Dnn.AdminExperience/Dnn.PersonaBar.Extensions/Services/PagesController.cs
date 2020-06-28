@@ -680,7 +680,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
             catch (Exception ex)
             {
-                var errorMessage = "An unexpected error occured while trying to make this page neureal, please consult the logs for more details.";
+                var errorMessage = "An unexpected error occurred while trying to make this page neutral, please consult the logs for more details.";
                 Logger.Error(errorMessage, ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, errorMessage);
             }
