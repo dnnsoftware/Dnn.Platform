@@ -494,7 +494,7 @@ namespace Dnn.PersonaBar.Pages.Services
         public HttpResponseMessage GetDefaultSettings(int pageId = 0)
         {
             var settings = this.pagesController.GetDefaultSettings(pageId);
-            return this.Request.CreateResponse(HttpStatusCode.OK, settings);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { page= settings, new DnnFileUploadOptions().ValidationCode });
         }
 
         /// <summary>
