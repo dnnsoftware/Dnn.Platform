@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 if (this.ImageStore.TryTransmitIfContains(cacheId, context.Response))
                 {
-                    context.Response.End();
+                    context.Response.Flush();
                     return;
                 }
             }
