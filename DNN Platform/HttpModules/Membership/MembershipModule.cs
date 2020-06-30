@@ -255,7 +255,7 @@ namespace DotNetNuke.HttpModules.Membership
 
                 // if user's password changed after the user cookie created, then force user to login again.
                 DateTime? issueDate = null;
-                if (context.User.Identity.GetType() == typeof(FormsIdentity))
+                if (context.User.Identity is FormsIdentity)
                 {
                     issueDate = ((FormsIdentity)context.User.Identity)?.Ticket.IssueDate;
                 }
