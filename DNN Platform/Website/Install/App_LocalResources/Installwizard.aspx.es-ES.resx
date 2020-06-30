@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -319,7 +319,7 @@ Utilice el Explorador de Windows para ver las carpetas de su sitio web ( {0} ). 
     <value>El grupo de aplicaciones de IIS tiene que ejecutarse en Modo Integrado</value>
   </data>
   <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>El programa de mejoras del producto nos permite entender mejor como mejorar DNN para usted. Los datos enviados nos ayudarán a analizar el uso y lo que es más importante para los usuarios del producto. Todos los datos enviados son anónimos y para uso interno. Ver más información sobre el &lt;a href="http://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de Mejoras del Producto&lt;/a&gt;.</value>
+    <value>El programa de mejoras del producto nos permite entender mejor como mejorar DNN para usted. Los datos enviados nos ayudarán a analizar el uso y lo que es más importante para los usuarios del producto. Todos los datos enviados son anónimos y para uso interno. Ver más información sobre el &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;Programa de Mejoras del Producto&lt;/a&gt;.</value>
   </data>
   <data name="ImprovementProgramLabel.Text" xml:space="preserve">
     <value>Enviar información anónima de uso a DNN</value>
