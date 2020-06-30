@@ -63,11 +63,6 @@ namespace DotNetNuke.Services.ImprovementsProgram
             return enabled;
         }
 
-        protected override Func<IBeaconService> GetFactory()
-        {
-            return () => new BeaconService();
-        }
-
         public bool IsBeaconEnabledForPersonaBar()
         {
             return Host.ParticipateInImprovementProg && !IsAlphaMode;
@@ -148,6 +143,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
         public string GetBeaconUrl(UserInfo user, string filePath = null)
         {
             return this.GetBeaconEndpoint() + this.GetBeaconQuery(user, filePath);
+        }
+
+        protected override Func<IBeaconService> GetFactory()
+        {
+            return () => new BeaconService();
         }
 
         private static RolesEnum GetUserRolesBitValues(UserInfo user)

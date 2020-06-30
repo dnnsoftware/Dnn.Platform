@@ -186,71 +186,6 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Converts a SearchItemInfo into a SearchDocument.
-        ///
-        /// SearchItemInfo object was used in the old version of search.
-        /// </summary>
-        /// <param name="searchItem"></param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-#pragma warning disable 0618
-        public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
-        {
-            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
-
-            var searchDoc = new SearchDocument
-            {
-                // Assigns as a Search key the SearchItems' GUID, if not it creates a dummy guid.
-                UniqueKey = (searchItem.SearchKey.Trim() != string.Empty) ? searchItem.SearchKey : Guid.NewGuid().ToString(),
-                QueryString = searchItem.GUID,
-                Title = searchItem.Title,
-                Body = searchItem.Content,
-                Description = searchItem.Description,
-                ModifiedTimeUtc = searchItem.PubDate,
-                AuthorUserId = searchItem.Author,
-                TabId = searchItem.TabId,
-                PortalId = module.PortalID,
-                SearchTypeId = ModuleSearchTypeId,
-                CultureCode = module.CultureCode,
-
-                // Add Module MetaData
-                ModuleDefId = module.ModuleDefID,
-                ModuleId = module.ModuleID,
-            };
-
-            return searchDoc;
-        }
-
-        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
-        {
-            foreach (var searchItem in searchItems)
-            {
-                searchItem.ModuleDefId = module.ModuleDefID;
-                searchItem.ModuleId = module.ModuleID;
-                if (string.IsNullOrEmpty(searchItem.CultureCode))
-                {
-                    searchItem.CultureCode = module.CultureCode;
-                }
-
-                if (Null.IsNull(searchItem.ModifiedTimeUtc))
-                {
-                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
-                }
-            }
-        }
-
-        private int IndexCollectedDocs(
-            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
-        {
-            indexer.Invoke(searchDocuments);
-            var total = searchDocuments.Count;
-            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
-            return total;
-        }
-#pragma warning restore 0618
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a list of modules that are listed as "Searchable" from the module definition and check if they
         /// implement ModuleSearchBase -- which is a newer implementation of search that replaces ISearchable.
         /// </summary>
@@ -337,5 +272,70 @@ namespace DotNetNuke.Services.Search
 
             return searchModules;
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Converts a SearchItemInfo into a SearchDocument.
+        ///
+        /// SearchItemInfo object was used in the old version of search.
+        /// </summary>
+        /// <param name="searchItem"></param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+#pragma warning disable 0618
+        public SearchDocument ConvertSearchItemInfoToSearchDocument(SearchItemInfo searchItem)
+        {
+            var module = ModuleController.Instance.GetModule(searchItem.ModuleId, Null.NullInteger, true);
+
+            var searchDoc = new SearchDocument
+            {
+                // Assigns as a Search key the SearchItems' GUID, if not it creates a dummy guid.
+                UniqueKey = (searchItem.SearchKey.Trim() != string.Empty) ? searchItem.SearchKey : Guid.NewGuid().ToString(),
+                QueryString = searchItem.GUID,
+                Title = searchItem.Title,
+                Body = searchItem.Content,
+                Description = searchItem.Description,
+                ModifiedTimeUtc = searchItem.PubDate,
+                AuthorUserId = searchItem.Author,
+                TabId = searchItem.TabId,
+                PortalId = module.PortalID,
+                SearchTypeId = ModuleSearchTypeId,
+                CultureCode = module.CultureCode,
+
+                // Add Module MetaData
+                ModuleDefId = module.ModuleDefID,
+                ModuleId = module.ModuleID,
+            };
+
+            return searchDoc;
+        }
+
+        private static void AddModuleMetaData(IEnumerable<SearchDocument> searchItems, ModuleInfo module)
+        {
+            foreach (var searchItem in searchItems)
+            {
+                searchItem.ModuleDefId = module.ModuleDefID;
+                searchItem.ModuleId = module.ModuleID;
+                if (string.IsNullOrEmpty(searchItem.CultureCode))
+                {
+                    searchItem.CultureCode = module.CultureCode;
+                }
+
+                if (Null.IsNull(searchItem.ModifiedTimeUtc))
+                {
+                    searchItem.ModifiedTimeUtc = module.LastContentModifiedOnDate.ToUniversalTime();
+                }
+            }
+        }
+
+        private int IndexCollectedDocs(
+            Action<IEnumerable<SearchDocument>> indexer, ICollection<SearchDocument> searchDocuments, int portalId, ScheduleHistoryItem schedule)
+        {
+            indexer.Invoke(searchDocuments);
+            var total = searchDocuments.Count;
+            this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, schedule.StartDate);
+            return total;
+        }
+#pragma warning restore 0618
     }
 }

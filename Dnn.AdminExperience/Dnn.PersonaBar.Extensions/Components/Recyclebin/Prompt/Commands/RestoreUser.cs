@@ -19,7 +19,6 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_RestoreUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private IUserValidator _userValidator;
         private IRecyclebinController _recyclebinController;
 
@@ -27,13 +26,14 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
         }
 
-        private int UserId { get; set; }
-
         public RestoreUser(IUserValidator userValidator, IRecyclebinController instance)
         {
             this._userValidator = userValidator;
             this._recyclebinController = instance;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+        private int UserId { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

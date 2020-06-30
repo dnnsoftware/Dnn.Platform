@@ -48,16 +48,6 @@ namespace DotNetNuke.Web.Mvp
                                             .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value));
         }
 
-        private void OnLoadSettingsInternal(object sender, EventArgs e)
-        {
-            this.LoadSettings();
-        }
-
-        private void OnSaveSettingsInternal(object sender, EventArgs e)
-        {
-            this.SaveSettings();
-        }
-
         protected virtual void SaveSettings()
         {
             var controller = ModuleController.Instance;
@@ -71,6 +61,16 @@ namespace DotNetNuke.Web.Mvp
             {
                 ModuleController.Instance.UpdateTabModuleSetting(this.ModuleContext.TabModuleId, setting.Key, setting.Value);
             }
+        }
+
+        private void OnLoadSettingsInternal(object sender, EventArgs e)
+        {
+            this.LoadSettings();
+        }
+
+        private void OnSaveSettingsInternal(object sender, EventArgs e)
+        {
+            this.SaveSettings();
         }
     }
 }

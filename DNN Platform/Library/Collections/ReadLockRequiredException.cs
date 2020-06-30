@@ -6,6 +6,5 @@ namespace DotNetNuke.Collections.Internal
     using System;
 
     public class ReadLockRequiredException : Exception
-    {
-    }
+    {}
 }

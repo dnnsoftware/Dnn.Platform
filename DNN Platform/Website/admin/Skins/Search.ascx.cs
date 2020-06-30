@@ -28,11 +28,6 @@ namespace DotNetNuke.UI.Skins.Controls
         private readonly INavigationManager _navigationManager;
         private bool _showSite = true;
         private bool _showWeb = true;
-
-        public Search()
-        {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
         private string _siteIconURL;
         private string _siteText;
         private string _siteToolTip;
@@ -43,6 +38,43 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _webURL;
 
         private bool _enableWildSearch = true;
+
+        public Search()
+        {
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public string SeeMoreText
+        {
+            get
+            {
+                return Localization.GetSafeJSString("SeeMoreResults", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        public string ClearQueryText
+        {
+            get
+            {
+                return Localization.GetSafeJSString("SearchClearQuery", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        public string NoResultText
+        {
+            get
+            {
+                return Localization.GetSafeJSString("NoResult", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
+
+        public string PlaceHolderText
+        {
+            get
+            {
+                return Localization.GetSafeJSString("Placeholder", Localization.GetResourceFile(this, MyFileName));
+            }
+        }
 
         /// <summary>
         /// Gets or sets the CSS class for the option buttons and search button.
@@ -109,38 +141,6 @@ namespace DotNetNuke.UI.Skins.Controls
             set
             {
                 this._siteIconURL = value;
-            }
-        }
-
-        public string SeeMoreText
-        {
-            get
-            {
-                return Localization.GetSafeJSString("SeeMoreResults", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        public string ClearQueryText
-        {
-            get
-            {
-                return Localization.GetSafeJSString("SearchClearQuery", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        public string NoResultText
-        {
-            get
-            {
-                return Localization.GetSafeJSString("NoResult", Localization.GetResourceFile(this, MyFileName));
-            }
-        }
-
-        public string PlaceHolderText
-        {
-            get
-            {
-                return Localization.GetSafeJSString("Placeholder", Localization.GetResourceFile(this, MyFileName));
             }
         }
 
@@ -491,31 +491,6 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        private int GetSearchTabId()
-        {
-            int searchTabId = this.PortalSettings.SearchTabId;
-            if (searchTabId == Null.NullInteger)
-            {
-                ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
-                if (arrModules.Count > 1)
-                {
-                    foreach (ModuleInfo SearchModule in arrModules)
-                    {
-                        if (SearchModule.CultureCode == this.PortalSettings.CultureCode)
-                        {
-                            searchTabId = SearchModule.TabID;
-                        }
-                    }
-                }
-                else if (arrModules.Count == 1)
-                {
-                    searchTabId = ((ModuleInfo)arrModules[0]).TabID;
-                }
-            }
-
-            return searchTabId;
-        }
-
         /// <summary>
         /// Handles the Click event of the cmdSearchNew control.
         /// </summary>
@@ -586,6 +561,31 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.txtSearch.Attributes.Add("autocomplete", "off");
                 this.txtSearch.Attributes.Add("placeholder", this.PlaceHolderText);
             }
+        }
+
+        private int GetSearchTabId()
+        {
+            int searchTabId = this.PortalSettings.SearchTabId;
+            if (searchTabId == Null.NullInteger)
+            {
+                ArrayList arrModules = ModuleController.Instance.GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
+                if (arrModules.Count > 1)
+                {
+                    foreach (ModuleInfo SearchModule in arrModules)
+                    {
+                        if (SearchModule.CultureCode == this.PortalSettings.CultureCode)
+                        {
+                            searchTabId = SearchModule.TabID;
+                        }
+                    }
+                }
+                else if (arrModules.Count == 1)
+                {
+                    searchTabId = ((ModuleInfo)arrModules[0]).TabID;
+                }
+            }
+
+            return searchTabId;
         }
 
         /// <summary>

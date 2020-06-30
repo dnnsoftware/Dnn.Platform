@@ -7,6 +7,5 @@ namespace Dnn.PersonaBar.Pages.Components.Exceptions
     using System;
 
     public class PageModuleNotFoundException : Exception
-    {
-    }
+    {}
 }

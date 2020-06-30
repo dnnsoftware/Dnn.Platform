@@ -45,6 +45,11 @@ namespace DotNetNuke.UI.WebControls
             base.CreateControlHierarchy(useDataSource);
         }
 
+        protected override void PrepareControlHierarchy()
+        {
+            base.PrepareControlHierarchy();
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Centralised Event that is raised whenever a check box is changed.
@@ -56,11 +61,6 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.ItemCheckedChanged(sender, e);
             }
-        }
-
-        protected override void PrepareControlHierarchy()
-        {
-            base.PrepareControlHierarchy();
         }
     }
 }

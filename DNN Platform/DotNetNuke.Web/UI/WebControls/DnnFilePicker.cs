@@ -32,6 +32,25 @@ namespace DotNetNuke.Web.UI.WebControls
         private Panel _pnlLeftDiv;
         private Panel _pnlFolder;
 
+        private Label _lblFolder;
+        private DropDownList _cboFolders;
+        private Panel _pnlFile;
+        private Label _lblFile;
+        private DropDownList _cboFiles;
+        private Panel _pnlUpload;
+        private HtmlInputFile _txtFile;
+        private Panel _pnlButtons;
+        private LinkButton _cmdCancel;
+        private LinkButton _cmdSave;
+        private LinkButton _cmdUpload;
+        private Panel _pnlMessage;
+        private Label _lblMessage;
+        private Panel _pnlRightDiv;
+        private Image _imgPreview;
+        private bool _localize = true;
+        private int _maxHeight = 100;
+        private int _maxWidth = 135;
+
         /// <summary>
         ///   Represents a possible mode for the File Control.
         /// </summary>
@@ -52,24 +71,6 @@ namespace DotNetNuke.Web.UI.WebControls
             /// </summary>
             Preview,
         }
-        private Label _lblFolder;
-        private DropDownList _cboFolders;
-        private Panel _pnlFile;
-        private Label _lblFile;
-        private DropDownList _cboFiles;
-        private Panel _pnlUpload;
-        private HtmlInputFile _txtFile;
-        private Panel _pnlButtons;
-        private LinkButton _cmdCancel;
-        private LinkButton _cmdSave;
-        private LinkButton _cmdUpload;
-        private Panel _pnlMessage;
-        private Label _lblMessage;
-        private Panel _pnlRightDiv;
-        private Image _imgPreview;
-        private bool _localize = true;
-        private int _maxHeight = 100;
-        private int _maxWidth = 135;
 
         public int MaxHeight
         {
@@ -94,26 +95,6 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this._maxWidth = value;
-            }
-        }
-
-        /// <summary>
-        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab.
-        /// </summary>
-        /// <value>A Boolean.</value>
-        protected bool IsHost
-        {
-            get
-            {
-                var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-
-                // if not host tab but current edit user is a host user, then return true
-                if (!isHost && this.User != null && this.User.IsSuperUser)
-                {
-                    isHost = true;
-                }
-
-                return isHost;
             }
         }
 
@@ -155,74 +136,6 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this.ViewState["FileFilter"] = value;
-            }
-        }
-
-        /// <summary>
-        ///   Gets or sets the current mode of the control.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to FileControlMode.Normal.
-        /// </remarks>
-        /// <value>A FileControlMode enum.</value>
-        protected FileControlMode Mode
-        {
-            get
-            {
-                return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode)this.ViewState["Mode"];
-            }
-
-            set
-            {
-                this.ViewState["Mode"] = value;
-            }
-        }
-
-        /// <summary>
-        ///   Gets the root folder for the control.
-        /// </summary>
-        /// <value>A String.</value>
-        protected string ParentFolder
-        {
-            get
-            {
-                return this.IsHost ? Globals.HostMapPath : this.PortalSettings.HomeDirectoryMapPath;
-            }
-        }
-
-        /// <summary>
-        ///   Gets the file PortalId to use.
-        /// </summary>
-        /// <remarks>
-        ///   Defaults to PortalSettings.PortalId.
-        /// </remarks>
-        /// <value>An Integer.</value>
-        protected int PortalId
-        {
-            get
-            {
-                if ((this.Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
-                {
-                    return int.Parse(this.Page.Request.QueryString["pid"]);
-                }
-
-                if (!this.IsHost)
-                {
-                    return this.PortalSettings.PortalId;
-                }
-
-                return Null.NullInteger;
-            }
-        }
-
-        /// <summary>
-        ///   Gets the current Portal Settings.
-        /// </summary>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
@@ -404,6 +317,94 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public string LocalResourceFile { get; set; }
 
+        /// <summary>
+        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab.
+        /// </summary>
+        /// <value>A Boolean.</value>
+        protected bool IsHost
+        {
+            get
+            {
+                var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+
+                // if not host tab but current edit user is a host user, then return true
+                if (!isHost && this.User != null && this.User.IsSuperUser)
+                {
+                    isHost = true;
+                }
+
+                return isHost;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the root folder for the control.
+        /// </summary>
+        /// <value>A String.</value>
+        protected string ParentFolder
+        {
+            get
+            {
+                return this.IsHost ? Globals.HostMapPath : this.PortalSettings.HomeDirectoryMapPath;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the file PortalId to use.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to PortalSettings.PortalId.
+        /// </remarks>
+        /// <value>An Integer.</value>
+        protected int PortalId
+        {
+            get
+            {
+                if ((this.Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
+                {
+                    return int.Parse(this.Page.Request.QueryString["pid"]);
+                }
+
+                if (!this.IsHost)
+                {
+                    return this.PortalSettings.PortalId;
+                }
+
+                return Null.NullInteger;
+            }
+        }
+
+        /// <summary>
+        ///   Gets the current Portal Settings.
+        /// </summary>
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
+        /// <summary>
+        ///   Gets or sets the current mode of the control.
+        /// </summary>
+        /// <remarks>
+        ///   Defaults to FileControlMode.Normal.
+        /// </remarks>
+        /// <value>A FileControlMode enum.</value>
+        protected FileControlMode Mode
+        {
+            get
+            {
+                return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode)this.ViewState["Mode"];
+            }
+
+            set
+            {
+                this.ViewState["Mode"] = value;
+            }
+        }
+
         public virtual void LocalizeStrings()
         {
         }
@@ -444,6 +445,100 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Controls.Add(this._pnlContainer);
 
             base.CreateChildControls();
+        }
+
+        /// <summary>
+        ///   OnPreRender runs just before the control is rendered.
+        /// </summary>
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (this._cboFolders.Items.Count > 0)
+            {
+                // Configure Labels
+                this._lblFolder.Text = Utilities.GetLocalizedString("Folder");
+                this._lblFolder.CssClass = this.LabelCssClass;
+                this._lblFile.Text = Utilities.GetLocalizedString("File");
+                this._lblFile.CssClass = this.LabelCssClass;
+
+                // select folder
+                string fileName;
+                string folderPath;
+                if (!string.IsNullOrEmpty(this.FilePath))
+                {
+                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
+                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, string.Empty);
+                }
+                else
+                {
+                    fileName = this.FilePath;
+                    folderPath = string.Empty;
+                }
+
+                if (this._cboFolders.Items.FindByValue(folderPath) != null)
+                {
+                    this._cboFolders.SelectedIndex = -1;
+                    this._cboFolders.Items.FindByValue(folderPath).Selected = true;
+                }
+
+                // Get Files
+                this.LoadFiles();
+                if (this._cboFiles.Items.FindByText(fileName) != null)
+                {
+                    this._cboFiles.Items.FindByText(fileName).Selected = true;
+                }
+
+                if (this._cboFiles.SelectedItem == null || string.IsNullOrEmpty(this._cboFiles.SelectedItem.Value))
+                {
+                    this.FileID = -1;
+                }
+                else
+                {
+                    this.FileID = int.Parse(this._cboFiles.SelectedItem.Value);
+                }
+
+                if (this._cboFolders.Items.Count > 1 && this.ShowFolders)
+                {
+                    this._pnlFolder.Visible = true;
+                }
+                else
+                {
+                    this._pnlFolder.Visible = false;
+                }
+
+                // Configure Mode
+                switch (this.Mode)
+                {
+                    case FileControlMode.Normal:
+                        this._pnlFile.Visible = true;
+                        this._pnlUpload.Visible = false;
+                        this._pnlRightDiv.Visible = true;
+                        this.ShowImage();
+
+                        if ((FolderPermissionController.HasFolderPermission(this.PortalId, this._cboFolders.SelectedItem.Value, "ADD") || this.IsUserFolder(this._cboFolders.SelectedItem.Value)) && this.ShowUpLoad)
+                        {
+                            this.ShowButton(this._cmdUpload, "Upload");
+                        }
+
+                        break;
+
+                    case FileControlMode.UpLoadFile:
+                        this._pnlFile.Visible = false;
+                        this._pnlUpload.Visible = true;
+                        this._pnlRightDiv.Visible = false;
+                        this.ShowButton(this._cmdSave, "Save");
+                        this.ShowButton(this._cmdCancel, "Cancel");
+                        break;
+                }
+            }
+            else
+            {
+                this._lblMessage.Text = Utilities.GetLocalizedString("NoPermission");
+            }
+
+            // Show message Row
+            this._pnlMessage.Visible = !string.IsNullOrEmpty(this._lblMessage.Text);
         }
 
         /// <summary>
@@ -689,100 +784,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._pnlRightDiv.Controls.Add(imageHolderPanel);
                 this._pnlRightDiv.Visible = true;
             }
-        }
-
-        /// <summary>
-        ///   OnPreRender runs just before the control is rendered.
-        /// </summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if (this._cboFolders.Items.Count > 0)
-            {
-                // Configure Labels
-                this._lblFolder.Text = Utilities.GetLocalizedString("Folder");
-                this._lblFolder.CssClass = this.LabelCssClass;
-                this._lblFile.Text = Utilities.GetLocalizedString("File");
-                this._lblFile.CssClass = this.LabelCssClass;
-
-                // select folder
-                string fileName;
-                string folderPath;
-                if (!string.IsNullOrEmpty(this.FilePath))
-                {
-                    fileName = this.FilePath.Substring(this.FilePath.LastIndexOf("/") + 1);
-                    folderPath = string.IsNullOrEmpty(fileName) ? this.FilePath : this.FilePath.Replace(fileName, string.Empty);
-                }
-                else
-                {
-                    fileName = this.FilePath;
-                    folderPath = string.Empty;
-                }
-
-                if (this._cboFolders.Items.FindByValue(folderPath) != null)
-                {
-                    this._cboFolders.SelectedIndex = -1;
-                    this._cboFolders.Items.FindByValue(folderPath).Selected = true;
-                }
-
-                // Get Files
-                this.LoadFiles();
-                if (this._cboFiles.Items.FindByText(fileName) != null)
-                {
-                    this._cboFiles.Items.FindByText(fileName).Selected = true;
-                }
-
-                if (this._cboFiles.SelectedItem == null || string.IsNullOrEmpty(this._cboFiles.SelectedItem.Value))
-                {
-                    this.FileID = -1;
-                }
-                else
-                {
-                    this.FileID = int.Parse(this._cboFiles.SelectedItem.Value);
-                }
-
-                if (this._cboFolders.Items.Count > 1 && this.ShowFolders)
-                {
-                    this._pnlFolder.Visible = true;
-                }
-                else
-                {
-                    this._pnlFolder.Visible = false;
-                }
-
-                // Configure Mode
-                switch (this.Mode)
-                {
-                    case FileControlMode.Normal:
-                        this._pnlFile.Visible = true;
-                        this._pnlUpload.Visible = false;
-                        this._pnlRightDiv.Visible = true;
-                        this.ShowImage();
-
-                        if ((FolderPermissionController.HasFolderPermission(this.PortalId, this._cboFolders.SelectedItem.Value, "ADD") || this.IsUserFolder(this._cboFolders.SelectedItem.Value)) && this.ShowUpLoad)
-                        {
-                            this.ShowButton(this._cmdUpload, "Upload");
-                        }
-
-                        break;
-
-                    case FileControlMode.UpLoadFile:
-                        this._pnlFile.Visible = false;
-                        this._pnlUpload.Visible = true;
-                        this._pnlRightDiv.Visible = false;
-                        this.ShowButton(this._cmdSave, "Save");
-                        this.ShowButton(this._cmdCancel, "Cancel");
-                        break;
-                }
-            }
-            else
-            {
-                this._lblMessage.Text = Utilities.GetLocalizedString("NoPermission");
-            }
-
-            // Show message Row
-            this._pnlMessage.Visible = !string.IsNullOrEmpty(this._lblMessage.Text);
         }
 
         private void CancelUpload(object sender, EventArgs e)

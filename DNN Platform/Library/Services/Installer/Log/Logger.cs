@@ -35,6 +35,42 @@ namespace DotNetNuke.Services.Installer.Log
             this._hasWarnings = Null.NullBoolean;
         }
 
+        public bool HasWarnings
+        {
+            get
+            {
+                return this._hasWarnings;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a List of Log Entries.
+        /// </summary>
+        /// <value>A List of LogEntrys.</value>
+        /// -----------------------------------------------------------------------------
+        public IList<LogEntry> Logs
+        {
+            get
+            {
+                return this._logs;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets a value indicating whether gets a Flag that indicates whether the Installation was Valid.
+        /// </summary>
+        /// <value>A List of LogEntrys.</value>
+        /// -----------------------------------------------------------------------------
+        public bool Valid
+        {
+            get
+            {
+                return this._valid;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Css Class used for Error Log Entries.
@@ -56,14 +92,6 @@ namespace DotNetNuke.Services.Installer.Log
             set
             {
                 this._errorClass = value;
-            }
-        }
-
-        public bool HasWarnings
-        {
-            get
-            {
-                return this._hasWarnings;
             }
         }
 
@@ -93,20 +121,6 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a List of Log Entries.
-        /// </summary>
-        /// <value>A List of LogEntrys.</value>
-        /// -----------------------------------------------------------------------------
-        public IList<LogEntry> Logs
-        {
-            get
-            {
-                return this._logs;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the Css Class used for normal Log Entries.
         /// </summary>
         /// <value>A String.</value>
@@ -126,20 +140,6 @@ namespace DotNetNuke.Services.Installer.Log
             set
             {
                 this._normalClass = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a value indicating whether gets a Flag that indicates whether the Installation was Valid.
-        /// </summary>
-        /// <value>A List of LogEntrys.</value>
-        /// -----------------------------------------------------------------------------
-        public bool Valid
-        {
-            get
-            {
-                return this._valid;
             }
         }
 

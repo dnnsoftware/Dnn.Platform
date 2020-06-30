@@ -168,6 +168,52 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return jfile;
         }
 
+        public static string GetJQueryScriptReference()
+        {
+#pragma warning disable 618
+            string scriptsrc = jQuery.HostedUrl;
+            if (!jQuery.UseHostedScript)
+            {
+                scriptsrc = jQuery.JQueryFile(!jQuery.UseDebugScript);
+            }
+
+            return scriptsrc;
+#pragma warning restore 618
+        }
+
+        public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
+        {
+            switch (reference)
+            {
+                case ClientAPI.ClientNamespaceReferences.dnn:
+                case ClientAPI.ClientNamespaceReferences.dnn_dom:
+                    if (HttpContextSource.Current.Items.Contains(LegacyPrefix + "dnn.js"))
+                    {
+                        break;
+                    }
+
+                    ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
+                    HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
+                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", string.Empty);
+
+                    if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
+                    {
+                        ClientAPI.RegisterClientVariable(page, "__scdoff", "1", true);
+                    }
+
+                    if (!ClientAPI.UseExternalScripts)
+                    {
+                        ClientAPI.RegisterEmbeddedResource(page, "dnn.scripts.js", typeof(ClientAPI));
+                    }
+
+                    break;
+                case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:
+                    RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
+                    ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.dom.positioning.js", 13);
+                    break;
+            }
+        }
+
         private static void RequestHighestVersionLibraryRegistration(string jsname)
         {
             var library = GetHighestVersionLibrary(jsname);
@@ -562,52 +608,6 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
             }
 #pragma warning restore 618
-        }
-
-        public static string GetJQueryScriptReference()
-        {
-#pragma warning disable 618
-            string scriptsrc = jQuery.HostedUrl;
-            if (!jQuery.UseHostedScript)
-            {
-                scriptsrc = jQuery.JQueryFile(!jQuery.UseDebugScript);
-            }
-
-            return scriptsrc;
-#pragma warning restore 618
-        }
-
-        public static void RegisterClientReference(Page page, ClientAPI.ClientNamespaceReferences reference)
-        {
-            switch (reference)
-            {
-                case ClientAPI.ClientNamespaceReferences.dnn:
-                case ClientAPI.ClientNamespaceReferences.dnn_dom:
-                    if (HttpContextSource.Current.Items.Contains(LegacyPrefix + "dnn.js"))
-                    {
-                        break;
-                    }
-
-                    ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.js", 12);
-                    HttpContextSource.Current.Items.Add(LegacyPrefix + "dnn.js", true);
-                    page.ClientScript.RegisterClientScriptBlock(page.GetType(), "dnn.js", string.Empty);
-
-                    if (!ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.SingleCharDelimiters))
-                    {
-                        ClientAPI.RegisterClientVariable(page, "__scdoff", "1", true);
-                    }
-
-                    if (!ClientAPI.UseExternalScripts)
-                    {
-                        ClientAPI.RegisterEmbeddedResource(page, "dnn.scripts.js", typeof(ClientAPI));
-                    }
-
-                    break;
-                case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:
-                    RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);
-                    ClientResourceManager.RegisterScript(page, ClientAPI.ScriptPath + "dnn.dom.positioning.js", 13);
-                    break;
-            }
         }
     }
 }

@@ -77,16 +77,6 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
         }
 
-        protected override bool IsFullControl(PermissionInfo permissionInfo)
-        {
-            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
-        }
-
-        protected override bool IsViewPermisison(PermissionInfo permissionInfo)
-        {
-            return permissionInfo.PermissionKey == "VIEW";
-        }
-
         public override void DataBind()
         {
             this.GetTabPermissions();
@@ -95,6 +85,16 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         public override void GenerateDataGrid()
         {
+        }
+
+        protected override bool IsFullControl(PermissionInfo permissionInfo)
+        {
+            return (permissionInfo.PermissionKey == "EDIT") && PermissionProvider.Instance().SupportsFullControl();
+        }
+
+        protected override bool IsViewPermisison(PermissionInfo permissionInfo)
+        {
+            return permissionInfo.PermissionKey == "VIEW";
         }
 
         protected override void CreateChildControls()
@@ -116,66 +116,6 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Clear Permission List
             this._PermissionsList = null;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the TabPermissions from the Data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void GetTabPermissions()
-        {
-            this._TabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
-            this._PermissionsList = null;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
-        /// </summary>
-        /// <param name="Settings">A string array of settings.</param>
-        /// -----------------------------------------------------------------------------
-        private TabPermissionInfo ParseKeys(string[] Settings)
-        {
-            var objTabPermission = new TabPermissionInfo();
-
-            // Call base class to load base properties
-            this.ParsePermissionKeys(objTabPermission, Settings);
-            if (string.IsNullOrEmpty(Settings[2]))
-            {
-                objTabPermission.TabPermissionID = -1;
-            }
-            else
-            {
-                objTabPermission.TabPermissionID = Convert.ToInt32(Settings[2]);
-            }
-
-            objTabPermission.TabID = this.TabID;
-
-            return objTabPermission;
-        }
-
-        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            var item = e.Item;
-
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
-                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
-                {
-                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
-                    if (actionImage != null)
-                    {
-                        actionImage.Visible = false;
-                    }
-                }
-            }
-        }
-
-        private bool IsImplicitRole(int portalId, int roleId)
-        {
-            return TabPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
 
         /// -----------------------------------------------------------------------------
@@ -396,6 +336,66 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the TabPermissions from the Data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void GetTabPermissions()
+        {
+            this._TabPermissions = new TabPermissionCollection(TabPermissionController.GetTabPermissions(this.TabID, this.PortalId));
+            this._PermissionsList = null;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
+        /// </summary>
+        /// <param name="Settings">A string array of settings.</param>
+        /// -----------------------------------------------------------------------------
+        private TabPermissionInfo ParseKeys(string[] Settings)
+        {
+            var objTabPermission = new TabPermissionInfo();
+
+            // Call base class to load base properties
+            this.ParsePermissionKeys(objTabPermission, Settings);
+            if (string.IsNullOrEmpty(Settings[2]))
+            {
+                objTabPermission.TabPermissionID = -1;
+            }
+            else
+            {
+                objTabPermission.TabPermissionID = Convert.ToInt32(Settings[2]);
+            }
+
+            objTabPermission.TabID = this.TabID;
+
+            return objTabPermission;
+        }
+
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            var item = e.Item;
+
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
+                if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
+                {
+                    var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
+                    if (actionImage != null)
+                    {
+                        actionImage.Visible = false;
+                    }
+                }
+            }
+        }
+
+        private bool IsImplicitRole(int portalId, int roleId)
+        {
+            return TabPermissionController.ImplicitRoles(portalId).Any(r => r.RoleID == roleId);
         }
     }
 }

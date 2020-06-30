@@ -37,6 +37,18 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        public void CancelAction(int portalId, int tabId, int moduleId)
+        {
+            foreach (var control in this.Controls)
+            {
+                var actionsControl = control as IUserControlActions;
+                if (actionsControl != null)
+                {
+                    actionsControl.CancelAction(portalId, tabId, moduleId);
+                }
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -61,18 +73,6 @@ namespace DotNetNuke.ExtensionPoints
             var control = this.Page.LoadControl(extension.UserControlSrc);
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
             this.Controls.Add(control);
-        }
-
-        public void CancelAction(int portalId, int tabId, int moduleId)
-        {
-            foreach (var control in this.Controls)
-            {
-                var actionsControl = control as IUserControlActions;
-                if (actionsControl != null)
-                {
-                    actionsControl.CancelAction(portalId, tabId, moduleId);
-                }
-            }
         }
     }
 }

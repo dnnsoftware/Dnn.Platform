@@ -27,6 +27,5 @@ namespace Dnn.PersonaBar.Security.Helper
             registrationFormTypeOptions.Add(new KeyValuePair<string, int>(Localization.GetString("Custom", Components.Constants.LocalResourcesFile), 1));
             return registrationFormTypeOptions;
         }
-
     }
 }

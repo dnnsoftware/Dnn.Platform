@@ -159,10 +159,13 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [DataMember(Name = "siteAliases")]
         public IEnumerable<KeyValuePair<int, string>> SiteAliases { get; set; }
+
         [DataMember(Name = "primaryAliasId")]
         public int? PrimaryAliasId { get; set; }
+
         [DataMember(Name = "locales")]
         public IOrderedEnumerable<KeyValuePair<int, string>> Locales { get; set; }
+
         [DataMember(Name = "hasParent")]
         public bool HasParent { get; set; }
 

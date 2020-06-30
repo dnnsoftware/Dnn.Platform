@@ -34,10 +34,10 @@ namespace DotNetNuke.Entities.Users
     [Serializable]
     public class UserInfo : BaseEntityInfo, IPropertyAccess
     {
+        private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
         private string _administratorRoleName;
         private UserMembership _membership;
         private UserProfile _profile;
-        private readonly ConcurrentDictionary<int, UserSocial> _social = new ConcurrentDictionary<int, UserSocial>();
 
         public UserInfo()
         {
@@ -46,6 +46,46 @@ namespace DotNetNuke.Entities.Users
             this.PortalID = Null.NullInteger;
             this.IsSuperUser = Null.NullBoolean;
             this.AffiliateID = Null.NullInteger;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether gets whether the user is in the portal's administrators role.
+        /// </summary>
+        public bool IsAdmin
+        {
+            get
+            {
+                if (this.IsSuperUser)
+                {
+                    return true;
+                }
+
+                PortalInfo ps = PortalController.Instance.GetPortal(this.PortalID);
+                return ps != null && this.IsInRole(ps.AdministratorRoleName);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets and sets the Social property.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [Browsable(false)]
+        public UserSocial Social
+        {
+            get
+            {
+                return this._social.GetOrAdd(this.PortalID, i => new UserSocial(this));
+            }
+        }
+
+        [Browsable(false)]
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.notCacheable;
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -105,23 +145,6 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether gets whether the user is in the portal's administrators role.
-        /// </summary>
-        public bool IsAdmin
-        {
-            get
-            {
-                if (this.IsSuperUser)
-                {
-                    return true;
-                }
-
-                PortalInfo ps = PortalController.Instance.GetPortal(this.PortalID);
-                return ps != null && this.IsInRole(ps.AdministratorRoleName);
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -261,20 +284,6 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Social property.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        [Browsable(false)]
-        public UserSocial Social
-        {
-            get
-            {
-                return this._social.GetOrAdd(this.PortalID, i => new UserSocial(this));
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the User Id.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -293,15 +302,6 @@ namespace DotNetNuke.Entities.Users
         public string Username { get; set; }
 
         public string VanityUrl { get; set; }
-
-        [Browsable(false)]
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
-        }
 
         /// <summary>
         /// Property access, initially provided for TokenReplace.
@@ -486,32 +486,6 @@ namespace DotNetNuke.Entities.Users
             return this.LocalTime(DateUtils.GetDatabaseUtcTime());
         }
 
-        /// <summary>
-        /// Determine, if accessing user is Administrator.
-        /// </summary>
-        /// <param name="accessingUser">userinfo of the user to query.</param>
-        /// <returns>true, if user is portal administrator or superuser.</returns>
-        private bool isAdminUser(ref UserInfo accessingUser)
-        {
-            if (accessingUser == null || accessingUser.UserID == -1)
-            {
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(this._administratorRoleName))
-            {
-                PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
-                this._administratorRoleName = ps.AdministratorRoleName;
-            }
-
-            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
-        }
-
-        private string GetMembershipUserId()
-        {
-            return MembershipProvider.Instance().GetProviderUserKey(this)?.Replace("-", string.Empty) ?? string.Empty;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Convert utc time in User's timezone.
@@ -543,6 +517,32 @@ namespace DotNetNuke.Entities.Users
             format = format.Replace("[LASTNAME]", this.LastName);
             format = format.Replace("[USERNAME]", this.Username);
             this.DisplayName = format;
+        }
+
+        /// <summary>
+        /// Determine, if accessing user is Administrator.
+        /// </summary>
+        /// <param name="accessingUser">userinfo of the user to query.</param>
+        /// <returns>true, if user is portal administrator or superuser.</returns>
+        private bool isAdminUser(ref UserInfo accessingUser)
+        {
+            if (accessingUser == null || accessingUser.UserID == -1)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(this._administratorRoleName))
+            {
+                PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
+                this._administratorRoleName = ps.AdministratorRoleName;
+            }
+
+            return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
+        }
+
+        private string GetMembershipUserId()
+        {
+            return MembershipProvider.Instance().GetProviderUserKey(this)?.Replace("-", string.Empty) ?? string.Empty;
         }
     }
 }

@@ -135,6 +135,36 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
         }
 
+        private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
+        {
+            foreach (var portal in portals)
+            {
+                DesktopModuleController.AddDesktopModuleToPortal(portal.Id, desktopModule.DesktopModuleID, true, true);
+            }
+        }
+
+        private static void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
+        {
+            var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
+            ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
+        }
+
+        private static void DeleteModuleDefinition(int defId)
+        {
+            new ModuleDefinitionController().DeleteModuleDefinition(defId);
+        }
+
+        private static void SaveModuleControl(ModuleControlDto moduleControlDto)
+        {
+            var moduleControl = moduleControlDto.ToModuleControlInfo();
+            ModuleControlController.SaveModuleControl(moduleControl, true);
+        }
+
+        private static void DeleteModuleControl(int controlId)
+        {
+            ModuleControlController.DeleteModuleControl(controlId);
+        }
+
         private PermissionsDto GetPermissionsData(int portalId, int desktopModuleId)
         {
             var permissions = new PermissionsDto(true);
@@ -260,36 +290,6 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 }
             }
             DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portalSettings.PortalId));
-        }
-
-        private static void AssignPortals(DesktopModuleInfo desktopModule, IList<ListItemDto> portals)
-        {
-            foreach (var portal in portals)
-            {
-                DesktopModuleController.AddDesktopModuleToPortal(portal.Id, desktopModule.DesktopModuleID, true, true);
-            }
-        }
-
-        private static void SaveModuleDefinition(ModuleDefinitionDto definitionDto)
-        {
-            var moduleDefinition = definitionDto.ToModuleDefinitionInfo();
-            ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, true);
-        }
-
-        private static void DeleteModuleDefinition(int defId)
-        {
-            new ModuleDefinitionController().DeleteModuleDefinition(defId);
-        }
-
-        private static void SaveModuleControl(ModuleControlDto moduleControlDto)
-        {
-            var moduleControl = moduleControlDto.ToModuleControlInfo();
-            ModuleControlController.SaveModuleControl(moduleControl, true);
-        }
-
-        private static void DeleteModuleControl(int controlId)
-        {
-            ModuleControlController.DeleteModuleControl(controlId);
         }
     }
 }

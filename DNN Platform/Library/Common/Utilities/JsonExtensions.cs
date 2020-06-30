@@ -35,12 +35,6 @@ namespace DotNetNuke.Common.Utilities
             return ToJsonString(value);
         }
 
-        private static JavaScriptSerializer SerializerFactory()
-        {
-            // Allow large JSON strings to be serialized and deserialized.
-            return new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
-        }
-
         /// <summary>
         ///   Deserializes a json string into a specific type.
         ///   Note that the type specified must be serializable.
@@ -76,6 +70,12 @@ namespace DotNetNuke.Common.Utilities
 
             var result = ser.Deserialize<TType>(json);
             return result;
+        }
+
+        private static JavaScriptSerializer SerializerFactory()
+        {
+            // Allow large JSON strings to be serialized and deserialized.
+            return new JavaScriptSerializer { MaxJsonLength = int.MaxValue };
         }
     }
 }

@@ -27,6 +27,16 @@ namespace DotNetNuke.Modules.Groups.Controls
     {
         public UserInfo currentUser;
 
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string ItemTemplate { get; set; }
@@ -46,16 +56,6 @@ namespace DotNetNuke.Modules.Groups.Controls
         [DefaultValue("")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowFooterTemplate { get; set; }
-
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
 
         [DefaultValue(1)]
         public int ItemsPerRow { get; set; }

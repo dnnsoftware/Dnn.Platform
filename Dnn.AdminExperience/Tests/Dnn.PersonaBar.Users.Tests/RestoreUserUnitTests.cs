@@ -61,18 +61,6 @@ namespace Dnn.PersonaBar.Users.Tests
             Assert.IsTrue(result.IsError);
         }
 
-        protected override RestoreUser CreateCommand()
-        {
-            return new RestoreUser(this._userValidatorMock.Object, this._recyclebinControllerMock.Object);
-        }
-
-        [SetUp]
-        protected override void ChildSetup()
-        {
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._recyclebinControllerMock = new Mock<IRecyclebinController>();
-        }
-
         [Test]
         public void Run_RestoreNotDeletedUser_ReturnErrorResponse()
         {
@@ -106,6 +94,18 @@ namespace Dnn.PersonaBar.Users.Tests
 
             // Assert
             Assert.IsTrue(result.IsError);
+        }
+
+        protected override RestoreUser CreateCommand()
+        {
+            return new RestoreUser(this._userValidatorMock.Object, this._recyclebinControllerMock.Object);
+        }
+
+        [SetUp]
+        protected override void ChildSetup()
+        {
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._recyclebinControllerMock = new Mock<IRecyclebinController>();
         }
     }
 }

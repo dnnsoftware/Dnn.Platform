@@ -80,36 +80,6 @@ namespace DotNetNuke.Services.Personalization
             this.SaveProfile(objPersonalization, userId, portalId);
         }
 
-        private static object GetCachedUserPersonalizationCallback(CacheItemArgs cacheItemArgs)
-        {
-            var portalId = (int)cacheItemArgs.ParamList[0];
-            var userId = (int)cacheItemArgs.ParamList[1];
-            var returnValue = Null.NullString; // Default is no profile
-            IDataReader dr = null;
-            try
-            {
-                dr = DataProvider.Instance().GetProfile(userId, portalId);
-                if (dr.Read())
-                {
-                    returnValue = dr["ProfileData"].ToString();
-                }
-                else // does not exist
-                {
-                    DataProvider.Instance().AddProfile(userId, portalId);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return returnValue;
-        }
-
         // override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public void SaveProfile(PersonalizationInfo personalization, int userId, int portalId)
         {
@@ -143,6 +113,36 @@ namespace DotNetNuke.Services.Personalization
                     }
                 }
             }
+        }
+
+        private static object GetCachedUserPersonalizationCallback(CacheItemArgs cacheItemArgs)
+        {
+            var portalId = (int)cacheItemArgs.ParamList[0];
+            var userId = (int)cacheItemArgs.ParamList[1];
+            var returnValue = Null.NullString; // Default is no profile
+            IDataReader dr = null;
+            try
+            {
+                dr = DataProvider.Instance().GetProfile(userId, portalId);
+                if (dr.Read())
+                {
+                    returnValue = dr["ProfileData"].ToString();
+                }
+                else // does not exist
+                {
+                    DataProvider.Instance().AddProfile(userId, portalId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.LogException(ex);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return returnValue;
         }
 
         private static string EncryptData(string profileData)

@@ -99,25 +99,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.AddFile(null, Constants.FOLDER_ValidFileName, stream.Object);
         }
 
-        private Dictionary<string, string> GetPortalSettingsDictionaryMock()
-        {
-            var portalSettingsDictionary = new Dictionary<string, string>();
-            portalSettingsDictionary.Add("AddCachebusterToResourceUris", true.ToString());
-
-            return portalSettingsDictionary;
-        }
-
-        private PortalSettings GetPortalSettingsMock()
-        {
-            var portalSettingsMock = new Mock<PortalSettings>();
-            portalSettingsMock.Object.HomeDirectory = "/portals/" + Constants.CONTENT_ValidPortalId;
-            portalSettingsMock.Object.PortalId = Constants.CONTENT_ValidPortalId;
-            portalSettingsMock.Object.EnableUrlLanguage = false;
-            portalSettingsMock.Object.GUID = Guid.NewGuid();
-
-            return portalSettingsMock.Object;
-        }
-
         [Test]
         [TestCase(null)]
         [TestCase("")]
@@ -785,6 +766,25 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.UpdateFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, stream.Object);
 
             this._fileWrapper.Verify(fw => fw.Create(Constants.FOLDER_ValidFilePath), Times.Once());
+        }
+
+        private Dictionary<string, string> GetPortalSettingsDictionaryMock()
+        {
+            var portalSettingsDictionary = new Dictionary<string, string>();
+            portalSettingsDictionary.Add("AddCachebusterToResourceUris", true.ToString());
+
+            return portalSettingsDictionary;
+        }
+
+        private PortalSettings GetPortalSettingsMock()
+        {
+            var portalSettingsMock = new Mock<PortalSettings>();
+            portalSettingsMock.Object.HomeDirectory = "/portals/" + Constants.CONTENT_ValidPortalId;
+            portalSettingsMock.Object.PortalId = Constants.CONTENT_ValidPortalId;
+            portalSettingsMock.Object.EnableUrlLanguage = false;
+            portalSettingsMock.Object.GUID = Guid.NewGuid();
+
+            return portalSettingsMock.Object;
         }
     }
 }

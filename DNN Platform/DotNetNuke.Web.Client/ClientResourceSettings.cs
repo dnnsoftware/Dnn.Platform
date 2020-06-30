@@ -76,6 +76,20 @@ namespace DotNetNuke.Web.Client
             Unknown,
         }
 
+        private UpgradeStatus Status
+        {
+            get
+            {
+                if (!this._statusChecked)
+                {
+                    this._status = this.GetStatusByReflection();
+                    this._statusChecked = true;
+                }
+
+                return this._status;
+            }
+        }
+
         /// <summary>
         ///
         /// </summary>
@@ -152,34 +166,6 @@ namespace DotNetNuke.Web.Client
                 }
             }
 
-            return null;
-        }
-
-        private bool? IsBooleanSettingEnabled(string settingKey)
-        {
-            if (this.Status != UpgradeStatus.None)
-            {
-                return false;
-            }
-
-            var portalEnabled = GetBooleanSetting(PortalSettingsDictionaryKey, settingKey);
-            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
-
-            // if portal version is set
-            // and the portal "override default settings" flag is set and set to true
-            if (portalEnabled.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
-            {
-                return portalEnabled.Value;
-            }
-
-            // otherwise return the host setting
-            var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
-            if (hostEnabled.HasValue)
-            {
-                return hostEnabled.Value;
-            }
-
-            // otherwise tell the calling method that nothing is set
             return null;
         }
 
@@ -274,18 +260,32 @@ namespace DotNetNuke.Web.Client
             return null;
         }
 
-        private UpgradeStatus Status
+        private bool? IsBooleanSettingEnabled(string settingKey)
         {
-            get
+            if (this.Status != UpgradeStatus.None)
             {
-                if (!this._statusChecked)
-                {
-                    this._status = this.GetStatusByReflection();
-                    this._statusChecked = true;
-                }
-
-                return this._status;
+                return false;
             }
+
+            var portalEnabled = GetBooleanSetting(PortalSettingsDictionaryKey, settingKey);
+            var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);
+
+            // if portal version is set
+            // and the portal "override default settings" flag is set and set to true
+            if (portalEnabled.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
+                return portalEnabled.Value;
+            }
+
+            // otherwise return the host setting
+            var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
+            if (hostEnabled.HasValue)
+            {
+                return hostEnabled.Value;
+            }
+
+            // otherwise tell the calling method that nothing is set
+            return null;
         }
 
         private UpgradeStatus GetStatusByReflection()

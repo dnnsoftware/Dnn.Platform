@@ -43,14 +43,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets the Completed flag.
-        /// </summary>
-        /// <value>A Boolean value.</value>
-        /// -----------------------------------------------------------------------------
-        public bool Completed { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets the InstallMode.
         /// </summary>
         /// <value>An InstallMode value.</value>
@@ -76,14 +68,6 @@ namespace DotNetNuke.Services.Installer.Installers
                 return this.Package.Log;
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the associated Package.
-        /// </summary>
-        /// <value>An PackageInfo object.</value>
-        /// -----------------------------------------------------------------------------
-        public PackageInfo Package { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -113,8 +97,6 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        public bool Skipped { get; set; }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
@@ -131,11 +113,37 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets a value indicating whether gets the Completed flag.
+        /// </summary>
+        /// <value>A Boolean value.</value>
+        /// -----------------------------------------------------------------------------
+        public bool Completed { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the associated Package.
+        /// </summary>
+        /// <value>An PackageInfo object.</value>
+        /// -----------------------------------------------------------------------------
+        public PackageInfo Package { get; set; }
+
+        public bool Skipped { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the Type of the component.
         /// </summary>
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Type { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets the Version of the Component.
+        /// </summary>
+        /// <value>A System.Version.</value>
+        /// -----------------------------------------------------------------------------
+        public Version Version { get; set; }
 
         public EventMessage ReadEventMessageNode(XPathNavigator manifestNav)
         {
@@ -215,14 +223,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
             return eventMessage;
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets the Version of the Component.
-        /// </summary>
-        /// <value>A System.Version.</value>
-        /// -----------------------------------------------------------------------------
-        public Version Version { get; set; }
 
         public abstract void Commit();
 

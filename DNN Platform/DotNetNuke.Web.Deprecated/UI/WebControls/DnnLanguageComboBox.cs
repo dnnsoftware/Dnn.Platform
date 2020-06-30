@@ -40,9 +40,53 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public event EventHandler ModeChanged;
 
+        public string SelectedValue
+        {
+            get
+            {
+                string selectedValue = this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase) ? this._nativeCombo.SelectedValue : this._englishCombo.SelectedValue;
+                if (selectedValue == "None")
+                {
+                    selectedValue = Null.NullString;
+                }
+
+                return selectedValue;
+            }
+        }
+
         public string FlagImageUrlFormatString { get; set; }
 
         public Dictionary<string, Locale> HideLanguagesList { get; set; }
+
+        public bool IncludeNoneSpecified { get; set; }
+
+        public LanguagesListType LanguagesListType
+        {
+            get
+            {
+                return this._languagesListType;
+            }
+
+            set
+            {
+                this._languagesListType = value;
+            }
+        }
+
+        public int PortalId { get; set; }
+
+        public bool ShowFlag { get; set; }
+
+        public bool ShowModeButtons { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        ///   Gets or sets a value indicating whether determines whether the List Auto Posts Back.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public bool AutoPostBack { get; set; }
+
+        public bool CausesValidation { get; set; }
 
         protected override HtmlTextWriterTag TagKey
         {
@@ -65,50 +109,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 return displayMode;
             }
         }
-
-        public bool IncludeNoneSpecified { get; set; }
-
-        public LanguagesListType LanguagesListType
-        {
-            get
-            {
-                return this._languagesListType;
-            }
-
-            set
-            {
-                this._languagesListType = value;
-            }
-        }
-
-        public int PortalId { get; set; }
-
-        public string SelectedValue
-        {
-            get
-            {
-                string selectedValue = this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase) ? this._nativeCombo.SelectedValue : this._englishCombo.SelectedValue;
-                if (selectedValue == "None")
-                {
-                    selectedValue = Null.NullString;
-                }
-
-                return selectedValue;
-            }
-        }
-
-        public bool ShowFlag { get; set; }
-
-        public bool ShowModeButtons { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        ///   Gets or sets a value indicating whether determines whether the List Auto Posts Back.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public bool AutoPostBack { get; set; }
-
-        public bool CausesValidation { get; set; }
 
         public void BindData(bool refresh)
         {

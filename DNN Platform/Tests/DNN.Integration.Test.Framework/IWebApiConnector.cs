@@ -21,9 +21,9 @@ namespace DNN.Integration.Test.Framework
 
         DateTime LoggedInAtTime { get; }
 
-        TimeSpan Timeout { get; set; }
-
         Uri Domain { get; }
+
+        TimeSpan Timeout { get; set; }
 
         string UserAgentValue { get; set; }
 

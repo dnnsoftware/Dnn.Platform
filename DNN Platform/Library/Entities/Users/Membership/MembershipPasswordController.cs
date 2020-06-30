@@ -42,32 +42,6 @@ namespace DotNetNuke.Entities.Users.Membership
             return history;
         }
 
-        private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
-        {
-            using (HashAlgorithm ha = HashAlgorithm.Create())
-            {
-                byte[] newSalt = this.GetRandomSaltValue();
-                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
-                var inputBuffer = new byte[bytePassword.Length + 16];
-                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
-                Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
-                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
-                string hashedPassword = Convert.ToBase64String(bhashedPassword);
-
-                this._dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
-            }
-        }
-
-        private byte[] GetRandomSaltValue()
-        {
-            using (var rcsp = new RNGCryptoServiceProvider())
-            {
-                var bSalt = new byte[16];
-                rcsp.GetBytes(bSalt);
-                return bSalt;
-            }
-        }
-
         /// <summary>
         /// checks to see if the password is in history and adds it if it is not.
         /// </summary>
@@ -187,6 +161,32 @@ namespace DotNetNuke.Entities.Users.Membership
             }
 
             return false;
+        }
+
+        private void AddPasswordHistory(int userId, string password, int passwordsRetained, int daysRetained)
+        {
+            using (HashAlgorithm ha = HashAlgorithm.Create())
+            {
+                byte[] newSalt = this.GetRandomSaltValue();
+                byte[] bytePassword = Encoding.Unicode.GetBytes(password);
+                var inputBuffer = new byte[bytePassword.Length + 16];
+                Buffer.BlockCopy(bytePassword, 0, inputBuffer, 0, bytePassword.Length);
+                Buffer.BlockCopy(newSalt, 0, inputBuffer, bytePassword.Length, 16);
+                byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
+                string hashedPassword = Convert.ToBase64String(bhashedPassword);
+
+                this._dataProvider.AddPasswordHistory(userId, hashedPassword, Convert.ToBase64String(newSalt), passwordsRetained, daysRetained);
+            }
+        }
+
+        private byte[] GetRandomSaltValue()
+        {
+            using (var rcsp = new RNGCryptoServiceProvider())
+            {
+                var bSalt = new byte[16];
+                rcsp.GetBytes(bSalt);
+                return bSalt;
+            }
         }
     }
 }

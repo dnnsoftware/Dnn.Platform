@@ -33,11 +33,6 @@ namespace DotNetNuke.Services.Social.Notifications
         internal const int ConstMaxSubject = 400;
         internal const int ConstMaxTo = 2000;
         private const string ToastsCacheKey = "GetToasts_{0}";
-
-        protected override Func<INotificationsController> GetFactory()
-        {
-            return () => new NotificationsController();
-        }
         private readonly IDataService _dataService;
         private readonly Messaging.Data.IDataService _messagingDataService;
 
@@ -476,6 +471,11 @@ namespace DotNetNuke.Services.Social.Notifications
         internal virtual void RemoveNotificationTypeCache()
         {
             DataCache.ClearCache("NotificationTypes:");
+        }
+
+        protected override Func<INotificationsController> GetFactory()
+        {
+            return () => new NotificationsController();
         }
     }
 }

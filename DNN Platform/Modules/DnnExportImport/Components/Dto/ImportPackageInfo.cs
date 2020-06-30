@@ -15,6 +15,21 @@ namespace Dnn.ExportImport.Components.Dto
     public class ImportPackageInfo : IDateTimeConverter
     {
         /// <summary>
+        /// Gets package file name. It is just fake name for UI representation.
+        /// </summary>
+        public string FileName => this.PackageId;
+
+        /// <summary>
+        /// Gets formatted DateTime when the package was exported.
+        /// </summary>
+        public string ExporTimeString => Util.GetDateTimeString(this.ExporTime);
+
+        /// <summary>
+        /// Gets path to the thumbnail image for the package.
+        /// </summary>
+        public string Thumb => this.PackageId + ".jpg";
+
+        /// <summary>
         /// Gets or sets package Id. Used to identify the package and path.
         /// </summary>
         public string PackageId { get; set; }
@@ -25,19 +40,9 @@ namespace Dnn.ExportImport.Components.Dto
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets package file name. It is just fake name for UI representation.
-        /// </summary>
-        public string FileName => this.PackageId;
-
-        /// <summary>
         /// Gets or sets dateTime when the package was exported.
         /// </summary>
         public DateTime ExporTime { get; set; }
-
-        /// <summary>
-        /// Gets formatted DateTime when the package was exported.
-        /// </summary>
-        public string ExporTimeString => Util.GetDateTimeString(this.ExporTime);
 
         /// <summary>
         /// Gets or sets the portal from which the exported package was created.
@@ -48,11 +53,6 @@ namespace Dnn.ExportImport.Components.Dto
         /// Gets or sets package description.
         /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Gets path to the thumbnail image for the package.
-        /// </summary>
-        public string Thumb => this.PackageId + ".jpg";
 
         /// <summary>
         /// Gets or sets complete summary of import package.

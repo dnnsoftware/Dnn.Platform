@@ -17,6 +17,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Models
             this.Keywords = tab.KeyWords;
             this.Description = tab.Description;
         }
+
         public string Container { get; set; }
         public string Url { get; set; }
         public string Keywords { get; set; }

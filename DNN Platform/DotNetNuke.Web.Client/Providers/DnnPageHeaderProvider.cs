@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.Client.Providers
         /// The name of the placeholder in which the controls will be rendered.
         /// </summary>
         public const string CssPlaceHolderName = "ClientDependencyHeadCss";
+
         public const string JsPlaceHolderName = "ClientDependencyHeadJs";
 
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)

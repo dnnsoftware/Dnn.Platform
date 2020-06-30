@@ -34,6 +34,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto
 
         [JsonProperty("addPage")]
         public bool AddPage { get; set; }
-
     }
 }

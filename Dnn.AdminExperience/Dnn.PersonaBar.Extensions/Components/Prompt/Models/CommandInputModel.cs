@@ -9,8 +9,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
 
     public class CommandInputModel
     {
-        public string CmdLine { get; set; }
-        public int CurrentPage { get; set; }
         public string[] Args
         {
             get
@@ -20,5 +18,8 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
                 return tokenEx.Matches(this.CmdLine).Cast<Match>().Select(m => m.Value.Replace("\"", "")).ToArray();
             }
         }
+
+        public string CmdLine { get; set; }
+        public int CurrentPage { get; set; }
     }
 }

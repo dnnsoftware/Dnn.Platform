@@ -56,61 +56,6 @@ namespace DotNetNuke.Entities.Urls
             out bool useDnnPagePath,
             ref List<string> messages);
 
-        protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options)
-        {
-            bool changed;
-            string result = options != null
-                                ? FriendlyUrlController.CleanNameForUrl(urlValue, options, out changed)
-                                : FriendlyUrlController.CleanNameForUrl(urlValue, null, out changed);
-
-            return result;
-        }
-
-        protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options, out bool replacedUnwantedChars)
-        {
-            return FriendlyUrlController.CleanNameForUrl(urlValue, options, out replacedUnwantedChars);
-        }
-
-        protected string CreateQueryStringFromParameters(string[] urlParms, int skipUpToPosition)
-        {
-            string result = string.Empty;
-            int i = 0;
-            bool odd = true;
-            int size = urlParms.GetUpperBound(0) - skipUpToPosition;
-            if (size >= 0 && urlParms.GetUpperBound(0) >= 0)
-            {
-                var qs = new StringBuilder(urlParms.GetUpperBound(0));
-                foreach (string urlPathPart in urlParms)
-                {
-                    if (i > skipUpToPosition) // skip over the parts we don't want
-                    {
-                        if (odd)
-                        {
-                            qs.Append("&" + urlPathPart);
-                        }
-                        else
-                        {
-                            qs.Append("=" + urlPathPart);
-                        }
-
-                        // switch odd/even
-                        odd = !odd;
-                    }
-
-                    i++;
-                }
-
-                result = qs.ToString();
-            }
-
-            return result;
-        }
-
-        protected string EnsureLeadingChar(string leading, string path)
-        {
-            return FriendlyUrlController.EnsureLeadingChar(leading, path);
-        }
-
         /// <summary>
         ///
         /// </summary>
@@ -177,6 +122,61 @@ namespace DotNetNuke.Entities.Urls
         public string EnsureNotLeadingChar(string leading, string path)
         {
             return FriendlyUrlController.EnsureNotLeadingChar(leading, path);
+        }
+
+        protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options)
+        {
+            bool changed;
+            string result = options != null
+                                ? FriendlyUrlController.CleanNameForUrl(urlValue, options, out changed)
+                                : FriendlyUrlController.CleanNameForUrl(urlValue, null, out changed);
+
+            return result;
+        }
+
+        protected string CleanNameForUrl(string urlValue, FriendlyUrlOptions options, out bool replacedUnwantedChars)
+        {
+            return FriendlyUrlController.CleanNameForUrl(urlValue, options, out replacedUnwantedChars);
+        }
+
+        protected string CreateQueryStringFromParameters(string[] urlParms, int skipUpToPosition)
+        {
+            string result = string.Empty;
+            int i = 0;
+            bool odd = true;
+            int size = urlParms.GetUpperBound(0) - skipUpToPosition;
+            if (size >= 0 && urlParms.GetUpperBound(0) >= 0)
+            {
+                var qs = new StringBuilder(urlParms.GetUpperBound(0));
+                foreach (string urlPathPart in urlParms)
+                {
+                    if (i > skipUpToPosition) // skip over the parts we don't want
+                    {
+                        if (odd)
+                        {
+                            qs.Append("&" + urlPathPart);
+                        }
+                        else
+                        {
+                            qs.Append("=" + urlPathPart);
+                        }
+
+                        // switch odd/even
+                        odd = !odd;
+                    }
+
+                    i++;
+                }
+
+                result = qs.ToString();
+            }
+
+            return result;
+        }
+
+        protected string EnsureLeadingChar(string leading, string path)
+        {
+            return FriendlyUrlController.EnsureLeadingChar(leading, path);
         }
     }
 }

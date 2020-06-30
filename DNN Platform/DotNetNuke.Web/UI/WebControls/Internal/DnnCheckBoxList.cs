@@ -57,20 +57,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Items.Add(new ListItem(text, value));
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            this.RepeatColumns = 1;
-            base.OnInit(e);
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            Utilities.ApplySkin(this);
-            this.RegisterRequestResources();
-
-            base.OnPreRender(e);
-        }
-
         public void InsertItem(int index, string text, string value)
         {
             this.Items.Insert(index, new ListItem(text, value));
@@ -119,6 +105,20 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         public int FindItemIndexByValue(string value)
         {
             return this.Items.IndexOf(this.FindItemByValue(value));
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            this.RepeatColumns = 1;
+            base.OnInit(e);
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            Utilities.ApplySkin(this);
+            this.RegisterRequestResources();
+
+            base.OnPreRender(e);
         }
 
         private void RegisterRequestResources()

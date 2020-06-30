@@ -24,6 +24,17 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
+        /// Gets the schema set.
+        /// </summary>
+        public XmlSchemaSet SchemaSet
+        {
+            get
+            {
+                return this._schemaSet;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the errors.
         /// </summary>
         /// <value>
@@ -39,17 +50,6 @@ namespace DotNetNuke.Common
             set
             {
                 this._errs = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the schema set.
-        /// </summary>
-        public XmlSchemaSet SchemaSet
-        {
-            get
-            {
-                return this._schemaSet;
             }
         }
 
@@ -101,16 +101,6 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Validations the call back.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
-        protected void ValidationCallBack(object sender, ValidationEventArgs args)
-        {
-            this._errs.Add(args.Message);
-        }
-
-        /// <summary>
         /// Validates the specified filename.
         /// </summary>
         /// <param name="filename">The filename.</param>
@@ -123,6 +113,16 @@ namespace DotNetNuke.Common
                 DtdProcessing = DtdProcessing.Prohibit,
             };
             return this.IsValid();
+        }
+
+        /// <summary>
+        /// Validations the call back.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="System.Xml.Schema.ValidationEventArgs"/> instance containing the event data.</param>
+        protected void ValidationCallBack(object sender, ValidationEventArgs args)
+        {
+            this._errs.Add(args.Message);
         }
     }
 }

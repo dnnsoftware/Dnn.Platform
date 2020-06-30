@@ -45,6 +45,10 @@ namespace DotNetNuke.UI.WebControls.Internal
         // value on postback is undefined at this time
         public bool Locked { get; set; }
 
+        public string PermissionKey { get; set; }
+
+        public bool SupportsDenyMode { get; set; }
+
         public static void RegisterScripts(Page page, Control ctl)
         {
             const string scriptKey = "initTriState";
@@ -160,9 +164,5 @@ namespace DotNetNuke.UI.WebControls.Internal
             denyAltText = Localization.GetString("PermissionTypeDeny");
             nullAltText = Localization.GetString("PermissionTypeNull");
         }
-
-        public string PermissionKey { get; set; }
-
-        public bool SupportsDenyMode { get; set; }
     }
 }

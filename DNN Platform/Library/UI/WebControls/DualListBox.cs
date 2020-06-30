@@ -39,51 +39,7 @@ namespace DotNetNuke.UI.WebControls
 
         public event DualListBoxEventHandler RemoveButtonClick;
 
-        public string AddAllImageURL { get; set; }
-
-        public string AddAllKey { get; set; }
-
-        public string AddAllText { get; set; }
-
-        public string AddImageURL { get; set; }
-
-        public string AddKey { get; set; }
-
-        public string AddText { get; set; }
-
-        public object AvailableDataSource { get; set; }
-
-        public string DataTextField { private get; set; }
-
-        public string DataValueField { private get; set; }
-
-        public string LocalResourceFile { get; set; }
-
-        public string RemoveAllImageURL { get; set; }
-
-        public string RemoveAllKey { get; set; }
-
-        public string RemoveAllText { get; set; }
-
-        public string RemoveImageURL { get; set; }
-
-        public string RemoveKey { get; set; }
-
-        public string RemoveText { get; set; }
-
-        public object SelectedDataSource { get; set; }
-
-        public bool ShowAddButton { get; set; }
-
-        public bool ShowAddAllButton { get; set; }
-
-        public bool ShowRemoveButton { get; set; }
-
-        public bool ShowRemoveAllButton { get; set; }
-
-        public bool CausesValidation { get; set; }
-
-        public string ValidationGroup { get; set; }
+        public event EventHandler RemoveAllButtonClick;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -122,14 +78,6 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 return this._ButtonStyle;
-            }
-        }
-
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
             }
         }
 
@@ -193,6 +141,60 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        public string AddAllImageURL { get; set; }
+
+        public string AddAllKey { get; set; }
+
+        public string AddAllText { get; set; }
+
+        public string AddImageURL { get; set; }
+
+        public string AddKey { get; set; }
+
+        public string AddText { get; set; }
+
+        public object AvailableDataSource { get; set; }
+
+        public string DataTextField { private get; set; }
+
+        public string DataValueField { private get; set; }
+
+        public string LocalResourceFile { get; set; }
+
+        public string RemoveAllImageURL { get; set; }
+
+        public string RemoveAllKey { get; set; }
+
+        public string RemoveAllText { get; set; }
+
+        public string RemoveImageURL { get; set; }
+
+        public string RemoveKey { get; set; }
+
+        public string RemoveText { get; set; }
+
+        public object SelectedDataSource { get; set; }
+
+        public bool ShowAddButton { get; set; }
+
+        public bool ShowAddAllButton { get; set; }
+
+        public bool ShowRemoveButton { get; set; }
+
+        public bool ShowRemoveAllButton { get; set; }
+
+        public bool CausesValidation { get; set; }
+
+        public string ValidationGroup { get; set; }
+
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
+
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool retValue = Null.NullBoolean;
@@ -246,8 +248,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        public event EventHandler RemoveAllButtonClick;
-
         protected virtual PostBackOptions GetPostBackOptions(string argument)
         {
             var postBackOptions = new PostBackOptions(this, argument) { RequiresJavaScriptProtocol = true };
@@ -267,6 +267,59 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.AddButtonClick(this, e);
             }
+        }
+
+        protected void OnAddAllButtonClick(EventArgs e)
+        {
+            if (this.AddAllButtonClick != null)
+            {
+                this.AddAllButtonClick(this, e);
+            }
+        }
+
+        protected void OnRemoveButtonClick(DualListBoxEventArgs e)
+        {
+            if (this.RemoveButtonClick != null)
+            {
+                this.RemoveButtonClick(this, e);
+            }
+        }
+
+        protected void OnRemoveAllButtonClick(EventArgs e)
+        {
+            if (this.RemoveAllButtonClick != null)
+            {
+                this.RemoveAllButtonClick(this, e);
+            }
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+            if (this.Page != null)
+            {
+                this.Page.RegisterRequiresPostBack(this);
+            }
+        }
+
+        protected override void RenderContents(HtmlTextWriter writer)
+        {
+            // render table
+            if (this.ContainerStyle != null)
+            {
+                this.ContainerStyle.AddAttributesToRender(writer);
+            }
+
+            writer.RenderBeginTag(HtmlTextWriterTag.Table);
+
+            // Render Header Row
+            this.RenderHeader(writer);
+
+            // Render ListBox row
+            this.RenderListBoxes(writer);
+
+            // Render end of table
+            writer.RenderEndTag();
         }
 
         private NameValueCollection GetList(string listType, object dataSource)
@@ -481,59 +534,6 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
 
             // Render end of List Boxes Row
-            writer.RenderEndTag();
-        }
-
-        protected void OnAddAllButtonClick(EventArgs e)
-        {
-            if (this.AddAllButtonClick != null)
-            {
-                this.AddAllButtonClick(this, e);
-            }
-        }
-
-        protected void OnRemoveButtonClick(DualListBoxEventArgs e)
-        {
-            if (this.RemoveButtonClick != null)
-            {
-                this.RemoveButtonClick(this, e);
-            }
-        }
-
-        protected void OnRemoveAllButtonClick(EventArgs e)
-        {
-            if (this.RemoveAllButtonClick != null)
-            {
-                this.RemoveAllButtonClick(this, e);
-            }
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-            if (this.Page != null)
-            {
-                this.Page.RegisterRequiresPostBack(this);
-            }
-        }
-
-        protected override void RenderContents(HtmlTextWriter writer)
-        {
-            // render table
-            if (this.ContainerStyle != null)
-            {
-                this.ContainerStyle.AddAttributesToRender(writer);
-            }
-
-            writer.RenderBeginTag(HtmlTextWriterTag.Table);
-
-            // Render Header Row
-            this.RenderHeader(writer);
-
-            // Render ListBox row
-            this.RenderListBoxes(writer);
-
-            // Render end of table
             writer.RenderEndTag();
         }
     }

@@ -17,6 +17,10 @@ namespace DotNetNuke.UI.UserControls
         protected Label Label2;
         protected LinkButton cmdAdd;
         protected LinkButton cmdAddAll;
+        protected LinkButton cmdRemove;
+        protected LinkButton cmdRemoveAll;
+        protected ListBox lstAssigned;
+        protected ListBox lstAvailable;
         private string MyFileName = "DualListControl.ascx";
         private ArrayList _Assigned;
         private ArrayList _Available;
@@ -25,10 +29,6 @@ namespace DotNetNuke.UI.UserControls
         private bool _Enabled = true;
         private string _ListBoxHeight = string.Empty;
         private string _ListBoxWidth = string.Empty;
-        protected LinkButton cmdRemove;
-        protected LinkButton cmdRemoveAll;
-        protected ListBox lstAssigned;
-        protected ListBox lstAvailable;
 
         public string ListBoxWidth
         {

@@ -16,6 +16,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     public class CheckDiskAcccessPermissions : IAuditCheck
     {
         private const char Yes = 'Y';
+        private const char No = 'N';
 
         public string Id => "CheckDiskAccess";
 
@@ -173,11 +174,19 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
             return permissions;
         }
-        private const char No = 'N';
 
         private class Permissions
         {
             private char _create;
+
+            private bool _createLocked;
+            private char _delete;
+            private bool _deleteLocked;
+            private char _read;
+            private bool _readLocked;
+
+            private char _write;
+            private bool _writeLocked;
 
             public Permissions(char initial)
             {
@@ -188,14 +197,6 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             {
                 get { return this.Create == Yes || this.Write == Yes || this.Read == Yes || this.Delete == Yes; }
             }
-            private char _write;
-            private char _read;
-            private char _delete;
-
-            private bool _createLocked;
-            private bool _writeLocked;
-            private bool _readLocked;
-            private bool _deleteLocked;
 
             public char Create
             {

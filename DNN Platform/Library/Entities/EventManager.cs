@@ -223,11 +223,6 @@ namespace DotNetNuke.Entities
             AddLog(args.FileInfo, args.UserId, EventLogController.EventLogType.FILE_CHANGED);
         }
 
-        protected override Func<IEventManager> GetFactory()
-        {
-            return () => new EventManager();
-        }
-
         public virtual void OnFileDeleted(FileDeletedEventArgs args)
         {
             if (this.FileDeleted != null)
@@ -575,6 +570,11 @@ namespace DotNetNuke.Entities
                 this.TabSerialize += handlers.Value.TabSerialize;
                 this.TabDeserialize += handlers.Value.TabDeserialize;
             }
+        }
+
+        protected override Func<IEventManager> GetFactory()
+        {
+            return () => new EventManager();
         }
 
         private static void AddLog(IFileInfo fileInfo, int userId, EventLogController.EventLogType logType)

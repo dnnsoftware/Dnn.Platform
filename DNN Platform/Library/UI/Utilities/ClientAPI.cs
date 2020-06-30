@@ -139,12 +139,6 @@ namespace DotNetNuke.UI.Utilities
             EnableMinMax(objButton, objContent, -1, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
         }
 
-        private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
-        {
-            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
-            objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
-        }
-
         public static void EnableMinMax(Control objButton, Control objContent, int intModuleId, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
             EnableMinMax(objButton, objContent, intModuleId, blnDefaultMin, string.Empty, string.Empty, ePersistanceType);
@@ -300,51 +294,6 @@ namespace DotNetNuke.UI.Utilities
             MinMaxContentVisibile(objButton, -1, blnDefaultMin, ePersistanceType, value);
         }
 
-        private static void SetMinMaxProperties(Control objButton, string strImage, string strToolTip, string strAltText)
-        {
-            if (objButton is LinkButton)
-            {
-                var objLB = (LinkButton)objButton;
-                objLB.ToolTip = strToolTip;
-                if (objLB.Controls.Count > 0)
-                {
-                    SetImageProperties(objLB.Controls[0], strImage, strToolTip, strAltText);
-                }
-            }
-            else if (objButton is Image)
-            {
-                SetImageProperties(objButton, strImage, strToolTip, strAltText);
-            }
-            else if (objButton is ImageButton)
-            {
-                SetImageProperties(objButton, strImage, strToolTip, strAltText);
-            }
-        }
-
-        private static void SetImageProperties(Control objControl, string strImage, string strToolTip, string strAltText)
-        {
-            if (objControl is Image)
-            {
-                var objImage = (Image)objControl;
-                objImage.ImageUrl = strImage;
-                objImage.AlternateText = strAltText;
-                objImage.ToolTip = strToolTip;
-            }
-            else if (objControl is ImageButton)
-            {
-                var objImage = (ImageButton)objControl;
-                objImage.ImageUrl = strImage;
-                objImage.AlternateText = strAltText;
-                objImage.ToolTip = strToolTip;
-            }
-            else if (objControl is HtmlImage)
-            {
-                var objImage = (HtmlImage)objControl;
-                objImage.Src = strImage;
-                objImage.Alt = strAltText;
-            }
-        }
-
         public static bool MinMaxContentVisibile(Control objButton, int intModuleId, bool blnDefaultMin, MinMaxPersistanceType ePersistanceType)
         {
             if (HttpContext.Current != null)
@@ -454,6 +403,57 @@ namespace DotNetNuke.UI.Utilities
         public static bool IsPersonalizationKeyRegistered(string strKey)
         {
             return m_objEnabledClientPersonalizationKeys.ContainsKey(strKey);
+        }
+
+        private static void AddBodyOnLoad(Page objPage, string scriptKey, string strJSFunction)
+        {
+            JavaScript.RegisterClientReference(objPage, ClientAPI.ClientNamespaceReferences.dnn);
+            objPage.ClientScript.RegisterStartupScript(objPage.GetType(), scriptKey, strJSFunction, true);
+        }
+
+        private static void SetMinMaxProperties(Control objButton, string strImage, string strToolTip, string strAltText)
+        {
+            if (objButton is LinkButton)
+            {
+                var objLB = (LinkButton)objButton;
+                objLB.ToolTip = strToolTip;
+                if (objLB.Controls.Count > 0)
+                {
+                    SetImageProperties(objLB.Controls[0], strImage, strToolTip, strAltText);
+                }
+            }
+            else if (objButton is Image)
+            {
+                SetImageProperties(objButton, strImage, strToolTip, strAltText);
+            }
+            else if (objButton is ImageButton)
+            {
+                SetImageProperties(objButton, strImage, strToolTip, strAltText);
+            }
+        }
+
+        private static void SetImageProperties(Control objControl, string strImage, string strToolTip, string strAltText)
+        {
+            if (objControl is Image)
+            {
+                var objImage = (Image)objControl;
+                objImage.ImageUrl = strImage;
+                objImage.AlternateText = strAltText;
+                objImage.ToolTip = strToolTip;
+            }
+            else if (objControl is ImageButton)
+            {
+                var objImage = (ImageButton)objControl;
+                objImage.ImageUrl = strImage;
+                objImage.AlternateText = strAltText;
+                objImage.ToolTip = strToolTip;
+            }
+            else if (objControl is HtmlImage)
+            {
+                var objImage = (HtmlImage)objControl;
+                objImage.Src = strImage;
+                objImage.Alt = strAltText;
+            }
         }
 
         private static void AddAttribute(Control objControl, string strName, string strValue)

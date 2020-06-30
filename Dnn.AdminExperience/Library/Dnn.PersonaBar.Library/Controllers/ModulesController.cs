@@ -162,11 +162,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
-        }
-
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
@@ -256,6 +251,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
         }
     }
 }

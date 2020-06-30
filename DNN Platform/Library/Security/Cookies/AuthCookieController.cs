@@ -39,11 +39,6 @@ namespace DotNetNuke.Security.Cookies
                 _ => CBO.Instance.FillObject<PersistedAuthCookie>(this._dataProvider.FindAuthCookie(cookieValue)), false);
         }
 
-        protected override Func<IAuthCookieController> GetFactory()
-        {
-            return () => new AuthCookieController();
-        }
-
         public void DeleteByValue(string cookieValue)
         {
             if (string.IsNullOrEmpty(cookieValue))
@@ -59,6 +54,11 @@ namespace DotNetNuke.Security.Cookies
         public void DeleteExpired(DateTime utcExpiredBefore)
         {
             this._dataProvider.DeleteExpiredAuthCookies(utcExpiredBefore);
+        }
+
+        protected override Func<IAuthCookieController> GetFactory()
+        {
+            return () => new AuthCookieController();
         }
 
         private static string GetKey(string cookieValue)

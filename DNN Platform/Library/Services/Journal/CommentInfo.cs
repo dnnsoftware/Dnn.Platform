@@ -16,6 +16,14 @@ namespace DotNetNuke.Services.Journal
 
     public class CommentInfo : IHydratable, IPropertyAccess
     {
+        public CacheLevel Cacheability
+        {
+            get
+            {
+                return CacheLevel.fullyCacheable;
+            }
+        }
+
         public int CommentId { get; set; }
 
         public int JournalId { get; set; }
@@ -42,14 +50,6 @@ namespace DotNetNuke.Services.Journal
             set
             {
                 this.CommentId = value;
-            }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.fullyCacheable;
             }
         }
 

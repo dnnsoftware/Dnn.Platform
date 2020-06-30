@@ -100,6 +100,28 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.cmdUpdate.Click += this.cmdUpdate_Click;
+            var displayMode = this.DisplayMode;
+            if (displayMode == "editor" || displayMode == "settings")
+            {
+                this.AuthEditorHead.Visible = this.AuthEditorHead.EnableViewState = false;
+            }
+        }
+
+        protected void cmdUpdate_Click(object sender, EventArgs e)
+        {
+            this.SettingsControl?.UpdateSettings();
+
+            var displayMode = this.DisplayMode;
+            if (displayMode != "editor" && displayMode != "settings")
+            {
+                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This routine Binds the Authentication System.
@@ -136,28 +158,6 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this.cmdUpdate.Visible = false;
                 }
-            }
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.cmdUpdate.Click += this.cmdUpdate_Click;
-            var displayMode = this.DisplayMode;
-            if (displayMode == "editor" || displayMode == "settings")
-            {
-                this.AuthEditorHead.Visible = this.AuthEditorHead.EnableViewState = false;
-            }
-        }
-
-        protected void cmdUpdate_Click(object sender, EventArgs e)
-        {
-            this.SettingsControl?.UpdateSettings();
-
-            var displayMode = this.DisplayMode;
-            if (displayMode != "editor" && displayMode != "settings")
-            {
-                this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
     }

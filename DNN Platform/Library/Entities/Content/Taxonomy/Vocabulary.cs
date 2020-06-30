@@ -65,6 +65,40 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.Weight = 0;
         }
 
+        public bool IsHeirarchical
+        {
+            get
+            {
+                return this.Type == VocabularyType.Hierarchy;
+            }
+        }
+
+        public ScopeType ScopeType
+        {
+            get
+            {
+                if (this._ScopeType == null)
+                {
+                    this._ScopeType = this.GetScopeType(this._ScopeTypeId);
+                }
+
+                return this._ScopeType;
+            }
+        }
+
+        public List<Term> Terms
+        {
+            get
+            {
+                if (this._Terms == null)
+                {
+                    this._Terms = this.GetTerms(this._VocabularyId);
+                }
+
+                return this._Terms;
+            }
+        }
+
         public string Description
         {
             get
@@ -75,14 +109,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             set
             {
                 this._Description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-            }
-        }
-
-        public bool IsHeirarchical
-        {
-            get
-            {
-                return this.Type == VocabularyType.Hierarchy;
             }
         }
 
@@ -130,19 +156,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        public ScopeType ScopeType
-        {
-            get
-            {
-                if (this._ScopeType == null)
-                {
-                    this._ScopeType = this.GetScopeType(this._ScopeTypeId);
-                }
-
-                return this._ScopeType;
-            }
-        }
-
         public int ScopeTypeId
         {
             get
@@ -153,19 +166,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             set
             {
                 this._ScopeTypeId = value;
-            }
-        }
-
-        public List<Term> Terms
-        {
-            get
-            {
-                if (this._Terms == null)
-                {
-                    this._Terms = this.GetTerms(this._VocabularyId);
-                }
-
-                return this._Terms;
             }
         }
 

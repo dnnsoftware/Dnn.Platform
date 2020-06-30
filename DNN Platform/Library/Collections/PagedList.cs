@@ -57,6 +57,31 @@ namespace DotNetNuke.Collections
         /// </summary>
         public bool IsFirstPage { get; private set; }
 
+        /// <summary>
+        ///   Gets a value indicating whether gets a boolean indicating if this is the last page.
+        /// </summary>
+        public bool IsLastPage { get; private set; }
+
+        /// <summary>
+        ///   Gets or sets the number of pages in this list.
+        /// </summary>
+        public int PageCount { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the index of the page contained in this list.
+        /// </summary>
+        public int PageIndex { get; set; }
+
+        /// <summary>
+        ///   Gets or sets the size of the page in this list.
+        /// </summary>
+        public int PageSize { get; set; }
+
+        /// <summary>
+        ///   Gets or sets or ses the total number of objects in the data store.
+        /// </summary>
+        public int TotalCount { get; set; }
+
         private void CommonConstruct(IEnumerable<T> items, int totalCount, int pageIndex, int pageSize)
         {
             this.PageCount = (int)Math.Ceiling(totalCount / (double)pageSize);
@@ -91,30 +116,5 @@ namespace DotNetNuke.Collections
             this.IsFirstPage = this.PageIndex <= 0;
             this.IsLastPage = this.PageIndex >= (this.PageCount - 1);
         }
-
-        /// <summary>
-        ///   Gets a value indicating whether gets a boolean indicating if this is the last page.
-        /// </summary>
-        public bool IsLastPage { get; private set; }
-
-        /// <summary>
-        ///   Gets or sets the number of pages in this list.
-        /// </summary>
-        public int PageCount { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the index of the page contained in this list.
-        /// </summary>
-        public int PageIndex { get; set; }
-
-        /// <summary>
-        ///   Gets or sets the size of the page in this list.
-        /// </summary>
-        public int PageSize { get; set; }
-
-        /// <summary>
-        ///   Gets or sets or ses the total number of objects in the data store.
-        /// </summary>
-        public int TotalCount { get; set; }
     }
 }

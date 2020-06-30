@@ -251,6 +251,108 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
+        public static Opml LoadFromXml(XmlDocument doc)
+        {
+            var _out = new Opml();
+            try
+            {
+                // Parse head
+                XmlNode head = doc.GetElementsByTagName("head")[0];
+                XmlNode title = head.SelectSingleNode("./title");
+                XmlNode dateCreated = head.SelectSingleNode("./dateCreated");
+                XmlNode dateModified = head.SelectSingleNode("./dateModified");
+                XmlNode ownerName = head.SelectSingleNode("./ownerName");
+                XmlNode ownerEmail = head.SelectSingleNode("./ownerEmail");
+                XmlNode ownerId = head.SelectSingleNode("./ownerId");
+                XmlNode docs = head.SelectSingleNode("./docs");
+                XmlNode expansionState = head.SelectSingleNode("./expansionState");
+                XmlNode vertScrollState = head.SelectSingleNode("./vertScrollState");
+                XmlNode windowTop = head.SelectSingleNode("./windowTop");
+                XmlNode windowLeft = head.SelectSingleNode("./windowLeft");
+                XmlNode windowBottom = head.SelectSingleNode("./windowBottom");
+                XmlNode windowRight = head.SelectSingleNode("./windowRight");
+
+                if (title != null)
+                {
+                    _out.Title = title.InnerText;
+                }
+
+                if (dateCreated != null)
+                {
+                    _out.DateCreated = DateTime.Parse(dateCreated.InnerText);
+                }
+
+                if (dateModified != null)
+                {
+                    _out.DateModified = DateTime.Parse(dateModified.InnerText);
+                }
+
+                if (ownerName != null)
+                {
+                    _out.OwnerName = ownerName.InnerText;
+                }
+
+                if (ownerEmail != null)
+                {
+                    _out.OwnerEmail = ownerEmail.InnerText;
+                }
+
+                if (ownerId != null)
+                {
+                    _out.OwnerId = ownerId.InnerText;
+                }
+
+                if (docs != null)
+                {
+                    _out.Docs = docs.InnerText;
+                }
+
+                if (expansionState != null)
+                {
+                    _out.ExpansionState = expansionState.InnerText;
+                }
+
+                if (vertScrollState != null)
+                {
+                    _out.VertScrollState = vertScrollState.InnerText;
+                }
+
+                if (windowTop != null)
+                {
+                    _out.WindowTop = windowTop.InnerText;
+                }
+
+                if (windowLeft != null)
+                {
+                    _out.WindowLeft = windowLeft.InnerText;
+                }
+
+                if (windowBottom != null)
+                {
+                    _out.WindowBottom = windowBottom.InnerText;
+                }
+
+                if (windowLeft != null)
+                {
+                    _out.WindowLeft = windowLeft.InnerText;
+                }
+
+                // Parse body
+                XmlNode body = doc.GetElementsByTagName("body")[0];
+                XmlNodeList outlineList = body.SelectNodes("./outline");
+                foreach (XmlElement outline in outlineList)
+                {
+                    _out.Outlines.Add(ParseXml(outline));
+                }
+
+                return _out;
+            }
+            catch
+            {
+                return new Opml();
+            }
+        }
+
         public void AddOutline(OpmlOutline item)
         {
             this._outlines.Add(item);
@@ -363,108 +465,6 @@ namespace DotNetNuke.Services.Syndication
             }
 
             this.opmlDoc.Save(fileName);
-        }
-
-        public static Opml LoadFromXml(XmlDocument doc)
-        {
-            var _out = new Opml();
-            try
-            {
-                // Parse head
-                XmlNode head = doc.GetElementsByTagName("head")[0];
-                XmlNode title = head.SelectSingleNode("./title");
-                XmlNode dateCreated = head.SelectSingleNode("./dateCreated");
-                XmlNode dateModified = head.SelectSingleNode("./dateModified");
-                XmlNode ownerName = head.SelectSingleNode("./ownerName");
-                XmlNode ownerEmail = head.SelectSingleNode("./ownerEmail");
-                XmlNode ownerId = head.SelectSingleNode("./ownerId");
-                XmlNode docs = head.SelectSingleNode("./docs");
-                XmlNode expansionState = head.SelectSingleNode("./expansionState");
-                XmlNode vertScrollState = head.SelectSingleNode("./vertScrollState");
-                XmlNode windowTop = head.SelectSingleNode("./windowTop");
-                XmlNode windowLeft = head.SelectSingleNode("./windowLeft");
-                XmlNode windowBottom = head.SelectSingleNode("./windowBottom");
-                XmlNode windowRight = head.SelectSingleNode("./windowRight");
-
-                if (title != null)
-                {
-                    _out.Title = title.InnerText;
-                }
-
-                if (dateCreated != null)
-                {
-                    _out.DateCreated = DateTime.Parse(dateCreated.InnerText);
-                }
-
-                if (dateModified != null)
-                {
-                    _out.DateModified = DateTime.Parse(dateModified.InnerText);
-                }
-
-                if (ownerName != null)
-                {
-                    _out.OwnerName = ownerName.InnerText;
-                }
-
-                if (ownerEmail != null)
-                {
-                    _out.OwnerEmail = ownerEmail.InnerText;
-                }
-
-                if (ownerId != null)
-                {
-                    _out.OwnerId = ownerId.InnerText;
-                }
-
-                if (docs != null)
-                {
-                    _out.Docs = docs.InnerText;
-                }
-
-                if (expansionState != null)
-                {
-                    _out.ExpansionState = expansionState.InnerText;
-                }
-
-                if (vertScrollState != null)
-                {
-                    _out.VertScrollState = vertScrollState.InnerText;
-                }
-
-                if (windowTop != null)
-                {
-                    _out.WindowTop = windowTop.InnerText;
-                }
-
-                if (windowLeft != null)
-                {
-                    _out.WindowLeft = windowLeft.InnerText;
-                }
-
-                if (windowBottom != null)
-                {
-                    _out.WindowBottom = windowBottom.InnerText;
-                }
-
-                if (windowLeft != null)
-                {
-                    _out.WindowLeft = windowLeft.InnerText;
-                }
-
-                // Parse body
-                XmlNode body = doc.GetElementsByTagName("body")[0];
-                XmlNodeList outlineList = body.SelectNodes("./outline");
-                foreach (XmlElement outline in outlineList)
-                {
-                    _out.Outlines.Add(ParseXml(outline));
-                }
-
-                return _out;
-            }
-            catch
-            {
-                return new Opml();
-            }
         }
 
         internal static OpmlOutline ParseXml(XmlElement node)

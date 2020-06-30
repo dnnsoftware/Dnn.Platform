@@ -20,10 +20,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         [FlagParameter("enabled", "Prompt_ListTasks_FlagEnabled", "Boolean")]
         private const string FlagEnabled = "enabled";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("name", "Prompt_ListTasks_FlagName", "String")]
         private const string FlagName = "name";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private bool? Enabled { get; set; }
         private string TaskName { get; set; }

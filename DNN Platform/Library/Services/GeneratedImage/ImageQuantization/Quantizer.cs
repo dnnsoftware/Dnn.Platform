@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// Flag used to indicate whether a single pass or two passes are needed for quantization.
         /// </summary>
         private bool _singlePass;
+
         private int _pixelSize;
 
         /// <summary>
@@ -261,11 +262,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             [FieldOffset(2)]
             public byte Red;
 
-            public Color32(IntPtr pSourcePixel)
-            {
-                this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
-            }
-
             /// <summary>
             /// Holds the alpha component of the colour.
             /// </summary>
@@ -277,6 +273,11 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// </summary>
             [FieldOffset(0)]
             public int ARGB;
+
+            public Color32(IntPtr pSourcePixel)
+            {
+                this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
+            }
 
             /// <summary>
             /// Gets return the color for this Color32 object.

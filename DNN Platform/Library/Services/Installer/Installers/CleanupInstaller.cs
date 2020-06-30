@@ -85,6 +85,23 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
+        public override void ReadManifest(XPathNavigator manifestNav)
+        {
+            this._fileName = Util.ReadAttribute(manifestNav, "fileName");
+            this._glob = Util.ReadAttribute(manifestNav, "glob");
+            base.ReadManifest(manifestNav);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UnInstall method uninstalls the file component.
+        /// </summary>
+        /// <remarks>There is no uninstall for this component.</remarks>
+        /// -----------------------------------------------------------------------------
+        public override void UnInstall()
+        {
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The CleanupFile method cleansup a single file.
@@ -126,6 +143,25 @@ namespace DotNetNuke.Services.Installer.Installers
             if (file != null)
             {
                 this.Files.Add(file);
+            }
+        }
+
+        protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
+        {
+            return base.ReadManifestItem(nav, false);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The RollbackFile method rolls back the cleanup of a single file.
+        /// </summary>
+        /// <param name="installFile">The InstallFile to commit.</param>
+        /// -----------------------------------------------------------------------------
+        protected override void RollbackFile(InstallFile installFile)
+        {
+            if (File.Exists(installFile.BackupFileName))
+            {
+                Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
             }
         }
 
@@ -176,42 +212,6 @@ namespace DotNetNuke.Services.Installer.Installers
 
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
-        }
-
-        protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
-        {
-            return base.ReadManifestItem(nav, false);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The RollbackFile method rolls back the cleanup of a single file.
-        /// </summary>
-        /// <param name="installFile">The InstallFile to commit.</param>
-        /// -----------------------------------------------------------------------------
-        protected override void RollbackFile(InstallFile installFile)
-        {
-            if (File.Exists(installFile.BackupFileName))
-            {
-                Util.RestoreFile(installFile, this.PhysicalBasePath, this.Log);
-            }
-        }
-
-        public override void ReadManifest(XPathNavigator manifestNav)
-        {
-            this._fileName = Util.ReadAttribute(manifestNav, "fileName");
-            this._glob = Util.ReadAttribute(manifestNav, "glob");
-            base.ReadManifest(manifestNav);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UnInstall method uninstalls the file component.
-        /// </summary>
-        /// <remarks>There is no uninstall for this component.</remarks>
-        /// -----------------------------------------------------------------------------
-        public override void UnInstall()
-        {
         }
     }
 }

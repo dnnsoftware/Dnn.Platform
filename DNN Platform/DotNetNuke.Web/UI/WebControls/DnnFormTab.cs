@@ -29,8 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormSection> Sections { get; private set; }
 
-        internal string ExpandAllScript { get; set; }
-
         public string ResourceKey { get; set; }
+        internal string ExpandAllScript { get; set; }
     }
 }

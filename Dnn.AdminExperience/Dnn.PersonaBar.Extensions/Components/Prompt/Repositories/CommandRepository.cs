@@ -80,6 +80,17 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
 
+        private static string CreateCommandFromClass(string className)
+        {
+            var camelCasedParts = SplitCamelCase(className);
+            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
+        }
+
+        private static string[] SplitCamelCase(string source)
+        {
+            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
+        }
+
         private CommandHelp GetCommandHelpInternal(IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
         {
             var commandHelp = new CommandHelp();
@@ -101,7 +112,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                         Required = attribute.Required,
                         DefaultValue = attribute.DefaultValue,
                         Description =
-                               LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
+                            LocalizeString(attribute.Description, consoleCommand.LocalResourceFile)
                     }).ToList();
                     commandHelp.Options = options;
                 }
@@ -120,16 +131,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Repositories
                 commandHelp.Error = LocalizeString("Prompt_CommandNotFound");
             }
             return commandHelp;
-        }
-
-        private static string CreateCommandFromClass(string className)
-        {
-            var camelCasedParts = SplitCamelCase(className);
-            return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
-        }
-        private static string[] SplitCamelCase(string source)
-        {
-            return Regex.Split(source, @"(?<!^)(?=[A-Z])");
         }
     }
 }

@@ -104,6 +104,14 @@ namespace DotNetNuke.Web.InternalServices
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        private int FixPortalId(int portalId)
+        {
+            return this.UserInfo.IsSuperUser && this.PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
+                .OfType<PortalInfo>().Any(x => x.PortalID == portalId)
+                ? portalId
+                : this.PortalSettings.PortalId;
+        }
+
         public class MoveModuleDTO
         {
             public int ModuleId { get; set; }
@@ -122,14 +130,6 @@ namespace DotNetNuke.Web.InternalServices
             public int TabId { get; set; }
 
             public bool SoftDelete { get; set; }
-        }
-
-        private int FixPortalId(int portalId)
-        {
-            return this.UserInfo.IsSuperUser && this.PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
-                       .OfType<PortalInfo>().Any(x => x.PortalID == portalId)
-                ? portalId
-                : this.PortalSettings.PortalId;
         }
     }
 }

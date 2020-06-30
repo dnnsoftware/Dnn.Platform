@@ -15,35 +15,8 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     [JsonObject]
     public class DnnModuleDto
     {
-        public string ModuleTitle { get; set; }
-        public string CultureCode { get; set; }
-        public Guid DefaultLanguageGuid { get; set; }
-        public int TabId { get; set; }
-        public int TabModuleId { get; set; }
-        public int ModuleId { get; set; }
-        public int DefaultModuleId { get; set; }
-        public string DefaultTabName { get; set; }
-        public string ModuleInfoHelp { get; set; }
-        public bool IsTranslated { get; set; }
-        public bool IsLocalized { get; set; }
-        public bool IsShared { get; set; }
-        public bool IsDeleted { get; set; }
-        public bool CopyModule { get; set; }
-        public bool ErrorDuplicateModule { get; set; }
-        public bool ErrorDefaultOnOtherTab { get; set; }
-        public bool ErrorCultureOfModuleNotCultureOfTab { get; set; }
-
-        [JsonIgnore]
-        public string LocalResourceFile { get; set; }
-
-        [JsonIgnore]
-        public bool CanViewModule { get; set; }
-
-        [JsonIgnore]
-        public bool CanAdminModule { get; set; }
-
         public bool TranslatedVisible => !this.ErrorVisible && this.CultureCode != null
-                                         && this.DefaultLanguageGuid != Null.NullGuid && this.ModuleId != this.DefaultModuleId;
+                                                            && this.DefaultLanguageGuid != Null.NullGuid && this.ModuleId != this.DefaultModuleId;
 
         public bool LocalizedVisible => !this.ErrorVisible && this.CultureCode != null && this.DefaultLanguageGuid != Null.NullGuid;
 
@@ -74,28 +47,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
                 }
                 return string.Format(this.LocalizeString("NotTranslated.Text"), pageName);
             }
-        }
-
-        public void SetModuleInfoHelp()
-        {
-            var returnValue = "";
-            var moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
-            if (moduleInfo != null)
-            {
-                if (moduleInfo.IsDeleted)
-                {
-                    returnValue = this.LocalizeString("ModuleDeleted.Text");
-                }
-                else
-                {
-                    returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
-                        ? string.Format(this.LocalizeString("ModuleInfo.Text"),
-                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
-                        : this.LocalizeString("ModuleInfoForNonAdmins.Text");
-                }
-            }
-
-            this.ModuleInfoHelp = returnValue;
         }
 
         public string LocalizedTooltip
@@ -143,6 +94,55 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
                 return "";
             }
+        }
+
+        public string ModuleTitle { get; set; }
+        public string CultureCode { get; set; }
+        public Guid DefaultLanguageGuid { get; set; }
+        public int TabId { get; set; }
+        public int TabModuleId { get; set; }
+        public int ModuleId { get; set; }
+        public int DefaultModuleId { get; set; }
+        public string DefaultTabName { get; set; }
+        public string ModuleInfoHelp { get; set; }
+        public bool IsTranslated { get; set; }
+        public bool IsLocalized { get; set; }
+        public bool IsShared { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool CopyModule { get; set; }
+        public bool ErrorDuplicateModule { get; set; }
+        public bool ErrorDefaultOnOtherTab { get; set; }
+        public bool ErrorCultureOfModuleNotCultureOfTab { get; set; }
+
+        [JsonIgnore]
+        public string LocalResourceFile { get; set; }
+
+        [JsonIgnore]
+        public bool CanViewModule { get; set; }
+
+        [JsonIgnore]
+        public bool CanAdminModule { get; set; }
+
+        public void SetModuleInfoHelp()
+        {
+            var returnValue = "";
+            var moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
+            if (moduleInfo != null)
+            {
+                if (moduleInfo.IsDeleted)
+                {
+                    returnValue = this.LocalizeString("ModuleDeleted.Text");
+                }
+                else
+                {
+                    returnValue = ModulePermissionController.CanAdminModule(moduleInfo)
+                        ? string.Format(this.LocalizeString("ModuleInfo.Text"),
+                                moduleInfo.ModuleDefinition.FriendlyName, moduleInfo.ModuleTitle, moduleInfo.PaneName)
+                        : this.LocalizeString("ModuleInfoForNonAdmins.Text");
+                }
+            }
+
+            this.ModuleInfoHelp = returnValue;
         }
 
         private string LocalizeString(string localizationKey)

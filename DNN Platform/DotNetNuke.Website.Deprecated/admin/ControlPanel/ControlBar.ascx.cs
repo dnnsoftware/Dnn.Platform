@@ -71,18 +71,19 @@ namespace DotNetNuke.UI.ControlPanels
 
         private List<string> _adminBookmarkItems;
 
-        public ControlBar()
-        {
-            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
         private List<string> _hostBookmarkItems;
 
         private List<TabInfo> _adminTabs;
         private List<TabInfo> _adminBaseTabs;
         private List<TabInfo> _adminAdvancedTabs;
+        private List<TabInfo> _hostTabs;
+        private List<TabInfo> _hostBaseTabs;
+        private List<TabInfo> _hostAdvancedTabs;
 
-        public override bool IsDockable { get; set; }
+        public ControlBar()
+        {
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
 
         public override bool IncludeInControlHierarchy
         {
@@ -92,11 +93,7 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        protected string CurrentUICulture { get; set; }
-
-        protected string LoginUrl { get; set; }
-
-        protected string LoadTabModuleMessage { get; set; }
+        public override bool IsDockable { get; set; }
 
         protected string BookmarkModuleCategory
         {
@@ -153,6 +150,73 @@ namespace DotNetNuke.UI.ControlPanels
                 return this._hostBookmarkItems;
             }
         }
+
+        protected List<TabInfo> AdminBaseTabs
+        {
+            get
+            {
+                if (this._adminBaseTabs == null)
+                {
+                    this.GetAdminTabs();
+                }
+
+                return this._adminBaseTabs;
+            }
+        }
+
+        protected List<TabInfo> AdminAdvancedTabs
+        {
+            get
+            {
+                if (this._adminAdvancedTabs == null)
+                {
+                    this.GetAdminTabs();
+                }
+
+                return this._adminAdvancedTabs;
+            }
+        }
+
+        protected List<TabInfo> HostBaseTabs
+        {
+            get
+            {
+                if (this._hostBaseTabs == null)
+                {
+                    this.GetHostTabs();
+                }
+
+                return this._hostBaseTabs;
+            }
+        }
+
+        protected List<TabInfo> HostAdvancedTabs
+        {
+            get
+            {
+                if (this._hostAdvancedTabs == null)
+                {
+                    this.GetHostTabs();
+                }
+
+                return this._hostAdvancedTabs;
+            }
+        }
+
+        protected bool IsBeaconEnabled
+        {
+            get
+            {
+                var user = UserController.Instance.GetCurrentUserInfo();
+                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
+            }
+        }
+
+        protected string CurrentUICulture { get; set; }
+
+        protected string LoginUrl { get; set; }
+
+        protected string LoadTabModuleMessage { get; set; }
 
         private new string LocalResourceFile
         {
@@ -306,29 +370,6 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             return resultPanes;
-        }
-
-        private void LoadCustomMenuItems()
-        {
-            foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
-            {
-                var liElement = new HtmlGenericControl("li");
-                liElement.Attributes.Add("id", menuItem.ID + "_tab");
-
-                var control = this.Page.LoadControl(menuItem.Source);
-                control.ID = menuItem.ID;
-
-                liElement.Controls.Add(control);
-
-                this.CustomMenuItems.Controls.Add(liElement);
-            }
-        }
-
-        private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
-        {
-            return string.Format(
-                "<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
-                upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, this.ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
         protected string GetString(string key)
@@ -857,6 +898,14 @@ namespace DotNetNuke.UI.ControlPanels
             return DesktopModuleController.GetDesktopModuleByFriendlyName("Languages") != null;
         }
 
+        protected string GetBeaconUrl()
+        {
+            var beaconService = BeaconService.Instance;
+            var user = UserController.Instance.GetCurrentUserInfo();
+            var path = this.PortalSettings.ActiveTab.TabPath;
+            return beaconService.GetBeaconUrl(user, path);
+        }
+
         private static IEnumerable<PortalInfo> GetCurrentPortalsGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
@@ -874,6 +923,29 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             return result;
+        }
+
+        private void LoadCustomMenuItems()
+        {
+            foreach (var menuItem in ControlBarController.Instance.GetCustomMenuItems())
+            {
+                var liElement = new HtmlGenericControl("li");
+                liElement.Attributes.Add("id", menuItem.ID + "_tab");
+
+                var control = this.Page.LoadControl(menuItem.Source);
+                control.ID = menuItem.ID;
+
+                liElement.Controls.Add(control);
+
+                this.CustomMenuItems.Controls.Add(liElement);
+            }
+        }
+
+        private string GetUpgradeIndicatorButton(UpgradeIndicatorViewModel upgradeIndicator)
+        {
+            return string.Format(
+                "<a id=\"{0}\" href=\"#\" onclick=\"{1}\" class=\"{2}\"><img src=\"{3}\" alt=\"{4}\" title=\"{5}\"/></a>",
+                upgradeIndicator.ID, upgradeIndicator.WebAction, upgradeIndicator.CssClass, this.ResolveClientUrl(upgradeIndicator.ImageUrl), upgradeIndicator.AltText, upgradeIndicator.ToolTip);
         }
 
         private void LoadCategoryList()
@@ -1007,78 +1079,6 @@ namespace DotNetNuke.UI.ControlPanels
                     this.controlBar_SwitchLanguage.Items.Add(item);
                 }
             }
-        }
-        private List<TabInfo> _hostTabs;
-        private List<TabInfo> _hostBaseTabs;
-        private List<TabInfo> _hostAdvancedTabs;
-
-        protected List<TabInfo> AdminBaseTabs
-        {
-            get
-            {
-                if (this._adminBaseTabs == null)
-                {
-                    this.GetAdminTabs();
-                }
-
-                return this._adminBaseTabs;
-            }
-        }
-
-        protected List<TabInfo> AdminAdvancedTabs
-        {
-            get
-            {
-                if (this._adminAdvancedTabs == null)
-                {
-                    this.GetAdminTabs();
-                }
-
-                return this._adminAdvancedTabs;
-            }
-        }
-
-        protected List<TabInfo> HostBaseTabs
-        {
-            get
-            {
-                if (this._hostBaseTabs == null)
-                {
-                    this.GetHostTabs();
-                }
-
-                return this._hostBaseTabs;
-            }
-        }
-
-        protected List<TabInfo> HostAdvancedTabs
-        {
-            get
-            {
-                if (this._hostAdvancedTabs == null)
-                {
-                    this.GetHostTabs();
-                }
-
-                return this._hostAdvancedTabs;
-            }
-        }
-
-        protected bool IsBeaconEnabled
-        {
-            get
-            {
-                var user = UserController.Instance.GetCurrentUserInfo();
-                return BeaconService.Instance.IsBeaconEnabledForControlBar(user);
-            }
-        }
-
-        protected string GetBeaconUrl()
-        {
-            var beaconService = BeaconService.Instance;
-            var user = UserController.Instance.GetCurrentUserInfo();
-            var path = this.PortalSettings.ActiveTab.TabPath;
-            return beaconService.GetBeaconUrl(user, path);
         }
 
         private void GetHostTabs()

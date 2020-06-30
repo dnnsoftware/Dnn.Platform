@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     public class ExtensionLanguagePackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
+
         public ExtensionLanguagePackageEditor()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

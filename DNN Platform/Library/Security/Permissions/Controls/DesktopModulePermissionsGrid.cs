@@ -133,41 +133,6 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the DesktopModulePermissions from the Data Store.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private void GetDesktopModulePermissions()
-        {
-            this._DesktopModulePermissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
-        /// </summary>
-        /// <param name="Settings">A string array of settings.</param>
-        /// -----------------------------------------------------------------------------
-        private DesktopModulePermissionInfo ParseKeys(string[] Settings)
-        {
-            var objDesktopModulePermission = new DesktopModulePermissionInfo();
-
-            // Call base class to load base properties
-            this.ParsePermissionKeys(objDesktopModulePermission, Settings);
-            if (string.IsNullOrEmpty(Settings[2]))
-            {
-                objDesktopModulePermission.DesktopModulePermissionID = -1;
-            }
-            else
-            {
-                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(Settings[2]);
-            }
-
-            objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;
-            return objDesktopModulePermission;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Updates a Permission.
         /// </summary>
         /// <param name="permissions">The permissions collection.</param>
@@ -310,6 +275,41 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
             return true;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the DesktopModulePermissions from the Data Store.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void GetDesktopModulePermissions()
+        {
+            this._DesktopModulePermissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
+        /// </summary>
+        /// <param name="Settings">A string array of settings.</param>
+        /// -----------------------------------------------------------------------------
+        private DesktopModulePermissionInfo ParseKeys(string[] Settings)
+        {
+            var objDesktopModulePermission = new DesktopModulePermissionInfo();
+
+            // Call base class to load base properties
+            this.ParsePermissionKeys(objDesktopModulePermission, Settings);
+            if (string.IsNullOrEmpty(Settings[2]))
+            {
+                objDesktopModulePermission.DesktopModulePermissionID = -1;
+            }
+            else
+            {
+                objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(Settings[2]);
+            }
+
+            objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;
+            return objDesktopModulePermission;
         }
     }
 }

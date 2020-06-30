@@ -19,6 +19,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
         public string LocalResourceFile => Constants.LocalResourcesFile;
 
         public string ResultHtml => Localization.GetString("Prompt_Reload_ResultHtml", this.LocalResourceFile);
+
         public string ValidationMessage
         {
             get
@@ -41,6 +42,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
         {
             throw new NotImplementedException();
         }
-
     }
 }

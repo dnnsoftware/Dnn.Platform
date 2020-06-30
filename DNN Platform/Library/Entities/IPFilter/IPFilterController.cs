@@ -75,15 +75,6 @@ namespace DotNetNuke.Entities.Host
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
-        /// <summary>
-        /// get the list of IP filters.
-        /// </summary>
-        /// <returns>list of IP filters.</returns>
-        IList<IPFilterInfo> IIPFilterController.GetIPFilters()
-        {
-            return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
-        }
-
         [Obsolete("deprecated with 7.1.0 - please use IsIPBanned instead to return the value and apply your own logic. Scheduled removal in v10.0.0.")]
         public void IsIPAddressBanned(string ipAddress)
         {
@@ -187,6 +178,30 @@ namespace DotNetNuke.Entities.Host
             return true;
         }
 
+        private static void AssertValidIPFilter(IPFilterInfo ipFilter)
+        {
+            IPAddress parsed;
+            if (IPAddress.TryParse(ipFilter.IPAddress, out parsed) == false)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("IPAddressIncorrect", "IP address is not in correct format"));
+            }
+
+            bool isIPRange = string.IsNullOrEmpty(ipFilter.SubnetMask) == false;
+            if (isIPRange && IPAddress.TryParse(ipFilter.SubnetMask, out parsed) == false)
+            {
+                throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
+            }
+        }
+
+        /// <summary>
+        /// get the list of IP filters.
+        /// </summary>
+        /// <returns>list of IP filters.</returns>
+        IList<IPFilterInfo> IIPFilterController.GetIPFilters()
+        {
+            return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
+        }
+
         private bool CheckIfBannedIPAddress(string ipAddress)
         {
             IList<IPFilterInfo> filterList = Instance.GetIPFilters();
@@ -225,21 +240,6 @@ namespace DotNetNuke.Entities.Host
             };
             log.LogProperties.Add(new LogDetailInfo("HostAddress", ipAddress));
             LogController.Instance.AddLog(log);
-        }
-
-        private static void AssertValidIPFilter(IPFilterInfo ipFilter)
-        {
-            IPAddress parsed;
-            if (IPAddress.TryParse(ipFilter.IPAddress, out parsed) == false)
-            {
-                throw new ArgumentException(Localization.GetExceptionMessage("IPAddressIncorrect", "IP address is not in correct format"));
-            }
-
-            bool isIPRange = string.IsNullOrEmpty(ipFilter.SubnetMask) == false;
-            if (isIPRange && IPAddress.TryParse(ipFilter.SubnetMask, out parsed) == false)
-            {
-                throw new ArgumentException(Localization.GetExceptionMessage("SubnetMaskIncorrect", "Subnet mask is not in correct format"));
-            }
         }
     }
 }

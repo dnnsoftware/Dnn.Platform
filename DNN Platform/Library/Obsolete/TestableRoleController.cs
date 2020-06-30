@@ -24,11 +24,6 @@ namespace DotNetNuke.Security.Roles.Internal
             return RoleController.Instance.AddRole(role, addToExistUsers);
         }
 
-        protected override Func<IRoleController> GetFactory()
-        {
-            return () => new TestableRoleController();
-        }
-
         public void DeleteRole(RoleInfo role)
         {
             RoleController.Instance.DeleteRole(role);
@@ -77,6 +72,11 @@ namespace DotNetNuke.Security.Roles.Internal
         public void ClearRoleCache(int portalId)
         {
             RoleController.Instance.ClearRoleCache(portalId);
+        }
+
+        protected override Func<IRoleController> GetFactory()
+        {
+            return () => new TestableRoleController();
         }
     }
 }

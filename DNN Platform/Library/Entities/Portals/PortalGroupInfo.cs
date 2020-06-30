@@ -13,12 +13,6 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalGroupInfo : BaseEntityInfo, IHydratable
     {
-        public int PortalGroupId { get; set; }
-
-        public string AuthenticationDomain { get; set; }
-
-        public int MasterPortalId { get; set; }
-
         public string MasterPortalName
         {
             get
@@ -36,6 +30,12 @@ namespace DotNetNuke.Entities.Portals
                 return portalName;
             }
         }
+
+        public int PortalGroupId { get; set; }
+
+        public string AuthenticationDomain { get; set; }
+
+        public int MasterPortalId { get; set; }
 
         [Required]
         public string PortalGroupDescription { get; set; }

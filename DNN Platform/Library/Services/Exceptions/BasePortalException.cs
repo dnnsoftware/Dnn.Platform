@@ -73,6 +73,15 @@ namespace DotNetNuke.Services.Exceptions
             this.m_Source = info.GetString("m_Source");
         }
 
+        [XmlIgnore]
+        public new MethodBase TargetSite
+        {
+            get
+            {
+                return base.TargetSite;
+            }
+        }
+
         public string AssemblyVersion { get; private set; }
 
         public int PortalID { get; private set; }
@@ -106,15 +115,6 @@ namespace DotNetNuke.Services.Exceptions
         public int FileColumnNumber { get; private set; }
 
         public string Method { get; private set; }
-
-        [XmlIgnore]
-        public new MethodBase TargetSite
-        {
-            get
-            {
-                return base.TargetSite;
-            }
-        }
 
         private void InitializePrivateVariables()
         {

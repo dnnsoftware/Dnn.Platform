@@ -121,155 +121,6 @@ namespace DotNetNuke.Entities.Profile
             return intDefinition;
         }
 
-        internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility,
-                                                  Dictionary<string, ListEntryInfo> types)
-        {
-            ListEntryInfo typeInfo = types["DataType:" + type] ?? types["DataType:Unknown"];
-            var propertyDefinition = new ProfilePropertyDefinition(portalId)
-            {
-                DataType = typeInfo.EntryID,
-                DefaultValue = string.Empty,
-                ModuleDefId = Null.NullInteger,
-                PropertyCategory = category,
-                PropertyName = name,
-                Required = false,
-                ViewOrder = viewOrder,
-                Visible = true,
-                Length = length,
-                DefaultVisibility = defaultVisibility,
-            };
-            AddPropertyDefinition(propertyDefinition);
-        }
-
-        private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
-        {
-            _orderCounter += 2;
-            AddDefaultDefinition(portalId, category, name, strType, length, _orderCounter, defaultVisibility, types);
-        }
-
-        private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr)
-        {
-            ProfilePropertyDefinition definition = null;
-            try
-            {
-                definition = FillPropertyDefinitionInfo(dr, true);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return definition;
-        }
-
-        private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr, bool checkForOpenDataReader)
-        {
-            ProfilePropertyDefinition definition = null;
-
-            // read datareader
-            bool canContinue = true;
-            if (checkForOpenDataReader)
-            {
-                canContinue = false;
-                if (dr.Read())
-                {
-                    canContinue = true;
-                }
-            }
-
-            if (canContinue)
-            {
-                int portalid = 0;
-                portalid = Convert.ToInt32(Null.SetNull(dr["PortalId"], portalid));
-                definition = new ProfilePropertyDefinition(portalid);
-                definition.PropertyDefinitionId = Convert.ToInt32(Null.SetNull(dr["PropertyDefinitionId"], definition.PropertyDefinitionId));
-                definition.ModuleDefId = Convert.ToInt32(Null.SetNull(dr["ModuleDefId"], definition.ModuleDefId));
-                definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType));
-                definition.DefaultValue = Convert.ToString(Null.SetNull(dr["DefaultValue"], definition.DefaultValue));
-                definition.PropertyCategory = Convert.ToString(Null.SetNull(dr["PropertyCategory"], definition.PropertyCategory));
-                definition.PropertyName = Convert.ToString(Null.SetNull(dr["PropertyName"], definition.PropertyName));
-                definition.Length = Convert.ToInt32(Null.SetNull(dr["Length"], definition.Length));
-                if (dr.GetSchemaTable().Select("ColumnName = 'ReadOnly'").Length > 0)
-                {
-                    definition.ReadOnly = Convert.ToBoolean(Null.SetNull(dr["ReadOnly"], definition.ReadOnly));
-                }
-
-                definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required));
-                definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
-                definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
-                definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible));
-                definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
-                definition.ProfileVisibility = new ProfileVisibility
-                {
-                    VisibilityMode = definition.DefaultVisibility,
-                };
-                definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
-            }
-
-            return definition;
-        }
-
-        private static List<ProfilePropertyDefinition> FillPropertyDefinitionInfoCollection(IDataReader dr)
-        {
-            var arr = new List<ProfilePropertyDefinition>();
-            try
-            {
-                while (dr.Read())
-                {
-                    // fill business object
-                    ProfilePropertyDefinition definition = FillPropertyDefinitionInfo(dr, false);
-
-                    // add to collection
-                    arr.Add(definition);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return arr;
-        }
-
-        private static int GetEffectivePortalId(int portalId)
-        {
-            return PortalController.GetEffectivePortalId(portalId);
-        }
-
-        private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(int portalId)
-        {
-            // Get the Cache Key
-            string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
-
-            // Try fetching the List from the Cache
-            var definitions = (List<ProfilePropertyDefinition>)DataCache.GetCache(key);
-            if (definitions == null)
-            {
-                // definitions caching settings
-                int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
-
-                // Get the List from the database
-                definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));
-
-                // Cache the List
-                if (timeOut > 0)
-                {
-                    DataCache.SetCache(key, definitions, TimeSpan.FromMinutes(timeOut));
-                }
-            }
-
-            return definitions;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Clears the Profile Definitions Cache.
@@ -632,6 +483,161 @@ namespace DotNetNuke.Entities.Profile
             return res;
         }
 
+        [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
+        public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
+        {
+            return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
+        }
+
+        internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility,
+                                                  Dictionary<string, ListEntryInfo> types)
+        {
+            ListEntryInfo typeInfo = types["DataType:" + type] ?? types["DataType:Unknown"];
+            var propertyDefinition = new ProfilePropertyDefinition(portalId)
+            {
+                DataType = typeInfo.EntryID,
+                DefaultValue = string.Empty,
+                ModuleDefId = Null.NullInteger,
+                PropertyCategory = category,
+                PropertyName = name,
+                Required = false,
+                ViewOrder = viewOrder,
+                Visible = true,
+                Length = length,
+                DefaultVisibility = defaultVisibility,
+            };
+            AddPropertyDefinition(propertyDefinition);
+        }
+
+        private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
+        {
+            _orderCounter += 2;
+            AddDefaultDefinition(portalId, category, name, strType, length, _orderCounter, defaultVisibility, types);
+        }
+
+        private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr)
+        {
+            ProfilePropertyDefinition definition = null;
+            try
+            {
+                definition = FillPropertyDefinitionInfo(dr, true);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return definition;
+        }
+
+        private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr, bool checkForOpenDataReader)
+        {
+            ProfilePropertyDefinition definition = null;
+
+            // read datareader
+            bool canContinue = true;
+            if (checkForOpenDataReader)
+            {
+                canContinue = false;
+                if (dr.Read())
+                {
+                    canContinue = true;
+                }
+            }
+
+            if (canContinue)
+            {
+                int portalid = 0;
+                portalid = Convert.ToInt32(Null.SetNull(dr["PortalId"], portalid));
+                definition = new ProfilePropertyDefinition(portalid);
+                definition.PropertyDefinitionId = Convert.ToInt32(Null.SetNull(dr["PropertyDefinitionId"], definition.PropertyDefinitionId));
+                definition.ModuleDefId = Convert.ToInt32(Null.SetNull(dr["ModuleDefId"], definition.ModuleDefId));
+                definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType));
+                definition.DefaultValue = Convert.ToString(Null.SetNull(dr["DefaultValue"], definition.DefaultValue));
+                definition.PropertyCategory = Convert.ToString(Null.SetNull(dr["PropertyCategory"], definition.PropertyCategory));
+                definition.PropertyName = Convert.ToString(Null.SetNull(dr["PropertyName"], definition.PropertyName));
+                definition.Length = Convert.ToInt32(Null.SetNull(dr["Length"], definition.Length));
+                if (dr.GetSchemaTable().Select("ColumnName = 'ReadOnly'").Length > 0)
+                {
+                    definition.ReadOnly = Convert.ToBoolean(Null.SetNull(dr["ReadOnly"], definition.ReadOnly));
+                }
+
+                definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required));
+                definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
+                definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
+                definition.Visible = Convert.ToBoolean(Null.SetNull(dr["Visible"], definition.Visible));
+                definition.DefaultVisibility = (UserVisibilityMode)Convert.ToInt32(Null.SetNull(dr["DefaultVisibility"], definition.DefaultVisibility));
+                definition.ProfileVisibility = new ProfileVisibility
+                {
+                    VisibilityMode = definition.DefaultVisibility,
+                };
+                definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
+            }
+
+            return definition;
+        }
+
+        private static List<ProfilePropertyDefinition> FillPropertyDefinitionInfoCollection(IDataReader dr)
+        {
+            var arr = new List<ProfilePropertyDefinition>();
+            try
+            {
+                while (dr.Read())
+                {
+                    // fill business object
+                    ProfilePropertyDefinition definition = FillPropertyDefinitionInfo(dr, false);
+
+                    // add to collection
+                    arr.Add(definition);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return arr;
+        }
+
+        private static int GetEffectivePortalId(int portalId)
+        {
+            return PortalController.GetEffectivePortalId(portalId);
+        }
+
+        private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(int portalId)
+        {
+            // Get the Cache Key
+            string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
+
+            // Try fetching the List from the Cache
+            var definitions = (List<ProfilePropertyDefinition>)DataCache.GetCache(key);
+            if (definitions == null)
+            {
+                // definitions caching settings
+                int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
+
+                // Get the List from the database
+                definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));
+
+                // Cache the List
+                if (timeOut > 0)
+                {
+                    DataCache.SetCache(key, definitions, TimeSpan.FromMinutes(timeOut));
+                }
+            }
+
+            return definitions;
+        }
+
         private static void CreateThumbnails(int fileId)
         {
             CreateThumbnail(fileId, "l", 64, 64);
@@ -657,12 +663,6 @@ namespace DotNetNuke.Entities.Profile
                     }
                 }
             }
-        }
-
-        [Obsolete("This method has been deprecated.  Please use GetPropertyDefinition(ByVal definitionId As Integer, ByVal portalId As Integer) instead. Scheduled removal in v11.0.0.")]
-        public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId)
-        {
-            return CBO.FillObject<ProfilePropertyDefinition>(_dataProvider.GetPropertyDefinition(definitionId));
         }
     }
 }

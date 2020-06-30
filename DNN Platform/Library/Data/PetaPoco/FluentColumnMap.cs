@@ -24,17 +24,17 @@ namespace DotNetNuke.Data.PetaPoco
         {
         }
 
-        public ColumnInfo ColumnInfo { get; set; }
-
-        public Func<object, object> FromDbConverter { get; set; }
-
-        public Func<object, object> ToDbConverter { get; set; }
-
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter, Func<object, object> toDbConverter)
         {
             this.ColumnInfo = columnInfo;
             this.FromDbConverter = fromDbConverter;
             this.ToDbConverter = toDbConverter;
         }
+
+        public ColumnInfo ColumnInfo { get; set; }
+
+        public Func<object, object> FromDbConverter { get; set; }
+
+        public Func<object, object> ToDbConverter { get; set; }
     }
 }

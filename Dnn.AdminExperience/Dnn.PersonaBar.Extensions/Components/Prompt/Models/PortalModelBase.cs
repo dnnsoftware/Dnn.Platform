@@ -12,14 +12,6 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         {
         }
 
-        public int PortalId { get; set; }
-        public string PortalName { get; set; }
-        public string RegistrationMode { get; set; }
-        public string DefaultPortalAlias { get; set; }
-        public int PageCount { get; set; }
-        public int UserCount { get; set; }
-        public string Language { get; set; }
-
         public PortalModelBase(DotNetNuke.Entities.Portals.PortalInfo portal)
         {
             this.PortalId = portal.PortalID;
@@ -47,5 +39,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
                     break;
             }
         }
+
+        public int PortalId { get; set; }
+        public string PortalName { get; set; }
+        public string RegistrationMode { get; set; }
+        public string DefaultPortalAlias { get; set; }
+        public int PageCount { get; set; }
+        public int UserCount { get; set; }
+        public string Language { get; set; }
     }
 }

@@ -54,20 +54,6 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Underlying DataSource.
-        /// </summary>
-        /// <value>An IEnumerable.</value>
-        /// -----------------------------------------------------------------------------
-        protected override IEnumerable UnderlyingDataSource
-        {
-            get
-            {
-                return (IEnumerable)this.DataSource;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the value of the Field that determines the length.
         /// </summary>
         /// <value>A string representing the Name of the Field.</value>
@@ -163,6 +149,20 @@ namespace DotNetNuke.UI.WebControls
         [Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Underlying DataSource.
+        /// </summary>
+        /// <value>An IEnumerable.</value>
+        /// -----------------------------------------------------------------------------
+        protected override IEnumerable UnderlyingDataSource
+        {
+            get
+            {
+                return (IEnumerable)this.DataSource;
+            }
+        }
+
         protected override void AddEditorRow(Table table, object obj)
         {
             this.AddEditorRow(table, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
@@ -171,22 +171,6 @@ namespace DotNetNuke.UI.WebControls
         protected override void AddEditorRow(Panel container, object obj)
         {
             this.AddEditorRow(container, this.NameDataField, new CollectionEditorInfoAdapter(obj, this.ID, this.NameDataField, this.GetFieldNames()));
-        }
-
-        private Hashtable GetFieldNames()
-        {
-            var fields = new Hashtable();
-            fields.Add("Category", this.CategoryDataField);
-            fields.Add("Editor", this.EditorDataField);
-            fields.Add("Name", this.NameDataField);
-            fields.Add("Required", this.RequiredDataField);
-            fields.Add("Type", this.TypeDataField);
-            fields.Add("ValidationExpression", this.ValidationExpressionDataField);
-            fields.Add("Value", this.ValueDataField);
-            fields.Add("ProfileVisibility", this.VisibilityDataField);
-            fields.Add("Length", this.LengthDataField);
-
-            return fields;
         }
 
         protected override void AddEditorRow(object obj)
@@ -284,6 +268,22 @@ namespace DotNetNuke.UI.WebControls
             }
 
             return isVisible;
+        }
+
+        private Hashtable GetFieldNames()
+        {
+            var fields = new Hashtable();
+            fields.Add("Category", this.CategoryDataField);
+            fields.Add("Editor", this.EditorDataField);
+            fields.Add("Name", this.NameDataField);
+            fields.Add("Required", this.RequiredDataField);
+            fields.Add("Type", this.TypeDataField);
+            fields.Add("ValidationExpression", this.ValidationExpressionDataField);
+            fields.Add("Value", this.ValueDataField);
+            fields.Add("ProfileVisibility", this.VisibilityDataField);
+            fields.Add("Length", this.LengthDataField);
+
+            return fields;
         }
     }
 }

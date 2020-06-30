@@ -13,6 +13,12 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Backing field for <see cref="Http" />.</summary>
         private readonly HttpPlaceholder http = new HttpPlaceholder();
 
+        /// <summary>Gets an object to set the <see cref="HttpEquiv" /> property.</summary>
+        public HttpPlaceholder Http
+        {
+            get { return this.http; }
+        }
+
         /// <summary>
         /// Gets or sets the name of the <c>meta</c> element
         /// Either the name or the <see cref="HttpEquiv" /> must be set.
@@ -22,12 +28,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>Gets or sets the content of the <c>meta</c> element.</summary>
         public string Content { get; set; }
-
-        /// <summary>Gets an object to set the <see cref="HttpEquiv" /> property.</summary>
-        public HttpPlaceholder Http
-        {
-            get { return this.http; }
-        }
 
         /// <summary>
         /// Gets or sets the <c>http-equiv</c> attribute of the <c>meta</c> element.

@@ -72,102 +72,6 @@ namespace DotNetNuke.Common.Lists
             this.DeleteList(listName, parentKey, Null.NullInteger);
         }
 
-        private void ClearListCache(int portalId)
-        {
-            DataCache.ClearListsCache(portalId);
-        }
-
-        private void ClearEntriesCache(string listName, int portalId)
-        {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
-            DataCache.RemoveCache(cacheKey);
-        }
-
-        private ListInfo FillListInfo(IDataReader dr, bool CheckForOpenDataReader)
-        {
-            ListInfo list = null;
-
-            // read datareader
-            bool canContinue = true;
-            if (CheckForOpenDataReader)
-            {
-                canContinue = false;
-                if (dr.Read())
-                {
-                    canContinue = true;
-                }
-            }
-
-            if (canContinue)
-            {
-                list = new ListInfo(Convert.ToString(dr["ListName"]));
-                {
-                    list.Level = Convert.ToInt32(dr["Level"]);
-                    list.PortalID = Convert.ToInt32(dr["PortalID"]);
-                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"]);
-                    list.EntryCount = Convert.ToInt32(dr["EntryCount"]);
-                    list.ParentID = Convert.ToInt32(dr["ParentID"]);
-                    list.ParentKey = Convert.ToString(dr["ParentKey"]);
-                    list.Parent = Convert.ToString(dr["Parent"]);
-                    list.ParentList = Convert.ToString(dr["ParentList"]);
-                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"]) > 0;
-                    list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
-                }
-            }
-
-            return list;
-        }
-
-        private Dictionary<string, ListInfo> FillListInfoDictionary(IDataReader dr)
-        {
-            var dic = new Dictionary<string, ListInfo>();
-            try
-            {
-                while (dr.Read())
-                {
-                    // fill business object
-                    ListInfo list = this.FillListInfo(dr, false);
-                    if (!dic.ContainsKey(list.Key))
-                    {
-                        dic.Add(list.Key, list);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // close datareader
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return dic;
-        }
-
-        private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
-        {
-            string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
-            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.ListsCacheTimeOut,
-                DataCache.ListsCachePriority),
-                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
-        }
-
-        private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
-        {
-            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
-            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
-                new CacheItemArgs(
-                cacheKey,
-                DataCache.ListsCacheTimeOut,
-                DataCache.ListsCachePriority),
-                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
-        }
-
         public void DeleteList(string listName, string parentKey, int portalId)
         {
             ListInfo list = this.GetListInfo(listName, parentKey, portalId);
@@ -278,14 +182,6 @@ namespace DotNetNuke.Common.Lists
         public ListInfo GetListInfo(string listName, string parentKey)
         {
             return this.GetListInfo(listName, parentKey, -1);
-        }
-
-        private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
-        {
-            var dict = new Dictionary<string, ListEntryInfo>();
-            items.ToList().ForEach(x => dict.Add(x.Key, x));
-
-            return dict;
         }
 
         public ListInfo GetListInfo(string listName, string parentKey, int portalId)
@@ -411,6 +307,110 @@ namespace DotNetNuke.Common.Lists
             }
 
             return collection;
+        }
+
+        private static Dictionary<string, ListEntryInfo> ListEntryInfoItemsToDictionary(IEnumerable<ListEntryInfo> items)
+        {
+            var dict = new Dictionary<string, ListEntryInfo>();
+            items.ToList().ForEach(x => dict.Add(x.Key, x));
+
+            return dict;
+        }
+
+        private void ClearListCache(int portalId)
+        {
+            DataCache.ClearListsCache(portalId);
+        }
+
+        private void ClearEntriesCache(string listName, int portalId)
+        {
+            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            DataCache.RemoveCache(cacheKey);
+        }
+
+        private ListInfo FillListInfo(IDataReader dr, bool CheckForOpenDataReader)
+        {
+            ListInfo list = null;
+
+            // read datareader
+            bool canContinue = true;
+            if (CheckForOpenDataReader)
+            {
+                canContinue = false;
+                if (dr.Read())
+                {
+                    canContinue = true;
+                }
+            }
+
+            if (canContinue)
+            {
+                list = new ListInfo(Convert.ToString(dr["ListName"]));
+                {
+                    list.Level = Convert.ToInt32(dr["Level"]);
+                    list.PortalID = Convert.ToInt32(dr["PortalID"]);
+                    list.DefinitionID = Convert.ToInt32(dr["DefinitionID"]);
+                    list.EntryCount = Convert.ToInt32(dr["EntryCount"]);
+                    list.ParentID = Convert.ToInt32(dr["ParentID"]);
+                    list.ParentKey = Convert.ToString(dr["ParentKey"]);
+                    list.Parent = Convert.ToString(dr["Parent"]);
+                    list.ParentList = Convert.ToString(dr["ParentList"]);
+                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"]) > 0;
+                    list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
+                }
+            }
+
+            return list;
+        }
+
+        private Dictionary<string, ListInfo> FillListInfoDictionary(IDataReader dr)
+        {
+            var dic = new Dictionary<string, ListInfo>();
+            try
+            {
+                while (dr.Read())
+                {
+                    // fill business object
+                    ListInfo list = this.FillListInfo(dr, false);
+                    if (!dic.ContainsKey(list.Key))
+                    {
+                        dic.Add(list.Key, list);
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // close datareader
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return dic;
+        }
+
+        private Dictionary<string, ListInfo> GetListInfoDictionary(int portalId)
+        {
+            string cacheKey = string.Format(DataCache.ListsCacheKey, portalId);
+            return CBO.GetCachedObject<Dictionary<string, ListInfo>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.ListsCacheTimeOut,
+                DataCache.ListsCachePriority),
+                c => this.FillListInfoDictionary(DataProvider.Instance().GetLists(portalId)));
+        }
+
+        private IEnumerable<ListEntryInfo> GetListEntries(string listName, int portalId)
+        {
+            string cacheKey = string.Format(DataCache.ListEntriesCacheKey, portalId, listName);
+            return CBO.GetCachedObject<IEnumerable<ListEntryInfo>>(
+                new CacheItemArgs(
+                cacheKey,
+                DataCache.ListsCacheTimeOut,
+                DataCache.ListsCachePriority),
+                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
     }
 }

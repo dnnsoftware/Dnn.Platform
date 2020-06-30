@@ -36,6 +36,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
+        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
+
+        private const string AuthFailureMessage = "Authorization has been denied for this request.";
+
         // Sample matches:
         // MyResources.ascx.en-US.resx
         // MyResources.ascx.en-US.Host.resx
@@ -44,20 +48,20 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             @"\.([a-z]{2,3}\-[0-9A-Z]{2,4}(-[A-Z]{2})?)(\.(Host|Portal-\d+))?\.resx$",
             RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
-        private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
-        private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        public LanguagesController(INavigationManager navigationManager)
-        {
-            this.NavigationManager = navigationManager;
-        }
-        protected INavigationManager NavigationManager { get; }
 
         private ITabController _tabController = TabController.Instance;
         private ILocaleController _localeController = LocaleController.Instance;
         private IPortalController _portalController = PortalController.Instance;
 
         private string _selectedResourceFile;
+
+        public LanguagesController(INavigationManager navigationManager)
+        {
+            this.NavigationManager = navigationManager;
+        }
+
+        protected INavigationManager NavigationManager { get; }
 
         // From inside Visual Studio editor press [CTRL]+[M] then [O] to collapse source code to definition
         // From inside Visual Studio editor press [CTRL]+[M] then [P] to expand source code folding
@@ -729,6 +733,18 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             return "//root/data[@name=" + XmlUtils.XPathLiteral(resourceKeyName) + "]";
         }
 
+        private static XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)
+        {
+            // missing entry
+            XmlNode nodeData = resourceDoc.CreateElement("data");
+            var attr = resourceDoc.CreateAttribute("name");
+            attr.Value = resourceKey;
+            nodeData.Attributes?.Append(attr);
+            var selectSingleNode = resourceDoc.SelectSingleNode("//root");
+            selectSingleNode?.AppendChild(nodeData);
+            return nodeData.AppendChild(resourceDoc.CreateElement("value"));
+        }
+
         private bool IsDefaultLanguage(int portalId, string cultureCode)
         {
             var portal = PortalController.Instance.GetPortal(portalId);
@@ -948,18 +964,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
 
             return string.Format(LocalizeString("Updated"), this.ResourceFile(portalId, locale, mode));
-        }
-
-        private static XmlNode AddResourceKey(XmlDocument resourceDoc, string resourceKey)
-        {
-            // missing entry
-            XmlNode nodeData = resourceDoc.CreateElement("data");
-            var attr = resourceDoc.CreateAttribute("name");
-            attr.Value = resourceKey;
-            nodeData.Attributes?.Append(attr);
-            var selectSingleNode = resourceDoc.SelectSingleNode("//root");
-            selectSingleNode?.AppendChild(nodeData);
-            return nodeData.AppendChild(resourceDoc.CreateElement("value"));
         }
 
         private IList<LanguageTabDto> GetTabsForTranslationInternal(int portalId, string cultureCode)

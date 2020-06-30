@@ -68,31 +68,6 @@ namespace DotNetNuke.UI.WebControls
             this.AddEditorRow(container, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSettings converts the DataSource into an ArrayList (IEnumerable).
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private ArrayList GetSettings()
-        {
-            var settings = (Hashtable)this.DataSource;
-            var arrSettings = new ArrayList();
-            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
-            while (settingsEnumerator.MoveNext())
-            {
-                var info = new SettingInfo(settingsEnumerator.Key, settingsEnumerator.Value);
-                if ((this.CustomEditors != null) && (this.CustomEditors[settingsEnumerator.Key] != null))
-                {
-                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key]);
-                }
-
-                arrSettings.Add(info);
-            }
-
-            arrSettings.Sort(new SettingNameComparer());
-            return arrSettings;
-        }
-
         protected override void AddEditorRow(object obj)
         {
             var info = (SettingInfo)obj;
@@ -116,6 +91,31 @@ namespace DotNetNuke.UI.WebControls
             }
 
             return _IsVisible;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetSettings converts the DataSource into an ArrayList (IEnumerable).
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private ArrayList GetSettings()
+        {
+            var settings = (Hashtable)this.DataSource;
+            var arrSettings = new ArrayList();
+            IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
+            while (settingsEnumerator.MoveNext())
+            {
+                var info = new SettingInfo(settingsEnumerator.Key, settingsEnumerator.Value);
+                if ((this.CustomEditors != null) && (this.CustomEditors[settingsEnumerator.Key] != null))
+                {
+                    info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key]);
+                }
+
+                arrSettings.Add(info);
+            }
+
+            arrSettings.Sort(new SettingNameComparer());
+            return arrSettings;
         }
     }
 }

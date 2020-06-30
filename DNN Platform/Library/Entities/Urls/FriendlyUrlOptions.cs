@@ -17,9 +17,6 @@ namespace DotNetNuke.Entities.Urls
     {
         public bool ConvertDiacriticChars;
         public string IllegalChars;
-
-        private static readonly object _regexLookupLock = new object();
-        private static readonly Dictionary<string, Regex> _regexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
         public int MaxUrlPathLength;
         public string PageExtension;
         public string PunctuationReplacement;
@@ -30,6 +27,8 @@ namespace DotNetNuke.Entities.Urls
         public string ReplaceChars;
         public bool ReplaceDoubleChars;
         public string SpaceEncoding;
+        private static readonly object _regexLookupLock = new object();
+        private static readonly Dictionary<string, Regex> _regexLookup = new Dictionary<string, Regex>(StringComparer.OrdinalIgnoreCase);
 
         public bool CanGenerateNonStandardPath
         {

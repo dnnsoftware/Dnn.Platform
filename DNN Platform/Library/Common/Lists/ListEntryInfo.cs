@@ -24,10 +24,6 @@ namespace DotNetNuke.Common.Lists
             this.ListName = Null.NullString;
         }
 
-        public int EntryID { get; set; }
-
-        public int PortalID { get; set; }
-
         public string Key
         {
             get
@@ -42,8 +38,6 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        public string ListName { get; set; }
-
         public string DisplayName
         {
             get
@@ -51,6 +45,26 @@ namespace DotNetNuke.Common.Lists
                 return this.ListName + ":" + this.Text;
             }
         }
+
+        /// <summary>
+        /// Gets the text value bypassing localization.
+        /// </summary>
+        /// <value>
+        /// The text value of the list entry item as it was set originally.
+        /// </value>
+        public string TextNonLocalized
+        {
+            get
+            {
+                return this._Text;
+            }
+        }
+
+        public int EntryID { get; set; }
+
+        public int PortalID { get; set; }
+
+        public string ListName { get; set; }
 
         public string Value { get; set; }
 
@@ -96,20 +110,6 @@ namespace DotNetNuke.Common.Lists
             set
             {
                 this._Text = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the text value bypassing localization.
-        /// </summary>
-        /// <value>
-        /// The text value of the list entry item as it was set originally.
-        /// </value>
-        public string TextNonLocalized
-        {
-            get
-            {
-                return this._Text;
             }
         }
 

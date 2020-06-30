@@ -96,13 +96,6 @@ namespace Dnn.PersonaBar.Users.Tests
             Assert.IsTrue(result.IsError);
         }
 
-        protected override void ChildSetup()
-        {
-            this._userValidatorMock = new Mock<IUserValidator>();
-            this._usersControllerMock = new Mock<IUsersController>();
-            this._rolesControllerMock = new Mock<IRolesController>();
-        }
-
         [TestCase]
         public void Run_AddRolesWhenRoleNotValid_ThrowsException()
         {
@@ -149,6 +142,13 @@ namespace Dnn.PersonaBar.Users.Tests
 
             // Assert
             Assert.Throws<Exception>(ex, "Should throw exception");
+        }
+
+        protected override void ChildSetup()
+        {
+            this._userValidatorMock = new Mock<IUserValidator>();
+            this._usersControllerMock = new Mock<IUsersController>();
+            this._rolesControllerMock = new Mock<IRolesController>();
         }
 
         protected override AddRoles CreateCommand()

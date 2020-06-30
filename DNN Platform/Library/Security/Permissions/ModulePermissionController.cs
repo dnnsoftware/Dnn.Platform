@@ -48,12 +48,6 @@ namespace DotNetNuke.Security.Permissions
             return _provider.CanAdminModule(module);
         }
 
-        private static void ClearPermissionCache(int moduleId)
-        {
-            ModuleInfo objModule = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
-            DataCache.ClearModulePermissionsCache(objModule.TabID);
-        }
-
         /// <summary>
         /// Returns a flag indicating whether the current user can delete a module.
         /// </summary>
@@ -183,6 +177,12 @@ namespace DotNetNuke.Security.Permissions
         {
             _provider.SaveModulePermissions(module);
             DataCache.ClearModulePermissionsCache(module.TabID);
+        }
+
+        private static void ClearPermissionCache(int moduleId)
+        {
+            ModuleInfo objModule = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
+            DataCache.ClearModulePermissionsCache(objModule.TabID);
         }
     }
 }

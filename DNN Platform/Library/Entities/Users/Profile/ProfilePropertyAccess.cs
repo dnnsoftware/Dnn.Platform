@@ -168,6 +168,20 @@ namespace DotNetNuke.Entities.Users
             return result;
         }
 
+        public static string DisplayDataType(ProfilePropertyDefinition definition)
+        {
+            string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
+            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + string.Empty;
+            if (strDataType == string.Empty)
+            {
+                var objListController = new ListController();
+                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
+                DataCache.SetCache(cacheKey, strDataType);
+            }
+
+            return strDataType;
+        }
+
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             if (currentScope >= Scope.DefaultSettings && this.user != null && this.user.Profile != null)
@@ -235,20 +249,6 @@ namespace DotNetNuke.Entities.Users
         private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
         {
             return accessingUser != null && accessingUser.UserID == targetUser.UserID;
-        }
-
-        public static string DisplayDataType(ProfilePropertyDefinition definition)
-        {
-            string cacheKey = string.Format("DisplayDataType:{0}", definition.DataType);
-            string strDataType = Convert.ToString(DataCache.GetCache(cacheKey)) + string.Empty;
-            if (strDataType == string.Empty)
-            {
-                var objListController = new ListController();
-                strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
-                DataCache.SetCache(cacheKey, strDataType);
-            }
-
-            return strDataType;
         }
     }
 }

@@ -37,6 +37,25 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Dictionary of ModuleControls that are part of this definition.
+        /// </summary>
+        /// <returns>A Dictionary(Of String, ModuleControlInfo).</returns>
+        /// -----------------------------------------------------------------------------
+        public Dictionary<string, ModuleControlInfo> ModuleControls
+        {
+            get
+            {
+                if (this._ModuleControls == null)
+                {
+                    this.LoadControls();
+                }
+
+                return this._ModuleControls;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the Module Definition ID.
         /// </summary>
         /// <returns>An Integer.</returns>
@@ -83,25 +102,6 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
 
             set { this._definitionName = value; }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Dictionary of ModuleControls that are part of this definition.
-        /// </summary>
-        /// <returns>A Dictionary(Of String, ModuleControlInfo).</returns>
-        /// -----------------------------------------------------------------------------
-        public Dictionary<string, ModuleControlInfo> ModuleControls
-        {
-            get
-            {
-                if (this._ModuleControls == null)
-                {
-                    this.LoadControls();
-                }
-
-                return this._ModuleControls;
-            }
         }
 
         /// -----------------------------------------------------------------------------

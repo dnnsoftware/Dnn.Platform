@@ -113,6 +113,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             scheduleItem.Servers = string.IsNullOrEmpty(servers) ? Null.NullString : servers;
             return scheduleItem;
         }
+
         public IEnumerable<ScheduleItem> GetScheduleItems(bool? enabled, string serverName = "", string taskName = "")
         {
             try

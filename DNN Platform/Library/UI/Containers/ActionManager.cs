@@ -117,121 +117,6 @@ namespace DotNetNuke.UI.Containers
             return this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByCommandName(commandName);
         }
 
-        private void ClearCache(ModuleAction Command)
-        {
-            // synchronize cache
-            ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
-
-            // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        private void Delete(ModuleAction Command)
-        {
-            var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), this.ModuleContext.TabId, true);
-
-            // Check if this is the owner instance of a shared module.
-            var user = UserController.Instance.GetCurrentUserInfo();
-            if (!module.IsShared)
-            {
-                foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
-                {
-                    if (instance.IsShared)
-                    {
-                        // HARD Delete Shared Instance
-                        ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
-                    }
-                }
-            }
-
-            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
-            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
-
-            // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        private void DoAction(ModuleAction Command)
-        {
-            if (Command.NewWindow)
-            {
-                UrlUtils.OpenNewWindow(this.ActionControl.ModuleControl.Control.Page, this.GetType(), Command.Url);
-            }
-            else
-            {
-                this.Response.Redirect(Command.Url, true);
-            }
-        }
-
-        private void Localize(ModuleAction Command)
-        {
-            ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
-
-            switch (Command.CommandName)
-            {
-                case ModuleActionType.LocalizeModule:
-                    ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(this.ModuleContext.PortalId));
-                    break;
-                case ModuleActionType.DeLocalizeModule:
-                    ModuleController.Instance.DeLocalizeModule(sourceModule);
-                    break;
-            }
-
-            // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        private void Translate(ModuleAction Command)
-        {
-            ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
-            switch (Command.CommandName)
-            {
-                case ModuleActionType.TranslateModule:
-                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, true);
-                    break;
-                case ModuleActionType.UnTranslateModule:
-                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, false);
-                    break;
-            }
-
-            // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        private void MoveToPane(ModuleAction Command)
-        {
-            ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, Command.CommandArgument);
-            ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
-
-            // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
-        private void MoveUpDown(ModuleAction Command)
-        {
-            switch (Command.CommandName)
-            {
-                case ModuleActionType.MoveTop:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, 0, Command.CommandArgument);
-                    break;
-                case ModuleActionType.MoveUp:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
-                    break;
-                case ModuleActionType.MoveDown:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
-                    break;
-                case ModuleActionType.MoveBottom:
-                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
-                    break;
-            }
-
-            ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
-
-            // Redirect to the same page to pick up changes
-            this.Response.Redirect(this.Request.RawUrl, true);
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetAction gets the action associated with the id.
@@ -382,6 +267,121 @@ namespace DotNetNuke.UI.Containers
             }
 
             return bProcessed;
+        }
+
+        private void ClearCache(ModuleAction Command)
+        {
+            // synchronize cache
+            ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
+
+            // Redirect to the same page to pick up changes
+            this.Response.Redirect(this.Request.RawUrl, true);
+        }
+
+        private void Delete(ModuleAction Command)
+        {
+            var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), this.ModuleContext.TabId, true);
+
+            // Check if this is the owner instance of a shared module.
+            var user = UserController.Instance.GetCurrentUserInfo();
+            if (!module.IsShared)
+            {
+                foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
+                {
+                    if (instance.IsShared)
+                    {
+                        // HARD Delete Shared Instance
+                        ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
+                        EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
+                    }
+                }
+            }
+
+            ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
+            EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+
+            // Redirect to the same page to pick up changes
+            this.Response.Redirect(this.Request.RawUrl, true);
+        }
+
+        private void DoAction(ModuleAction Command)
+        {
+            if (Command.NewWindow)
+            {
+                UrlUtils.OpenNewWindow(this.ActionControl.ModuleControl.Control.Page, this.GetType(), Command.Url);
+            }
+            else
+            {
+                this.Response.Redirect(Command.Url, true);
+            }
+        }
+
+        private void Localize(ModuleAction Command)
+        {
+            ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
+
+            switch (Command.CommandName)
+            {
+                case ModuleActionType.LocalizeModule:
+                    ModuleController.Instance.LocalizeModule(sourceModule, LocaleController.Instance.GetCurrentLocale(this.ModuleContext.PortalId));
+                    break;
+                case ModuleActionType.DeLocalizeModule:
+                    ModuleController.Instance.DeLocalizeModule(sourceModule);
+                    break;
+            }
+
+            // Redirect to the same page to pick up changes
+            this.Response.Redirect(this.Request.RawUrl, true);
+        }
+
+        private void Translate(ModuleAction Command)
+        {
+            ModuleInfo sourceModule = ModuleController.Instance.GetModule(this.ModuleContext.ModuleId, this.ModuleContext.TabId, false);
+            switch (Command.CommandName)
+            {
+                case ModuleActionType.TranslateModule:
+                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, true);
+                    break;
+                case ModuleActionType.UnTranslateModule:
+                    ModuleController.Instance.UpdateTranslationStatus(sourceModule, false);
+                    break;
+            }
+
+            // Redirect to the same page to pick up changes
+            this.Response.Redirect(this.Request.RawUrl, true);
+        }
+
+        private void MoveToPane(ModuleAction Command)
+        {
+            ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, Command.CommandArgument);
+            ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
+
+            // Redirect to the same page to pick up changes
+            this.Response.Redirect(this.Request.RawUrl, true);
+        }
+
+        private void MoveUpDown(ModuleAction Command)
+        {
+            switch (Command.CommandName)
+            {
+                case ModuleActionType.MoveTop:
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, 0, Command.CommandArgument);
+                    break;
+                case ModuleActionType.MoveUp:
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder - 3, Command.CommandArgument);
+                    break;
+                case ModuleActionType.MoveDown:
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, this.ModuleContext.Configuration.ModuleOrder + 3, Command.CommandArgument);
+                    break;
+                case ModuleActionType.MoveBottom:
+                    ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
+                    break;
+            }
+
+            ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
+
+            // Redirect to the same page to pick up changes
+            this.Response.Redirect(this.Request.RawUrl, true);
         }
     }
 }

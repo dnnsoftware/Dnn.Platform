@@ -20,10 +20,12 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     public class CoreLanguagePackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
+
         public CoreLanguagePackageEditor()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected INavigationManager NavigationManager { get; }
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)

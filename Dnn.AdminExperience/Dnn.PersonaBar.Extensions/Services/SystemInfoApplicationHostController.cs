@@ -72,6 +72,5 @@ namespace Dnn.PersonaBar.Servers.Services
         {
             return ProviderConfiguration.GetProviderConfiguration(providerName).DefaultProvider;
         }
-
     }
 }

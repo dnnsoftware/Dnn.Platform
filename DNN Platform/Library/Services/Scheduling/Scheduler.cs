@@ -29,6 +29,11 @@ namespace DotNetNuke.Services.Scheduling
             public static bool KeepThreadAlive = true;
             public static bool KeepRunning = true;
 
+            private static readonly SharedList<ScheduleItem> ScheduleQueue;
+            private static readonly SharedList<ScheduleHistoryItem> ScheduleInProgress;
+            private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(45);
+            private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
+
             // This is the heart of the scheduler mechanism.
             // This class manages running new events according
             // to the schedule.
@@ -50,9 +55,6 @@ namespace DotNetNuke.Services.Scheduling
 
             private static int _numberOfProcessGroups;
 
-            private static readonly SharedList<ScheduleItem> ScheduleQueue;
-            private static readonly SharedList<ScheduleHistoryItem> ScheduleInProgress;
-
             // This is our array that holds the process group
             // where our threads will be kicked off.
             private static ProcessGroup[] _processGroup;
@@ -64,8 +66,6 @@ namespace DotNetNuke.Services.Scheduling
             // of the ReaderWriter locks.
             private static int _readerTimeouts;
             private static int _writerTimeouts;
-            private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(45);
-            private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
             private static ScheduleStatus _status = ScheduleStatus.STOPPED;
 
             static CoreScheduler()
@@ -134,179 +134,6 @@ namespace DotNetNuke.Services.Scheduling
                         Interlocked.Increment(ref _writerTimeouts);
                         Exceptions.Exceptions.LogException(ex);
                     }
-                }
-            }
-
-            internal static bool IsInQueue(ScheduleItem scheduleItem)
-            {
-                try
-                {
-                    using (ScheduleQueue.GetReadLock(LockTimeout))
-                    {
-                        return ScheduleQueue.Any(si => si.ScheduleID == scheduleItem.ScheduleID);
-                    }
-                }
-                catch (ApplicationException)
-                {
-                    // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
-                    return false;
-                }
-            }
-
-            internal static ServerInfo GetServer(string executingServer)
-            {
-                try
-                {
-                    return ServerController.GetServers().FirstOrDefault(
-                        s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled);
-                }
-                catch (Exception)
-                {
-                    // catches edge-case where schedule runs before webserver registration
-                    return null;
-                }
-            }
-
-            /// <summary>
-            /// adds an item to the collection of schedule items in progress.
-            /// </summary>
-            /// <param name="scheduleHistoryItem">Item to add.</param>
-            /// <remarks>Thread Safe.</remarks>
-            private static void AddToScheduleInProgress(ScheduleHistoryItem scheduleHistoryItem)
-            {
-                if (!ScheduleInProgressContains(scheduleHistoryItem))
-                {
-                    try
-                    {
-                        using (ScheduleInProgress.GetWriteLock(LockTimeout))
-                        {
-                            if (!ScheduleInProgressContains(scheduleHistoryItem))
-                            {
-                                ScheduleInProgress.Add(scheduleHistoryItem);
-                            }
-                        }
-                    }
-                    catch (ApplicationException ex)
-                    {
-                        // The writer lock request timed out.
-                        Interlocked.Increment(ref _writerTimeouts);
-                        Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-            }
-
-            private static int GetProcessGroup()
-            {
-                // return a random process group
-                var r = new Random();
-                return r.Next(0, _numberOfProcessGroups - 1);
-            }
-
-            private static bool IsInProgress(ScheduleItem scheduleItem)
-            {
-                try
-                {
-                    using (ScheduleInProgress.GetReadLock(LockTimeout))
-                    {
-                        return ScheduleInProgress.Any(si => si.ScheduleID == scheduleItem.ScheduleID);
-                    }
-                }
-                catch (ApplicationException ex)
-                {
-                    // The reader lock request timed out.
-                    Interlocked.Increment(ref _readerTimeouts);
-                    if (Logger.IsDebugEnabled)
-                    {
-                        Logger.Debug(ex);
-                    }
-
-                    return false;
-                }
-            }
-
-            /// <summary>
-            /// Removes an item from the collection of schedule items in progress.
-            /// </summary>
-            /// <param name="scheduleItem"></param>
-            /// <remarks>Thread Safe.</remarks>
-            private static void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
-            {
-                try
-                {
-                    using (ScheduleInProgress.GetWriteLock(LockTimeout))
-                    {
-                        var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
-                        if (item != null)
-                        {
-                            ScheduleInProgress.Remove(item);
-                        }
-                    }
-                }
-                catch (ApplicationException ex)
-                {
-                    // The writer lock request timed out.
-                    Interlocked.Increment(ref _writerTimeouts);
-                    Exceptions.Exceptions.LogException(ex);
-                }
-            }
-
-            /// <summary>
-            /// Gets a schedulehistory item from the collection of schedule items in progress.
-            /// </summary>
-            /// <param name="scheduleItem"></param>
-            /// <remarks>Thread Safe.</remarks>
-            private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)
-            {
-                try
-                {
-                    using (ScheduleInProgress.GetWriteLock(LockTimeout))
-                    {
-                        var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
-                        return item;
-                    }
-                }
-                catch (ApplicationException ex)
-                {
-                    // The writer lock request timed out.
-                    Interlocked.Increment(ref _writerTimeouts);
-                    Exceptions.Exceptions.LogException(ex);
-                }
-
-                return null;
-            }
-
-            private static bool ScheduleInProgressContains(ScheduleHistoryItem scheduleHistoryItem)
-            {
-                try
-                {
-                    using (ScheduleInProgress.GetReadLock(LockTimeout))
-                    {
-                        return ScheduleInProgress.Any(si => si.ScheduleID == scheduleHistoryItem.ScheduleID);
-                    }
-                }
-                catch (ApplicationException ex)
-                {
-                    Interlocked.Increment(ref _readerTimeouts);
-                    Exceptions.Exceptions.LogException(ex);
-                    return false;
-                }
-            }
-
-            private static bool ScheduleQueueContains(ScheduleItem objScheduleItem)
-            {
-                try
-                {
-                    using (ScheduleQueue.GetReadLock(LockTimeout))
-                    {
-                        return ScheduleQueue.Any(si => si.ScheduleID == objScheduleItem.ScheduleID);
-                    }
-                }
-                catch (ApplicationException ex)
-                {
-                    Interlocked.Increment(ref _readerTimeouts);
-                    Exceptions.Exceptions.LogException(ex);
-                    return false;
                 }
             }
 
@@ -391,71 +218,6 @@ namespace DotNetNuke.Services.Scheduling
             public static int GetFreeThreadCount()
             {
                 return FreeThreads;
-            }
-
-            private static void LogWhyTaskNotRun(ScheduleItem scheduleItem)
-            {
-                if (_debug)
-                {
-                    bool appended = false;
-                    var strDebug = new StringBuilder("Task not run because ");
-                    if (!(scheduleItem.NextStart <= DateTime.Now))
-                    {
-                        strDebug.Append(" task is scheduled for " + scheduleItem.NextStart);
-                        appended = true;
-                    }
-
-                    if (!scheduleItem.Enabled)
-                    {
-                        if (appended)
-                        {
-                            strDebug.Append(" and");
-                        }
-
-                        strDebug.Append(" task is not enabled");
-                        appended = true;
-                    }
-
-                    if (IsInProgress(scheduleItem))
-                    {
-                        if (appended)
-                        {
-                            strDebug.Append(" and");
-                        }
-
-                        strDebug.Append(" task is already in progress");
-                        appended = true;
-                    }
-
-                    if (HasDependenciesConflict(scheduleItem))
-                    {
-                        if (appended)
-                        {
-                            strDebug.Append(" and");
-                        }
-
-                        strDebug.Append(" task has conflicting dependency");
-                    }
-
-                    var log = new LogInfo();
-                    log.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
-                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
-                    log.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
-                    log.LogTypeKey = "DEBUG";
-                    LogController.Instance.AddLog(log);
-                }
-            }
-
-            private static void LogEventAddedToProcessGroup(ScheduleItem scheduleItem)
-            {
-                if (_debug)
-                {
-                    var log = new LogInfo();
-                    log.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
-                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
-                    log.LogTypeKey = "DEBUG";
-                    LogController.Instance.AddLog(log);
-                }
             }
 
             public static int GetMaxThreadCount()
@@ -764,13 +526,6 @@ namespace DotNetNuke.Services.Scheduling
             public static void ReloadSchedule()
             {
                 _forceReloadSchedule = true;
-            }
-
-            private static string ServerGroupServers(ServerInfo thisServer)
-            {
-                // Get the servers
-                var servers = ServerController.GetEnabledServers().Where(s => s.ServerGroup == thisServer.ServerGroup);
-                return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
             }
 
             /// <summary>
@@ -1475,6 +1230,37 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
+            internal static bool IsInQueue(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleQueue.GetReadLock(LockTimeout))
+                    {
+                        return ScheduleQueue.Any(si => si.ScheduleID == scheduleItem.ScheduleID);
+                    }
+                }
+                catch (ApplicationException)
+                {
+                    // The reader lock request timed out.
+                    Interlocked.Increment(ref _readerTimeouts);
+                    return false;
+                }
+            }
+
+            internal static ServerInfo GetServer(string executingServer)
+            {
+                try
+                {
+                    return ServerController.GetServers().FirstOrDefault(
+                        s => ServerController.GetServerName(s).Equals(executingServer, StringComparison.OrdinalIgnoreCase) && s.Enabled);
+                }
+                catch (Exception)
+                {
+                    // catches edge-case where schedule runs before webserver registration
+                    return null;
+                }
+            }
+
             internal static void InitializeThreadPool(bool boolDebug, int maxThreads)
             {
                 _debug = boolDebug;
@@ -1497,6 +1283,220 @@ namespace DotNetNuke.Services.Scheduling
                         }
                     }
                 }
+            }
+
+            /// <summary>
+            /// adds an item to the collection of schedule items in progress.
+            /// </summary>
+            /// <param name="scheduleHistoryItem">Item to add.</param>
+            /// <remarks>Thread Safe.</remarks>
+            private static void AddToScheduleInProgress(ScheduleHistoryItem scheduleHistoryItem)
+            {
+                if (!ScheduleInProgressContains(scheduleHistoryItem))
+                {
+                    try
+                    {
+                        using (ScheduleInProgress.GetWriteLock(LockTimeout))
+                        {
+                            if (!ScheduleInProgressContains(scheduleHistoryItem))
+                            {
+                                ScheduleInProgress.Add(scheduleHistoryItem);
+                            }
+                        }
+                    }
+                    catch (ApplicationException ex)
+                    {
+                        // The writer lock request timed out.
+                        Interlocked.Increment(ref _writerTimeouts);
+                        Exceptions.Exceptions.LogException(ex);
+                    }
+                }
+            }
+
+            private static int GetProcessGroup()
+            {
+                // return a random process group
+                var r = new Random();
+                return r.Next(0, _numberOfProcessGroups - 1);
+            }
+
+            private static bool IsInProgress(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleInProgress.GetReadLock(LockTimeout))
+                    {
+                        return ScheduleInProgress.Any(si => si.ScheduleID == scheduleItem.ScheduleID);
+                    }
+                }
+                catch (ApplicationException ex)
+                {
+                    // The reader lock request timed out.
+                    Interlocked.Increment(ref _readerTimeouts);
+                    if (Logger.IsDebugEnabled)
+                    {
+                        Logger.Debug(ex);
+                    }
+
+                    return false;
+                }
+            }
+
+            /// <summary>
+            /// Removes an item from the collection of schedule items in progress.
+            /// </summary>
+            /// <param name="scheduleItem"></param>
+            /// <remarks>Thread Safe.</remarks>
+            private static void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleInProgress.GetWriteLock(LockTimeout))
+                    {
+                        var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
+                        if (item != null)
+                        {
+                            ScheduleInProgress.Remove(item);
+                        }
+                    }
+                }
+                catch (ApplicationException ex)
+                {
+                    // The writer lock request timed out.
+                    Interlocked.Increment(ref _writerTimeouts);
+                    Exceptions.Exceptions.LogException(ex);
+                }
+            }
+
+            /// <summary>
+            /// Gets a schedulehistory item from the collection of schedule items in progress.
+            /// </summary>
+            /// <param name="scheduleItem"></param>
+            /// <remarks>Thread Safe.</remarks>
+            private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)
+            {
+                try
+                {
+                    using (ScheduleInProgress.GetWriteLock(LockTimeout))
+                    {
+                        var item = ScheduleInProgress.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
+                        return item;
+                    }
+                }
+                catch (ApplicationException ex)
+                {
+                    // The writer lock request timed out.
+                    Interlocked.Increment(ref _writerTimeouts);
+                    Exceptions.Exceptions.LogException(ex);
+                }
+
+                return null;
+            }
+
+            private static bool ScheduleInProgressContains(ScheduleHistoryItem scheduleHistoryItem)
+            {
+                try
+                {
+                    using (ScheduleInProgress.GetReadLock(LockTimeout))
+                    {
+                        return ScheduleInProgress.Any(si => si.ScheduleID == scheduleHistoryItem.ScheduleID);
+                    }
+                }
+                catch (ApplicationException ex)
+                {
+                    Interlocked.Increment(ref _readerTimeouts);
+                    Exceptions.Exceptions.LogException(ex);
+                    return false;
+                }
+            }
+
+            private static bool ScheduleQueueContains(ScheduleItem objScheduleItem)
+            {
+                try
+                {
+                    using (ScheduleQueue.GetReadLock(LockTimeout))
+                    {
+                        return ScheduleQueue.Any(si => si.ScheduleID == objScheduleItem.ScheduleID);
+                    }
+                }
+                catch (ApplicationException ex)
+                {
+                    Interlocked.Increment(ref _readerTimeouts);
+                    Exceptions.Exceptions.LogException(ex);
+                    return false;
+                }
+            }
+
+            private static void LogWhyTaskNotRun(ScheduleItem scheduleItem)
+            {
+                if (_debug)
+                {
+                    bool appended = false;
+                    var strDebug = new StringBuilder("Task not run because ");
+                    if (!(scheduleItem.NextStart <= DateTime.Now))
+                    {
+                        strDebug.Append(" task is scheduled for " + scheduleItem.NextStart);
+                        appended = true;
+                    }
+
+                    if (!scheduleItem.Enabled)
+                    {
+                        if (appended)
+                        {
+                            strDebug.Append(" and");
+                        }
+
+                        strDebug.Append(" task is not enabled");
+                        appended = true;
+                    }
+
+                    if (IsInProgress(scheduleItem))
+                    {
+                        if (appended)
+                        {
+                            strDebug.Append(" and");
+                        }
+
+                        strDebug.Append(" task is already in progress");
+                        appended = true;
+                    }
+
+                    if (HasDependenciesConflict(scheduleItem))
+                    {
+                        if (appended)
+                        {
+                            strDebug.Append(" and");
+                        }
+
+                        strDebug.Append(" task has conflicting dependency");
+                    }
+
+                    var log = new LogInfo();
+                    log.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.AddProperty("TYPE FULL NAME", scheduleItem.TypeFullName);
+                    log.LogTypeKey = "DEBUG";
+                    LogController.Instance.AddLog(log);
+                }
+            }
+
+            private static void LogEventAddedToProcessGroup(ScheduleItem scheduleItem)
+            {
+                if (_debug)
+                {
+                    var log = new LogInfo();
+                    log.AddProperty("EVENT ADDED TO PROCESS GROUP " + scheduleItem.ProcessGroup, scheduleItem.TypeFullName);
+                    log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
+                    log.LogTypeKey = "DEBUG";
+                    LogController.Instance.AddLog(log);
+                }
+            }
+
+            private static string ServerGroupServers(ServerInfo thisServer)
+            {
+                // Get the servers
+                var servers = ServerController.GetEnabledServers().Where(s => s.ServerGroup == thisServer.ServerGroup);
+                return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
             }
         }
     }

@@ -19,7 +19,6 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_DeleteUser_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("notify", "Prompt_DeleteUser_FlagNotify", "Boolean", "false")]
         private const string FlagNotify = "notify";
 
@@ -30,14 +29,16 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
         }
 
-        private int UserId { get; set; }
-        private bool Notify { get; set; }
-
         public DeleteUser(IUserValidator userValidator, IUserControllerWrapper userControllerWrapper)
         {
             this._userValidator = userValidator;
             this._userControllerWrapper = userControllerWrapper;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        private int UserId { get; set; }
+        private bool Notify { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

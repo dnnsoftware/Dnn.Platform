@@ -110,14 +110,540 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// CreateObject creates a new object of Type TObject.
+        /// </summary>
+        /// <typeparam name="TObject">The type of object to create.</typeparam>
+        /// <param name="initialise">A flag that indicates whether to initialise the
+        /// object.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static TObject CreateObject<TObject>(bool initialise)
+        {
+            return (TObject)CreateObjectInternal(typeof(TObject), initialise);
+        }
+
+        public static TObject DeserializeObject<TObject>(string fileName)
+        {
+            return DeserializeObject<TObject>(XmlReader.Create(new FileStream(fileName, FileMode.Open, FileAccess.Read)));
+        }
+
+        public static TObject DeserializeObject<TObject>(XmlDocument document)
+        {
+            return DeserializeObject<TObject>(XmlReader.Create(new StringReader(document.OuterXml)));
+        }
+
+        public static TObject DeserializeObject<TObject>(Stream stream)
+        {
+            return DeserializeObject<TObject>(XmlReader.Create(stream));
+        }
+
+        public static TObject DeserializeObject<TObject>(TextReader reader)
+        {
+            return DeserializeObject<TObject>(XmlReader.Create(reader));
+        }
+
+        public static TObject DeserializeObject<TObject>(XmlReader reader)
+        {
+            // First Create the Object
+            var objObject = CreateObject<TObject>(true);
+
+            // Try to cast the Object as IXmlSerializable
+            var xmlSerializableObject = objObject as IXmlSerializable;
+            if (xmlSerializableObject == null)
+            {
+                // Use XmlSerializer
+                var serializer = new XmlSerializer(objObject.GetType());
+                objObject = (TObject)serializer.Deserialize(reader);
+            }
+            else
+            {
+                // Use XmlReader
+                xmlSerializableObject.ReadXml(reader);
+            }
+
+            return objObject;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillCollection fills a Collection of objects from a DataReader.
+        /// </summary>
+        /// <param name="dr">The Data Reader.</param>
+        /// <param name="objType">The type of the Object.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static ArrayList FillCollection(IDataReader dr, Type objType)
+        {
+            return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillCollection fills a Collection of objects from a DataReader.
+        /// </summary>
+        /// <param name="dr">The Data Reader.</param>
+        /// <param name="objType">The type of the Object.</param>
+        /// <param name="closeReader">Flag that indicates whether the Data Reader should be closed.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static ArrayList FillCollection(IDataReader dr, Type objType, bool closeReader)
+        {
+            return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), closeReader);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillCollection fills a Collection of objects from a DataReader.
+        /// </summary>
+        /// <param name="dr">The Data Reader.</param>
+        /// <param name="objType">The type of the Object.</param>
+        /// <param name="objToFill">An IList to fill.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static IList FillCollection(IDataReader dr, Type objType, ref IList objToFill)
+        {
+            return FillListFromReader(objType, dr, objToFill, true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillCollection fills a Collection of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TItem">The type of object.</typeparam>
+        /// <param name="dr">The Data Reader.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static List<TItem> FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
-        TObject ICBO.FillObject<TObject>(IDataReader dr)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillCollection fills a Collection of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TItem">The type of object.</typeparam>
+        /// <param name="objToFill">The List to fill.</param>
+        /// <param name="dr">The Data Reader.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static IList<TItem> FillCollection<TItem>(IDataReader dr, ref IList<TItem> objToFill)
+        {
+            return FillListFromReader(dr, objToFill, true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillCollection fills a List of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TItem">The type of the Object.</typeparam>
+        /// <param name="objToFill">The List to fill.</param>
+        /// <param name="dr">The Data Reader.</param>
+        /// <param name="closeReader">A flag that indicates whether the DataReader should be closed.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static IList<TItem> FillCollection<TItem>(IDataReader dr, IList<TItem> objToFill, bool closeReader)
+        {
+            return FillListFromReader(dr, objToFill, closeReader);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Generic version of FillCollection fills a List custom business object of a specified type
+        /// from the supplied DataReader.
+        /// </summary>
+        /// <param name="dr">The IDataReader to use to fill the object.</param>
+        /// <param name="objType">The type of the Object.</param>
+        /// <param name="totalRecords">The total No of records.</param>
+        /// <returns>A List of custom business objects.</returns>
+        /// <remarks></remarks>
+        /// -----------------------------------------------------------------------------
+        public static ArrayList FillCollection(IDataReader dr, ref Type objType, ref int totalRecords)
+        {
+            var objFillCollection = (ArrayList)FillListFromReader(objType, dr, new ArrayList(), false);
+            try
+            {
+                if (dr.NextResult())
+                {
+                    // Get the total no of records from the second result
+                    totalRecords = Globals.GetTotalRecords(ref dr);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // Ensure DataReader is closed
+                CloseDataReader(dr, true);
+            }
+
+            return objFillCollection;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Generic version of FillCollection fills a List custom business object of a specified type
+        /// from the supplied DataReader.
+        /// </summary>
+        /// <typeparam name="T">The type of the business object.</typeparam>
+        /// <param name="dr">The IDataReader to use to fill the object.</param>
+        /// <param name="totalRecords"></param>
+        /// <returns>A List of custom business objects.</returns>
+        /// <remarks></remarks>
+        /// -----------------------------------------------------------------------------
+        public static List<T> FillCollection<T>(IDataReader dr, ref int totalRecords)
+        {
+            IList<T> objFillCollection = FillCollection(dr, new List<T>(), false);
+            try
+            {
+                if (dr.NextResult())
+                {
+                    // Get the total no of records from the second result
+                    totalRecords = Globals.GetTotalRecords(ref dr);
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+            }
+            finally
+            {
+                // Ensure DataReader is closed
+                CloseDataReader(dr, true);
+            }
+
+            return (List<T>)objFillCollection;
+        }
+
+        /// <summary>
+        /// FillDictionary fills a Dictionary of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
+        /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
+        /// <param name="keyField">The key field used for the Key.</param>
+        /// <param name="dr">The Data Reader.</param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr)
+        {
+            return
+                (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), true);
+        }
+
+        /// <summary>
+        /// FillDictionary fills a Dictionary of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
+        /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
+        /// <param name="keyField">The key field used for the Key.</param>
+        /// <param name="dr">The Data Reader.</param>
+        /// <param name="closeReader">A flag indicating whether to close the reader.</param>
+        /// <returns></returns>
+        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, bool closeReader)
+        {
+            return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillDictionary fills a Dictionary of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
+        /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
+        /// <param name="keyField">The key field used for the Key.</param>
+        /// <param name="objDictionary">The Dictionary to fill.</param>
+        /// <param name="dr">The Data Reader.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
+        {
+            return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillObject fills an object from a DataReader.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="dr">The Data Reader.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static TObject FillObject<TObject>(IDataReader dr)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillObject fills an object from a DataReader.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <param name="dr">The Data Reader.</param>
+        /// <param name="closeReader">A flag that indicates the reader should be closed.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
+        {
+            return (TObject)CreateObjectFromReader(typeof(TObject), dr, closeReader);
+        }
+
+        public static IQueryable<TItem> FillQueryable<TItem>(IDataReader dr)
+        {
+            return FillListFromReader(dr, new List<TItem>(), true).AsQueryable();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FillSortedList fills a SortedList of objects from a DataReader.
+        /// </summary>
+        /// <typeparam name="TKey">The key for the SortedList.</typeparam>
+        /// <typeparam name="TValue">The value for the SortedList Item.</typeparam>
+        /// <param name="keyField">The key field used for the Key.</param>
+        /// <param name="dr">The Data Reader.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
+        {
+            return
+                (SortedList<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new SortedList<TKey, TValue>(), true);
+        }
+
+        public static void DeserializeSettings(IDictionary dictionary, XmlNode rootNode, string elementName)
+        {
+            string sKey = null;
+            string sValue = null;
+
+            foreach (XmlNode settingNode in rootNode.SelectNodes(elementName))
+            {
+                sKey = XmlUtils.GetNodeValue(settingNode.CreateNavigator(), "settingname");
+                sValue = XmlUtils.GetNodeValue(settingNode.CreateNavigator(), "settingvalue");
+
+                dictionary[sKey] = sValue;
+            }
+        }
+
+        /// <summary>
+        ///  Iterates items in a IDictionary object and generates XML nodes.
+        /// </summary>
+        /// <param name = "dictionary">The IDictionary to iterate.</param>
+        /// <param name = "document">The XML document the node should be added to.</param>
+        /// <param name="targetPath">Path at which to serialize settings.</param>
+        /// <param name = "elementName">The name of the new element created.</param>
+        /// <remarks>
+        /// </remarks>
+        public static void SerializeSettings(IDictionary dictionary, XmlDocument document, string targetPath, string elementName)
+        {
+            string sOuterElementName = elementName + "s";
+            string sInnerElementName = elementName;
+            XmlNode nodeSetting = default(XmlNode);
+            XmlNode nodeSettings = default(XmlNode);
+            XmlNode nodeSettingName = default(XmlNode);
+            XmlNode nodeSettingValue = default(XmlNode);
+
+            XmlNode targetNode = document.SelectSingleNode(targetPath);
+
+            if (targetNode != null)
+            {
+                nodeSettings = targetNode.AppendChild(document.CreateElement(sOuterElementName));
+                foreach (object sKey in dictionary.Keys)
+                {
+                    nodeSetting = nodeSettings.AppendChild(document.CreateElement(sInnerElementName));
+
+                    nodeSettingName = nodeSetting.AppendChild(document.CreateElement("settingname"));
+                    nodeSettingName.InnerText = sKey.ToString();
+
+                    nodeSettingValue = nodeSetting.AppendChild(document.CreateElement("settingvalue"));
+                    nodeSettingValue.InnerText = dictionary[sKey].ToString();
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Invalid Target Path");
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetCachedObject gets an object from the Cache.
+        /// </summary>
+        /// <typeparam name="TObject">The type of th object to fetch.</typeparam>
+        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
+        /// cache AND to fetch the item if the cache has expired.</param>
+        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
+        /// the cache if the item has expired.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
+        {
+            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired);
+        }
+
+        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+        {
+            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetProperties gets a Dictionary of the Properties for an object.
+        /// </summary>
+        /// <typeparam name="TObject">The type of the object.</typeparam>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static Dictionary<string, PropertyInfo> GetProperties<TObject>()
+        {
+            return GetObjectMapping(typeof(TObject)).Properties;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// GetProperties gets a Dictionary of the Properties for an object.
+        /// </summary>
+        /// <param name="objType">The type of the object.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static Dictionary<string, PropertyInfo> GetProperties(Type objType)
+        {
+            return GetObjectMapping(objType).Properties;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// InitializeObject initialises all the properties of an object to their
+        /// Null Values.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// -----------------------------------------------------------------------------
+        public static void InitializeObject(object objObject)
+        {
+            // initialize properties
+            foreach (PropertyInfo objPropertyInfo in GetObjectMapping(objObject.GetType()).Properties.Values)
+            {
+                if (objPropertyInfo.CanWrite)
+                {
+                    objPropertyInfo.SetValue(objObject, Null.SetNull(objPropertyInfo), null);
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// InitializeObject initialises all the properties of an object to their
+        /// Null Values.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="objType">The type of the object.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public static object InitializeObject(object objObject, Type objType)
+        {
+            // initialize properties
+            foreach (PropertyInfo objPropertyInfo in GetObjectMapping(objType).Properties.Values)
+            {
+                if (objPropertyInfo.CanWrite)
+                {
+                    objPropertyInfo.SetValue(objObject, Null.SetNull(objPropertyInfo), null);
+                }
+            }
+
+            return objObject;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SerializeObject serializes an Object.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="fileName">A filename for the resulting serialized xml.</param>
+        /// -----------------------------------------------------------------------------
+        public static void SerializeObject(object objObject, string fileName)
+        {
+            using (
+                XmlWriter writer = XmlWriter.Create(fileName, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+            {
+                SerializeObject(objObject, writer);
+                writer.Flush();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SerializeObject serializes an Object.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="document">An XmlDocument to serialize to.</param>
+        /// -----------------------------------------------------------------------------
+        public static void SerializeObject(object objObject, XmlDocument document)
+        {
+            var sb = new StringBuilder();
+            using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)))
+            {
+                // Serialize the object
+                SerializeObject(objObject, writer);
+
+                // Load XmlDocument
+                document.LoadXml(sb.ToString());
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SerializeObject serializes an Object.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="stream">A Stream to serialize to.</param>
+        /// -----------------------------------------------------------------------------
+        public static void SerializeObject(object objObject, Stream stream)
+        {
+            using (XmlWriter writer = XmlWriter.Create(stream, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+            {
+                SerializeObject(objObject, writer);
+                writer.Flush();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SerializeObject serializes an Object.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="textWriter">A TextWriter to serialize to.</param>
+        /// -----------------------------------------------------------------------------
+        public static void SerializeObject(object objObject, TextWriter textWriter)
+        {
+            using (
+                XmlWriter writer = XmlWriter.Create(textWriter, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
+            {
+                SerializeObject(objObject, writer);
+                writer.Flush();
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SerializeObject serializes an Object.
+        /// </summary>
+        /// <param name="objObject">The object to Initialise.</param>
+        /// <param name="writer">An XmlWriter to serialize to.</param>
+        /// -----------------------------------------------------------------------------
+        public static void SerializeObject(object objObject, XmlWriter writer)
+        {
+            // Try to cast the Object as IXmlSerializable
+            var xmlSerializableObject = objObject as IXmlSerializable;
+            if (xmlSerializableObject == null)
+            {
+                // Use XmlSerializer
+                var serializer = new XmlSerializer(objObject.GetType());
+                serializer.Serialize(writer, objObject);
+            }
+            else
+            {
+                // Use XmlWriter
+                xmlSerializableObject.WriteXml(writer);
+            }
         }
 
         protected override Func<ICBO> GetFactory()
@@ -181,9 +707,9 @@ namespace DotNetNuke.Common.Utilities
             return objObject;
         }
 
-        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField, IDataReader dr,
-                                                                                        IDictionary<TKey, TValue>
-                                                                                            objDictionary,
+        private static IDictionary<TKey, TValue> FillDictionaryFromReader<TKey, TValue>(string keyField, 
+                                                                                        IDataReader dr,
+                                                                                        IDictionary<TKey, TValue> objDictionary,
                                                                                         bool closeReader)
         {
             TValue objObject;
@@ -523,546 +1049,19 @@ namespace DotNetNuke.Common.Utilities
             return tableName;
         }
 
-        TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
-        {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// CreateObject creates a new object of Type TObject.
-        /// </summary>
-        /// <typeparam name="TObject">The type of object to create.</typeparam>
-        /// <param name="initialise">A flag that indicates whether to initialise the
-        /// object.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static TObject CreateObject<TObject>(bool initialise)
-        {
-            return (TObject)CreateObjectInternal(typeof(TObject), initialise);
-        }
-
-        public static TObject DeserializeObject<TObject>(string fileName)
-        {
-            return DeserializeObject<TObject>(XmlReader.Create(new FileStream(fileName, FileMode.Open, FileAccess.Read)));
-        }
-
-        public static TObject DeserializeObject<TObject>(XmlDocument document)
-        {
-            return DeserializeObject<TObject>(XmlReader.Create(new StringReader(document.OuterXml)));
-        }
-
-        public static TObject DeserializeObject<TObject>(Stream stream)
-        {
-            return DeserializeObject<TObject>(XmlReader.Create(stream));
-        }
-
-        public static TObject DeserializeObject<TObject>(TextReader reader)
-        {
-            return DeserializeObject<TObject>(XmlReader.Create(reader));
-        }
-
-        public static TObject DeserializeObject<TObject>(XmlReader reader)
-        {
-            // First Create the Object
-            var objObject = CreateObject<TObject>(true);
-
-            // Try to cast the Object as IXmlSerializable
-            var xmlSerializableObject = objObject as IXmlSerializable;
-            if (xmlSerializableObject == null)
-            {
-                // Use XmlSerializer
-                var serializer = new XmlSerializer(objObject.GetType());
-                objObject = (TObject)serializer.Deserialize(reader);
-            }
-            else
-            {
-                // Use XmlReader
-                xmlSerializableObject.ReadXml(reader);
-            }
-
-            return objObject;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
-        /// <param name="dr">The Data Reader.</param>
-        /// <param name="objType">The type of the Object.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static ArrayList FillCollection(IDataReader dr, Type objType)
-        {
-            return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
-        /// <param name="dr">The Data Reader.</param>
-        /// <param name="objType">The type of the Object.</param>
-        /// <param name="closeReader">Flag that indicates whether the Data Reader should be closed.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static ArrayList FillCollection(IDataReader dr, Type objType, bool closeReader)
-        {
-            return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), closeReader);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
-        /// <param name="dr">The Data Reader.</param>
-        /// <param name="objType">The type of the Object.</param>
-        /// <param name="objToFill">An IList to fill.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static IList FillCollection(IDataReader dr, Type objType, ref IList objToFill)
-        {
-            return FillListFromReader(objType, dr, objToFill, true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TItem">The type of object.</typeparam>
-        /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static List<TItem> FillCollection<TItem>(IDataReader dr)
+        List<TItem> ICBO.FillCollection<TItem>(IDataReader dr)
         {
             return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillCollection fills a Collection of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TItem">The type of object.</typeparam>
-        /// <param name="objToFill">The List to fill.</param>
-        /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static IList<TItem> FillCollection<TItem>(IDataReader dr, ref IList<TItem> objToFill)
-        {
-            return FillListFromReader(dr, objToFill, true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillCollection fills a List of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TItem">The type of the Object.</typeparam>
-        /// <param name="objToFill">The List to fill.</param>
-        /// <param name="dr">The Data Reader.</param>
-        /// <param name="closeReader">A flag that indicates whether the DataReader should be closed.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static IList<TItem> FillCollection<TItem>(IDataReader dr, IList<TItem> objToFill, bool closeReader)
-        {
-            return FillListFromReader(dr, objToFill, closeReader);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Generic version of FillCollection fills a List custom business object of a specified type
-        /// from the supplied DataReader.
-        /// </summary>
-        /// <param name="dr">The IDataReader to use to fill the object.</param>
-        /// <param name="objType">The type of the Object.</param>
-        /// <param name="totalRecords">The total No of records.</param>
-        /// <returns>A List of custom business objects.</returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
-        public static ArrayList FillCollection(IDataReader dr, ref Type objType, ref int totalRecords)
-        {
-            var objFillCollection = (ArrayList)FillListFromReader(objType, dr, new ArrayList(), false);
-            try
-            {
-                if (dr.NextResult())
-                {
-                    // Get the total no of records from the second result
-                    totalRecords = Globals.GetTotalRecords(ref dr);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // Ensure DataReader is closed
-                CloseDataReader(dr, true);
-            }
-
-            return objFillCollection;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Generic version of FillCollection fills a List custom business object of a specified type
-        /// from the supplied DataReader.
-        /// </summary>
-        /// <typeparam name="T">The type of the business object.</typeparam>
-        /// <param name="dr">The IDataReader to use to fill the object.</param>
-        /// <param name="totalRecords"></param>
-        /// <returns>A List of custom business objects.</returns>
-        /// <remarks></remarks>
-        /// -----------------------------------------------------------------------------
-        public static List<T> FillCollection<T>(IDataReader dr, ref int totalRecords)
-        {
-            IList<T> objFillCollection = FillCollection(dr, new List<T>(), false);
-            try
-            {
-                if (dr.NextResult())
-                {
-                    // Get the total no of records from the second result
-                    totalRecords = Globals.GetTotalRecords(ref dr);
-                }
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-            }
-            finally
-            {
-                // Ensure DataReader is closed
-                CloseDataReader(dr, true);
-            }
-
-            return (List<T>)objFillCollection;
-        }
-
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
-        /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
-        /// <param name="keyField">The key field used for the Key.</param>
-        /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
-        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr)
-        {
-            return
-                (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), true);
-        }
-
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
-        /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
-        /// <param name="keyField">The key field used for the Key.</param>
-        /// <param name="dr">The Data Reader.</param>
-        /// <param name="closeReader">A flag indicating whether to close the reader.</param>
-        /// <returns></returns>
-        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, bool closeReader)
-        {
-            return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillDictionary fills a Dictionary of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TKey">The key for the Dictionary.</typeparam>
-        /// <typeparam name="TValue">The value for the Dictionary Item.</typeparam>
-        /// <param name="keyField">The key field used for the Key.</param>
-        /// <param name="objDictionary">The Dictionary to fill.</param>
-        /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
-        {
-            return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillObject fills an object from a DataReader.
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static TObject FillObject<TObject>(IDataReader dr)
+        TObject ICBO.FillObject<TObject>(IDataReader dr)
         {
             return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillObject fills an object from a DataReader.
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="dr">The Data Reader.</param>
-        /// <param name="closeReader">A flag that indicates the reader should be closed.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
-        {
-            return (TObject)CreateObjectFromReader(typeof(TObject), dr, closeReader);
-        }
-
-        public static IQueryable<TItem> FillQueryable<TItem>(IDataReader dr)
-        {
-            return FillListFromReader(dr, new List<TItem>(), true).AsQueryable();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FillSortedList fills a SortedList of objects from a DataReader.
-        /// </summary>
-        /// <typeparam name="TKey">The key for the SortedList.</typeparam>
-        /// <typeparam name="TValue">The value for the SortedList Item.</typeparam>
-        /// <param name="keyField">The key field used for the Key.</param>
-        /// <param name="dr">The Data Reader.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
-        {
-            return
-                (SortedList<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new SortedList<TKey, TValue>(), true);
-        }
-
-        public static void DeserializeSettings(IDictionary dictionary, XmlNode rootNode, string elementName)
-        {
-            string sKey = null;
-            string sValue = null;
-
-            foreach (XmlNode settingNode in rootNode.SelectNodes(elementName))
-            {
-                sKey = XmlUtils.GetNodeValue(settingNode.CreateNavigator(), "settingname");
-                sValue = XmlUtils.GetNodeValue(settingNode.CreateNavigator(), "settingvalue");
-
-                dictionary[sKey] = sValue;
-            }
-        }
-
-        /// <summary>
-        ///  Iterates items in a IDictionary object and generates XML nodes.
-        /// </summary>
-        /// <param name = "dictionary">The IDictionary to iterate.</param>
-        /// <param name = "document">The XML document the node should be added to.</param>
-        /// <param name="targetPath">Path at which to serialize settings.</param>
-        /// <param name = "elementName">The name of the new element created.</param>
-        /// <remarks>
-        /// </remarks>
-        public static void SerializeSettings(IDictionary dictionary, XmlDocument document, string targetPath,
-                                             string elementName)
-        {
-            string sOuterElementName = elementName + "s";
-            string sInnerElementName = elementName;
-            XmlNode nodeSetting = default(XmlNode);
-            XmlNode nodeSettings = default(XmlNode);
-            XmlNode nodeSettingName = default(XmlNode);
-            XmlNode nodeSettingValue = default(XmlNode);
-
-            XmlNode targetNode = document.SelectSingleNode(targetPath);
-
-            if (targetNode != null)
-            {
-                nodeSettings = targetNode.AppendChild(document.CreateElement(sOuterElementName));
-                foreach (object sKey in dictionary.Keys)
-                {
-                    nodeSetting = nodeSettings.AppendChild(document.CreateElement(sInnerElementName));
-
-                    nodeSettingName = nodeSetting.AppendChild(document.CreateElement("settingname"));
-                    nodeSettingName.InnerText = sKey.ToString();
-
-                    nodeSettingValue = nodeSetting.AppendChild(document.CreateElement("settingvalue"));
-                    nodeSettingValue.InnerText = dictionary[sKey].ToString();
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Invalid Target Path");
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetCachedObject gets an object from the Cache.
-        /// </summary>
-        /// <typeparam name="TObject">The type of th object to fetch.</typeparam>
-        /// <param name="cacheItemArgs">A CacheItemArgs object that provides parameters to manage the
-        /// cache AND to fetch the item if the cache has expired.</param>
-        /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
-        /// the cache if the item has expired.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
-        {
-            return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired);
-        }
-
-        public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
+        TObject ICBO.GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired, bool saveInDictionary)
         {
             return DataCache.GetCachedData<TObject>(cacheItemArgs, cacheItemExpired, saveInDictionary);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetProperties gets a Dictionary of the Properties for an object.
-        /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static Dictionary<string, PropertyInfo> GetProperties<TObject>()
-        {
-            return GetObjectMapping(typeof(TObject)).Properties;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetProperties gets a Dictionary of the Properties for an object.
-        /// </summary>
-        /// <param name="objType">The type of the object.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static Dictionary<string, PropertyInfo> GetProperties(Type objType)
-        {
-            return GetObjectMapping(objType).Properties;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// InitializeObject initialises all the properties of an object to their
-        /// Null Values.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// -----------------------------------------------------------------------------
-        public static void InitializeObject(object objObject)
-        {
-            // initialize properties
-            foreach (PropertyInfo objPropertyInfo in GetObjectMapping(objObject.GetType()).Properties.Values)
-            {
-                if (objPropertyInfo.CanWrite)
-                {
-                    objPropertyInfo.SetValue(objObject, Null.SetNull(objPropertyInfo), null);
-                }
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// InitializeObject initialises all the properties of an object to their
-        /// Null Values.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="objType">The type of the object.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public static object InitializeObject(object objObject, Type objType)
-        {
-            // initialize properties
-            foreach (PropertyInfo objPropertyInfo in GetObjectMapping(objType).Properties.Values)
-            {
-                if (objPropertyInfo.CanWrite)
-                {
-                    objPropertyInfo.SetValue(objObject, Null.SetNull(objPropertyInfo), null);
-                }
-            }
-
-            return objObject;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="fileName">A filename for the resulting serialized xml.</param>
-        /// -----------------------------------------------------------------------------
-        public static void SerializeObject(object objObject, string fileName)
-        {
-            using (
-                XmlWriter writer = XmlWriter.Create(fileName, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-            {
-                SerializeObject(objObject, writer);
-                writer.Flush();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="document">An XmlDocument to serialize to.</param>
-        /// -----------------------------------------------------------------------------
-        public static void SerializeObject(object objObject, XmlDocument document)
-        {
-            var sb = new StringBuilder();
-            using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Document)))
-            {
-                // Serialize the object
-                SerializeObject(objObject, writer);
-
-                // Load XmlDocument
-                document.LoadXml(sb.ToString());
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="stream">A Stream to serialize to.</param>
-        /// -----------------------------------------------------------------------------
-        public static void SerializeObject(object objObject, Stream stream)
-        {
-            using (XmlWriter writer = XmlWriter.Create(stream, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-            {
-                SerializeObject(objObject, writer);
-                writer.Flush();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="textWriter">A TextWriter to serialize to.</param>
-        /// -----------------------------------------------------------------------------
-        public static void SerializeObject(object objObject, TextWriter textWriter)
-        {
-            using (
-                XmlWriter writer = XmlWriter.Create(textWriter, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
-            {
-                SerializeObject(objObject, writer);
-                writer.Flush();
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// SerializeObject serializes an Object.
-        /// </summary>
-        /// <param name="objObject">The object to Initialise.</param>
-        /// <param name="writer">An XmlWriter to serialize to.</param>
-        /// -----------------------------------------------------------------------------
-        public static void SerializeObject(object objObject, XmlWriter writer)
-        {
-            // Try to cast the Object as IXmlSerializable
-            var xmlSerializableObject = objObject as IXmlSerializable;
-            if (xmlSerializableObject == null)
-            {
-                // Use XmlSerializer
-                var serializer = new XmlSerializer(objObject.GetType());
-                serializer.Serialize(writer, objObject);
-            }
-            else
-            {
-                // Use XmlWriter
-                xmlSerializableObject.WriteXml(writer);
-            }
         }
     }
 }

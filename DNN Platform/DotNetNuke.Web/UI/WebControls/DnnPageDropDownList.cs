@@ -38,54 +38,6 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </summary>
         public bool IncludeDisabledTabs { get; set; }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            this.Roles = new List<int>();
-
-            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
-            this.Services.GetTreeMethod = "ItemListService/GetPages";
-            this.Services.GetNodeDescendantsMethod = "ItemListService/GetPageDescendants";
-            this.Services.SearchTreeMethod = "ItemListService/SearchPages";
-            this.Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPage";
-            this.Services.ServiceRoot = "InternalServices";
-            this.Services.SortTreeMethod = "ItemListService/SortPages";
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            this.AddCssClass("page");
-            if (this.InternalPortalId.HasValue)
-            {
-                this.Services.Parameters.Add("PortalId", this.InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
-            }
-
-            this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
-            this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
-            this.Services.Parameters.Add("includeActive", this.IncludeActiveTab.ToString().ToLowerInvariant());
-            this.Services.Parameters.Add("disabledNotSelectable", this.DisabledNotSelectable.ToString().ToLowerInvariant());
-            this.Services.Parameters.Add("includeHostPages", (this.IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
-            this.Services.Parameters.Add("roles", string.Join(";", this.Roles.ToArray()));
-
-            base.OnPreRender(e);
-
-            // add the selected folder's level path so that it can expand to the selected node in client side.
-            var selectedPage = this.SelectedPage;
-            if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
-            {
-                var tabLevel = string.Empty;
-                var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, this.PortalId, false);
-                while (parentTab != null)
-                {
-                    tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
-                    parentTab = TabController.Instance.GetTab(parentTab.ParentId, this.PortalId, false);
-                }
-
-                this.ExpandPath = tabLevel.TrimEnd(',');
-            }
-        }
-
         /// <summary>
         /// Gets or sets a value indicating whether whether include pages which tab type is not normal.
         /// </summary>
@@ -148,6 +100,54 @@ namespace DotNetNuke.Web.UI.WebControls
             set
             {
                 this.ViewState.SetValue<int?>("PortalId", value, null);
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.Roles = new List<int>();
+
+            this.SelectItemDefaultText = Localization.GetString("DropDownList.SelectWebPageDefaultText", Localization.SharedResourceFile);
+            this.Services.GetTreeMethod = "ItemListService/GetPages";
+            this.Services.GetNodeDescendantsMethod = "ItemListService/GetPageDescendants";
+            this.Services.SearchTreeMethod = "ItemListService/SearchPages";
+            this.Services.GetTreeWithNodeMethod = "ItemListService/GetTreePathForPage";
+            this.Services.ServiceRoot = "InternalServices";
+            this.Services.SortTreeMethod = "ItemListService/SortPages";
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            this.AddCssClass("page");
+            if (this.InternalPortalId.HasValue)
+            {
+                this.Services.Parameters.Add("PortalId", this.InternalPortalId.Value.ToString(CultureInfo.InvariantCulture));
+            }
+
+            this.Services.Parameters.Add("includeDisabled", this.IncludeDisabledTabs.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeAllTypes", this.IncludeAllTabTypes.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeActive", this.IncludeActiveTab.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("disabledNotSelectable", this.DisabledNotSelectable.ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("includeHostPages", (this.IncludeHostPages && UserController.Instance.GetCurrentUserInfo().IsSuperUser).ToString().ToLowerInvariant());
+            this.Services.Parameters.Add("roles", string.Join(";", this.Roles.ToArray()));
+
+            base.OnPreRender(e);
+
+            // add the selected folder's level path so that it can expand to the selected node in client side.
+            var selectedPage = this.SelectedPage;
+            if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
+            {
+                var tabLevel = string.Empty;
+                var parentTab = TabController.Instance.GetTab(selectedPage.ParentId, this.PortalId, false);
+                while (parentTab != null)
+                {
+                    tabLevel = string.Format("{0},{1}", parentTab.TabID, tabLevel);
+                    parentTab = TabController.Instance.GetTab(parentTab.ParentId, this.PortalId, false);
+                }
+
+                this.ExpandPath = tabLevel.TrimEnd(',');
             }
         }
     }

@@ -63,6 +63,23 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
+        /// Gets the value in the current items or if none is available <c>default(T)</c>.
+        /// </summary>
+        public T ValueOrDefault
+        {
+            get
+            {
+                var returnedValue = this.GetInitializedInternalValue();
+                if (returnedValue == null)
+                {
+                    return default(T);
+                }
+
+                return (T)returnedValue;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets or gets the value in the current items.
         /// </summary>
         /// <exception cref="InvalidOperationException">
@@ -88,23 +105,6 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets the value in the current items or if none is available <c>default(T)</c>.
-        /// </summary>
-        public T ValueOrDefault
-        {
-            get
-            {
-                var returnedValue = this.GetInitializedInternalValue();
-                if (returnedValue == null)
-                {
-                    return default(T);
-                }
-
-                return (T)returnedValue;
-            }
-        }
-
-        /// <summary>
         /// Get/sets the value in associated dictionary/map.
         /// </summary>
         /// <param name="key">Value key.</param>
@@ -112,6 +112,14 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         /// <remarks></remarks>
         protected abstract object this[string key] { get; set; }
+
+        /// <summary>
+        /// Clears the value in the current items.
+        /// </summary>
+        public void Clear()
+        {
+            this.Remove(this._key);
+        }
 
         /// <summary>
         /// Removes the value in associated dictionary according.
@@ -130,14 +138,6 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return value;
-        }
-
-        /// <summary>
-        /// Clears the value in the current items.
-        /// </summary>
-        public void Clear()
-        {
-            this.Remove(this._key);
         }
     }
 }

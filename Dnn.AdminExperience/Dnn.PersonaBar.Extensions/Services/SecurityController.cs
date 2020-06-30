@@ -525,38 +525,6 @@ namespace Dnn.PersonaBar.Security.Services
             }
         }
 
-        private int ValidateTabId(int tabId)
-        {
-            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-            return tab?.TabID ?? Null.NullInteger;
-        }
-
-        private string GetTabName(int tabId)
-        {
-            if (tabId == Null.NullInteger)
-            {
-                return "";
-            }
-            else
-            {
-                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabName : "";
-            }
-        }
-
-        private string GetTabPath(int tabId)
-        {
-            if (tabId == Null.NullInteger)
-            {
-                return "";
-            }
-            else
-            {
-                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
-                return tab != null ? tab.TabPath : "";
-            }
-        }
-
         /// GET: api/Security/GetSslSettings
         /// <summary>
         /// Gets portal's SSL settings.
@@ -1060,6 +1028,38 @@ namespace Dnn.PersonaBar.Security.Services
                 }
             }
             return portalAlias;
+        }
+
+        private int ValidateTabId(int tabId)
+        {
+            var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+            return tab?.TabID ?? Null.NullInteger;
+        }
+
+        private string GetTabName(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+                return tab != null ? tab.TabName : "";
+            }
+        }
+
+        private string GetTabPath(int tabId)
+        {
+            if (tabId == Null.NullInteger)
+            {
+                return "";
+            }
+            else
+            {
+                var tab = TabController.Instance.GetTab(tabId, this.PortalId);
+                return tab != null ? tab.TabPath : "";
+            }
         }
 
         private string DisplayDate(DateTime userDate)

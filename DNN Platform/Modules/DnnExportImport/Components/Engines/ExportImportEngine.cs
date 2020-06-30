@@ -513,73 +513,6 @@ namespace Dnn.ExportImport.Components.Engines
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
         }
 
-        private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,
-            HashSet<string> includedItems, IList<ExportImportChekpoint> checkpoints)
-        {
-            // there must be one parent implementor at least for this to work
-            var nextLevelServices = new List<BasePortableService>();
-            var firstIteration = true;
-            if (checkpoints.Any())
-            {
-                return;
-            }
-
-            do
-            {
-                foreach (var service in parentServices.OrderBy(x => x.Priority))
-                {
-                    if (implementors.Count > 0)
-                    {
-                        // collect children for next iteration
-                        var children =
-                            implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
-                        nextLevelServices.AddRange(children);
-                        implementors = implementors.Except(nextLevelServices).ToList();
-                    }
-
-                    if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
-                        (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
-                    {
-                        var serviceAssembly = service.GetType().Assembly.GetName().Name;
-
-                        service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
-
-                        if (service.CheckPoint != null)
-                        {
-                            continue;
-                        }
-
-                        service.CheckPoint = new ExportImportChekpoint
-                        {
-                            JobId = jobId,
-                            AssemblyName = serviceAssembly,
-                            Category = service.Category,
-                            Progress = 0,
-                        };
-
-                        // persist the record in db
-                        this.CheckpointCallback(service);
-                    }
-                }
-
-                firstIteration = false;
-                parentServices = new List<BasePortableService>(nextLevelServices);
-                nextLevelServices.Clear();
-            }
-            while (parentServices.Count > 0);
-        }
-
-        /// <summary>
-        /// Callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
-        /// </summary>
-        /// <param name="service">The <see cref="BasePortableService"/> implementation.</param>
-        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise.</returns>
-        private bool CheckpointCallback(BasePortableService service)
-        {
-            EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
-            return this.TimeIsUp;
-        }
-
         private static HashSet<string> GetAllCategoriesToInclude(
             ExportDto exportDto,
             List<BasePortableService> implementors)
@@ -760,6 +693,73 @@ namespace Dnn.ExportImport.Components.Engines
                         e.Message);
                 }
             }
+        }
+
+        private void PrepareCheckPoints(int jobId, List<BasePortableService> parentServices, List<BasePortableService> implementors,
+            HashSet<string> includedItems, IList<ExportImportChekpoint> checkpoints)
+        {
+            // there must be one parent implementor at least for this to work
+            var nextLevelServices = new List<BasePortableService>();
+            var firstIteration = true;
+            if (checkpoints.Any())
+            {
+                return;
+            }
+
+            do
+            {
+                foreach (var service in parentServices.OrderBy(x => x.Priority))
+                {
+                    if (implementors.Count > 0)
+                    {
+                        // collect children for next iteration
+                        var children =
+                            implementors.Where(imp => service.Category.Equals(imp.ParentCategory, IgnoreCaseComp));
+                        nextLevelServices.AddRange(children);
+                        implementors = implementors.Except(nextLevelServices).ToList();
+                    }
+
+                    if ((firstIteration && includedItems.Any(x => x.Equals(service.Category, IgnoreCaseComp))) ||
+                        (!firstIteration && includedItems.Any(x => x.Equals(service.ParentCategory, IgnoreCaseComp))))
+                    {
+                        var serviceAssembly = service.GetType().Assembly.GetName().Name;
+
+                        service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
+
+                        if (service.CheckPoint != null)
+                        {
+                            continue;
+                        }
+
+                        service.CheckPoint = new ExportImportChekpoint
+                        {
+                            JobId = jobId,
+                            AssemblyName = serviceAssembly,
+                            Category = service.Category,
+                            Progress = 0,
+                        };
+
+                        // persist the record in db
+                        this.CheckpointCallback(service);
+                    }
+                }
+
+                firstIteration = false;
+                parentServices = new List<BasePortableService>(nextLevelServices);
+                nextLevelServices.Clear();
+            }
+            while (parentServices.Count > 0);
+        }
+
+        /// <summary>
+        /// Callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
+        /// </summary>
+        /// <param name="service">The <see cref="BasePortableService"/> implementation.</param>
+        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise.</returns>
+        private bool CheckpointCallback(BasePortableService service)
+        {
+            EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);
+            return this.TimeIsUp;
         }
     }
 }

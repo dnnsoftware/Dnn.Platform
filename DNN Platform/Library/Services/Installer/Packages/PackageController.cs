@@ -114,235 +114,6 @@ namespace DotNetNuke.Services.Installer.Packages
             return CBO.FillDictionary<int, PackageInfo>("PackageID", provider.GetModulePackagesInUse(portalID, forHost));
         }
 
-        public void DeleteExtensionPackage(PackageInfo package)
-        {
-            switch (package.PackageType)
-            {
-                case "Auth_System":
-                    AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
-                    if (authSystem != null)
-                    {
-                        AuthenticationController.DeleteAuthentication(authSystem);
-                    }
-
-                    break;
-                case "CoreLanguagePack":
-                    LanguagePackInfo languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
-                    if (languagePack != null)
-                    {
-                        LanguagePackController.DeleteLanguagePack(languagePack);
-                    }
-
-                    break;
-                case "Module":
-                    var controller = new DesktopModuleController();
-                    DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
-                    if (desktopModule != null)
-                    {
-                        controller.DeleteDesktopModule(desktopModule);
-                    }
-
-                    break;
-                case "SkinObject":
-                    SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
-                    if (skinControl != null)
-                    {
-                        SkinControlController.DeleteSkinControl(skinControl);
-                    }
-
-                    break;
-            }
-
-            DeletePackageInternal(package);
-        }
-
-        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
-        {
-            return this.GetExtensionPackage(portalId, predicate, false);
-        }
-
-        protected override Func<IPackageController> GetFactory()
-        {
-            return () => new PackageController();
-        }
-
-        private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
-        {
-            EventLogController.Instance.AddLog(
-                package,
-                PortalController.Instance.GetCurrentPortalSettings(),
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                string.Empty,
-                logType);
-        }
-
-        private static void AddPackageInternal(PackageInfo package)
-        {
-            package.PackageID = provider.AddPackage(
-                package.PortalID,
-                package.Name,
-                package.FriendlyName,
-                package.Description,
-                package.PackageType,
-                package.Version.ToString(3),
-                package.License,
-                package.Manifest,
-                package.Owner,
-                package.Organization,
-                package.Url,
-                package.Email,
-                package.ReleaseNotes,
-                package.IsSystemPackage,
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                package.FolderName,
-                package.IconFile);
-
-            foreach (var dependency in package.Dependencies)
-            {
-                dependency.PackageId = package.PackageID;
-                SavePackageDependency(dependency);
-            }
-
-            AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
-
-            ClearCache(package.PortalID);
-        }
-
-        private static void ClearCache(int portalId)
-        {
-            DataCache.ClearPackagesCache(portalId);
-        }
-
-        private static void ClearDependenciesCache()
-        {
-            DataCache.RemoveCache(DataCache.PackageDependenciesCacheKey);
-        }
-
-        private static void DeletePackageInternal(PackageInfo package)
-        {
-            provider.DeletePackage(package.PackageID);
-            AddLog(package, EventLogController.EventLogType.PACKAGE_DELETED);
-
-            if (PortalSettings.Current != null)
-            {
-                ClearCache(PortalSettings.Current.PortalId);
-            }
-
-            ClearCache(Null.NullInteger);
-        }
-
-        private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
-        {
-            return CBO.GetCachedObject<List<PackageDependencyInfo>>(
-                new CacheItemArgs(
-                DataCache.PackageDependenciesCacheKey,
-                DataCache.PackagesCacheTimeout,
-                DataCache.PackagesCachePriority),
-                c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
-        }
-
-        private static void UpdatePackageInternal(PackageInfo package)
-        {
-            provider.UpdatePackage(
-                package.PackageID,
-                package.PortalID,
-                package.FriendlyName,
-                package.Description,
-                package.PackageType,
-                package.Version.ToString(3),
-                package.License,
-                package.Manifest,
-                package.Owner,
-                package.Organization,
-                package.Url,
-                package.Email,
-                package.ReleaseNotes,
-                package.IsSystemPackage,
-                UserController.Instance.GetCurrentUserInfo().UserID,
-                package.FolderName,
-                package.IconFile);
-
-            foreach (var dependency in package.Dependencies)
-            {
-                dependency.PackageId = package.PackageID;
-                SavePackageDependency(dependency);
-            }
-
-            AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
-
-            ClearCache(package.PortalID);
-        }
-
-        private static void SavePackageDependency(PackageDependencyInfo dependency)
-        {
-            dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
-                           dependency.Version.ToString());
-
-            ClearDependenciesCache();
-        }
-
-        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
-        {
-            var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
-
-            if (package != null && useCopy)
-            {
-                return package.Clone();
-            }
-
-            return package;
-        }
-
-        public IList<PackageInfo> GetExtensionPackages(int portalId)
-        {
-            var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
-            var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
-            return CBO.GetCachedObject<List<PackageInfo>>(
-                cacheItemArgs,
-                c => CBO.FillCollection<PackageInfo>(provider.GetPackages(portalId)));
-        }
-
-        public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
-        {
-            return this.GetExtensionPackages(portalId).Where(predicate).ToList();
-        }
-
-        /// <summary>
-        /// Save or update the package.
-        /// </summary>
-        /// <param name="package"></param>
-        public void SaveExtensionPackage(PackageInfo package)
-        {
-            if (package.PackageID == Null.NullInteger)
-            {
-                AddPackageInternal(package);
-            }
-            else
-            {
-                UpdatePackageInternal(package);
-            }
-        }
-
-        public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
-        {
-            return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
-        }
-
-        public IList<PackageType> GetExtensionPackageTypes()
-        {
-            return CBO.GetCachedObject<List<PackageType>>(
-                new CacheItemArgs(
-                DataCache.PackageTypesCacheKey,
-                DataCache.PackageTypesCacheTimeout,
-                DataCache.PackageTypesCachePriority),
-                c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
-        }
-
-        public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
-        {
-            return GetPackageDependencies().Where(predicate).ToList();
-        }
-
         public static void ParsePackage(string file, string installPath, Dictionary<string, PackageInfo> packages, List<string> invalidPackages)
         {
             var unzip = new ZipInputStream(new FileStream(file, FileMode.Open, FileAccess.Read));
@@ -515,27 +286,6 @@ namespace DotNetNuke.Services.Installer.Packages
             Instance.DeleteExtensionPackage(package);
         }
 
-        internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
-        {
-            string result = string.Empty;
-            var foldernameNav = manifestNav.Select(xpath);
-
-            if (foldernameNav != null)
-            {
-                while (foldernameNav.MoveNext())
-                {
-                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
-                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
-                    {
-                        result = elementValue;
-                        break;
-                    }
-                }
-            }
-
-            return result;
-        }
-
         [Obsolete("Deprecated in DNN 7.2, Replaced by DeleteExtensionPackage(PackageInfo package). Scheduled removal in v10.0.0.")]
         public static void DeletePackage(int packageID)
         {
@@ -612,6 +362,256 @@ namespace DotNetNuke.Services.Installer.Packages
         public static void UpdatePackage(PackageInfo package)
         {
             Instance.SaveExtensionPackage(package);
+        }
+
+        public void DeleteExtensionPackage(PackageInfo package)
+        {
+            switch (package.PackageType)
+            {
+                case "Auth_System":
+                    AuthenticationInfo authSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
+                    if (authSystem != null)
+                    {
+                        AuthenticationController.DeleteAuthentication(authSystem);
+                    }
+
+                    break;
+                case "CoreLanguagePack":
+                    LanguagePackInfo languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
+                    if (languagePack != null)
+                    {
+                        LanguagePackController.DeleteLanguagePack(languagePack);
+                    }
+
+                    break;
+                case "Module":
+                    var controller = new DesktopModuleController();
+                    DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
+                    if (desktopModule != null)
+                    {
+                        controller.DeleteDesktopModule(desktopModule);
+                    }
+
+                    break;
+                case "SkinObject":
+                    SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
+                    if (skinControl != null)
+                    {
+                        SkinControlController.DeleteSkinControl(skinControl);
+                    }
+
+                    break;
+            }
+
+            DeletePackageInternal(package);
+        }
+
+        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate)
+        {
+            return this.GetExtensionPackage(portalId, predicate, false);
+        }
+
+        public PackageInfo GetExtensionPackage(int portalId, Func<PackageInfo, bool> predicate, bool useCopy)
+        {
+            var package = this.GetExtensionPackages(portalId).FirstOrDefault(predicate);
+
+            if (package != null && useCopy)
+            {
+                return package.Clone();
+            }
+
+            return package;
+        }
+
+        public IList<PackageInfo> GetExtensionPackages(int portalId)
+        {
+            var cacheKey = string.Format(DataCache.PackagesCacheKey, portalId);
+            var cacheItemArgs = new CacheItemArgs(cacheKey, DataCache.PackagesCacheTimeout, DataCache.PackagesCachePriority, portalId);
+            return CBO.GetCachedObject<List<PackageInfo>>(
+                cacheItemArgs,
+                c => CBO.FillCollection<PackageInfo>(provider.GetPackages(portalId)));
+        }
+
+        public IList<PackageInfo> GetExtensionPackages(int portalId, Func<PackageInfo, bool> predicate)
+        {
+            return this.GetExtensionPackages(portalId).Where(predicate).ToList();
+        }
+
+        /// <summary>
+        /// Save or update the package.
+        /// </summary>
+        /// <param name="package"></param>
+        public void SaveExtensionPackage(PackageInfo package)
+        {
+            if (package.PackageID == Null.NullInteger)
+            {
+                AddPackageInternal(package);
+            }
+            else
+            {
+                UpdatePackageInternal(package);
+            }
+        }
+
+        public PackageType GetExtensionPackageType(Func<PackageType, bool> predicate)
+        {
+            return this.GetExtensionPackageTypes().SingleOrDefault(predicate);
+        }
+
+        public IList<PackageType> GetExtensionPackageTypes()
+        {
+            return CBO.GetCachedObject<List<PackageType>>(
+                new CacheItemArgs(
+                DataCache.PackageTypesCacheKey,
+                DataCache.PackageTypesCacheTimeout,
+                DataCache.PackageTypesCachePriority),
+                c => CBO.FillCollection<PackageType>(provider.GetPackageTypes()));
+        }
+
+        public IList<PackageDependencyInfo> GetPackageDependencies(Func<PackageDependencyInfo, bool> predicate)
+        {
+            return GetPackageDependencies().Where(predicate).ToList();
+        }
+
+        internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
+        {
+            string result = string.Empty;
+            var foldernameNav = manifestNav.Select(xpath);
+
+            if (foldernameNav != null)
+            {
+                while (foldernameNav.MoveNext())
+                {
+                    var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
+                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
+                    {
+                        result = elementValue;
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        protected override Func<IPackageController> GetFactory()
+        {
+            return () => new PackageController();
+        }
+
+        private static void AddLog(PackageInfo package, EventLogController.EventLogType logType)
+        {
+            EventLogController.Instance.AddLog(
+                package,
+                PortalController.Instance.GetCurrentPortalSettings(),
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                string.Empty,
+                logType);
+        }
+
+        private static void AddPackageInternal(PackageInfo package)
+        {
+            package.PackageID = provider.AddPackage(
+                package.PortalID,
+                package.Name,
+                package.FriendlyName,
+                package.Description,
+                package.PackageType,
+                package.Version.ToString(3),
+                package.License,
+                package.Manifest,
+                package.Owner,
+                package.Organization,
+                package.Url,
+                package.Email,
+                package.ReleaseNotes,
+                package.IsSystemPackage,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                package.FolderName,
+                package.IconFile);
+
+            foreach (var dependency in package.Dependencies)
+            {
+                dependency.PackageId = package.PackageID;
+                SavePackageDependency(dependency);
+            }
+
+            AddLog(package, EventLogController.EventLogType.PACKAGE_CREATED);
+
+            ClearCache(package.PortalID);
+        }
+
+        private static void ClearCache(int portalId)
+        {
+            DataCache.ClearPackagesCache(portalId);
+        }
+
+        private static void ClearDependenciesCache()
+        {
+            DataCache.RemoveCache(DataCache.PackageDependenciesCacheKey);
+        }
+
+        private static void DeletePackageInternal(PackageInfo package)
+        {
+            provider.DeletePackage(package.PackageID);
+            AddLog(package, EventLogController.EventLogType.PACKAGE_DELETED);
+
+            if (PortalSettings.Current != null)
+            {
+                ClearCache(PortalSettings.Current.PortalId);
+            }
+
+            ClearCache(Null.NullInteger);
+        }
+
+        private static IEnumerable<PackageDependencyInfo> GetPackageDependencies()
+        {
+            return CBO.GetCachedObject<List<PackageDependencyInfo>>(
+                new CacheItemArgs(
+                DataCache.PackageDependenciesCacheKey,
+                DataCache.PackagesCacheTimeout,
+                DataCache.PackagesCachePriority),
+                c => CBO.FillCollection<PackageDependencyInfo>(provider.GetPackageDependencies()));
+        }
+
+        private static void UpdatePackageInternal(PackageInfo package)
+        {
+            provider.UpdatePackage(
+                package.PackageID,
+                package.PortalID,
+                package.FriendlyName,
+                package.Description,
+                package.PackageType,
+                package.Version.ToString(3),
+                package.License,
+                package.Manifest,
+                package.Owner,
+                package.Organization,
+                package.Url,
+                package.Email,
+                package.ReleaseNotes,
+                package.IsSystemPackage,
+                UserController.Instance.GetCurrentUserInfo().UserID,
+                package.FolderName,
+                package.IconFile);
+
+            foreach (var dependency in package.Dependencies)
+            {
+                dependency.PackageId = package.PackageID;
+                SavePackageDependency(dependency);
+            }
+
+            AddLog(package, EventLogController.EventLogType.PACKAGE_UPDATED);
+
+            ClearCache(package.PortalID);
+        }
+
+        private static void SavePackageDependency(PackageDependencyInfo dependency)
+        {
+            dependency.PackageDependencyId = provider.SavePackageDependency(dependency.PackageDependencyId, dependency.PackageId, dependency.PackageName,
+                           dependency.Version.ToString());
+
+            ClearDependenciesCache();
         }
     }
 }

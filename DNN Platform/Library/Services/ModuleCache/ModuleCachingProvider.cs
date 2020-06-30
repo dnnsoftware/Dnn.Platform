@@ -33,18 +33,6 @@ namespace DotNetNuke.Services.ModuleCache
 
         public abstract int GetItemCount(int tabModuleId);
 
-        protected string ByteArrayToString(byte[] arrInput)
-        {
-            int i;
-            var sOutput = new StringBuilder(arrInput.Length);
-            for (i = 0; i <= arrInput.Length - 1; i++)
-            {
-                sOutput.Append(arrInput[i].ToString("X2"));
-            }
-
-            return sOutput.ToString();
-        }
-
         public abstract byte[] GetModule(int tabModuleId, string cacheKey);
 
         public abstract void Remove(int tabModuleId);
@@ -57,6 +45,18 @@ namespace DotNetNuke.Services.ModuleCache
 
         public virtual void PurgeExpiredItems(int portalId)
         {
+        }
+
+        protected string ByteArrayToString(byte[] arrInput)
+        {
+            int i;
+            var sOutput = new StringBuilder(arrInput.Length);
+            for (i = 0; i <= arrInput.Length - 1; i++)
+            {
+                sOutput.Append(arrInput[i].ToString("X2"));
+            }
+
+            return sOutput.ToString();
         }
     }
 }

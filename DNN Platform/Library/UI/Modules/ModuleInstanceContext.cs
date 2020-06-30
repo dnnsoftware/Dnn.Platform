@@ -49,47 +49,6 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Actions for this module context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public ModuleActionCollection Actions
-        {
-            get
-            {
-                if (this._actions == null)
-                {
-                    this.LoadActions(HttpContext.Current.Request);
-                }
-
-                return this._actions;
-            }
-
-            set
-            {
-                this._actions = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public ModuleInfo Configuration
-        {
-            get
-            {
-                return this._configuration;
-            }
-
-            set
-            {
-                this._configuration = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
         /// Administrator role.
         /// </summary>
@@ -101,13 +60,6 @@ namespace DotNetNuke.UI.Modules
                 return TabPermissionController.CanAdminPage();
             }
         }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the HelpUrl for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string HelpURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -153,32 +105,6 @@ namespace DotNetNuke.UI.Modules
             get
             {
                 return Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the module ID for this context.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public int ModuleId
-        {
-            get
-            {
-                if (this._configuration != null)
-                {
-                    return this._configuration.ModuleID;
-                }
-
-                return Null.NullInteger;
-            }
-
-            set
-            {
-                if (this._configuration != null)
-                {
-                    this._configuration.ModuleID = value;
-                }
             }
         }
 
@@ -251,6 +177,80 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets or sets and sets the Actions for this module context.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public ModuleActionCollection Actions
+        {
+            get
+            {
+                if (this._actions == null)
+                {
+                    this.LoadActions(HttpContext.Current.Request);
+                }
+
+                return this._actions;
+            }
+
+            set
+            {
+                this._actions = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public ModuleInfo Configuration
+        {
+            get
+            {
+                return this._configuration;
+            }
+
+            set
+            {
+                this._configuration = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the HelpUrl for this context.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string HelpURL { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the module ID for this context.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public int ModuleId
+        {
+            get
+            {
+                if (this._configuration != null)
+                {
+                    return this._configuration.ModuleID;
+                }
+
+                return Null.NullInteger;
+            }
+
+            set
+            {
+                if (this._configuration != null)
+                {
+                    this._configuration.ModuleID = value;
+                }
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets the tabnmodule ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -283,6 +283,79 @@ namespace DotNetNuke.UI.Modules
         public string EditUrl(string controlKey)
         {
             return this.EditUrl(string.Empty, string.Empty, controlKey);
+        }
+
+        public string EditUrl(string keyName, string keyValue)
+        {
+            return this.EditUrl(keyName, keyValue, "Edit");
+        }
+
+        public string EditUrl(string keyName, string keyValue, string controlKey)
+        {
+            var parameters = new string[] { };
+            return this.EditUrl(keyName, keyValue, controlKey, parameters);
+        }
+
+        public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
+        {
+            string key = controlKey;
+            if (string.IsNullOrEmpty(key))
+            {
+                key = "Edit";
+            }
+
+            string moduleIdParam = string.Empty;
+            if (this.Configuration != null)
+            {
+                moduleIdParam = string.Format("mid={0}", this.Configuration.ModuleID);
+            }
+
+            string[] parameters;
+            if (!string.IsNullOrEmpty(keyName) && !string.IsNullOrEmpty(keyValue))
+            {
+                parameters = new string[2 + additionalParameters.Length];
+                parameters[0] = moduleIdParam;
+                parameters[1] = string.Format("{0}={1}", keyName, keyValue);
+                Array.Copy(additionalParameters, 0, parameters, 2, additionalParameters.Length);
+            }
+            else
+            {
+                parameters = new string[1 + additionalParameters.Length];
+                parameters[0] = moduleIdParam;
+                Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
+            }
+
+            return this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, key, false, parameters);
+        }
+
+        public string NavigateUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
+        {
+            return this.NavigateUrl(tabID, controlKey, Globals.glbDefaultPage, pageRedirect, additionalParameters);
+        }
+
+        public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
+        {
+            var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
+            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var language = Globals.GetCultureCode(tabID, isSuperTab, settings);
+            var url = TestableGlobals.Instance.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+
+            // Making URLs call popups
+            if (this.PortalSettings != null && this.PortalSettings.EnablePopUps)
+            {
+                if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && url.Contains("ctl"))
+                {
+                    url = UrlUtils.PopUpUrl(url, null, this.PortalSettings, false, pageRedirect);
+                }
+            }
+
+            return url;
+        }
+
+        public int GetNextActionID()
+        {
+            this._nextActionId += 1;
+            return this._nextActionId;
         }
 
         private static string FilterUrl(HttpRequest request)
@@ -747,79 +820,6 @@ namespace DotNetNuke.UI.Modules
             var isSecureConnection = UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request);
             return (isSecureConnection && url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                    || (!isSecureConnection && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        public string EditUrl(string keyName, string keyValue)
-        {
-            return this.EditUrl(keyName, keyValue, "Edit");
-        }
-
-        public string EditUrl(string keyName, string keyValue, string controlKey)
-        {
-            var parameters = new string[] { };
-            return this.EditUrl(keyName, keyValue, controlKey, parameters);
-        }
-
-        public string EditUrl(string keyName, string keyValue, string controlKey, params string[] additionalParameters)
-        {
-            string key = controlKey;
-            if (string.IsNullOrEmpty(key))
-            {
-                key = "Edit";
-            }
-
-            string moduleIdParam = string.Empty;
-            if (this.Configuration != null)
-            {
-                moduleIdParam = string.Format("mid={0}", this.Configuration.ModuleID);
-            }
-
-            string[] parameters;
-            if (!string.IsNullOrEmpty(keyName) && !string.IsNullOrEmpty(keyValue))
-            {
-                parameters = new string[2 + additionalParameters.Length];
-                parameters[0] = moduleIdParam;
-                parameters[1] = string.Format("{0}={1}", keyName, keyValue);
-                Array.Copy(additionalParameters, 0, parameters, 2, additionalParameters.Length);
-            }
-            else
-            {
-                parameters = new string[1 + additionalParameters.Length];
-                parameters[0] = moduleIdParam;
-                Array.Copy(additionalParameters, 0, parameters, 1, additionalParameters.Length);
-            }
-
-            return this.NavigateUrl(this.PortalSettings.ActiveTab.TabID, key, false, parameters);
-        }
-
-        public string NavigateUrl(int tabID, string controlKey, bool pageRedirect, params string[] additionalParameters)
-        {
-            return this.NavigateUrl(tabID, controlKey, Globals.glbDefaultPage, pageRedirect, additionalParameters);
-        }
-
-        public string NavigateUrl(int tabID, string controlKey, string pageName, bool pageRedirect, params string[] additionalParameters)
-        {
-            var isSuperTab = TestableGlobals.Instance.IsHostTab(tabID);
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
-            var language = Globals.GetCultureCode(tabID, isSuperTab, settings);
-            var url = TestableGlobals.Instance.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
-
-            // Making URLs call popups
-            if (this.PortalSettings != null && this.PortalSettings.EnablePopUps)
-            {
-                if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && url.Contains("ctl"))
-                {
-                    url = UrlUtils.PopUpUrl(url, null, this.PortalSettings, false, pageRedirect);
-                }
-            }
-
-            return url;
-        }
-
-        public int GetNextActionID()
-        {
-            this._nextActionId += 1;
-            return this._nextActionId;
         }
     }
 }
