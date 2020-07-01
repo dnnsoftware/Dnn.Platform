@@ -217,10 +217,10 @@ Bij gebruik van Windows Explorer, browse naar de folders van uw website ( {0} ).
     <value>AppPool in IIS moet onder Integrated Mode draaien</value>
   </data>
   <data name="ImprovementProgramExplain.Text" xml:space="preserve">
-    <value>Het productverbeterprogramma stelt ons in staat om een beter beeld te krijgen hoe we DNNPlatform kunnen verbeteren. De gegevens helpen ons om het gebruik te analyseren en om te zien wat belangrijk is voor de mensen die DNNPlatform gebruiken. Alle data is anoniem en alleen voor intern gebruik. Kijk voor meer informatie op https://www.dnnsoftware.com/dnn-improvement-program.</value>
+    <value>Het productverbeteringsprogramma stelt ons in staat om een beter beeld te krijgen hoe we DNNPlatform kunnen verbeteren. De gegevens helpen ons om het gebruik te analyseren en om te zien wat belangrijk is voor de mensen die DNNPlatform gebruiken. Alle data is anoniem en alleen voor intern gebruik.&lt;br /&gt;Kijk voor meer informatie op &lt;a href="https://www.dnnsoftware.com/dnn-improvement-program" target="_blank"&gt;DNN Productverbeteringsprogramma&lt;/a&gt;.&lt;br /&gt;</value>
   </data>
   <data name="ImprovementProgramLabel.Text" xml:space="preserve">
-    <value>Stuur anonieme gebruikersinformatie naar DNN</value>
+    <value>Stuur anonieme gebruiksinformatie naar DNN</value>
   </data>
   <data name="ImprovementsProgramTitle.Text" xml:space="preserve">
     <value>Productverbeteringsprogramma</value>
