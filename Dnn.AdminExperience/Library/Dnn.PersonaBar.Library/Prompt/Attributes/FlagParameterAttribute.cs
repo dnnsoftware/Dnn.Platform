@@ -31,6 +31,11 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         {
         }
 
+        public FlagParameterAttribute(string flag, string description, string type, bool required)
+            : this(flag, description, type, string.Empty, required)
+        {
+        }
+
         /// <summary>
         /// Gets or sets name of the flag.
         /// </summary>
@@ -55,10 +60,5 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
         /// Gets or sets description of flag.
         /// </summary>
         public string Description { get; set; }
-
-        public FlagParameterAttribute(string flag, string description, string type, bool required)
-            : this(flag, description, type, string.Empty, required)
-        {
-        }
     }
 }

@@ -212,6 +212,16 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
+        private static void RefreshRecordsUserIds(IEnumerable<SettingItem> settingItems)
+        {
+            var provider = DataProvider.Instance();
+            foreach (var item in settingItems)
+            {
+                provider.UpdateSettingRecordChangers("RoleSettings", "RoleID",
+                    item.RoleId, item.Name, item.CreatedBy, item.ModifiedBy);
+            }
+        }
+
         private void ProcessRoleGroups(ExportImportJob importJob, ImportDto importDto,
             IEnumerable<ExportRoleGroup> otherRoleGroups)
         {
@@ -435,16 +445,6 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             RoleController.Instance.ClearRoleCache(importJob.PortalId);
-        }
-
-        private static void RefreshRecordsUserIds(IEnumerable<SettingItem> settingItems)
-        {
-            var provider = DataProvider.Instance();
-            foreach (var item in settingItems)
-            {
-                provider.UpdateSettingRecordChangers("RoleSettings", "RoleID",
-                    item.RoleId, item.Name, item.CreatedBy, item.ModifiedBy);
-            }
         }
 
         private struct RoleGroupItem

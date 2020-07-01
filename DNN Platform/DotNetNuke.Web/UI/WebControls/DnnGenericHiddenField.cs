@@ -17,6 +17,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private bool _isValueSerialized = false;
 
+        public T TypedValueOrDefault
+        {
+            get
+            {
+                return this.TypedValue ?? (this.TypedValue = new T());
+            }
+        }
+
+        public bool HasValue
+        {
+            get { return this._typedValue != null; }
+        }
+
         public T TypedValue
         {
             get
@@ -29,19 +42,6 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._typedValue = value;
                 this._isValueSerialized = false;
             }
-        }
-
-        public T TypedValueOrDefault
-        {
-            get
-            {
-                return this.TypedValue ?? (this.TypedValue = new T());
-            }
-        }
-
-        public bool HasValue
-        {
-            get { return this._typedValue != null; }
         }
 
         public override void RenderControl(HtmlTextWriter writer)

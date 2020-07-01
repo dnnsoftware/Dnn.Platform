@@ -9,7 +9,6 @@ namespace Dnn.PersonaBar.Users.Components.Helpers
 
     public class SearchTextFilter
     {
-
         public static string CleanWildcards(string searchText)
         {
             if (string.IsNullOrEmpty(searchText) || searchText.Equals("*") || searchText.Equals("%"))

@@ -34,14 +34,14 @@ namespace DotNetNuke.Services.Social.Messaging
             this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, Convert.ToInt32(userPreference.MessagesEmailFrequency), Convert.ToInt32(userPreference.NotificationsEmailFrequency));
         }
 
-        protected override Func<IUserPreferencesController> GetFactory()
-        {
-            return () => new UserPreferencesController();
-        }
-
         public UserPreference GetUserPreference(UserInfo userinfo)
         {
             return CBO.FillObject<UserPreference>(this.dataService.GetUserPreference(userinfo.PortalID, userinfo.UserID));
+        }
+
+        protected override Func<IUserPreferencesController> GetFactory()
+        {
+            return () => new UserPreferencesController();
         }
     }
 }

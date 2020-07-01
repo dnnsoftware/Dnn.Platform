@@ -116,24 +116,6 @@ namespace DotNetNuke.Services.Exceptions
             ProcessHttpException(exc, URL);
         }
 
-        /// <summary>
-        /// Threads the abort check if the exception is a ThreadAbortCheck.
-        /// </summary>
-        /// <param name="exc">The exc.</param>
-        /// <returns></returns>
-        private static bool ThreadAbortCheck(Exception exc)
-        {
-            if (exc is ThreadAbortException)
-            {
-                Thread.ResetAbort();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public static void ProcessHttpException(HttpException exc)
         {
             ProcessHttpException(exc, HttpContext.Current.Request.RawUrl);
@@ -165,28 +147,6 @@ namespace DotNetNuke.Services.Exceptions
         public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
         {
             ProcessModuleLoadException((Control)objPortalModuleBase, exc, DisplayErrorMessage);
-        }
-
-        private static void ProcessHttpException(HttpException exc, string URL)
-        {
-            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
-            Logger.Error(notFoundErrorString + ": - " + URL, exc);
-
-            var log = new LogInfo
-            {
-                BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
-            };
-            log.LogProperties.Add(new LogDetailInfo(notFoundErrorString, "URL"));
-            var context = HttpContext.Current;
-            if (context != null)
-            {
-                log.LogProperties.Add(new LogDetailInfo("URL:", URL));
-            }
-
-            LogController.Instance.AddLog(log);
-
-            throw exc;
         }
 
         /// <summary>
@@ -487,6 +447,46 @@ namespace DotNetNuke.Services.Exceptions
             Logger.Error(exc);
             var objExceptionLog = new ExceptionLogController();
             objExceptionLog.AddLog(exc, ExceptionLogController.ExceptionLogType.SEARCH_INDEXER_EXCEPTION);
+        }
+
+        /// <summary>
+        /// Threads the abort check if the exception is a ThreadAbortCheck.
+        /// </summary>
+        /// <param name="exc">The exc.</param>
+        /// <returns></returns>
+        private static bool ThreadAbortCheck(Exception exc)
+        {
+            if (exc is ThreadAbortException)
+            {
+                Thread.ResetAbort();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static void ProcessHttpException(HttpException exc, string URL)
+        {
+            var notFoundErrorString = Localization.GetString("ResourceNotFound", Localization.SharedResourceFile);
+            Logger.Error(notFoundErrorString + ": - " + URL, exc);
+
+            var log = new LogInfo
+            {
+                BypassBuffering = true,
+                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+            };
+            log.LogProperties.Add(new LogDetailInfo(notFoundErrorString, "URL"));
+            var context = HttpContext.Current;
+            if (context != null)
+            {
+                log.LogProperties.Add(new LogDetailInfo("URL:", URL));
+            }
+
+            LogController.Instance.AddLog(log);
+
+            throw exc;
         }
     }
 }

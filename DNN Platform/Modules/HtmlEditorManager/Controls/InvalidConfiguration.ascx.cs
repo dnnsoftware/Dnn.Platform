@@ -10,6 +10,5 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     /// Control to display information about provider not being supported.
     /// </summary>
     public partial class InvalidConfiguration : PortalModuleBase
-    {
-    }
+    {}
 }

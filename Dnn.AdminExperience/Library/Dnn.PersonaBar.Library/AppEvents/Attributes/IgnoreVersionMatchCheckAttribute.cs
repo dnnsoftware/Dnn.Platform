@@ -14,6 +14,5 @@ namespace Dnn.PersonaBar.Library.AppEvents.Attributes
     /// <remarks>This has been added as workaround for microservices module and a jira (CONTENT-6958) has been
     /// created to review if the version match check can be removed in the future.</remarks>
     public class IgnoreVersionMatchCheckAttribute : Attribute
-    {
-    }
+    {}
 }

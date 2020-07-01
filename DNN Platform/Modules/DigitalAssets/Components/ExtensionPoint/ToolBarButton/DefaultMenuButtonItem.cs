@@ -23,6 +23,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
             this.Action = itemAction;
         }
 
+        public bool Visible
+        {
+            get { return true; }
+        }
+
         public string ItemId { get; private set; }
 
         public string Attributes { get; private set; }
@@ -38,11 +43,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
         public string Action { get; private set; }
 
         public string CssClass { get; private set; }
-
-        public bool Visible
-        {
-            get { return true; }
-        }
 
         public ModuleInstanceContext ModuleContext { get; set; }
     }

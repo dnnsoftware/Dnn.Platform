@@ -67,6 +67,25 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets the Module Context for this control.
+        /// </summary>
+        /// <returns>A ModuleInstanceContext.</returns>
+        /// -----------------------------------------------------------------------------
+        public ModuleInstanceContext ModuleContext
+        {
+            get
+            {
+                if (this._moduleContext == null)
+                {
+                    this._moduleContext = new ModuleInstanceContext(this);
+                }
+
+                return this._moduleContext;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the local resource file for this control.
         /// </summary>
         /// <returns>A String.</returns>
@@ -91,25 +110,6 @@ namespace DotNetNuke.UI.Modules
             set
             {
                 this._localResourceFile = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Module Context for this control.
-        /// </summary>
-        /// <returns>A ModuleInstanceContext.</returns>
-        /// -----------------------------------------------------------------------------
-        public ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                if (this._moduleContext == null)
-                {
-                    this._moduleContext = new ModuleInstanceContext(this);
-                }
-
-                return this._moduleContext;
             }
         }
     }

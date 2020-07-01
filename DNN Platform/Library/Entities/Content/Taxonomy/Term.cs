@@ -49,6 +49,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     public class Term : BaseEntityInfo, IHydratable
     {
         private static readonly PortalSecurity Security = PortalSecurity.Instance;
+        private readonly List<string> _synonyms = new List<string>();
 
         private List<Term> _childTerms;
         private string _description;
@@ -56,7 +57,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private string _name;
         private int? _parentTermId;
         private int _right;
-        private readonly List<string> _synonyms = new List<string>();
         private int _termId;
         private Vocabulary _vocabulary;
         private int _vocabularyId;
@@ -112,21 +112,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
-        public string Description
-        {
-            get
-            {
-                return this._description;
-            }
-
-            set
-            {
-                this._description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
-            }
-        }
-
-        [XmlIgnore]
-        [ScriptIgnore]
         public bool IsHeirarchical
         {
             get
@@ -142,6 +127,66 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             get
             {
                 return this._left;
+            }
+        }
+
+        [XmlIgnore]
+        [ScriptIgnore]
+        public int Right
+        {
+            get
+            {
+                return this._right;
+            }
+        }
+
+        [XmlIgnore]
+        [ScriptIgnore]
+        public List<string> Synonyms
+        {
+            get
+            {
+                return this._synonyms;
+            }
+        }
+
+        [XmlIgnore]
+        [ScriptIgnore]
+        public Vocabulary Vocabulary
+        {
+            get
+            {
+                if (this._vocabulary == null && this._vocabularyId > Null.NullInteger)
+                {
+                    this._vocabulary = this.GetVocabulary(this._vocabularyId);
+                }
+
+                return this._vocabulary;
+            }
+        }
+
+        [XmlIgnore]
+        [ScriptIgnore]
+        public int VocabularyId
+        {
+            get
+            {
+                return this._vocabularyId;
+            }
+        }
+
+        [XmlIgnore]
+        [ScriptIgnore]
+        public string Description
+        {
+            get
+            {
+                return this._description;
+            }
+
+            set
+            {
+                this._description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }
 
@@ -187,26 +232,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         [XmlIgnore]
         [ScriptIgnore]
-        public int Right
-        {
-            get
-            {
-                return this._right;
-            }
-        }
-
-        [XmlIgnore]
-        [ScriptIgnore]
-        public List<string> Synonyms
-        {
-            get
-            {
-                return this._synonyms;
-            }
-        }
-
-        [XmlIgnore]
-        [ScriptIgnore]
         public int TermId
         {
             get
@@ -217,31 +242,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             set
             {
                 this._termId = value;
-            }
-        }
-
-        [XmlIgnore]
-        [ScriptIgnore]
-        public Vocabulary Vocabulary
-        {
-            get
-            {
-                if (this._vocabulary == null && this._vocabularyId > Null.NullInteger)
-                {
-                    this._vocabulary = this.GetVocabulary(this._vocabularyId);
-                }
-
-                return this._vocabulary;
-            }
-        }
-
-        [XmlIgnore]
-        [ScriptIgnore]
-        public int VocabularyId
-        {
-            get
-            {
-                return this._vocabularyId;
             }
         }
 

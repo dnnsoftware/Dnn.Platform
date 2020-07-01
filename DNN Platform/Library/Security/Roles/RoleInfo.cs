@@ -46,6 +46,71 @@ namespace DotNetNuke.Security.Roles
             this.IsSystemRole = false;
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Role Type.
+        /// </summary>
+        /// <value>A enum representing the type of the role.</value>
+        /// -----------------------------------------------------------------------------
+        public RoleType RoleType
+        {
+            get
+            {
+                if (!this._RoleTypeSet)
+                {
+                    this.GetRoleType();
+                    this._RoleTypeSet = true;
+                }
+
+                return this._RoleType;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the role settings.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public Dictionary<string, string> Settings
+        {
+            get
+            {
+                return this._settings ?? (this._settings = (this.RoleID == Null.NullInteger)
+                                                     ? new Dictionary<string, string>()
+                                                     : RoleController.Instance.GetRoleSettings(this.RoleID) as
+                                                       Dictionary<string, string>);
+            }
+        }
+
+        public string PhotoURL
+        {
+            get
+            {
+                string photoURL = Globals.ApplicationPath + "/images/sample-group-profile.jpg";
+
+                if (this.IconFile != null)
+                {
+                    if (!string.IsNullOrEmpty(this.IconFile))
+                    {
+                        IFileInfo fileInfo =
+                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
+                        if (fileInfo != null)
+                        {
+                            photoURL = FileManager.Instance.GetUrl(fileInfo);
+                        }
+                    }
+                }
+
+                return photoURL;
+            }
+        }
+
+        public CacheLevel Cacheability
+        {
+            get { return CacheLevel.fullyCacheable; }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether gets whether this role is a system role.
         /// </summary>
@@ -146,26 +211,6 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Role Type.
-        /// </summary>
-        /// <value>A enum representing the type of the role.</value>
-        /// -----------------------------------------------------------------------------
-        public RoleType RoleType
-        {
-            get
-            {
-                if (!this._RoleTypeSet)
-                {
-                    this.GetRoleType();
-                    this._RoleTypeSet = true;
-                }
-
-                return this._RoleType;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets and sets the RSVP Code for the role.
         /// </summary>
         /// <value>A string representing the RSVP Code for the role.</value>
@@ -188,23 +233,6 @@ namespace DotNetNuke.Security.Roles
         /// <value>A single number representing the fee for the role.</value>
         /// -----------------------------------------------------------------------------
         public float ServiceFee { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the role settings.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public Dictionary<string, string> Settings
-        {
-            get
-            {
-                return this._settings ?? (this._settings = (this.RoleID == Null.NullInteger)
-                                                     ? new Dictionary<string, string>()
-                                                     : RoleController.Instance.GetRoleSettings(this.RoleID) as
-                                                       Dictionary<string, string>);
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -255,29 +283,6 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public int UserCount { get; private set; }
 
-        public string PhotoURL
-        {
-            get
-            {
-                string photoURL = Globals.ApplicationPath + "/images/sample-group-profile.jpg";
-
-                if (this.IconFile != null)
-                {
-                    if (!string.IsNullOrEmpty(this.IconFile))
-                    {
-                        IFileInfo fileInfo =
-                            FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
-                        if (fileInfo != null)
-                        {
-                            photoURL = FileManager.Instance.GetUrl(fileInfo);
-                        }
-                    }
-                }
-
-                return photoURL;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Key ID.
@@ -288,11 +293,6 @@ namespace DotNetNuke.Security.Roles
         {
             get { return this.RoleID; }
             set { this.RoleID = value; }
-        }
-
-        public CacheLevel Cacheability
-        {
-            get { return CacheLevel.fullyCacheable; }
         }
 
         /// -----------------------------------------------------------------------------
@@ -444,27 +444,6 @@ namespace DotNetNuke.Security.Roles
 
                     propertyNotFound = true;
                     return string.Empty;
-            }
-        }
-
-        private void GetRoleType()
-        {
-            var portal = PortalController.Instance.GetPortal(this.PortalID);
-            if (this.RoleID == portal.AdministratorRoleId)
-            {
-                this._RoleType = RoleType.Administrator;
-            }
-            else if (this.RoleID == portal.RegisteredRoleId)
-            {
-                this._RoleType = RoleType.RegisteredUser;
-            }
-            else if (this.RoleName == "Subscribers")
-            {
-                this._RoleType = RoleType.Subscriber;
-            }
-            else if (this.RoleName == "Unverified Users")
-            {
-                this._RoleType = RoleType.UnverifiedUser;
             }
         }
 
@@ -703,6 +682,27 @@ namespace DotNetNuke.Security.Roles
 
             // Write end of main element
             writer.WriteEndElement();
+        }
+
+        private void GetRoleType()
+        {
+            var portal = PortalController.Instance.GetPortal(this.PortalID);
+            if (this.RoleID == portal.AdministratorRoleId)
+            {
+                this._RoleType = RoleType.Administrator;
+            }
+            else if (this.RoleID == portal.RegisteredRoleId)
+            {
+                this._RoleType = RoleType.RegisteredUser;
+            }
+            else if (this.RoleName == "Subscribers")
+            {
+                this._RoleType = RoleType.Subscriber;
+            }
+            else if (this.RoleName == "Unverified Users")
+            {
+                this._RoleType = RoleType.UnverifiedUser;
+            }
         }
 
         private string GetString(string keyName, string defaultValue)

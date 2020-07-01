@@ -21,30 +21,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Items.Insert(index, new DnnComboBoxItem(text, value));
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            this.EnableEmbeddedBaseStylesheet = false;
-            this.OnClientLoad = "$.dnnComboBoxLoaded";
-            this.OnClientFocus = "$.dnnComboBoxHack";
-            this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
-            this.OnClientItemsRequested = "$.dnnComboBoxItemRequested";
-            this.MaxHeight = 240;
-            this.ZIndex = 100010;
-            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
-            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
-            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
-            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
-            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
-        }
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            Utilities.ApplySkin(this);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            base.OnPreRender(e);
-        }
-
         public void DataBind(string initialValue)
         {
             this.DataBind(initialValue, false);
@@ -73,6 +49,30 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.FindItemByValue(initial, true).Selected = true;
                 }
             }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            this.EnableEmbeddedBaseStylesheet = false;
+            this.OnClientLoad = "$.dnnComboBoxLoaded";
+            this.OnClientFocus = "$.dnnComboBoxHack";
+            this.OnClientDropDownOpened = "$.dnnComboBoxScroll";
+            this.OnClientItemsRequested = "$.dnnComboBoxItemRequested";
+            this.MaxHeight = 240;
+            this.ZIndex = 100010;
+            this.Localization.ItemsCheckedString = Utilities.GetLocalizedString("ItemsCheckedString");
+            this.Localization.CheckAllString = Utilities.GetLocalizedString("CheckAllString");
+            this.Localization.AllItemsCheckedString = Utilities.GetLocalizedString("AllItemsCheckedString");
+            this.Localization.NoMatches = Utilities.GetLocalizedString("NoMatches");
+            this.Localization.ShowMoreFormatString = Utilities.GetLocalizedString("ShowMoreFormatString");
+        }
+
+        protected override void OnPreRender(EventArgs e)
+        {
+            Utilities.ApplySkin(this);
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            base.OnPreRender(e);
         }
     }
 }

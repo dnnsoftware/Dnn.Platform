@@ -16,10 +16,6 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
         {
         }
 
-        public string TypeName { get; set; }
-        public bool CatchUp { get; set; }
-        public string Created { get; set; }
-        public string StartDate { get; set; }
         public TaskModel(ScheduleItem item) : base(item)
         {
             this.NextStart = item.NextStart.ToPromptLongDateString();
@@ -28,5 +24,10 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Models
             this.StartDate = item.ScheduleStartDate.ToPromptLongDateString();
             this.TypeName = item.TypeFullName;
         }
+
+        public string TypeName { get; set; }
+        public bool CatchUp { get; set; }
+        public string Created { get; set; }
+        public string StartDate { get; set; }
     }
 }

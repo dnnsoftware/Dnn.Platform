@@ -69,15 +69,6 @@ namespace DotNetNuke.Tests.UI.Validation
             Assert.AreEqual("Yo, you have to specify 5 characters for Bar", result.Errors.Where(e => e.PropertyName == "Bar").Single().ErrorMessage);
         }
 
-        public class TestClass
-        {
-            [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
-            public object Foo { get; set; }
-
-            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
-            public string Bar { get; set; }
-        }
-
         [Test]
         public void ValidateObject_Collects_ValidationAttribute_Objects_From_Failed_Validation()
         {
@@ -92,6 +83,15 @@ namespace DotNetNuke.Tests.UI.Validation
             Assert.IsFalse(result.IsValid);
             Assert.IsInstanceOf<RequiredAttribute>(result.Errors.Single(e => e.PropertyName == "Foo").Validator);
             Assert.IsInstanceOf<StringLengthAttribute>(result.Errors.Single(e => e.PropertyName == "Bar").Validator);
+        }
+
+        public class TestClass
+        {
+            [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
+            public object Foo { get; set; }
+
+            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
+            public string Bar { get; set; }
         }
     }
 }

@@ -16,10 +16,10 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     {
         internal const string AuthenticationScheme = "Digest";
         private static readonly MD5 Md5 = new MD5CryptoServiceProvider();
-        private DigestAuthenticationRequest _request;
-        private string _password;
         private readonly int _portalId;
         private readonly string _ipAddress;
+        private DigestAuthenticationRequest _request;
+        private string _password;
 
         public DigestAuthentication(DigestAuthenticationRequest request, int portalId, string ipAddress)
         {

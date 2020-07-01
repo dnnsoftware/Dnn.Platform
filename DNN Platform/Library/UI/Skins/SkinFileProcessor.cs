@@ -166,6 +166,14 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
+        public string SkinName
+        {
+            get
+            {
+                return this.m_SkinName;
+            }
+        }
+
         private PathParser PathFactory
         {
             get
@@ -208,14 +216,6 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.m_Message = value;
-            }
-        }
-
-        public string SkinName
-        {
-            get
-            {
-                return this.m_SkinName;
             }
         }
 
@@ -353,6 +353,14 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
+            private Hashtable ControlList
+            {
+                get
+                {
+                    return this.m_ControlList;
+                }
+            }
+
             private ArrayList RegisterList
             {
                 get
@@ -363,14 +371,6 @@ namespace DotNetNuke.UI.Skins
                 set
                 {
                     this.m_RegisterList = value;
-                }
-            }
-
-            private Hashtable ControlList
-            {
-                get
-                {
-                    return this.m_ControlList;
                 }
             }
 
@@ -631,6 +631,14 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
+            private Hashtable ControlList
+            {
+                get
+                {
+                    return this.m_ControlList;
+                }
+            }
+
             private ArrayList RegisterList
             {
                 get
@@ -641,14 +649,6 @@ namespace DotNetNuke.UI.Skins
                 set
                 {
                     this.m_RegisterList = value;
-                }
-            }
-
-            private Hashtable ControlList
-            {
-                get
-                {
-                    return this.m_ControlList;
                 }
             }
 
@@ -871,18 +871,18 @@ namespace DotNetNuke.UI.Skins
                 new Regex("(?<tag><embed[^>]*?\\s(?:src)\\s*=\\s*\")(?!https://|http://|\\\\|[~/])(?<content>[^\"]*)(?<endtag>\"[^>]*>)", PatternOptions),
             };
 
+            // retrieve the patterns
+            private static readonly Regex[] CssArrayPattern =
+            {
+                new Regex("(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)", PatternOptions),
+            };
+
             private readonly string SUBST = Util.GetLocalizedString("Substituting");
             private readonly string SUBST_DETAIL = Util.GetLocalizedString("Substituting.Detail");
             private readonly ArrayList m_CSSPatterns = new ArrayList();
             private readonly ArrayList m_HTMLPatterns = new ArrayList();
             private string m_Messages = string.Empty;
             private string m_SkinPath = string.Empty;
-
-            // retrieve the patterns
-            private static readonly Regex[] CssArrayPattern =
-            {
-                new Regex("(?<tag>\\surl\\u0028)(?<content>[^\\u0029]*)(?<endtag>\\u0029.*;)", PatternOptions),
-            };
 
             /// -----------------------------------------------------------------------------
             /// <summary>
@@ -1068,6 +1068,7 @@ namespace DotNetNuke.UI.Skins
 
             private static readonly Regex PaneCheck1Regex = new Regex("\\s*id\\s*=\\s*\"" + Globals.glbDefaultPane + "\"", RegexOptions.IgnoreCase | RegexOptions.Compiled);
             private static readonly Regex PaneCheck2Regex = new Regex("\\s*[" + Globals.glbDefaultPane + "]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            private static readonly Regex BodyExtractionRegex = new Regex(StrPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
             private readonly string CONTROL_DIR = Util.GetLocalizedString("ControlDirective");
             private readonly string CONTROL_REG = Util.GetLocalizedString("ControlRegister");
@@ -1083,7 +1084,6 @@ namespace DotNetNuke.UI.Skins
             private readonly string m_WriteFileName;
             private string FILE_FORMAT_DETAIL = Util.GetLocalizedString("FileFormat.Detail");
             private string m_Messages = string.Empty;
-            private static readonly Regex BodyExtractionRegex = new Regex(StrPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
 
             /// -----------------------------------------------------------------------------
             /// <summary>

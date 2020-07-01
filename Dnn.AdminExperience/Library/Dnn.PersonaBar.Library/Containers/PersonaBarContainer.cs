@@ -49,9 +49,9 @@ namespace Dnn.PersonaBar.Library.Containers
 
         public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit" };
 
-        protected INavigationManager NavigationManager { get; }
-
         public virtual bool Visible => true;
+
+        protected INavigationManager NavigationManager { get; }
 
         public static void SetInstance(IPersonaBarContainer instance, bool overwrite = false)
         {

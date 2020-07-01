@@ -22,6 +22,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Utilities
 
             return new ConsoleErrorResultModel(this.LocalizeString("Prompt_Echo_Nothing"));
         }
-
     }
 }

@@ -52,6 +52,21 @@ namespace DotNetNuke.Services.Install
         private static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
         private static IInstallationStep iisVerification = new IISVerificationStep();
 
+        // Ordered List of Steps (and weight in percentage) to be executed
+        private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
+            {
+            // {new AddFcnModeStep(), 1},
+                { iisVerification, 1 },
+                { upgradeDatabase, 49 },
+                { upgradeExtensions, 49 },
+                { new InstallVersionStep(), 1 },
+            };
+
+        static UpgradeWizard()
+        {
+            IsAuthenticated = false;
+        }
+
         protected Version ApplicationVersion
         {
             get
@@ -83,6 +98,78 @@ namespace DotNetNuke.Services.Install
 
         private static bool IsAuthenticated { get; set; }
 
+        [System.Web.Services.WebMethod]
+        public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)
+        {
+            string errorMsg;
+            var result = VerifyHostUser(accountInfo, out errorMsg);
+
+            return new Tuple<bool, string>(result, errorMsg);
+        }
+
+        [System.Web.Services.WebMethod]
+        public static void RunUpgrade(Dictionary<string, string> accountInfo)
+        {
+            string errorMsg;
+            var result = VerifyHostUser(accountInfo, out errorMsg);
+
+            if (result == true)
+            {
+                _upgradeRunning = false;
+                LaunchUpgrade();
+
+                // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
+                HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
+
+                // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
+            }
+        }
+
+        [System.Web.Services.WebMethod]
+        public static object GetInstallationLog(int startRow)
+        {
+            if (IsAuthenticated == false)
+            {
+                return string.Empty;
+            }
+
+            var data = string.Empty;
+            string logFile = "InstallerLog" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".resources";
+            try
+            {
+                var lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Portals", "_default", "logs", logFile));
+                var errorLogged = false;
+                if (lines.Length > startRow)
+                {
+                    var count = lines.Length - startRow > 500 ? 500 : lines.Length - startRow;
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                    for (var i = startRow; i < startRow + count; i++)
+                    {
+                        if (lines[i].Contains("[ERROR]"))
+                        {
+                            sb.Append(lines[i]);
+                            sb.Append("<br/>");
+                            errorLogged = true;
+                        }
+                    }
+
+                    data = sb.ToString();
+                }
+
+                if (errorLogged == false)
+                {
+                    Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                }
+            }
+            catch (Exception)
+            {
+                // ignore
+            }
+
+            return data;
+        }
+
         protected string LocalizeString(string key)
         {
             return Localization.GetString(key, LocalResourceFile, _culture);
@@ -92,6 +179,64 @@ namespace DotNetNuke.Services.Install
         {
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Init runs when the Page is initialised.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
+            {
+                this.Response.Redirect(this.Request.RawUrl, true);
+            }
+
+            this.SslRequiredCheck();
+            GetInstallerLocales();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the Page loads.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            if (InstallBlocker.Instance.IsInstallInProgress())
+            {
+                this.Response.Redirect("Install.aspx", true);
+            }
+
+            base.OnLoad(e);
+
+            this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
+            this.LocalizePage();
+
+            if (this.Request.RawUrl.EndsWith("?complete"))
+            {
+                this.CompleteUpgrade();
+            }
+
+            // Create Status Files
+            if (!this.Page.IsPostBack)
+            {
+                // Reset the accept terms flag
+                HostController.Instance.Update("AcceptDnnTerms", "N");
+                if (!File.Exists(StatusFile))
+                {
+                    File.CreateText(StatusFile).Close();
+                }
+
+                Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
+            }
         }
 
         private static void GetInstallerLocales()
@@ -226,6 +371,65 @@ namespace DotNetNuke.Services.Install
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
         }
 
+        private static void CurrentStepActivity(string status)
+        {
+            var percentage = (_currentStep == null) ? _upgradeProgress : _upgradeProgress + (_currentStep.Percentage / _steps.Count);
+            var obj = new
+            {
+                progress = percentage,
+                details = status,
+                check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? string.Empty : " Errors " + upgradeDatabase.Errors.Count),
+                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? string.Empty : " Errors " + upgradeExtensions.Errors.Count),
+            };
+
+            try
+            {
+                if (!File.Exists(StatusFile))
+                {
+                    File.CreateText(StatusFile);
+                }
+
+                using (var sw = new StreamWriter(StatusFile, true))
+                {
+                    sw.WriteLine(obj.ToJson());
+                    sw.Close();
+                }
+            }
+            catch (Exception)
+            {
+                // TODO - do something
+            }
+        }
+
+        private static bool VerifyHostUser(Dictionary<string, string> accountInfo, out string errorMsg)
+        {
+            var result = true;
+            errorMsg = string.Empty;
+
+            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
+            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
+            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
+            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
+
+            if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
+            {
+                result = false;
+                errorMsg = LocalizeStringStatic("InvalidCredentials");
+            }
+            else
+            {
+                IsAuthenticated = true;
+            }
+
+            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
+            {
+                result = false;
+                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
+            }
+
+            return result;
+        }
+
         private void LocalizePage()
         {
             this.SetBrowserLanguage();
@@ -269,36 +473,6 @@ namespace DotNetNuke.Services.Install
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
         }
 
-        private static void CurrentStepActivity(string status)
-        {
-            var percentage = (_currentStep == null) ? _upgradeProgress : _upgradeProgress + (_currentStep.Percentage / _steps.Count);
-            var obj = new
-            {
-                progress = percentage,
-                details = status,
-                check0 = upgradeDatabase.Status.ToString() + (upgradeDatabase.Errors.Count == 0 ? string.Empty : " Errors " + upgradeDatabase.Errors.Count),
-                check1 = upgradeExtensions.Status.ToString() + (upgradeExtensions.Errors.Count == 0 ? string.Empty : " Errors " + upgradeExtensions.Errors.Count),
-            };
-
-            try
-            {
-                if (!File.Exists(StatusFile))
-                {
-                    File.CreateText(StatusFile);
-                }
-
-                using (var sw = new StreamWriter(StatusFile, true))
-                {
-                    sw.WriteLine(obj.ToJson());
-                    sw.Close();
-                }
-            }
-            catch (Exception)
-            {
-                // TODO - do something
-            }
-        }
-
         private void CompleteUpgrade()
         {
             // Delete the status file.
@@ -338,180 +512,6 @@ namespace DotNetNuke.Services.Install
 
                 this.Response.Redirect(sslUrl, true);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the Page is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (Upgrade.Upgrade.UpdateNewtonsoftVersion())
-            {
-                this.Response.Redirect(this.Request.RawUrl, true);
-            }
-
-            this.SslRequiredCheck();
-            GetInstallerLocales();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the Page loads.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            if (InstallBlocker.Instance.IsInstallInProgress())
-            {
-                this.Response.Redirect("Install.aspx", true);
-            }
-
-            base.OnLoad(e);
-
-            this.pnlAcceptTerms.Visible = this.NeedAcceptTerms;
-            this.LocalizePage();
-
-            if (this.Request.RawUrl.EndsWith("?complete"))
-            {
-                this.CompleteUpgrade();
-            }
-
-            // Create Status Files
-            if (!this.Page.IsPostBack)
-            {
-                // Reset the accept terms flag
-                HostController.Instance.Update("AcceptDnnTerms", "N");
-                if (!File.Exists(StatusFile))
-                {
-                    File.CreateText(StatusFile).Close();
-                }
-
-                Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
-            }
-        }
-
-        // Ordered List of Steps (and weight in percentage) to be executed
-        private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
-            {
-            // {new AddFcnModeStep(), 1},
-                { iisVerification, 1 },
-                { upgradeDatabase, 49 },
-                { upgradeExtensions, 49 },
-                { new InstallVersionStep(), 1 },
-            };
-
-        static UpgradeWizard()
-        {
-            IsAuthenticated = false;
-        }
-
-        [System.Web.Services.WebMethod]
-        public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)
-        {
-            string errorMsg;
-            var result = VerifyHostUser(accountInfo, out errorMsg);
-
-            return new Tuple<bool, string>(result, errorMsg);
-        }
-
-        [System.Web.Services.WebMethod]
-        public static void RunUpgrade(Dictionary<string, string> accountInfo)
-        {
-            string errorMsg;
-            var result = VerifyHostUser(accountInfo, out errorMsg);
-
-            if (result == true)
-            {
-                _upgradeRunning = false;
-                LaunchUpgrade();
-
-                // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
-                HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
-
-                // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
-                HostController.Instance.Update("InstallerFilesRemoved", "False", true);
-            }
-        }
-
-        [System.Web.Services.WebMethod]
-        public static object GetInstallationLog(int startRow)
-        {
-            if (IsAuthenticated == false)
-            {
-                return string.Empty;
-            }
-
-            var data = string.Empty;
-            string logFile = "InstallerLog" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".resources";
-            try
-            {
-                var lines = File.ReadAllLines(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Portals", "_default", "logs", logFile));
-                var errorLogged = false;
-                if (lines.Length > startRow)
-                {
-                    var count = lines.Length - startRow > 500 ? 500 : lines.Length - startRow;
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    for (var i = startRow; i < startRow + count; i++)
-                    {
-                        if (lines[i].Contains("[ERROR]"))
-                        {
-                            sb.Append(lines[i]);
-                            sb.Append("<br/>");
-                            errorLogged = true;
-                        }
-                    }
-
-                    data = sb.ToString();
-                }
-
-                if (errorLogged == false)
-                {
-                    Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
-                }
-            }
-            catch (Exception)
-            {
-                // ignore
-            }
-
-            return data;
-        }
-
-        private static bool VerifyHostUser(Dictionary<string, string> accountInfo, out string errorMsg)
-        {
-            var result = true;
-            errorMsg = string.Empty;
-
-            UserLoginStatus loginStatus = UserLoginStatus.LOGIN_FAILURE;
-            var userRequestIpAddressController = UserRequestIPAddressController.Instance;
-            var ipAddress = userRequestIpAddressController.GetUserRequestIPAddress(new HttpRequestWrapper(HttpContext.Current.Request));
-            UserInfo hostUser = UserController.ValidateUser(-1, accountInfo["username"], accountInfo["password"], "DNN", string.Empty, string.Empty, ipAddress, ref loginStatus);
-
-            if (loginStatus == UserLoginStatus.LOGIN_FAILURE || !hostUser.IsSuperUser)
-            {
-                result = false;
-                errorMsg = LocalizeStringStatic("InvalidCredentials");
-            }
-            else
-            {
-                IsAuthenticated = true;
-            }
-
-            if (result && (!accountInfo.ContainsKey("acceptTerms") || accountInfo["acceptTerms"] != "Y"))
-            {
-                result = false;
-                errorMsg = LocalizeStringStatic("AcceptTerms.Required");
-            }
-
-            return result;
         }
     }
 }

@@ -43,11 +43,6 @@ namespace DNN.Integration.Test.Framework.Helpers
             return PetaPocoHelper.ExecuteScalar<T>(AppConfigHelper.ConnectionString, CommandType.Text, qstr, args);
         }
 
-        private static string ReplaceQueryQualifier(string input)
-        {
-            return input.Replace(QualifierPrefix, AppConfigHelper.ObjectQualifier);
-        }
-
         public static IEnumerable<TItem> ExecuteQuery<TItem>(string queryString)
         {
             using (var connection = new SqlConnection(AppConfigHelper.ConnectionString))
@@ -240,6 +235,11 @@ namespace DNN.Integration.Test.Framework.Helpers
             }
 
             return values;
+        }
+
+        private static string ReplaceQueryQualifier(string input)
+        {
+            return input.Replace(QualifierPrefix, AppConfigHelper.ObjectQualifier);
         }
     }
 }

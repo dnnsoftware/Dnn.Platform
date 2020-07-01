@@ -64,6 +64,14 @@ namespace DotNetNuke.Framework
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        public string CurrentSkinPath
+        {
+            get
+            {
+                return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
@@ -89,14 +97,6 @@ namespace DotNetNuke.Framework
             }
 
             set { this.ScrollTop.Value = value.ToString(); }
-        }
-
-        public string CurrentSkinPath
-        {
-            get
-            {
-                return ((PortalSettings)HttpContext.Current.Items["PortalSettings"]).ActiveTab.SkinPath;
-            }
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -314,6 +314,88 @@ namespace DotNetNuke.Framework
             {
                 AJAX.GetScriptManager(this).AsyncPostBackTimeout = Host.AsyncTimeout;
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            this.ManageInstallerFiles();
+
+            if (!string.IsNullOrEmpty(this.ScrollTop.Value))
+            {
+                DNNClientAPI.SetScrollTop(this.Page);
+                this.ScrollTop.Value = this.ScrollTop.Value;
+            }
+        }
+
+        protected override void OnPreRender(EventArgs evt)
+        {
+            base.OnPreRender(evt);
+
+            // Set the Head tags
+            this.metaPanel.Visible = !UrlUtils.InPopUp();
+            if (!UrlUtils.InPopUp())
+            {
+                this.MetaGenerator.Content = this.Generator;
+                this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
+                this.MetaAuthor.Content = this.PortalSettings.PortalName;
+                /*
+                 * Never show to be html5 compatible and stay backward compatible
+                 *
+                 * MetaCopyright.Content = Copyright;
+                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
+                 */
+                this.MetaKeywords.Content = this.KeyWords;
+                this.MetaKeywords.Visible = !string.IsNullOrEmpty(this.KeyWords);
+                this.MetaDescription.Content = this.Description;
+                this.MetaDescription.Visible = !string.IsNullOrEmpty(this.Description);
+            }
+
+            this.Page.Header.Title = this.Title;
+            if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)
+            {
+                this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
+            }
+
+            if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
+            {
+                // Add Canonical <link> using the primary alias
+                var canonicalLink = new HtmlLink();
+                canonicalLink.Href = this.CanonicalLinkUrl;
+                canonicalLink.Attributes.Add("rel", "canonical");
+
+                // Add the HtmlLink to the Head section of the page.
+                this.Page.Header.Controls.Add(canonicalLink);
+            }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
+            {
+                var editClass = "dnnEditState";
+
+                var bodyClass = this.Body.Attributes["class"];
+                if (!string.IsNullOrEmpty(bodyClass))
+                {
+                    this.Body.Attributes["class"] = string.Format("{0} {1}", bodyClass, editClass);
+                }
+                else
+                {
+                    this.Body.Attributes["class"] = editClass;
+                }
+            }
+
+            base.Render(writer);
         }
 
         /// -----------------------------------------------------------------------------
@@ -694,88 +776,6 @@ namespace DotNetNuke.Framework
         private IFileInfo GetBackgroundFileInfoCallBack(CacheItemArgs itemArgs)
         {
             return FileManager.Instance.GetFile(this.PortalSettings.PortalId, this.PortalSettings.BackgroundFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
-        /// </summary>
-        /// <param name="e"></param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            this.ManageInstallerFiles();
-
-            if (!string.IsNullOrEmpty(this.ScrollTop.Value))
-            {
-                DNNClientAPI.SetScrollTop(this.Page);
-                this.ScrollTop.Value = this.ScrollTop.Value;
-            }
-        }
-
-        protected override void OnPreRender(EventArgs evt)
-        {
-            base.OnPreRender(evt);
-
-            // Set the Head tags
-            this.metaPanel.Visible = !UrlUtils.InPopUp();
-            if (!UrlUtils.InPopUp())
-            {
-                this.MetaGenerator.Content = this.Generator;
-                this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
-                this.MetaAuthor.Content = this.PortalSettings.PortalName;
-                /*
-                 * Never show to be html5 compatible and stay backward compatible
-                 *
-                 * MetaCopyright.Content = Copyright;
-                 * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
-                 */
-                this.MetaKeywords.Content = this.KeyWords;
-                this.MetaKeywords.Visible = !string.IsNullOrEmpty(this.KeyWords);
-                this.MetaDescription.Content = this.Description;
-                this.MetaDescription.Visible = !string.IsNullOrEmpty(this.Description);
-            }
-
-            this.Page.Header.Title = this.Title;
-            if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)
-            {
-                this.Page.Response.AddHeader("X-UA-Compatible", this.PortalSettings.AddCompatibleHttpHeader);
-            }
-
-            if (!string.IsNullOrEmpty(this.CanonicalLinkUrl))
-            {
-                // Add Canonical <link> using the primary alias
-                var canonicalLink = new HtmlLink();
-                canonicalLink.Href = this.CanonicalLinkUrl;
-                canonicalLink.Attributes.Add("rel", "canonical");
-
-                // Add the HtmlLink to the Head section of the page.
-                this.Page.Header.Controls.Add(canonicalLink);
-            }
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            if (this.PortalSettings.UserMode == PortalSettings.Mode.Edit)
-            {
-                var editClass = "dnnEditState";
-
-                var bodyClass = this.Body.Attributes["class"];
-                if (!string.IsNullOrEmpty(bodyClass))
-                {
-                    this.Body.Attributes["class"] = string.Format("{0} {1}", bodyClass, editClass);
-                }
-                else
-                {
-                    this.Body.Attributes["class"] = editClass;
-                }
-            }
-
-            base.Render(writer);
         }
     }
 }

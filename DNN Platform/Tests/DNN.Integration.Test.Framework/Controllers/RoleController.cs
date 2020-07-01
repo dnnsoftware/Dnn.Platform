@@ -53,23 +53,6 @@ namespace DNN.Integration.Test.Framework.Controllers
             return GetRoleId("Administrators", portalId);
         }
 
-        private static int CreateRole(string roleName, string roleDescription, int portalId = 0)
-        {
-            var fileContent = SqlScripts.SingleRoleCreation;
-            var masterScript = new StringBuilder(fileContent)
-                .Replace(PortalIdMarker, portalId.ToString(CultureInfo.InvariantCulture))
-                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
-                .ToString();
-
-            var script = new StringBuilder(masterScript)
-                .Replace(RoleNameMarker, roleName.Replace("'", "''"))
-                .Replace(RoleDescriptionMarker, roleDescription.Replace("'", "''"));
-
-            DatabaseHelper.ExecuteQuery(script.ToString());
-            WebApiTestHelper.ClearHostCache();
-            return GetRoleId(roleName);
-        }
-
         public static int GetRoleId(string roleName, int portalId = 0)
         {
             // The fix for DNN-4288 prevented virtual roles from getting virtual
@@ -105,6 +88,23 @@ namespace DNN.Integration.Test.Framework.Controllers
                 .Replace(UserIdMarker, userId.ToString(CultureInfo.InvariantCulture));
 
             DatabaseHelper.ExecuteQuery(script.ToString());
+        }
+
+        private static int CreateRole(string roleName, string roleDescription, int portalId = 0)
+        {
+            var fileContent = SqlScripts.SingleRoleCreation;
+            var masterScript = new StringBuilder(fileContent)
+                .Replace(PortalIdMarker, portalId.ToString(CultureInfo.InvariantCulture))
+                .Replace("{objectQualifier}", AppConfigHelper.ObjectQualifier)
+                .ToString();
+
+            var script = new StringBuilder(masterScript)
+                .Replace(RoleNameMarker, roleName.Replace("'", "''"))
+                .Replace(RoleDescriptionMarker, roleDescription.Replace("'", "''"));
+
+            DatabaseHelper.ExecuteQuery(script.ToString());
+            WebApiTestHelper.ClearHostCache();
+            return GetRoleId(roleName);
         }
     }
 }

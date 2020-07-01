@@ -47,109 +47,29 @@ namespace DotNetNuke.Entities.Modules
             this.Shareable = ModuleSharing.Unknown;
         }
 
-        [Serializable]
-        public class PageInfo : IXmlSerializable
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Module Definitions for this Desktop Module.
+        /// </summary>
+        /// <returns>A Boolean.</returns>
+        /// -----------------------------------------------------------------------------
+        public Dictionary<string, ModuleDefinitionInfo> ModuleDefinitions
         {
-            [XmlAttribute("type")]
-            public string Type { get; set; }
-
-            [XmlAttribute("common")]
-            public bool IsCommon { get; set; }
-
-            [XmlElement("name")]
-            public string Name { get; set; }
-
-            [XmlElement("icon")]
-            public string Icon { get; set; }
-
-            [XmlElement("largeIcon")]
-            public string LargeIcon { get; set; }
-
-            [XmlElement("description")]
-            public string Description { get; set; }
-
-            public bool HasAdminPage()
+            get
             {
-                return this.Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
-            }
-
-            public bool HasHostPage()
-            {
-                return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
-            }
-
-            public XmlSchema GetSchema()
-            {
-                return null;
-            }
-
-            public void ReadXml(XmlReader reader)
-            {
-                while (!reader.EOF)
+                if (this._moduleDefinitions == null)
                 {
-                    if (reader.NodeType == XmlNodeType.EndElement)
+                    if (this.DesktopModuleID > Null.NullInteger)
                     {
-                        if (reader.Name == "page")
-                        {
-                            break;
-                        }
-
-                        reader.Read();
-                        continue;
+                        this._moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(this.DesktopModuleID);
                     }
-
-                    if (reader.NodeType == XmlNodeType.Whitespace)
+                    else
                     {
-                        reader.Read();
-                        continue;
-                    }
-
-                    switch (reader.Name)
-                    {
-                        case "page":
-                            this.Type = reader.GetAttribute("type");
-                            var commonValue = reader.GetAttribute("common");
-                            if (!string.IsNullOrEmpty(commonValue))
-                            {
-                                this.IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
-                            }
-
-                            reader.Read();
-                            break;
-                        case "name":
-                            this.Name = reader.ReadElementContentAsString();
-                            break;
-                        case "icon":
-                            this.Icon = reader.ReadElementContentAsString();
-                            break;
-                        case "largeIcon":
-                            this.LargeIcon = reader.ReadElementContentAsString();
-                            break;
-                        case "description":
-                            this.Description = reader.ReadElementContentAsString();
-                            break;
-                        default:
-                            reader.Read();
-                            break;
+                        this._moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
                     }
                 }
-            }
 
-            public void WriteXml(XmlWriter writer)
-            {
-                // Write start of main elemenst
-                writer.WriteStartElement("page");
-                writer.WriteAttributeString("type", this.Type);
-                writer.WriteAttributeString("common", this.IsCommon.ToString().ToLowerInvariant());
-
-                // write out properties
-                writer.WriteElementString("name", this.Name);
-                writer.WriteElementString("icon", this.Icon);
-                writer.WriteElementString("largeIcon", this.LargeIcon);
-                writer.WriteElementString("description", this.Description);
-
-                // Write end of main element
-                writer.WriteEndElement();
+                return this._moduleDefinitions;
             }
         }
 
@@ -339,32 +259,6 @@ namespace DotNetNuke.Entities.Modules
         {
             get;
             set;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Module Definitions for this Desktop Module.
-        /// </summary>
-        /// <returns>A Boolean.</returns>
-        /// -----------------------------------------------------------------------------
-        public Dictionary<string, ModuleDefinitionInfo> ModuleDefinitions
-        {
-            get
-            {
-                if (this._moduleDefinitions == null)
-                {
-                    if (this.DesktopModuleID > Null.NullInteger)
-                    {
-                        this._moduleDefinitions = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(this.DesktopModuleID);
-                    }
-                    else
-                    {
-                        this._moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
-                    }
-                }
-
-                return this._moduleDefinitions;
-            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -795,6 +689,112 @@ namespace DotNetNuke.Entities.Modules
             if (this.Page.HasHostPage())
             {
                 this.HostPage = this.Page.Name;
+            }
+        }
+
+        [Serializable]
+        public class PageInfo : IXmlSerializable
+        {
+            [XmlAttribute("type")]
+            public string Type { get; set; }
+
+            [XmlAttribute("common")]
+            public bool IsCommon { get; set; }
+
+            [XmlElement("name")]
+            public string Name { get; set; }
+
+            [XmlElement("icon")]
+            public string Icon { get; set; }
+
+            [XmlElement("largeIcon")]
+            public string LargeIcon { get; set; }
+
+            [XmlElement("description")]
+            public string Description { get; set; }
+
+            public bool HasAdminPage()
+            {
+                return this.Type.IndexOf("admin", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+            }
+
+            public bool HasHostPage()
+            {
+                return this.Type.IndexOf("host", StringComparison.InvariantCultureIgnoreCase) > Null.NullInteger;
+            }
+
+            public XmlSchema GetSchema()
+            {
+                return null;
+            }
+
+            public void ReadXml(XmlReader reader)
+            {
+                while (!reader.EOF)
+                {
+                    if (reader.NodeType == XmlNodeType.EndElement)
+                    {
+                        if (reader.Name == "page")
+                        {
+                            break;
+                        }
+
+                        reader.Read();
+                        continue;
+                    }
+
+                    if (reader.NodeType == XmlNodeType.Whitespace)
+                    {
+                        reader.Read();
+                        continue;
+                    }
+
+                    switch (reader.Name)
+                    {
+                        case "page":
+                            this.Type = reader.GetAttribute("type");
+                            var commonValue = reader.GetAttribute("common");
+                            if (!string.IsNullOrEmpty(commonValue))
+                            {
+                                this.IsCommon = commonValue.Equals("true", StringComparison.InvariantCultureIgnoreCase);
+                            }
+
+                            reader.Read();
+                            break;
+                        case "name":
+                            this.Name = reader.ReadElementContentAsString();
+                            break;
+                        case "icon":
+                            this.Icon = reader.ReadElementContentAsString();
+                            break;
+                        case "largeIcon":
+                            this.LargeIcon = reader.ReadElementContentAsString();
+                            break;
+                        case "description":
+                            this.Description = reader.ReadElementContentAsString();
+                            break;
+                        default:
+                            reader.Read();
+                            break;
+                    }
+                }
+            }
+
+            public void WriteXml(XmlWriter writer)
+            {
+                // Write start of main elemenst
+                writer.WriteStartElement("page");
+                writer.WriteAttributeString("type", this.Type);
+                writer.WriteAttributeString("common", this.IsCommon.ToString().ToLowerInvariant());
+
+                // write out properties
+                writer.WriteElementString("name", this.Name);
+                writer.WriteElementString("icon", this.Icon);
+                writer.WriteElementString("largeIcon", this.LargeIcon);
+                writer.WriteElementString("description", this.Description);
+
+                // Write end of main element
+                writer.WriteEndElement();
             }
         }
     }

@@ -73,96 +73,6 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Cell/Mobile Phone.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string Cell
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_Cell);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_Cell, value);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the City part of the Address.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string City
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_City);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_City, value);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Country part of the Address.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string Country
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_Country);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_Country, value);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Fax Phone.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string Fax
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_Fax);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_Fax, value);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the First Name.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string FirstName
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_FirstName);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_FirstName, value);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets and sets the Full Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -176,24 +86,6 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Instant Messenger Handle.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string IM
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_IM);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_IM, value);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets a value indicating whether gets or sets whether the property has been changed.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -202,37 +94,6 @@ namespace DotNetNuke.Entities.Users
             get
             {
                 return this._IsDirty;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets or sets and sets the Last Name.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public string LastName
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_LastName);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_LastName, value);
-            }
-        }
-
-        public string Photo
-        {
-            get
-            {
-                return this.GetPropertyValue(USERPROFILE_Photo);
-            }
-
-            set
-            {
-                this.SetProfileProperty(USERPROFILE_Photo, value);
             }
         }
 
@@ -326,6 +187,155 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets and sets the Collection of Profile Properties.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public ProfilePropertyDefinitionCollection ProfileProperties
+        {
+            get { return this._profileProperties ?? (this._profileProperties = new ProfilePropertyDefinitionCollection()); }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Cell/Mobile Phone.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string Cell
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_Cell);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_Cell, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the City part of the Address.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string City
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_City);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_City, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Country part of the Address.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string Country
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_Country);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_Country, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Fax Phone.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string Fax
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_Fax);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_Fax, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the First Name.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string FirstName
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_FirstName);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_FirstName, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Instant Messenger Handle.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string IM
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_IM);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_IM, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the Last Name.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public string LastName
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_LastName);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_LastName, value);
+            }
+        }
+
+        public string Photo
+        {
+            get
+            {
+                return this.GetPropertyValue(USERPROFILE_Photo);
+            }
+
+            set
+            {
+                this.SetProfileProperty(USERPROFILE_Photo, value);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets and sets the PostalCode part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -396,16 +406,6 @@ namespace DotNetNuke.Entities.Users
                     this.SetProfileProperty(USERPROFILE_PreferredTimeZone, value.Id);
                 }
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and sets the Collection of Profile Properties.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public ProfilePropertyDefinitionCollection ProfileProperties
-        {
-            get { return this._profileProperties ?? (this._profileProperties = new ProfilePropertyDefinitionCollection()); }
         }
 
         /// -----------------------------------------------------------------------------
@@ -648,22 +648,6 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        private string GetListValue(string listName, string value)
-        {
-            ListController lc = new ListController();
-            int entryId;
-            if (int.TryParse(value, out entryId))
-            {
-                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
-                if (item != null)
-                {
-                    return item.Text;
-                }
-            }
-
-            return value;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Sets a Profile Property Value in the Profile.
@@ -685,6 +669,22 @@ namespace DotNetNuke.Entities.Users
                     this._IsDirty = true;
                 }
             }
+        }
+
+        private string GetListValue(string listName, string value)
+        {
+            ListController lc = new ListController();
+            int entryId;
+            if (int.TryParse(value, out entryId))
+            {
+                ListEntryInfo item = lc.GetListEntryInfo(listName, entryId);
+                if (item != null)
+                {
+                    return item.Text;
+                }
+            }
+
+            return value;
         }
     }
 }

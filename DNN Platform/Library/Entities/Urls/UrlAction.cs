@@ -58,33 +58,6 @@ namespace DotNetNuke.Entities.Urls
 
         public Uri Url { get; set; }
 
-        private void Constructor(string scheme, string applicationPath, string physicalPath)
-        {
-            if (scheme.EndsWith("://") == false)
-            {
-                this.Scheme = scheme + "://";
-            }
-            else
-            {
-                this.Scheme = scheme;
-            }
-
-            this.ApplicationPath = applicationPath;
-            string domainPath = applicationPath.Replace(scheme, string.Empty);
-            this.DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
-            this.PhysicalPath = physicalPath;
-            this.PortalId = -1;
-            this.TabId = -1;
-            this.Reason = RedirectReason.Not_Redirected;
-            this.FriendlyRewrite = false;
-            this.BypassCachedDictionary = false;
-            this.VirtualPath = StateBoolean.NotSet;
-            this.IsSecureConnection = false;
-            this.IsSSLOffloaded = false;
-            this.DebugMessages = new List<string>();
-            this.CultureCode = null;
-        }
-
         public bool DoRewrite { get; set; }
 
         public bool FriendlyRewrite { get; set; }
@@ -288,6 +261,33 @@ namespace DotNetNuke.Entities.Urls
                 UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", this);
                 this.Ex = ex;
             }
+        }
+
+        private void Constructor(string scheme, string applicationPath, string physicalPath)
+        {
+            if (scheme.EndsWith("://") == false)
+            {
+                this.Scheme = scheme + "://";
+            }
+            else
+            {
+                this.Scheme = scheme;
+            }
+
+            this.ApplicationPath = applicationPath;
+            string domainPath = applicationPath.Replace(scheme, string.Empty);
+            this.DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
+            this.PhysicalPath = physicalPath;
+            this.PortalId = -1;
+            this.TabId = -1;
+            this.Reason = RedirectReason.Not_Redirected;
+            this.FriendlyRewrite = false;
+            this.BypassCachedDictionary = false;
+            this.VirtualPath = StateBoolean.NotSet;
+            this.IsSecureConnection = false;
+            this.IsSSLOffloaded = false;
+            this.DebugMessages = new List<string>();
+            this.CultureCode = null;
         }
     }
 }

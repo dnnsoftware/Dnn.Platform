@@ -16,8 +16,6 @@ namespace DotNetNuke.Modules.Journal
             this.UserFolder = FolderManager.Instance.GetUserFolder(portalSettings.UserInfo);
         }
 
-        public IFolderInfo UserFolder { get; set; }
-
         public string UserFolderPhysicalPath
         {
             get
@@ -33,5 +31,7 @@ namespace DotNetNuke.Modules.Journal
                 return this.UserFolder.FolderPath;
             }
         }
+
+        public IFolderInfo UserFolder { get; set; }
     }
 }

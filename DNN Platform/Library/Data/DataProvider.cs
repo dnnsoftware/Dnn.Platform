@@ -69,11 +69,6 @@ namespace DotNetNuke.Data
             get { return Instance().ProviderName; }
         }
 
-        public static DataProvider Instance()
-        {
-            return ComponentFactory.GetComponent<DataProvider>();
-        }
-
         public abstract bool IsConnectionValid { get; }
 
         public virtual string ObjectQualifier
@@ -112,35 +107,14 @@ namespace DotNetNuke.Data
             }
         }
 
+        public static DataProvider Instance()
+        {
+            return ComponentFactory.GetComponent<DataProvider>();
+        }
+
         public abstract void ExecuteNonQuery(string procedureName, params object[] commandParameters);
 
         public abstract void ExecuteNonQuery(int timeoutSec, string procedureName, params object[] commandParameters);
-
-        private static DateTime FixDate(DateTime dateToFix)
-        {
-            // Fix for Sql Dates having a minimum value of January 1, 1753
-            // or maximum value of December 31, 9999
-            if (dateToFix <= SqlDateTime.MinValue.Value)
-            {
-                dateToFix = SqlDateTime.MinValue.Value.AddDays(1);
-            }
-            else if (dateToFix >= SqlDateTime.MaxValue.Value)
-            {
-                dateToFix = SqlDateTime.MaxValue.Value.AddDays(-1);
-            }
-
-            return dateToFix;
-        }
-
-        private object GetRoleNull(int RoleID)
-        {
-            if (RoleID.ToString(CultureInfo.InvariantCulture) == Globals.glbRoleNothing)
-            {
-                return DBNull.Value;
-            }
-
-            return RoleID;
-        }
 
         public abstract void BulkInsert(string procedureName, string tableParameterName, DataTable dataTable);
 
@@ -300,45 +274,6 @@ namespace DotNetNuke.Data
             }
 
             return path;
-        }
-
-        private Version GetVersionInternal(bool current)
-        {
-            Version version = null;
-            IDataReader dr = null;
-            try
-            {
-                dr = current ? this.GetDatabaseVersion() : this.GetDatabaseInstallVersion();
-                if (dr.Read())
-                {
-                    version = new Version(Convert.ToInt32(dr["Major"]), Convert.ToInt32(dr["Minor"]),
-                                          Convert.ToInt32(dr["Build"]));
-                }
-            }
-            catch (SqlException ex)
-            {
-                bool noStoredProc = false;
-                for (int i = 0; i <= ex.Errors.Count - 1; i++)
-                {
-                    SqlError sqlError = ex.Errors[i];
-                    if (sqlError.Number == 2812 && sqlError.Class == 16) // 2812 - 16 means SP could not be found
-                    {
-                        noStoredProc = true;
-                        break;
-                    }
-                }
-
-                if (!noStoredProc)
-                {
-                    throw;
-                }
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return version;
         }
 
         public virtual string TestDatabaseConnection(DbConnectionStringBuilder builder, string Owner, string Qualifier)
@@ -656,20 +591,6 @@ namespace DotNetNuke.Data
                 homeDirectory,
                 lastModifiedByUserID,
                 cultureCode);
-        }
-
-        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
-        {
-            var result = new Dictionary<int, string>();
-            using (var reader = this.ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
-            {
-                while (reader.Read())
-                {
-                    result[reader.GetInt32(0)] = reader.GetString(1);
-                }
-            }
-
-            return result;
         }
 
         public virtual void UpdatePortalSetting(int portalId, string settingName, string settingValue, int userId,
@@ -4243,6 +4164,85 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetFiles(int folderId, bool retrieveUnpublishedFiles = false)
         {
             return this.GetFiles(folderId, retrieveUnpublishedFiles, false);
+        }
+
+        internal virtual IDictionary<int, string> GetPortalSettingsBySetting(string settingName, string cultureCode)
+        {
+            var result = new Dictionary<int, string>();
+            using (var reader = this.ExecuteReader("GetPortalSettingsBySetting", settingName, cultureCode))
+            {
+                while (reader.Read())
+                {
+                    result[reader.GetInt32(0)] = reader.GetString(1);
+                }
+            }
+
+            return result;
+        }
+
+        private static DateTime FixDate(DateTime dateToFix)
+        {
+            // Fix for Sql Dates having a minimum value of January 1, 1753
+            // or maximum value of December 31, 9999
+            if (dateToFix <= SqlDateTime.MinValue.Value)
+            {
+                dateToFix = SqlDateTime.MinValue.Value.AddDays(1);
+            }
+            else if (dateToFix >= SqlDateTime.MaxValue.Value)
+            {
+                dateToFix = SqlDateTime.MaxValue.Value.AddDays(-1);
+            }
+
+            return dateToFix;
+        }
+
+        private object GetRoleNull(int RoleID)
+        {
+            if (RoleID.ToString(CultureInfo.InvariantCulture) == Globals.glbRoleNothing)
+            {
+                return DBNull.Value;
+            }
+
+            return RoleID;
+        }
+
+        private Version GetVersionInternal(bool current)
+        {
+            Version version = null;
+            IDataReader dr = null;
+            try
+            {
+                dr = current ? this.GetDatabaseVersion() : this.GetDatabaseInstallVersion();
+                if (dr.Read())
+                {
+                    version = new Version(Convert.ToInt32(dr["Major"]), Convert.ToInt32(dr["Minor"]),
+                                          Convert.ToInt32(dr["Build"]));
+                }
+            }
+            catch (SqlException ex)
+            {
+                bool noStoredProc = false;
+                for (int i = 0; i <= ex.Errors.Count - 1; i++)
+                {
+                    SqlError sqlError = ex.Errors[i];
+                    if (sqlError.Number == 2812 && sqlError.Class == 16) // 2812 - 16 means SP could not be found
+                    {
+                        noStoredProc = true;
+                        break;
+                    }
+                }
+
+                if (!noStoredProc)
+                {
+                    throw;
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return version;
         }
     }
 }

@@ -75,16 +75,6 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ClearPermissionCache clears the DesktopModule Permission Cache.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        private static void ClearPermissionCache()
-        {
-            DataCache.ClearDesktopModulePermissionsCache();
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// DeleteDesktopModulePermissionsByPortalDesktopModuleID deletes a DesktopModule's
         /// DesktopModule Permission in the Database.
         /// </summary>
@@ -180,6 +170,16 @@ namespace DotNetNuke.Security.Permissions
                 string.Empty,
                 EventLogController.EventLogType.DESKTOPMODULEPERMISSION_UPDATED);
             ClearPermissionCache();
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// ClearPermissionCache clears the DesktopModule Permission Cache.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private static void ClearPermissionCache()
+        {
+            DataCache.ClearDesktopModulePermissionsCache();
         }
     }
 }

@@ -91,12 +91,6 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this._DataService.AddTermToContent(term, contentItem);
         }
 
-        private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
-        {
-            var vocabularyId = (int)cacheItemArgs.ParamList[0];
-            return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
-        }
-
         /// <summary>
         /// Deletes the term.
         /// </summary>
@@ -240,6 +234,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             // Clear Cache
             DataCache.RemoveCache(string.Format(DataCache.TermCacheKey, term.VocabularyId));
+        }
+
+        private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
+        {
+            var vocabularyId = (int)cacheItemArgs.ParamList[0];
+            return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
     }
 }

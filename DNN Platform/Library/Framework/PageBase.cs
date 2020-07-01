@@ -43,10 +43,10 @@ namespace DotNetNuke.Framework
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
-
-        private PageStatePersister _persister;
         private readonly NameValueCollection _htmlAttributes = new NameValueCollection();
         private readonly ArrayList _localizedControls;
+
+        private PageStatePersister _persister;
         private CultureInfo _pageCulture;
         private string _localResourceFile;
 
@@ -74,39 +74,6 @@ namespace DotNetNuke.Framework
             get
             {
                 return this._htmlAttributes;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.
-        /// </summary>
-        /// <returns>A System.Web.UI.PageStatePersister.</returns>
-        /// -----------------------------------------------------------------------------
-        protected override PageStatePersister PageStatePersister
-        {
-            get
-            {
-                // Set ViewState Persister to default (as defined in Base Class)
-                if (this._persister == null)
-                {
-                    this._persister = base.PageStatePersister;
-
-                    if (Globals.Status == Globals.UpgradeStatus.None)
-                    {
-                        switch (Host.PageStatePersister)
-                        {
-                            case "M":
-                                this._persister = new CachePageStatePersister(this);
-                                break;
-                            case "D":
-                                this._persister = new DiskPageStatePersister(this);
-                                break;
-                        }
-                    }
-                }
-
-                return this._persister;
             }
         }
 
@@ -148,6 +115,39 @@ namespace DotNetNuke.Framework
         /// Gets a value indicating whether indicate whether http headers has been sent to client.
         /// </summary>
         public bool HeaderIsWritten { get; internal set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.
+        /// </summary>
+        /// <returns>A System.Web.UI.PageStatePersister.</returns>
+        /// -----------------------------------------------------------------------------
+        protected override PageStatePersister PageStatePersister
+        {
+            get
+            {
+                // Set ViewState Persister to default (as defined in Base Class)
+                if (this._persister == null)
+                {
+                    this._persister = base.PageStatePersister;
+
+                    if (Globals.Status == Globals.UpgradeStatus.None)
+                    {
+                        switch (Host.PageStatePersister)
+                        {
+                            case "M":
+                                this._persister = new CachePageStatePersister(this);
+                                break;
+                            case "D":
+                                this._persister = new DiskPageStatePersister(this);
+                                break;
+                        }
+                    }
+                }
+
+                return this._persister;
+            }
+        }
 
         /// <summary>
         /// <para>RemoveKeyAttribute remove the key attribute from the control. If this isn't done, then the HTML output will have
@@ -423,55 +423,6 @@ namespace DotNetNuke.Framework
             Exceptions.ProcessPageLoadException(exc, strURL);
         }
 
-        private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
-        {
-            if (this.Request.QueryString["error"] != null)
-            {
-                url += string.Concat(url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&", "error=terminate");
-            }
-            else
-            {
-                url += string.Concat(
-                    url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&",
-                    "error=",
-                    exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message));
-                if (!Globals.IsAdminControl() && hideContent)
-                {
-                    url += "&content=0";
-                }
-            }
-
-            return url;
-        }
-
-        private bool IsViewStateFailure(Exception e)
-        {
-            return !this.User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
-        }
-
-        private void IterateControls(ControlCollection controls, ArrayList affectedControls, string resourceFileRoot)
-        {
-            foreach (Control c in controls)
-            {
-                this.ProcessControl(c, affectedControls, true, resourceFileRoot);
-                this.LogDnnTrace("PageBase.IterateControls", "Info", $"ControlId: {c.ID}");
-            }
-        }
-
-        private void LogDnnTrace(string origin, string action, string message)
-        {
-            var tabId = -1;
-            if (this.PortalSettings?.ActiveTab != null)
-            {
-                tabId = this.PortalSettings.ActiveTab.TabID;
-            }
-
-            if (this._tracelLogger.IsDebugEnabled)
-            {
-                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
-            }
-        }
-
         protected override void OnInit(EventArgs e)
         {
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
@@ -536,6 +487,55 @@ namespace DotNetNuke.Framework
             base.Render(writer);
 
             this.LogDnnTrace("PageBase.Render", "End", $"{this.Page.Request.Url.AbsoluteUri}");
+        }
+
+        private string GetErrorUrl(string url, Exception exc, bool hideContent = true)
+        {
+            if (this.Request.QueryString["error"] != null)
+            {
+                url += string.Concat(url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&", "error=terminate");
+            }
+            else
+            {
+                url += string.Concat(
+                    url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&",
+                    "error=",
+                    exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message));
+                if (!Globals.IsAdminControl() && hideContent)
+                {
+                    url += "&content=0";
+                }
+            }
+
+            return url;
+        }
+
+        private bool IsViewStateFailure(Exception e)
+        {
+            return !this.User.Identity.IsAuthenticated && e != null && e.InnerException is ViewStateException;
+        }
+
+        private void IterateControls(ControlCollection controls, ArrayList affectedControls, string resourceFileRoot)
+        {
+            foreach (Control c in controls)
+            {
+                this.ProcessControl(c, affectedControls, true, resourceFileRoot);
+                this.LogDnnTrace("PageBase.IterateControls", "Info", $"ControlId: {c.ID}");
+            }
+        }
+
+        private void LogDnnTrace(string origin, string action, string message)
+        {
+            var tabId = -1;
+            if (this.PortalSettings?.ActiveTab != null)
+            {
+                tabId = this.PortalSettings.ActiveTab.TabID;
+            }
+
+            if (this._tracelLogger.IsDebugEnabled)
+            {
+                this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+            }
         }
 
         private void LocalizeControl(Control control, string value)

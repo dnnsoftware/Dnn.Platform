@@ -162,6 +162,39 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.CreateContainerPanel.Visible = true;
         }
 
+        /// <summary>
+        /// </summary>
+        protected void btnSelectExistingContainer_Click(object sender, EventArgs e)
+        {
+            this.SelectContainerPanel.Visible = true;
+            this.CreateContainerPanel.Visible = false;
+        }
+
+        /// <summary>
+        /// </summary>
+        protected void valContainerName_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            if (this.SelectContainerPanel.Visible)
+            {
+                if (this.ddlContainers.SelectedIndex > 1)
+                {
+                    args.IsValid = true;
+                    return;
+                }
+            }
+            else
+            {
+                if (this.tbContainerName.Text.Trim().Length > 0)
+                {
+                    args.IsValid = true;
+                    return;
+                }
+            }
+
+            this.valContainerName.ErrorMessage = Localization.GetString("valContainerName.ErrorMessage", this.LocalResourceFile);
+            args.IsValid = false;
+        }
+
         private static bool AreThereFolderMappingsWithSameSettings(FolderMappingInfo folderMapping, string accountName, string container)
         {
             var folderMappingController = FolderMappingController.Instance;
@@ -360,39 +393,6 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 this.valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", this.LocalResourceFile);
                 this.valContainerName.IsValid = false;
             }
-        }
-
-        /// <summary>
-        /// </summary>
-        protected void btnSelectExistingContainer_Click(object sender, EventArgs e)
-        {
-            this.SelectContainerPanel.Visible = true;
-            this.CreateContainerPanel.Visible = false;
-        }
-
-        /// <summary>
-        /// </summary>
-        protected void valContainerName_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            if (this.SelectContainerPanel.Visible)
-            {
-                if (this.ddlContainers.SelectedIndex > 1)
-                {
-                    args.IsValid = true;
-                    return;
-                }
-            }
-            else
-            {
-                if (this.tbContainerName.Text.Trim().Length > 0)
-                {
-                    args.IsValid = true;
-                    return;
-                }
-            }
-
-            this.valContainerName.ErrorMessage = Localization.GetString("valContainerName.ErrorMessage", this.LocalResourceFile);
-            args.IsValid = false;
         }
     }
 }

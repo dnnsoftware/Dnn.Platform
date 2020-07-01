@@ -66,6 +66,50 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets a Dictionary of Files that are included in the Package.
+        /// </summary>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public Dictionary<string, InstallFile> Files
+        {
+            get
+            {
+                return this.InstallerInfo.Files;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the InstallMode.
+        /// </summary>
+        /// <value>An InstallMode value.</value>
+        /// -----------------------------------------------------------------------------
+        public InstallMode InstallMode
+        {
+            get
+            {
+                return this.InstallerInfo.InstallMode;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Logger.
+        /// </summary>
+        /// <value>An Logger object.</value>
+        /// -----------------------------------------------------------------------------
+        [XmlIgnore]
+        public Logger Log
+        {
+            get
+            {
+                return this.InstallerInfo.Log;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets the Email for this package.
         /// </summary>
         /// <value>A String.</value>
@@ -87,21 +131,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string FileName { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package.
-        /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile).</value>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public Dictionary<string, InstallFile> Files
-        {
-            get
-            {
-                return this.InstallerInfo.Files;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -146,20 +175,6 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the InstallMode.
-        /// </summary>
-        /// <value>An InstallMode value.</value>
-        /// -----------------------------------------------------------------------------
-        public InstallMode InstallMode
-        {
-            get
-            {
-                return this.InstallerInfo.InstallMode;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Gets or sets a value indicating whether gets and Sets whether this package is a "system" Package.
         /// </summary>
         /// <value>A String.</value>
@@ -182,21 +197,6 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string License { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Logger.
-        /// </summary>
-        /// <value>An Logger object.</value>
-        /// -----------------------------------------------------------------------------
-        [XmlIgnore]
-        public Logger Log
-        {
-            get
-            {
-                return this.InstallerInfo.Log;
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

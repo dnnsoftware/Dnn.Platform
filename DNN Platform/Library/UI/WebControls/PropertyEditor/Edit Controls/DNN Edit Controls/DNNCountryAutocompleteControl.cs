@@ -42,6 +42,11 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
+        protected string OldStringValue
+        {
+            get { return Convert.ToString(this.OldValue); }
+        }
+
         protected override string StringValue
         {
             get
@@ -82,11 +87,6 @@ namespace DotNetNuke.UI.WebControls
 
                 return this._CountryId;
             }
-        }
-
-        protected string OldStringValue
-        {
-            get { return Convert.ToString(this.OldValue); }
         }
 
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)

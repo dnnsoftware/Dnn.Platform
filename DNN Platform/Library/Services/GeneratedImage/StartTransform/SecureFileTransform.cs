@@ -28,6 +28,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
+        /// Gets provides an Unique String for the image transformation.
+        /// </summary>
+        public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
+
+        /// <summary>
         /// Gets or sets set IFileInfo object of given FileId.
         /// </summary>
         public IFileInfo SecureFile { get; set; }
@@ -36,11 +41,6 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// Gets or sets the Image to return if no image or error.
         /// </summary>
         public Image EmptyImage { get; set; }
-
-        /// <summary>
-        /// Gets provides an Unique String for the image transformation.
-        /// </summary>
-        public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
 
         /// <summary>
         /// Processes an input image returing a secure file image.

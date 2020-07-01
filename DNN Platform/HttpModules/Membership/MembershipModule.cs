@@ -206,6 +206,34 @@ namespace DotNetNuke.HttpModules.Membership
         {
         }
 
+        private static bool RequireLogout(HttpContextBase context, UserInfo user)
+        {
+            try
+            {
+                if (user == null || user.IsDeleted || user.Membership.LockedOut
+                    || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
+                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+
+                var forceLogout = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged");
+                if (!forceLogout)
+                {
+                    return false;
+                }
+
+                // if user's password changed after the user cookie created, then force user to login again.
+                var issueDate = ((FormsIdentity)context.User.Identity)?.Ticket.IssueDate;
+                return !Null.IsNull(issueDate) && issueDate < user.Membership.LastPasswordChangeDate;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return true;
+            }
+        }
+
         private void OnAuthenticateRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
@@ -233,34 +261,6 @@ namespace DotNetNuke.HttpModules.Membership
                         PortalSecurity.Instance.SignIn(UserController.Instance.GetCurrentUserInfo(), false);
                     }
                 }
-            }
-        }
-
-        private static bool RequireLogout(HttpContextBase context, UserInfo user)
-        {
-            try
-            {
-                if (user == null || user.IsDeleted || user.Membership.LockedOut
-                    || (!user.Membership.Approved && !user.IsInRole("Unverified Users"))
-                    || !user.Username.Equals(context.User.Identity.Name, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return true;
-                }
-
-                var forceLogout = HostController.Instance.GetBoolean("ForceLogoutAfterPasswordChanged");
-                if (!forceLogout)
-                {
-                    return false;
-                }
-
-                // if user's password changed after the user cookie created, then force user to login again.
-                var issueDate = ((FormsIdentity)context.User.Identity)?.Ticket.IssueDate;
-                return !Null.IsNull(issueDate) && issueDate < user.Membership.LastPasswordChangeDate;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return true;
             }
         }
     }

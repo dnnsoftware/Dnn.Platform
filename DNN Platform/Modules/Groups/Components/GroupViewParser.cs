@@ -33,6 +33,8 @@ namespace DotNetNuke.Modules.Groups.Components
 
         public int GroupViewTabId { get; set; }
 
+        public string GroupEditUrl { get; set; }
+
         protected INavigationManager NavigationManager { get; }
 
         private PortalSettings PortalSettings { get; set; }
@@ -40,8 +42,6 @@ namespace DotNetNuke.Modules.Groups.Components
         private RoleInfo RoleInfo { get; set; }
 
         private UserInfo CurrentUser { get; set; }
-
-        public string GroupEditUrl { get; set; }
 
         public string ParseView()
         {

@@ -36,15 +36,6 @@ namespace DNN.Integration.Test.Framework
 
         private const string LoginPath = "/Login";
 
-        private static readonly Dictionary<string, CachedWebPage> CachedPages = new Dictionary<string, CachedWebPage>();
-
-        public static WebApiConnector GetWebConnector(string siteUrl, string userName)
-        {
-            return new WebApiConnector(siteUrl)
-            {
-                UserName = (userName ?? string.Empty).Replace("'", string.Empty),
-            };
-        }
         private const string LogoffPath = "/Home/ctl/Logoff";
 
         // private const string LogoffPath = "/Home/ctl/Logoff.aspx";
@@ -52,21 +43,33 @@ namespace DNN.Integration.Test.Framework
         // private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
         private const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
 
-        private string _userAgentValue;
-
-        public string UserAgentValue
-        {
-            get { return this._userAgentValue ?? (this._userAgentValue = ConfigurationManager.AppSettings["HttpUserAgent"] ?? DefaultUserAgent); }
-            set { this._userAgentValue = value; }
-        }
         private const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
+        private static readonly Dictionary<string, CachedWebPage> CachedPages = new Dictionary<string, CachedWebPage>();
+
         private static readonly Regex HtmlFormInuts = new Regex(
             @"<input .*?/>",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
+        private static readonly Encoding Encoding = Encoding.UTF8;
+
+        private string _userAgentValue;
         private int _userId;
 
-        public bool AvoidCaching { get; set; }
+        private CookieContainer _sessionCookiesContainer;
+        private Cookie _cookieVerificationToken;
+        private string _inputFieldVerificationToken;
+        private string _currentTabId;
+
+        private WebApiConnector(string siteUrl)
+        {
+            this.Timeout = TimeSpan.FromMinutes(1);
+            this.Domain = new Uri(siteUrl);
+            this.IsLoggedIn = false;
+            this.ResetUserId();
+            this._sessionCookiesContainer = new CookieContainer();
+            this._cookieVerificationToken = new Cookie(RqVerifTokenName, string.Empty, "/", this.Domain.Host);
+            this.AvoidCaching = false;
+        }
 
         /// <summary>
         /// Gets the userID will be available only if the user is logged in.
@@ -85,37 +88,6 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
-        public string UserName { get; private set; }
-
-        public bool IsLoggedIn { get; private set; }
-
-        private void ResetUserId()
-        {
-            this._userId = -1;
-        }
-
-        // ==============================================================================
-        // Adapted from http://www.briangrinstead.com/blog/multipart-form-post-in-c#
-        private static readonly Encoding Encoding = Encoding.UTF8;
-
-        private CookieContainer _sessionCookiesContainer;
-        private Cookie _cookieVerificationToken;
-        private string _inputFieldVerificationToken;
-        private string _currentTabId;
-
-        private WebApiConnector(string siteUrl)
-        {
-            this.Timeout = TimeSpan.FromMinutes(1);
-            this.Domain = new Uri(siteUrl);
-            this.IsLoggedIn = false;
-            this.ResetUserId();
-            this._sessionCookiesContainer = new CookieContainer();
-            this._cookieVerificationToken = new Cookie(RqVerifTokenName, string.Empty, "/", this.Domain.Host);
-            this.AvoidCaching = false;
-        }
-
-        public TimeSpan Timeout { get; set; }
-
         public Uri Domain { get; }
 
         public CookieContainer SessionCookies
@@ -127,7 +99,32 @@ namespace DNN.Integration.Test.Framework
             }
         }
 
+        public string UserAgentValue
+        {
+            get { return this._userAgentValue ?? (this._userAgentValue = ConfigurationManager.AppSettings["HttpUserAgent"] ?? DefaultUserAgent); }
+            set { this._userAgentValue = value; }
+        }
+
+        public bool AvoidCaching { get; set; }
+
+        public string UserName { get; private set; }
+
+        public bool IsLoggedIn { get; private set; }
+
+        // ==============================================================================
+        // Adapted from http://www.briangrinstead.com/blog/multipart-form-post-in-c#
+
+        public TimeSpan Timeout { get; set; }
+
         public DateTime LoggedInAtTime { get; private set; }
+
+        public static WebApiConnector GetWebConnector(string siteUrl, string userName)
+        {
+            return new WebApiConnector(siteUrl)
+            {
+                UserName = (userName ?? string.Empty).Replace("'", string.Empty),
+            };
+        }
 
         public void Dispose()
         {
@@ -172,17 +169,6 @@ namespace DNN.Integration.Test.Framework
                         this._inputFieldVerificationToken = null;
                     }
                 }
-            }
-        }
-
-        private void EnsureLoggedIn()
-        {
-            if (!this.IsLoggedIn)
-            {
-                Console.WriteLine(@"User not logged in yet");
-                throw new WebApiException(
-                    new HttpRequestException("User not logged in yet."),
-                    new HttpResponseMessage(HttpStatusCode.Unauthorized));
             }
         }
 
@@ -247,91 +233,6 @@ namespace DNN.Integration.Test.Framework
         {
             this.EnsureLoggedIn();
             return this.ActivityStreamUploadFile(headers, fileName);
-        }
-
-        private static string GetVerificationToken(string pageData)
-        {
-            if (!string.IsNullOrEmpty(pageData))
-            {
-                const string str1 = "<input name=\"" + RqVerifTokenName + "\" type=\"hidden\" value=\"";
-                var startIndex1 = pageData.IndexOf(str1, StringComparison.Ordinal) + str1.Length;
-                if (startIndex1 >= str1.Length)
-                {
-                    var num1 = pageData.IndexOf("\"", startIndex1, StringComparison.Ordinal);
-                    return pageData.Substring(startIndex1, num1 - startIndex1);
-                }
-            }
-
-            return string.Empty;
-        }
-
-        private static string GetCurrentTabId(string pageData)
-        {
-            if (!string.IsNullOrEmpty(pageData))
-            {
-                var match = Regex.Match(pageData, "`sf_tabId`:`(\\d+)`");
-                if (match.Success)
-                {
-                    return match.Groups[1].Value;
-                }
-            }
-
-            return string.Empty;
-        }
-
-        private void VerifyLogInCookie(HttpWebResponse httpResponse)
-        {
-            var cookie = AppConfigHelper.LoginCookie;
-            var loginCookie = httpResponse.Cookies[cookie];
-            if (loginCookie != null)
-            {
-                this.IsLoggedIn = true;
-                this.ExtractVerificationCookie(httpResponse.Headers["Set-Cookie"] ?? string.Empty);
-                using (var rs = httpResponse.GetResponseStream())
-                {
-                    if (rs != null && httpResponse.StatusCode == HttpStatusCode.OK)
-                    {
-                        using (var sr = new StreamReader(rs, Encoding.UTF8))
-                        {
-                            var data = sr.ReadToEnd();
-                            var token = GetVerificationToken(data);
-                            if (!string.IsNullOrEmpty(token))
-                            {
-                                this._inputFieldVerificationToken = token;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ExtractVerificationCookie(string cookiesString)
-        {
-            var parts1 = cookiesString.Split(',');
-            foreach (var part1 in parts1)
-            {
-                if (part1.Contains(RqVerifTokenName))
-                {
-                    var parts2 = part1.Split(';');
-                    foreach (var part2 in parts2)
-                    {
-                        if (part2.Contains(RqVerifTokenName))
-                        {
-                            this._cookieVerificationToken.Value = part2.Split('=')[1];
-                        }
-                        else if (part2.Contains("path"))
-                        {
-                            this._cookieVerificationToken.Path = part2.Split('=')[1];
-                        }
-                        else if (part2.Contains("HttpOnly"))
-                        {
-                            this._cookieVerificationToken.HttpOnly = true;
-                        }
-                    }
-
-                    break;
-                }
-            }
         }
 
         public bool UploadCmsFile(string fileName, string portalFolder)
@@ -416,113 +317,6 @@ namespace DNN.Integration.Test.Framework
                 return !waitHttpResponse
                     ? result
                     : EnsureSuccessResponse(result, "PutJson", requestUriString);
-            }
-        }
-
-        private HttpResponseMessage UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
-        {
-            using (var client = this.CreateHttpClient("/", true))
-            {
-                var headers = client.DefaultRequestHeaders;
-                headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
-                headers.UserAgent.ParseAdd(this.UserAgentValue);
-
-                if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
-                {
-                    var resultGet = client.GetAsync("/").Result;
-                    var data = resultGet.Content.ReadAsStringAsync().Result;
-                    this._inputFieldVerificationToken = GetVerificationToken(data);
-
-                    if (!string.IsNullOrEmpty(this._inputFieldVerificationToken))
-                    {
-                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
-                    }
-                    else
-                    {
-                        Console.WriteLine(@"Cannot find '{0}' in the page input fields (A)", RqVerifTokenName);
-                    }
-                }
-
-                var content = new MultipartFormDataContent();
-                var values = new[]
-                {
-                    new KeyValuePair<string, string>("\"folder\"", portalFolder),
-                    new KeyValuePair<string, string>("\"filter\"", FileFilters),
-                    new KeyValuePair<string, string>("\"overwrite\"", "true"),
-                };
-
-                foreach (var keyValuePair in values)
-                {
-                    content.Add(new StringContent(keyValuePair.Value), keyValuePair.Key);
-                }
-
-                var fi = new FileInfo(fileName);
-                var fileContent = new ByteArrayContent(File.ReadAllBytes(fileName));
-                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                {
-                    FileName = fi.Name,
-                    Name = "\"postfile\"",
-                };
-
-                content.Add(fileContent);
-
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
-                var result = client.PostAsync(UploadFileRequestPath, content).Result;
-                return !waitHttpResponse
-                    ? result
-                    : EnsureSuccessResponse(result, "UploadFile", UploadFileRequestPath);
-            }
-        }
-
-        private HttpResponseMessage ActivityStreamUploadFile(
-            IDictionary<string, string> headers, string fileName, bool waitHttpResponse = false)
-        {
-            using (var clientHandler = new HttpClientHandler
-            {
-                AllowAutoRedirect = false,
-            })
-            using (var client = new HttpClient(clientHandler))
-            {
-                clientHandler.CookieContainer = this._sessionCookiesContainer;
-                client.BaseAddress = this.Domain;
-                client.Timeout = this.Timeout;
-
-                var rqHeaders = client.DefaultRequestHeaders;
-                rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
-                rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
-                rqHeaders.UserAgent.ParseAdd(this.UserAgentValue);
-
-                var resultGet = client.GetAsync("/").Result;
-                var data = resultGet.Content.ReadAsStringAsync().Result;
-                var requestVerificationToken = GetVerificationToken(data);
-                if (!string.IsNullOrEmpty(requestVerificationToken))
-                {
-                    client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, requestVerificationToken);
-                }
-                else
-                {
-                    Console.WriteLine(@"Cannot find '{0}' in the page input fields (B)", RqVerifTokenName);
-                }
-
-                var content = new MultipartFormDataContent();
-                var fi = new FileInfo(fileName);
-                var fileContent = new ByteArrayContent(File.ReadAllBytes(fileName));
-                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-                {
-                    Name = "\"files[]\"",
-                    FileName = "\"" + fi.Name + "\"",
-                };
-                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
-
-                content.Add(fileContent);
-                rqHeaders.Add("TabID", headers["TabID"]);
-                rqHeaders.Add("ModuleID", headers["ModuleID"]);
-                var result = client.PostAsync(ActivityStreamUploadFilePath, content).Result;
-                return !waitHttpResponse
-                    ? result
-                    : EnsureSuccessResponse(result, "ActivityStreamUploadFile", ActivityStreamUploadFilePath);
             }
         }
 
@@ -662,87 +456,6 @@ namespace DNN.Integration.Test.Framework
             return this.MultipartFormDataPost(url, this.UserAgentValue, postParameters, headers, followRedirect);
         }
 
-        private HttpClient CreateHttpClient(string path, bool autoRedirect)
-        {
-            var clientHandler = new HttpClientHandler
-            {
-                AllowAutoRedirect = autoRedirect,
-                CookieContainer = this._sessionCookiesContainer,
-            };
-
-            var url = CombineUrlPath(this.Domain, path);
-            var client = new HttpClient(clientHandler)
-            {
-                BaseAddress = this.Domain,
-                Timeout = this.Timeout,
-            };
-
-            if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
-            {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
-                var resultGet = client.GetAsync(url).Result;
-                var data = resultGet.Content.ReadAsStringAsync().Result;
-                this._inputFieldVerificationToken = GetVerificationToken(data);
-                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
-
-                this._currentTabId = GetCurrentTabId(data);
-                client.DefaultRequestHeaders.Add("TabId", this._currentTabId);
-            }
-            else
-            {
-                client.DefaultRequestHeaders.Add("TabId", this._currentTabId);
-                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
-            }
-
-            return client;
-        }
-
-        private string[] GetPageInputFields(HttpClient client, string path)
-        {
-            CachedWebPage cachedPage = null;
-            var url = CombineUrlPath(this.Domain, path);
-            if (!this.IsLoggedIn || this.AvoidCaching ||
-                (!CachedPages.TryGetValue(url, out cachedPage) ||
-                cachedPage.FetchDateTime < DateTime.Now.AddMinutes(-19.5)))
-            {
-                try
-                {
-                    var requestVerificationToken = string.Empty;
-                    client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
-                    var resultGet = client.GetAsync(url).Result;
-                    var data = resultGet.Content.ReadAsStringAsync().Result;
-                    const string str1 = "<input name=\"" + RqVerifTokenName + "\" type=\"hidden\" value=\"";
-                    var startIndex1 = data.IndexOf(str1, StringComparison.Ordinal);
-                    if (startIndex1 >= 0)
-                    {
-                        startIndex1 += str1.Length;
-                        var num1 = data.IndexOf("\"", startIndex1, StringComparison.Ordinal);
-                        requestVerificationToken = data.Substring(startIndex1, num1 - startIndex1);
-                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, requestVerificationToken);
-                    }
-                    else
-                    {
-                        Console.WriteLine(@"Cannot find '{0}' in the page input fields. Data: {1}", RqVerifTokenName, resultGet);
-                    }
-
-                    var inputFields = HtmlFormInuts.Matches(data).Cast<Match>().Select(match => match.Groups[0].Value).ToArray();
-                    cachedPage = new CachedWebPage(requestVerificationToken, inputFields);
-                    CachedPages[url] = cachedPage;
-                    return inputFields;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(@"Error accessing this path {0}.{1}{2}", path, Environment.NewLine, ex);
-                }
-            }
-            else
-            {
-                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, cachedPage.VerificationToken);
-            }
-
-            return cachedPage != null ? cachedPage.InputFields : new string[0];
-        }
-
         public HttpResponseMessage GetContent(
             string relativeUrl, object parameters, Dictionary<string, string> contentHeaders = null,
             bool waitHttpResponse = true, bool autoRedirect = true)
@@ -777,6 +490,36 @@ namespace DNN.Integration.Test.Framework
                     ? result
                     : EnsureSuccessResponse(result, "GetContent", uri.AbsoluteUri);
             }
+        }
+
+        private static string GetVerificationToken(string pageData)
+        {
+            if (!string.IsNullOrEmpty(pageData))
+            {
+                const string str1 = "<input name=\"" + RqVerifTokenName + "\" type=\"hidden\" value=\"";
+                var startIndex1 = pageData.IndexOf(str1, StringComparison.Ordinal) + str1.Length;
+                if (startIndex1 >= str1.Length)
+                {
+                    var num1 = pageData.IndexOf("\"", startIndex1, StringComparison.Ordinal);
+                    return pageData.Substring(startIndex1, num1 - startIndex1);
+                }
+            }
+
+            return string.Empty;
+        }
+
+        private static string GetCurrentTabId(string pageData)
+        {
+            if (!string.IsNullOrEmpty(pageData))
+            {
+                var match = Regex.Match(pageData, "`sf_tabId`:`(\\d+)`");
+                if (match.Success)
+                {
+                    return match.Groups[1].Value;
+                }
+            }
+
+            return string.Empty;
         }
 
         private static byte[] GetMultipartFormData(IEnumerable<KeyValuePair<string, object>> postParameters, string boundary)
@@ -869,6 +612,295 @@ namespace DNN.Integration.Test.Framework
             return new Uri(url + path).AbsoluteUri;
         }
 
+        private static string QueryStringFromObject(object query)
+        {
+            var properties = from p in query.GetType().GetProperties()
+                where p.GetValue(query, null) != null
+                select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(query, null).ToString());
+
+            return string.Join("&", properties.ToArray());
+        }
+
+        private static HttpResponseMessage EnsureSuccessResponse(HttpResponseMessage result, string source, string url)
+        {
+            var body = string.Empty;
+
+            try
+            {
+                body = result.Content.ReadAsStringAsync().Result;
+                return result.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException ex)
+            {
+                Console.WriteLine(@"{0} failed for [{1}] {2}\n{3}", source, url, ex.Message, body);
+                throw new WebApiException(ex, result, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(@"{0} failed for [{1}] {2}", source, url, ex.Message);
+                throw;
+            }
+        }
+
+        private void ResetUserId()
+        {
+            this._userId = -1;
+        }
+
+        private void EnsureLoggedIn()
+        {
+            if (!this.IsLoggedIn)
+            {
+                Console.WriteLine(@"User not logged in yet");
+                throw new WebApiException(
+                    new HttpRequestException("User not logged in yet."),
+                    new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            }
+        }
+
+        private void VerifyLogInCookie(HttpWebResponse httpResponse)
+        {
+            var cookie = AppConfigHelper.LoginCookie;
+            var loginCookie = httpResponse.Cookies[cookie];
+            if (loginCookie != null)
+            {
+                this.IsLoggedIn = true;
+                this.ExtractVerificationCookie(httpResponse.Headers["Set-Cookie"] ?? string.Empty);
+                using (var rs = httpResponse.GetResponseStream())
+                {
+                    if (rs != null && httpResponse.StatusCode == HttpStatusCode.OK)
+                    {
+                        using (var sr = new StreamReader(rs, Encoding.UTF8))
+                        {
+                            var data = sr.ReadToEnd();
+                            var token = GetVerificationToken(data);
+                            if (!string.IsNullOrEmpty(token))
+                            {
+                                this._inputFieldVerificationToken = token;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ExtractVerificationCookie(string cookiesString)
+        {
+            var parts1 = cookiesString.Split(',');
+            foreach (var part1 in parts1)
+            {
+                if (part1.Contains(RqVerifTokenName))
+                {
+                    var parts2 = part1.Split(';');
+                    foreach (var part2 in parts2)
+                    {
+                        if (part2.Contains(RqVerifTokenName))
+                        {
+                            this._cookieVerificationToken.Value = part2.Split('=')[1];
+                        }
+                        else if (part2.Contains("path"))
+                        {
+                            this._cookieVerificationToken.Path = part2.Split('=')[1];
+                        }
+                        else if (part2.Contains("HttpOnly"))
+                        {
+                            this._cookieVerificationToken.HttpOnly = true;
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        private HttpResponseMessage UploadFile(string fileName, string portalFolder, bool waitHttpResponse = true)
+        {
+            using (var client = this.CreateHttpClient("/", true))
+            {
+                var headers = client.DefaultRequestHeaders;
+                headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
+                headers.UserAgent.ParseAdd(this.UserAgentValue);
+
+                if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
+                {
+                    var resultGet = client.GetAsync("/").Result;
+                    var data = resultGet.Content.ReadAsStringAsync().Result;
+                    this._inputFieldVerificationToken = GetVerificationToken(data);
+
+                    if (!string.IsNullOrEmpty(this._inputFieldVerificationToken))
+                    {
+                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
+                    }
+                    else
+                    {
+                        Console.WriteLine(@"Cannot find '{0}' in the page input fields (A)", RqVerifTokenName);
+                    }
+                }
+
+                var content = new MultipartFormDataContent();
+                var values = new[]
+                {
+                    new KeyValuePair<string, string>("\"folder\"", portalFolder),
+                    new KeyValuePair<string, string>("\"filter\"", FileFilters),
+                    new KeyValuePair<string, string>("\"overwrite\"", "true"),
+                };
+
+                foreach (var keyValuePair in values)
+                {
+                    content.Add(new StringContent(keyValuePair.Value), keyValuePair.Key);
+                }
+
+                var fi = new FileInfo(fileName);
+                var fileContent = new ByteArrayContent(File.ReadAllBytes(fileName));
+                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                {
+                    FileName = fi.Name,
+                    Name = "\"postfile\"",
+                };
+
+                content.Add(fileContent);
+
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
+                var result = client.PostAsync(UploadFileRequestPath, content).Result;
+                return !waitHttpResponse
+                    ? result
+                    : EnsureSuccessResponse(result, "UploadFile", UploadFileRequestPath);
+            }
+        }
+
+        private HttpResponseMessage ActivityStreamUploadFile(
+            IDictionary<string, string> headers, string fileName, bool waitHttpResponse = false)
+        {
+            using (var clientHandler = new HttpClientHandler
+            {
+                AllowAutoRedirect = false,
+            })
+            using (var client = new HttpClient(clientHandler))
+            {
+                clientHandler.CookieContainer = this._sessionCookiesContainer;
+                client.BaseAddress = this.Domain;
+                client.Timeout = this.Timeout;
+
+                var rqHeaders = client.DefaultRequestHeaders;
+                rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/html", 0.8));
+                rqHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
+                rqHeaders.UserAgent.ParseAdd(this.UserAgentValue);
+
+                var resultGet = client.GetAsync("/").Result;
+                var data = resultGet.Content.ReadAsStringAsync().Result;
+                var requestVerificationToken = GetVerificationToken(data);
+                if (!string.IsNullOrEmpty(requestVerificationToken))
+                {
+                    client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, requestVerificationToken);
+                }
+                else
+                {
+                    Console.WriteLine(@"Cannot find '{0}' in the page input fields (B)", RqVerifTokenName);
+                }
+
+                var content = new MultipartFormDataContent();
+                var fi = new FileInfo(fileName);
+                var fileContent = new ByteArrayContent(File.ReadAllBytes(fileName));
+                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                {
+                    Name = "\"files[]\"",
+                    FileName = "\"" + fi.Name + "\"",
+                };
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
+
+                content.Add(fileContent);
+                rqHeaders.Add("TabID", headers["TabID"]);
+                rqHeaders.Add("ModuleID", headers["ModuleID"]);
+                var result = client.PostAsync(ActivityStreamUploadFilePath, content).Result;
+                return !waitHttpResponse
+                    ? result
+                    : EnsureSuccessResponse(result, "ActivityStreamUploadFile", ActivityStreamUploadFilePath);
+            }
+        }
+
+        private HttpClient CreateHttpClient(string path, bool autoRedirect)
+        {
+            var clientHandler = new HttpClientHandler
+            {
+                AllowAutoRedirect = autoRedirect,
+                CookieContainer = this._sessionCookiesContainer,
+            };
+
+            var url = CombineUrlPath(this.Domain, path);
+            var client = new HttpClient(clientHandler)
+            {
+                BaseAddress = this.Domain,
+                Timeout = this.Timeout,
+            };
+
+            if (string.IsNullOrEmpty(this._inputFieldVerificationToken))
+            {
+                client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
+                var resultGet = client.GetAsync(url).Result;
+                var data = resultGet.Content.ReadAsStringAsync().Result;
+                this._inputFieldVerificationToken = GetVerificationToken(data);
+                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
+
+                this._currentTabId = GetCurrentTabId(data);
+                client.DefaultRequestHeaders.Add("TabId", this._currentTabId);
+            }
+            else
+            {
+                client.DefaultRequestHeaders.Add("TabId", this._currentTabId);
+                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, this._inputFieldVerificationToken);
+            }
+
+            return client;
+        }
+
+        private string[] GetPageInputFields(HttpClient client, string path)
+        {
+            CachedWebPage cachedPage = null;
+            var url = CombineUrlPath(this.Domain, path);
+            if (!this.IsLoggedIn || this.AvoidCaching ||
+                (!CachedPages.TryGetValue(url, out cachedPage) ||
+                 cachedPage.FetchDateTime < DateTime.Now.AddMinutes(-19.5)))
+            {
+                try
+                {
+                    var requestVerificationToken = string.Empty;
+                    client.DefaultRequestHeaders.UserAgent.ParseAdd(this.UserAgentValue);
+                    var resultGet = client.GetAsync(url).Result;
+                    var data = resultGet.Content.ReadAsStringAsync().Result;
+                    const string str1 = "<input name=\"" + RqVerifTokenName + "\" type=\"hidden\" value=\"";
+                    var startIndex1 = data.IndexOf(str1, StringComparison.Ordinal);
+                    if (startIndex1 >= 0)
+                    {
+                        startIndex1 += str1.Length;
+                        var num1 = data.IndexOf("\"", startIndex1, StringComparison.Ordinal);
+                        requestVerificationToken = data.Substring(startIndex1, num1 - startIndex1);
+                        client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, requestVerificationToken);
+                    }
+                    else
+                    {
+                        Console.WriteLine(@"Cannot find '{0}' in the page input fields. Data: {1}", RqVerifTokenName, resultGet);
+                    }
+
+                    var inputFields = HtmlFormInuts.Matches(data).Cast<Match>().Select(match => match.Groups[0].Value).ToArray();
+                    cachedPage = new CachedWebPage(requestVerificationToken, inputFields);
+                    CachedPages[url] = cachedPage;
+                    return inputFields;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(@"Error accessing this path {0}.{1}{2}", path, Environment.NewLine, ex);
+                }
+            }
+            else
+            {
+                client.DefaultRequestHeaders.Add(RqVerifTokenNameNoUndescrores, cachedPage.VerificationToken);
+            }
+
+            return cachedPage != null ? cachedPage.InputFields : new string[0];
+        }
+
         private HttpWebResponse MultipartFormDataPost(
             string postUrl, string userAgent, IDictionary<string, object> postParameters, IDictionary<string, string> headers = null, bool followRedirect = false)
         {
@@ -919,36 +951,6 @@ namespace DNN.Integration.Test.Framework
             {
                 requestStream.Write(formData, 0, formData.Length);
                 return request.GetResponse() as HttpWebResponse;
-            }
-        }
-
-        private static string QueryStringFromObject(object query)
-        {
-            var properties = from p in query.GetType().GetProperties()
-                             where p.GetValue(query, null) != null
-                             select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(query, null).ToString());
-
-            return string.Join("&", properties.ToArray());
-        }
-
-        private static HttpResponseMessage EnsureSuccessResponse(HttpResponseMessage result, string source, string url)
-        {
-            var body = string.Empty;
-
-            try
-            {
-                body = result.Content.ReadAsStringAsync().Result;
-                return result.EnsureSuccessStatusCode();
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine(@"{0} failed for [{1}] {2}\n{3}", source, url, ex.Message, body);
-                throw new WebApiException(ex, result, body);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(@"{0} failed for [{1}] {2}", source, url, ex.Message);
-                throw;
             }
         }
     }

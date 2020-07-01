@@ -71,33 +71,6 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Virtual method called when the configuration of the repository changes.
-        /// </summary>
-        /// <param name = "repository">the repository holding the levels.</param>
-        /// <remarks>
-        ///   <para>
-        ///     Virtual method called when the configuration of the repository changes.
-        ///   </para>
-        /// </remarks>
-        private static void ReloadLevels(ILoggerRepository repository)
-        {
-            LevelMap levelMap = repository.LevelMap;
-
-            LevelTrace = levelMap.LookupWithDefault(Level.Trace);
-            LevelDebug = levelMap.LookupWithDefault(Level.Debug);
-            LevelInfo = levelMap.LookupWithDefault(Level.Info);
-            LevelWarn = levelMap.LookupWithDefault(Level.Warn);
-            LevelError = levelMap.LookupWithDefault(Level.Error);
-            LevelFatal = levelMap.LookupWithDefault(Level.Fatal);
-            LevelLogError = levelMap.LookupWithDefault(LevelLogError);
-            LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
-
-            //// Register custom logging levels with the default LoggerRepository
-            LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
-            LogManager.GetRepository().LevelMap.Add(LevelLogError);
-        }
-
-        /// <summary>
         ///   Logs a message object with the <c>DEBUG</c> level.
         /// </summary>
         /// <param name = "message">The message object to log.</param>
@@ -300,21 +273,6 @@ namespace DotNetNuke.Instrumentation
         public void Warn(object message, Exception exception)
         {
             this.Logger.Log(this._stackBoundary, LevelWarn, message, exception);
-        }
-
-        internal void TraceFormat(string format, params object[] args)
-        {
-            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
-        }
-
-        internal void Trace(string message)
-        {
-            this.Logger.Log(this._stackBoundary, LevelTrace, message, null);
-        }
-
-        internal void TraceFormat(IFormatProvider provider, string format, params object[] args)
-        {
-            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
         }
 
         /// <summary>
@@ -598,6 +556,48 @@ namespace DotNetNuke.Instrumentation
         public void InstallLogInfoFormat(IFormatProvider provider, string format, params object[] args)
         {
             this.Logger.Log(this._stackBoundary, LevelLogInfo, new SystemStringFormat(provider, format, args), null);
+        }
+
+        internal void TraceFormat(string format, params object[] args)
+        {
+            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(CultureInfo.InvariantCulture, format, args), null);
+        }
+
+        internal void Trace(string message)
+        {
+            this.Logger.Log(this._stackBoundary, LevelTrace, message, null);
+        }
+
+        internal void TraceFormat(IFormatProvider provider, string format, params object[] args)
+        {
+            this.Logger.Log(this._stackBoundary, LevelTrace, new SystemStringFormat(provider, format, args), null);
+        }
+
+        /// <summary>
+        ///   Virtual method called when the configuration of the repository changes.
+        /// </summary>
+        /// <param name = "repository">the repository holding the levels.</param>
+        /// <remarks>
+        ///   <para>
+        ///     Virtual method called when the configuration of the repository changes.
+        ///   </para>
+        /// </remarks>
+        private static void ReloadLevels(ILoggerRepository repository)
+        {
+            LevelMap levelMap = repository.LevelMap;
+
+            LevelTrace = levelMap.LookupWithDefault(Level.Trace);
+            LevelDebug = levelMap.LookupWithDefault(Level.Debug);
+            LevelInfo = levelMap.LookupWithDefault(Level.Info);
+            LevelWarn = levelMap.LookupWithDefault(Level.Warn);
+            LevelError = levelMap.LookupWithDefault(Level.Error);
+            LevelFatal = levelMap.LookupWithDefault(Level.Fatal);
+            LevelLogError = levelMap.LookupWithDefault(LevelLogError);
+            LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
+
+            //// Register custom logging levels with the default LoggerRepository
+            LogManager.GetRepository().LevelMap.Add(LevelLogInfo);
+            LogManager.GetRepository().LevelMap.Add(LevelLogError);
         }
     }
 }

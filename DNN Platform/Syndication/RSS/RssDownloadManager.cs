@@ -58,6 +58,42 @@ namespace DotNetNuke.Services.Syndication
             return defaultTtlMinutes;
         }
 
+        private static string PrepareTempDir()
+        {
+            string tempDir = null;
+
+            try
+            {
+                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + RSS_Dir);
+
+                if (!Directory.Exists(d))
+                {
+                    Directory.CreateDirectory(d);
+                }
+
+                tempDir = d;
+            }
+            catch
+            {
+                // don't cache on disk if can't do it
+            }
+
+            return tempDir;
+        }
+
+        private static string GetTempFileNamePrefixFromUrl(string url)
+        {
+            try
+            {
+                var uri = new Uri(url);
+                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
+            }
+            catch
+            {
+                return "rss";
+            }
+        }
+
         private RssChannelDom DownloadChannelDom(string url)
         {
             // look for disk cache first
@@ -217,42 +253,6 @@ namespace DotNetNuke.Services.Syndication
             }
 
             return dom;
-        }
-
-        private static string PrepareTempDir()
-        {
-            string tempDir = null;
-
-            try
-            {
-                string d = HttpContext.Current.Server.MapPath(Settings.CacheRoot + RSS_Dir);
-
-                if (!Directory.Exists(d))
-                {
-                    Directory.CreateDirectory(d);
-                }
-
-                tempDir = d;
-            }
-            catch
-            {
-                // don't cache on disk if can't do it
-            }
-
-            return tempDir;
-        }
-
-        private static string GetTempFileNamePrefixFromUrl(string url)
-        {
-            try
-            {
-                var uri = new Uri(url);
-                return string.Format("{0}_{1:x8}", uri.Host.Replace('.', '_'), uri.AbsolutePath.GetHashCode());
-            }
-            catch
-            {
-                return "rss";
-            }
         }
     }
 }

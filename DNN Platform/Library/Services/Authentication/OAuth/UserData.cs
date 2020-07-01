@@ -10,6 +10,19 @@ namespace DotNetNuke.Services.Authentication.OAuth
     [DataContract]
     public class UserData
     {
+        public string PreferredEmail
+        {
+            get
+            {
+                if (this.Emails == null)
+                {
+                    return this.Email;
+                }
+
+                return this.Emails.PreferredEmail;
+            }
+        }
+
         [DataMember(Name = "id")]
         public string Id { get; set; }
 
@@ -57,19 +70,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         [DataMember(Name = "name")]
         public virtual string Name { get; set; }
-
-        public string PreferredEmail
-        {
-            get
-            {
-                if (this.Emails == null)
-                {
-                    return this.Email;
-                }
-
-                return this.Emails.PreferredEmail;
-            }
-        }
 
         public virtual string ProfileImage { get; set; }
 

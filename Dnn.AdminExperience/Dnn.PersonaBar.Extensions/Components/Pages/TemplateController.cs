@@ -80,6 +80,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return filename;
         }
+
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -97,59 +98,6 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return Null.NullInteger;
-        }
-
-        protected override Func<ITemplateController> GetFactory()
-        {
-            return () => new TemplateController();
-        }
-
-        private static IFolderInfo GetTemplateFolder()
-        {
-            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
-        }
-
-        private static IFolderInfo CreateTemplateFolder()
-        {
-            return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
-        }
-
-        private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
-        {
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            var tab = this._tabController.GetTab(template.TabId, portalSettings.PortalId, false);
-            var xmlTab = new XmlDocument { XmlResolver = null };
-            var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
-            nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
-        }
-
-        private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
-        {
-            var templates = new List<Template>();
-            if (templateFolder == null)
-            {
-                return templates;
-            }
-
-            templates.Add(new Template
-            {
-                Id = Localization.GetString("None_Specified"),
-                Value = Null.NullInteger
-            });
-
-            var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
-            foreach (FileItem file in files)
-            {
-                int i;
-                int.TryParse(file.Value, out i);
-                templates.Add(new Template
-                {
-                    Id = file.Text.Replace(".page.template", ""),
-                    Value = i
-                });
-            }
-
-            return templates;
         }
 
         public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)
@@ -218,6 +166,59 @@ namespace Dnn.PersonaBar.Pages.Components
                     throw new PageException(exceptions);
                 }
             }
+        }
+
+        protected override Func<ITemplateController> GetFactory()
+        {
+            return () => new TemplateController();
+        }
+
+        private static IFolderInfo GetTemplateFolder()
+        {
+            return FolderManager.Instance.GetFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
+        }
+
+        private static IFolderInfo CreateTemplateFolder()
+        {
+            return FolderManager.Instance.AddFolder(PortalSettings.Current.PortalId, TemplatesFolderPath);
+        }
+
+        private void SerializeTab(PageTemplate template, XmlDocument xmlTemplate, XmlNode nodeTabs)
+        {
+            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var tab = this._tabController.GetTab(template.TabId, portalSettings.PortalId, false);
+            var xmlTab = new XmlDocument { XmlResolver = null };
+            var nodeTab = TabController.SerializeTab(xmlTab, tab, template.IncludeContent);
+            nodeTabs.AppendChild(xmlTemplate.ImportNode(nodeTab, true));
+        }
+
+        private IEnumerable<Template> LoadTemplates(int portalId, IFolderInfo templateFolder)
+        {
+            var templates = new List<Template>();
+            if (templateFolder == null)
+            {
+                return templates;
+            }
+
+            templates.Add(new Template
+            {
+                Id = Localization.GetString("None_Specified"),
+                Value = Null.NullInteger
+            });
+
+            var files = Globals.GetFileList(portalId, "page.template", false, templateFolder.FolderPath);
+            foreach (FileItem file in files)
+            {
+                int i;
+                int.TryParse(file.Value, out i);
+                templates.Add(new Template
+                {
+                    Id = file.Text.Replace(".page.template", ""),
+                    Value = i
+                });
+            }
+
+            return templates;
         }
     }
 }

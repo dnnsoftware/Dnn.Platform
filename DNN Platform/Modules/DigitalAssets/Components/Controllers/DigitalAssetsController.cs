@@ -78,178 +78,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             return folderTypeId;
         }
 
-        private static string GetFileIconUrl(string extension)
-        {
-            if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
-            {
-                return IconController.IconURL("Ext" + extension, "32x32", "Standard");
-            }
-
-            return IconController.IconURL("ExtFile", "32x32", "Standard");
-        }
-
-        private IFolderInfo GetFolderInfo(int folderId)
-        {
-            var folder = FolderManager.Instance.GetFolder(folderId);
-            if (folder == null)
-            {
-                throw new DotNetNukeException(LocalizationHelper.GetString("FolderDoesNotExists.Error"));
-            }
-
-            return folder;
-        }
-
-        private IEnumerable<PermissionViewModel> GetPermissionViewModelCollection(IFolderInfo folder)
-        {
-            // TODO Split permission between CE and PE packages
-            string[] permissionKeys = { "ADD", "BROWSE", "COPY", "READ", "WRITE", "DELETE", "MANAGE", "VIEW", "FULLCONTROL" };
-
-            return permissionKeys.Select(permissionKey => new PermissionViewModel { Key = permissionKey, Value = this.HasPermission(folder, permissionKey) }).ToList();
-        }
-
-        private FolderMappingViewModel GetFolderMappingViewModel(FolderMappingInfo folderMapping)
-        {
-            return new FolderMappingViewModel
-            {
-                Id = folderMapping.FolderMappingID,
-                FolderTypeName = folderMapping.FolderProviderType,
-                Name = folderMapping.MappingName,
-            };
-        }
-
-        private Field GetTotalFilesField(IFolderInfo folder)
-        {
-            var field = new Field(DefaultMetadataNames.TotalFiles);
-            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
-            var totalFiles = Convert.ToInt32(FolderManager.Instance.GetFiles(folder, true, false).Count());
-            field.Type = totalFiles.GetType();
-            field.Value = totalFiles;
-            field.StringValue = field.Value.ToString();
-            return field;
-        }
-
-        private Field GetFolderSizeField(IFolderInfo folder)
-        {
-            var field = new Field(DefaultMetadataNames.Size);
-            var size = FolderManager.Instance.GetFiles(folder, true, false).Sum(f => (long)f.Size);
-            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
-            field.Type = size.GetType();
-            field.Value = size;
-            field.StringValue = string.Format(new FileSizeFormatProvider(), "{0:fs}", size);
-
-            return field;
-        }
-
-        private Field GetFileKindField(IFileInfo file)
-        {
-            var field = new Field(DefaultMetadataNames.Type);
-            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
-            field.Type = file.Extension.GetType();
-            field.Value = file.Extension;
-            field.StringValue = field.Value.ToString();
-
-            return field;
-        }
-
-        private Field GetFileSizeField(IFileInfo file)
-        {
-            var field = new Field(DefaultMetadataNames.Size);
-            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
-            field.Type = file.Size.GetType();
-            field.Value = file.Size;
-            field.StringValue = string.Format(new FileSizeFormatProvider(), "{0:fs}", file.Size);
-
-            return field;
-        }
-
-        private List<Field> GetFolderPreviewFields(IFolderInfo folder)
-        {
-            var fields = new List<Field>
-                             {
-                                 this.GetFolderSizeField(folder),
-                                 this.GetTotalFilesField(folder),
-                             };
-            fields.AddRange(this.GetAuditFields((FolderInfo)folder, folder.PortalID));
-            return fields;
-        }
-
-        private List<Field> GetFilePreviewFields(IFileInfo file)
-        {
-            var fields = new List<Field>
-                             {
-                                 this.GetFileKindField(file),
-                                 this.GetFileSizeField(file),
-                             };
-            fields.AddRange(this.GetAuditFields((FileInfo)file, file.PortalId));
-            return fields;
-        }
-
-        private IEnumerable<Field> GetAuditFields(BaseEntityInfo item, int portalId)
-        {
-            var createdByUser = item.CreatedByUser(portalId);
-            var lastModifiedByUser = item.LastModifiedByUser(portalId);
-            return new List<Field>
-                {
-                    new Field(DefaultMetadataNames.Created)
-                    {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Created + ".DisplayName"),
-                        Type = typeof(DateTime),
-                        Value = item.CreatedOnDate,
-                        StringValue = item.CreatedOnDate.ToString(CultureInfo.CurrentCulture),
-                    },
-                    new Field(DefaultMetadataNames.CreatedBy)
-                    {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.CreatedBy + ".DisplayName"),
-                        Type = typeof(int),
-                        Value = item.CreatedByUserID,
-                        StringValue = createdByUser != null ? createdByUser.DisplayName : string.Empty,
-                    },
-                    new Field(DefaultMetadataNames.Modified)
-                    {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Modified + ".DisplayName"),
-                        Type = typeof(DateTime),
-                        Value = item.LastModifiedOnDate,
-                        StringValue = item.LastModifiedOnDate.ToString(CultureInfo.CurrentCulture),
-                    },
-                    new Field(DefaultMetadataNames.ModifiedBy)
-                    {
-                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.ModifiedBy + ".DisplayName"),
-                        Type = typeof(int),
-                        Value = item.LastModifiedByUserID,
-                        StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : string.Empty
-                    },
-                };
-        }
-
-        private bool AreMappedPathsSupported(int folderMappingId)
-        {
-            if (MappedPathsSupported.ContainsKey(folderMappingId))
-            {
-                return (bool)MappedPathsSupported[folderMappingId];
-            }
-
-            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
-            var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
-            var result = folderProvider.SupportsMappedPaths;
-            MappedPathsSupported[folderMappingId] = result;
-            return result;
-        }
-
-        private string GetUnlinkAllowedStatus(IFolderInfo folder)
-        {
-            if (this.AreMappedPathsSupported(folder.FolderMappingID) && folder.ParentID > 0 && this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
-            {
-                return "onlyUnlink";
-            }
-
-            if (this.AreMappedPathsSupported(folder.FolderMappingID))
-            {
-                return "true";
-            }
-
-            return "false";
-        }
-
         public int GetCurrentPortalId(int moduleId)
         {
             if (PortalSettings.Current.UserInfo.IsSuperUser)
@@ -377,42 +205,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public FolderViewModel CreateFolder(string folderName, int folderParentID, int folderMappingID, string mappedPath)
         {
             return this.GetFolderViewModel(AssetManager.Instance.CreateFolder(folderName, folderParentID, folderMappingID, mappedPath));
-        }
-
-        private IFolderInfo EnsureGroupFolder(int groupId, PortalSettings portalSettings)
-        {
-            const int AllUsersRoleId = -1;
-            var groupFolderPath = "Groups/" + groupId;
-
-            if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, groupFolderPath))
-            {
-                var pc = new PermissionController();
-                var browsePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "BROWSE").Cast<PermissionInfo>().FirstOrDefault();
-                var readPermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ").Cast<PermissionInfo>().FirstOrDefault();
-                var writePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "WRITE").Cast<PermissionInfo>().FirstOrDefault();
-
-                if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, "Groups"))
-                {
-                    var folder = FolderManager.Instance.AddFolder(portalSettings.PortalId, "Groups");
-
-                    folder.FolderPermissions.Remove(browsePermission.PermissionID, AllUsersRoleId, Null.NullInteger);
-                    folder.FolderPermissions.Remove(readPermission.PermissionID, AllUsersRoleId, Null.NullInteger);
-                    folder.IsProtected = true;
-                    FolderManager.Instance.UpdateFolder(folder);
-                }
-
-                var groupFolder = FolderManager.Instance.AddFolder(portalSettings.PortalId, groupFolderPath);
-
-                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(browsePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
-                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(readPermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
-                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(writePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
-
-                groupFolder.IsProtected = true;
-                FolderManager.Instance.UpdateFolder(groupFolder);
-                return groupFolder;
-            }
-
-            return FolderManager.Instance.GetFolder(portalSettings.PortalId, groupFolderPath);
         }
 
         public ItemViewModel GetFile(int fileID)
@@ -805,18 +597,6 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             };
         }
 
-        private ItemViewModel GetItemViewModel(object item)
-        {
-            var folder = item as IFolderInfo;
-            if (folder != null)
-            {
-                return this.GetItemViewModel(folder);
-            }
-
-            var file = item as IFileInfo;
-            return this.GetItemViewModel(file);
-        }
-
         protected string GetFolderIconUrl(int portalId, int folderMappingID)
         {
             var imageUrl = IconController.IconURL("ExtClosedFolder", "32x32", "Standard");
@@ -828,6 +608,226 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             }
 
             return imageUrl;
+        }
+
+        private static string GetFileIconUrl(string extension)
+        {
+            if (!string.IsNullOrEmpty(extension) && File.Exists(HttpContext.Current.Server.MapPath(IconController.IconURL("Ext" + extension, "32x32", "Standard"))))
+            {
+                return IconController.IconURL("Ext" + extension, "32x32", "Standard");
+            }
+
+            return IconController.IconURL("ExtFile", "32x32", "Standard");
+        }
+
+        private IFolderInfo GetFolderInfo(int folderId)
+        {
+            var folder = FolderManager.Instance.GetFolder(folderId);
+            if (folder == null)
+            {
+                throw new DotNetNukeException(LocalizationHelper.GetString("FolderDoesNotExists.Error"));
+            }
+
+            return folder;
+        }
+
+        private IEnumerable<PermissionViewModel> GetPermissionViewModelCollection(IFolderInfo folder)
+        {
+            // TODO Split permission between CE and PE packages
+            string[] permissionKeys = { "ADD", "BROWSE", "COPY", "READ", "WRITE", "DELETE", "MANAGE", "VIEW", "FULLCONTROL" };
+
+            return permissionKeys.Select(permissionKey => new PermissionViewModel { Key = permissionKey, Value = this.HasPermission(folder, permissionKey) }).ToList();
+        }
+
+        private FolderMappingViewModel GetFolderMappingViewModel(FolderMappingInfo folderMapping)
+        {
+            return new FolderMappingViewModel
+            {
+                Id = folderMapping.FolderMappingID,
+                FolderTypeName = folderMapping.FolderProviderType,
+                Name = folderMapping.MappingName,
+            };
+        }
+
+        private Field GetTotalFilesField(IFolderInfo folder)
+        {
+            var field = new Field(DefaultMetadataNames.TotalFiles);
+            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
+            var totalFiles = Convert.ToInt32(FolderManager.Instance.GetFiles(folder, true, false).Count());
+            field.Type = totalFiles.GetType();
+            field.Value = totalFiles;
+            field.StringValue = field.Value.ToString();
+            return field;
+        }
+
+        private Field GetFolderSizeField(IFolderInfo folder)
+        {
+            var field = new Field(DefaultMetadataNames.Size);
+            var size = FolderManager.Instance.GetFiles(folder, true, false).Sum(f => (long)f.Size);
+            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
+            field.Type = size.GetType();
+            field.Value = size;
+            field.StringValue = string.Format(new FileSizeFormatProvider(), "{0:fs}", size);
+
+            return field;
+        }
+
+        private Field GetFileKindField(IFileInfo file)
+        {
+            var field = new Field(DefaultMetadataNames.Type);
+            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
+            field.Type = file.Extension.GetType();
+            field.Value = file.Extension;
+            field.StringValue = field.Value.ToString();
+
+            return field;
+        }
+
+        private Field GetFileSizeField(IFileInfo file)
+        {
+            var field = new Field(DefaultMetadataNames.Size);
+            field.DisplayName = LocalizationHelper.GetString("Field" + field.Name + ".DisplayName");
+            field.Type = file.Size.GetType();
+            field.Value = file.Size;
+            field.StringValue = string.Format(new FileSizeFormatProvider(), "{0:fs}", file.Size);
+
+            return field;
+        }
+
+        private List<Field> GetFolderPreviewFields(IFolderInfo folder)
+        {
+            var fields = new List<Field>
+                             {
+                                 this.GetFolderSizeField(folder),
+                                 this.GetTotalFilesField(folder),
+                             };
+            fields.AddRange(this.GetAuditFields((FolderInfo)folder, folder.PortalID));
+            return fields;
+        }
+
+        private List<Field> GetFilePreviewFields(IFileInfo file)
+        {
+            var fields = new List<Field>
+                             {
+                                 this.GetFileKindField(file),
+                                 this.GetFileSizeField(file),
+                             };
+            fields.AddRange(this.GetAuditFields((FileInfo)file, file.PortalId));
+            return fields;
+        }
+
+        private IEnumerable<Field> GetAuditFields(BaseEntityInfo item, int portalId)
+        {
+            var createdByUser = item.CreatedByUser(portalId);
+            var lastModifiedByUser = item.LastModifiedByUser(portalId);
+            return new List<Field>
+                {
+                    new Field(DefaultMetadataNames.Created)
+                    {
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Created + ".DisplayName"),
+                        Type = typeof(DateTime),
+                        Value = item.CreatedOnDate,
+                        StringValue = item.CreatedOnDate.ToString(CultureInfo.CurrentCulture),
+                    },
+                    new Field(DefaultMetadataNames.CreatedBy)
+                    {
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.CreatedBy + ".DisplayName"),
+                        Type = typeof(int),
+                        Value = item.CreatedByUserID,
+                        StringValue = createdByUser != null ? createdByUser.DisplayName : string.Empty,
+                    },
+                    new Field(DefaultMetadataNames.Modified)
+                    {
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.Modified + ".DisplayName"),
+                        Type = typeof(DateTime),
+                        Value = item.LastModifiedOnDate,
+                        StringValue = item.LastModifiedOnDate.ToString(CultureInfo.CurrentCulture),
+                    },
+                    new Field(DefaultMetadataNames.ModifiedBy)
+                    {
+                        DisplayName = LocalizationHelper.GetString("Field" + DefaultMetadataNames.ModifiedBy + ".DisplayName"),
+                        Type = typeof(int),
+                        Value = item.LastModifiedByUserID,
+                        StringValue = lastModifiedByUser != null ? lastModifiedByUser.DisplayName : string.Empty
+                    },
+                };
+        }
+
+        private bool AreMappedPathsSupported(int folderMappingId)
+        {
+            if (MappedPathsSupported.ContainsKey(folderMappingId))
+            {
+                return (bool)MappedPathsSupported[folderMappingId];
+            }
+
+            var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
+            var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
+            var result = folderProvider.SupportsMappedPaths;
+            MappedPathsSupported[folderMappingId] = result;
+            return result;
+        }
+
+        private string GetUnlinkAllowedStatus(IFolderInfo folder)
+        {
+            if (this.AreMappedPathsSupported(folder.FolderMappingID) && folder.ParentID > 0 && this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID)
+            {
+                return "onlyUnlink";
+            }
+
+            if (this.AreMappedPathsSupported(folder.FolderMappingID))
+            {
+                return "true";
+            }
+
+            return "false";
+        }
+
+        private IFolderInfo EnsureGroupFolder(int groupId, PortalSettings portalSettings)
+        {
+            const int AllUsersRoleId = -1;
+            var groupFolderPath = "Groups/" + groupId;
+
+            if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, groupFolderPath))
+            {
+                var pc = new PermissionController();
+                var browsePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "BROWSE").Cast<PermissionInfo>().FirstOrDefault();
+                var readPermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ").Cast<PermissionInfo>().FirstOrDefault();
+                var writePermission = pc.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "WRITE").Cast<PermissionInfo>().FirstOrDefault();
+
+                if (!FolderManager.Instance.FolderExists(portalSettings.PortalId, "Groups"))
+                {
+                    var folder = FolderManager.Instance.AddFolder(portalSettings.PortalId, "Groups");
+
+                    folder.FolderPermissions.Remove(browsePermission.PermissionID, AllUsersRoleId, Null.NullInteger);
+                    folder.FolderPermissions.Remove(readPermission.PermissionID, AllUsersRoleId, Null.NullInteger);
+                    folder.IsProtected = true;
+                    FolderManager.Instance.UpdateFolder(folder);
+                }
+
+                var groupFolder = FolderManager.Instance.AddFolder(portalSettings.PortalId, groupFolderPath);
+
+                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(browsePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
+                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(readPermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
+                groupFolder.FolderPermissions.Add(new FolderPermissionInfo(writePermission) { FolderPath = groupFolder.FolderPath, RoleID = groupId, AllowAccess = true });
+
+                groupFolder.IsProtected = true;
+                FolderManager.Instance.UpdateFolder(groupFolder);
+                return groupFolder;
+            }
+
+            return FolderManager.Instance.GetFolder(portalSettings.PortalId, groupFolderPath);
+        }
+
+        private ItemViewModel GetItemViewModel(object item)
+        {
+            var folder = item as IFolderInfo;
+            if (folder != null)
+            {
+                return this.GetItemViewModel(folder);
+            }
+
+            var file = item as IFileInfo;
+            return this.GetItemViewModel(file);
         }
     }
 }

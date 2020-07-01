@@ -89,6 +89,19 @@ namespace DotNetNuke.Services.Installer
             this.SourceConfig = sourceDoc;
         }
 
+        public IDictionary<string, XmlDocument> PendingDocuments
+        {
+            get
+            {
+                if (this._pendingDocuments == null)
+                {
+                    this._pendingDocuments = new Dictionary<string, XmlDocument>();
+                }
+
+                return this._pendingDocuments;
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Source for the Config file.
@@ -137,19 +150,6 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         public bool ConfigUpdateChangedNodes { get; private set; }
 
-        public IDictionary<string, XmlDocument> PendingDocuments
-        {
-            get
-            {
-                if (this._pendingDocuments == null)
-                {
-                    this._pendingDocuments = new Dictionary<string, XmlDocument>();
-                }
-
-                return this._pendingDocuments;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UpdateConfig method processes the source file and updates the Target
@@ -188,6 +188,77 @@ namespace DotNetNuke.Services.Installer
             }
 
             this.ConfigUpdateChangedNodes = changedAnyNodes;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The UpdateConfigs method processes the source file and updates the various config
+        /// files.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        public void UpdateConfigs()
+        {
+            this.UpdateConfigs(true);
+        }
+
+        public void UpdateConfigs(bool autoSave)
+        {
+            var changedAnyNodes = false;
+            var nodes = this.SourceConfig.SelectNodes("/configuration/nodes");
+            if (nodes != null)
+            {
+                foreach (XmlNode configNode in nodes)
+                {
+                    Debug.Assert(configNode.Attributes != null, "configNode.Attributes != null");
+
+                    // Attempt to load TargetFile property from configFile Atribute
+                    this.TargetFileName = configNode.Attributes["configfile"].Value;
+                    string targetProductName = string.Empty;
+                    if (configNode.Attributes["productName"] != null)
+                    {
+                        targetProductName = configNode.Attributes["productName"].Value;
+                    }
+
+                    bool isAppliedToProduct;
+
+                    if (!File.Exists(Globals.ApplicationMapPath + "\\" + this.TargetFileName))
+                    {
+                        DnnInstallLogger.InstallLogInfo($"Target File {this.TargetFileName} doesn't exist, ignore the merge process");
+                        return;
+                    }
+
+                    this.TargetConfig = Config.Load(this.TargetFileName);
+                    if (string.IsNullOrEmpty(targetProductName) || targetProductName == "All")
+                    {
+                        isAppliedToProduct = true;
+                    }
+                    else
+                    {
+                        isAppliedToProduct = DotNetNukeContext.Current.Application.ApplyToProduct(targetProductName);
+                    }
+
+                    // The nodes definition is not correct so skip changes
+                    if (this.TargetConfig != null && isAppliedToProduct)
+                    {
+                        var changedNodes = this.ProcessNodes(configNode.SelectNodes("node"), autoSave);
+                        changedAnyNodes = changedAnyNodes || changedNodes;
+                        if (!autoSave && changedNodes)
+                        {
+                            this.PendingDocuments.Add(this.TargetFileName, this.TargetConfig);
+                        }
+                    }
+                }
+            }
+
+            this.ConfigUpdateChangedNodes = changedAnyNodes;
+        }
+
+        public void SavePendingConfigs()
+        {
+            foreach (var key in this.PendingDocuments.Keys)
+            {
+                Config.Save(this.PendingDocuments[key], key);
+            }
         }
 
         private bool AddNode(XmlNode rootNode, XmlNode actionNode)
@@ -610,77 +681,6 @@ namespace DotNetNuke.Services.Installer
             if (commentNodes.Count > 0)
             {
                 commentNodes.ForEach(n => { node.RemoveChild(n); });
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The UpdateConfigs method processes the source file and updates the various config
-        /// files.
-        /// </summary>
-        /// -----------------------------------------------------------------------------
-        public void UpdateConfigs()
-        {
-            this.UpdateConfigs(true);
-        }
-
-        public void UpdateConfigs(bool autoSave)
-        {
-            var changedAnyNodes = false;
-            var nodes = this.SourceConfig.SelectNodes("/configuration/nodes");
-            if (nodes != null)
-            {
-                foreach (XmlNode configNode in nodes)
-                {
-                    Debug.Assert(configNode.Attributes != null, "configNode.Attributes != null");
-
-                    // Attempt to load TargetFile property from configFile Atribute
-                    this.TargetFileName = configNode.Attributes["configfile"].Value;
-                    string targetProductName = string.Empty;
-                    if (configNode.Attributes["productName"] != null)
-                    {
-                        targetProductName = configNode.Attributes["productName"].Value;
-                    }
-
-                    bool isAppliedToProduct;
-
-                    if (!File.Exists(Globals.ApplicationMapPath + "\\" + this.TargetFileName))
-                    {
-                        DnnInstallLogger.InstallLogInfo($"Target File {this.TargetFileName} doesn't exist, ignore the merge process");
-                        return;
-                    }
-
-                    this.TargetConfig = Config.Load(this.TargetFileName);
-                    if (string.IsNullOrEmpty(targetProductName) || targetProductName == "All")
-                    {
-                        isAppliedToProduct = true;
-                    }
-                    else
-                    {
-                        isAppliedToProduct = DotNetNukeContext.Current.Application.ApplyToProduct(targetProductName);
-                    }
-
-                    // The nodes definition is not correct so skip changes
-                    if (this.TargetConfig != null && isAppliedToProduct)
-                    {
-                        var changedNodes = this.ProcessNodes(configNode.SelectNodes("node"), autoSave);
-                        changedAnyNodes = changedAnyNodes || changedNodes;
-                        if (!autoSave && changedNodes)
-                        {
-                            this.PendingDocuments.Add(this.TargetFileName, this.TargetConfig);
-                        }
-                    }
-                }
-            }
-
-            this.ConfigUpdateChangedNodes = changedAnyNodes;
-        }
-
-        public void SavePendingConfigs()
-        {
-            foreach (var key in this.PendingDocuments.Keys)
-            {
-                Config.Save(this.PendingDocuments[key], key);
             }
         }
     }

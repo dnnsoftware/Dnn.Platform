@@ -34,6 +34,42 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
+        /// Gets a value indicating whether is this a Portal-Level Relationship.
+        /// </summary>
+        [XmlIgnore]
+        public bool IsPortalList
+        {
+            get
+            {
+                return this.UserId == Null.NullInteger && this.PortalId >= 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether is this a Host-Level Relationship (very uncommon).
+        /// </summary>
+        [XmlIgnore]
+        public bool IsHostList
+        {
+            get
+            {
+                return this.UserId == Null.NullInteger && this.PortalId == Null.NullInteger;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether is this a USer-Level Relationship.
+        /// </summary>
+        [XmlIgnore]
+        public bool IsUserList
+        {
+            get
+            {
+                return this.UserId > 0 && this.PortalId >= 0;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets relationshipId - The primary key.
         /// </summary>
         [XmlAttribute]
@@ -74,42 +110,6 @@ namespace DotNetNuke.Entities.Users.Social
         /// </summary>
         [XmlAttribute]
         public RelationshipStatus DefaultResponse { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether is this a Portal-Level Relationship.
-        /// </summary>
-        [XmlIgnore]
-        public bool IsPortalList
-        {
-            get
-            {
-                return this.UserId == Null.NullInteger && this.PortalId >= 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether is this a Host-Level Relationship (very uncommon).
-        /// </summary>
-        [XmlIgnore]
-        public bool IsHostList
-        {
-            get
-            {
-                return this.UserId == Null.NullInteger && this.PortalId == Null.NullInteger;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether is this a USer-Level Relationship.
-        /// </summary>
-        [XmlIgnore]
-        public bool IsUserList
-        {
-            get
-            {
-                return this.UserId > 0 && this.PortalId >= 0;
-            }
-        }
 
         /// <summary>
         /// Gets or sets iHydratable.KeyID.

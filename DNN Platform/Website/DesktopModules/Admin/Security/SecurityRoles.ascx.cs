@@ -56,6 +56,14 @@ namespace DotNetNuke.Modules.Admin.Security
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
+        public ModuleActionCollection ModuleActions
+        {
+            get
+            {
+                return new ModuleActionCollection();
+            }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the ParentModule (if one exists).
@@ -64,14 +72,6 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public PortalModuleBase ParentModule { get; set; }
-
-        public ModuleActionCollection ModuleActions
-        {
-            get
-            {
-                return new ModuleActionCollection();
-            }
-        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -154,19 +154,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        protected int SelectedUserID
-        {
-            get
-            {
-                return this._SelectedUserID;
-            }
-
-            set
-            {
-                this._SelectedUserID = value;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the control should use a Combo Box or Text Box to display the users.
@@ -181,8 +168,6 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        protected int CurrentPage { get; set; }
-
         protected int PageSize
         {
             get
@@ -191,6 +176,21 @@ namespace DotNetNuke.Modules.Admin.Security
                 return Convert.ToInt32(setting);
             }
         }
+
+        protected int SelectedUserID
+        {
+            get
+            {
+                return this._SelectedUserID;
+            }
+
+            set
+            {
+                this._SelectedUserID = value;
+            }
+        }
+
+        protected int CurrentPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -237,6 +237,174 @@ namespace DotNetNuke.Modules.Admin.Security
             }
 
             return canDelete;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="DateTime">The Date object to format.</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public string FormatDate(DateTime DateTime)
+        {
+            if (!Null.IsNull(DateTime))
+            {
+                return DateTime.ToShortDateString();
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
+        /// </summary>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
+        public string FormatUser(int UserID, string DisplayName)
+        {
+            return "<a href=\"" + Globals.LinkClick("userid=" + UserID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + DisplayName + "</a>";
+        }
+
+        public void cmdDeleteUserRole_click(object sender, ImageClickEventArgs e)
+        {
+            if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
+            {
+                return;
+            }
+
+            try
+            {
+                var cmdDeleteUserRole = (ImageButton)sender;
+                int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
+                int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
+
+                RoleInfo role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
+                if (!RoleController.DeleteUserRole(UserController.GetUserById(this.PortalId, userId), role, this.PortalSettings, this.chkNotify.Checked))
+                {
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                }
+
+                this.BindGrid();
+            }
+            catch (Exception exc)
+            {
+                Exceptions.LogException(exc);
+                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Init runs when the control is initialised.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (this.Request.QueryString["RoleId"] != null)
+            {
+                this.RoleId = int.Parse(this.Request.QueryString["RoleId"]);
+            }
+
+            if (this.Request.QueryString["UserId"] != null)
+            {
+                int userId;
+
+                // Use Int32.MaxValue as invalid UserId
+                this.UserId = int.TryParse(this.Request.QueryString["UserId"], out userId) ? userId : int.MaxValue;
+            }
+
+            this.CurrentPage = 1;
+            if (this.Request.QueryString["CurrentPage"] != null)
+            {
+                var currentPage = 0;
+                if (int.TryParse(this.Request.QueryString["CurrentPage"], out currentPage)
+                    && currentPage > 0)
+                {
+                    this.CurrentPage = currentPage;
+                }
+                else
+                {
+                    this.CurrentPage = 1;
+                }
+            }
+
+            this.cboRoles.SelectedIndexChanged += this.cboRoles_SelectedIndexChanged;
+            this.cboUsers.SelectedIndexChanged += this.cboUsers_SelectedIndexChanged;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.cmdValidate.Click += this.cmdValidate_Click;
+            this.grdUserRoles.ItemCreated += this.grdUserRoles_ItemCreated;
+            this.grdUserRoles.ItemDataBound += this.grdUserRoles_ItemDataBound;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Page_Load runs when the control is loaded.
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            try
+            {
+                this.cmdCancel.NavigateUrl = this.ReturnUrl;
+                if (this.ParentModule == null)
+                {
+                    this.DataBind();
+                }
+
+                if (this.Role == null)
+                {
+                    return;
+                }
+
+                this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
+                this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
+            }
+            catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
+            {
+                Logger.Debug(exc);
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        protected void grdUserRoles_ItemDataBound(object sender, DataGridItemEventArgs e)
+        {
+            DataGridItem item = e.Item;
+            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
+            {
+                var userRole = (UserRoleInfo)item.DataItem;
+                if (this.RoleId == Null.NullInteger)
+                {
+                    if (userRole.RoleID == Convert.ToInt32(this.cboRoles.SelectedValue))
+                    {
+                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
+                    }
+                }
+
+                if (this.UserId == Null.NullInteger)
+                {
+                    if (userRole.UserID == this.SelectedUserID)
+                    {
+                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
+                    }
+                }
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -451,174 +619,6 @@ namespace DotNetNuke.Modules.Admin.Security
 
             this.effectiveDatePicker.SelectedDate = effectiveDate;
             this.expiryDatePicker.SelectedDate = expiryDate;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="DateTime">The Date object to format.</param>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public string FormatDate(DateTime DateTime)
-        {
-            if (!Null.IsNull(DateTime))
-            {
-                return DateTime.ToShortDateString();
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
-        /// </summary>
-        /// <returns></returns>
-        /// -----------------------------------------------------------------------------
-        public string FormatUser(int UserID, string DisplayName)
-        {
-            return "<a href=\"" + Globals.LinkClick("userid=" + UserID, this.TabId, this.ModuleId) + "\" class=\"CommandButton\">" + DisplayName + "</a>";
-        }
-
-        public void cmdDeleteUserRole_click(object sender, ImageClickEventArgs e)
-        {
-            if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
-            {
-                return;
-            }
-
-            try
-            {
-                var cmdDeleteUserRole = (ImageButton)sender;
-                int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
-                int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
-
-                RoleInfo role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == roleId);
-                if (!RoleController.DeleteUserRole(UserController.GetUserById(this.PortalId, userId), role, this.PortalSettings, this.chkNotify.Checked))
-                {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                }
-
-                this.BindGrid();
-            }
-            catch (Exception exc)
-            {
-                Exceptions.LogException(exc);
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Init runs when the control is initialised.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            if (this.Request.QueryString["RoleId"] != null)
-            {
-                this.RoleId = int.Parse(this.Request.QueryString["RoleId"]);
-            }
-
-            if (this.Request.QueryString["UserId"] != null)
-            {
-                int userId;
-
-                // Use Int32.MaxValue as invalid UserId
-                this.UserId = int.TryParse(this.Request.QueryString["UserId"], out userId) ? userId : int.MaxValue;
-            }
-
-            this.CurrentPage = 1;
-            if (this.Request.QueryString["CurrentPage"] != null)
-            {
-                var currentPage = 0;
-                if (int.TryParse(this.Request.QueryString["CurrentPage"], out currentPage)
-                    && currentPage > 0)
-                {
-                    this.CurrentPage = currentPage;
-                }
-                else
-                {
-                    this.CurrentPage = 1;
-                }
-            }
-
-            this.cboRoles.SelectedIndexChanged += this.cboRoles_SelectedIndexChanged;
-            this.cboUsers.SelectedIndexChanged += this.cboUsers_SelectedIndexChanged;
-            this.cmdAdd.Click += this.cmdAdd_Click;
-            this.cmdValidate.Click += this.cmdValidate_Click;
-            this.grdUserRoles.ItemCreated += this.grdUserRoles_ItemCreated;
-            this.grdUserRoles.ItemDataBound += this.grdUserRoles_ItemDataBound;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Page_Load runs when the control is loaded.
-        /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-
-            try
-            {
-                this.cmdCancel.NavigateUrl = this.ReturnUrl;
-                if (this.ParentModule == null)
-                {
-                    this.DataBind();
-                }
-
-                if (this.Role == null)
-                {
-                    return;
-                }
-
-                this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
-                this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
-            }
-            catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
-            {
-                Logger.Debug(exc);
-            }
-            catch (Exception exc) // Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
-            }
-        }
-
-        protected void grdUserRoles_ItemDataBound(object sender, DataGridItemEventArgs e)
-        {
-            DataGridItem item = e.Item;
-            if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
-            {
-                var userRole = (UserRoleInfo)item.DataItem;
-                if (this.RoleId == Null.NullInteger)
-                {
-                    if (userRole.RoleID == Convert.ToInt32(this.cboRoles.SelectedValue))
-                    {
-                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
-                    }
-                }
-
-                if (this.UserId == Null.NullInteger)
-                {
-                    if (userRole.UserID == this.SelectedUserID)
-                    {
-                        this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
-                    }
-                }
-            }
         }
 
         /// -----------------------------------------------------------------------------

@@ -46,8 +46,6 @@ namespace Dnn.PersonaBar.Pages.Services
         private const string LocalResourceFile = Library.Constants.PersonaBarRelativePath + "Modules/Dnn.Pages/App_LocalResources/Pages.resx";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
         private readonly IPagesController _pagesController;
-
-        protected INavigationManager NavigationManager { get; }
         private readonly IBulkPagesController _bulkPagesController;
         private readonly IThemesController _themesController;
         private readonly ITemplateController _templateController;
@@ -71,6 +69,8 @@ namespace Dnn.PersonaBar.Pages.Services
             this._localeController = LocaleController.Instance;
             this._securityService = SecurityService.Instance;
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         /// GET: api/Pages/GetPageDetails
         /// <summary>
@@ -872,6 +872,22 @@ namespace Dnn.PersonaBar.Pages.Services
             }
         }
 
+        private static void DisableTabVersioningAndWorkflow(TabInfo tab)
+        {
+            var tabVersionSettings = TabVersionSettings.Instance;
+            var tabWorkflowSettings = TabWorkflowSettings.Instance;
+
+            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID))
+            {
+                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
+            }
+
+            if (tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
+            {
+                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+            }
+        }
+
         //private bool IsDefaultLanguage(string cultureCode)
         //{
         //    return string.Equals(cultureCode, PortalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase);
@@ -1233,22 +1249,6 @@ namespace Dnn.PersonaBar.Pages.Services
                         this._tabController.UpdateTranslationStatus(tabInfo, true);
                     }
                 }
-            }
-        }
-
-        private static void DisableTabVersioningAndWorkflow(TabInfo tab)
-        {
-            var tabVersionSettings = TabVersionSettings.Instance;
-            var tabWorkflowSettings = TabWorkflowSettings.Instance;
-
-            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID))
-            {
-                tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
-            }
-
-            if (tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID))
-            {
-                tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
         }
 

@@ -70,28 +70,6 @@ namespace Dnn.ExportImport.Components.Controllers
             return true;
         }
 
-        protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
-        {
-            var objSecurity = PortalSecurity.Instance;
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-            var userInfo = UserController.Instance.GetUser(portalId, userId);
-            var username = objSecurity.InputFilter(
-                userInfo.Username,
-                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
-
-            var log = new LogInfo
-            {
-                LogTypeKey = logTypeKey,
-                LogPortalID = portalId,
-                LogPortalName = portalInfo.PortalName,
-                LogUserName = username,
-                LogUserID = userId,
-            };
-
-            log.AddProperty("JobID", jobId.ToString());
-            LogController.Instance.AddLog(log);
-        }
-
         /// <summary>
         /// Retrieves one page of paginated proceessed jobs.
         /// </summary>
@@ -240,6 +218,28 @@ namespace Dnn.ExportImport.Components.Controllers
             ImportPackageInfo packageInfo = null;
             Util.ReadJson(manifestPath, ref packageInfo);
             return packageInfo;
+        }
+
+        protected void AddEventLog(int portalId, int userId, int jobId, string logTypeKey)
+        {
+            var objSecurity = PortalSecurity.Instance;
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+            var userInfo = UserController.Instance.GetUser(portalId, userId);
+            var username = objSecurity.InputFilter(
+                userInfo.Username,
+                PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+
+            var log = new LogInfo
+            {
+                LogTypeKey = logTypeKey,
+                LogPortalID = portalId,
+                LogPortalName = portalInfo.PortalName,
+                LogUserName = username,
+                LogUserID = userId,
+            };
+
+            log.AddProperty("JobID", jobId.ToString());
+            LogController.Instance.AddLog(log);
         }
 
         private static JobItem ToJobItem(ExportImportJob job)

@@ -52,6 +52,25 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
+        public void CancelAction(int portalId, int tabId, int moduleId)
+        {
+            foreach (var control in this.Controls)
+            {
+                var panelcontrol = control as PanelEditPagePanelExtensionControl;
+                if (panelcontrol != null)
+                {
+                    foreach (var extensionControl in panelcontrol.Controls)
+                    {
+                        var actionsControl = extensionControl as IEditPagePanelControlActions;
+                        if (actionsControl != null)
+                        {
+                            actionsControl.CancelAction(portalId, tabId, moduleId);
+                        }
+                    }
+                }
+            }
+        }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -84,25 +103,6 @@ namespace DotNetNuke.ExtensionPoints
             control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
             editPanel.Controls.Add(control);
             this.Controls.Add(editPanel);
-        }
-
-        public void CancelAction(int portalId, int tabId, int moduleId)
-        {
-            foreach (var control in this.Controls)
-            {
-                var panelcontrol = control as PanelEditPagePanelExtensionControl;
-                if (panelcontrol != null)
-                {
-                    foreach (var extensionControl in panelcontrol.Controls)
-                    {
-                        var actionsControl = extensionControl as IEditPagePanelControlActions;
-                        if (actionsControl != null)
-                        {
-                            actionsControl.CancelAction(portalId, tabId, moduleId);
-                        }
-                    }
-                }
-            }
         }
     }
 

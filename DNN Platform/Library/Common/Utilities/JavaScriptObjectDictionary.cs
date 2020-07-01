@@ -94,6 +94,25 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         return ToJsonString(this);
     }
 
+    public string ToJavaScriptArrayString()
+    {
+        return ToJavaScriptArrayString(this);
+    }
+
+    public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
+    {
+        var enumerator = this.Dictionary.GetEnumerator();
+        while (enumerator.MoveNext())
+        {
+            yield return new KeyValuePair<string, string>(enumerator.Key.ToString(), enumerator.Value.ToString());
+        }
+    }
+
+    public override string ToString()
+    {
+        return this._dictionary == null ? string.Empty : this._dictionary.ToString();
+    }
+
     private static string ToJsonString(IEnumerable<KeyValuePair<string, string>> methods)
     {
         if (methods == null)
@@ -127,28 +146,9 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         return builder.ToString();
     }
 
-    public string ToJavaScriptArrayString()
-    {
-        return ToJavaScriptArrayString(this);
-    }
-
-    public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-    {
-        var enumerator = this.Dictionary.GetEnumerator();
-        while (enumerator.MoveNext())
-        {
-            yield return new KeyValuePair<string, string>(enumerator.Key.ToString(), enumerator.Value.ToString());
-        }
-    }
-
     IEnumerator IEnumerable.GetEnumerator()
     {
         return this.GetEnumeratorPrivate();
-    }
-
-    public override string ToString()
-    {
-        return this._dictionary == null ? string.Empty : this._dictionary.ToString();
     }
 
     private IEnumerator GetEnumeratorPrivate()

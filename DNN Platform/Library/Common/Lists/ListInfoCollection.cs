@@ -50,12 +50,6 @@ namespace DotNetNuke.Common.Lists
             }
         }
 
-        internal new void Clear()
-        {
-            this.mKeyIndexLookup.Clear();
-            base.Clear();
-        }
-
         public object Item(string key)
         {
             int index;
@@ -132,6 +126,12 @@ namespace DotNetNuke.Common.Lists
             }
 
             return childList;
+        }
+
+        internal new void Clear()
+        {
+            this.mKeyIndexLookup.Clear();
+            base.Clear();
         }
     }
 }

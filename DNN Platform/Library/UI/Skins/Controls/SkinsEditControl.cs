@@ -55,6 +55,29 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Gets oldStringValue returns the String representation of the OldValue.
+        /// </summary>
+        /// <value>A String representing the OldValue.</value>
+        /// -----------------------------------------------------------------------------
+        protected string OldStringValue
+        {
+            get
+            {
+                string strValue = Null.NullString;
+                if (this.OldDictionaryValue != null)
+                {
+                    foreach (string Skin in this.OldDictionaryValue.Values)
+                    {
+                        strValue += Skin + ",";
+                    }
+                }
+
+                return strValue;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
         /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.
         /// </summary>
         /// <value>A Dictionary(Of Integer, String) representing the Value.</value>
@@ -88,29 +111,6 @@ namespace DotNetNuke.UI.Skins.Controls
             set
             {
                 this.OldValue = value;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets oldStringValue returns the String representation of the OldValue.
-        /// </summary>
-        /// <value>A String representing the OldValue.</value>
-        /// -----------------------------------------------------------------------------
-        protected string OldStringValue
-        {
-            get
-            {
-                string strValue = Null.NullString;
-                if (this.OldDictionaryValue != null)
-                {
-                    foreach (string Skin in this.OldDictionaryValue.Values)
-                    {
-                        strValue += Skin + ",";
-                    }
-                }
-
-                return strValue;
             }
         }
 

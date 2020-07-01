@@ -23,15 +23,19 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         [FlagParameter("email", "Prompt_ListUsers_FlagEmail", "String")]
         private const string FlagEmail = "email";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
         [FlagParameter("username", "Prompt_ListUsers_FlagUsername", "String")]
         private const string FlagUsername = "username";
+
         [FlagParameter("role", "Prompt_ListUsers_FlagRole", "String")]
         private const string FlagRole = "role";
+
         [FlagParameter("page", "Prompt_ListUsers_FlagPage", "Integer", "0")]
         private const string FlagPage = "page";
+
         [FlagParameter("max", "Prompt_ListUsers_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private string Email { get; set; }
         private string Username { get; set; }
@@ -157,6 +161,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
         {
             return (from UserInfo ui in lstUserInfos select new UserModelBase(ui)).ToList();
         }
+
         private static List<UserModelBase> ConvertList(IEnumerable<UserBasicDto> lstBasicDtos, int portalId)
         {
             return (from UserBasicDto ui in lstBasicDtos select new UserModelBase(UserController.Instance.GetUser(portalId, ui.UserId))).ToList();

@@ -34,14 +34,14 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code.
-        /// </summary>
-        public HttpResponseMessage Result { get; private set; }
-
-        /// <summary>
         /// Gets body from the Get Response. Available when exception is thrown as well.
         /// </summary>
         public string Body { get; }
+
+        /// <summary>
+        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code.
+        /// </summary>
+        public HttpResponseMessage Result { get; private set; }
 
         public dynamic BodyAsJson()
         {

@@ -40,6 +40,11 @@ namespace DotNetNuke.UI.ControlPanels
             Edit = 1,
         }
 
+        public virtual bool IncludeInControlHierarchy
+        {
+            get { return true; }
+        }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the Local ResourceFile for the Control Panel.
@@ -69,9 +74,10 @@ namespace DotNetNuke.UI.ControlPanels
             }
         }
 
-        public virtual bool IncludeInControlHierarchy
+        public virtual bool IsDockable
         {
-            get { return true; }
+            get { return false; }
+            set { }
         }
 
         /// -----------------------------------------------------------------------------
@@ -113,12 +119,6 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 return this.PortalSettings.UserMode;
             }
-        }
-
-        public virtual bool IsDockable
-        {
-            get { return false; }
-            set { }
         }
 
         internal static bool IsModuleAdminInternal()
@@ -358,35 +358,6 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a Module Permission.
-        /// </summary>
-        /// <param name="objModule">Module Info.</param>
-        /// <param name="permission">The permission to add.</param>
-        /// <param name="roleId">The Id of the role to add the permission for.</param>
-        /// <param name="userId">Operator.</param>
-        /// <param name="allowAccess">Whether allow to access the module.</param>
-        /// -----------------------------------------------------------------------------
-        private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
-        {
-            var objModulePermission = new ModulePermissionInfo();
-            objModulePermission.ModuleID = objModule.ModuleID;
-            objModulePermission.PermissionID = permission.PermissionID;
-            objModulePermission.RoleID = roleId;
-            objModulePermission.UserID = userId;
-            objModulePermission.PermissionKey = permission.PermissionKey;
-            objModulePermission.AllowAccess = allowAccess;
-
-            // add the permission to the collection
-            if (!objModule.ModulePermissions.Contains(objModulePermission))
-            {
-                objModule.ModulePermissions.Add(objModulePermission);
-            }
-
-            return objModulePermission;
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
         /// Builds a URL.
         /// </summary>
         /// <param name="FriendlyName">The friendly name of the Module.</param>
@@ -457,6 +428,35 @@ namespace DotNetNuke.UI.ControlPanels
                 this.Page.Items[typeof(ControlPanelBase)] = this;
                 base.OnInit(e);
             }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Adds a Module Permission.
+        /// </summary>
+        /// <param name="objModule">Module Info.</param>
+        /// <param name="permission">The permission to add.</param>
+        /// <param name="roleId">The Id of the role to add the permission for.</param>
+        /// <param name="userId">Operator.</param>
+        /// <param name="allowAccess">Whether allow to access the module.</param>
+        /// -----------------------------------------------------------------------------
+        private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
+        {
+            var objModulePermission = new ModulePermissionInfo();
+            objModulePermission.ModuleID = objModule.ModuleID;
+            objModulePermission.PermissionID = permission.PermissionID;
+            objModulePermission.RoleID = roleId;
+            objModulePermission.UserID = userId;
+            objModulePermission.PermissionKey = permission.PermissionKey;
+            objModulePermission.AllowAccess = allowAccess;
+
+            // add the permission to the collection
+            if (!objModule.ModulePermissions.Contains(objModulePermission))
+            {
+                objModule.ModulePermissions.Add(objModulePermission);
+            }
+
+            return objModulePermission;
         }
     }
 }

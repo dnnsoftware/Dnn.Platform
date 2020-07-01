@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     {
         [FlagParameter("mode", "Prompt_SetMode_FlagMode", "DNN View Mode", true)]
         private const string FlagMode = "mode";
+
         public string LocalResourceFile => Constants.LocalResourcesFile;
 
         public string ResultHtml => Localization.GetString("Prompt_SetMode_ResultHtml", this.LocalResourceFile);
@@ -44,6 +45,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
         {
             throw new NotImplementedException();
         }
-
     }
 }

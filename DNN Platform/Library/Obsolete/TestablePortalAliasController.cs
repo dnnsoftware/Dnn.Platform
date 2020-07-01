@@ -24,11 +24,6 @@ namespace DotNetNuke.Entities.Portals.Internal
             PortalAliasController.Instance.DeletePortalAlias(portalAlias);
         }
 
-        protected override Func<IPortalAliasController> GetFactory()
-        {
-            return () => new TestablePortalAliasController();
-        }
-
         public PortalAliasInfo GetPortalAlias(string alias)
         {
             return PortalAliasController.Instance.GetPortalAlias(alias);
@@ -48,6 +43,11 @@ namespace DotNetNuke.Entities.Portals.Internal
         public void UpdatePortalAlias(PortalAliasInfo portalAlias)
         {
             PortalAliasController.Instance.UpdatePortalAlias(portalAlias);
+        }
+
+        protected override Func<IPortalAliasController> GetFactory()
+        {
+            return () => new TestablePortalAliasController();
         }
     }
 }

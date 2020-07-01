@@ -83,7 +83,34 @@ namespace DotNetNuke.Web.InternalServices
             return acceptedExtensions.Contains(extension);
         }
 
-        // ReSharper disable LoopCanBeConvertedToQuery
+        private static string GetFileSize(int sizeInBytes)
+        {
+            var size = sizeInBytes / 1024;
+            var biggerThanAMegabyte = size > 1024;
+            if (biggerThanAMegabyte)
+            {
+                size = size / 1024;
+            }
+
+            return size.ToString(CultureInfo.InvariantCulture) + (biggerThanAMegabyte ? "Mb" : "k");
+        }
+
+        private string GetThumbUrl(IFileInfo file)
+        {
+            if (IsImageFile(file.RelativePath))
+            {
+                return FileManager.Instance.GetUrl(file);
+            }
+
+            var fileIcon = IconController.IconURL("Ext" + file.Extension, "32x32");
+            if (!System.IO.File.Exists(this.Request.GetHttpContext().Server.MapPath(fileIcon)))
+            {
+                fileIcon = IconController.IconURL("File", "32x32");
+            }
+
+            return fileIcon;
+        }
+
         private List<Item> GetChildren(IFolderInfo folder, ICollection<string> extensions)
         {
             var everything = new List<Item>();
@@ -126,35 +153,6 @@ namespace DotNetNuke.Web.InternalServices
             return everything;
         }
 
-        // ReSharper restore LoopCanBeConvertedToQuery
-        private string GetThumbUrl(IFileInfo file)
-        {
-            if (IsImageFile(file.RelativePath))
-            {
-                return FileManager.Instance.GetUrl(file);
-            }
-
-            var fileIcon = IconController.IconURL("Ext" + file.Extension, "32x32");
-            if (!System.IO.File.Exists(this.Request.GetHttpContext().Server.MapPath(fileIcon)))
-            {
-                fileIcon = IconController.IconURL("File", "32x32");
-            }
-
-            return fileIcon;
-        }
-
-        private static string GetFileSize(int sizeInBytes)
-        {
-            var size = sizeInBytes / 1024;
-            var biggerThanAMegabyte = size > 1024;
-            if (biggerThanAMegabyte)
-            {
-                size = size / 1024;
-            }
-
-            return size.ToString(CultureInfo.InvariantCulture) + (biggerThanAMegabyte ? "Mb" : "k");
-        }
-
         private class Item
         {
             // ReSharper disable InconsistentNaming
@@ -180,5 +178,9 @@ namespace DotNetNuke.Web.InternalServices
             // ReSharper restore UnusedAutoPropertyAccessor.Local
             // ReSharper restore InconsistentNaming
         }
+
+        // ReSharper disable LoopCanBeConvertedToQuery
+
+        // ReSharper restore LoopCanBeConvertedToQuery
     }
 }

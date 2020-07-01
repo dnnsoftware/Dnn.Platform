@@ -210,31 +210,6 @@ namespace DotNetNuke.Modules.SearchResults
             get { return Localization.GetSafeJSString("DefaultText", Localization.GetResourceFile(this, MyFileName)); }
         }
 
-        private IList<int> SearchPortalIds
-        {
-            get
-            {
-                if (this._searchPortalIds == null)
-                {
-                    this._searchPortalIds = new List<int>();
-                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
-                    {
-                        List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
-                        foreach (string l in list)
-                        {
-                            this._searchPortalIds.Add(Convert.ToInt32(l));
-                        }
-                    }
-                    else
-                    {
-                        this._searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
-                    }
-                }
-
-                return this._searchPortalIds;
-            }
-        }
-
         protected string NoResultsText
         {
             get { return Localization.GetSafeJSString("NoResults", Localization.GetResourceFile(this, MyFileName)); }
@@ -334,6 +309,31 @@ namespace DotNetNuke.Modules.SearchResults
         }
 
         protected string CultureCode { get; set; }
+
+        private IList<int> SearchPortalIds
+        {
+            get
+            {
+                if (this._searchPortalIds == null)
+                {
+                    this._searchPortalIds = new List<int>();
+                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
+                    {
+                        List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
+                        foreach (string l in list)
+                        {
+                            this._searchPortalIds.Add(Convert.ToInt32(l));
+                        }
+                    }
+                    else
+                    {
+                        this._searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
+                    }
+                }
+
+                return this._searchPortalIds;
+            }
+        }
 
         protected override void OnLoad(EventArgs e)
         {

@@ -25,11 +25,12 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             }
         }
 
-        public bool HasMissingLanguages { get; set; }
-        public bool ErrorExists { get; set; }
         public IList<LocaleInfoDto> Locales { get; }
         public IList<DnnPageDto> Pages { get; }
         public IList<DnnModulesDto> Modules { get; }
+
+        public bool HasMissingLanguages { get; set; }
+        public bool ErrorExists { get; set; }
 
         public DnnPageDto Page(string locale)
         {

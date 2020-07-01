@@ -26,10 +26,10 @@ namespace DotNetNuke.UI.UserControls
     {
         protected LinkButton cmdHelp;
         protected Image imgHelp;
-        private string _HelpKey;
-        private string _ResourceKey;
         protected Label lblHelp;
         protected Panel pnlHelp;
+        private string _HelpKey;
+        private string _ResourceKey;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

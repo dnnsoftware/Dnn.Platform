@@ -62,6 +62,24 @@ namespace DotNetNuke.Services.FileSystem
             DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
         }
 
+        /// <summary>
+        /// Updates the content of the file in the database.
+        /// </summary>
+        /// <param name="fileId">The file identifier.</param>
+        /// <param name="content">The new content.</param>
+        public static void UpdateFileContent(int fileId, byte[] content)
+        {
+            if (content != null)
+            {
+                DataProvider.Instance().UpdateFileContent(fileId, content);
+                DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
+            }
+            else
+            {
+                ClearFileContent(fileId);
+            }
+        }
+
         public override void CopyFile(string folderPath, string fileName, string newFolderPath, FolderMappingInfo folderMapping)
         {
             Requires.PropertyNotNull("folderPath", folderPath);
@@ -102,62 +120,6 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNullOrEmpty("fileName", fileName);
 
             this.UpdateFile(folder, fileName, content);
-        }
-
-        private Stream GetFileStreamInternal(IDataReader dr)
-        {
-            byte[] bytes = null;
-            try
-            {
-                if (dr.Read())
-                {
-                    bytes = (byte[])dr["Content"];
-                }
-            }
-            finally
-            {
-                CBO.CloseDataReader(dr, true);
-            }
-
-            return bytes != null ? new MemoryStream(bytes) : null;
-        }
-
-        private void UpdateFileInternal(int fileId, Stream content)
-        {
-            byte[] fileContent = null;
-
-            if (content != null)
-            {
-                var restorePosition = content.CanSeek;
-                long originalPosition = Null.NullInteger;
-
-                if (restorePosition)
-                {
-                    originalPosition = content.Position;
-                    content.Position = 0;
-                }
-
-                var buffer = new byte[16 * 1024];
-
-                using (var ms = new MemoryStream())
-                {
-                    int read;
-
-                    while ((read = content.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        ms.Write(buffer, 0, read);
-                    }
-
-                    fileContent = ms.ToArray();
-                }
-
-                if (restorePosition)
-                {
-                    content.Position = originalPosition;
-                }
-            }
-
-            UpdateFileContent(fileId, fileContent);
         }
 
         public override void DeleteFile(IFileInfo file)
@@ -296,22 +258,60 @@ namespace DotNetNuke.Services.FileSystem
             this.UpdateFileInternal(file.FileId, content);
         }
 
-        /// <summary>
-        /// Updates the content of the file in the database.
-        /// </summary>
-        /// <param name="fileId">The file identifier.</param>
-        /// <param name="content">The new content.</param>
-        public static void UpdateFileContent(int fileId, byte[] content)
+        private Stream GetFileStreamInternal(IDataReader dr)
         {
+            byte[] bytes = null;
+            try
+            {
+                if (dr.Read())
+                {
+                    bytes = (byte[])dr["Content"];
+                }
+            }
+            finally
+            {
+                CBO.CloseDataReader(dr, true);
+            }
+
+            return bytes != null ? new MemoryStream(bytes) : null;
+        }
+
+        private void UpdateFileInternal(int fileId, Stream content)
+        {
+            byte[] fileContent = null;
+
             if (content != null)
             {
-                DataProvider.Instance().UpdateFileContent(fileId, content);
-                DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());
+                var restorePosition = content.CanSeek;
+                long originalPosition = Null.NullInteger;
+
+                if (restorePosition)
+                {
+                    originalPosition = content.Position;
+                    content.Position = 0;
+                }
+
+                var buffer = new byte[16 * 1024];
+
+                using (var ms = new MemoryStream())
+                {
+                    int read;
+
+                    while ((read = content.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        ms.Write(buffer, 0, read);
+                    }
+
+                    fileContent = ms.ToArray();
+                }
+
+                if (restorePosition)
+                {
+                    content.Position = originalPosition;
+                }
             }
-            else
-            {
-                ClearFileContent(fileId);
-            }
+
+            UpdateFileContent(fileId, fileContent);
         }
     }
 }

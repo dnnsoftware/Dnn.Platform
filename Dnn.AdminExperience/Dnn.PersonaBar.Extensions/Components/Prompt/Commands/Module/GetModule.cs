@@ -22,11 +22,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("id", "Prompt_GetModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("pageid", "Prompt_GetModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private int ModuleId { get; set; }
         private int PageId { get; set; }
 

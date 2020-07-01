@@ -55,11 +55,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public string APISecret { get; set; }
 
-        protected string Service { get; set; }
-
         public bool Enabled { get; set; }
 
         public bool HostConfig { get; set; }
+
+        protected string Service { get; set; }
 
         public static void ClearConfig(string service, int portalId)
         {
@@ -77,11 +77,6 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
 
             return config;
-        }
-
-        private static string GetCacheKey(string service, int portalId)
-        {
-            return _cacheKey + "." + service + "_" + portalId;
         }
 
         public static void UpdateConfig(OAuthConfigBase config)
@@ -103,6 +98,11 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
 
             ClearConfig(config.Service, config.PortalID);
+        }
+
+        private static string GetCacheKey(string service, int portalId)
+        {
+            return _cacheKey + "." + service + "_" + portalId;
         }
     }
 }

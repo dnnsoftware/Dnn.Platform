@@ -24,11 +24,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     {
         public List<ClientOption> ClientOptions = new List<ClientOption>();
         public List<TemplateArgument> TemplateArguments = new List<TemplateArgument>();
-
-        internal string Folder;
-        internal string TemplatePath;
-        internal string TemplateVirtualPath;
-        internal string TemplateHeadPath;
         internal readonly Dictionary<string, Tuple<Version, SpecificVersion?>> ScriptLibraries = new Dictionary<string, Tuple<Version, SpecificVersion?>>();
         internal readonly List<string> ScriptUrls = new List<string>();
         internal readonly List<string> ScriptKeys = new List<string>();
@@ -36,6 +31,11 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         internal readonly List<string> StyleSheets = new List<string>();
         internal readonly List<ClientOption> DefaultClientOptions = new List<ClientOption>();
         internal readonly List<TemplateArgument> DefaultTemplateArguments = new List<TemplateArgument>();
+
+        internal string Folder;
+        internal string TemplatePath;
+        internal string TemplateVirtualPath;
+        internal string TemplateHeadPath;
         internal ITemplateProcessor Processor;
 
         private static readonly Regex RegexLinks =
@@ -52,6 +52,46 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         {
             this.ClientOptions = new List<ClientOption>(this.DefaultClientOptions);
             this.TemplateArguments = new List<TemplateArgument>(this.DefaultTemplateArguments);
+        }
+
+        public void AddClientOptions(List<ClientOption> options, bool replace)
+        {
+            if (options != null)
+            {
+                foreach (var option in options)
+                {
+                    var option1 = option;
+                    if (replace)
+                    {
+                        this.ClientOptions.RemoveAll(o => o.Name == option1.Name);
+                    }
+
+                    if (!this.ClientOptions.Exists(o => o.Name == option1.Name))
+                    {
+                        this.ClientOptions.Add(option);
+                    }
+                }
+            }
+        }
+
+        public void AddTemplateArguments(List<TemplateArgument> args, bool replace)
+        {
+            if (args != null)
+            {
+                foreach (var arg in args)
+                {
+                    var arg1 = arg;
+                    if (replace)
+                    {
+                        this.TemplateArguments.RemoveAll(a => a.Name == arg1.Name);
+                    }
+
+                    if (!this.TemplateArguments.Exists(a => a.Name == arg1.Name))
+                    {
+                        this.TemplateArguments.Add(arg);
+                    }
+                }
+            }
         }
 
         internal static TemplateDefinition FromName(string templateName, string manifestName)
@@ -232,6 +272,59 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return result;
         }
 
+        internal void PreRender()
+        {
+            var page = DNNContext.Current.Page;
+
+            foreach (var stylesheet in this.StyleSheets)
+            {
+                ClientResourceManager.RegisterStyleSheet(page, stylesheet);
+            }
+
+            foreach (var scriptUrl in this.ScriptUrls)
+            {
+                ClientResourceManager.RegisterScript(page, scriptUrl);
+            }
+
+            foreach (var libraryInfo in this.ScriptLibraries)
+            {
+                var libraryName = libraryInfo.Key;
+                var parameters = libraryInfo.Value;
+                var libraryVersion = parameters.Item1;
+                var specificVersion = parameters.Item2;
+                if (libraryVersion == null)
+                {
+                    JavaScript.RequestRegistration(libraryName);
+                }
+                else if (specificVersion == null)
+                {
+                    JavaScript.RequestRegistration(libraryName, libraryVersion);
+                }
+                else
+                {
+                    JavaScript.RequestRegistration(libraryName, libraryVersion, specificVersion.Value);
+                }
+            }
+
+            foreach (var scriptKey in this.ScriptKeys)
+            {
+                var clientScript = page.ClientScript;
+                if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                {
+                    clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                }
+            }
+
+            var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
+            var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
+            page.Header.Controls.Add(new LiteralControl(expandedHead));
+        }
+
+        internal void Render(object source, HtmlTextWriter htmlWriter)
+        {
+            this.Processor.Render(source, htmlWriter, this);
+        }
+
         private static string GetResolvedPath(XmlNode scriptElt, PathResolver pathResolver)
         {
             return pathResolver.Resolve(
@@ -294,99 +387,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
 
             return string.Join(" && ", objectsToCheck.ToArray());
-        }
-
-        public void AddClientOptions(List<ClientOption> options, bool replace)
-        {
-            if (options != null)
-            {
-                foreach (var option in options)
-                {
-                    var option1 = option;
-                    if (replace)
-                    {
-                        this.ClientOptions.RemoveAll(o => o.Name == option1.Name);
-                    }
-
-                    if (!this.ClientOptions.Exists(o => o.Name == option1.Name))
-                    {
-                        this.ClientOptions.Add(option);
-                    }
-                }
-            }
-        }
-
-        public void AddTemplateArguments(List<TemplateArgument> args, bool replace)
-        {
-            if (args != null)
-            {
-                foreach (var arg in args)
-                {
-                    var arg1 = arg;
-                    if (replace)
-                    {
-                        this.TemplateArguments.RemoveAll(a => a.Name == arg1.Name);
-                    }
-
-                    if (!this.TemplateArguments.Exists(a => a.Name == arg1.Name))
-                    {
-                        this.TemplateArguments.Add(arg);
-                    }
-                }
-            }
-        }
-
-        internal void PreRender()
-        {
-            var page = DNNContext.Current.Page;
-
-            foreach (var stylesheet in this.StyleSheets)
-            {
-                ClientResourceManager.RegisterStyleSheet(page, stylesheet);
-            }
-
-            foreach (var scriptUrl in this.ScriptUrls)
-            {
-                ClientResourceManager.RegisterScript(page, scriptUrl);
-            }
-
-            foreach (var libraryInfo in this.ScriptLibraries)
-            {
-                var libraryName = libraryInfo.Key;
-                var parameters = libraryInfo.Value;
-                var libraryVersion = parameters.Item1;
-                var specificVersion = parameters.Item2;
-                if (libraryVersion == null)
-                {
-                    JavaScript.RequestRegistration(libraryName);
-                }
-                else if (specificVersion == null)
-                {
-                    JavaScript.RequestRegistration(libraryName, libraryVersion);
-                }
-                else
-                {
-                    JavaScript.RequestRegistration(libraryName, libraryVersion, specificVersion.Value);
-                }
-            }
-
-            foreach (var scriptKey in this.ScriptKeys)
-            {
-                var clientScript = page.ClientScript;
-                if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
-                {
-                    clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
-                }
-            }
-
-            var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
-            var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
-            page.Header.Controls.Add(new LiteralControl(expandedHead));
-        }
-
-        internal void Render(object source, HtmlTextWriter htmlWriter)
-        {
-            this.Processor.Render(source, htmlWriter, this);
         }
     }
 }

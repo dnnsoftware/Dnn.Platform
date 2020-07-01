@@ -66,14 +66,23 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        protected string LocalizeString(string key)
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Module Context for this control.
+        /// </summary>
+        /// <returns>A ModuleInstanceContext.</returns>
+        /// -----------------------------------------------------------------------------
+        public ModuleInstanceContext ModuleContext
         {
-            return Localization.GetString(key, this.LocalResourceFile);
-        }
+            get
+            {
+                if (this._moduleContext == null)
+                {
+                    this._moduleContext = new ModuleInstanceContext(this);
+                }
 
-        protected string LocalizeSafeJsString(string key)
-        {
-            return Localization.GetSafeJSString(key, this.LocalResourceFile);
+                return this._moduleContext;
+            }
         }
 
         /// -----------------------------------------------------------------------------
@@ -105,23 +114,14 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Module Context for this control.
-        /// </summary>
-        /// <returns>A ModuleInstanceContext.</returns>
-        /// -----------------------------------------------------------------------------
-        public ModuleInstanceContext ModuleContext
+        protected string LocalizeString(string key)
         {
-            get
-            {
-                if (this._moduleContext == null)
-                {
-                    this._moduleContext = new ModuleInstanceContext(this);
-                }
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
 
-                return this._moduleContext;
-            }
+        protected string LocalizeSafeJsString(string key)
+        {
+            return Localization.GetSafeJSString(key, this.LocalResourceFile);
         }
     }
 }

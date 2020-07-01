@@ -28,6 +28,23 @@ namespace DotNetNuke.Services.Social.Messaging
         private string _displayDate;
 
         /// <summary>
+        /// Gets a pretty printed string with the time since the message was created.
+        /// </summary>
+        [XmlAttribute]
+        public string DisplayDate
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this._displayDate))
+                {
+                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
+                }
+
+                return this._displayDate;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets messageID - The primary key.
         /// </summary>
         [XmlAttribute]
@@ -97,23 +114,6 @@ namespace DotNetNuke.Services.Social.Messaging
         /// </summary>
         [XmlAttribute]
         public int SenderUserID { get; set; }
-
-        /// <summary>
-        /// Gets a pretty printed string with the time since the message was created.
-        /// </summary>
-        [XmlAttribute]
-        public string DisplayDate
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this._displayDate))
-                {
-                    this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
-                }
-
-                return this._displayDate;
-            }
-        }
 
         /// <summary>
         /// Gets or sets iHydratable.KeyID.

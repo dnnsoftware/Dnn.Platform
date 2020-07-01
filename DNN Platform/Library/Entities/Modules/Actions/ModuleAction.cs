@@ -208,40 +208,6 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         public string Icon { get; set; }
 
-        internal string ControlKey
-        {
-            get
-            {
-                string controlKey = string.Empty;
-                if (!string.IsNullOrEmpty(this.Url))
-                {
-                    int startIndex = this.Url.IndexOf("/ctl/");
-                    int endIndex = -1;
-                    if (startIndex > -1)
-                    {
-                        startIndex += 4;
-                        endIndex = this.Url.IndexOf("/", startIndex + 1);
-                    }
-                    else
-                    {
-                        startIndex = this.Url.IndexOf("ctl=");
-                        if (startIndex > -1)
-                        {
-                            startIndex += 4;
-                            endIndex = this.Url.IndexOf("&", startIndex + 1);
-                        }
-                    }
-
-                    if (startIndex > -1)
-                    {
-                        controlKey = endIndex > -1 ? this.Url.Substring(startIndex + 1, endIndex - startIndex - 1) : this.Url.Substring(startIndex + 1);
-                    }
-                }
-
-                return controlKey;
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the URL to which the user is redirected when the
@@ -291,6 +257,40 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public bool NewWindow { get; set; }
+
+        internal string ControlKey
+        {
+            get
+            {
+                string controlKey = string.Empty;
+                if (!string.IsNullOrEmpty(this.Url))
+                {
+                    int startIndex = this.Url.IndexOf("/ctl/");
+                    int endIndex = -1;
+                    if (startIndex > -1)
+                    {
+                        startIndex += 4;
+                        endIndex = this.Url.IndexOf("/", startIndex + 1);
+                    }
+                    else
+                    {
+                        startIndex = this.Url.IndexOf("ctl=");
+                        if (startIndex > -1)
+                        {
+                            startIndex += 4;
+                            endIndex = this.Url.IndexOf("&", startIndex + 1);
+                        }
+                    }
+
+                    if (startIndex > -1)
+                    {
+                        controlKey = endIndex > -1 ? this.Url.Substring(startIndex + 1, endIndex - startIndex - 1) : this.Url.Substring(startIndex + 1);
+                    }
+                }
+
+                return controlKey;
+            }
+        }
 
         /// -----------------------------------------------------------------------------
         /// <summary>

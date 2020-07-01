@@ -14,9 +14,6 @@ namespace Dnn.PersonaBar.Library.Model
     {
         private IList<MenuItem> _allItems;
 
-        [DataMember]
-        public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
-
         [IgnoreDataMember]
         public IList<MenuItem> AllItems
         {
@@ -31,6 +28,9 @@ namespace Dnn.PersonaBar.Library.Model
                 return this._allItems;
             }
         }
+
+        [DataMember]
+        public IList<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
         private void FillAllItems(IList<MenuItem> allItems, IList<MenuItem> menuItems)
         {

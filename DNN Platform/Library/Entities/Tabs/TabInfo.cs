@@ -39,6 +39,8 @@ namespace DotNetNuke.Entities.Tabs
         private static readonly Regex SkinSrcRegex = new Regex(@"([^/]+$)", RegexOptions.CultureInvariant);
         private static Dictionary<string, string> _docTypeCache = new Dictionary<string, string>();
         private static ReaderWriterLockSlim _docTypeCacheLock = new ReaderWriterLockSlim();
+        private readonly SharedDictionary<string, string> _localizedTabNameDictionary;
+        private readonly SharedDictionary<string, string> _fullUrlDictionary;
 
         private string _administratorRoles;
         private string _authorizedRoles;
@@ -49,8 +51,6 @@ namespace DotNetNuke.Entities.Tabs
         private Hashtable _settings;
         private string _skinDoctype;
         private bool _superTabIdSet = Null.NullBoolean;
-        private readonly SharedDictionary<string, string> _localizedTabNameDictionary;
-        private readonly SharedDictionary<string, string> _fullUrlDictionary;
         private string _iconFile;
         private string _iconFileLarge;
 
@@ -107,54 +107,6 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [XmlIgnore]
-        public ArrayList BreadCrumbs { get; set; }
-
-        [XmlIgnore]
-        public string ContainerPath { get; set; }
-
-        [XmlElement("containersrc")]
-        public string ContainerSrc { get; set; }
-
-        [XmlElement("cultureCode")]
-        public string CultureCode { get; set; }
-
-        [XmlElement("defaultLanguageGuid")]
-        public Guid DefaultLanguageGuid { get; set; }
-
-        [XmlElement("description")]
-        public string Description { get; set; }
-
-        [XmlElement("disabled")]
-        public bool DisableLink { get; set; }
-
-        [XmlElement("enddate")]
-        public DateTime EndDate { get; set; }
-
-        [XmlElement("haschildren")]
-        public bool HasChildren { get; set; }
-
-        [XmlIgnore]
-        public string IconFileRaw { get; private set; }
-
-        [XmlIgnore]
-        public string IconFileLargeRaw { get; private set; }
-
-        [XmlElement("isdeleted")]
-        public bool IsDeleted { get; set; }
-
-        [XmlElement("issecure")]
-        public bool IsSecure { get; set; }
-
-        [XmlElement("visible")]
-        public bool IsVisible { get; set; }
-
-        [XmlElement("issystem")]
-        public bool IsSystem { get; set; }
-
-        [XmlIgnore]
-        public bool HasBeenPublished { get; set; }
-
-        [XmlIgnore]
         public bool HasAVisibleVersion
         {
             get
@@ -162,77 +114,6 @@ namespace DotNetNuke.Entities.Tabs
                 return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
             }
         }
-
-        [XmlElement("keywords")]
-        public string KeyWords { get; set; }
-
-        [XmlIgnore]
-        public int Level { get; set; }
-
-        [XmlElement("localizedVersionGuid")]
-        public Guid LocalizedVersionGuid { get; set; }
-
-        [XmlIgnore]
-        public ArrayList Modules
-        {
-            get
-            {
-                return this._modules ?? (this._modules = TabModulesController.Instance.GetTabModules(this));
-            }
-
-            set
-            {
-                this._modules = value;
-            }
-        }
-
-        [XmlElement("pageheadtext")]
-        public string PageHeadText { get; set; }
-
-        [XmlIgnore]
-        public ArrayList Panes { get; private set; }
-
-        [XmlElement("parentid")]
-        public int ParentId { get; set; }
-
-        [XmlElement("permanentredirect")]
-        public bool PermanentRedirect { get; set; }
-
-        [XmlElement("portalid")]
-        public int PortalID { get; set; }
-
-        [XmlElement("refreshinterval")]
-        public int RefreshInterval { get; set; }
-
-        [XmlElement("sitemappriority")]
-        public float SiteMapPriority { get; set; }
-
-        [XmlIgnore]
-        public string SkinPath { get; set; }
-
-        [XmlElement("skinsrc")]
-        public string SkinSrc { get; set; }
-
-        [XmlElement("startdate")]
-        public DateTime StartDate { get; set; }
-
-        [XmlElement("name")]
-        public string TabName { get; set; }
-
-        [XmlElement("taborder")]
-        public int TabOrder { get; set; }
-
-        [XmlElement("tabpath")]
-        public string TabPath { get; set; }
-
-        [XmlElement("title")]
-        public string Title { get; set; }
-
-        [XmlElement("uniqueid")]
-        public Guid UniqueId { get; set; }
-
-        [XmlElement("versionguid")]
-        public Guid VersionGuid { get; set; }
 
         [XmlIgnore]
         public Dictionary<int, ModuleInfo> ChildModules
@@ -276,38 +157,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        [XmlElement("iconfile")]
-        public string IconFile
-        {
-            get
-            {
-                this.IconFileGetter(ref this._iconFile, this.IconFileRaw);
-                return this._iconFile;
-            }
-
-            set
-            {
-                this.IconFileRaw = value;
-                this._iconFile = null;
-            }
-        }
-
-        [XmlElement("iconfilelarge")]
-        public string IconFileLarge
-        {
-            get
-            {
-                this.IconFileGetter(ref this._iconFileLarge, this.IconFileLargeRaw);
-                return this._iconFileLarge;
-            }
-
-            set
-            {
-                this.IconFileLargeRaw = value;
-                this._iconFileLarge = null;
-            }
-        }
-
         [XmlIgnore]
         public string IndentedTabName
         {
@@ -343,26 +192,6 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         [XmlIgnore]
-        public bool IsSuperTab
-        {
-            get
-            {
-                if (this._superTabIdSet)
-                {
-                    return this._isSuperTab;
-                }
-
-                return this.PortalID == Null.NullInteger;
-            }
-
-            set
-            {
-                this._isSuperTab = value;
-                this._superTabIdSet = true;
-            }
-        }
-
-        [XmlIgnore]
         public bool IsTranslated
         {
             get
@@ -375,20 +204,6 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 return isTranslated;
-            }
-        }
-
-        [XmlIgnore]
-        public override int KeyID
-        {
-            get
-            {
-                return this.TabID;
-            }
-
-            set
-            {
-                this.TabID = value;
             }
         }
 
@@ -444,29 +259,6 @@ namespace DotNetNuke.Entities.Tabs
                 }
 
                 return this._localizedTabs;
-            }
-        }
-
-        [XmlElement("skindoctype")]
-        public string SkinDoctype
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(this.SkinSrc) == false && string.IsNullOrEmpty(this._skinDoctype))
-                {
-                    this._skinDoctype = this.CheckIfDoctypeConfigExists();
-                    if (string.IsNullOrEmpty(this._skinDoctype))
-                    {
-                        this._skinDoctype = Host.Host.DefaultDocType;
-                    }
-                }
-
-                return this._skinDoctype;
-            }
-
-            set
-            {
-                this._skinDoctype = value;
             }
         }
 
@@ -583,12 +375,6 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        [XmlElement("url")]
-        public string Url { get; set; }
-
-        [XmlIgnore]
-        public bool UseBaseFriendlyUrls { get; set; }
-
         public CacheLevel Cacheability
         {
             get
@@ -596,6 +382,220 @@ namespace DotNetNuke.Entities.Tabs
                 return CacheLevel.fullyCacheable;
             }
         }
+
+        [XmlIgnore]
+        public ArrayList BreadCrumbs { get; set; }
+
+        [XmlIgnore]
+        public string ContainerPath { get; set; }
+
+        [XmlElement("containersrc")]
+        public string ContainerSrc { get; set; }
+
+        [XmlElement("cultureCode")]
+        public string CultureCode { get; set; }
+
+        [XmlElement("defaultLanguageGuid")]
+        public Guid DefaultLanguageGuid { get; set; }
+
+        [XmlElement("description")]
+        public string Description { get; set; }
+
+        [XmlElement("disabled")]
+        public bool DisableLink { get; set; }
+
+        [XmlElement("enddate")]
+        public DateTime EndDate { get; set; }
+
+        [XmlElement("haschildren")]
+        public bool HasChildren { get; set; }
+
+        [XmlIgnore]
+        public string IconFileRaw { get; private set; }
+
+        [XmlIgnore]
+        public string IconFileLargeRaw { get; private set; }
+
+        [XmlElement("isdeleted")]
+        public bool IsDeleted { get; set; }
+
+        [XmlElement("issecure")]
+        public bool IsSecure { get; set; }
+
+        [XmlElement("visible")]
+        public bool IsVisible { get; set; }
+
+        [XmlElement("issystem")]
+        public bool IsSystem { get; set; }
+
+        [XmlIgnore]
+        public bool HasBeenPublished { get; set; }
+
+        [XmlElement("keywords")]
+        public string KeyWords { get; set; }
+
+        [XmlIgnore]
+        public int Level { get; set; }
+
+        [XmlElement("localizedVersionGuid")]
+        public Guid LocalizedVersionGuid { get; set; }
+
+        [XmlIgnore]
+        public ArrayList Modules
+        {
+            get
+            {
+                return this._modules ?? (this._modules = TabModulesController.Instance.GetTabModules(this));
+            }
+
+            set
+            {
+                this._modules = value;
+            }
+        }
+
+        [XmlElement("pageheadtext")]
+        public string PageHeadText { get; set; }
+
+        [XmlIgnore]
+        public ArrayList Panes { get; private set; }
+
+        [XmlElement("parentid")]
+        public int ParentId { get; set; }
+
+        [XmlElement("permanentredirect")]
+        public bool PermanentRedirect { get; set; }
+
+        [XmlElement("portalid")]
+        public int PortalID { get; set; }
+
+        [XmlElement("refreshinterval")]
+        public int RefreshInterval { get; set; }
+
+        [XmlElement("sitemappriority")]
+        public float SiteMapPriority { get; set; }
+
+        [XmlIgnore]
+        public string SkinPath { get; set; }
+
+        [XmlElement("skinsrc")]
+        public string SkinSrc { get; set; }
+
+        [XmlElement("startdate")]
+        public DateTime StartDate { get; set; }
+
+        [XmlElement("name")]
+        public string TabName { get; set; }
+
+        [XmlElement("taborder")]
+        public int TabOrder { get; set; }
+
+        [XmlElement("tabpath")]
+        public string TabPath { get; set; }
+
+        [XmlElement("title")]
+        public string Title { get; set; }
+
+        [XmlElement("uniqueid")]
+        public Guid UniqueId { get; set; }
+
+        [XmlElement("versionguid")]
+        public Guid VersionGuid { get; set; }
+
+        [XmlElement("iconfile")]
+        public string IconFile
+        {
+            get
+            {
+                this.IconFileGetter(ref this._iconFile, this.IconFileRaw);
+                return this._iconFile;
+            }
+
+            set
+            {
+                this.IconFileRaw = value;
+                this._iconFile = null;
+            }
+        }
+
+        [XmlElement("iconfilelarge")]
+        public string IconFileLarge
+        {
+            get
+            {
+                this.IconFileGetter(ref this._iconFileLarge, this.IconFileLargeRaw);
+                return this._iconFileLarge;
+            }
+
+            set
+            {
+                this.IconFileLargeRaw = value;
+                this._iconFileLarge = null;
+            }
+        }
+
+        [XmlIgnore]
+        public bool IsSuperTab
+        {
+            get
+            {
+                if (this._superTabIdSet)
+                {
+                    return this._isSuperTab;
+                }
+
+                return this.PortalID == Null.NullInteger;
+            }
+
+            set
+            {
+                this._isSuperTab = value;
+                this._superTabIdSet = true;
+            }
+        }
+
+        [XmlIgnore]
+        public override int KeyID
+        {
+            get
+            {
+                return this.TabID;
+            }
+
+            set
+            {
+                this.TabID = value;
+            }
+        }
+
+        [XmlElement("skindoctype")]
+        public string SkinDoctype
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.SkinSrc) == false && string.IsNullOrEmpty(this._skinDoctype))
+                {
+                    this._skinDoctype = this.CheckIfDoctypeConfigExists();
+                    if (string.IsNullOrEmpty(this._skinDoctype))
+                    {
+                        this._skinDoctype = Host.Host.DefaultDocType;
+                    }
+                }
+
+                return this._skinDoctype;
+            }
+
+            set
+            {
+                this._skinDoctype = value;
+            }
+        }
+
+        [XmlElement("url")]
+        public string Url { get; set; }
+
+        [XmlIgnore]
+        public bool UseBaseFriendlyUrls { get; set; }
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -869,6 +869,26 @@ namespace DotNetNuke.Entities.Tabs
             this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
         }
 
+        public string GetCurrentUrl(string cultureCode)
+        {
+            string url = null;
+            if (this._tabUrls != null && this._tabUrls.Count > 0)
+            {
+                TabUrlInfo tabUrl = this._tabUrls.CurrentUrl(cultureCode);
+                if (tabUrl != null)
+                {
+                    url = tabUrl.Url;
+                }
+            }
+
+            return url ?? string.Empty;
+        }
+
+        public string GetTags()
+        {
+            return string.Join(",", this.Terms.Select(t => t.Name));
+        }
+
         internal void ClearTabUrls()
         {
             this._tabUrls = null;
@@ -970,26 +990,6 @@ namespace DotNetNuke.Entities.Tabs
 
                 iconFile = fileInfo != null ? FileManager.Instance.GetUrl(fileInfo) : iconRaw;
             }
-        }
-
-        public string GetCurrentUrl(string cultureCode)
-        {
-            string url = null;
-            if (this._tabUrls != null && this._tabUrls.Count > 0)
-            {
-                TabUrlInfo tabUrl = this._tabUrls.CurrentUrl(cultureCode);
-                if (tabUrl != null)
-                {
-                    url = tabUrl.Url;
-                }
-            }
-
-            return url ?? string.Empty;
-        }
-
-        public string GetTags()
-        {
-            return string.Join(",", this.Terms.Select(t => t.Name));
         }
     }
 }

@@ -17,8 +17,10 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
     {
         [FlagParameter("name", "Prompt_Goto_FlagName", "String")]
         private const string FlagName = "name";
+
         [FlagParameter("id", "Prompt_Goto_FlagId", "Integer")]
         private const string FlagId = "id";
+
         [FlagParameter("parentid", "Prompt_Goto_FlagParentId", "Integer")]
         private const string FlagParentId = "parentid";
 

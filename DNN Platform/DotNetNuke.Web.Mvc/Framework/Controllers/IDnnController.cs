@@ -15,6 +15,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
     {
         ControllerContext ControllerContext { get; }
 
+        ActionResult ResultOfLastExecute { get; }
+
         Page DnnPage { get; set; }
 
         string LocalResourceFile { get; set; }
@@ -23,14 +25,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         ModuleInstanceContext ModuleContext { get; set; }
 
-        ActionResult ResultOfLastExecute { get; }
-
-        string LocalizeString(string key);
-
         bool ValidateRequest { get; set; }
 
         ViewEngineCollection ViewEngineCollectionEx { get; set; }
 
         DnnUrlHelper Url { get; set; }
+        string LocalizeString(string key);
     }
 }

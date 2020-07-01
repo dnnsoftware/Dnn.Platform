@@ -24,6 +24,11 @@ namespace DotNetNuke.Tests.Web.Api
     {
         private const int ValidPortalId = 0;
         private const int ValidTabModuleId = 999;
+        private const int ValidModuleId = 456;
+        private const int ValidTabId = 46;
+
+        private const string MonikerSettingName = "Moniker";
+        private const string MonikerSettingValue = "TestMoniker";
 
         private Mock<IModuleController> _mockModuleController;
         private IModuleController _moduleController;
@@ -35,11 +40,6 @@ namespace DotNetNuke.Tests.Web.Api
         private ITabModulesController _tabModuleController;
         private TabInfo _tabInfo;
         private ModuleInfo _moduleInfo;
-        private const int ValidModuleId = 456;
-        private const int ValidTabId = 46;
-
-        private const string MonikerSettingName = "Moniker";
-        private const string MonikerSettingValue = "TestMoniker";
 
         [SetUp]
         public void Setup()
@@ -109,53 +109,6 @@ namespace DotNetNuke.Tests.Web.Api
             // Assert
             Assert.IsTrue(result);
             Assert.AreSame(this._moduleInfo, returnedModuleInfo);
-        }
-
-        private static IDataReader GetPortalsCallBack(string culture)
-        {
-            return GetPortalCallBack(0, culture);
-        }
-
-        private static IDataReader GetPortalCallBack(int portalId, string culture)
-        {
-            var table = new DataTable("Portal");
-
-            var cols = new[]
-            {
-                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
-                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
-                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId",
-                "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor",
-                "ProcessorUserId",
-                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset",
-                "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
-                "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
-                "CultureCode",
-            };
-
-            foreach (var col in cols)
-            {
-                table.Columns.Add(col);
-            }
-
-            const int homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2018 DNN Corp.", null,
-                "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
-                "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
-                null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null,
-                homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
-                "-1", "2011-08-25 07:34:29", culture);
-
-            return table.CreateDataReader();
-        }
-
-        private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance)
-            where T : class
-        {
-            mock = new Mock<T>();
-            instance = mock.Object;
-            register(instance);
         }
 
         [Test]
@@ -402,6 +355,53 @@ namespace DotNetNuke.Tests.Web.Api
             // Assert
             Assert.IsFalse(result);
             Assert.AreEqual(-1, moduleId);
+        }
+
+        private static IDataReader GetPortalsCallBack(string culture)
+        {
+            return GetPortalCallBack(0, culture);
+        }
+
+        private static IDataReader GetPortalCallBack(int portalId, string culture)
+        {
+            var table = new DataTable("Portal");
+
+            var cols = new[]
+            {
+                "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate",
+                "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
+                "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId",
+                "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor",
+                "ProcessorUserId",
+                "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset",
+                "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
+                "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId",
+                "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate",
+                "CultureCode",
+            };
+
+            foreach (var col in cols)
+            {
+                table.Columns.Add(col);
+            }
+
+            const int homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright (c) 2018 DNN Corp.", null,
+                "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
+                "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
+                null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null,
+                homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
+                "-1", "2011-08-25 07:34:29", culture);
+
+            return table.CreateDataReader();
+        }
+
+        private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance)
+            where T : class
+        {
+            mock = new Mock<T>();
+            instance = mock.Object;
+            register(instance);
         }
     }
 }

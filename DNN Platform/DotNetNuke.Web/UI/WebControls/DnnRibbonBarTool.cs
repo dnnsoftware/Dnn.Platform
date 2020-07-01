@@ -36,8 +36,6 @@ namespace DotNetNuke.Web.UI.WebControls
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        protected INavigationManager NavigationManager { get; }
-
         public virtual RibbonBarToolInfo ToolInfo
         {
             get
@@ -127,6 +125,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
             }
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         protected virtual DnnTextButton DnnLinkButton
         {

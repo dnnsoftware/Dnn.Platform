@@ -25,6 +25,83 @@ namespace DotNetNuke.Services.Syndication
             this.Outlines = new OpmlOutlines();
         }
 
+        public string Version
+        {
+            get
+            {
+                return "2.0";
+            }
+        }
+
+        public XmlElement ToXml
+        {
+            get
+            {
+                var opmlDoc = new XmlDocument { XmlResolver = null };
+                XmlElement outlineNode = opmlDoc.CreateElement("outline");
+
+                if (!string.IsNullOrEmpty(this.Title))
+                {
+                    outlineNode.SetAttribute("title", this.Title);
+                }
+
+                if (!string.IsNullOrEmpty(this.Description))
+                {
+                    outlineNode.SetAttribute("description", this.Description);
+                }
+
+                if (!string.IsNullOrEmpty(this.Text))
+                {
+                    outlineNode.SetAttribute("text", this.Text);
+                }
+
+                if (!string.IsNullOrEmpty(this.Type))
+                {
+                    outlineNode.SetAttribute("type", this.Type);
+                }
+
+                if (!string.IsNullOrEmpty(this.Language))
+                {
+                    outlineNode.SetAttribute("language", this.Language);
+                }
+
+                if (!string.IsNullOrEmpty(this.Category))
+                {
+                    outlineNode.SetAttribute("category", this.Category);
+                }
+
+                if (this.Created > DateTime.MinValue)
+                {
+                    outlineNode.SetAttribute("created", this.Created.ToString("r", null));
+                }
+
+                if (this.HtmlUrl != null)
+                {
+                    outlineNode.SetAttribute("htmlUrl", this.HtmlUrl.ToString());
+                }
+
+                if (this.XmlUrl != null)
+                {
+                    outlineNode.SetAttribute("xmlUrl", this.XmlUrl.ToString());
+                }
+
+                if (this.Url != null)
+                {
+                    outlineNode.SetAttribute("url", this.Url.ToString());
+                }
+
+                outlineNode.SetAttribute("isComment", this.IsComment ? "true" : "false");
+                outlineNode.SetAttribute("isBreakpoint", this.IsBreakpoint ? "true" : "false");
+
+                foreach (OpmlOutline childOutline in this.Outlines)
+                {
+                    outlineNode.AppendChild(childOutline.ToXml);
+                }
+
+                return outlineNode;
+            }
+        }
+
         public string Description
         {
             get
@@ -126,87 +203,9 @@ namespace DotNetNuke.Services.Syndication
             }
         }
 
-        public string Version
-        {
-            get
-            {
-                return "2.0";
-            }
-        }
-
         public OpmlOutlines Outlines { get; set; }
-
-        public XmlElement ToXml
-        {
-            get
-            {
-                var opmlDoc = new XmlDocument { XmlResolver = null };
-                XmlElement outlineNode = opmlDoc.CreateElement("outline");
-
-                if (!string.IsNullOrEmpty(this.Title))
-                {
-                    outlineNode.SetAttribute("title", this.Title);
-                }
-
-                if (!string.IsNullOrEmpty(this.Description))
-                {
-                    outlineNode.SetAttribute("description", this.Description);
-                }
-
-                if (!string.IsNullOrEmpty(this.Text))
-                {
-                    outlineNode.SetAttribute("text", this.Text);
-                }
-
-                if (!string.IsNullOrEmpty(this.Type))
-                {
-                    outlineNode.SetAttribute("type", this.Type);
-                }
-
-                if (!string.IsNullOrEmpty(this.Language))
-                {
-                    outlineNode.SetAttribute("language", this.Language);
-                }
-
-                if (!string.IsNullOrEmpty(this.Category))
-                {
-                    outlineNode.SetAttribute("category", this.Category);
-                }
-
-                if (this.Created > DateTime.MinValue)
-                {
-                    outlineNode.SetAttribute("created", this.Created.ToString("r", null));
-                }
-
-                if (this.HtmlUrl != null)
-                {
-                    outlineNode.SetAttribute("htmlUrl", this.HtmlUrl.ToString());
-                }
-
-                if (this.XmlUrl != null)
-                {
-                    outlineNode.SetAttribute("xmlUrl", this.XmlUrl.ToString());
-                }
-
-                if (this.Url != null)
-                {
-                    outlineNode.SetAttribute("url", this.Url.ToString());
-                }
-
-                outlineNode.SetAttribute("isComment", this.IsComment ? "true" : "false");
-                outlineNode.SetAttribute("isBreakpoint", this.IsBreakpoint ? "true" : "false");
-
-                foreach (OpmlOutline childOutline in this.Outlines)
-                {
-                    outlineNode.AppendChild(childOutline.ToXml);
-                }
-
-                return outlineNode;
-            }
-        }
     }
 
     public class OpmlOutlines : List<OpmlOutline>
-    {
-    }
+    {}
 }

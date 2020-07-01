@@ -14,6 +14,27 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
     [JsonObject]
     public class DnnPageDto
     {
+        public bool TranslatedVisible => !this.Default && this.TabName != null;
+
+        public bool PublishedVisible => !this.Default && this.IsTranslated;
+
+        public bool Default => this.DefaultLanguageGuid == Null.NullGuid;
+
+        public string LanguageStatus
+        {
+            get
+            {
+                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
+                if (this.CultureCode == portalSettings.DefaultLanguage)
+                    return Localization.GetString("Default.Text", this.LocalResourceFile);
+
+                return IsLanguagePublished(portalSettings.PortalId, this.CultureCode)
+                    ? ""
+                    : Localization.GetString("NotActive.Text", this.LocalResourceFile);
+            }
+        }
+
         public int TabId { get; set; }
         public string TabName { get; set; }
         public string Title { get; set; }
@@ -36,27 +57,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
 
         [JsonIgnore]
         public string LocalResourceFile { get; set; }
-
-        public bool TranslatedVisible => !this.Default && this.TabName != null;
-
-        public bool PublishedVisible => !this.Default && this.IsTranslated;
-
-        public bool Default => this.DefaultLanguageGuid == Null.NullGuid;
-
-        public string LanguageStatus
-        {
-            get
-            {
-                var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
-                if (this.CultureCode == portalSettings.DefaultLanguage)
-                    return Localization.GetString("Default.Text", this.LocalResourceFile);
-
-                return IsLanguagePublished(portalSettings.PortalId, this.CultureCode)
-                    ? ""
-                    : Localization.GetString("NotActive.Text", this.LocalResourceFile);
-            }
-        }
 
         private static bool IsLanguagePublished(int portalId, string code)
         {

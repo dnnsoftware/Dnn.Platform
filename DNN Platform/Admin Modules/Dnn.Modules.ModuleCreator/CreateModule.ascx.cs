@@ -66,6 +66,35 @@ namespace Dnn.Module.ModuleCreator
             }
         }
 
+        protected void optLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadModuleTemplates();
+        }
+
+        protected void cboTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadReadMe();
+        }
+
+        protected void cmdCreate_Click(object sender, EventArgs e)
+        {
+            if (this.UserInfo.IsSuperUser)
+            {
+                if (!string.IsNullOrEmpty(this.txtOwner.Text) && !string.IsNullOrEmpty(this.txtModule.Text) && this.cboTemplate.SelectedIndex > 0 && !string.IsNullOrEmpty(this.txtControl.Text))
+                {
+                    HostController.Instance.Update("Owner", this.txtOwner.Text, false);
+                    if (this.CreateModuleDefinition())
+                    {
+                        this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+                    }
+                }
+                else
+                {
+                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InputValidation.ErrorMessage", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                }
+            }
+        }
+
         private void LoadReadMe()
         {
             var readMePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedItem.Value + "\\readme.txt";
@@ -401,35 +430,6 @@ namespace Dnn.Module.ModuleCreator
                 Exceptions.LogException(exc);
                 DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, exc.ToString(), ModuleMessage.ModuleMessageType.RedError);
                 return false;
-            }
-        }
-
-        protected void optLanguage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.LoadModuleTemplates();
-        }
-
-        protected void cboTemplate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.LoadReadMe();
-        }
-
-        protected void cmdCreate_Click(object sender, EventArgs e)
-        {
-            if (this.UserInfo.IsSuperUser)
-            {
-                if (!string.IsNullOrEmpty(this.txtOwner.Text) && !string.IsNullOrEmpty(this.txtModule.Text) && this.cboTemplate.SelectedIndex > 0 && !string.IsNullOrEmpty(this.txtControl.Text))
-                {
-                    HostController.Instance.Update("Owner", this.txtOwner.Text, false);
-                    if (this.CreateModuleDefinition())
-                    {
-                        this.Response.Redirect(this._navigationManager.NavigateURL(), true);
-                    }
-                }
-                else
-                {
-                    DotNetNuke.UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("InputValidation.ErrorMessage", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                }
             }
         }
     }

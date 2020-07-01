@@ -22,8 +22,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
             }
         }
 
-        public Guid UniqueId { get; set; }
         public List<DnnModuleDto> Modules { get; }
+
+        public Guid UniqueId { get; set; }
 
         public DnnModuleDto Module(string locale)
         {

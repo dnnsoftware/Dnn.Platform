@@ -82,22 +82,6 @@ namespace DotNetNuke.Services.GeneratedImage
             set { IPCount.PurgeInterval = value; }
         }
 
-        private DateTime DateTime_Now
-        {
-            get
-            {
-                return this._now ?? DateTime.Now;
-            }
-        }
-
-        private IImageStore ImageStore
-        {
-            get
-            {
-                return this._imageStore ?? DiskImageStore.Instance;
-            }
-        }
-
         public bool EnableClientCache { get; set; }
 
         public bool EnableServerCache { get; set; }
@@ -114,6 +98,22 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             get;
             private set;
+        }
+
+        private DateTime DateTime_Now
+        {
+            get
+            {
+                return this._now ?? DateTime.Now;
+            }
+        }
+
+        private IImageStore ImageStore
+        {
+            get
+            {
+                return this._imageStore ?? DiskImageStore.Instance;
+            }
         }
 
         public void HandleImageRequest(HttpContextBase context, Func<NameValueCollection, ImageInfo> imageGenCallback, string uniqueIdStringSeed)

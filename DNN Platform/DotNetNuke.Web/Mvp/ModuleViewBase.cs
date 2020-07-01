@@ -23,12 +23,12 @@ namespace DotNetNuke.Web.Mvp
 
         public new event EventHandler Load;
 
-        public bool AutoDataBind { get; set; }
-
         public bool ThrowExceptionIfNoPresenterBound
         {
             get { return true; }
         }
+
+        public bool AutoDataBind { get; set; }
 
         public void ProcessModuleLoadException(Exception ex)
         {

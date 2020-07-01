@@ -77,31 +77,6 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <summary>
-        /// Gets the Content Pane Control (Id="ContentPane").
-        /// </summary>
-        /// <returns>An HtmlContainerControl.</returns>
-        protected HtmlContainerControl ContentPane
-        {
-            get
-            {
-                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Portal Settings for the current Portal.
-        /// </summary>
-        /// <returns>A PortalSettings object.</returns>
-        protected PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleHost object that this container is displaying.
@@ -151,6 +126,31 @@ namespace DotNetNuke.UI.Containers
 
         internal bool InjectActionMenu { get; set; }
 
+        /// <summary>
+        /// Gets the Content Pane Control (Id="ContentPane").
+        /// </summary>
+        /// <returns>An HtmlContainerControl.</returns>
+        protected HtmlContainerControl ContentPane
+        {
+            get
+            {
+                return this._contentPane ?? (this._contentPane = this.FindControl(Globals.glbDefaultPane) as HtmlContainerControl);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the Portal Settings for the current Portal.
+        /// </summary>
+        /// <returns>A PortalSettings object.</returns>
+        protected PortalSettings PortalSettings
+        {
+            get
+            {
+                return PortalController.Instance.GetCurrentPortalSettings();
+            }
+        }
+
         public void SetModuleConfiguration(ModuleInfo configuration)
         {
             this._moduleConfiguration = configuration;
@@ -176,6 +176,28 @@ namespace DotNetNuke.UI.Containers
             base.OnLoad(e);
 
             this.InvokeContainerEvents(ContainerEventType.OnContainerLoad);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnLoad runs just before the Container is rendered.
+        /// </summary>
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// OnUnLoad runs when the Container is unloaded.
+        /// </summary>
+        protected override void OnUnload(EventArgs e)
+        {
+            base.OnUnload(e);
+
+            this.InvokeContainerEvents(ContainerEventType.OnContainerUnLoad);
         }
 
         private void AddAdministratorOnlyHighlighting(string message)
@@ -449,28 +471,6 @@ namespace DotNetNuke.UI.Containers
                 this.ContentPane.Style["border-right"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
                 this.ContentPane.Style["border-left"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnLoad runs just before the Container is rendered.
-        /// </summary>
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            this.InvokeContainerEvents(ContainerEventType.OnContainerPreRender);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// OnUnLoad runs when the Container is unloaded.
-        /// </summary>
-        protected override void OnUnload(EventArgs e)
-        {
-            base.OnUnload(e);
-
-            this.InvokeContainerEvents(ContainerEventType.OnContainerUnLoad);
         }
 
         private void InvokeContainerEvents(ContainerEventType containerEventType)

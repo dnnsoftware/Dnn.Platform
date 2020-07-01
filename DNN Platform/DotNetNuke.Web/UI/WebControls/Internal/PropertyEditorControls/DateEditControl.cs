@@ -28,6 +28,15 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
         private DnnDatePicker _dateControl;
 
+        public override string EditControlClientId
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this.DateControl.ClientID;
+            }
+        }
+
         public override string ID
         {
             get
@@ -38,15 +47,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             set
             {
                 base.ID = value;
-            }
-        }
-
-        public override string EditControlClientId
-        {
-            get
-            {
-                this.EnsureChildControls();
-                return this.DateControl.ClientID;
             }
         }
 

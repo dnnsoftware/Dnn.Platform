@@ -21,12 +21,12 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_PurgePage_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
+        [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
+        private const string FlagDeleteChildren = "deletechildren";
+
         private readonly ITabController _tabController;
         private readonly IRecyclebinController _recyclebinController;
         private readonly IContentVerifier _contentVerifier;
-
-        [FlagParameter("deletechildren", "Prompt_PurgePage_FlagDeleteChildren", "Boolean", "false")]
-        private const string FlagDeleteChildren = "deletechildren";
 
         public PurgePage() : this(
             TabController.Instance,
@@ -36,17 +36,17 @@ namespace Dnn.PersonaBar.Recyclebin.Components.Prompt.Commands
         {
         }
 
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
-        private int PageId { get; set; }
-        private bool DeleteChildren { get; set; }
-
         public PurgePage(ITabController tabController, IRecyclebinController recyclebinController, IContentVerifier contentVerifier)
         {
             this._tabController = tabController;
             this._recyclebinController = recyclebinController;
             this._contentVerifier = contentVerifier;
         }
+
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
+
+        private int PageId { get; set; }
+        private bool DeleteChildren { get; set; }
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {

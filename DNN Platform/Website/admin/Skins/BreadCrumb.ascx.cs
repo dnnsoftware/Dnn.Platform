@@ -20,18 +20,38 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class BreadCrumb : SkinObjectBase
     {
         private const string UrlRegex = "(href|src)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)";
+        private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
+        private readonly INavigationManager _navigationManager;
         private string _separator = "<img alt=\"breadcrumb separator\" src=\"" + Globals.ApplicationPath + "/images/breadcrumb.gif\">";
         private string _cssClass = "SkinObject";
         private int _rootLevel = 0;
         private bool _showRoot = false;
-        private readonly StringBuilder _breadcrumb = new StringBuilder("<span itemscope itemtype=\"http://schema.org/BreadcrumbList\">");
         private string _homeUrl = string.Empty;
         private string _homeTabName = "Root";
-        private readonly INavigationManager _navigationManager;
 
         public BreadCrumb()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public int ProfileUserId
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.Request.Params["UserId"])
+                    ? Null.NullInteger
+                    : int.Parse(this.Request.Params["UserId"]);
+            }
+        }
+
+        public int GroupId
+        {
+            get
+            {
+                return string.IsNullOrEmpty(this.Request.Params["GroupId"])
+                    ? Null.NullInteger
+                    : int.Parse(this.Request.Params["GroupId"]);
+            }
         }
 
         // Separator between breadcrumb elements
@@ -70,26 +90,6 @@ namespace DotNetNuke.UI.Skins.Controls
 
         // Do not show when there is no breadcrumb (only has current tab)
         public bool HideWithNoBreadCrumb { get; set; }
-
-        public int ProfileUserId
-        {
-            get
-            {
-                return string.IsNullOrEmpty(this.Request.Params["UserId"])
-                    ? Null.NullInteger
-                    : int.Parse(this.Request.Params["UserId"]);
-            }
-        }
-
-        public int GroupId
-        {
-            get
-            {
-                return string.IsNullOrEmpty(this.Request.Params["GroupId"])
-                    ? Null.NullInteger
-                    : int.Parse(this.Request.Params["GroupId"]);
-            }
-        }
 
         protected override void OnLoad(EventArgs e)
         {

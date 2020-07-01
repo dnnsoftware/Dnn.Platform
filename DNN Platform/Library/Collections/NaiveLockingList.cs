@@ -64,46 +64,6 @@ namespace DotNetNuke.Collections.Internal
             return new NaiveLockingEnumerator(this._list.GetEnumerator(), readLock);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-        // TODO is no recursion the correct policy
-        private void DoInReadLock(Action action)
-        {
-            this.DoInReadLock(() =>
-            {
-                action.Invoke();
-                return true;
-            });
-        }
-
-        private TRet DoInReadLock<TRet>(Func<TRet> func)
-        {
-            using (this._list.GetReadLock())
-            {
-                return func.Invoke();
-            }
-        }
-
-        private void DoInWriteLock(Action action)
-        {
-            this.DoInWriteLock(() =>
-            {
-                action.Invoke();
-                return true;
-            });
-        }
-
-        private TRet DoInWriteLock<TRet>(Func<TRet> func)
-        {
-            using (this._list.GetWriteLock())
-            {
-                return func.Invoke();
-            }
-        }
-
         public void Add(T item)
         {
             this.DoInWriteLock(() => this._list.Add(item));
@@ -144,11 +104,51 @@ namespace DotNetNuke.Collections.Internal
             this.DoInWriteLock(() => this._list.RemoveAt(index));
         }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        // TODO is no recursion the correct policy
+        private void DoInReadLock(Action action)
+        {
+            this.DoInReadLock(() =>
+            {
+                action.Invoke();
+                return true;
+            });
+        }
+
+        private TRet DoInReadLock<TRet>(Func<TRet> func)
+        {
+            using (this._list.GetReadLock())
+            {
+                return func.Invoke();
+            }
+        }
+
+        private void DoInWriteLock(Action action)
+        {
+            this.DoInWriteLock(() =>
+            {
+                action.Invoke();
+                return true;
+            });
+        }
+
+        private TRet DoInWriteLock<TRet>(Func<TRet> func)
+        {
+            using (this._list.GetWriteLock())
+            {
+                return func.Invoke();
+            }
+        }
+
         public class NaiveLockingEnumerator : IEnumerator<T>
         {
             private readonly IEnumerator<T> _enumerator;
-            private bool _isDisposed;
             private readonly ISharedCollectionLock _readLock;
+            private bool _isDisposed;
 
             public NaiveLockingEnumerator(IEnumerator<T> enumerator, ISharedCollectionLock readLock)
             {

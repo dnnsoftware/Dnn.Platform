@@ -217,6 +217,27 @@ namespace DotNetNuke.Services.Sitemap
             this.WriteSitemapFileToOutput(string.Format("sitemap_{0}.{1}.xml", index, currentCulture), output);
         }
 
+        private static void LoadProviders()
+        {
+            // Avoid claiming lock if providers are already loaded
+            if (_providers == null)
+            {
+                lock (_lock)
+                {
+                    _providers = new List<SitemapProvider>();
+
+                    foreach (KeyValuePair<string, SitemapProvider> comp in ComponentFactory.GetComponents<SitemapProvider>())
+                    {
+                        comp.Value.Name = comp.Key;
+                        comp.Value.Description = comp.Value.Description;
+                        _providers.Add(comp.Value);
+                    }
+
+                    // 'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
+                }
+            }
+        }
+
         /// <summary>
         ///   Generates a sitemap file.
         /// </summary>
@@ -428,27 +449,6 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             return isChild;
-        }
-
-        private static void LoadProviders()
-        {
-            // Avoid claiming lock if providers are already loaded
-            if (_providers == null)
-            {
-                lock (_lock)
-                {
-                    _providers = new List<SitemapProvider>();
-
-                    foreach (KeyValuePair<string, SitemapProvider> comp in ComponentFactory.GetComponents<SitemapProvider>())
-                    {
-                        comp.Value.Name = comp.Key;
-                        comp.Value.Description = comp.Value.Description;
-                        _providers.Add(comp.Value);
-                    }
-
-                    // 'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
-                }
-            }
         }
     }
 }

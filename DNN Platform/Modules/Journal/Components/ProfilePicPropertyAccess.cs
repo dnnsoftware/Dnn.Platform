@@ -19,9 +19,9 @@ namespace DotNetNuke.Modules.Journal.Components
             this._userId = userId;
         }
 
-        public int Size { get; set; } = 32;
-
         public CacheLevel Cacheability => CacheLevel.notCacheable;
+
+        public int Size { get; set; } = 32;
 
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {

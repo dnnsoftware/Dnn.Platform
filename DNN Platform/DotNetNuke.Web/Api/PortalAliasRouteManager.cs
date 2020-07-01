@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-
 namespace DotNetNuke.Web.Api
 {
     using System;
@@ -80,23 +79,6 @@ namespace DotNetNuke.Web.Api
             return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
         }
 
-        private string GeneratePrefixString(int count)
-        {
-            if (count == 0)
-            {
-                return string.Empty;
-            }
-
-            string prefix = string.Empty;
-
-            for (int i = count - 1; i >= 0; i--)
-            {
-                prefix = "{prefix" + i + "}/" + prefix;
-            }
-
-            return prefix;
-        }
-
         public void ClearCachedData()
         {
             this._prefixCounts = null;
@@ -168,6 +150,23 @@ namespace DotNetNuke.Web.Api
             }
 
             return StripApplicationPathIterable(aliases, appPath);
+        }
+
+        private string GeneratePrefixString(int count)
+        {
+            if (count == 0)
+            {
+                return string.Empty;
+            }
+
+            string prefix = string.Empty;
+
+            for (int i = count - 1; i >= 0; i--)
+            {
+                prefix = "{prefix" + i + "}/" + prefix;
+            }
+
+            return prefix;
         }
     }
 }

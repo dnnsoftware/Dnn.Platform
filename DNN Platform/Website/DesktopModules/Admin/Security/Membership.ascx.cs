@@ -49,6 +49,12 @@ namespace DotNetNuke.Modules.Admin.Users
 
         public event EventHandler MembershipUnAuthorized;
 
+        public event EventHandler MembershipUnLocked;
+
+        public event EventHandler MembershipPromoteToSuperuser;
+
+        public event EventHandler MembershipDemoteFromSuperuser;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the UserMembership associated with this control.
@@ -67,12 +73,6 @@ namespace DotNetNuke.Modules.Admin.Users
                 return membership;
             }
         }
-
-        public event EventHandler MembershipUnLocked;
-
-        public event EventHandler MembershipPromoteToSuperuser;
-
-        public event EventHandler MembershipDemoteFromSuperuser;
 
         /// -----------------------------------------------------------------------------
         /// <summary>

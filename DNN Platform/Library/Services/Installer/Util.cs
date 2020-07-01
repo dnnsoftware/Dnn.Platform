@@ -31,248 +31,6 @@ namespace DotNetNuke.Services.Installer
     /// </remarks>
     public class Util
     {
-        // ReSharper disable InconsistentNaming
-        public const string DEFAULT_MANIFESTEXT = ".manifest";
-        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
-        public static string ASSEMBLY_Added = GetLocalizedString("ASSEMBLY_Added");
-        public static string ASSEMBLY_AddedBindingRedirect = GetLocalizedString("ASSEMBLY_AddedBindingRedirect");
-        public static string ASSEMBLY_RemovedBindingRedirect = GetLocalizedString("ASSEMBLY_RemovedBindingRedirect");
-        public static string ASSEMBLY_InUse = GetLocalizedString("ASSEMBLY_InUse");
-        public static string ASSEMBLY_Registered = GetLocalizedString("ASSEMBLY_Registered");
-        public static string ASSEMBLY_UnRegistered = GetLocalizedString("ASSEMBLY_UnRegistered");
-        public static string ASSEMBLY_Updated = GetLocalizedString("ASSEMBLY_Updated");
-        public static string AUTHENTICATION_ReadSuccess = GetLocalizedString("AUTHENTICATION_ReadSuccess");
-        public static string AUTHENTICATION_LoginSrcMissing = GetLocalizedString("AUTHENTICATION_LoginSrcMissing");
-        public static string AUTHENTICATION_Registered = GetLocalizedString("AUTHENTICATION_Registered");
-        public static string AUTHENTICATION_SettingsSrcMissing = GetLocalizedString("AUTHENTICATION_SettingsSrcMissing");
-        public static string AUTHENTICATION_TypeMissing = GetLocalizedString("AUTHENTICATION_TypeMissing");
-        public static string AUTHENTICATION_UnRegistered = GetLocalizedString("AUTHENTICATION_UnRegistered");
-        public static string CLEANUP_Processing = GetLocalizedString("CLEANUP_Processing");
-        public static string CLEANUP_ProcessComplete = GetLocalizedString("CLEANUP_ProcessComplete");
-        public static string CLEANUP_ProcessError = GetLocalizedString("CLEANUP_ProcessError");
-        public static string COMPONENT_Installed = GetLocalizedString("COMPONENT_Installed");
-        public static string COMPONENT_Skipped = GetLocalizedString("COMPONENT_Skipped");
-        public static string COMPONENT_RolledBack = GetLocalizedString("COMPONENT_RolledBack");
-        public static string COMPONENT_RollingBack = GetLocalizedString("COMPONENT_RollingBack");
-        public static string COMPONENT_UnInstalled = GetLocalizedString("COMPONENT_UnInstalled");
-        public static string CONFIG_Committed = GetLocalizedString("CONFIG_Committed");
-        public static string CONFIG_RolledBack = GetLocalizedString("CONFIG_RolledBack");
-        public static string CONFIG_Updated = GetLocalizedString("CONFIG_Updated");
-        public static string DASHBOARD_ReadSuccess = GetLocalizedString("DASHBOARD_ReadSuccess");
-        public static string DASHBOARD_SrcMissing = GetLocalizedString("DASHBOARD_SrcMissing");
-        public static string DASHBOARD_Registered = GetLocalizedString("DASHBOARD_Registered");
-        public static string DASHBOARD_KeyMissing = GetLocalizedString("DASHBOARD_KeyMissing");
-        public static string DASHBOARD_LocalResourcesMissing = GetLocalizedString("DASHBOARD_LocalResourcesMissing");
-        public static string DASHBOARD_UnRegistered = GetLocalizedString("DASHBOARD_UnRegistered");
-        public static string DNN_Reading = GetLocalizedString("DNN_Reading");
-        public static string DNN_ReadingComponent = GetLocalizedString("DNN_ReadingComponent");
-        public static string DNN_ReadingPackage = GetLocalizedString("DNN_ReadingPackage");
-        public static string DNN_Success = GetLocalizedString("DNN_Success");
-        public static string EVENTMESSAGE_CommandMissing = GetLocalizedString("EVENTMESSAGE_CommandMissing");
-        public static string EVENTMESSAGE_TypeMissing = GetLocalizedString("EVENTMESSAGE_TypeMissing");
-        public static string EXCEPTION = GetLocalizedString("EXCEPTION");
-        public static string EXCEPTION_FileLoad = GetLocalizedString("EXCEPTION_FileLoad");
-        public static string EXCEPTION_FileRead = GetLocalizedString("EXCEPTION_FileRead");
-        public static string EXCEPTION_GlobDotDotNotSupportedInCleanup = GetLocalizedString("EXCEPTION_GlobDotDotNotSupportedInCleanup");
-        public static string EXCEPTION_InstallerCreate = GetLocalizedString("EXCEPTION_InstallerCreate");
-        public static string EXCEPTION_MissingDnn = GetLocalizedString("EXCEPTION_MissingDnn");
-        public static string EXCEPTION_MultipleDnn = GetLocalizedString("EXCEPTION_MultipleDnn");
-        public static string EXCEPTION_NameMissing = GetLocalizedString("EXCEPTION_NameMissing");
-        public static string EXCEPTION_Type = GetLocalizedString("EXCEPTION_Type");
-        public static string EXCEPTION_TypeMissing = GetLocalizedString("EXCEPTION_TypeMissing");
-        public static string EXCEPTION_VersionMissing = GetLocalizedString("EXCEPTION_VersionMissing");
-        public static string FILE_CreateBackup = GetLocalizedString("FILE_CreateBackup");
-        public static string FILE_Created = GetLocalizedString("FILE_Created");
-        public static string FILE_Deleted = GetLocalizedString("FILE_Deleted");
-        public static string FILE_Found = GetLocalizedString("FILE_Found");
-        public static string FILE_Loading = GetLocalizedString("FILE_Loading");
-        public static string FILE_NotAllowed = GetLocalizedString("FILE_NotAllowed");
-        public static string FILE_NotFound = GetLocalizedString("FILE_NotFound");
-        public static string FILE_ReadSuccess = GetLocalizedString("FILE_ReadSuccess");
-        public static string FILE_RestoreBackup = GetLocalizedString("FILE_RestoreBackup");
-        public static string FILES_CreatedResources = GetLocalizedString("FILES_CreatedResources");
-        public static string FILES_Expanding = GetLocalizedString("FILES_Expanding");
-        public static string FILES_Loading = GetLocalizedString("FILES_Loading");
-        public static string FILES_Reading = GetLocalizedString("FILES_Reading");
-        public static string FILES_ReadingEnd = GetLocalizedString("FILES_ReadingEnd");
-        public static string FOLDER_Created = GetLocalizedString("FOLDER_Created");
-        public static string FOLDER_Deleted = GetLocalizedString("FOLDER_Deleted");
-        public static string FOLDER_DeletedBackup = GetLocalizedString("FOLDER_DeletedBackup");
-        public static string INSTALL_Compatibility = GetLocalizedString("INSTALL_Compatibility");
-        public static string INSTALL_Dependencies = GetLocalizedString("INSTALL_Dependencies");
-        public static string INSTALL_Aborted = GetLocalizedString("INSTALL_Aborted");
-        public static string INSTALL_Failed = GetLocalizedString("INSTALL_Failed");
-        public static string INSTALL_Committed = GetLocalizedString("INSTALL_Committed");
-        public static string INSTALL_Namespace = GetLocalizedString("INSTALL_Namespace");
-        public static string INSTALL_Package = GetLocalizedString("INSTALL_Package");
-        public static string INSTALL_Permissions = GetLocalizedString("INSTALL_Permissions");
-        public static string INSTALL_Start = GetLocalizedString("INSTALL_Start");
-        public static string INSTALL_Success = GetLocalizedString("INSTALL_Success");
-        public static string INSTALL_Version = GetLocalizedString("INSTALL_Version");
-        public static string LANGUAGE_PortalsEnabled = GetLocalizedString("LANGUAGE_PortalsEnabled");
-        public static string LANGUAGE_Registered = GetLocalizedString("LANGUAGE_Registered");
-        public static string LANGUAGE_UnRegistered = GetLocalizedString("LANGUAGE_UnRegistered");
-        public static string LIBRARY_ReadSuccess = GetLocalizedString("LIBRARY_ReadSuccess");
-        public static string LIBRARY_Registered = GetLocalizedString("LIBRARY_Registered");
-        public static string LIBRARY_UnRegistered = GetLocalizedString("LIBRARY_UnRegistered");
-        public static string MODULE_ControlKeyMissing = GetLocalizedString("MODULE_ControlKeyMissing");
-        public static string MODULE_ControlTypeMissing = GetLocalizedString("MODULE_ControlTypeMissing");
-        public static string MODULE_FriendlyNameMissing = GetLocalizedString("MODULE_FriendlyNameMissing");
-        public static string MODULE_InvalidVersion = GetLocalizedString("MODULE_InvalidVersion");
-        public static string MODULE_ReadSuccess = GetLocalizedString("MODULE_ReadSuccess");
-        public static string MODULE_Registered = GetLocalizedString("MODULE_Registered");
-        public static string MODULE_UnRegistered = GetLocalizedString("MODULE_UnRegistered");
-        public static string MODULE_AdminPageAdded = GetLocalizedString("MODULE_AdminPageAdded");
-        public static string MODULE_AdminPagemoduleAdded = GetLocalizedString("MODULE_AdminPagemoduleAdded");
-        public static string MODULE_AdminPageRemoved = GetLocalizedString("MODULE_AdminPageRemoved");
-        public static string MODULE_AdminPagemoduleRemoved = GetLocalizedString("MODULE_AdminPagemoduleRemoved");
-        public static string MODULE_HostPageAdded = GetLocalizedString("MODULE_HostPageAdded");
-        public static string MODULE_HostPagemoduleAdded = GetLocalizedString("MODULE_HostPagemoduleAdded");
-        public static string MODULE_HostPageRemoved = GetLocalizedString("MODULE_HostPageRemoved");
-        public static string MODULE_HostPagemoduleRemoved = GetLocalizedString("MODULE_HostPagemoduleRemoved");
-        public static string PACKAGE_NoLicense = GetLocalizedString("PACKAGE_NoLicense");
-        public static string PACKAGE_NoReleaseNotes = GetLocalizedString("PACKAGE_NoReleaseNotes");
-        public static string PACKAGE_UnRecognizable = GetLocalizedString("PACKAGE_UnRecognizable");
-        public static string SECURITY_Installer = GetLocalizedString("SECURITY_Installer");
-        public static string SECURITY_NotRegistered = GetLocalizedString("SECURITY_NotRegistered");
-        public static string SKIN_BeginProcessing = GetLocalizedString("SKIN_BeginProcessing");
-        public static string SKIN_Installed = GetLocalizedString("SKIN_Installed");
-        public static string SKIN_EndProcessing = GetLocalizedString("SKIN_EndProcessing");
-        public static string SKIN_Registered = GetLocalizedString("SKIN_Registered");
-        public static string SKIN_UnRegistered = GetLocalizedString("SKIN_UnRegistered");
-        public static string SQL_Begin = GetLocalizedString("SQL_Begin");
-        public static string SQL_BeginFile = GetLocalizedString("SQL_BeginFile");
-        public static string SQL_BeginUnInstall = GetLocalizedString("SQL_BeginUnInstall");
-        public static string SQL_Committed = GetLocalizedString("SQL_Committed");
-        public static string SQL_End = GetLocalizedString("SQL_End");
-        public static string SQL_EndFile = GetLocalizedString("SQL_EndFile");
-        public static string SQL_EndUnInstall = GetLocalizedString("SQL_EndUnInstall");
-        public static string SQL_Exceptions = GetLocalizedString("SQL_Exceptions");
-        public static string SQL_Executing = GetLocalizedString("SQL_Executing");
-        public static string SQL_RolledBack = GetLocalizedString("SQL_RolledBack");
-        public static string UNINSTALL_Start = GetLocalizedString("UNINSTALL_Start");
-        public static string UNINSTALL_StartComp = GetLocalizedString("UNINSTALL_StartComp");
-        public static string UNINSTALL_Failure = GetLocalizedString("UNINSTALL_Failure");
-        public static string UNINSTALL_Success = GetLocalizedString("UNINSTALL_Success");
-        public static string UNINSTALL_SuccessComp = GetLocalizedString("UNINSTALL_SuccessComp");
-        public static string UNINSTALL_Warnings = GetLocalizedString("UNINSTALL_Warnings");
-        public static string UNINSTALL_WarningsComp = GetLocalizedString("UNINSTALL_WarningsComp");
-        public static string URLPROVIDER_NameMissing = GetLocalizedString("URLPROVIDER_NameMissing");
-        public static string URLPROVIDER_ReadSuccess = GetLocalizedString("URLPROVIDER_ReadSuccess");
-        public static string URLPROVIDER_Registered = GetLocalizedString("URLPROVIDER_Registered");
-        public static string URLPROVIDER_TypeMissing = GetLocalizedString("URLPROVIDER_TypeMissing");
-        public static string URLPROVIDER_UnRegistered = GetLocalizedString("URLPROVIDER_UnRegistered");
-        public static string WRITER_AddFileToManifest = GetLocalizedString("WRITER_AddFileToManifest");
-        public static string WRITER_CreateArchive = GetLocalizedString("WRITER_CreateArchive");
-        public static string WRITER_CreatedManifest = GetLocalizedString("WRITER_CreatedManifest");
-        public static string WRITER_CreatedPackage = GetLocalizedString("WRITER_CreatedPackage");
-        public static string WRITER_CreatingManifest = GetLocalizedString("WRITER_CreatingManifest");
-        public static string WRITER_CreatingPackage = GetLocalizedString("WRITER_CreatingPackage");
-        public static string WRITER_SavedFile = GetLocalizedString("WRITER_SavedFile");
-        public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
-        public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The BackupFile method backs up a file to the backup folder.
-        /// </summary>
-        /// <param name="installFile">The file to backup.</param>
-        /// <param name="basePath">The basePath to the file.</param>
-        /// <param name="log">A Logger to log the result.</param>
-        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
-        {
-            string fullFileName = Path.Combine(basePath, installFile.FullName);
-            string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
-
-            // create the backup folder if neccessary
-            if (!Directory.Exists(installFile.BackupPath))
-            {
-                Directory.CreateDirectory(installFile.BackupPath);
-            }
-
-            // Copy file to backup location
-            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
-            log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The CopyFile method copies a file from the temporary extract location.
-        /// </summary>
-        /// <param name="installFile">The file to copy.</param>
-        /// <param name="basePath">The basePath to the file.</param>
-        /// <param name="log">A Logger to log the result.</param>
-        public static void CopyFile(InstallFile installFile, string basePath, Logger log)
-        {
-            string filePath = Path.Combine(basePath, installFile.Path);
-            string fullFileName = Path.Combine(basePath, installFile.FullName);
-
-            // create the folder if neccessary
-            if (!Directory.Exists(filePath))
-            {
-                log.AddInfo(string.Format(FOLDER_Created, filePath));
-                Directory.CreateDirectory(filePath);
-            }
-
-            // Copy file from temp location
-            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(installFile.TempFileName, fullFileName), "Copy file to " + fullFileName);
-
-            log.AddInfo(string.Format(FILE_Created, installFile.FullName));
-        }
-
-        // ReSharper restore InconsistentNaming
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// The StreamToStream method reads a source stream and wrtites it to a destination stream.
-        /// </summary>
-        /// <param name="sourceStream">The Source Stream.</param>
-        /// <param name="destStream">The Destination Stream.</param>
-        private static void StreamToStream(Stream sourceStream, Stream destStream)
-        {
-            var buf = new byte[1024];
-            int count;
-            do
-            {
-                // Read the chunk from the source
-                count = sourceStream.Read(buf, 0, 1024);
-
-                // Write the chunk to the destination
-                destStream.Write(buf, 0, count);
-            }
-            while (count > 0);
-            destStream.Flush();
-        }
-
-        private static void TryDeleteFolder(DirectoryInfo folder, Logger log)
-        {
-            if (folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0)
-            {
-                folder.Delete();
-                log.AddInfo(string.Format(FOLDER_Deleted, folder.Name));
-                TryDeleteFolder(folder.Parent, log);
-            }
-        }
-
-        private static string ValidateNode(string propValue, bool isRequired, Logger log, string logmessage, string defaultValue)
-        {
-            if (string.IsNullOrEmpty(propValue))
-            {
-                if (isRequired)
-                {
-                    // Log Error
-                    log.AddFailure(logmessage);
-                }
-                else
-                {
-                    // Use Default
-                    propValue = defaultValue;
-                }
-            }
-
-            return propValue;
-        }
-
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DeleteFile method deletes a file.
@@ -779,5 +537,247 @@ namespace DotNetNuke.Services.Installer
                 }
             }
         }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The StreamToStream method reads a source stream and wrtites it to a destination stream.
+        /// </summary>
+        /// <param name="sourceStream">The Source Stream.</param>
+        /// <param name="destStream">The Destination Stream.</param>
+        private static void StreamToStream(Stream sourceStream, Stream destStream)
+        {
+            var buf = new byte[1024];
+            int count;
+            do
+            {
+                // Read the chunk from the source
+                count = sourceStream.Read(buf, 0, 1024);
+
+                // Write the chunk to the destination
+                destStream.Write(buf, 0, count);
+            }
+            while (count > 0);
+            destStream.Flush();
+        }
+
+        private static void TryDeleteFolder(DirectoryInfo folder, Logger log)
+        {
+            if (folder.GetFiles().Length == 0 && folder.GetDirectories().Length == 0)
+            {
+                folder.Delete();
+                log.AddInfo(string.Format(FOLDER_Deleted, folder.Name));
+                TryDeleteFolder(folder.Parent, log);
+            }
+        }
+
+        private static string ValidateNode(string propValue, bool isRequired, Logger log, string logmessage, string defaultValue)
+        {
+            if (string.IsNullOrEmpty(propValue))
+            {
+                if (isRequired)
+                {
+                    // Log Error
+                    log.AddFailure(logmessage);
+                }
+                else
+                {
+                    // Use Default
+                    propValue = defaultValue;
+                }
+            }
+
+            return propValue;
+        }
+
+        // ReSharper disable InconsistentNaming
+        public const string DEFAULT_MANIFESTEXT = ".manifest";
+        public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
+        public static string ASSEMBLY_Added = GetLocalizedString("ASSEMBLY_Added");
+        public static string ASSEMBLY_AddedBindingRedirect = GetLocalizedString("ASSEMBLY_AddedBindingRedirect");
+        public static string ASSEMBLY_RemovedBindingRedirect = GetLocalizedString("ASSEMBLY_RemovedBindingRedirect");
+        public static string ASSEMBLY_InUse = GetLocalizedString("ASSEMBLY_InUse");
+        public static string ASSEMBLY_Registered = GetLocalizedString("ASSEMBLY_Registered");
+        public static string ASSEMBLY_UnRegistered = GetLocalizedString("ASSEMBLY_UnRegistered");
+        public static string ASSEMBLY_Updated = GetLocalizedString("ASSEMBLY_Updated");
+        public static string AUTHENTICATION_ReadSuccess = GetLocalizedString("AUTHENTICATION_ReadSuccess");
+        public static string AUTHENTICATION_LoginSrcMissing = GetLocalizedString("AUTHENTICATION_LoginSrcMissing");
+        public static string AUTHENTICATION_Registered = GetLocalizedString("AUTHENTICATION_Registered");
+        public static string AUTHENTICATION_SettingsSrcMissing = GetLocalizedString("AUTHENTICATION_SettingsSrcMissing");
+        public static string AUTHENTICATION_TypeMissing = GetLocalizedString("AUTHENTICATION_TypeMissing");
+        public static string AUTHENTICATION_UnRegistered = GetLocalizedString("AUTHENTICATION_UnRegistered");
+        public static string CLEANUP_Processing = GetLocalizedString("CLEANUP_Processing");
+        public static string CLEANUP_ProcessComplete = GetLocalizedString("CLEANUP_ProcessComplete");
+        public static string CLEANUP_ProcessError = GetLocalizedString("CLEANUP_ProcessError");
+        public static string COMPONENT_Installed = GetLocalizedString("COMPONENT_Installed");
+        public static string COMPONENT_Skipped = GetLocalizedString("COMPONENT_Skipped");
+        public static string COMPONENT_RolledBack = GetLocalizedString("COMPONENT_RolledBack");
+        public static string COMPONENT_RollingBack = GetLocalizedString("COMPONENT_RollingBack");
+        public static string COMPONENT_UnInstalled = GetLocalizedString("COMPONENT_UnInstalled");
+        public static string CONFIG_Committed = GetLocalizedString("CONFIG_Committed");
+        public static string CONFIG_RolledBack = GetLocalizedString("CONFIG_RolledBack");
+        public static string CONFIG_Updated = GetLocalizedString("CONFIG_Updated");
+        public static string DASHBOARD_ReadSuccess = GetLocalizedString("DASHBOARD_ReadSuccess");
+        public static string DASHBOARD_SrcMissing = GetLocalizedString("DASHBOARD_SrcMissing");
+        public static string DASHBOARD_Registered = GetLocalizedString("DASHBOARD_Registered");
+        public static string DASHBOARD_KeyMissing = GetLocalizedString("DASHBOARD_KeyMissing");
+        public static string DASHBOARD_LocalResourcesMissing = GetLocalizedString("DASHBOARD_LocalResourcesMissing");
+        public static string DASHBOARD_UnRegistered = GetLocalizedString("DASHBOARD_UnRegistered");
+        public static string DNN_Reading = GetLocalizedString("DNN_Reading");
+        public static string DNN_ReadingComponent = GetLocalizedString("DNN_ReadingComponent");
+        public static string DNN_ReadingPackage = GetLocalizedString("DNN_ReadingPackage");
+        public static string DNN_Success = GetLocalizedString("DNN_Success");
+        public static string EVENTMESSAGE_CommandMissing = GetLocalizedString("EVENTMESSAGE_CommandMissing");
+        public static string EVENTMESSAGE_TypeMissing = GetLocalizedString("EVENTMESSAGE_TypeMissing");
+        public static string EXCEPTION = GetLocalizedString("EXCEPTION");
+        public static string EXCEPTION_FileLoad = GetLocalizedString("EXCEPTION_FileLoad");
+        public static string EXCEPTION_FileRead = GetLocalizedString("EXCEPTION_FileRead");
+        public static string EXCEPTION_GlobDotDotNotSupportedInCleanup = GetLocalizedString("EXCEPTION_GlobDotDotNotSupportedInCleanup");
+        public static string EXCEPTION_InstallerCreate = GetLocalizedString("EXCEPTION_InstallerCreate");
+        public static string EXCEPTION_MissingDnn = GetLocalizedString("EXCEPTION_MissingDnn");
+        public static string EXCEPTION_MultipleDnn = GetLocalizedString("EXCEPTION_MultipleDnn");
+        public static string EXCEPTION_NameMissing = GetLocalizedString("EXCEPTION_NameMissing");
+        public static string EXCEPTION_Type = GetLocalizedString("EXCEPTION_Type");
+        public static string EXCEPTION_TypeMissing = GetLocalizedString("EXCEPTION_TypeMissing");
+        public static string EXCEPTION_VersionMissing = GetLocalizedString("EXCEPTION_VersionMissing");
+        public static string FILE_CreateBackup = GetLocalizedString("FILE_CreateBackup");
+        public static string FILE_Created = GetLocalizedString("FILE_Created");
+        public static string FILE_Deleted = GetLocalizedString("FILE_Deleted");
+        public static string FILE_Found = GetLocalizedString("FILE_Found");
+        public static string FILE_Loading = GetLocalizedString("FILE_Loading");
+        public static string FILE_NotAllowed = GetLocalizedString("FILE_NotAllowed");
+        public static string FILE_NotFound = GetLocalizedString("FILE_NotFound");
+        public static string FILE_ReadSuccess = GetLocalizedString("FILE_ReadSuccess");
+        public static string FILE_RestoreBackup = GetLocalizedString("FILE_RestoreBackup");
+        public static string FILES_CreatedResources = GetLocalizedString("FILES_CreatedResources");
+        public static string FILES_Expanding = GetLocalizedString("FILES_Expanding");
+        public static string FILES_Loading = GetLocalizedString("FILES_Loading");
+        public static string FILES_Reading = GetLocalizedString("FILES_Reading");
+        public static string FILES_ReadingEnd = GetLocalizedString("FILES_ReadingEnd");
+        public static string FOLDER_Created = GetLocalizedString("FOLDER_Created");
+        public static string FOLDER_Deleted = GetLocalizedString("FOLDER_Deleted");
+        public static string FOLDER_DeletedBackup = GetLocalizedString("FOLDER_DeletedBackup");
+        public static string INSTALL_Compatibility = GetLocalizedString("INSTALL_Compatibility");
+        public static string INSTALL_Dependencies = GetLocalizedString("INSTALL_Dependencies");
+        public static string INSTALL_Aborted = GetLocalizedString("INSTALL_Aborted");
+        public static string INSTALL_Failed = GetLocalizedString("INSTALL_Failed");
+        public static string INSTALL_Committed = GetLocalizedString("INSTALL_Committed");
+        public static string INSTALL_Namespace = GetLocalizedString("INSTALL_Namespace");
+        public static string INSTALL_Package = GetLocalizedString("INSTALL_Package");
+        public static string INSTALL_Permissions = GetLocalizedString("INSTALL_Permissions");
+        public static string INSTALL_Start = GetLocalizedString("INSTALL_Start");
+        public static string INSTALL_Success = GetLocalizedString("INSTALL_Success");
+        public static string INSTALL_Version = GetLocalizedString("INSTALL_Version");
+        public static string LANGUAGE_PortalsEnabled = GetLocalizedString("LANGUAGE_PortalsEnabled");
+        public static string LANGUAGE_Registered = GetLocalizedString("LANGUAGE_Registered");
+        public static string LANGUAGE_UnRegistered = GetLocalizedString("LANGUAGE_UnRegistered");
+        public static string LIBRARY_ReadSuccess = GetLocalizedString("LIBRARY_ReadSuccess");
+        public static string LIBRARY_Registered = GetLocalizedString("LIBRARY_Registered");
+        public static string LIBRARY_UnRegistered = GetLocalizedString("LIBRARY_UnRegistered");
+        public static string MODULE_ControlKeyMissing = GetLocalizedString("MODULE_ControlKeyMissing");
+        public static string MODULE_ControlTypeMissing = GetLocalizedString("MODULE_ControlTypeMissing");
+        public static string MODULE_FriendlyNameMissing = GetLocalizedString("MODULE_FriendlyNameMissing");
+        public static string MODULE_InvalidVersion = GetLocalizedString("MODULE_InvalidVersion");
+        public static string MODULE_ReadSuccess = GetLocalizedString("MODULE_ReadSuccess");
+        public static string MODULE_Registered = GetLocalizedString("MODULE_Registered");
+        public static string MODULE_UnRegistered = GetLocalizedString("MODULE_UnRegistered");
+        public static string MODULE_AdminPageAdded = GetLocalizedString("MODULE_AdminPageAdded");
+        public static string MODULE_AdminPagemoduleAdded = GetLocalizedString("MODULE_AdminPagemoduleAdded");
+        public static string MODULE_AdminPageRemoved = GetLocalizedString("MODULE_AdminPageRemoved");
+        public static string MODULE_AdminPagemoduleRemoved = GetLocalizedString("MODULE_AdminPagemoduleRemoved");
+        public static string MODULE_HostPageAdded = GetLocalizedString("MODULE_HostPageAdded");
+        public static string MODULE_HostPagemoduleAdded = GetLocalizedString("MODULE_HostPagemoduleAdded");
+        public static string MODULE_HostPageRemoved = GetLocalizedString("MODULE_HostPageRemoved");
+        public static string MODULE_HostPagemoduleRemoved = GetLocalizedString("MODULE_HostPagemoduleRemoved");
+        public static string PACKAGE_NoLicense = GetLocalizedString("PACKAGE_NoLicense");
+        public static string PACKAGE_NoReleaseNotes = GetLocalizedString("PACKAGE_NoReleaseNotes");
+        public static string PACKAGE_UnRecognizable = GetLocalizedString("PACKAGE_UnRecognizable");
+        public static string SECURITY_Installer = GetLocalizedString("SECURITY_Installer");
+        public static string SECURITY_NotRegistered = GetLocalizedString("SECURITY_NotRegistered");
+        public static string SKIN_BeginProcessing = GetLocalizedString("SKIN_BeginProcessing");
+        public static string SKIN_Installed = GetLocalizedString("SKIN_Installed");
+        public static string SKIN_EndProcessing = GetLocalizedString("SKIN_EndProcessing");
+        public static string SKIN_Registered = GetLocalizedString("SKIN_Registered");
+        public static string SKIN_UnRegistered = GetLocalizedString("SKIN_UnRegistered");
+        public static string SQL_Begin = GetLocalizedString("SQL_Begin");
+        public static string SQL_BeginFile = GetLocalizedString("SQL_BeginFile");
+        public static string SQL_BeginUnInstall = GetLocalizedString("SQL_BeginUnInstall");
+        public static string SQL_Committed = GetLocalizedString("SQL_Committed");
+        public static string SQL_End = GetLocalizedString("SQL_End");
+        public static string SQL_EndFile = GetLocalizedString("SQL_EndFile");
+        public static string SQL_EndUnInstall = GetLocalizedString("SQL_EndUnInstall");
+        public static string SQL_Exceptions = GetLocalizedString("SQL_Exceptions");
+        public static string SQL_Executing = GetLocalizedString("SQL_Executing");
+        public static string SQL_RolledBack = GetLocalizedString("SQL_RolledBack");
+        public static string UNINSTALL_Start = GetLocalizedString("UNINSTALL_Start");
+        public static string UNINSTALL_StartComp = GetLocalizedString("UNINSTALL_StartComp");
+        public static string UNINSTALL_Failure = GetLocalizedString("UNINSTALL_Failure");
+        public static string UNINSTALL_Success = GetLocalizedString("UNINSTALL_Success");
+        public static string UNINSTALL_SuccessComp = GetLocalizedString("UNINSTALL_SuccessComp");
+        public static string UNINSTALL_Warnings = GetLocalizedString("UNINSTALL_Warnings");
+        public static string UNINSTALL_WarningsComp = GetLocalizedString("UNINSTALL_WarningsComp");
+        public static string URLPROVIDER_NameMissing = GetLocalizedString("URLPROVIDER_NameMissing");
+        public static string URLPROVIDER_ReadSuccess = GetLocalizedString("URLPROVIDER_ReadSuccess");
+        public static string URLPROVIDER_Registered = GetLocalizedString("URLPROVIDER_Registered");
+        public static string URLPROVIDER_TypeMissing = GetLocalizedString("URLPROVIDER_TypeMissing");
+        public static string URLPROVIDER_UnRegistered = GetLocalizedString("URLPROVIDER_UnRegistered");
+        public static string WRITER_AddFileToManifest = GetLocalizedString("WRITER_AddFileToManifest");
+        public static string WRITER_CreateArchive = GetLocalizedString("WRITER_CreateArchive");
+        public static string WRITER_CreatedManifest = GetLocalizedString("WRITER_CreatedManifest");
+        public static string WRITER_CreatedPackage = GetLocalizedString("WRITER_CreatedPackage");
+        public static string WRITER_CreatingManifest = GetLocalizedString("WRITER_CreatingManifest");
+        public static string WRITER_CreatingPackage = GetLocalizedString("WRITER_CreatingPackage");
+        public static string WRITER_SavedFile = GetLocalizedString("WRITER_SavedFile");
+        public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
+        public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The BackupFile method backs up a file to the backup folder.
+        /// </summary>
+        /// <param name="installFile">The file to backup.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
+        public static void BackupFile(InstallFile installFile, string basePath, Logger log)
+        {
+            string fullFileName = Path.Combine(basePath, installFile.FullName);
+            string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
+
+            // create the backup folder if neccessary
+            if (!Directory.Exists(installFile.BackupPath))
+            {
+                Directory.CreateDirectory(installFile.BackupPath);
+            }
+
+            // Copy file to backup location
+            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
+            log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// The CopyFile method copies a file from the temporary extract location.
+        /// </summary>
+        /// <param name="installFile">The file to copy.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
+        public static void CopyFile(InstallFile installFile, string basePath, Logger log)
+        {
+            string filePath = Path.Combine(basePath, installFile.Path);
+            string fullFileName = Path.Combine(basePath, installFile.FullName);
+
+            // create the folder if neccessary
+            if (!Directory.Exists(filePath))
+            {
+                log.AddInfo(string.Format(FOLDER_Created, filePath));
+                Directory.CreateDirectory(filePath);
+            }
+
+            // Copy file from temp location
+            RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(installFile.TempFileName, fullFileName), "Copy file to " + fullFileName);
+
+            log.AddInfo(string.Format(FILE_Created, installFile.FullName));
+        }
+
+        // ReSharper restore InconsistentNaming
     }
 }

@@ -49,8 +49,6 @@ namespace DotNetNuke.Modules.Groups
             }
         }
 
-        protected INavigationManager NavigationManager { get; }
-
         public int GroupId
         {
             get
@@ -267,6 +265,8 @@ namespace DotNetNuke.Modules.Groups
                 return userGroupsOnly;
             }
         }
+
+        protected INavigationManager NavigationManager { get; }
 
         public string GetCreateUrl()
         {

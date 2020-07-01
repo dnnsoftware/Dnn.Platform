@@ -36,16 +36,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
         private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
         private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
-
-        public enum SearchTypeIds
-        {
-            ModuleSearchTypeId = 1,
-            TabSearchTypeId,
-            DocumentSearchTypeId,
-            UrlSearchTypeId,
-            OtherSearchTypeId,
-            UnknownSearchTypeId,
-        }
         private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
         private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
         private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
@@ -133,6 +123,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private IInternalSearchController _internalSearchController;
         private LuceneControllerImpl _luceneController;
 
+        public enum SearchTypeIds
+        {
+            ModuleSearchTypeId = 1,
+            TabSearchTypeId,
+            DocumentSearchTypeId,
+            UrlSearchTypeId,
+            OtherSearchTypeId,
+            UnknownSearchTypeId,
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -186,554 +186,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act, Assert
             Assert.Throws<ArgumentException>(() => this._searchController.SiteSearch(new SearchQuery { KeyWords = "word" }));
-        }
-
-        /// <summary>
-        /// Executes function proc on a separate thread respecting the given timeout value.
-        /// </summary>
-        /// <typeparam name="R"></typeparam>
-        /// <param name="proc">The function to execute.</param>
-        /// <param name="timeout">The timeout duration.</param>
-        /// <returns>R.</returns>
-        /// <remarks>From: http://stackoverflow.com/questions/9460661/implementing-regex-timeout-in-net-4.</remarks>
-        private static R ExecuteWithTimeout<R>(Func<R> proc, TimeSpan timeout)
-        {
-            var r = default(R); // init default return value
-            Exception ex = null; // records inter-thread exception
-
-            // define a thread to wrap 'proc'
-            var t = new Thread(() =>
-            {
-                try
-                {
-                    r = proc();
-                }
-                catch (Exception e)
-                {
-                    // this can get set to ThreadAbortException
-                    ex = e;
-
-                    Console.WriteLine("Exception hit");
-                }
-            });
-
-            t.Start(); // start running 'proc' thread wrapper
-
-            // from docs: "The Start method does not return until the new thread has started running."
-            if (t.Join(timeout) == false)
-            {
-                t.Abort(); // die evil thread!
-
-                // Abort raises the ThreadAbortException
-                int i = 0;
-                while ((t.Join(1) == false) && (i < 20))
-                {
-                    // 20 ms wait possible here
-                    i++;
-                }
-
-                if (i >= 20)
-                {
-                    // we didn't abort, might want to log this or take some other action
-                    // this can happen if you are doing something indefinitely hinky in a
-                    // finally block (cause the finally be will executed before the Abort
-                    // completes.
-                    Console.WriteLine("Abort didn't work as expected");
-                }
-            }
-
-            if (ex != null)
-            {
-                throw ex; // oops
-            }
-
-            return r; // ah!
-        }
-
-        private void CreateNewLuceneControllerInstance(bool reCreate = false)
-        {
-            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
-            this._internalSearchController = InternalSearchController.Instance;
-            this._searchController = new SearchControllerImpl();
-
-            if (!reCreate)
-            {
-                this.DeleteIndexFolder();
-
-                if (this._luceneController != null)
-                {
-                    LuceneController.ClearInstance();
-                    this._luceneController.Dispose();
-                }
-
-                this._luceneController = new LuceneControllerImpl();
-                LuceneController.SetTestableInstance(this._luceneController);
-            }
-        }
-
-        private void SetupHostController()
-        {
-            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
-            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchDescriptionBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
-            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
-            HostController.RegisterInstance(this._mockHostController.Object);
-        }
-
-        private void SetupLocaleController()
-        {
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
-            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
-
-            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
-            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
-        }
-
-        private void SetupDataProvider()
-        {
-            // Standard DataProvider Path for Logging
-            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
-
-            DataTableReader searchTypes = null;
-            this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
-                     .Callback(() => searchTypes = this.GetAllSearchTypes().CreateDataReader())
-                     .Returns(() => searchTypes);
-
-            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
-        }
-
-        private IDataReader GetPortalsCallBack(string culture)
-        {
-            return this.GetPortalCallBack(PortalId0, CultureEnUs);
-        }
-
-        private IDataReader GetPortalCallBack(int portalId, string culture)
-        {
-            var table = new DataTable("Portal");
-
-            var cols = new[]
-                        {
-                            "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
-                            "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
-                            "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
-                            "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
-                        };
-
-            foreach (var col in cols)
-            {
-                table.Columns.Add(col);
-            }
-
-            const int homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
-                    "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null,
-                    "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0",
-                    null, homePage.ToString("D"), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
-
-            return table.CreateDataReader();
-        }
-
-        private void SetupSearchHelper()
-        {
-            this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
-            this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
-            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
-            this._mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
-                new SearchStopWords
-                {
-                    PortalId = 0,
-                    CultureCode = CultureEsEs,
-                    StopWords = "los,de,el",
-                });
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
-                new SearchStopWords
-                {
-                    PortalId = 0,
-                    CultureCode = CultureEnUs,
-                    StopWords = "the,over",
-                });
-            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnCa)).Returns(
-                new SearchStopWords
-                {
-                    PortalId = 0,
-                    CultureCode = CultureEnCa,
-                    StopWords = "the,over",
-                });
-
-            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
-            this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
-            SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
-        }
-
-        private SearchType GetSearchTypeByNameCallback(string searchTypeName)
-        {
-            var searchType = new SearchType { SearchTypeName = searchTypeName, SearchTypeId = 0 };
-            switch (searchTypeName)
-            {
-                case ModuleSearchTypeName:
-                    searchType.SearchTypeId = ModuleSearchTypeId;
-                    break;
-                case TabSearchTypeName:
-                    searchType.SearchTypeId = TabSearchTypeId;
-                    break;
-                case OtherSearchTypeName:
-                    searchType.SearchTypeId = OtherSearchTypeId;
-                    break;
-                case DocumentSearchTypeName:
-                    searchType.SearchTypeId = DocumentSearchTypeId;
-                    break;
-                case UrlSearchTypeName:
-                    searchType.SearchTypeId = UrlSearchTypeId;
-                    break;
-            }
-
-            return searchType;
-        }
-
-        private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
-        {
-            var synonyms = new List<string>();
-            if (term == "fox")
-            {
-                synonyms.Add("wolf");
-            }
-
-            return synonyms;
-        }
-
-        private UserInfo GetUserByIdCallback(int portalId, int userId)
-        {
-            if (portalId == PortalId12 && userId == StandardAuthorId)
-            {
-                return new UserInfo { UserID = userId, DisplayName = StandardAuthorDisplayName };
-            }
-
-            return null;
-        }
-
-        private DataTable GetAllSearchTypes()
-        {
-            var dtSearchTypes = new DataTable("SearchTypes");
-            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof(int));
-            dtSearchTypes.Columns.Add("SearchTypeName", typeof(string));
-            dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
-            dtSearchTypes.PrimaryKey = new[] { pkId };
-
-            // Create default Crawler
-            dtSearchTypes.Rows.Add(ModuleSearchTypeId, ModuleSearchTypeName, FakeResultControllerClass);
-            dtSearchTypes.Rows.Add(TabSearchTypeId, TabSearchTypeName, FakeResultControllerClass);
-            dtSearchTypes.Rows.Add(OtherSearchTypeId, OtherSearchTypeName, FakeResultControllerClass);
-            dtSearchTypes.Rows.Add(DocumentSearchTypeId, DocumentSearchTypeName, NoPermissionFakeResultControllerClass);
-            dtSearchTypes.Rows.Add(UrlSearchTypeId, UrlSearchTypeName, FakeResultControllerClass);
-
-            return dtSearchTypes;
-        }
-
-        private IEnumerable<SearchType> GetSearchTypes()
-        {
-            var searchTypes = new List<SearchType>
-                {
-                    new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                    new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                    new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                    new SearchType { SearchTypeId = DocumentSearchTypeId, SearchTypeName = DocumentSearchTypeName, SearchResultClass = NoPermissionFakeResultControllerClass },
-                    new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
-                };
-
-            return searchTypes;
-        }
-
-        private void DeleteIndexFolder()
-        {
-            try
-            {
-                if (Directory.Exists(SearchIndexFolder))
-                {
-                    Directory.Delete(SearchIndexFolder, true);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
-        }
-
-        /// <summary>
-        /// Returns few SearchDocs.
-        /// </summary>
-        private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
-        {
-            var searchDocs = new List<SearchDocument>
-            {
-                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
-                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2, CultureCode = CultureEnUs },
-                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
-                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
-                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line5, CultureCode = CultureEsEs },
-            };
-
-            var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
-            var i = 0;
-
-            foreach (var searchDocument in searchDocs)
-            {
-                searchDocument.SearchTypeId = searchTypeId;
-                searchDocument.UniqueKey = Guid.NewGuid().ToString();
-                searchDocument.ModuleId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleId : -1;
-                searchDocument.ModuleDefId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleDefId : -1;
-                searchDocument.ModifiedTimeUtc = now.AddYears(++i); // last added is the newest
-            }
-
-            return searchDocs;
-        }
-
-        private IEnumerable<SearchDocument> GetSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
-        {
-            var searchDocs = new List<SearchDocument>
-            {
-                new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = { { "title", "Hello" } }, Body = "Hello1 World" },
-                new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = { { "subject", "Hello" } }, Body = "Hello2 World" },
-                new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = { { "comments", "Hello" } }, Body = "Hello3 World" },
-                new SearchDocument { PortalId = PortalId0, Title = Line4, Keywords = { { "authorname", "Hello" } }, Body = "Hello4 World" },
-            };
-
-            var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
-            var i = 0;
-
-            foreach (var searchDocument in searchDocs)
-            {
-                searchDocument.SearchTypeId = searchTypeId;
-                searchDocument.UniqueKey = Guid.NewGuid().ToString();
-                searchDocument.ModuleId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleId : -1;
-                searchDocument.ModuleDefId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleDefId : -1;
-                searchDocument.ModifiedTimeUtc = now.AddYears(++i); // last added is the newest
-            }
-
-            return searchDocs;
-        }
-
-        /// <summary>
-        /// Adds standarad SearchDocs in Lucene Index.
-        /// </summary>
-        /// <returns>Number of dcuments added.</returns>
-        private int AddStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
-        {
-            var docs = this.GetStandardSearchDocs(searchTypeId).ToArray();
-            this._internalSearchController.AddSearchDocuments(docs);
-            return docs.Length;
-        }
-
-        private int AddSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
-        {
-            var docs = this.GetSearchDocsForCustomBoost(searchTypeId).ToArray();
-            this._internalSearchController.AddSearchDocuments(docs);
-            return docs.Length;
-        }
-
-        private int AddDocumentsWithNumericKeys(int searchTypeId = OtherSearchTypeId)
-        {
-            var doc1 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key1",
-                Body = "hello",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
-            };
-            var doc2 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key2",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
-            };
-            var doc3 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key3",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
-            };
-            var doc4 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key4",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
-            };
-            var doc5 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key5",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
-            };
-
-            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
-
-            this._internalSearchController.AddSearchDocuments(docs);
-
-            return docs.Count;
-        }
-
-        private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)
-        {
-            var doc1 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key1",
-                Body = "hello",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
-            };
-            var doc2 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key2",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } },
-            };
-            var doc3 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key3",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } },
-            };
-            var doc4 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key4",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } },
-            };
-            var doc5 = new SearchDocument
-            {
-                Title = "Title",
-                UniqueKey = "key5",
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } },
-            };
-
-            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
-
-            this._internalSearchController.AddSearchDocuments(docs);
-
-            return docs.Count;
-        }
-
-        private int AddDocuments(IList<string> titles, string body, int searchTypeId = OtherSearchTypeId)
-        {
-            var count = 0;
-            foreach (var doc in titles.Select(title => new SearchDocument
-            {
-                Title = title,
-                UniqueKey = Guid.NewGuid().ToString(),
-                Body = body,
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-            }))
-            {
-                this._internalSearchController.AddSearchDocument(doc);
-                count++;
-            }
-
-            return count;
-        }
-
-        private int AddDocumentsWithKeywords(IEnumerable<string> keywords, string title, int searchTypeId = OtherSearchTypeId)
-        {
-            var count = 0;
-            foreach (var doc in keywords.Select(keyword => new SearchDocument
-            {
-                Title = title,
-                UniqueKey = Guid.NewGuid().ToString(),
-                Keywords = new Dictionary<string, string>() { { KeyWord1Name, keyword } },
-                SearchTypeId = OtherSearchTypeId,
-                ModifiedTimeUtc = DateTime.UtcNow,
-                PortalId = PortalId12,
-            }))
-            {
-                this._internalSearchController.AddSearchDocument(doc);
-                count++;
-            }
-
-            return count;
-        }
-
-        private void AddLinesAsSearchDocs(IList<string> lines, int searchTypeId = OtherSearchTypeId)
-        {
-            var now = DateTime.UtcNow - TimeSpan.FromSeconds(lines.Count());
-            var i = 0;
-
-            this._internalSearchController.AddSearchDocuments(
-                lines.Select(line =>
-                    new SearchDocument
-                    {
-                        Title = line,
-                        UniqueKey = Guid.NewGuid().ToString(),
-                        SearchTypeId = searchTypeId,
-                        ModifiedTimeUtc = now.AddSeconds(i++),
-                    }).ToList());
-        }
-
-        private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId, bool useWildcard = false, bool allowLeadingWildcard = false)
-        {
-            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
-            return this._searchController.SiteSearch(query);
-        }
-
-        private SearchResults SearchForKeywordWithWildCard(string keyword, int searchTypeId = OtherSearchTypeId)
-        {
-            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = true };
-            return this._searchController.SiteSearch(query);
-        }
-
-        private SearchResults SearchForKeywordInModule(string keyword, int searchTypeId = ModuleSearchTypeId)
-        {
-            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId } };
-            return this._searchController.SiteSearch(query);
-        }
-
-        private string StipEllipses(string text)
-        {
-            return text.Replace("...", string.Empty).Trim();
         }
 
         [Test]
@@ -984,30 +436,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(maxDocs - 18, result.TotalHits);
             Assert.AreEqual(query.PageSize, result.Results.Count);
             Assert.AreEqual(new[] { 6, 7, 8, 9, 16, 17 }, ids);
-        }
-
-        /// <summary>
-        /// Sets up some data for testing security trimming.
-        /// In the tests below, the users will have access to the follwoing documents
-        /// { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29, ..., etc. }
-        /// The tests check that pagination qith various page sizes returns the proper groupings.
-        /// </summary>
-        private void SetupSecurityTrimmingDocs(int totalDocs, int searchType = DocumentSearchTypeId)
-        {
-            var docModifyTime = DateTime.UtcNow - TimeSpan.FromSeconds(totalDocs);
-            for (var i = 0; i < totalDocs; i++)
-            {
-                this._internalSearchController.AddSearchDocument(new SearchDocument
-                {
-                    AuthorUserId = i,
-                    Title = "Fox and Dog",
-                    Body = Line1,
-                    Tags = new[] { Tag0, Tag1 },
-                    SearchTypeId = searchType,
-                    UniqueKey = Guid.NewGuid().ToString(),
-                    ModifiedTimeUtc = docModifyTime.AddSeconds(i),
-                });
-            }
         }
 
         [Test]
@@ -2510,38 +1938,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(2, result3.TotalHits);
         }
 
-        private void AddFoldersAndFiles()
-        {
-            var allFiles = new Dictionary<string, string>
-                               {
-                                { "Awesome-Cycles-Logo.png", "Images/" },
-                                { "Banner1.jpg", "Images/" },
-                                { "Banner2.jpg", "Images/" },
-                                { "bike-powered.png", "Images/DNN/" },
-                                { "Spacer.gif", "Images/DNN/" },
-                                { "monday.png", "My<Images/" },
-                                { "tuesday.jpg", "My<Images/" },
-                                { "wednesday.jpg", "My<Images/" },
-                                { "thursday.png", "My<Images/My<DNN/" },
-                                { "friday.gif", "My<Images/My<DNN/" },
-                               };
-
-            foreach (var file in allFiles)
-            {
-                var doc = new SearchDocument
-                {
-                    Title = file.Key,
-                    UniqueKey = Guid.NewGuid().ToString(),
-                    SearchTypeId = OtherSearchTypeId,
-                    ModifiedTimeUtc = DateTime.UtcNow,
-                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } },
-                };
-                this._internalSearchController.AddSearchDocument(doc);
-            }
-
-            this._internalSearchController.Commit();
-        }
-
         [Test]
         public void SearchController_EmailTest_With_WildCard()
         {
@@ -2980,6 +2376,610 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             // we won't find "los" in the es-ES document.
             Assert.AreEqual(0, search.TotalHits, "Found: " + string.Join(Environment.NewLine, search.Results.Select(r => r.Title)));
+        }
+
+        /// <summary>
+        /// Executes function proc on a separate thread respecting the given timeout value.
+        /// </summary>
+        /// <typeparam name="R"></typeparam>
+        /// <param name="proc">The function to execute.</param>
+        /// <param name="timeout">The timeout duration.</param>
+        /// <returns>R.</returns>
+        /// <remarks>From: http://stackoverflow.com/questions/9460661/implementing-regex-timeout-in-net-4.</remarks>
+        private static R ExecuteWithTimeout<R>(Func<R> proc, TimeSpan timeout)
+        {
+            var r = default(R); // init default return value
+            Exception ex = null; // records inter-thread exception
+
+            // define a thread to wrap 'proc'
+            var t = new Thread(() =>
+            {
+                try
+                {
+                    r = proc();
+                }
+                catch (Exception e)
+                {
+                    // this can get set to ThreadAbortException
+                    ex = e;
+
+                    Console.WriteLine("Exception hit");
+                }
+            });
+
+            t.Start(); // start running 'proc' thread wrapper
+
+            // from docs: "The Start method does not return until the new thread has started running."
+            if (t.Join(timeout) == false)
+            {
+                t.Abort(); // die evil thread!
+
+                // Abort raises the ThreadAbortException
+                int i = 0;
+                while ((t.Join(1) == false) && (i < 20))
+                {
+                    // 20 ms wait possible here
+                    i++;
+                }
+
+                if (i >= 20)
+                {
+                    // we didn't abort, might want to log this or take some other action
+                    // this can happen if you are doing something indefinitely hinky in a
+                    // finally block (cause the finally be will executed before the Abort
+                    // completes.
+                    Console.WriteLine("Abort didn't work as expected");
+                }
+            }
+
+            if (ex != null)
+            {
+                throw ex; // oops
+            }
+
+            return r; // ah!
+        }
+
+        private void CreateNewLuceneControllerInstance(bool reCreate = false)
+        {
+            InternalSearchController.SetTestableInstance(new InternalSearchControllerImpl());
+            this._internalSearchController = InternalSearchController.Instance;
+            this._searchController = new SearchControllerImpl();
+
+            if (!reCreate)
+            {
+                this.DeleteIndexFolder();
+
+                if (this._luceneController != null)
+                {
+                    LuceneController.ClearInstance();
+                    this._luceneController.Dispose();
+                }
+
+                this._luceneController = new LuceneControllerImpl();
+                LuceneController.SetTestableInstance(this._luceneController);
+            }
+        }
+
+        private void SetupHostController()
+        {
+            this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(SearchIndexFolder);
+            this._mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).Returns(this._readerStaleTimeSpan);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTitleBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchTagBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchKeywordBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchDescriptionBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(Constants.DefaultSearchAuthorBoost);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMinLen);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(Constants.DefaultMaxLen);
+            this._mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(DefaultSearchRetryTimes);
+            HostController.RegisterInstance(this._mockHostController.Object);
+        }
+
+        private void SetupLocaleController()
+        {
+            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<string>())).Returns(new Locale { LanguageId = -1, Code = string.Empty });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEnCa)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this._mockLocaleController.Setup(l => l.GetLocale(CultureEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
+
+            this._mockLocaleController.Setup(l => l.GetLocale(It.IsAny<int>())).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnUs)).Returns(new Locale { LanguageId = LanguageIdEnUs, Code = CultureEnUs });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEnFr)).Returns(new Locale { LanguageId = LanguageIdEnFr, Code = CultureEnCa });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdItIt)).Returns(new Locale { LanguageId = LanguageIdItIt, Code = CultureItIt });
+            this._mockLocaleController.Setup(l => l.GetLocale(LanguageIdEsEs)).Returns(new Locale { LanguageId = LanguageIdEsEs, Code = CultureEsEs });
+        }
+
+        private void SetupDataProvider()
+        {
+            // Standard DataProvider Path for Logging
+            this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns(string.Empty);
+
+            DataTableReader searchTypes = null;
+            this._mockDataProvider.Setup(ds => ds.GetAllSearchTypes())
+                     .Callback(() => searchTypes = this.GetAllSearchTypes().CreateDataReader())
+                     .Returns(() => searchTypes);
+
+            this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
+        }
+
+        private IDataReader GetPortalsCallBack(string culture)
+        {
+            return this.GetPortalCallBack(PortalId0, CultureEnUs);
+        }
+
+        private IDataReader GetPortalCallBack(int portalId, string culture)
+        {
+            var table = new DataTable("Portal");
+
+            var cols = new[]
+                        {
+                            "PortalID", "PortalGroupID", "PortalName", "LogoFile", "FooterText", "ExpiryDate", "UserRegistration", "BannerAdvertising", "AdministratorId", "Currency", "HostFee",
+                            "HostSpace", "PageQuota", "UserQuota", "AdministratorRoleId", "RegisteredRoleId", "Description", "KeyWords", "BackgroundFile", "GUID", "PaymentProcessor", "ProcessorUserId",
+                            "ProcessorPassword", "SiteLogHistory", "Email", "DefaultLanguage", "TimezoneOffset", "AdminTabId", "HomeDirectory", "SplashTabId", "HomeTabId", "LoginTabId", "RegisterTabId",
+                            "UserTabId", "SearchTabId", "Custom404TabId", "Custom500TabId", "TermsTabId", "PrivacyTabId", "SuperTabId", "CreatedByUserID", "CreatedOnDate", "LastModifiedByUserID", "LastModifiedOnDate", "CultureCode",
+                        };
+
+            foreach (var col in cols)
+            {
+                table.Columns.Add(col);
+            }
+
+            const int homePage = 1;
+            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
+                    "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website", "DotNetNuke, DNN, Content, Management, CMS", null,
+                    "1057AC7A-3C08-4849-A3A6-3D2AB4662020", null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0",
+                    null, homePage.ToString("D"), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11", "-1", "2011-08-25 07:34:29", culture);
+
+            return table.CreateDataReader();
+        }
+
+        private void SetupSearchHelper()
+        {
+            this._mockSearchHelper.Setup(c => c.GetSearchMinMaxLength()).Returns(new Tuple<int, int>(Constants.DefaultMinLen, Constants.DefaultMaxLen));
+            this._mockSearchHelper.Setup(c => c.GetSynonyms(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>())).Returns<int, string, string>(this.GetSynonymsCallBack);
+            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns((string name) => new SearchType { SearchTypeId = 0, SearchTypeName = name });
+            this._mockSearchHelper.Setup(x => x.GetSearchTypeByName(It.IsAny<string>())).Returns<string>(this.GetSearchTypeByNameCallback);
+            this._mockSearchHelper.Setup(x => x.GetSearchTypes()).Returns(this.GetSearchTypes());
+            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(It.IsAny<int>(), It.IsAny<string>())).Returns(new SearchStopWords());
+            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEsEs)).Returns(
+                new SearchStopWords
+                {
+                    PortalId = 0,
+                    CultureCode = CultureEsEs,
+                    StopWords = "los,de,el",
+                });
+            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnUs)).Returns(
+                new SearchStopWords
+                {
+                    PortalId = 0,
+                    CultureCode = CultureEnUs,
+                    StopWords = "the,over",
+                });
+            this._mockSearchHelper.Setup(x => x.GetSearchStopWords(0, CultureEnCa)).Returns(
+                new SearchStopWords
+                {
+                    PortalId = 0,
+                    CultureCode = CultureEnCa,
+                    StopWords = "the,over",
+                });
+
+            this._mockSearchHelper.Setup(x => x.RephraseSearchText(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns<string, bool, bool>(new SearchHelperImpl().RephraseSearchText);
+            this._mockSearchHelper.Setup(x => x.StripTagsNoAttributes(It.IsAny<string>(), It.IsAny<bool>())).Returns((string html, bool retainSpace) => html);
+            SearchHelper.SetTestableInstance(this._mockSearchHelper.Object);
+        }
+
+        private SearchType GetSearchTypeByNameCallback(string searchTypeName)
+        {
+            var searchType = new SearchType { SearchTypeName = searchTypeName, SearchTypeId = 0 };
+            switch (searchTypeName)
+            {
+                case ModuleSearchTypeName:
+                    searchType.SearchTypeId = ModuleSearchTypeId;
+                    break;
+                case TabSearchTypeName:
+                    searchType.SearchTypeId = TabSearchTypeId;
+                    break;
+                case OtherSearchTypeName:
+                    searchType.SearchTypeId = OtherSearchTypeId;
+                    break;
+                case DocumentSearchTypeName:
+                    searchType.SearchTypeId = DocumentSearchTypeId;
+                    break;
+                case UrlSearchTypeName:
+                    searchType.SearchTypeId = UrlSearchTypeId;
+                    break;
+            }
+
+            return searchType;
+        }
+
+        private IList<string> GetSynonymsCallBack(int portalId, string cultureCode, string term)
+        {
+            var synonyms = new List<string>();
+            if (term == "fox")
+            {
+                synonyms.Add("wolf");
+            }
+
+            return synonyms;
+        }
+
+        private UserInfo GetUserByIdCallback(int portalId, int userId)
+        {
+            if (portalId == PortalId12 && userId == StandardAuthorId)
+            {
+                return new UserInfo { UserID = userId, DisplayName = StandardAuthorDisplayName };
+            }
+
+            return null;
+        }
+
+        private DataTable GetAllSearchTypes()
+        {
+            var dtSearchTypes = new DataTable("SearchTypes");
+            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof(int));
+            dtSearchTypes.Columns.Add("SearchTypeName", typeof(string));
+            dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
+            dtSearchTypes.PrimaryKey = new[] { pkId };
+
+            // Create default Crawler
+            dtSearchTypes.Rows.Add(ModuleSearchTypeId, ModuleSearchTypeName, FakeResultControllerClass);
+            dtSearchTypes.Rows.Add(TabSearchTypeId, TabSearchTypeName, FakeResultControllerClass);
+            dtSearchTypes.Rows.Add(OtherSearchTypeId, OtherSearchTypeName, FakeResultControllerClass);
+            dtSearchTypes.Rows.Add(DocumentSearchTypeId, DocumentSearchTypeName, NoPermissionFakeResultControllerClass);
+            dtSearchTypes.Rows.Add(UrlSearchTypeId, UrlSearchTypeName, FakeResultControllerClass);
+
+            return dtSearchTypes;
+        }
+
+        private IEnumerable<SearchType> GetSearchTypes()
+        {
+            var searchTypes = new List<SearchType>
+                {
+                    new SearchType { SearchTypeId = ModuleSearchTypeId, SearchTypeName = ModuleSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                    new SearchType { SearchTypeId = TabSearchTypeId, SearchTypeName = TabSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                    new SearchType { SearchTypeId = OtherSearchTypeId, SearchTypeName = OtherSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                    new SearchType { SearchTypeId = DocumentSearchTypeId, SearchTypeName = DocumentSearchTypeName, SearchResultClass = NoPermissionFakeResultControllerClass },
+                    new SearchType { SearchTypeId = UrlSearchTypeId, SearchTypeName = UrlSearchTypeName, SearchResultClass = FakeResultControllerClass },
+                };
+
+            return searchTypes;
+        }
+
+        private void DeleteIndexFolder()
+        {
+            try
+            {
+                if (Directory.Exists(SearchIndexFolder))
+                {
+                    Directory.Delete(SearchIndexFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
+        /// <summary>
+        /// Returns few SearchDocs.
+        /// </summary>
+        private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
+        {
+            var searchDocs = new List<SearchDocument>
+            {
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2, CultureCode = CultureEnUs },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag3, Tag4, TagLatest }, Title = Line4, CultureCode = CultureEnCa },
+                new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line5, CultureCode = CultureEsEs },
+            };
+
+            var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
+            var i = 0;
+
+            foreach (var searchDocument in searchDocs)
+            {
+                searchDocument.SearchTypeId = searchTypeId;
+                searchDocument.UniqueKey = Guid.NewGuid().ToString();
+                searchDocument.ModuleId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleId : -1;
+                searchDocument.ModuleDefId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleDefId : -1;
+                searchDocument.ModifiedTimeUtc = now.AddYears(++i); // last added is the newest
+            }
+
+            return searchDocs;
+        }
+
+        private IEnumerable<SearchDocument> GetSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
+        {
+            var searchDocs = new List<SearchDocument>
+            {
+                new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = { { "title", "Hello" } }, Body = "Hello1 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = { { "subject", "Hello" } }, Body = "Hello2 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = { { "comments", "Hello" } }, Body = "Hello3 World" },
+                new SearchDocument { PortalId = PortalId0, Title = Line4, Keywords = { { "authorname", "Hello" } }, Body = "Hello4 World" },
+            };
+
+            var now = DateTime.UtcNow.AddYears(-searchDocs.Count);
+            var i = 0;
+
+            foreach (var searchDocument in searchDocs)
+            {
+                searchDocument.SearchTypeId = searchTypeId;
+                searchDocument.UniqueKey = Guid.NewGuid().ToString();
+                searchDocument.ModuleId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleId : -1;
+                searchDocument.ModuleDefId = (searchTypeId == ModuleSearchTypeId) ? HtmlModuleDefId : -1;
+                searchDocument.ModifiedTimeUtc = now.AddYears(++i); // last added is the newest
+            }
+
+            return searchDocs;
+        }
+
+        /// <summary>
+        /// Adds standarad SearchDocs in Lucene Index.
+        /// </summary>
+        /// <returns>Number of dcuments added.</returns>
+        private int AddStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
+        {
+            var docs = this.GetStandardSearchDocs(searchTypeId).ToArray();
+            this._internalSearchController.AddSearchDocuments(docs);
+            return docs.Length;
+        }
+
+        private int AddSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
+        {
+            var docs = this.GetSearchDocsForCustomBoost(searchTypeId).ToArray();
+            this._internalSearchController.AddSearchDocuments(docs);
+            return docs.Length;
+        }
+
+        private int AddDocumentsWithNumericKeys(int searchTypeId = OtherSearchTypeId)
+        {
+            var doc1 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key1",
+                Body = "hello",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue50 } },
+            };
+            var doc2 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key2",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue100 } },
+            };
+            var doc3 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key3",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue200 } },
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue500 } },
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                NumericKeys = new Dictionary<string, int>() { { NumericKey1, NumericValue1000 } },
+            };
+
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
+
+            this._internalSearchController.AddSearchDocuments(docs);
+
+            return docs.Count;
+        }
+
+        private int AddDocumentsWithKeywords(int searchTypeId = OtherSearchTypeId)
+        {
+            var doc1 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key1",
+                Body = "hello",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord1Value } },
+            };
+            var doc2 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key2",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord2Value } },
+            };
+            var doc3 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key3",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord3Value } },
+            };
+            var doc4 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key4",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord4Value } },
+            };
+            var doc5 = new SearchDocument
+            {
+                Title = "Title",
+                UniqueKey = "key5",
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, KeyWord5Value } },
+            };
+
+            var docs = new List<SearchDocument>() { doc1, doc2, doc3, doc4, doc5 };
+
+            this._internalSearchController.AddSearchDocuments(docs);
+
+            return docs.Count;
+        }
+
+        private int AddDocuments(IList<string> titles, string body, int searchTypeId = OtherSearchTypeId)
+        {
+            var count = 0;
+            foreach (var doc in titles.Select(title => new SearchDocument
+            {
+                Title = title,
+                UniqueKey = Guid.NewGuid().ToString(),
+                Body = body,
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+            }))
+            {
+                this._internalSearchController.AddSearchDocument(doc);
+                count++;
+            }
+
+            return count;
+        }
+
+        private int AddDocumentsWithKeywords(IEnumerable<string> keywords, string title, int searchTypeId = OtherSearchTypeId)
+        {
+            var count = 0;
+            foreach (var doc in keywords.Select(keyword => new SearchDocument
+            {
+                Title = title,
+                UniqueKey = Guid.NewGuid().ToString(),
+                Keywords = new Dictionary<string, string>() { { KeyWord1Name, keyword } },
+                SearchTypeId = OtherSearchTypeId,
+                ModifiedTimeUtc = DateTime.UtcNow,
+                PortalId = PortalId12,
+            }))
+            {
+                this._internalSearchController.AddSearchDocument(doc);
+                count++;
+            }
+
+            return count;
+        }
+
+        private void AddLinesAsSearchDocs(IList<string> lines, int searchTypeId = OtherSearchTypeId)
+        {
+            var now = DateTime.UtcNow - TimeSpan.FromSeconds(lines.Count());
+            var i = 0;
+
+            this._internalSearchController.AddSearchDocuments(
+                lines.Select(line =>
+                    new SearchDocument
+                    {
+                        Title = line,
+                        UniqueKey = Guid.NewGuid().ToString(),
+                        SearchTypeId = searchTypeId,
+                        ModifiedTimeUtc = now.AddSeconds(i++),
+                    }).ToList());
+        }
+
+        private SearchResults SearchForKeyword(string keyword, int searchTypeId = OtherSearchTypeId, bool useWildcard = false, bool allowLeadingWildcard = false)
+        {
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = useWildcard, AllowLeadingWildcard = allowLeadingWildcard };
+            return this._searchController.SiteSearch(query);
+        }
+
+        private SearchResults SearchForKeywordWithWildCard(string keyword, int searchTypeId = OtherSearchTypeId)
+        {
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId }, WildCardSearch = true };
+            return this._searchController.SiteSearch(query);
+        }
+
+        private SearchResults SearchForKeywordInModule(string keyword, int searchTypeId = ModuleSearchTypeId)
+        {
+            var query = new SearchQuery { KeyWords = keyword, SearchTypeIds = new[] { searchTypeId } };
+            return this._searchController.SiteSearch(query);
+        }
+
+        private string StipEllipses(string text)
+        {
+            return text.Replace("...", string.Empty).Trim();
+        }
+
+        /// <summary>
+        /// Sets up some data for testing security trimming.
+        /// In the tests below, the users will have access to the follwoing documents
+        /// { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29, ..., etc. }
+        /// The tests check that pagination qith various page sizes returns the proper groupings.
+        /// </summary>
+        private void SetupSecurityTrimmingDocs(int totalDocs, int searchType = DocumentSearchTypeId)
+        {
+            var docModifyTime = DateTime.UtcNow - TimeSpan.FromSeconds(totalDocs);
+            for (var i = 0; i < totalDocs; i++)
+            {
+                this._internalSearchController.AddSearchDocument(new SearchDocument
+                {
+                    AuthorUserId = i,
+                    Title = "Fox and Dog",
+                    Body = Line1,
+                    Tags = new[] { Tag0, Tag1 },
+                    SearchTypeId = searchType,
+                    UniqueKey = Guid.NewGuid().ToString(),
+                    ModifiedTimeUtc = docModifyTime.AddSeconds(i),
+                });
+            }
+        }
+
+        private void AddFoldersAndFiles()
+        {
+            var allFiles = new Dictionary<string, string>
+                               {
+                                { "Awesome-Cycles-Logo.png", "Images/" },
+                                { "Banner1.jpg", "Images/" },
+                                { "Banner2.jpg", "Images/" },
+                                { "bike-powered.png", "Images/DNN/" },
+                                { "Spacer.gif", "Images/DNN/" },
+                                { "monday.png", "My<Images/" },
+                                { "tuesday.jpg", "My<Images/" },
+                                { "wednesday.jpg", "My<Images/" },
+                                { "thursday.png", "My<Images/My<DNN/" },
+                                { "friday.gif", "My<Images/My<DNN/" },
+                               };
+
+            foreach (var file in allFiles)
+            {
+                var doc = new SearchDocument
+                {
+                    Title = file.Key,
+                    UniqueKey = Guid.NewGuid().ToString(),
+                    SearchTypeId = OtherSearchTypeId,
+                    ModifiedTimeUtc = DateTime.UtcNow,
+                    Keywords = new Dictionary<string, string> { { "folderName", file.Value.ToLowerInvariant() } },
+                };
+                this._internalSearchController.AddSearchDocument(doc);
+            }
+
+            this._internalSearchController.Commit();
         }
     }
 }

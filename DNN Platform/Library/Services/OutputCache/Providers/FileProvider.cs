@@ -48,119 +48,6 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        internal static string GetAttribFileName(int tabId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
-        }
-
-        internal static int GetCachedItemCount(int tabId)
-        {
-            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
-        }
-
-        private static string GetCacheFolder()
-        {
-            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
-            return GetCacheFolder(portalId);
-        }
-
-        private static string GetCacheFolder(int portalId)
-        {
-            string cacheFolder;
-
-            using (var readerLock = CacheFolderPath.GetReadLock())
-            {
-                if (CacheFolderPath.TryGetValue(portalId, out cacheFolder))
-                {
-                    return cacheFolder;
-                }
-            }
-
-            var portalInfo = PortalController.Instance.GetPortal(portalId);
-
-            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
-
-            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
-            {
-                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (!Directory.Exists(cacheFolder))
-                {
-                    Directory.CreateDirectory(cacheFolder);
-                }
-            }
-
-            using (var writerLock = CacheFolderPath.GetWriteLock())
-            {
-                CacheFolderPath.Add(portalId, cacheFolder);
-            }
-
-            return cacheFolder;
-        }
-
-        private bool IsFileExpired(string file)
-        {
-            StreamReader oRead = null;
-            try
-            {
-                oRead = File.OpenText(file);
-                DateTime expires = Convert.ToDateTime(oRead.ReadLine());
-                if (expires < DateTime.UtcNow)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            finally
-            {
-                if (oRead != null)
-                {
-                    oRead.Close();
-                }
-            }
-        }
-
-        private void PurgeCache(string folder)
-        {
-            try
-            {
-                var filesNotDeleted = new StringBuilder();
-                int i = 0;
-                foreach (string file in Directory.GetFiles(folder, "*.resources"))
-                {
-                    if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
-                    {
-                        filesNotDeleted.Append(file + ";");
-                    }
-                    else
-                    {
-                        i += 1;
-                    }
-                }
-
-                if (filesNotDeleted.Length > 0)
-                {
-                    throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
-                }
-            }
-            catch (Exception ex)
-            {
-                Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        internal static string GetCachedOutputFileName(int tabId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
-        }
-
-        internal static string GetTempFileName(int tabId, string cacheKey)
-        {
-            return string.Concat(GetCacheFolder(), cacheKey, TempFileExtension);
-        }
-
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new FileResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
@@ -319,6 +206,119 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
 
             return foundFile;
+        }
+
+        internal static string GetAttribFileName(int tabId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, AttribFileExtension);
+        }
+
+        internal static int GetCachedItemCount(int tabId)
+        {
+            return Directory.GetFiles(GetCacheFolder(), $"{tabId}_*{DataFileExtension}").Length;
+        }
+
+        internal static string GetCachedOutputFileName(int tabId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, DataFileExtension);
+        }
+
+        internal static string GetTempFileName(int tabId, string cacheKey)
+        {
+            return string.Concat(GetCacheFolder(), cacheKey, TempFileExtension);
+        }
+
+        private static string GetCacheFolder()
+        {
+            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            return GetCacheFolder(portalId);
+        }
+
+        private static string GetCacheFolder(int portalId)
+        {
+            string cacheFolder;
+
+            using (var readerLock = CacheFolderPath.GetReadLock())
+            {
+                if (CacheFolderPath.TryGetValue(portalId, out cacheFolder))
+                {
+                    return cacheFolder;
+                }
+            }
+
+            var portalInfo = PortalController.Instance.GetPortal(portalId);
+
+            string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
+
+            if (!string.IsNullOrEmpty(homeDirectoryMapPath))
+            {
+                cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
+                if (!Directory.Exists(cacheFolder))
+                {
+                    Directory.CreateDirectory(cacheFolder);
+                }
+            }
+
+            using (var writerLock = CacheFolderPath.GetWriteLock())
+            {
+                CacheFolderPath.Add(portalId, cacheFolder);
+            }
+
+            return cacheFolder;
+        }
+
+        private bool IsFileExpired(string file)
+        {
+            StreamReader oRead = null;
+            try
+            {
+                oRead = File.OpenText(file);
+                DateTime expires = Convert.ToDateTime(oRead.ReadLine());
+                if (expires < DateTime.UtcNow)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            finally
+            {
+                if (oRead != null)
+                {
+                    oRead.Close();
+                }
+            }
+        }
+
+        private void PurgeCache(string folder)
+        {
+            try
+            {
+                var filesNotDeleted = new StringBuilder();
+                int i = 0;
+                foreach (string file in Directory.GetFiles(folder, "*.resources"))
+                {
+                    if (!FileSystemUtils.DeleteFileWithWait(file, 100, 200))
+                    {
+                        filesNotDeleted.Append(file + ";");
+                    }
+                    else
+                    {
+                        i += 1;
+                    }
+                }
+
+                if (filesNotDeleted.Length > 0)
+                {
+                    throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.Exceptions.LogException(ex);
+            }
         }
     }
 }

@@ -303,6 +303,91 @@ namespace Dnn.Modules.Console
             }
         }
 
+        protected string GetHtml(TabInfo tab)
+        {
+            string returnValue = string.Empty;
+            if (this._groupTabID > -1 && this._groupTabID != tab.ParentId)
+            {
+                this._groupTabID = -1;
+                if (!tab.DisableLink)
+                {
+                    returnValue = "<br style=\"clear:both;\" /><br />";
+                }
+            }
+
+            if (tab.DisableLink)
+            {
+                const string headerHtml = "<br style=\"clear:both;\" /><br /><h1><span class=\"TitleHead\">{0}</span></h1><br style=\"clear:both\" />";
+                returnValue += string.Format(headerHtml, tab.TabName);
+                this._groupTabID = tab.TabID;
+            }
+            else
+            {
+                var sb = new StringBuilder();
+                if (tab.TabID == this.PortalSettings.ActiveTab.TabID)
+                {
+                    sb.Append("<div class=\"active console-none \">");
+                }
+                else
+                {
+                    sb.Append("<div class=\"console-none \">");
+                }
+
+                sb.Append("<a href=\"{0}\" aria-label=\"{3}\">");
+
+                if (this.DefaultSize != "IconNone" || (this.AllowSizeChange || this.AllowViewChange))
+                {
+                    sb.Append("<img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/>");
+                    sb.Append("<img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/>");
+                }
+
+                sb.Append("</a>");
+                sb.Append("<h3>{3}</h3>");
+                sb.Append("<div>{4}</div>");
+                sb.Append("</div>");
+
+                // const string contentHtml = "<div>" + "<a href=\"{0}\"><img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/><img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/></a>" + "<h3>{3}</h3>" + "<div>{4}</div>" + "</div>";
+                var tabUrl = tab.FullUrl;
+                if (this.ProfileUserId > -1)
+                {
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId.ToString(CultureInfo.InvariantCulture));
+                }
+
+                if (this.GroupId > -1)
+                {
+                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
+                }
+
+                returnValue += string.Format(
+                    sb.ToString(),
+                    tabUrl,
+                    this.GetIconUrl(tab.IconFile, "IconFile"),
+                    this.GetIconUrl(tab.IconFileLarge, "IconFileLarge"),
+                    tab.LocalizedTabName,
+                    tab.Description);
+            }
+
+            return returnValue;
+        }
+
+        protected string GetClientSideSettings()
+        {
+            string tmid = "-1";
+            if (this.UserId > -1)
+            {
+                tmid = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return string.Format(
+                "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
+                this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+                this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
+                this.DefaultSize,
+                this.DefaultView,
+                tmid,
+                this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
+        }
+
         private bool CanShowTab(TabInfo tab)
         {
             bool canShowTab = TabPermissionController.CanViewPage(tab) &&
@@ -435,91 +520,6 @@ namespace Dnn.Modules.Console
         private void SaveUserSetting(string key, object val)
         {
             Personalization.SetProfile(this.ModuleConfiguration.ModuleDefinition.FriendlyName, this.PersonalizationKey(key), val);
-        }
-
-        protected string GetHtml(TabInfo tab)
-        {
-            string returnValue = string.Empty;
-            if (this._groupTabID > -1 && this._groupTabID != tab.ParentId)
-            {
-                this._groupTabID = -1;
-                if (!tab.DisableLink)
-                {
-                    returnValue = "<br style=\"clear:both;\" /><br />";
-                }
-            }
-
-            if (tab.DisableLink)
-            {
-                const string headerHtml = "<br style=\"clear:both;\" /><br /><h1><span class=\"TitleHead\">{0}</span></h1><br style=\"clear:both\" />";
-                returnValue += string.Format(headerHtml, tab.TabName);
-                this._groupTabID = tab.TabID;
-            }
-            else
-            {
-                var sb = new StringBuilder();
-                if (tab.TabID == this.PortalSettings.ActiveTab.TabID)
-                {
-                    sb.Append("<div class=\"active console-none \">");
-                }
-                else
-                {
-                    sb.Append("<div class=\"console-none \">");
-                }
-
-                sb.Append("<a href=\"{0}\" aria-label=\"{3}\">");
-
-                if (this.DefaultSize != "IconNone" || (this.AllowSizeChange || this.AllowViewChange))
-                {
-                    sb.Append("<img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/>");
-                    sb.Append("<img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/>");
-                }
-
-                sb.Append("</a>");
-                sb.Append("<h3>{3}</h3>");
-                sb.Append("<div>{4}</div>");
-                sb.Append("</div>");
-
-                // const string contentHtml = "<div>" + "<a href=\"{0}\"><img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/><img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/></a>" + "<h3>{3}</h3>" + "<div>{4}</div>" + "</div>";
-                var tabUrl = tab.FullUrl;
-                if (this.ProfileUserId > -1)
-                {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "UserId=" + this.ProfileUserId.ToString(CultureInfo.InvariantCulture));
-                }
-
-                if (this.GroupId > -1)
-                {
-                    tabUrl = this._navigationManager.NavigateURL(tab.TabID, string.Empty, "GroupId=" + this.GroupId.ToString(CultureInfo.InvariantCulture));
-                }
-
-                returnValue += string.Format(
-                    sb.ToString(),
-                    tabUrl,
-                    this.GetIconUrl(tab.IconFile, "IconFile"),
-                    this.GetIconUrl(tab.IconFileLarge, "IconFileLarge"),
-                    tab.LocalizedTabName,
-                    tab.Description);
-            }
-
-            return returnValue;
-        }
-
-        protected string GetClientSideSettings()
-        {
-            string tmid = "-1";
-            if (this.UserId > -1)
-            {
-                tmid = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
-            }
-
-            return string.Format(
-                "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
-                this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
-                this.AllowViewChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),
-                this.DefaultSize,
-                this.DefaultView,
-                tmid,
-                this.ShowTooltip.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
         }
 
         private void RepeaterItemDataBound(object sender, RepeaterItemEventArgs e)

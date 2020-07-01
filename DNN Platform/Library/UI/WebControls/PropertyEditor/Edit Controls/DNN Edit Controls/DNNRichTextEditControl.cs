@@ -150,11 +150,6 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        private string RemoveBaseTags(string strInput)
-        {
-            return Globals.BaseTagRegex.Replace(strInput, " ");
-        }
-
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
@@ -167,6 +162,11 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             writer.Write(propValue);
             writer.RenderEndTag();
+        }
+
+        private string RemoveBaseTags(string strInput)
+        {
+            return Globals.BaseTagRegex.Replace(strInput, " ");
         }
     }
 }

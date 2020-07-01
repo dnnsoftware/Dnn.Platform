@@ -14,9 +14,9 @@ namespace DotNetNuke.Services.GeneratedImage
     public class GeneratedImage : Image
     {
         private const string TimestampField = "__timestamp";
-        private string _timestamp;
         private readonly Control _bindingContainer;
         private readonly HttpContextBase _context;
+        private string _timestamp;
         private string _imageHandlerUrl;
 
         public GeneratedImage()
@@ -30,6 +30,8 @@ namespace DotNetNuke.Services.GeneratedImage
             this._context = context;
             this._bindingContainer = bindingContainer;
         }
+
+        public List<ImageParameter> Parameters { get; }
 
         public string ImageHandlerUrl
         {
@@ -56,8 +58,6 @@ namespace DotNetNuke.Services.GeneratedImage
                 this._timestamp = value;
             }
         }
-
-        public List<ImageParameter> Parameters { get; }
 
         private new HttpContextBase Context => this._context ?? new HttpContextWrapper(HttpContext.Current);
 

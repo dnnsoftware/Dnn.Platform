@@ -36,9 +36,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
     public class LanguagePropertyAccess : IPropertyAccess
     {
-        public LanguageTokenReplace objParent;
         private const string FlagIconPhysicalLocation = @"~\images\Flags";
         private const string NonExistingFlagIconFileName = "none.gif";
+        public LanguageTokenReplace objParent;
         private readonly PortalSettings objPortal;
 
         public LanguagePropertyAccess(LanguageTokenReplace parent, PortalSettings settings)

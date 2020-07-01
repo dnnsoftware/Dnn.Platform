@@ -18,16 +18,16 @@ namespace Dnn.PersonaBar.Themes.Components.DTO
 
         }
 
-        [DataMember(Name = "text")]
-        public string Text { get; set; }
-
-        [DataMember(Name = "value")]
-        public string Value { get; set; }
-
         public ListItemInfo(string text, string value)
         {
             this.Text = text;
             this.Value = value;
         }
+
+        [DataMember(Name = "text")]
+        public string Text { get; set; }
+
+        [DataMember(Name = "value")]
+        public string Value { get; set; }
     }
 }
