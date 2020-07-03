@@ -7,6 +7,7 @@
 using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Net.Mime;
 using System.Web;
 
 #endregion
@@ -42,6 +43,7 @@ namespace DotNetNuke.UI.WebControls
             NameValueCollection queryString = context.Request.QueryString;
             string text = queryString[CaptchaControl.KEY];
             HttpResponse response = context.Response;
+            response.ContentType = MediaTypeNames.Image.Jpeg;
             Bitmap bmp = CaptchaControl.GenerateImage(text);
             if (bmp != null)
             {
