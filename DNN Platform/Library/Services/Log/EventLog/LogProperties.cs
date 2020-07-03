@@ -1,51 +1,42 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.IO;
-using System.Text;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+    using System.Collections;
+    using System.IO;
+    using System.Text;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+
     public class LogProperties : ArrayList
     {
-		#region "Public Properties"
-		
         public string Summary
         {
             get
             {
-                string summary = HtmlUtils.Clean(ToString(), true);
+                string summary = HtmlUtils.Clean(this.ToString(), true);
                 if (summary.Length > 75)
                 {
                     summary = summary.Substring(0, 75);
                 }
+
                 return summary;
             }
         }
-		
-		#endregion
-
-		#region "Public Methods"
 
         public void Deserialize(string content)
         {
             using (XmlReader reader = XmlReader.Create(new StringReader(content)))
             {
                 reader.ReadStartElement("LogProperties");
-                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !String.IsNullOrEmpty(reader.LocalName))
+                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
                 {
-                    ReadXml(reader);
+                    this.ReadXml(reader);
                 }
+
                 reader.Close();
             }
         }
@@ -56,16 +47,16 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 reader.ReadStartElement("LogProperty");
 
-                //Create new LogDetailInfo object
+                // Create new LogDetailInfo object
                 var logDetail = new LogDetailInfo();
 
-                //Load it from the Xml
+                // Load it from the Xml
                 logDetail.ReadXml(reader);
 
-                //Add to the collection
-                Add(logDetail);
-
-            } while (reader.ReadToNextSibling("LogProperty"));
+                // Add to the collection
+                this.Add(logDetail);
+            }
+            while (reader.ReadToNextSibling("LogProperty"));
         }
 
         public string Serialize()
@@ -76,7 +67,7 @@ namespace DotNetNuke.Services.Log.EventLog
             var sb = new StringBuilder();
             using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
-                WriteXml(writer);
+                this.WriteXml(writer);
                 writer.Close();
                 return sb.ToString();
             }
@@ -89,6 +80,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 sb.Append(logDetail.ToString());
             }
+
             return sb.ToString();
         }
 
@@ -99,9 +91,8 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 logDetail.WriteXml(writer);
             }
+
             writer.WriteEndElement();
         }
-		
-		#endregion
     }
 }

@@ -1,24 +1,25 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Management.Instrumentation;
-using System.Web;
-using System.Web.Mvc;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Web.Mvc.Common;
-using DotNetNuke.Web.Mvc.Framework;
-using DotNetNuke.Web.Mvc.Framework.ActionResults;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using Moq;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Management.Instrumentation;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Web.Mvc.Common;
+    using DotNetNuke.Web.Mvc.Framework;
+    using DotNetNuke.Web.Mvc.Framework.ActionResults;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class ModuleExecutionEngineTests
     {
@@ -34,7 +35,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var engine = new ModuleExecutionEngine();
-            var requestContext = new ModuleRequestContext() {ModuleApplication = null};
+            var requestContext = new ModuleRequestContext() { ModuleApplication = null };
 
             // Act
             ModuleRequestResult result = engine.ExecuteModule(requestContext);
@@ -81,7 +82,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         [Test]
         public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult()
         {
-            //Arrange
+            // Arrange
             var engine = new ModuleExecutionEngine();
 
             var actionResultMock = new Mock<ActionResult>();
@@ -90,23 +91,22 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             var controllerContext = MockHelper.CreateMockControllerContext();
             var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
-                                            };
+            {
+                ActionResult = actionResultMock.Object,
+                ControllerContext = controllerContext,
+            };
 
-            //Act
+            // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
 
-
-            //Arrange
+            // Arrange
             viewResultMock.Verify(v => v.ExecuteResult(It.IsAny<ControllerContext>(), It.IsAny<TextWriter>()));
         }
 
         [Test]
         public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult_With_ModuleRequestResult_ControllerContext()
         {
-            //Arrange
+            // Arrange
             var engine = new ModuleExecutionEngine();
 
             var actionResultMock = new Mock<ActionResult>();
@@ -115,16 +115,15 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
 
             var controllerContext = MockHelper.CreateMockControllerContext();
             var moduleRequestResult = new ModuleRequestResult
-                                            {
-                                                ActionResult = actionResultMock.Object,
-                                                ControllerContext = controllerContext
-                                            };
+            {
+                ActionResult = actionResultMock.Object,
+                ControllerContext = controllerContext,
+            };
 
-            //Act
+            // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
 
-
-            //Arrange
+            // Arrange
             viewResultMock.Verify(v => v.ExecuteResult(controllerContext, It.IsAny<TextWriter>()));
         }
     }

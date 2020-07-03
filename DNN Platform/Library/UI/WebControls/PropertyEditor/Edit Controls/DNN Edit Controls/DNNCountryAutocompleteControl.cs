@@ -1,210 +1,195 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Linq;
-using System.Web.UI.WebControls;
-using System.Web.UI;
-using DotNetNuke.Common.Lists;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
-	[ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
-	public class DnnCountryAutocompleteControl : EditControl
-	{
+    using DotNetNuke.Common.Lists;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
-		#region " Controls "
-		private TextBox _CountryName;
-		private TextBox CountryName
-		{
-			get
-			{
-				if (_CountryName == null)
-				{
-					_CountryName = new TextBox();
-				}
-				return _CountryName;
-			}
-		}
+    [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
+    public class DnnCountryAutocompleteControl : EditControl
+    {
+        private TextBox _CountryName;
 
-		private HiddenField _CountryId;
-		private HiddenField CountryId
-		{
-			get
-			{
-				if (_CountryId == null)
-				{
-					_CountryId = new HiddenField();
-				}
-				return _CountryId;
-			}
-		}
+        private HiddenField _CountryId;
 
-		public override string EditControlClientId
-		{
-			get
-			{
-				EnsureChildControls();
-				return CountryName.ClientID;
-			}
-		}
+        public DnnCountryAutocompleteControl()
+        {
+            this.Init += this.DnnCountryRegionControl_Init;
+        }
 
-		#endregion
+        public DnnCountryAutocompleteControl(string type)
+        {
+            this.Init += this.DnnCountryRegionControl_Init;
+            this.SystemType = type;
+        }
 
-		#region " Properties "
-		protected override string StringValue
-		{
-			get
-			{
-				string strValue = Null.NullString;
-				if (Value != null)
-				{
-					strValue = Convert.ToString(Value);
-				}
-				return strValue;
-			}
-			set { this.Value = value; }
-		}
+        public override string EditControlClientId
+        {
+            get
+            {
+                this.EnsureChildControls();
+                return this.CountryName.ClientID;
+            }
+        }
 
-		protected string OldStringValue
-		{
-			get { return Convert.ToString(OldValue); }
-		}
-		#endregion
+        protected string OldStringValue
+        {
+            get { return Convert.ToString(this.OldValue); }
+        }
 
-		#region " Constructors "
-		public DnnCountryAutocompleteControl()
-		{
-			Init += DnnCountryRegionControl_Init;
-		}
-		public DnnCountryAutocompleteControl(string type)
-		{
-			Init += DnnCountryRegionControl_Init;
-			SystemType = type;
-		}
-		#endregion
+        protected override string StringValue
+        {
+            get
+            {
+                string strValue = Null.NullString;
+                if (this.Value != null)
+                {
+                    strValue = Convert.ToString(this.Value);
+                }
 
-		#region " Overrides "
-		protected override void OnDataChanged(EventArgs e)
-		{
-			PropertyEditorEventArgs args = new PropertyEditorEventArgs(Name);
-			args.Value = StringValue;
-			args.OldValue = OldStringValue;
-			args.StringValue = StringValue;
-			base.OnValueChanged(args);
-		}
+                return strValue;
+            }
 
-		protected override void CreateChildControls()
-		{
-			base.CreateChildControls();
+            set { this.Value = value; }
+        }
 
-			CountryName.ControlStyle.CopyFrom(ControlStyle);
-			CountryName.ID = ID + "_name";
-			CountryName.Attributes.Add("data-name", Name);
-			CountryName.Attributes.Add("data-list", "Country");
-			CountryName.Attributes.Add("data-category", Category);
-			CountryName.Attributes.Add("data-editor", "DnnCountryAutocompleteControl");
-			CountryName.Attributes.Add("data-required", Required.ToString().ToLowerInvariant());
-			Controls.Add(CountryName);
+        private TextBox CountryName
+        {
+            get
+            {
+                if (this._CountryName == null)
+                {
+                    this._CountryName = new TextBox();
+                }
 
-			CountryId.ID = ID + "_id";
-			Controls.Add(CountryId);
+                return this._CountryName;
+            }
+        }
 
-		}
+        private HiddenField CountryId
+        {
+            get
+            {
+                if (this._CountryId == null)
+                {
+                    this._CountryId = new HiddenField();
+                }
 
-		public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
-		{
-			bool dataChanged = false;
-			string presentValue = StringValue;
-			string postedValue = postCollection[postDataKey + "_id"];
-			if (!presentValue.Equals(postedValue))
-			{
-				Value = postedValue;
-				dataChanged = true;
-			}
-			return dataChanged;
-		}
+                return this._CountryId;
+            }
+        }
 
-		protected override void OnPreRender(System.EventArgs e)
-		{
-			base.OnPreRender(e);
+        public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
+        {
+            bool dataChanged = false;
+            string presentValue = this.StringValue;
+            string postedValue = postCollection[postDataKey + "_id"];
+            if (!presentValue.Equals(postedValue))
+            {
+                this.Value = postedValue;
+                dataChanged = true;
+            }
 
-			LoadControls();
+            return dataChanged;
+        }
 
-			if (Page != null & EditMode == PropertyEditorMode.Edit)
-			{
-				Page.RegisterRequiresPostBack(this);
-				Page.RegisterRequiresPostBack(CountryId);
-			}
+        protected override void OnDataChanged(EventArgs e)
+        {
+            PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.StringValue;
+            args.OldValue = this.OldStringValue;
+            args.StringValue = this.StringValue;
+            this.OnValueChanged(args);
+        }
 
-		}
+        protected override void CreateChildControls()
+        {
+            base.CreateChildControls();
 
-		protected override void RenderEditMode(HtmlTextWriter writer)
-		{
-			RenderChildren(writer);
-		}
-		#endregion
+            this.CountryName.ControlStyle.CopyFrom(this.ControlStyle);
+            this.CountryName.ID = this.ID + "_name";
+            this.CountryName.Attributes.Add("data-name", this.Name);
+            this.CountryName.Attributes.Add("data-list", "Country");
+            this.CountryName.Attributes.Add("data-category", this.Category);
+            this.CountryName.Attributes.Add("data-editor", "DnnCountryAutocompleteControl");
+            this.CountryName.Attributes.Add("data-required", this.Required.ToString().ToLowerInvariant());
+            this.Controls.Add(this.CountryName);
 
-		#region " Page Events "
-		private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
-		{
-			ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-			ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
-			ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
-			JavaScript.RequestRegistration(CommonJs.jQuery);
-			JavaScript.RequestRegistration(CommonJs.jQueryUI);
-		}
+            this.CountryId.ID = this.ID + "_id";
+            this.Controls.Add(this.CountryId);
+        }
 
-		#endregion
+        protected override void OnPreRender(System.EventArgs e)
+        {
+            base.OnPreRender(e);
 
-		#region " Private Methods "
-		private void LoadControls()
-		{
+            this.LoadControls();
 
-			CountryName.Text = StringValue;
-			int countryId = -1;
-			string countryCode = StringValue;
-			if (!string.IsNullOrEmpty(StringValue) && int.TryParse(StringValue, out countryId))
-			{
-				var listController = new ListController();
-				var c = listController.GetListEntryInfo(countryId);
-				CountryName.Text = c.Text;
-				countryCode = c.Value;
-			}
-			CountryId.Value = StringValue;
+            if (this.Page != null & this.EditMode == PropertyEditorMode.Edit)
+            {
+                this.Page.RegisterRequiresPostBack(this);
+                this.Page.RegisterRequiresPostBack(this.CountryId);
+            }
+        }
 
-			var regionControl2 = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(Page, c => IsCoupledRegionControl(c));
-			if (regionControl2 != null)
-			{
-				regionControl2.ParentKey = "Country." + countryCode;
-			}
+        protected override void RenderEditMode(HtmlTextWriter writer)
+        {
+            this.RenderChildren(writer);
+        }
 
-		}
+        private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
+        {
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
+            ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
+            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+        }
 
-		private bool IsCoupledRegionControl(Control ctr)
-		{
-			if (ctr is DNNRegionEditControl)
-			{
-				var c = (DNNRegionEditControl)ctr;
-				if (c.Category == this.Category)
-				{
-					return true;
-				}
-			}
-			return false;
-		}
-		#endregion
+        private void LoadControls()
+        {
+            this.CountryName.Text = this.StringValue;
+            int countryId = -1;
+            string countryCode = this.StringValue;
+            if (!string.IsNullOrEmpty(this.StringValue) && int.TryParse(this.StringValue, out countryId))
+            {
+                var listController = new ListController();
+                var c = listController.GetListEntryInfo(countryId);
+                this.CountryName.Text = c.Text;
+                countryCode = c.Value;
+            }
 
-	}
+            this.CountryId.Value = this.StringValue;
+
+            var regionControl2 = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(this.Page, c => this.IsCoupledRegionControl(c));
+            if (regionControl2 != null)
+            {
+                regionControl2.ParentKey = "Country." + countryCode;
+            }
+        }
+
+        private bool IsCoupledRegionControl(Control ctr)
+        {
+            if (ctr is DNNRegionEditControl)
+            {
+                var c = (DNNRegionEditControl)ctr;
+                if (c.Category == this.Category)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
 }

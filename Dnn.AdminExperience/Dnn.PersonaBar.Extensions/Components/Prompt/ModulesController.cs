@@ -1,33 +1,29 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using Dnn.PersonaBar.Prompt.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+
+    using Dnn.PersonaBar.Prompt.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
     [Obsolete("9.2.1 has been moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency", false)]
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));        
-
-        protected override Func<IModulesController> GetFactory()
-        {
-            return () => new ModulesController();
-        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
 
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
@@ -103,7 +99,7 @@ namespace Dnn.PersonaBar.Prompt.Components
 
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
-            var sourceModule = GetModule(portalSettings, moduleId, sourcePageId, out message);
+            var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
 
             if (sourceModule == null)
             {
@@ -114,7 +110,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
 
             if (targetPage == null)
-            {                
+            {
                 return null;
             }
 
@@ -146,26 +142,26 @@ namespace Dnn.PersonaBar.Prompt.Components
             else
             {
                 return null;
-            }            
-        }      
+            }
+        }
 
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
-        {         
-            var module = GetModule(portalSettings,moduleId,pageId,out message);
+        {
+            var module = this.GetModule(portalSettings, moduleId, pageId, out message);
 
             if (module != null)
-            {               
-                    try
-                    {
-                        ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
-                        ModuleController.Instance.ClearCache(pageId);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Error(ex);
-                        message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
-                    }             
-            }           
+            {
+                try
+                {
+                    ModuleController.Instance.DeleteTabModule(pageId, moduleId, true);
+                    ModuleController.Instance.ClearCache(pageId);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
+                }
+            }
         }
 
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
@@ -206,7 +202,7 @@ namespace Dnn.PersonaBar.Prompt.Components
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_NoModule", Constants.LocalResourcesFile), moduleId));
             return null;
         }
-      
+
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null,
             int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
@@ -236,6 +232,11 @@ namespace Dnn.PersonaBar.Prompt.Components
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
+        }
+
+        protected override Func<IModulesController> GetFactory()
+        {
+            return () => new ModulesController();
         }
     }
 }

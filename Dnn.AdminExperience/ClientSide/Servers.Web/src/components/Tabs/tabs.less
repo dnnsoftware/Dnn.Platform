@@ -1,204 +1,222 @@
 @import "~@dnnsoftware/dnn-react-common/styles/index";
 .dnn-servers-tab-panel {
-    .dnn-servers-info-panel {
-        padding: 30px 80px 45px;
-        display: inline-block;
+  .dnn-servers-info-panel {
+    padding: 30px 80px 45px;
+    display: inline-block;
+  }
+  .dnn-servers-info-panel-big {
+    margin: 30px 30px 45px;
+    display: inline-block;
+    width: 93%;
+    .dnn-switch-container {
+      float: right;
     }
-    .dnn-servers-info-panel-big {
-        margin: 30px 30px 45px;
-        display: inline-block;
-        width: 93%;
-        .dnn-switch-container {
-            float: right;
-        }
+  }
+  .dnn-ui-common-input-group {
+    padding: 0 0 32px 0;
+    .title label {
+      font-weight: bolder;
+      float: left;
+      text-transform: uppercase;
     }
-    .dnn-ui-common-input-group {
-        padding: 0 0 32px 0;
-        .title label {
-            font-weight: bolder;
-            float: left;
-            text-transform: uppercase;
-        }
-        .dnn-single-line-input-with-error {
-            display: block;
-        }
+    .dnn-single-line-input-with-error {
+      display: block;
     }
-    .tooltipAdjustment {
-        float: left;
+  }
+  .tooltipAdjustment {
+    float: left;
+    width: 100%;
+    div.tooltip-text {
+      max-width: 320px;
+      word-break: normal;
+    }
+  }
+  .log-file-cell {
+    padding: 7px 0;
+    .dnn-dropdown {
+      border-right: 1px solid @alto;
+      .collapsible-label {
+        padding: 3px 0;
+      }
+      .dropdown-icon {
+        top: 5px;
+        right: 17px;
+      }
+    }
+  }
+  .leftPane {
+    padding-right: 30px;
+    border-right: 1px solid @alto;
+    .dnn-radio-buttons {
+      ul {
+        li {
+          margin: 0 15px 0 0;
+          label {
+            word-break: break-word;
+          }
+        }
+      }
+    }
+  }
+  .rightPane {
+    padding-left: 20px;
+    padding-right: 10px;
+    .dnn-radio-buttons {
+      ul {
+        li:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+  .border-bottom {
+    border-bottom: 1px solid @alto;
+    margin-bottom: 28px;
+  }
+  .dnn-radio-buttons ul li {
+    padding-top: 10px;
+    div.check {
+      margin-top: 8px;
+    }
+    label {
+      padding: 0px 21px 0 28px;
+      margin-bottom: 0px;
+    }
+  }
+  .buttons-panel {
+    text-align: center;
+    margin-top: 55px;
+    .dnn-ui-common-button {
+      margin-right: 10px;
+    }
+  }
+  .dnn-servers-grid-panel {
+    padding: 0 30px 55px;
+    width: 100%;
+    .header-title label {
+      font-weight: bolder;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .grid {
+      display: block;
+      float: left;
+      width: 100%;
+      margin-top: 10px;
+      border-left: 1px solid @alto;
+      border-right: 1px solid @alto;
+      box-sizing: border-box;
+      .row {
+        display: table;
         width: 100%;
-        div.tooltip-text {
-            max-width: 320px;
-            word-break: normal;
-        }
-    }
-    .log-file-cell {
-        padding: 7px 0;
-        .dnn-dropdown {
-            border-right: 1px solid @alto;
-            .collapsible-label {
-                padding: 3px 0;
-            }
-            .dropdown-icon {
-                top: 5px;
-                right: 17px;
-            }
-        }
-    }
-    .leftPane {
-        padding-right: 30px;
-        border-right: 1px solid @alto;
-        .dnn-radio-buttons {
-            ul {
-                li {
-                    margin: 0 15px 0 0;
-                    label {
-                        word-break: break-word;
-                    }
-                }
-            }
-        }
-    }
-    .rightPane {
-        padding-left: 20px;
-        padding-right: 10px;
-        .dnn-radio-buttons {
-            ul {
-                li:first-child {
-                    margin-left: 0;
-                }
-            }
-        }
-    }
-    .border-bottom {
+        position: relative;
+        padding: 15px 20px;
+        box-sizing: border-box;
         border-bottom: 1px solid @alto;
-        margin-bottom: 28px;
+        .alert-message {
+          text-align: center;
+          color: red;
+          font-weight: bolder;
+        }
+      }
+      .header {
+        border-top: 1px solid @alto;
+        text-transform: uppercase;
+        .dnn-grid-cell {
+          font-weight: bolder;
+        }
+      }
     }
-    .dnn-radio-buttons ul li {
-        padding-top: 10px;
-        div.check {
-            margin-top: 8px;
-        }
-        label {
-            padding: 0px 21px 0 28px;
-            margin-bottom: 0px;
-        }
-    }
-    .buttons-panel {
-        text-align: center;
-        margin-top: 55px;
-        .dnn-ui-common-button {
-            margin-right: 10px;
-        }
-    }
-    .dnn-servers-grid-panel {
-        padding: 0 30px 55px;
-        width: 100%;
-        .header-title label {
-            font-weight: bolder;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        .grid {
-            display: block;
-            float: left;
-            width: 100%;
-            margin-top: 10px;
-            border-left: 1px solid @alto;
-            border-right: 1px solid @alto;
-            box-sizing: border-box;
-            .row {
-                display: table;
-                width: 100%;
-                position: relative;
-                padding: 15px 20px;
-                box-sizing: border-box;
-                border-bottom: 1px solid @alto;
-                .alert-message {
-                    text-align: center;
-                    color: red;
-                    font-weight: bolder;
-                }
-            }
-            .header {
-                border-top: 1px solid @alto;
-                text-transform: uppercase;
-                .dnn-grid-cell {
-                    font-weight: bolder;
-                }
-            }
-        }
-    }
+  }
 }
 
 .dnn-servers-tab-panel .dnn-servers-info-panel-big {
-    &.logsTab {
-        .log-file-display {
-            height:500px;
-            padding-right: 50px;
-            white-space: pre-wrap;
-        }
+  &.logsTab {
+    .log-file-display {
+      white-space: pre-wrap;
+    }
 
-        .track-horizontal {
-            display:none;
-        }
-        .dnn-label {
-            width: auto;
-            margin-top: 8px;
-        }
-        .leftPane {
-            margin-bottom: 15px;
-        }
-        .dnn-ui-common-input-group {
-            padding: 0px;
-        }
-        .dnn-ui-common-multi-line-input {
-            height: 400px;
-            overflow-y:hidden;
-        }
-        .dnn-dropdown {
-            width: 70%;
-        }
-        .dnn-ui-common-input-group .title label {
-            text-transform: none;
-        }
+    .track-horizontal {
+      display: none;
     }
-    &.performanceSettingTab {
-        .title.lowerCase label {
-            text-transform: none;
-        }
-        .dnn-servers-grid-panel.newSection {
-            padding-top: 20px;
-            padding-bottom: 10px;
-        }
-        .borderSeparation {
-            > div {
-                border-bottom: 1px solid @alto;
-                margin-top: 10px;
-                padding-bottom: 10px;
-            }
-            :first-child {
-                margin-top: 0;
-            }
-        }
-        .dnn-ui-common-input-group .title label {
-            text-transform: none;
-        }
-        .currentHostVersion .dnn-label {
-            width: auto;
-            label {
-                text-transform: uppercase;
-            }
-        }
+    .dnn-label {
+      width: auto;
+      margin-top: 8px;
     }
-    &.smtpServerSettingsTab {
-        .dnn-ui-common-input-group {
-            padding-bottom: 0;
-            .dnn-radio-buttons{
-                margin-bottom: 28px;
-            }
-            .title label {
-                text-transform: none;
-            }
-        }
+    .leftPane {
+      margin-bottom: 15px;
     }
+    .dnn-ui-common-input-group {
+      padding: 0px;
+    }
+    .dnn-ui-common-multi-line-input {
+      height: 400px;
+      overflow-y: hidden;
+    }
+    .dnn-dropdown {
+      width: 70%;
+    }
+    .dnn-ui-common-input-group .title label {
+      text-transform: none;
+    }
+
+    .logHeader-wrapper {
+      font-weight: bold;
+      .logHeader-type {
+        width: 20%;
+        float: left;
+      }
+      .logHeader-filename {
+        width: 35%;
+        float: left;
+      }
+      .logHeader-date {
+        width: 35%;
+        float: left;
+      }
+      .logHeader-size {
+        width: 10%;
+        float: left;
+      }
+    }
+  }
+  &.performanceSettingTab {
+    .title.lowerCase label {
+      text-transform: none;
+    }
+    .dnn-servers-grid-panel.newSection {
+      padding-top: 20px;
+      padding-bottom: 10px;
+    }
+    .borderSeparation {
+      > div {
+        border-bottom: 1px solid @alto;
+        margin-top: 10px;
+        padding-bottom: 10px;
+      }
+      :first-child {
+        margin-top: 0;
+      }
+    }
+    .dnn-ui-common-input-group .title label {
+      text-transform: none;
+    }
+    .currentHostVersion .dnn-label {
+      width: auto;
+      label {
+        text-transform: uppercase;
+      }
+    }
+  }
+  &.smtpServerSettingsTab {
+    .dnn-ui-common-input-group {
+      padding-bottom: 0;
+      .dnn-radio-buttons {
+        margin-bottom: 28px;
+      }
+      .title label {
+        text-transform: none;
+      }
+    }
+  }
 }

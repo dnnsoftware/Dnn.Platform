@@ -1,23 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Entities.Icons;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Utilities;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.WebControls.Internal
 {
+    using System;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+
     /// <summary>
     /// A TriState permission control built specifically for use in the PermissionGrid control
-    /// This control is not general in any way shape of form and should NOT be used outside 
-    /// of the PermissionGrid
+    /// This control is not general in any way shape of form and should NOT be used outside
+    /// of the PermissionGrid.
     /// </summary>
     public class PermissionTriState : HiddenField
     {
@@ -31,18 +31,23 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public PermissionTriState()
         {
-            //kind of ugly to lookup this data each time, but doesn't seem worth the effort to 
-            //maintain statics for the paths but require a control instance to initialize them
-            //and lazy load the text bits when the page instance (or localization) changes 
-            LookupScriptValues(this, out _grantImagePath, out _denyImagePath, out _nullImagePath, out _lockImagePath, out _grantAltText, out _denyAltText, out _nullAltText);
+            // kind of ugly to lookup this data each time, but doesn't seem worth the effort to
+            // maintain statics for the paths but require a control instance to initialize them
+            // and lazy load the text bits when the page instance (or localization) changes
+            LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
         }
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
+        public bool IsFullControl { get; set; }
 
-            RegisterScripts(Page, this);
-        }
+        public bool IsView { get; set; }
+
+        // Locked is currently not used on a post-back and therefore the
+        // value on postback is undefined at this time
+        public bool Locked { get; set; }
+
+        public string PermissionKey { get; set; }
+
+        public bool SupportsDenyMode { get; set; }
 
         public static void RegisterScripts(Page page, Control ctl)
         {
@@ -64,7 +69,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             LookupScriptValues(ctl, out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
 
             string script =
-                    String.Format(
+                    string.Format(
                         @"jQuery(document).ready(
                             function() {{
                                 var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
@@ -84,6 +89,70 @@ namespace DotNetNuke.UI.WebControls.Internal
             return script;
         }
 
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            RegisterScripts(this.Page, this);
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            string imagePath;
+            string altText;
+            switch (this.Value)
+            {
+                case "True":
+                    imagePath = this._grantImagePath;
+                    altText = this._grantAltText;
+                    break;
+
+                case "False":
+                    imagePath = this._denyImagePath;
+                    altText = this._denyAltText;
+                    break;
+
+                default:
+                    imagePath = this._nullImagePath;
+                    altText = this._nullAltText;
+                    break;
+            }
+
+            string cssClass = "tristate";
+            if (this.Locked)
+            {
+                imagePath = this._lockImagePath;
+                cssClass += " lockedPerm";
+
+                // altText is set based on Value
+            }
+
+            if (!this.SupportsDenyMode)
+            {
+                cssClass += " noDenyPerm";
+            }
+
+            if (this.IsFullControl)
+            {
+                cssClass += " fullControl";
+            }
+
+            if (this.IsView && !this.Locked)
+            {
+                cssClass += " view";
+            }
+
+            if (!string.IsNullOrEmpty(this.PermissionKey) && !this.IsView && !this.IsFullControl)
+            {
+                cssClass += " " + this.PermissionKey.ToLowerInvariant();
+            }
+
+            writer.Write("<img src='{0}' alt='{1}' />", imagePath, altText);
+
+            writer.AddAttribute("class", cssClass);
+            base.Render(writer);
+        }
+
         private static void LookupScriptValues(Control ctl, out string grantImagePath, out string denyImagePath, out string nullImagePath, out string lockImagePath, out string grantAltText, out string denyAltText, out string nullAltText)
         {
             grantImagePath = IconController.IconURL("Grant");
@@ -95,73 +164,5 @@ namespace DotNetNuke.UI.WebControls.Internal
             denyAltText = Localization.GetString("PermissionTypeDeny");
             nullAltText = Localization.GetString("PermissionTypeNull");
         }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            string imagePath;
-            string altText;
-            switch (Value)
-            {
-                case "True":
-                    imagePath = _grantImagePath;
-                    altText = _grantAltText;
-                    break;
-
-                case "False":
-                    imagePath = _denyImagePath;
-                    altText = _denyAltText;
-                    break;
-
-                default:
-                    imagePath = _nullImagePath;
-                    altText = _nullAltText;
-                    break;
-            }
-
-            string cssClass = "tristate";
-            if (Locked)
-            {
-                imagePath = _lockImagePath;
-                cssClass += " lockedPerm";
-                //altText is set based on Value
-            }
-
-            if (!SupportsDenyMode)
-            {
-                cssClass += " noDenyPerm";
-            }
-
-            if (IsFullControl)
-            {
-                cssClass += " fullControl";
-            }
-
-            if (IsView && !Locked)
-            {
-                cssClass += " view";
-            }
-
-            if (!String.IsNullOrEmpty(PermissionKey) && !IsView && !IsFullControl)
-            {
-                cssClass += " " + PermissionKey.ToLowerInvariant();
-            }
-
-            writer.Write("<img src='{0}' alt='{1}' />", imagePath, altText);
-
-            writer.AddAttribute("class", cssClass);
-            base.Render(writer);
-        }
-
-        public bool IsFullControl { get; set; }
-
-        public bool IsView { get; set; }
-
-        //Locked is currently not used on a post-back and therefore the 
-        //value on postback is undefined at this time
-        public bool Locked { get; set; }
-
-        public string PermissionKey { get; set; }
-
-        public bool SupportsDenyMode { get; set; }
     }
 }

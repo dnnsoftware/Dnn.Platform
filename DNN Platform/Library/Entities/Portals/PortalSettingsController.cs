@@ -1,25 +1,26 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using DotNetNuke.Collections;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Security;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Skins;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Web.Client;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Portals
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Skins;
+    using DotNetNuke.Web.Client;
+
     public class PortalSettingsController : IPortalSettingsController
     {
         public static IPortalSettingsController Instance()
@@ -37,11 +38,14 @@ namespace DotNetNuke.Entities.Portals
         {
             var activeTab = portalSettings.ActiveTab;
 
-            if (activeTab == null || activeTab.TabID == Null.NullInteger) return;
+            if (activeTab == null || activeTab.TabID == Null.NullInteger)
+            {
+                return;
+            }
 
-            UpdateSkinSettings(activeTab, portalSettings);
+            this.UpdateSkinSettings(activeTab, portalSettings);
 
-            activeTab.BreadCrumbs = new ArrayList(GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
+            activeTab.BreadCrumbs = new ArrayList(this.GetBreadcrumbs(activeTab.TabID, portalSettings.PortalId));
         }
 
         public virtual TabInfo GetActiveTab(int tabId, PortalSettings portalSettings)
@@ -50,11 +54,11 @@ namespace DotNetNuke.Entities.Portals
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
             var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
-            //Check portal
+            // Check portal
             var activeTab = GetTab(tabId, portalTabs)
-                ?? GetTab(tabId, hostTabs)  //check host
-                ?? GetSpecialTab(portalId, portalSettings.SplashTabId) //check splash tab
-                ?? GetSpecialTab(portalId, portalSettings.HomeTabId); //check home tab
+                ?? GetTab(tabId, hostTabs) // check host
+                ?? GetSpecialTab(portalId, portalSettings.SplashTabId) // check splash tab
+                ?? GetSpecialTab(portalId, portalSettings.HomeTabId); // check home tab
 
             if (activeTab == null)
             {
@@ -72,6 +76,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     activeTab.StartDate = DateTime.MinValue;
                 }
+
                 if (Null.IsNull(activeTab.EndDate))
                 {
                     activeTab.EndDate = DateTime.MaxValue;
@@ -79,36 +84,6 @@ namespace DotNetNuke.Entities.Portals
             }
 
             return activeTab;
-        }
-
-        protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
-        {
-            var breadCrumbs = new List<TabInfo>();
-            GetBreadCrumbs(breadCrumbs, tabId, portalId);
-            return breadCrumbs;
-        }
-
-        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
-        {
-            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
-            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
-            while (true)
-            {
-                TabInfo tab;
-                if (portalTabs.TryGetValue(tabId, out tab) || hostTabs.TryGetValue(tabId, out tab))
-                {
-                    //add tab to breadcrumb collection
-                    breadCrumbs.Insert(0, tab.Clone());
-
-                    //get the tab parent
-                    if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
-                    {
-                        tabId = tab.ParentId;
-                        continue;
-                    }
-                }
-                break;
-            }
         }
 
         public virtual PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId)
@@ -130,34 +105,8 @@ namespace DotNetNuke.Entities.Portals
                         break;
                 }
             }
+
             return aliasMapping;
-        }
-
-        private static TabInfo GetSpecialTab(int portalId, int tabId)
-        {
-            TabInfo activeTab = null;
-
-            if (tabId > 0)
-            {
-                var tab = TabController.Instance.GetTab(tabId, portalId, false);
-                if (tab != null)
-                {
-                    activeTab = tab.Clone();
-                }
-            }
-
-            return activeTab;
-        }
-
-        // This method is called few times wiht each request; it would be
-        // better to have it cache the "activeTab" for a short period.
-        private static TabInfo GetTab(int tabId, TabCollection tabs)
-        {
-            TabInfo tab;
-            var activeTab = tabId != Null.NullInteger && tabs.TryGetValue(tabId, out tab) && !tab.IsDeleted
-                ? tab.Clone()
-                : null;
-            return activeTab;
         }
 
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
@@ -216,10 +165,10 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.Registration = new RegistrationSettings(settings);
 
             var clientResourcesSettings = new ClientResourceSettings();
-            Boolean overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
+            bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
 
             int crmVersion;
-            if(overridingDefaultSettings)
+            if (overridingDefaultSettings)
             {
                 int? globalVersion = new ClientResourceSettings().GetVersion();
                 crmVersion = globalVersion ?? default(int);
@@ -228,7 +177,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 crmVersion = settings.GetValueOrDefault("CrmVersion", HostController.Instance.GetInteger("CrmVersion"));
             }
-            
+
             portalSettings.AllowUserUICulture = settings.GetValueOrDefault("AllowUserUICulture", false);
             portalSettings.CdfVersion = crmVersion;
             portalSettings.ContentLocalizationEnabled = settings.GetValueOrDefault("ContentLocalizationEnabled", false);
@@ -265,37 +214,40 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.SMTPMaxIdleTime = settings.GetValueOrDefault("SMTPMaxIdleTime", 100000);
 
             portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.ModuleEditor;
-            string setting = settings.GetValueOrDefault("ControlPanelSecurity", "");
+            string setting = settings.GetValueOrDefault("ControlPanelSecurity", string.Empty);
             if (setting.Equals("TAB", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.ControlPanelSecurity = PortalSettings.ControlPanelPermission.TabEditor;
             }
 
             portalSettings.DefaultControlPanelMode = PortalSettings.Mode.View;
-            setting = settings.GetValueOrDefault("ControlPanelMode", "");
+            setting = settings.GetValueOrDefault("ControlPanelMode", string.Empty);
             if (setting.Equals("EDIT", StringComparison.InvariantCultureIgnoreCase))
             {
                 portalSettings.DefaultControlPanelMode = PortalSettings.Mode.Edit;
             }
 
-            setting = settings.GetValueOrDefault("ControlPanelVisibility", "");
+            setting = settings.GetValueOrDefault("ControlPanelVisibility", string.Empty);
             portalSettings.DefaultControlPanelVisibility = !setting.Equals("MIN", StringComparison.InvariantCultureIgnoreCase);
 
-            setting = settings.GetValueOrDefault("TimeZone", "");
+            setting = settings.GetValueOrDefault("TimeZone", string.Empty);
             if (!string.IsNullOrEmpty(setting))
             {
                 var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);
                 if (timeZone != null)
+                {
                     portalSettings.TimeZone = timeZone;
+                }
             }
 
             setting = settings.GetValueOrDefault("DataConsentActive", "False");
             portalSettings.DataConsentActive = bool.Parse(setting);
-            setting = settings.GetValueOrDefault("DataConsentTermsLastChange", "");
+            setting = settings.GetValueOrDefault("DataConsentTermsLastChange", string.Empty);
             if (!string.IsNullOrEmpty(setting))
             {
                 portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, System.Globalization.CultureInfo.InvariantCulture);
             }
+
             setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
             portalSettings.DataConsentConsentRedirect = int.Parse(setting);
             setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
@@ -308,40 +260,99 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
         }
 
+        protected List<TabInfo> GetBreadcrumbs(int tabId, int portalId)
+        {
+            var breadCrumbs = new List<TabInfo>();
+            GetBreadCrumbs(breadCrumbs, tabId, portalId);
+            return breadCrumbs;
+        }
+
         protected virtual void UpdateSkinSettings(TabInfo activeTab, PortalSettings portalSettings)
         {
             if (Globals.IsAdminSkin())
             {
-                //DNN-6170 ensure skin value is culture specific
-                activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
+                // DNN-6170 ensure skin value is culture specific
+                activeTab.SkinSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
                     Host.Host.DefaultAdminSkin, portalSettings.CultureCode)) ? portalSettings.DefaultAdminSkin : PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
                     Host.Host.DefaultAdminSkin, portalSettings.CultureCode);
             }
-            else if (String.IsNullOrEmpty(activeTab.SkinSrc))
+            else if (string.IsNullOrEmpty(activeTab.SkinSrc))
             {
-                //DNN-6170 ensure skin value is culture specific
-                activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
+                // DNN-6170 ensure skin value is culture specific
+                activeTab.SkinSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultPortalSkin : PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode);
             }
+
             activeTab.SkinSrc = SkinController.FormatSkinSrc(activeTab.SkinSrc, portalSettings);
             activeTab.SkinPath = SkinController.FormatSkinPath(activeTab.SkinSrc);
 
             if (Globals.IsAdminSkin())
             {
-                activeTab.ContainerSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
+                activeTab.ContainerSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
                     Host.Host.DefaultAdminContainer, portalSettings.CultureCode)) ? portalSettings.DefaultAdminContainer : PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
                     Host.Host.DefaultAdminContainer, portalSettings.CultureCode);
             }
-            else if (String.IsNullOrEmpty(activeTab.ContainerSrc))
+            else if (string.IsNullOrEmpty(activeTab.ContainerSrc))
             {
-                activeTab.ContainerSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
+                activeTab.ContainerSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
                     Host.Host.DefaultPortalContainer, portalSettings.CultureCode)) ? portalSettings.DefaultPortalContainer : PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
                     Host.Host.DefaultPortalContainer, portalSettings.CultureCode);
             }
 
             activeTab.ContainerSrc = SkinController.FormatSkinSrc(activeTab.ContainerSrc, portalSettings);
             activeTab.ContainerPath = SkinController.FormatSkinPath(activeTab.ContainerSrc);
+        }
+
+        private static void GetBreadCrumbs(IList<TabInfo> breadCrumbs, int tabId, int portalId)
+        {
+            var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
+            while (true)
+            {
+                TabInfo tab;
+                if (portalTabs.TryGetValue(tabId, out tab) || hostTabs.TryGetValue(tabId, out tab))
+                {
+                    // add tab to breadcrumb collection
+                    breadCrumbs.Insert(0, tab.Clone());
+
+                    // get the tab parent
+                    if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
+                    {
+                        tabId = tab.ParentId;
+                        continue;
+                    }
+                }
+
+                break;
+            }
+        }
+
+        private static TabInfo GetSpecialTab(int portalId, int tabId)
+        {
+            TabInfo activeTab = null;
+
+            if (tabId > 0)
+            {
+                var tab = TabController.Instance.GetTab(tabId, portalId, false);
+                if (tab != null)
+                {
+                    activeTab = tab.Clone();
+                }
+            }
+
+            return activeTab;
+        }
+
+        // This method is called few times wiht each request; it would be
+        // better to have it cache the "activeTab" for a short period.
+        private static TabInfo GetTab(int tabId, TabCollection tabs)
+        {
+            TabInfo tab;
+            var activeTab = tabId != Null.NullInteger && tabs.TryGetValue(tabId, out tab) && !tab.IsDeleted
+                ? tab.Clone()
+                : null;
+            return activeTab;
         }
     }
 }

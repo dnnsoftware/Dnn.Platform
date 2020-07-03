@@ -1,26 +1,32 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Web;
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components.Models
 {
+    using System.Web;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Users;
+
     public class HostModel
     {
         // DNN Platform for example
         public string Product { get; set; }
         public string Version { get; set; }
+
         public bool UpgradeAvailable { get; set; }
+
         // .NET Framework: 4.6 for example
         public string Framework { get; set; }
+
         // Could be IPv6
         public string IpAddress { get; set; }
+
         // ReflectionPermission, WebPermission, AspNetHostingPermission, etc.
         public string Permissions { get; set; }
+
         // prompt.com
         public string Site { get; set; }
         public string Title { get; set; }
@@ -31,6 +37,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
         public string EditTheme { get; set; }
         public string EditContainer { get; set; }
         public int PortalCount { get; set; }
+
         public static HostModel Current()
         {
             var application = DotNetNuke.Application.DotNetNukeContext.Current.Application;
@@ -62,6 +69,5 @@ namespace Dnn.PersonaBar.Prompt.Components.Models
             };
             return hostModel;
         }
-
     }
 }

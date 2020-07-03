@@ -1,94 +1,51 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Web.Http;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Web.Api;
-using DotNetNuke.Web.Api.Internal;
-using DotNetNuke.Web.Client.ClientResourceManagement;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading;
+    using System.Web.Http;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+    using DotNetNuke.Web.Api.Internal;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     [DnnAuthorize]
     public class ControlBarController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
         private readonly Components.Controllers.IControlBarController Controller;
         private IDictionary<string, string> _nameDics;
 
         public ControlBarController()
         {
-            Controller = Components.Controllers.ControlBarController.Instance;
+            this.Controller = Components.Controllers.ControlBarController.Instance;
         }
-
-        public class ModuleDefDTO
-        {
-            public int ModuleID { get; set; }
-            public string ModuleName { get; set; }
-            public string ModuleImage { get; set; }
-            public bool Bookmarked { get; set; }
-            public bool ExistsInBookmarkCategory { get; set; }
-        }
-
-        public class PageDefDTO
-        {
-            public int TabID { get; set; }
-            public string IndentedTabName { get; set; }
-        }
-
-        public class AddModuleDTO
-        {
-            public string Visibility { get; set; }
-            public string Position { get; set; }
-            public string Module { get; set; }
-            public string Page { get; set; }
-            public string Pane { get; set; }
-            public string AddExistingModule { get; set; }
-            public string CopyModule { get; set; }
-            public string Sort { get; set; }
-        }
-
-        public class UserModeDTO
-        {
-            public string UserMode { get; set; }
-        }
-
-        public class SwitchSiteDTO
-        {
-            public string Site { get; set; }
-        }
-
-        public class SwitchLanguageDTO
-        {
-            public string Language { get; set; }
-        }
-
-
 
         [HttpGet]
         [DnnPageEditor]
@@ -98,12 +55,13 @@ namespace DotNetNuke.Web.InternalServices
             {
                 category = "All";
             }
-            var bookmarCategory = Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
-            var bookmarkedModules = Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
-            var bookmarkCategoryModules = Controller.GetCategoryDesktopModules(PortalSettings.PortalId, bookmarCategory, searchTerm);
+
+            var bookmarCategory = this.Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
+            var bookmarkedModules = this.Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
+            var bookmarkCategoryModules = this.Controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, bookmarCategory, searchTerm);
 
             var filteredList = bookmarCategory == category ? bookmarkCategoryModules.OrderBy(m => m.Key).Union(bookmarkedModules.OrderBy(m => m.Key)).Distinct()
-                                            : Controller.GetCategoryDesktopModules(PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
+                                            : this.Controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, category, searchTerm).OrderBy(m => m.Key);
 
             if (!string.IsNullOrEmpty(excludeCategories))
             {
@@ -112,13 +70,15 @@ namespace DotNetNuke.Web.InternalServices
                     filteredList.Where(kvp =>
                         !excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
             }
+
             if (sortBookmarks)
             {
-                //sort bookmarked modules
+                // sort bookmarked modules
                 filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
-                //move Html on top
-                filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
-                                Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
+
+                // move Html on top
+                filteredList = filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()).
+                                Concat(filteredList.Except(filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())));
             }
 
             filteredList = filteredList
@@ -129,23 +89,23 @@ namespace DotNetNuke.Web.InternalServices
             {
                 ModuleID = kvp.Value.DesktopModuleID,
                 ModuleName = kvp.Key,
-                ModuleImage = GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
+                ModuleImage = this.GetDeskTopModuleImage(kvp.Value.DesktopModuleID),
                 Bookmarked = bookmarkedModules.Any(m => m.Key == kvp.Key),
-                ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key)
+                ExistsInBookmarkCategory = bookmarkCategoryModules.Any(m => m.Key == kvp.Key),
             }).ToList();
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [HttpGet]
         [DnnPageEditor]
         public HttpResponseMessage GetPageList(string portal)
         {
-            var portalSettings = GetPortalSettings(portal);
+            var portalSettings = this.GetPortalSettings(portal);
 
             List<TabInfo> tabList = null;
-            if (PortalSettings.PortalId == portalSettings.PortalId)
+            if (this.PortalSettings.PortalId == portalSettings.PortalId)
             {
-                tabList = TabController.GetPortalTabs(portalSettings.PortalId, PortalSettings.ActiveTab.TabID, false, string.Empty, true, false, false, false, true);
+                tabList = TabController.GetPortalTabs(portalSettings.PortalId, this.PortalSettings.ActiveTab.TabID, false, string.Empty, true, false, false, false, true);
             }
             else
             {
@@ -164,20 +124,20 @@ namespace DotNetNuke.Web.InternalServices
                 else
                 {
                     // try to get pages not allowed
-                    return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                    return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
                 }
             }
 
             List<PageDefDTO> result = new List<PageDefDTO>();
             foreach (var tab in tabList)
             {
-                if (tab.PortalID == PortalSettings.PortalId || (GetModules(tab.TabID).Count > 0 && tab.TabID != portalSettings.AdminTabId && tab.ParentId != portalSettings.AdminTabId))
+                if (tab.PortalID == this.PortalSettings.PortalId || (this.GetModules(tab.TabID).Count > 0 && tab.TabID != portalSettings.AdminTabId && tab.ParentId != portalSettings.AdminTabId))
                 {
                     result.Add(new PageDefDTO { TabID = tab.TabID, IndentedTabName = tab.IndentedTabName });
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [HttpGet]
@@ -186,36 +146,23 @@ namespace DotNetNuke.Web.InternalServices
         {
             int tabID;
 
-            if (Int32.TryParse(tab, out tabID))
+            if (int.TryParse(tab, out tabID))
             {
                 var result = new List<ModuleDefDTO>();
                 if (tabID > 0)
                 {
-                    var pageModules = GetModules(tabID);
+                    var pageModules = this.GetModules(tabID);
 
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                     result.AddRange(from kvp in resultDict
-                                    let imageUrl = GetTabModuleImage(tabID, kvp.Key)
-                                    select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl }
-                                    );
+                                    let imageUrl = this.GetTabModuleImage(tabID, kvp.Key)
+                                    select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
-                return Request.CreateResponse(HttpStatusCode.OK, result);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
-        }
-
-        private IList<ModuleInfo> GetModules(int tabID)
-        {
-            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
-            var tabModules = ModuleController.Instance.GetTabModules(tabID);
-
-            var pageModules = isRemote
-                                ? tabModules.Values.Where(m => ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
-                                : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
-
-            return pageModules;
-
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -224,13 +171,13 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage CopyPermissionsToChildren()
         {
             if (TabPermissionController.CanManagePage() && UserController.Instance.GetCurrentUserInfo().IsInRole("Administrators")
-                && ActiveTabHasChildren() && !PortalSettings.ActiveTab.IsSuperTab)
+                                                        && this.ActiveTabHasChildren() && !this.PortalSettings.ActiveTab.IsSuperTab)
             {
-                TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                TabController.CopyPermissionsToChildren(this.PortalSettings.ActiveTab, this.PortalSettings.ActiveTab.TabPermissions);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -238,7 +185,7 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage AddModule(AddModuleDTO dto)
         {
-            if (TabPermissionController.CanAddContentToPage() && CanAddModuleToPage())
+            if (TabPermissionController.CanAddContentToPage() && this.CanAddModuleToPage())
             {
                 int permissionType;
                 try
@@ -259,7 +206,9 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         sortID = int.Parse(dto.Sort);
                         if (sortID >= 0)
-                            positionID = GetPaneModuleOrder(dto.Pane, sortID);
+                        {
+                            positionID = this.GetPaneModuleOrder(dto.Pane, sortID);
+                        }
                     }
                     catch (Exception exc)
                     {
@@ -296,10 +245,9 @@ namespace DotNetNuke.Web.InternalServices
                 try
                 {
                     int tabModuleId = -1;
-                    if ((moduleLstID > -1))
+                    if (moduleLstID > -1)
                     {
-
-                        if ((dto.AddExistingModule == "true"))
+                        if (dto.AddExistingModule == "true")
                         {
                             int pageID;
                             try
@@ -312,18 +260,18 @@ namespace DotNetNuke.Web.InternalServices
                                 pageID = -1;
                             }
 
-                            if ((pageID > -1))
+                            if (pageID > -1)
                             {
-                                tabModuleId = DoAddExistingModule(moduleLstID, pageID, dto.Pane, positionID, "", dto.CopyModule == "true");
+                                tabModuleId = this.DoAddExistingModule(moduleLstID, pageID, dto.Pane, positionID, string.Empty, dto.CopyModule == "true");
                             }
                         }
                         else
                         {
-                            tabModuleId = DoAddNewModule("", moduleLstID, dto.Pane, positionID, permissionType, "");
+                            tabModuleId = this.DoAddNewModule(string.Empty, moduleLstID, dto.Pane, positionID, permissionType, string.Empty);
                         }
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, new { TabModuleID = tabModuleId });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { TabModuleID = tabModuleId });
                 }
                 catch (Exception ex)
                 {
@@ -331,7 +279,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -343,10 +291,10 @@ namespace DotNetNuke.Web.InternalServices
             {
                 DataCache.ClearCache();
                 ClientResourceManager.ClearCache();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -360,10 +308,10 @@ namespace DotNetNuke.Web.InternalServices
                 log.AddProperty("Message", "UserRestart");
                 LogController.Instance.AddLog(log);
                 Config.Touch();
-                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -375,20 +323,20 @@ namespace DotNetNuke.Web.InternalServices
             {
                 try
                 {
-                    if ((!string.IsNullOrEmpty(dto.Site)))
+                    if (!string.IsNullOrEmpty(dto.Site))
                     {
                         int selectedPortalID = int.Parse(dto.Site);
                         var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
-                        if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
+                        if (portalAliases.Count > 0 && (portalAliases[0] != null))
                         {
-                            return Request.CreateResponse(HttpStatusCode.OK, new { RedirectURL = Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias) });
+                            return this.Request.CreateResponse(HttpStatusCode.OK, new { RedirectURL = Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias) });
                         }
                     }
                 }
                 catch (System.Threading.ThreadAbortException)
                 {
-                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+                    // Do nothing we are not logging ThreadAbortxceptions caused by redirects
                 }
                 catch (Exception ex)
                 {
@@ -396,7 +344,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -405,30 +353,29 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                if (PortalSettings.AllowUserUICulture && PortalSettings.ContentLocalizationEnabled)
+                if (this.PortalSettings.AllowUserUICulture && this.PortalSettings.ContentLocalizationEnabled)
                 {
-                    if ((!string.IsNullOrEmpty(dto.Language)))
+                    if (!string.IsNullOrEmpty(dto.Language))
                     {
                         var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-                        var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
+                        var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
                         personalization.Profile["Usability:UICulture"] = dto.Language;
                         personalization.IsModified = true;
                         personalizationController.SaveProfile(personalization);
-                        return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
                     }
                 }
-                
             }
             catch (System.Threading.ThreadAbortException)
             {
-                //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+                // Do nothing we are not logging ThreadAbortxceptions caused by redirects
             }
             catch (Exception ex)
             {
                 Exceptions.LogException(ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
@@ -437,17 +384,19 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage ToggleUserMode(UserModeDTO userMode)
         {
             if (userMode == null)
+            {
                 userMode = new UserModeDTO { UserMode = "VIEW" };
+            }
 
-            ToggleUserMode(userMode.UserMode);
-            var response = Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            this.ToggleUserMode(userMode.UserMode);
+            var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
 
             if (userMode.UserMode.Equals("VIEW", StringComparison.InvariantCultureIgnoreCase))
             {
-                var cookie = Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();
+                var cookie = this.Request.Headers.GetCookies("StayInEditMode").FirstOrDefault();
                 if (cookie != null && !string.IsNullOrEmpty(cookie["StayInEditMode"].Value))
                 {
-                    var expireCookie = new CookieHeaderValue("StayInEditMode", "");
+                    var expireCookie = new CookieHeaderValue("StayInEditMode", string.Empty);
                     expireCookie.Expires = DateTimeOffset.Now.AddDays(-1);
                     expireCookie.Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/";
                     response.Headers.AddCookies(new List<CookieHeaderValue> { expireCookie });
@@ -457,27 +406,19 @@ namespace DotNetNuke.Web.InternalServices
             return response;
         }
 
-        public class BookmarkDTO
-        {
-            public string Title { get; set; }
-            public string Bookmark { get; set; }
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnPageEditor]
         public HttpResponseMessage SaveBookmark(BookmarkDTO bookmark)
         {
-            if (string.IsNullOrEmpty(bookmark.Bookmark)) bookmark.Bookmark = string.Empty;
+            if (string.IsNullOrEmpty(bookmark.Bookmark))
+            {
+                bookmark.Bookmark = string.Empty;
+            }
 
-            Controller.SaveBookMark(PortalSettings.PortalId, UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
+            this.Controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
-        }
-
-        public class LockingDTO
-        {
-            public bool Lock { get; set; }
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
         }
 
         [HttpPost]
@@ -486,7 +427,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage LockInstance(LockingDTO lockingRequest)
         {
             HostController.Instance.Update("IsLocked", lockingRequest.Lock.ToString(), true);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpPost]
@@ -494,15 +435,42 @@ namespace DotNetNuke.Web.InternalServices
         [RequireHost]
         public HttpResponseMessage LockSite(LockingDTO lockingRequest)
         {
-            PortalController.UpdatePortalSetting(PortalSettings.PortalId, "IsLocked", lockingRequest.Lock.ToString(), true);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "IsLocked", lockingRequest.Lock.ToString(), true);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        public bool CanAddModuleToPage()
+        {
+            return true;
+
+            // If we are not in an edit page
+            // return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
+        }
+
+        private static void SetCloneModuleContext(bool cloneModuleContext)
+        {
+            Thread.SetData(
+                Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
+        }
+
+        private IList<ModuleInfo> GetModules(int tabID)
+        {
+            var isRemote = TabController.Instance.GetTab(tabID, Null.NullInteger, false).PortalID != PortalSettings.Current.PortalId;
+            var tabModules = ModuleController.Instance.GetTabModules(tabID);
+
+            var pageModules = isRemote
+                ? tabModules.Values.Where(m => this.ModuleSupportsSharing(m) && !m.IsDeleted).ToList()
+                : tabModules.Values.Where(m => ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", m) && !m.IsDeleted).ToList();
+
+            return pageModules;
         }
 
         private void ToggleUserMode(string mode)
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
-            var personalization = personalizationController.LoadProfile(UserInfo.UserID, PortalSettings.PortalId);
-            personalization.Profile["Usability:UserMode" + PortalSettings.PortalId] = mode.ToUpper();
+            var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
+            personalization.Profile["Usability:UserMode" + this.PortalSettings.PortalId] = mode.ToUpper();
             personalization.IsModified = true;
             personalizationController.SaveProfile(personalization);
         }
@@ -513,16 +481,14 @@ namespace DotNetNuke.Web.InternalServices
 
             try
             {
-
                 if (!string.IsNullOrEmpty(portal))
                 {
                     var selectedPortalId = int.Parse(portal);
-                    if (PortalSettings.PortalId != selectedPortalId)
+                    if (this.PortalSettings.PortalId != selectedPortalId)
                     {
                         portalSettings = new PortalSettings(selectedPortalId);
                     }
                 }
-
             }
             catch (Exception)
             {
@@ -550,12 +516,12 @@ namespace DotNetNuke.Web.InternalServices
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl =
-                    (from pkgs in packages
-                     join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                     where portMods.Value.DesktopModuleID == moduleId
-                     select pkgs.IconFile).FirstOrDefault();
+                (from pkgs in packages
+                    join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                    where portMods.Value.DesktopModuleID == moduleId
+                    select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 
@@ -567,28 +533,21 @@ namespace DotNetNuke.Web.InternalServices
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             string imageUrl = (from pkgs in packages
-                               join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
-                               join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
-                               join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
-                               where tabMods.Value.ModuleID == moduleId
-                               select pkgs.IconFile).FirstOrDefault();
+                join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
+                join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
+                join tabMods in tabModules on modDefs.Value.DesktopModuleID equals tabMods.Value.DesktopModuleID
+                where tabMods.Value.ModuleID == moduleId
+                select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
-        }
-
-        public bool CanAddModuleToPage()
-        {
-            return true;
-            //If we are not in an edit page
-            //return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
         private bool ActiveTabHasChildren()
         {
-            var children = TabController.GetTabsByParent(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID);
+            var children = TabController.GetTabsByParent(this.PortalSettings.ActiveTab.TabID, this.PortalSettings.ActiveTab.PortalID);
 
-            if (((children == null) || children.Count < 1))
+            if ((children == null) || children.Count < 1)
             {
                 return false;
             }
@@ -608,8 +567,7 @@ namespace DotNetNuke.Web.InternalServices
                 userID = user.UserID;
             }
 
-
-            if ((moduleInfo != null))
+            if (moduleInfo != null)
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -619,8 +577,9 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         case ModuleSharing.Unsupported:
                             // Should never happen since the module should not be listed in the first place.
-                            throw new ApplicationException(string.Format("Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
-                                                                         moduleInfo.DesktopModule.FriendlyName));
+                            throw new ApplicationException(string.Format(
+                                "Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
+                                moduleInfo.DesktopModule.FriendlyName));
                         case ModuleSharing.Supported:
                             break;
                         case ModuleSharing.Unknown:
@@ -639,11 +598,11 @@ namespace DotNetNuke.Web.InternalServices
                 newModule.PaneName = paneName;
                 newModule.Alignment = align;
 
-                if ((cloneModule))
+                if (cloneModule)
                 {
                     newModule.ModuleID = Null.NullInteger;
 
-                    //copy module settings and tab module settings
+                    // copy module settings and tab module settings
                     newModule.ModuleSettings.Clear();
                     foreach (var key in moduleInfo.ModuleSettings.Keys)
                     {
@@ -656,7 +615,7 @@ namespace DotNetNuke.Web.InternalServices
                         newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
                     }
 
-                    //reset the module id
+                    // reset the module id
                     newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
@@ -682,7 +641,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    //copy tab module settings
+                    // copy tab module settings
                     newModule.TabModuleSettings.Clear();
                     foreach (var key in moduleInfo.TabModuleSettings.Keys)
                     {
@@ -692,49 +651,44 @@ namespace DotNetNuke.Web.InternalServices
                     ModuleController.Instance.AddModule(newModule);
                 }
 
-                //if the tab of original module has custom stylesheet defined, then also copy the stylesheet
-                //to the destination tab if its custom stylesheet is empty.
+                // if the tab of original module has custom stylesheet defined, then also copy the stylesheet
+                // to the destination tab if its custom stylesheet is empty.
                 var originalTab = TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID);
                 var targetTab = PortalSettings.Current.ActiveTab;
                 if (originalTab != null
                     && originalTab.TabSettings.ContainsKey("CustomStylesheet")
                     && !string.IsNullOrEmpty(originalTab.TabSettings["CustomStylesheet"].ToString())
                     && (!targetTab.TabSettings.ContainsKey("CustomStylesheet") ||
-                            string.IsNullOrEmpty(targetTab.TabSettings["CustomStylesheet"].ToString())))
+                        string.IsNullOrEmpty(targetTab.TabSettings["CustomStylesheet"].ToString())))
                 {
                     TabController.Instance.UpdateTabSetting(targetTab.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
                 }
 
                 if (remote)
                 {
-                    //Ensure the Portal Admin has View rights
+                    // Ensure the Portal Admin has View rights
                     var permissionController = new PermissionController();
                     ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-                    AddModulePermission(newModule,
-                                    (PermissionInfo)arrSystemModuleViewPermissions[0],
-                                    PortalSettings.Current.AdministratorRoleId,
-                                    Null.NullInteger,
-                                    true);
+                    this.AddModulePermission(
+                        newModule,
+                        (PermissionInfo)arrSystemModuleViewPermissions[0],
+                        PortalSettings.Current.AdministratorRoleId,
+                        Null.NullInteger,
+                        true);
 
-                    //Set PortalID correctly
+                    // Set PortalID correctly
                     newModule.OwnerPortalID = newModule.PortalID;
                     newModule.PortalID = PortalSettings.Current.PortalId;
                     ModulePermissionController.SaveModulePermissions(newModule);
                 }
 
-                //Add Event Log
-                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
+                // Add Event Log
+                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
 
                 return newModule.ModuleID;
             }
 
             return -1;
-        }
-
-        private static void SetCloneModuleContext(bool cloneModuleContext)
-        {
-            Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
-                cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
 
         private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
@@ -746,7 +700,7 @@ namespace DotNetNuke.Web.InternalServices
                 RoleID = roleId,
                 UserID = userId,
                 PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess
+                AllowAccess = allowAccess,
             };
 
             // add the permission to the collection
@@ -764,10 +718,10 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (ModuleInfo m in PortalSettings.Current.ActiveTab.Modules)
             {
-                //if user is allowed to view module and module is not deleted
+                // if user is allowed to view module and module is not deleted
                 if (ModulePermissionController.CanViewModule(m) && !m.IsDeleted)
                 {
-                    //modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
+                    // modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
                     if (!m.AllTabs || !PortalSettings.Current.ActiveTab.IsSuperTab)
                     {
                         if (string.Equals(m.PaneName, pane, StringComparison.OrdinalIgnoreCase))
@@ -834,7 +788,7 @@ namespace DotNetNuke.Web.InternalServices
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
                         ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if ((defaultModule != null))
+                        if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
                         }
@@ -846,7 +800,8 @@ namespace DotNetNuke.Web.InternalServices
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //set the culture of the module to that of the tab
+
+                    // set the culture of the module to that of the tab
                     var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
@@ -854,6 +809,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     objModule.CultureCode = Null.NullString;
                 }
+
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
@@ -863,7 +819,8 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     tabModuleId = objModule.ModuleID;
                 }
-                //update the position to let later modules with add after previous one.
+
+                // update the position to let later modules with add after previous one.
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
 
@@ -872,14 +829,83 @@ namespace DotNetNuke.Web.InternalServices
 
         private string GetModuleName(string moduleName)
         {
-            if (_nameDics == null)
+            if (this._nameDics == null)
             {
-                _nameDics = new Dictionary<string, string> {{"SearchCrawlerAdmin", "SearchCrawler Admin"},
-                                                             {"SearchCrawlerInput", "SearchCrawler Input"},
-                                                             {"SearchCrawlerResults", "SearchCrawler Results"}};
+                this._nameDics = new Dictionary<string, string>
+                {
+                    { "SearchCrawlerAdmin", "SearchCrawler Admin" },
+                    { "SearchCrawlerInput", "SearchCrawler Input" },
+                    { "SearchCrawlerResults", "SearchCrawler Results" },
+                };
             }
 
-            return _nameDics.ContainsKey(moduleName) ? _nameDics[moduleName] : moduleName;
+            return this._nameDics.ContainsKey(moduleName) ? this._nameDics[moduleName] : moduleName;
+        }
+
+        public class ModuleDefDTO
+        {
+            public int ModuleID { get; set; }
+
+            public string ModuleName { get; set; }
+
+            public string ModuleImage { get; set; }
+
+            public bool Bookmarked { get; set; }
+
+            public bool ExistsInBookmarkCategory { get; set; }
+        }
+
+        public class PageDefDTO
+        {
+            public int TabID { get; set; }
+
+            public string IndentedTabName { get; set; }
+        }
+
+        public class AddModuleDTO
+        {
+            public string Visibility { get; set; }
+
+            public string Position { get; set; }
+
+            public string Module { get; set; }
+
+            public string Page { get; set; }
+
+            public string Pane { get; set; }
+
+            public string AddExistingModule { get; set; }
+
+            public string CopyModule { get; set; }
+
+            public string Sort { get; set; }
+        }
+
+        public class UserModeDTO
+        {
+            public string UserMode { get; set; }
+        }
+
+        public class SwitchSiteDTO
+        {
+            public string Site { get; set; }
+        }
+
+        public class SwitchLanguageDTO
+        {
+            public string Language { get; set; }
+        }
+
+        public class BookmarkDTO
+        {
+            public string Title { get; set; }
+
+            public string Bookmark { get; set; }
+        }
+
+        public class LockingDTO
+        {
+            public bool Lock { get; set; }
         }
     }
 }

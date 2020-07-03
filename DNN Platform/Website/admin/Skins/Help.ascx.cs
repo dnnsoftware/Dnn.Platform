@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Skins.Controls
 {
+    using System;
+
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary></summary>
     /// <returns></returns>
@@ -24,15 +19,11 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         public string CssClass { get; set; }
 
-        private void InitializeComponent()
-        {
-        }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -40,23 +31,24 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
-                    hypHelp.CssClass = CssClass;
+                    this.hypHelp.CssClass = this.CssClass;
                 }
-                if (Request.IsAuthenticated)
+
+                if (this.Request.IsAuthenticated)
                 {
                     if (TabPermissionController.CanAdminPage())
                     {
-                        hypHelp.Text = Localization.GetString("Help");
-                        hypHelp.NavigateUrl = "mailto:" + Host.HostEmail + "?subject=" + PortalSettings.PortalName + " Support Request";
-                        hypHelp.Visible = true;
+                        this.hypHelp.Text = Localization.GetString("Help");
+                        this.hypHelp.NavigateUrl = "mailto:" + Host.HostEmail + "?subject=" + this.PortalSettings.PortalName + " Support Request";
+                        this.hypHelp.Visible = true;
                     }
                     else
                     {
-                        hypHelp.Text = Localization.GetString("Help");
-                        hypHelp.NavigateUrl = "mailto:" + PortalSettings.Email + "?subject=" + PortalSettings.PortalName + " Support Request";
-                        hypHelp.Visible = true;
+                        this.hypHelp.Text = Localization.GetString("Help");
+                        this.hypHelp.NavigateUrl = "mailto:" + this.PortalSettings.Email + "?subject=" + this.PortalSettings.PortalName + " Support Request";
+                        this.hypHelp.Visible = true;
                     }
                 }
             }
@@ -64,6 +56,10 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        private void InitializeComponent()
+        {
         }
     }
 }

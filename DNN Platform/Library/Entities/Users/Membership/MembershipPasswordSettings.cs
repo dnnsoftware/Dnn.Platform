@@ -1,30 +1,48 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web;
-using System.Web.Security;
-using DotNetNuke.Common;
-using DotNetNuke.Security.Membership;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Users.Membership
 {
+    using System;
+    using System.Web;
+    using System.Web.Security;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Security.Membership;
+
     public class MembershipPasswordSettings
     {
-        #region Public Properties
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MembershipPasswordSettings"/> class.
+        /// Initialiser for MembershipPasswordSettings provider object.
+        /// </summary>
+        public MembershipPasswordSettings(int portalId)
+        {
+            // portalId not used currently - left in place for potential site specific settings
+            this.PortalId = portalId;
 
-        public bool EnableBannedList { get; set; }
-        public bool EnableStrengthMeter { get; set; }
-        public bool EnableIPChecking { get; set; }
-        public bool EnablePasswordHistory { get; set; }
+            if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
+            {
+                this.EnableBannedList = Host.Host.EnableBannedList;
+                this.EnableStrengthMeter = Host.Host.EnableStrengthMeter;
+                this.EnableIPChecking = Host.Host.EnableIPChecking;
+                this.EnablePasswordHistory = Host.Host.EnablePasswordHistory;
 
-        public int NumberOfPasswordsStored { get; set; }
-        public int NumberOfDaysBeforePasswordReuse { get; set; }
-        public int ResetLinkValidity { get; set; }
+                this.ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
+                this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
+                this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
+            }
+            else // setup default values during install process.
+            {
+                this.EnableStrengthMeter = true;
+                this.EnableBannedList = true;
+                this.EnablePasswordHistory = true;
+            }
+        }
 
         /// <summary>
-        /// minimum number of non-alphanumeric characters setting for password strength indicator
+        /// Gets minimum number of non-alphanumeric characters setting for password strength indicator.
         /// </summary>
         public int MinNonAlphanumericCharacters
         {
@@ -35,7 +53,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>
-        /// minimum length of password setting for password strength indicator
+        /// Gets minimum length of password setting for password strength indicator.
         /// </summary>
         public int MinPasswordLength
         {
@@ -46,7 +64,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>
-        /// currently configured password format for installation
+        /// Gets currently configured password format for installation.
         /// </summary>
         public PasswordFormat PasswordFormat
         {
@@ -65,49 +83,28 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>
-        /// Regular Expression to validate password strength.
+        /// Gets regular Expression to validate password strength.
         /// </summary>
         public string ValidationExpression
         {
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
         }
 
-        #endregion
+        public bool EnableBannedList { get; set; }
 
-        #region initialization methods
+        public bool EnableStrengthMeter { get; set; }
 
-        /// <summary>
-        /// Initialiser for MembershipPasswordSettings provider object.  
-        /// </summary>
-        public MembershipPasswordSettings(int portalId)
-        {
-            //portalId not used currently - left in place for potential site specific settings
-            PortalId = portalId;
+        public bool EnableIPChecking { get; set; }
 
-            if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
-            {
-                EnableBannedList = Host.Host.EnableBannedList;
-                EnableStrengthMeter = Host.Host.EnableStrengthMeter;
-                EnableIPChecking = Host.Host.EnableIPChecking;
-                EnablePasswordHistory = Host.Host.EnablePasswordHistory;
+        public bool EnablePasswordHistory { get; set; }
 
-                ResetLinkValidity = Host.Host.MembershipResetLinkValidity;
-                NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
-                NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
-            }
-            else //setup default values during install process.
-            {
-                EnableStrengthMeter = true;
-                EnableBannedList = true;
-                EnablePasswordHistory = true;
-            }
-        }
+        public int NumberOfPasswordsStored { get; set; }
+
+        public int NumberOfDaysBeforePasswordReuse { get; set; }
+
+        public int ResetLinkValidity { get; set; }
 
         public int PortalId { get; set; }
-
-        #endregion
-
-        #region Private Methods
 
         private static bool IsInstallRequest(HttpRequest request)
         {
@@ -116,7 +113,5 @@ namespace DotNetNuke.Entities.Users.Membership
             return url.EndsWith("/install.aspx")
                    || url.Contains("/installwizard.aspx");
         }
-
-        #endregion
     }
 }

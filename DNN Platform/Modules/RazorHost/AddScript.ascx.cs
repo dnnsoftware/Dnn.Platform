@@ -1,37 +1,27 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.IO;
-
-using DotNetNuke.Common;
-using DotNetNuke.Abstractions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.UI.Modules;
-using Microsoft.Extensions.DependencyInjection;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.RazorHost
 {
+    using System;
+    using System.IO;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Modules;
+    using Microsoft.Extensions.DependencyInjection;
+
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
     public partial class AddScript : ModuleUserControlBase
     {
-        private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
         private readonly INavigationManager _navigationManager;
+        private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
         public AddScript()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
-        }
-
-        private void DisplayExtension()
-        {
-            fileExtension.Text = "." + scriptFileType.SelectedValue.ToLowerInvariant();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -39,9 +29,9 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnInit(e);
 
-            cmdCancel.Click += cmdCancel_Click;
-            cmdAdd.Click += cmdAdd_Click;
-            scriptFileType.SelectedIndexChanged += scriptFileType_SelectedIndexChanged;
+            this.cmdCancel.Click += this.cmdCancel_Click;
+            this.cmdAdd.Click += this.cmdAdd_Click;
+            this.scriptFileType.SelectedIndexChanged += this.scriptFileType_SelectedIndexChanged;
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -49,7 +39,7 @@ namespace DotNetNuke.Modules.RazorHost
         {
             base.OnLoad(e);
 
-            DisplayExtension();
+            this.DisplayExtension();
         }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
@@ -57,9 +47,9 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                Response.Redirect(ModuleContext.EditUrl("Edit"), true);
+                this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -70,35 +60,40 @@ namespace DotNetNuke.Modules.RazorHost
         {
             try
             {
-                if (!ModuleContext.PortalSettings.UserInfo.IsSuperUser)
+                if (!this.ModuleContext.PortalSettings.UserInfo.IsSuperUser)
                 {
-                    Response.Redirect(_navigationManager.NavigateURL("Access Denied"), true);
+                    this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
                 }
 
-                if (Page.IsValid)
+                if (this.Page.IsValid)
                 {
-                    string scriptFileName = "_" + Path.GetFileNameWithoutExtension(fileName.Text) + "." + scriptFileType.SelectedValue.ToLowerInvariant();
+                    string scriptFileName = "_" + Path.GetFileNameWithoutExtension(this.fileName.Text) + "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
 
-                    string srcFile = Server.MapPath(string.Format(razorScriptFileFormatString, scriptFileName));
+                    string srcFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, scriptFileName));
 
                     // write file
                     StreamWriter objStream = null;
                     objStream = File.CreateText(srcFile);
-                    objStream.WriteLine(Localization.GetString("NewScript", LocalResourceFile));
+                    objStream.WriteLine(Localization.GetString("NewScript", this.LocalResourceFile));
                     objStream.Close();
 
-                    Response.Redirect(ModuleContext.EditUrl("Edit"), true);
+                    this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
+        private void DisplayExtension()
+        {
+            this.fileExtension.Text = "." + this.scriptFileType.SelectedValue.ToLowerInvariant();
+        }
+
         private void scriptFileType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayExtension();
+            this.DisplayExtension();
         }
     }
 }

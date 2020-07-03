@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
+    using System;
+
     /// <summary>
-    /// Status of an Installation Step
+    /// Status of an Installation Step.
     /// </summary>
-    /// -----------------------------------------------------------------------------        
+    /// -----------------------------------------------------------------------------
     public enum StepStatus
     {
         /// <summary>
@@ -27,7 +22,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         Running = 1,
 
         /// <summary>
-        /// Step is done and was successful. 
+        /// Step is done and was successful.
         /// </summary>
         Done = 2,
 
@@ -44,6 +39,6 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         /// <summary>
         /// Step resulted in Application Restart. You should redirect to the same page.
         /// </summary>
-        AppRestart = 5
+        AppRestart = 5,
     }
 }

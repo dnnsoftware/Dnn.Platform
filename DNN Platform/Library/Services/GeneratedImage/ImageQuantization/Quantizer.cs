@@ -1,23 +1,31 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Imaging;
+    using System.Runtime.InteropServices;
+
     /// <summary>
-    /// Abstarct class for Quantizers
+    /// Abstarct class for Quantizers.
     /// </summary>
     public abstract class Quantizer
     {
         /// <summary>
-        /// Construct the quantizer
+        /// Flag used to indicate whether a single pass or two passes are needed for quantization.
         /// </summary>
-        /// <param name="singlePass">If true, the quantization only needs to loop through the source pixels once</param>
+        private bool _singlePass;
+
+        private int _pixelSize;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Quantizer"/> class.
+        /// Construct the quantizer.
+        /// </summary>
+        /// <param name="singlePass">If true, the quantization only needs to loop through the source pixels once.</param>
         /// <remarks>
         /// If you construct this class with a true value for singlePass, then the code will, when quantizing your image,
         /// only call the 'QuantizeImage' function. If two passes are required, the code will call 'InitialQuantizeImage'
@@ -25,15 +33,15 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// </remarks>
         public Quantizer(bool singlePass)
         {
-            _singlePass = singlePass;
-            _pixelSize = Marshal.SizeOf(typeof (Color32));
+            this._singlePass = singlePass;
+            this._pixelSize = Marshal.SizeOf(typeof(Color32));
         }
 
         /// <summary>
-        /// Quantize an image and return the resulting output bitmap
+        /// Quantize an image and return the resulting output bitmap.
         /// </summary>
-        /// <param name="source">The image to quantize</param>
-        /// <returns>A quantized version of the image</returns>
+        /// <param name="source">The image to quantize.</param>
+        /// <returns>A quantized version of the image.</returns>
         public Bitmap Quantize(Image source)
         {
             // Get the size of the source image
@@ -57,7 +65,6 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Draw the source image onto the copy bitmap,
                 // which will effect a widening as appropriate.
                 g.DrawImage(source, bounds);
-
             }
 
             // Define a pointer to the bitmap data
@@ -68,21 +75,20 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 // Get the source image bits and lock into memory
                 sourceData = copy.LockBits(bounds, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
-
-
                 // Call the FirstPass function if not a single pass algorithm.
                 // For something like an octree quantizer, this will run through
                 // all image pixels, build a data structure, and create a palette.
-                if (!_singlePass)
-                    FirstPass(sourceData, width, height);
+                if (!this._singlePass)
+                {
+                    this.FirstPass(sourceData, width, height);
+                }
 
-                // Then set the color palette on the output bitmap. I'm passing in the current palette 
+                // Then set the color palette on the output bitmap. I'm passing in the current palette
                 // as there's no way to construct a new, empty palette.
-                output.Palette = GetPalette(output.Palette);
-
+                output.Palette = this.GetPalette(output.Palette);
 
                 // Then call the second pass which actually does the conversion
-                SecondPass(sourceData, output, width, height, bounds);
+                this.SecondPass(sourceData, output, width, height, bounds);
             }
             finally
             {
@@ -95,15 +101,15 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Execute the first pass through the pixels in the image
+        /// Execute the first pass through the pixels in the image.
         /// </summary>
-        /// <param name="sourceData">The source data</param>
-        /// <param name="width">The width in pixels of the image</param>
-        /// <param name="height">The height in pixels of the image</param>
-        protected  virtual void FirstPass(BitmapData sourceData, int width, int height)
+        /// <param name="sourceData">The source data.</param>
+        /// <param name="width">The width in pixels of the image.</param>
+        /// <param name="height">The height in pixels of the image.</param>
+        protected virtual void FirstPass(BitmapData sourceData, int width, int height)
         {
             // Define the source data pointers. The source row is a byte to
-            // keep addition of the stride value easier (as this is in bytes)              
+            // keep addition of the stride value easier (as this is in bytes)
             IntPtr pSourceRow = sourceData.Scan0;
 
             // Loop through each row
@@ -114,10 +120,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                 // And loop through each column
                 for (int col = 0; col < width; col++)
-                {            
-                    InitialQuantizePixel(new Color32(pSourcePixel)); 
-                    pSourcePixel = (IntPtr)((Int64)pSourcePixel + _pixelSize);
-                }	// Now I have the pixel, call the FirstPassQuantize function...
+                {
+                    this.InitialQuantizePixel(new Color32(pSourcePixel));
+                    pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
+                }   // Now I have the pixel, call the FirstPassQuantize function...
 
                 // Add the stride to the source row
                 pSourceRow = (IntPtr)((long)pSourceRow + sourceData.Stride);
@@ -125,13 +131,13 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Execute a second pass through the bitmap
+        /// Execute a second pass through the bitmap.
         /// </summary>
-        /// <param name="sourceData">The source bitmap, locked into memory</param>
-        /// <param name="output">The output bitmap</param>
-        /// <param name="width">The width in pixels of the image</param>
-        /// <param name="height">The height in pixels of the image</param>
-        /// <param name="bounds">The bounding rectangle</param>
+        /// <param name="sourceData">The source bitmap, locked into memory.</param>
+        /// <param name="output">The output bitmap.</param>
+        /// <param name="width">The width in pixels of the image.</param>
+        /// <param name="height">The height in pixels of the image.</param>
+        /// <param name="bounds">The bounding rectangle.</param>
         protected virtual void SecondPass(BitmapData sourceData, Bitmap output, int width, int height, Rectangle bounds)
         {
             BitmapData outputData = null;
@@ -152,8 +158,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 IntPtr pDestinationPixel = pDestinationRow;
 
                 // And convert the first pixel, so that I have values going into the loop
-
-                byte pixelValue = QuantizePixel(new Color32(pSourcePixel));
+                byte pixelValue = this.QuantizePixel(new Color32(pSourcePixel));
 
                 // Assign the value of the first pixel
                 Marshal.WriteByte(pDestinationPixel, pixelValue);
@@ -175,7 +180,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         if (Marshal.ReadByte(pPreviousPixel) != Marshal.ReadByte(pSourcePixel))
                         {
                             // Quantize the pixel
-                            pixelValue = QuantizePixel(new Color32(pSourcePixel));
+                            pixelValue = this.QuantizePixel(new Color32(pSourcePixel));
 
                             // And setup the previous pointer
                             pPreviousPixel = pSourcePixel;
@@ -184,9 +189,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         // And set the pixel in the output
                         Marshal.WriteByte(pDestinationPixel, pixelValue);
 
-                        pSourcePixel = (IntPtr)((long)pSourcePixel + _pixelSize);
+                        pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
                         pDestinationPixel = (IntPtr)((long)pDestinationPixel + 1);
-
                     }
 
                     // Add the stride to the source row
@@ -204,9 +208,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Override this to process the pixel in the first pass of the algorithm
+        /// Override this to process the pixel in the first pass of the algorithm.
         /// </summary>
-        /// <param name="pixel">The pixel to quantize</param>
+        /// <param name="pixel">The pixel to quantize.</param>
         /// <remarks>
         /// This function need only be overridden if your quantize algorithm needs two passes,
         /// such as an Octree quantizer.
@@ -216,76 +220,71 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm
+        /// Override this to process the pixel in the second pass of the algorithm.
         /// </summary>
-        /// <param name="pixel">The pixel to quantize</param>
-        /// <returns>The quantized value</returns>
+        /// <param name="pixel">The pixel to quantize.</param>
+        /// <returns>The quantized value.</returns>
         protected abstract byte QuantizePixel(Color32 pixel);
 
         /// <summary>
-        /// Retrieve the palette for the quantized image
+        /// Retrieve the palette for the quantized image.
         /// </summary>
-        /// <param name="original">Any old palette, this is overrwritten</param>
-        /// <returns>The new color palette</returns>
+        /// <param name="original">Any old palette, this is overrwritten.</param>
+        /// <returns>The new color palette.</returns>
         protected abstract ColorPalette GetPalette(ColorPalette original);
 
         /// <summary>
-        /// Flag used to indicate whether a single pass or two passes are needed for quantization.
-        /// </summary>
-        private bool _singlePass;
-        private int _pixelSize;
-        
-        /// <summary>
-        /// Struct that defines a 32 bpp colour
+        /// Struct that defines a 32 bpp colour.
         /// </summary>
         /// <remarks>
         /// This struct is used to read data from a 32 bits per pixel image
         /// in memory, and is ordered in this manner as this is the way that
-        /// the data is layed out in memory
+        /// the data is layed out in memory.
         /// </remarks>
         [StructLayout(LayoutKind.Explicit)]
         public struct Color32
         {
-
-            public Color32(IntPtr pSourcePixel)
-            {
-              this = (Color32) Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
-                           
-            }
-
             /// <summary>
-            /// Holds the blue component of the colour
+            /// Holds the blue component of the colour.
             /// </summary>
             [FieldOffset(0)]
             public byte Blue;
+
             /// <summary>
-            /// Holds the green component of the colour
+            /// Holds the green component of the colour.
             /// </summary>
             [FieldOffset(1)]
             public byte Green;
+
             /// <summary>
-            /// Holds the red component of the colour
+            /// Holds the red component of the colour.
             /// </summary>
             [FieldOffset(2)]
             public byte Red;
+
             /// <summary>
-            /// Holds the alpha component of the colour
+            /// Holds the alpha component of the colour.
             /// </summary>
             [FieldOffset(3)]
             public byte Alpha;
 
             /// <summary>
-            /// Permits the color32 to be treated as an int32
+            /// Permits the color32 to be treated as an int32.
             /// </summary>
             [FieldOffset(0)]
             public int ARGB;
 
+            public Color32(IntPtr pSourcePixel)
+            {
+                this = (Color32)Marshal.PtrToStructure(pSourcePixel, typeof(Color32));
+            }
+
             /// <summary>
-            /// Return the color for this Color32 object
+            /// Gets return the color for this Color32 object.
             /// </summary>
             public Color Color
             {
-                get { return Color.FromArgb(Alpha, Red, Green, Blue); }
+                get { return Color.FromArgb(this.Alpha, this.Red, this.Green, this.Blue); }
             }
         }
     }

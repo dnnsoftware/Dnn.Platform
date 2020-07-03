@@ -1,11 +1,11 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Newtonsoft.Json;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.AuthServices.Jwt.Components.Entity
 {
+    using Newtonsoft.Json;
+
     /// <summary>
     /// Structure used for the Login to obtain a Json Web Token (JWT).
     /// </summary>
@@ -14,6 +14,7 @@ namespace Dnn.AuthServices.Jwt.Components.Entity
     {
         [JsonProperty("u")]
         public string Username;
+
         [JsonProperty("p")]
         public string Password;
     }

@@ -1,21 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api.Internal
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Common;
+
     internal class DnnActionFilterProvider : IFilterProvider
     {
         public IEnumerable<FilterInfo> GetFilters(HttpConfiguration configuration, HttpActionDescriptor actionDescriptor)
         {
-            //Requires.NotNull("configuration", configuration);
+            // Requires.NotNull("configuration", configuration);
             Requires.NotNull("actionDescriptor", actionDescriptor);
 
             var controllerFilters = actionDescriptor.ControllerDescriptor.GetFilters().Select(instance => new FilterInfo(instance, FilterScope.Controller));
@@ -25,7 +26,7 @@ namespace DotNetNuke.Web.Api.Internal
 
             var overrideFilterPresent = allFilters.Any(x => x.Instance is IOverrideDefaultAuthLevel);
 
-            if(!overrideFilterPresent)
+            if (!overrideFilterPresent)
             {
                 allFilters.Add(new FilterInfo(new RequireHostAttribute(), FilterScope.Action));
             }

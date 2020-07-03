@@ -1,23 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Data;
-using System.Xml.Serialization;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities;
-using DotNetNuke.Entities.Modules;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Social.Messaging
 {
+    using System;
+    using System.Data;
+    using System.Xml.Serialization;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Modules;
+
     /// <summary>
-    /// Archived Status of a Message
+    /// Archived Status of a Message.
     /// </summary>
     public enum MessageArchivedStatus
     {
@@ -34,6 +29,6 @@ namespace DotNetNuke.Services.Social.Messaging
         /// <summary>
         /// Any Message Status - Both Archived and UnArchived
         /// </summary>
-        Any = -1
+        Any = -1,
     }
 }

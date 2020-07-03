@@ -1,57 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.ExtensionPoints
 {
+    using System;
+    using System.ComponentModel;
+    using System.IO;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:EditPagePanelExtensionControl runat=server></{0}:EditPagePanelExtensionControl>")]
     public class EditPagePanelExtensionControl : DefaultExtensionControl
     {
-        private void LoadControl(IEditPagePanelExtensionPoint extension)
-        {
-            var editPanel = new PanelEditPagePanelExtensionControl { PanelId = extension.EditPagePanelId, Text = extension.Text, CssClass = extension.CssClass };
-            var control = Page.LoadControl(extension.UserControlSrc);
-            control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
-            editPanel.Controls.Add(control);
-            Controls.Add(editPanel);
-            
-        }
-
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-            var extensionPointManager = new ExtensionPointManager();
-            
-            if (!String.IsNullOrEmpty(Name))
-            {
-                var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(Module, Name);
-                if (extension != null)
-                {
-                    LoadControl(extension);                    
-                }
-            }
-            else
-            {
-                foreach (var extension in extensionPointManager.GetEditPagePanelExtensionPoints(Module, Group))
-                {
-                    if (extension != null)
-                    {
-                        LoadControl(extension);                        
-                    }
-                }
-            }
-        }
-
         public void BindAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var panelcontrol = control as PanelEditPagePanelExtensionControl;
                 if (panelcontrol != null)
@@ -70,7 +35,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void SaveAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var panelcontrol = control as PanelEditPagePanelExtensionControl;
                 if (panelcontrol != null)
@@ -89,7 +54,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public void CancelAction(int portalId, int tabId, int moduleId)
         {
-            foreach (var control in Controls)
+            foreach (var control in this.Controls)
             {
                 var panelcontrol = control as PanelEditPagePanelExtensionControl;
                 if (panelcontrol != null)
@@ -105,19 +70,53 @@ namespace DotNetNuke.ExtensionPoints
                 }
             }
         }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            var extensionPointManager = new ExtensionPointManager();
+
+            if (!string.IsNullOrEmpty(this.Name))
+            {
+                var extension = extensionPointManager.GetEditPagePanelExtensionPointFirstByPriority(this.Module, this.Name);
+                if (extension != null)
+                {
+                    this.LoadControl(extension);
+                }
+            }
+            else
+            {
+                foreach (var extension in extensionPointManager.GetEditPagePanelExtensionPoints(this.Module, this.Group))
+                {
+                    if (extension != null)
+                    {
+                        this.LoadControl(extension);
+                    }
+                }
+            }
+        }
+
+        private void LoadControl(IEditPagePanelExtensionPoint extension)
+        {
+            var editPanel = new PanelEditPagePanelExtensionControl { PanelId = extension.EditPagePanelId, Text = extension.Text, CssClass = extension.CssClass };
+            var control = this.Page.LoadControl(extension.UserControlSrc);
+            control.ID = Path.GetFileNameWithoutExtension(extension.UserControlSrc);
+            editPanel.Controls.Add(control);
+            this.Controls.Add(editPanel);
+        }
     }
 
     public class PanelEditPagePanelExtensionControl : WebControl
     {
         public string PanelId { get; set; }
+
         public string Text { get; set; }
 
         protected override void RenderContents(HtmlTextWriter op)
         {
-
-            op.Write(@"<div class="""+CssClass+@""">
-	<h2 id="""+PanelId+@""" class=""dnnFormSectionHead"">
-<a href="" class=""dnnLabelExpanded"">"+Text+@"</a>
+            op.Write(@"<div class=""" + this.CssClass + @""">
+	<h2 id=""" + this.PanelId + @""" class=""dnnFormSectionHead"">
+<a href="" class=""dnnLabelExpanded"">" + this.Text + @"</a>
 </h2>
 	<fieldset>");
             base.RenderContents(op);

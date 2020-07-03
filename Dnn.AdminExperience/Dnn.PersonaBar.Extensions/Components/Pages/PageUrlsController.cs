@@ -1,34 +1,52 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dnn.PersonaBar.Pages.Components.Dto;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Urls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+
+    using Dnn.PersonaBar.Pages.Components.Dto;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Urls;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Localization;
+
     public class PageUrlsController : ServiceLocator<IPageUrlsController, PageUrlsController>, IPageUrlsController
     {
-        private enum SortingFields { None = 0, Url, Locale, Status };
+        private enum SortingFields
+        {
+            None = 0,
+            Url,
+            Locale,
+            Status,
+        }
+
+        protected IEnumerable<KeyValuePair<int, string>> StatusCodes
+        {
+            get
+            {
+                return new[]
+                {
+                    new KeyValuePair<int, string>(200, "Active (200)"),
+                    new KeyValuePair<int, string>(301, "Redirect (301)")
+                };
+            }
+        }
 
         public IEnumerable<Url> GetPageUrls(TabInfo tab, int portalId)
         {
-            
             var locales = new Lazy<Dictionary<string, Locale>>(() => LocaleController.Instance.GetLocales(portalId));
-            var customUrls = GetSortedUrls(tab, portalId, locales, 1, true, false);
-            var automaticUrls = GetSortedUrls(tab, portalId, locales, 1, true, true).ToList();
+            var customUrls = this.GetSortedUrls(tab, portalId, locales, 1, true, false);
+            var automaticUrls = this.GetSortedUrls(tab, portalId, locales, 1, true, true).ToList();
 
             automaticUrls.AddRange(customUrls);
             return automaticUrls.OrderBy(url => url.StatusCode, new KeyValuePairComparer()).ThenBy(url => url.Path);
@@ -46,7 +64,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     Success = false,
                     ErrorMessage = Localization.GetString("CustomUrlPortalAlias.Error"),
                     SuggestedUrlPath = String.Empty
-                    };
+                };
             }
 
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
@@ -57,7 +75,8 @@ namespace Dnn.PersonaBar.Pages.Components
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
-                return new PageUrlResult {
+                return new PageUrlResult
+                {
                     Success = false,
                     ErrorMessage = Localization.GetString("CustomUrlPathCleaned.Error"),
                     SuggestedUrlPath = "/" + urlPath
@@ -68,7 +87,8 @@ namespace Dnn.PersonaBar.Pages.Components
             urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, portalSettings, out modified);
             if (modified)
             {
-                return new PageUrlResult {
+                return new PageUrlResult
+                {
                     Success = false,
                     ErrorMessage = Localization.GetString("UrlPathNotUnique.Error"),
                     SuggestedUrlPath = "/" + urlPath
@@ -78,7 +98,8 @@ namespace Dnn.PersonaBar.Pages.Components
             if (tab.TabUrls.Any(u => u.Url.ToLowerInvariant() == dto.Path.ValueOrEmpty().ToLowerInvariant()
                                      && (u.PortalAliasId == dto.SiteAliasKey || u.PortalAliasId == -1)))
             {
-                return new PageUrlResult {
+                return new PageUrlResult
+                {
                     Success = false,
                     ErrorMessage = Localization.GetString("DuplicateUrl.Error")
                 };
@@ -265,7 +286,6 @@ namespace Dnn.PersonaBar.Pages.Components
                 }
             }
 
-
             return new PageUrlResult
             {
                 Success = true
@@ -283,6 +303,11 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 Success = true
             };
+        }
+
+        protected override Func<IPageUrlsController> GetFactory()
+        {
+            return () => new PageUrlsController();
         }
 
         private IEnumerable<Url> GetSortedUrls(TabInfo tab, int portalId, Lazy<Dictionary<string, Locale>> locales, int sortColumn, bool sortOrder, bool isSystem)
@@ -339,7 +364,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     //AddUrlToList(tabs, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200);
                     //27139 : only show primary aliases in the tab grid (gets too confusing otherwise)
                     if (alias.IsPrimary) //alias was provided to FriendlyUrlCall, so will always get the correct canonical Url back
-                        AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, status, isSystem, friendlyUrlSettings, null);
+                        this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, status, isSystem, friendlyUrlSettings, null);
 
                     //Add url with diacritics
                     isRedirected = friendlyUrlSettings.RedirectUnfriendly;
@@ -354,7 +379,7 @@ namespace Dnn.PersonaBar.Pages.Components
                                 path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
                             }
                             path = path.Replace(asciiTabPath, tab.TabPath.Replace("//", "/"));
-                            AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
+                            this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                         }
                     }
                     else
@@ -365,7 +390,7 @@ namespace Dnn.PersonaBar.Pages.Components
                             path = path.Replace(friendlyUrlSettings.ReplaceSpaceWith, String.Empty);
                             if (customPath != null && string.Compare(customPath, path, StringComparison.OrdinalIgnoreCase) != 0)
                             {
-                                AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
+                                this.AddUrlToList(tabs, portalId, -1, alias, urlLocale, path, String.Empty, (isRedirected) ? 301 : 200, isSystem, friendlyUrlSettings, null);
                             }
                         }
 
@@ -396,7 +421,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     if (alias != null)
                     {
                         var urlLocale = locales.Value.Values.FirstOrDefault(local => local.Code == alias.CultureCode);
-                        AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
+                        this.AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
                     }
                 }
                 else
@@ -406,7 +431,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         .SingleOrDefault(p => p.PortalAliasID == url.PortalAliasId);
                     if (alias != null)
                     {
-                        AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
+                        this.AddUrlToList(tabs, portalId, url.SeqNum, alias, urlLocale, url.Url, url.QueryString, statusCode, isSystem, friendlyUrlSettings, url.LastModifiedByUserId);
                     }
                 }
             }
@@ -447,28 +472,17 @@ namespace Dnn.PersonaBar.Pages.Components
                 Id = id,
                 SiteAlias = new KeyValuePair<int, string>(alias.KeyID, alias.HTTPAlias),
                 Path = path,
-                PathWithNoExtension = GetCleanPath(path, friendlyUrlSettings),
+                PathWithNoExtension = this.GetCleanPath(path, friendlyUrlSettings),
                 QueryString = queryString,
                 Locale = (urlLocale != null) ? new KeyValuePair<int, string>(urlLocale.KeyID, urlLocale.EnglishName)
                                              : new KeyValuePair<int, string>(-1, ""),
-                StatusCode = StatusCodes.SingleOrDefault(kv => kv.Key == statusCode),
+                StatusCode = this.StatusCodes.SingleOrDefault(kv => kv.Key == statusCode),
                 SiteAliasUsage = (int)PortalAliasUsageType.ChildPagesInherit,
                 IsSystem = isSystem,
                 UserName = userName
             });
         }
 
-        protected IEnumerable<KeyValuePair<int, string>> StatusCodes
-        {
-            get
-            {
-                return new[]
-                {
-                    new KeyValuePair<int, string>(200, "Active (200)"),
-                    new KeyValuePair<int, string>(301, "Redirect (301)")
-                };
-            }
-        }
         private string GetCleanPath(string path, FriendlyUrlSettings friendlyUrlSettings)
         {
             if (string.IsNullOrEmpty(path))
@@ -481,17 +495,13 @@ namespace Dnn.PersonaBar.Pages.Components
 
             return string.Format("/{0}", urlPath);
         }
+
         public class KeyValuePairComparer : IComparer<KeyValuePair<int, string>>
         {
             public int Compare(KeyValuePair<int, string> pair1, KeyValuePair<int, string> pair2)
             {
                 return String.Compare(pair1.Value, pair2.Value, StringComparison.OrdinalIgnoreCase);
             }
-        }
-
-        protected override Func<IPageUrlsController> GetFactory()
-        {
-            return () => new PageUrlsController();
         }
     }
 }

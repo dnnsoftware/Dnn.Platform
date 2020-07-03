@@ -1,22 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Common;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Log.EventLog
 {
+    using System;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+
     [Serializable]
     public class LogTypeConfigInfo : LogTypeInfo
     {
-        #region NotificationThresholdTimeTypes enum
+        private string _mailFromAddress;
 
         public enum NotificationThresholdTimeTypes
         {
@@ -24,27 +19,23 @@ namespace DotNetNuke.Services.Log.EventLog
             Seconds = 1,
             Minutes = 2,
             Hours = 3,
-            Days = 4
+            Days = 4,
         }
-
-        #endregion
-
-        private string _mailFromAddress;
 
         public DateTime StartDateTime
         {
             get
             {
-                switch (NotificationThresholdTimeType)
+                switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddHours(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(NotificationThresholdTime*-1);
+                        return DateTime.Now.AddDays(this.NotificationThresholdTime * -1);
                     default:
                         return Null.NullDate;
                 }
@@ -55,15 +46,17 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public string MailFromAddress
         {
-            get {                
+            get
+            {
                 var portalSettings = Globals.GetPortalSettings();
-                return 
-                    string.IsNullOrWhiteSpace(_mailFromAddress) 
-                    ? (portalSettings == null ? string.Empty : portalSettings.Email) 
-                    : _mailFromAddress; }
-            set { _mailFromAddress = value; }
-        }
+                return
+                    string.IsNullOrWhiteSpace(this._mailFromAddress)
+                    ? (portalSettings == null ? string.Empty : portalSettings.Email)
+                    : this._mailFromAddress;
+            }
 
+            set { this._mailFromAddress = value; }
+        }
 
         public string MailToAddress { get; set; }
 

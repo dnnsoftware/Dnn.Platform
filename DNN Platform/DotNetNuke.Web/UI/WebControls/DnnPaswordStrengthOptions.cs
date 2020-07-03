@@ -1,15 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Runtime.Serialization;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users.Membership;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Runtime.Serialization;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users.Membership;
+
     [DataContract]
     public class DnnPaswordStrengthOptions
     {
@@ -58,49 +58,49 @@ namespace DotNetNuke.Web.UI.WebControls
         [DataMember(Name = "criteriaValidationExpression")]
         public string CriteriaValidationExpressionText;
 
-		[DataMember(Name = "passwordRulesHeadText")]
-		public string PasswordRulesHeadText;
+        [DataMember(Name = "passwordRulesHeadText")]
+        public string PasswordRulesHeadText;
 
         public DnnPaswordStrengthOptions()
         {
             // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
-            MinLengthText = Utilities.GetLocalizedString("PasswordStrengthMinLength");
-            WeakText = Utilities.GetLocalizedString("PasswordStrengthWeak");
-            FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
-            StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
+            this.MinLengthText = Utilities.GetLocalizedString("PasswordStrengthMinLength");
+            this.WeakText = Utilities.GetLocalizedString("PasswordStrengthWeak");
+            this.FairText = Utilities.GetLocalizedString("PasswordStrengthFair");
+            this.StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong");
 
-            CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
-            CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
-            CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
-            
-			PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
+            this.CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
+            this.CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");
+            this.CriteriaValidationExpressionText = Utilities.GetLocalizedString("CriteriaValidationExpression");
 
-            WeakColor = "#ed1e24";
-            FairColor = "#f6d50a";
-            StrongColor = "#69bd44";
+            this.PasswordRulesHeadText = Utilities.GetLocalizedString("PasswordRulesHeadText");
 
-            LabelCss = "min-length-text";
-            MeterCss = "meter";
+            this.WeakColor = "#ed1e24";
+            this.FairColor = "#f6d50a";
+            this.StrongColor = "#69bd44";
+
+            this.LabelCss = "min-length-text";
+            this.MeterCss = "meter";
         }
 
         /// <summary>
-        /// To avoid fetching data from the database in constructor, the OnSerializing method is consumed
+        /// To avoid fetching data from the database in constructor, the OnSerializing method is consumed.
         /// </summary>
         /// <param name="context"></param>
         [OnSerializing]
         public void OnSerializing(StreamingContext context)
         {
-            int portalId = (PortalController.Instance.GetCurrentPortalSettings()) != null ? (PortalController.Instance.GetCurrentPortalSettings().PortalId) : -1;
+            int portalId = PortalController.Instance.GetCurrentPortalSettings() != null ? PortalController.Instance.GetCurrentPortalSettings().PortalId : -1;
             var settings = new MembershipPasswordSettings(portalId);
 
-            MinLength = settings.MinPasswordLength;
-            CriteriaAtLeastNCharsText = string.Format(CriteriaAtLeastNCharsText, MinLength);
+            this.MinLength = settings.MinPasswordLength;
+            this.CriteriaAtLeastNCharsText = string.Format(this.CriteriaAtLeastNCharsText, this.MinLength);
 
-            MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
-            CriteriaAtLeastNSpecialCharsText = string.Format(CriteriaAtLeastNSpecialCharsText, MinNumberOfSpecialChars);
+            this.MinNumberOfSpecialChars = settings.MinNonAlphanumericCharacters;
+            this.CriteriaAtLeastNSpecialCharsText = string.Format(this.CriteriaAtLeastNSpecialCharsText, this.MinNumberOfSpecialChars);
 
-            ValidationExpression = settings.ValidationExpression;
-            CriteriaValidationExpressionText = string.Format(CriteriaValidationExpressionText, ValidationExpression);
+            this.ValidationExpression = settings.ValidationExpression;
+            this.CriteriaValidationExpressionText = string.Format(this.CriteriaValidationExpressionText, this.ValidationExpression);
         }
     }
 }

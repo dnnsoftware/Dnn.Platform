@@ -1,20 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Runtime.Serialization;
-using Dnn.PersonaBar.Users.Components.Dto;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components.Contracts
 {
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Users.Components.Dto;
+
     [DataContract]
     public class GetUsersContract
     {
         public GetUsersContract()
         {
-            SortColumn = "Joined";
-            SortAscending = false;
+            this.SortColumn = "Joined";
+            this.SortAscending = false;
         }
+
         public int PortalId { get; set; }
         public string SearchText { get; set; }
         public int PageIndex { get; set; }

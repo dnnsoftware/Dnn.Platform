@@ -1,20 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Mvc;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Web.Mvc.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
-  public  class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Web.Mvc.Common;
+
+    public class ValidateAntiForgeryTokenAttribute : AuthorizeAttributeBase
     {
         public virtual bool IsAuthenticated(HttpContextBase httpContext)
         {
@@ -24,14 +25,14 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 {
                     var headers = httpContext.Request.Headers;
                     var form = httpContext.Request.Form;
-                    //Try to fetch the token from Headers. (Used with Dnn service framework.). 
-                    //If not found then fetch it from form fields. (Would be used with standard MVC call).
+
+                    // Try to fetch the token from Headers. (Used with Dnn service framework.).
+                    // If not found then fetch it from form fields. (Would be used with standard MVC call).
                     var token = headers.AllKeys.Contains("RequestVerificationToken") ? headers.GetValues("RequestVerificationToken").FirstOrDefault()
                         : (
-                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault(): null
-                        );
+                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault() : null);
 
-                    var cookieValue = GetAntiForgeryCookieValue(httpContext);
+                    var cookieValue = this.GetAntiForgeryCookieValue(httpContext);
                     if (token != null)
                     {
                         AntiForgery.Instance.Validate(cookieValue, token);
@@ -68,15 +69,16 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 }
             }
 
-            return "";
+            return string.Empty;
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            if (!IsAuthenticated(httpContext))
+            if (!this.IsAuthenticated(httpContext))
             {
                 return false;
             }
+
             return true;
         }
     }

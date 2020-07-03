@@ -1,107 +1,94 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using System.Xml.XPath;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.Services.Localization;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Xml;
+    using System.Xml.XPath;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.Services.Localization;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The LanguagePackWriter class
+    /// The LanguagePackWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class LanguagePackWriter : PackageWriterBase
     {
-		#region "Private Members"
-
         private bool _IsCore = Null.NullBoolean;
         private Locale _Language;
         private LanguagePackInfo _LanguagePack;
-		
-		#endregion
 
-		#region "Constructors"
-
-
-        public LanguagePackWriter(PackageInfo package) : base(package)
+        public LanguagePackWriter(PackageInfo package)
+            : base(package)
         {
-            _LanguagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
-            if (LanguagePack != null)
+            this._LanguagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
+            if (this.LanguagePack != null)
             {
-                _Language = LocaleController.Instance.GetLocale(_LanguagePack.LanguageID);
-                if (LanguagePack.PackageType == LanguagePackType.Core)
+                this._Language = LocaleController.Instance.GetLocale(this._LanguagePack.LanguageID);
+                if (this.LanguagePack.PackageType == LanguagePackType.Core)
                 {
-                    BasePath = Null.NullString;
+                    this.BasePath = Null.NullString;
                 }
                 else
                 {
-					//Get the BasePath of the Dependent Package
-                    PackageInfo dependendentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == LanguagePack.DependentPackageID);
+                    // Get the BasePath of the Dependent Package
+                    PackageInfo dependendentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.LanguagePack.DependentPackageID);
                     PackageWriterBase dependentPackageWriter = PackageWriterFactory.GetWriter(dependendentPackage);
-                    BasePath = dependentPackageWriter.BasePath;
+                    this.BasePath = dependentPackageWriter.BasePath;
                 }
             }
             else
             {
-                BasePath = Null.NullString;
+                this.BasePath = Null.NullString;
             }
         }
 
         public LanguagePackWriter(XPathNavigator manifestNav, InstallerInfo installer)
         {
-            _Language = new Locale();
+            this._Language = new Locale();
             XPathNavigator cultureNav = manifestNav.SelectSingleNode("Culture");
-            _Language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
-            _Language.Code = Util.ReadAttribute(cultureNav, "Code");
-            _Language.Fallback = Localization.Localization.SystemLocale;
+            this._Language.Text = Util.ReadAttribute(cultureNav, "DisplayName");
+            this._Language.Code = Util.ReadAttribute(cultureNav, "Code");
+            this._Language.Fallback = Localization.SystemLocale;
 
-            //Create a Package
-            Package = new PackageInfo(installer);
-            Package.Name = Language.Text;
-            Package.FriendlyName = Language.Text;
-            Package.Description = Null.NullString;
-            Package.Version = new Version(1, 0, 0);
-            Package.License = Util.PACKAGE_NoLicense;
+            // Create a Package
+            this.Package = new PackageInfo(installer);
+            this.Package.Name = this.Language.Text;
+            this.Package.FriendlyName = this.Language.Text;
+            this.Package.Description = Null.NullString;
+            this.Package.Version = new Version(1, 0, 0);
+            this.Package.License = Util.PACKAGE_NoLicense;
 
-            ReadLegacyManifest(manifestNav);
+            this.ReadLegacyManifest(manifestNav);
 
-            if (_IsCore)
+            if (this._IsCore)
             {
-                Package.PackageType = "CoreLanguagePack";
+                this.Package.PackageType = "CoreLanguagePack";
             }
             else
             {
-                Package.PackageType = "ExtensionLanguagePack";
+                this.Package.PackageType = "ExtensionLanguagePack";
             }
-            BasePath = Null.NullString;
+
+            this.BasePath = Null.NullString;
         }
 
-        public LanguagePackWriter(Locale language, PackageInfo package) : base(package)
+        public LanguagePackWriter(Locale language, PackageInfo package)
+            : base(package)
         {
-            _Language = language;
-            BasePath = Null.NullString;
+            this._Language = language;
+            this.BasePath = Null.NullString;
         }
-		
-		#endregion
-
-		#region "Public Properties"
 
         public override bool IncludeAssemblies
         {
@@ -113,38 +100,96 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Language
+        /// Gets or sets the associated Language.
         /// </summary>
-        /// <value>An Locale object</value>
+        /// <value>An Locale object.</value>
         /// -----------------------------------------------------------------------------
         public Locale Language
         {
             get
             {
-                return _Language;
+                return this._Language;
             }
+
             set
             {
-                _Language = value;
+                this._Language = value;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Language Pack
+        /// Gets or sets the associated Language Pack.
         /// </summary>
-        /// <value>An LanguagePackInfo object</value>
+        /// <value>An LanguagePackInfo object.</value>
         /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {
             get
             {
-                return _LanguagePack;
+                return this._LanguagePack;
             }
+
             set
             {
-                _LanguagePack = value;
+                this._LanguagePack = value;
             }
+        }
+
+        protected override void GetFiles(bool includeSource, bool includeAppCode)
+        {
+            // Language file starts at the root
+            this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
+        }
+
+        protected override void ParseFiles(DirectoryInfo folder, string rootPath)
+        {
+            if (this.LanguagePack.PackageType == LanguagePackType.Core)
+            {
+                if ((folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin")) || folder.FullName.ToLowerInvariant().Contains("providers"))
+                {
+                    return;
+                }
+
+                if (folder.FullName.ToLowerInvariant().Contains("install") && folder.FullName.ToLowerInvariant().Contains("temp"))
+                {
+                    return;
+                }
+            }
+
+            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
+            {
+                // Add the Files in the Folder
+                FileInfo[] files = folder.GetFiles();
+                foreach (FileInfo file in files)
+                {
+                    string filePath = folder.FullName.Replace(rootPath, string.Empty);
+                    if (filePath.StartsWith("\\"))
+                    {
+                        filePath = filePath.Substring(1);
+                    }
+
+                    if (file.Name.ToLowerInvariant().Contains(this.Language.Code.ToLowerInvariant()) || (this.Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
+                    {
+                        this.AddFile(Path.Combine(filePath, file.Name));
+                    }
+                }
+            }
+        }
+
+        protected override void WriteFilesToManifest(XmlWriter writer)
+        {
+            LanguageComponentWriter languageFileWriter;
+            if (this.LanguagePack == null)
+            {
+                languageFileWriter = new LanguageComponentWriter(this.Language, this.BasePath, this.Files, this.Package);
+            }
+            else
+            {
+                languageFileWriter = new LanguageComponentWriter(this.LanguagePack, this.BasePath, this.Files, this.Package);
+            }
+
+            languageFileWriter.WriteManifest(writer);
         }
 
         private void ReadLegacyManifest(XPathNavigator manifestNav)
@@ -160,18 +205,18 @@ namespace DotNetNuke.Services.Installer.Writers
                 resourcetype = Util.ReadAttribute(fileNav, "FileType");
                 moduleName = Util.ReadAttribute(fileNav, "ModuleName").ToLowerInvariant();
                 sourceFileName = Path.Combine(resourcetype, Path.Combine(moduleName, fileName));
-                string extendedExtension = "." + Language.Code.ToLowerInvariant() + ".resx";
+                string extendedExtension = "." + this.Language.Code.ToLowerInvariant() + ".resx";
                 switch (resourcetype)
                 {
                     case "GlobalResource":
                         filePath = "App_GlobalResources";
-                        _IsCore = true;
+                        this._IsCore = true;
                         break;
                     case "ControlResource":
                         filePath = "Controls\\App_LocalResources";
                         break;
                     case "AdminResource":
-                        _IsCore = true;
+                        this._IsCore = true;
                         switch (moduleName)
                         {
                             case "authentication":
@@ -184,10 +229,10 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\FileManager\\App_LocalResources";
                                 break;
                             case "host":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "authentication.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "friendlyurls.ascx":
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
@@ -199,12 +244,13 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "lists":
                                 filePath = "DesktopModules\\Admin\\Lists\\App_LocalResources";
                                 break;
                             case "localization":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "languageeditor.ascx":
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
@@ -219,15 +265,16 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
                                         break;
                                     default:
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                 }
+
                                 break;
                             case "logging":
                                 filePath = "DesktopModules\\Admin\\LogViewer\\App_LocalResources";
                                 break;
                             case "moduledefinitions":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "editmodulecontrol.ascx":
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
@@ -239,9 +286,10 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Extensions\\Editors\\App_LocalResources";
                                         break;
                                     default:
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                 }
+
                                 break;
                             case "modules":
                                 filePath = "Admin\\Modules\\App_LocalResources";
@@ -250,7 +298,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\Extensions\\App_LocalResources";
                                 break;
                             case "portal":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "editportalalias.ascx":
                                         filePath = "DesktopModules\\Admin\\Portals\\App_LocalResources";
@@ -277,7 +325,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\SQL\\App_LocalResources";
                                         break;
                                     case "systemmessages.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "template.ascx":
                                         filePath = "DesktopModules\\Admin\\Portals\\App_LocalResources";
@@ -286,12 +334,13 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "Admin\\Portal\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "scheduling":
                                 filePath = "DesktopModules\\Admin\\Scheduler\\App_LocalResources";
                                 break;
                             case "search":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "inputsettings.ascx":
                                         filePath = "DesktopModules\\Admin\\SearchInput\\App_LocalResources";
@@ -309,15 +358,16 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\SearchResults\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "security":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "accessdenied.ascx":
                                         filePath = "Admin\\Security\\App_LocalResources";
                                         break;
                                     case "authenticationsettings.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "editgroups.ascx":
                                         filePath = "DesktopModules\\Admin\\Security\\App_LocalResources";
@@ -326,7 +376,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Security\\App_LocalResources";
                                         break;
                                     case "register.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "roles.ascx":
                                         filePath = "DesktopModules\\Admin\\Security\\App_LocalResources";
@@ -338,9 +388,10 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "Admin\\Security\\App_LocalResources";
                                         break;
                                     case "signin.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                 }
+
                                 break;
                             case "skins":
                                 filePath = "Admin\\Skins\\App_LocalResources";
@@ -349,7 +400,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                 filePath = "DesktopModules\\Admin\\FeedExplorer\\App_LocalResources";
                                 break;
                             case "tabs":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "export.ascx":
                                         filePath = "Admin\\Tabs\\App_LocalResources";
@@ -367,9 +418,10 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Tabs\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "users":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "bulkemail.ascx":
                                         filePath = "DesktopModules\\Admin\\Newsletters\\App_LocalResources";
@@ -409,15 +461,16 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "Admin\\Users\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "vendors":
-                                switch (fileName.Replace(extendedExtension, ""))
+                                switch (fileName.Replace(extendedExtension, string.Empty))
                                 {
                                     case "adsense.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "editadsense.ascx":
-                                        filePath = "";
+                                        filePath = string.Empty;
                                         break;
                                     case "affiliates.ascx":
                                         filePath = "DesktopModules\\Admin\\Vendors\\App_LocalResources";
@@ -444,46 +497,51 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Vendors\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                         }
+
                         break;
                     case "LocalResource":
                         filePath = Path.Combine("DesktopModules", Path.Combine(moduleName, "App_LocalResources"));
-                        //Two assumptions are made here
-                        //1. Core files appear in the package before extension files
-                        //2. Module packages only include one module
-                        if (!_IsCore && _LanguagePack == null)
+
+                        // Two assumptions are made here
+                        // 1. Core files appear in the package before extension files
+                        // 2. Module packages only include one module
+                        if (!this._IsCore && this._LanguagePack == null)
                         {
-							//Check if language is installed
-                            Locale locale = LocaleController.Instance.GetLocale(_Language.Code);
+                            // Check if language is installed
+                            Locale locale = LocaleController.Instance.GetLocale(this._Language.Code);
                             if (locale == null)
                             {
-                                LegacyError = "CoreLanguageError";
+                                this.LegacyError = "CoreLanguageError";
                             }
                             else
                             {
-								//Attempt to figure out the Extension
+                                // Attempt to figure out the Extension
                                 foreach (KeyValuePair<int, DesktopModuleInfo> kvp in
                                     DesktopModuleController.GetDesktopModules(Null.NullInteger))
                                 {
                                     if (kvp.Value.FolderName.ToLowerInvariant() == moduleName)
                                     {
-										//Found Module - Get Package
+                                        // Found Module - Get Package
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
-                                        Package.Name += "_" + dependentPackage.Name;
-                                        Package.FriendlyName += " " + dependentPackage.FriendlyName;
-                                        _LanguagePack = new LanguagePackInfo();
-                                        _LanguagePack.DependentPackageID = dependentPackage.PackageID;
-                                        _LanguagePack.LanguageID = locale.LanguageId;
+                                        this.Package.Name += "_" + dependentPackage.Name;
+                                        this.Package.FriendlyName += " " + dependentPackage.FriendlyName;
+                                        this._LanguagePack = new LanguagePackInfo();
+                                        this._LanguagePack.DependentPackageID = dependentPackage.PackageID;
+                                        this._LanguagePack.LanguageID = locale.LanguageId;
                                         break;
                                     }
                                 }
-                                if (_LanguagePack == null)
+
+                                if (this._LanguagePack == null)
                                 {
-                                    LegacyError = "DependencyError";
+                                    this.LegacyError = "DependencyError";
                                 }
                             }
                         }
+
                         break;
                     case "ProviderResource":
                         filePath = Path.Combine("Providers", Path.Combine(moduleName, "App_LocalResources"));
@@ -492,68 +550,12 @@ namespace DotNetNuke.Services.Installer.Writers
                         filePath = "Install\\App_LocalResources";
                         break;
                 }
+
                 if (!string.IsNullOrEmpty(filePath))
                 {
-                    AddFile(Path.Combine(filePath, fileName), sourceFileName);
+                    this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
                 }
             }
         }
-		
-		#endregion
-
-		#region "Protected methods"
-
-        protected override void GetFiles(bool includeSource, bool includeAppCode)
-        {
-			//Language file starts at the root
-            ParseFolder(Path.Combine(Globals.ApplicationMapPath, BasePath), Globals.ApplicationMapPath);
-        }
-
-        protected override void ParseFiles(DirectoryInfo folder, string rootPath)
-        {
-            if (LanguagePack.PackageType == LanguagePackType.Core)
-            {
-                if (folder.FullName.ToLowerInvariant().Contains("desktopmodules") && !folder.FullName.ToLowerInvariant().Contains("admin") || folder.FullName.ToLowerInvariant().Contains("providers"))
-                {
-                    return;
-                }
-                if (folder.FullName.ToLowerInvariant().Contains("install") && folder.FullName.ToLowerInvariant().Contains("temp"))
-                {
-                    return;
-                }
-            }
-            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() =="_default")
-            {
-				//Add the Files in the Folder
-                FileInfo[] files = folder.GetFiles();
-                foreach (FileInfo file in files)
-                {
-                    string filePath = folder.FullName.Replace(rootPath, "");
-                    if (filePath.StartsWith("\\"))
-                    {
-                        filePath = filePath.Substring(1);
-                    }
-                    if (file.Name.ToLowerInvariant().Contains(Language.Code.ToLowerInvariant()) || (Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
-                    {
-                        AddFile(Path.Combine(filePath, file.Name));
-                    }
-                }
-            }
-        }
-
-        protected override void WriteFilesToManifest(XmlWriter writer)
-        {
-            LanguageComponentWriter languageFileWriter;
-            if (LanguagePack == null)
-            {
-                languageFileWriter = new LanguageComponentWriter(Language, BasePath, Files, Package);
-            }
-            else
-            {
-                languageFileWriter = new LanguageComponentWriter(LanguagePack, BasePath, Files, Package);
-            }
-            languageFileWriter.WriteManifest(writer);
-        }
-		#endregion
     }
 }

@@ -1,27 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Web.Mvc;
-using DotNetNuke.Entities.Host;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Entities.Host;
+
     public class AuthFilterContext
     {
         public AuthFilterContext(AuthorizationContext filterContext, string authFailureMessage)
         {
-            ActionContext = filterContext;
-            AuthFailureMessage = authFailureMessage;
+            this.ActionContext = filterContext;
+            this.AuthFailureMessage = authFailureMessage;
         }
 
         public AuthorizationContext ActionContext { get; private set; }
+
         public string AuthFailureMessage { get; set; }
 
         /// <summary>
@@ -30,10 +31,10 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         /// </summary>
         public virtual void HandleUnauthorizedRequest()
         {
-            ActionContext.Result = new HttpUnauthorizedResult(AuthFailureMessage);
+            this.ActionContext.Result = new HttpUnauthorizedResult(this.AuthFailureMessage);
             if (!Host.DebugMode)
             {
-                ActionContext.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
+                this.ActionContext.RequestContext.HttpContext.Response.SuppressFormsAuthenticationRedirect = true;
             }
         }
     }

@@ -1,42 +1,53 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Common.Utils;
-using DotNetNuke.Services.UserRequest;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Threading;
-using System.Web;
-using System.Web.Hosting;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Net;
+    using System.Threading;
+    using System.Web;
+    using System.Web.Hosting;
+
+    using DotNetNuke.Common.Utils;
+    using DotNetNuke.Services.UserRequest;
+
     public class IPCount
     {
         private const string TempFileExtension = ".tmp";
         private const string CacheAppRelativePath = @"~\App_Data\_ipcount\";
-        private static string _cachePath;
         private static readonly object PurgeQueuedLock = new object();
+        private static readonly object FileLock = new object();
+        private static string _cachePath;
         private static bool _purgeQueued;
         private static TimeSpan _purgeInterval;
-        private static readonly object FileLock = new object();
+
+        static IPCount()
+        {
+            PurgeInterval = new TimeSpan(0, 10, 0);
+            MaxCount = 500;
+            CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
+        }
 
         public static string CachePath
         {
             get { return _cachePath; }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (!Directory.Exists(value))
                 {
                     Directory.CreateDirectory(value);
                 }
+
                 _cachePath = value;
             }
         }
@@ -47,16 +58,19 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _purgeInterval;
             }
+
             set
             {
                 if (value == null)
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
+
                 _purgeInterval = value;
             }
         }
@@ -75,21 +89,16 @@ namespace DotNetNuke.Services.GeneratedImage
                 }
                 else
                 {
-                    File.WriteAllText(CachePath + "_lastpurge", "");
+                    File.WriteAllText(CachePath + "_lastpurge", string.Empty);
                 }
+
                 return lastPurge;
             }
+
             set
             {
-                File.WriteAllText(CachePath + "_lastpurge", "");
+                File.WriteAllText(CachePath + "_lastpurge", string.Empty);
             }
-        }
-
-        static IPCount()
-        {
-            PurgeInterval = new TimeSpan(0, 10, 0);
-            MaxCount = 500;
-            CachePath = HostingEnvironment.MapPath(CacheAppRelativePath);
         }
 
         public static bool CheckIp(string ipAddress)
@@ -120,6 +129,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                 }
                             }
                         }
+
                         Thread.Sleep(0);
                         foreach (var fileinfo in toTryDeleteAgain)
                         {
@@ -132,13 +142,14 @@ namespace DotNetNuke.Services.GeneratedImage
                                 // do nothing at this point, try to delete file during next purge
                             }
                         }
+
                         LastPurge = DateTime.Now;
 
                         _purgeQueued = false;
                     }
                 }
             }
-            
+
             var path = BuildFilePath(ipAddress);
             var count = 1;
             lock (FileLock)
@@ -149,14 +160,27 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (int.TryParse(strCount, out count))
                     {
                         if (count > MaxCount)
+                        {
                             return false;
+                        }
 
                         count++;
                     }
                 }
+
                 File.WriteAllText(path, count.ToString());
                 return true;
             }
+        }
+
+        /// <summary>
+        /// method to get Client ip address.
+        /// </summary>
+        /// <returns>IP Address of visitor.</returns>
+        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
+        public static string GetVisitorIPAddress(HttpContextBase context)
+        {
+            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);
         }
 
         private static string BuildFilePath(string ipAddress)
@@ -164,16 +188,6 @@ namespace DotNetNuke.Services.GeneratedImage
             // it takes only the IP address without PORT for the file name
             var fileName = ipAddress.Split(':')[0];
             return CachePath + fileName + TempFileExtension;
-        }
-
-        /// <summary>
-        /// method to get Client ip address
-        /// </summary>
-        /// <returns>IP Address of visitor</returns>
-        [Obsolete("Deprecated in 9.2.0. Use UserRequestIPAddressController.Instance.GetUserRequestIPAddress. Scheduled removal in v11.0.0.")]
-        public static string GetVisitorIPAddress(HttpContextBase context)
-        {
-            return UserRequestIPAddressController.Instance.GetUserRequestIPAddress(context.Request);            
         }
     }
 }

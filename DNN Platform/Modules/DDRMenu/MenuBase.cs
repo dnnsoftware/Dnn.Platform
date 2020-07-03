@@ -1,222 +1,255 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Caching;
-using System.Web.Compilation;
-using System.Web.UI;
-using System.Xml;
-using System.Xml.Serialization;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.UI;
-using DotNetNuke.Web.DDRMenu.DNNCommon;
-using DotNetNuke.Web.DDRMenu.Localisation;
-using DotNetNuke.Web.DDRMenu.TemplateEngine;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.DDRMenu
 {
-	public class MenuBase
-	{
-		public static MenuBase Instantiate(string menuStyle)
-		{
-			try
-			{
-				var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
-				return new MenuBase {TemplateDef = templateDef};
-			}
-			catch (Exception exc)
-			{
-				throw new ApplicationException(String.Format("Couldn't load menu style '{0}': {1}", menuStyle, exc));
-			}
-		}
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Caching;
+    using System.Web.Compilation;
+    using System.Web.UI;
+    using System.Xml;
+    using System.Xml.Serialization;
 
-		private Settings menuSettings;
-		internal MenuNode RootNode { get; set; }
-		internal Boolean SkipLocalisation { get; set; }
-		public TemplateDefinition TemplateDef { get; set; }
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.UI;
+    using DotNetNuke.Web.DDRMenu.DNNCommon;
+    using DotNetNuke.Web.DDRMenu.Localisation;
+    using DotNetNuke.Web.DDRMenu.TemplateEngine;
 
-		private HttpContext currentContext;
-		private HttpContext CurrentContext { get { return currentContext ?? (currentContext = HttpContext.Current); } }
+    public class MenuBase
+    {
+        private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
+                                                                          {
+                                                                            { "rootonly", "*,0,0" },
+                                                                            { "rootchildren", "+0" },
+                                                                            { "currentchildren", "." },
+                                                                          };
 
-		private PortalSettings hostPortalSettings;
-		internal PortalSettings HostPortalSettings { get { return hostPortalSettings ?? (hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); } }
+        private Settings menuSettings;
 
-		private readonly Dictionary<string, string> nodeSelectorAliases = new Dictionary<string, string>
-																		  {
-																			{"rootonly", "*,0,0"},
-																			{"rootchildren", "+0"},
-																			{"currentchildren", "."}
-																		  };
+        private HttpContext currentContext;
 
-		internal void ApplySettings(Settings settings)
-		{
-			menuSettings = settings;
-		}
+        private PortalSettings hostPortalSettings;
 
-		internal virtual void PreRender()
-		{
-			TemplateDef.AddTemplateArguments(menuSettings.TemplateArguments, true);
-			TemplateDef.AddClientOptions(menuSettings.ClientOptions, true);
+        public TemplateDefinition TemplateDef { get; set; }
 
-			if (!String.IsNullOrEmpty(menuSettings.NodeXmlPath))
-			{
-				LoadNodeXml();
-			}
-			if (!String.IsNullOrEmpty(menuSettings.NodeSelector))
-			{
-				ApplyNodeSelector();
-			}
-			if (!String.IsNullOrEmpty(menuSettings.IncludeNodes))
-			{
-				FilterNodes(menuSettings.IncludeNodes, false);
-			}
-			if (!String.IsNullOrEmpty(menuSettings.ExcludeNodes))
-			{
-				FilterNodes(menuSettings.ExcludeNodes, true);
-			}
-			if (String.IsNullOrEmpty(menuSettings.NodeXmlPath) && !SkipLocalisation)
-			{
-				new Localiser(HostPortalSettings.PortalId).LocaliseNode(RootNode);
-			}
-			if (!String.IsNullOrEmpty(menuSettings.NodeManipulator))
-			{
-				ApplyNodeManipulator();
-			}
+        internal PortalSettings HostPortalSettings
+        {
+            get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }
+        }
 
-		    if (!menuSettings.IncludeHidden)
-		    {
-		        FilterHiddenNodes(RootNode);
-		    }
+        internal MenuNode RootNode { get; set; }
 
-			var imagePathOption =
-				menuSettings.ClientOptions.Find(o => o.Name.Equals("PathImage", StringComparison.InvariantCultureIgnoreCase));
-			RootNode.ApplyContext(
-				imagePathOption == null ? DNNContext.Current.PortalSettings.HomeDirectory : imagePathOption.Value);
+        internal bool SkipLocalisation { get; set; }
 
-			TemplateDef.PreRender();
-		}
+        private HttpContext CurrentContext
+        {
+            get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
+        }
 
-		internal void Render(HtmlTextWriter htmlWriter)
-		{
-		    if (Host.DebugMode)
-		    {
-                htmlWriter.Write("<!-- DDRmenu v07.04.01 - {0} template -->", menuSettings.MenuStyle);
-		    }
+        public static MenuBase Instantiate(string menuStyle)
+        {
+            try
+            {
+                var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
+                return new MenuBase { TemplateDef = templateDef };
+            }
+            catch (Exception exc)
+            {
+                throw new ApplicationException(string.Format("Couldn't load menu style '{0}': {1}", menuStyle, exc));
+            }
+        }
 
-			UserInfo user = null;
-			if (menuSettings.IncludeContext)
-			{
-				user = UserController.Instance.GetCurrentUserInfo();
-				user.Roles = user.Roles; // Touch roles to populate
-			}
+        internal void ApplySettings(Settings settings)
+        {
+            this.menuSettings = settings;
+        }
 
-			TemplateDef.AddClientOptions(new List<ClientOption> {new ClientString("MenuStyle", menuSettings.MenuStyle)}, false);
+        internal virtual void PreRender()
+        {
+            this.TemplateDef.AddTemplateArguments(this.menuSettings.TemplateArguments, true);
+            this.TemplateDef.AddClientOptions(this.menuSettings.ClientOptions, true);
 
-			TemplateDef.Render(new MenuXml {root = RootNode, user = user}, htmlWriter);
-		}
+            if (!string.IsNullOrEmpty(this.menuSettings.NodeXmlPath))
+            {
+                this.LoadNodeXml();
+            }
 
-		private void LoadNodeXml()
-		{
-			menuSettings.NodeXmlPath =
-				MapPath(
-					new PathResolver(TemplateDef.Folder).Resolve(
-						menuSettings.NodeXmlPath,
-						PathResolver.RelativeTo.Manifest,
-						PathResolver.RelativeTo.Skin,
-						PathResolver.RelativeTo.Module,
-						PathResolver.RelativeTo.Portal,
-						PathResolver.RelativeTo.Dnn));
+            if (!string.IsNullOrEmpty(this.menuSettings.NodeSelector))
+            {
+                this.ApplyNodeSelector();
+            }
 
-			var cache = CurrentContext.Cache;
-			RootNode = cache[menuSettings.NodeXmlPath] as MenuNode;
-			if (RootNode != null)
-			{
-				return;
-			}
+            if (!string.IsNullOrEmpty(this.menuSettings.IncludeNodes))
+            {
+                this.FilterNodes(this.menuSettings.IncludeNodes, false);
+            }
 
-			using (var reader = XmlReader.Create(menuSettings.NodeXmlPath))
-			{
-				reader.ReadToFollowing("root");
-				RootNode = (MenuNode)(new XmlSerializer(typeof(MenuNode), "").Deserialize(reader));
-			}
-			cache.Insert(menuSettings.NodeXmlPath, RootNode, new CacheDependency(menuSettings.NodeXmlPath));
-		}
+            if (!string.IsNullOrEmpty(this.menuSettings.ExcludeNodes))
+            {
+                this.FilterNodes(this.menuSettings.ExcludeNodes, true);
+            }
 
-		private void FilterNodes(string nodeString, bool exclude)
-		{
-			var nodeTextStrings = SplitAndTrim(nodeString);
-			var filteredNodes = new List<MenuNode>();
+            if (string.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
+            {
+                new Localiser(this.HostPortalSettings.PortalId).LocaliseNode(this.RootNode);
+            }
+
+            if (!string.IsNullOrEmpty(this.menuSettings.NodeManipulator))
+            {
+                this.ApplyNodeManipulator();
+            }
+
+            if (!this.menuSettings.IncludeHidden)
+            {
+                this.FilterHiddenNodes(this.RootNode);
+            }
+
+            var imagePathOption =
+                this.menuSettings.ClientOptions.Find(o => o.Name.Equals("PathImage", StringComparison.InvariantCultureIgnoreCase));
+            this.RootNode.ApplyContext(
+                imagePathOption == null ? DNNContext.Current.PortalSettings.HomeDirectory : imagePathOption.Value);
+
+            this.TemplateDef.PreRender();
+        }
+
+        internal void Render(HtmlTextWriter htmlWriter)
+        {
+            if (Host.DebugMode)
+            {
+                htmlWriter.Write("<!-- DDRmenu v07.04.01 - {0} template -->", this.menuSettings.MenuStyle);
+            }
+
+            UserInfo user = null;
+            if (this.menuSettings.IncludeContext)
+            {
+                user = UserController.Instance.GetCurrentUserInfo();
+                user.Roles = user.Roles; // Touch roles to populate
+            }
+
+            this.TemplateDef.AddClientOptions(new List<ClientOption> { new ClientString("MenuStyle", this.menuSettings.MenuStyle) }, false);
+
+            this.TemplateDef.Render(new MenuXml { root = this.RootNode, user = user }, htmlWriter);
+        }
+
+        protected string MapPath(string path)
+        {
+            return string.IsNullOrEmpty(path) ? string.Empty : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
+        }
+
+        private static List<string> SplitAndTrim(string str)
+        {
+            return new List<string>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
+        }
+
+        private void LoadNodeXml()
+        {
+            this.menuSettings.NodeXmlPath =
+                this.MapPath(
+                    new PathResolver(this.TemplateDef.Folder).Resolve(
+                        this.menuSettings.NodeXmlPath,
+                        PathResolver.RelativeTo.Manifest,
+                        PathResolver.RelativeTo.Skin,
+                        PathResolver.RelativeTo.Module,
+                        PathResolver.RelativeTo.Portal,
+                        PathResolver.RelativeTo.Dnn));
+
+            var cache = this.CurrentContext.Cache;
+            this.RootNode = cache[this.menuSettings.NodeXmlPath] as MenuNode;
+            if (this.RootNode != null)
+            {
+                return;
+            }
+
+            using (var reader = XmlReader.Create(this.menuSettings.NodeXmlPath))
+            {
+                reader.ReadToFollowing("root");
+                this.RootNode = (MenuNode)new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
+            }
+
+            cache.Insert(this.menuSettings.NodeXmlPath, this.RootNode, new CacheDependency(this.menuSettings.NodeXmlPath));
+        }
+
+        private void FilterNodes(string nodeString, bool exclude)
+        {
+            var nodeTextStrings = SplitAndTrim(nodeString);
+            var filteredNodes = new List<MenuNode>();
             var tc = new TabController();
-		    var flattenedNodes = new MenuNode();
+            var flattenedNodes = new MenuNode();
 
-			foreach (var nodeText in nodeTextStrings)
-			{
-				if (nodeText.StartsWith("["))
-				{
-					var roleName = nodeText.Substring(1, nodeText.Length - 2);
-					filteredNodes.AddRange(
-						RootNode.Children.FindAll(
-							n =>
-							{
+            foreach (var nodeText in nodeTextStrings)
+            {
+                if (nodeText.StartsWith("["))
+                {
+                    var roleName = nodeText.Substring(1, nodeText.Length - 2);
+                    filteredNodes.AddRange(
+                        this.RootNode.Children.FindAll(
+                            n =>
+                            {
                                 var tab = TabController.Instance.GetTab(n.TabId, Null.NullInteger, false);
-								foreach (TabPermissionInfo perm in tab.TabPermissions)
-								{
-									if (perm.AllowAccess && (perm.PermissionKey == "VIEW") &&
-										((perm.RoleID == -1) || (perm.RoleName.ToLowerInvariant() == roleName)))
-									{
-										return true;
-									}
-								}
-								return false;
-							}));
-				} 
+                                foreach (TabPermissionInfo perm in tab.TabPermissions)
+                                {
+                                    if (perm.AllowAccess && (perm.PermissionKey == "VIEW") &&
+                                        ((perm.RoleID == -1) || (perm.RoleName.ToLowerInvariant() == roleName)))
+                                    {
+                                        return true;
+                                    }
+                                }
+
+                                return false;
+                            }));
+                }
                 else if (nodeText.StartsWith("#"))
-			    {
+                {
                     var tagName = nodeText.Substring(1, nodeText.Length - 1);
-			        if (!string.IsNullOrEmpty(tagName))
-			        {
-                        //flatten nodes first. tagged pages should be flattened and not heirarchical
+                    if (!string.IsNullOrEmpty(tagName))
+                    {
+                        // flatten nodes first. tagged pages should be flattened and not heirarchical
                         if (flattenedNodes != new MenuNode())
-			                flattenedNodes.Children = RootNode.FlattenChildren(RootNode);
+                        {
+                            flattenedNodes.Children = this.RootNode.FlattenChildren(this.RootNode);
+                        }
 
                         filteredNodes.AddRange(
                             flattenedNodes.Children.FindAll(
                                 n =>
                                 {
                                     var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
-                                    return (tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName));
+                                    return tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName);
                                 }));
-			        }
-
-			    }
-				else
-				{
-                    filteredNodes.Add(RootNode.FindByNameOrId(nodeText));
-				}
-			}
+                    }
+                }
+                else
+                {
+                    filteredNodes.Add(this.RootNode.FindByNameOrId(nodeText));
+                }
+            }
 
             // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
-		    if (flattenedNodes.HasChildren())
-		        RootNode = flattenedNodes;
+            if (flattenedNodes.HasChildren())
+            {
+                this.RootNode = flattenedNodes;
+            }
+
             if (exclude)
             {
-                RootNode.RemoveAll(filteredNodes);
+                this.RootNode.RemoveAll(filteredNodes);
             }
             else
             {
-                RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
+                this.RootNode.Children.RemoveAll(n => filteredNodes.Contains(n) == exclude);
             }
-		}
+        }
 
         private void FilterHiddenNodes(MenuNode parentNode)
         {
@@ -225,130 +258,123 @@ namespace DotNetNuke.Web.DDRMenu
             filteredNodes.AddRange(
                 parentNode.Children.FindAll(
                     n =>
-                    {                     
+                    {
                         var tab = TabController.Instance.GetTab(n.TabId, portalSettings.PortalId);
                         return tab == null || !tab.IsVisible;
                     }));
 
             parentNode.Children.RemoveAll(n => filteredNodes.Contains(n));
 
-            parentNode.Children.ForEach(FilterHiddenNodes);
+            parentNode.Children.ForEach(this.FilterHiddenNodes);
         }
 
         private void ApplyNodeSelector()
-		{
-			string selector;
-			if (!nodeSelectorAliases.TryGetValue(menuSettings.NodeSelector.ToLowerInvariant(), out selector))
-			{
-				selector = menuSettings.NodeSelector;
-			}
+        {
+            string selector;
+            if (!this.nodeSelectorAliases.TryGetValue(this.menuSettings.NodeSelector.ToLowerInvariant(), out selector))
+            {
+                selector = this.menuSettings.NodeSelector;
+            }
 
-			var selectorSplit = SplitAndTrim(selector);
+            var selectorSplit = SplitAndTrim(selector);
 
-			var currentTabId = HostPortalSettings.ActiveTab.TabID;
+            var currentTabId = this.HostPortalSettings.ActiveTab.TabID;
 
-			var newRoot = RootNode;
+            var newRoot = this.RootNode;
 
-			var rootSelector = selectorSplit[0];
-			if (rootSelector != "*")
-			{
-				if (rootSelector.StartsWith("+"))
-				{
-					var depth = Convert.ToInt32(rootSelector);
-					newRoot = RootNode;
-					for (var i = 0; i <= depth; i++)
-					{
-						newRoot = newRoot.Children.Find(n => n.Breadcrumb);
-						if (newRoot == null)
-						{
-							RootNode = new MenuNode();
-							return;
-						}
-					}
-				}
-				else if (rootSelector.StartsWith("-") || rootSelector == "0" || rootSelector == ".")
-				{
-					newRoot = RootNode.FindById(currentTabId);
-					if (newRoot == null)
-					{
-						RootNode = new MenuNode();
-						return;
-					}
+            var rootSelector = selectorSplit[0];
+            if (rootSelector != "*")
+            {
+                if (rootSelector.StartsWith("+"))
+                {
+                    var depth = Convert.ToInt32(rootSelector);
+                    newRoot = this.RootNode;
+                    for (var i = 0; i <= depth; i++)
+                    {
+                        newRoot = newRoot.Children.Find(n => n.Breadcrumb);
+                        if (newRoot == null)
+                        {
+                            this.RootNode = new MenuNode();
+                            return;
+                        }
+                    }
+                }
+                else if (rootSelector.StartsWith("-") || rootSelector == "0" || rootSelector == ".")
+                {
+                    newRoot = this.RootNode.FindById(currentTabId);
+                    if (newRoot == null)
+                    {
+                        this.RootNode = new MenuNode();
+                        return;
+                    }
 
-					if (rootSelector.StartsWith("-"))
-					{
-						for (var n = Convert.ToInt32(rootSelector); n < 0; n++)
-						{
-							if (newRoot.Parent != null)
-							{
-								newRoot = newRoot.Parent;
-							}
-						}
-					}
-				}
-				else
-				{
-					newRoot = RootNode.FindByNameOrId(rootSelector);
-					if (newRoot == null)
-					{
-						RootNode = new MenuNode();
-						return;
-					}
-				}
-			}
+                    if (rootSelector.StartsWith("-"))
+                    {
+                        for (var n = Convert.ToInt32(rootSelector); n < 0; n++)
+                        {
+                            if (newRoot.Parent != null)
+                            {
+                                newRoot = newRoot.Parent;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    newRoot = this.RootNode.FindByNameOrId(rootSelector);
+                    if (newRoot == null)
+                    {
+                        this.RootNode = new MenuNode();
+                        return;
+                    }
+                }
+            }
 
-// ReSharper disable PossibleNullReferenceException
-			RootNode = new MenuNode(newRoot.Children);
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
+            this.RootNode = new MenuNode(newRoot.Children);
 
-			if (selectorSplit.Count > 1)
-			{
-				for (var n = Convert.ToInt32(selectorSplit[1]); n > 0; n--)
-				{
-					var newChildren = new List<MenuNode>();
-					foreach (var child in RootNode.Children)
-					{
-						newChildren.AddRange(child.Children);
-					}
-					RootNode = new MenuNode(newChildren);
-				}
-			}
+            // ReSharper restore PossibleNullReferenceException
+            if (selectorSplit.Count > 1)
+            {
+                for (var n = Convert.ToInt32(selectorSplit[1]); n > 0; n--)
+                {
+                    var newChildren = new List<MenuNode>();
+                    foreach (var child in this.RootNode.Children)
+                    {
+                        newChildren.AddRange(child.Children);
+                    }
 
-			if (selectorSplit.Count > 2)
-			{
-				var newChildren = RootNode.Children;
-				for (var n = Convert.ToInt32(selectorSplit[2]); n > 0; n--)
-				{
-					var nextChildren = new List<MenuNode>();
-					foreach (var child in newChildren)
-					{
-						nextChildren.AddRange(child.Children);
-					}
-					newChildren = nextChildren;
-				}
-				foreach (var node in newChildren)
-				{
-					node.Children = null;
-				}
-			}
-		}
+                    this.RootNode = new MenuNode(newChildren);
+                }
+            }
 
-		private void ApplyNodeManipulator()
-		{
-			RootNode =
-				new MenuNode(
-					((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(menuSettings.NodeManipulator, true, true))).
-						ManipulateNodes(RootNode.Children, HostPortalSettings));
-		}
+            if (selectorSplit.Count > 2)
+            {
+                var newChildren = this.RootNode.Children;
+                for (var n = Convert.ToInt32(selectorSplit[2]); n > 0; n--)
+                {
+                    var nextChildren = new List<MenuNode>();
+                    foreach (var child in newChildren)
+                    {
+                        nextChildren.AddRange(child.Children);
+                    }
 
-		protected string MapPath(string path)
-		{
-			return String.IsNullOrEmpty(path) ? "" : Path.GetFullPath(CurrentContext.Server.MapPath(path));
-		}
+                    newChildren = nextChildren;
+                }
 
-		private static List<string> SplitAndTrim(string str)
-		{
-			return new List<String>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
-		}
-	}
+                foreach (var node in newChildren)
+                {
+                    node.Children = null;
+                }
+            }
+        }
+
+        private void ApplyNodeManipulator()
+        {
+            this.RootNode =
+                new MenuNode(
+                    ((INodeManipulator)Activator.CreateInstance(BuildManager.GetType(this.menuSettings.NodeManipulator, true, true))).
+                        ManipulateNodes(this.RootNode.Children, this.HostPortalSettings));
+        }
+    }
 }

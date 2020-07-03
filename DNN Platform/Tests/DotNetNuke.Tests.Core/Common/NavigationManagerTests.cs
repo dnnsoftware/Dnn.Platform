@@ -1,37 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Abstractions;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Localization;
-using Moq;
-using NUnit.Framework;
-using System.Collections.Generic;
-using System.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Core.Common
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Localization;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture]
     public class NavigationManagerTests
     {
-        private INavigationManager _navigationManager;
         private const int TabID = 100;
         private const int PortalID = 7;
         private const string DefaultURLPattern = "/Default.aspx?tabid={0}";
         private const string DefaultSuperTabPattern = "&portalid={0}";
         private const string ControlKeyPattern = "&ctl={0}";
         private const string LanguagePattern = "&language={0}";
+        private INavigationManager _navigationManager;
 
         [TestFixtureSetUp]
         public void Setup()
         {
-
-            _navigationManager = new NavigationManager(PortalControllerMock());
+            this._navigationManager = new NavigationManager(PortalControllerMock());
             TabController.SetTestableInstance(TabControllerMock());
             LocaleController.SetTestableInstance(LocaleControllerMock());
 
@@ -55,12 +55,13 @@ namespace DotNetNuke.Tests.Core.Common
                         ActiveTab = new TabInfo
                         {
                             TabID = TabID
-                        }
+                        },
                     };
 
                     return portalSettings;
                 }
             }
+
             ITabController TabControllerMock()
             {
                 var mockTabController = new Mock<ITabController>();
@@ -71,11 +72,12 @@ namespace DotNetNuke.Tests.Core.Common
                     .Setup(x => x.GetTab(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()))
                     .Returns(new TabInfo
                     {
-                        CultureCode = "en-US"
+                        CultureCode = "en-US",
                     });
 
                 return mockTabController.Object;
             }
+
             ILocaleController LocaleControllerMock()
             {
                 var mockLocaleController = new Mock<ILocaleController>();
@@ -84,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Common
                     .Returns(new Dictionary<string, Locale>
                     {
                         { "en-US", new Locale() },
-                        { "TEST", new Locale() }
+                        { "TEST", new Locale() },
                     });
 
                 return mockLocaleController.Object;
@@ -94,7 +96,7 @@ namespace DotNetNuke.Tests.Core.Common
         [TestFixtureTearDown]
         public void TearDown()
         {
-            _navigationManager = null;
+            this._navigationManager = null;
             TabController.ClearInstance();
             LocaleController.ClearInstance();
         }
@@ -103,7 +105,7 @@ namespace DotNetNuke.Tests.Core.Common
         public void NavigateUrlTest()
         {
             var expected = string.Format(DefaultURLPattern, TabID);
-            var actual = _navigationManager.NavigateURL();
+            var actual = this._navigationManager.NavigateURL();
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -123,7 +125,7 @@ namespace DotNetNuke.Tests.Core.Common
         public void NavigateUrl_CustomTabID(int tabId)
         {
             var expected = string.Format(DefaultURLPattern, tabId);
-            var actual = _navigationManager.NavigateURL(tabId);
+            var actual = this._navigationManager.NavigateURL(tabId);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -134,7 +136,7 @@ namespace DotNetNuke.Tests.Core.Common
         {
             var customTabId = 55;
             var expected = string.Format(DefaultURLPattern, customTabId);
-            var actual = _navigationManager.NavigateURL(customTabId, false);
+            var actual = this._navigationManager.NavigateURL(customTabId, false);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -154,7 +156,7 @@ namespace DotNetNuke.Tests.Core.Common
         public void NavigateUrl_CustomTab_IsSuperTab(int tabId)
         {
             var expected = string.Format(DefaultURLPattern, tabId) + string.Format(DefaultSuperTabPattern, PortalID);
-            var actual = _navigationManager.NavigateURL(tabId, true);
+            var actual = this._navigationManager.NavigateURL(tabId, true);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -164,11 +166,11 @@ namespace DotNetNuke.Tests.Core.Common
         [Ignore]
         public void NavigateUrl_ControlKey_AccessDenied()
         {
-            // TODO - We can't properly test this until we migrate 
+            // TODO - We can't properly test this until we migrate
             // Globals.AccessDeniedURL to an interface in the abstraction
             // project. The dependencies go very deep and make it very
             // difficult to properly test just the NavigationManager logic.
-            var actual = _navigationManager.NavigateURL("Access Denied");
+            var actual = this._navigationManager.NavigateURL("Access Denied");
         }
 
         [Test]
@@ -176,7 +178,7 @@ namespace DotNetNuke.Tests.Core.Common
         {
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
-            var actual = _navigationManager.NavigateURL(controlKey);
+            var actual = this._navigationManager.NavigateURL(controlKey);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -187,7 +189,7 @@ namespace DotNetNuke.Tests.Core.Common
         {
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) + string.Format(ControlKeyPattern, controlKey);
-            var actual = _navigationManager.NavigateURL(controlKey, new string[0]);
+            var actual = this._navigationManager.NavigateURL(controlKey, new string[0]);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -201,7 +203,7 @@ namespace DotNetNuke.Tests.Core.Common
             var expected = string.Format(DefaultURLPattern, TabID) +
                 string.Format(ControlKeyPattern, controlKey) +
                 $"&{parameters[0]}";
-            var actual = _navigationManager.NavigateURL(controlKey, parameters);
+            var actual = this._navigationManager.NavigateURL(controlKey, parameters);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -220,13 +222,15 @@ namespace DotNetNuke.Tests.Core.Common
         {
             string[] parameters = new string[count];
             for (int index = 0; index < count; index++)
+            {
                 parameters[index] = $"My-Parameter{index}";
+            }
 
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) +
                 string.Format(ControlKeyPattern, controlKey) +
                 parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
-            var actual = _navigationManager.NavigateURL(controlKey, parameters);
+            var actual = this._navigationManager.NavigateURL(controlKey, parameters);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -247,7 +251,7 @@ namespace DotNetNuke.Tests.Core.Common
         {
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, tabId) + string.Format(ControlKeyPattern, controlKey);
-            var actual = _navigationManager.NavigateURL(tabId, controlKey);
+            var actual = this._navigationManager.NavigateURL(tabId, controlKey);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -267,7 +271,7 @@ namespace DotNetNuke.Tests.Core.Common
         public void NavigateUrl_TabID_EmptyControlKey(int tabId)
         {
             var expected = string.Format(DefaultURLPattern, tabId);
-            var actual = _navigationManager.NavigateURL(tabId, string.Empty);
+            var actual = this._navigationManager.NavigateURL(tabId, string.Empty);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -287,7 +291,7 @@ namespace DotNetNuke.Tests.Core.Common
         public void NavigateUrl_TabID_NullControlKey(int tabId)
         {
             var expected = string.Format(DefaultURLPattern, tabId);
-            var actual = _navigationManager.NavigateURL(tabId, string.Empty);
+            var actual = this._navigationManager.NavigateURL(tabId, string.Empty);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -308,16 +312,20 @@ namespace DotNetNuke.Tests.Core.Common
         {
             string[] parameters = new string[count];
             for (int index = 0; index < count; index++)
+            {
                 parameters[index] = $"My-Parameter{index}";
+            }
 
             var customTabId = 51;
             var expected = string.Format(DefaultURLPattern, customTabId) +
                 string.Format(ControlKeyPattern, controlKey);
 
             if (parameters.Length > 0)
+            {
                 expected += parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
+            }
 
-            var actual = _navigationManager.NavigateURL(customTabId, controlKey, parameters);
+            var actual = this._navigationManager.NavigateURL(customTabId, controlKey, parameters);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -339,7 +347,7 @@ namespace DotNetNuke.Tests.Core.Common
             var expected = string.Format(DefaultURLPattern, tabId) +
                 string.Format(ControlKeyPattern, controlKey);
 
-            var actual = _navigationManager.NavigateURL(tabId, controlKey, null);
+            var actual = this._navigationManager.NavigateURL(tabId, controlKey, null);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -361,7 +369,7 @@ namespace DotNetNuke.Tests.Core.Common
             var expected = string.Format(DefaultURLPattern, tabId) +
                 string.Format(ControlKeyPattern, controlKey);
 
-            var actual = _navigationManager.NavigateURL(tabId, default(IPortalSettings), controlKey, null);
+            var actual = this._navigationManager.NavigateURL(tabId, default(IPortalSettings), controlKey, null);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);
@@ -389,7 +397,7 @@ namespace DotNetNuke.Tests.Core.Common
                 string.Format(ControlKeyPattern, controlKey) +
                 string.Format(LanguagePattern, "en-US");
 
-            var actual = _navigationManager.NavigateURL(tabId, mockSettings.Object, controlKey, null);
+            var actual = this._navigationManager.NavigateURL(tabId, mockSettings.Object, controlKey, null);
 
             Assert.IsNotNull(actual);
             Assert.AreEqual(expected, actual);

@@ -1,58 +1,65 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Specialized;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGenericHiddenField<T> : HiddenField where T : class, new()
-    {
+    using System.Collections.Specialized;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common.Utilities;
+
+    public class DnnGenericHiddenField<T> : HiddenField
+        where T : class, new()
+    {
         private T _typedValue = null;
 
         private bool _isValueSerialized = false;
-        public T TypedValue
-        {
-            get
-            {
-                return _typedValue;
-            }
-            set
-            {
-                _typedValue = value;
-                _isValueSerialized = false;
-            }
-        }
 
         public T TypedValueOrDefault
         {
             get
             {
-                return TypedValue ?? (TypedValue = new T());
+                return this.TypedValue ?? (this.TypedValue = new T());
             }
         }
 
         public bool HasValue
         {
-            get { return _typedValue != null; }
+            get { return this._typedValue != null; }
+        }
+
+        public T TypedValue
+        {
+            get
+            {
+                return this._typedValue;
+            }
+
+            set
+            {
+                this._typedValue = value;
+                this._isValueSerialized = false;
+            }
+        }
+
+        public override void RenderControl(HtmlTextWriter writer)
+        {
+            this.EnsureValue();
+            base.RenderControl(writer);
         }
 
         protected override object SaveViewState()
         {
-            EnsureValue();
+            this.EnsureValue();
             return base.SaveViewState();
         }
 
         protected override void LoadViewState(object savedState)
         {
             base.LoadViewState(savedState);
-            SetTypedValue();
+            this.SetTypedValue();
         }
 
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -60,41 +67,35 @@ namespace DotNetNuke.Web.UI.WebControls
             var controlsStateChanged = base.LoadPostData(postDataKey, postCollection);
             if (controlsStateChanged)
             {
-                SetTypedValue();
+                this.SetTypedValue();
             }
+
             return controlsStateChanged;
+        }
+
+        protected override void TrackViewState()
+        {
+            this.EnsureValue();
+            base.TrackViewState();
         }
 
         private void SetTypedValue()
         {
-            _typedValue = string.IsNullOrEmpty(Value) ? null : Json.Deserialize<T>(Value);
+            this._typedValue = string.IsNullOrEmpty(this.Value) ? null : Json.Deserialize<T>(this.Value);
         }
 
         private void EnsureValue()
         {
-            if (!_isValueSerialized)
+            if (!this._isValueSerialized)
             {
-                SerializeValue();
+                this.SerializeValue();
             }
         }
 
         private void SerializeValue()
         {
-            Value = _typedValue == null ? string.Empty : Json.Serialize(_typedValue);
-            _isValueSerialized = true;
+            this.Value = this._typedValue == null ? string.Empty : Json.Serialize(this._typedValue);
+            this._isValueSerialized = true;
         }
-
-        protected override void TrackViewState()
-        {
-            EnsureValue();
-            base.TrackViewState();
-        }
-
-        public override void RenderControl(HtmlTextWriter writer)
-        {
-            EnsureValue();
-            base.RenderControl(writer);
-        }
-
     }
 }

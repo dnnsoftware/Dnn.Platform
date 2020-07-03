@@ -1,15 +1,16 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.Http;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [DnnExceptionFilter]
     public abstract class DnnApiController : ApiController
     {
@@ -17,16 +18,11 @@ namespace DotNetNuke.Web.Api
 
         protected DnnApiController()
         {
-            _activeModule = new Lazy<ModuleInfo>(InitModuleInfo);
-        }
-
-        private ModuleInfo InitModuleInfo()
-        {
-            return Request.FindModuleInfo();
+            this._activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }
 
         /// <summary>
-        /// PortalSettings for the current portal
+        /// Gets portalSettings for the current portal.
         /// </summary>
         public PortalSettings PortalSettings
         {
@@ -37,16 +33,25 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// UserInfo for the current user
+        /// Gets userInfo for the current user.
         /// </summary>
-        public UserInfo UserInfo { get { return PortalSettings.UserInfo; } }
+        public UserInfo UserInfo
+        {
+            get { return this.PortalSettings.UserInfo; }
+        }
 
         /// <summary>
-        /// ModuleInfo for the current module
+        /// Gets moduleInfo for the current module.
         /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
         /// </summary>
-        public ModuleInfo ActiveModule { 
-            get { return _activeModule.Value; } 
+        public ModuleInfo ActiveModule
+        {
+            get { return this._activeModule.Value; }
+        }
+
+        private ModuleInfo InitModuleInfo()
+        {
+            return this.Request.FindModuleInfo();
         }
     }
 }

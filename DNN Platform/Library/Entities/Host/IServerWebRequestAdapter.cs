@@ -1,12 +1,12 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Net;
-using System.Web;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Host
 {
+    using System.Net;
+    using System.Web;
+
     /// <summary>
     /// IServerWebRequestAdapter used to get server's info when new server added into server collections.
     /// Also it can process the request when send to a server, like sync cache, detect server etc.

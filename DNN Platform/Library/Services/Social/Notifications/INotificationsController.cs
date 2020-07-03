@@ -1,41 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.Social.Notifications
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
+
     /// <summary>
     /// Defines the methods to work with Notifications, NotificationTypes, NotificationTypeActions and NotificationActions.
     /// </summary>
     public interface INotificationsController
     {
-        #region NotificationTypes Methods
-
         /// <summary>
         /// Creates a new notification type.
         /// </summary>
         /// <param name="notificationType"> </param>
         void CreateNotificationType(NotificationType notificationType);
-        
+
         /// <summary>
         /// Deletes an existing notification type.
         /// </summary>
         /// <param name="notificationTypeId">The notification type identifier.</param>
         void DeleteNotificationType(int notificationTypeId);
-        
+
         /// <summary>
         /// Gets a notification type by identifier.
         /// </summary>
         /// <param name="notificationTypeId">The notification type identifier.</param>
         /// <returns>The notification type with the provided identifier.</returns>
         NotificationType GetNotificationType(int notificationTypeId);
-        
+
         /// <summary>
         /// Gets a notification type by name.
         /// </summary>
@@ -43,23 +41,19 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <returns>The notification type with the provided name.</returns>
         NotificationType GetNotificationType(string name);
 
-        #endregion
-
-        #region NotificationTypeActions Methods
-        
         /// <summary>
         /// Deletes an existing notification type action.
         /// </summary>
         /// <param name="notificationTypeActionId">The notification type action identifier.</param>
         void DeleteNotificationTypeAction(int notificationTypeActionId);
-        
+
         /// <summary>
         /// Gets a notification type action by identifier.
         /// </summary>
         /// <param name="notificationTypeActionId">The notification type action identifier.</param>
         /// <returns>The notification type action with the provided identifier.</returns>
         NotificationTypeAction GetNotificationTypeAction(int notificationTypeActionId);
-        
+
         /// <summary>
         /// Gets a notification type action by notification type and name.
         /// </summary>
@@ -67,7 +61,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="name">The notification type action name.</param>
         /// <returns>The notification type action with the provided notification type and name.</returns>
         NotificationTypeAction GetNotificationTypeAction(int notificationTypeId, string name);
-        
+
         /// <summary>
         /// Gets the list of notification type actions for the provided notification type.
         /// </summary>
@@ -76,26 +70,21 @@ namespace DotNetNuke.Services.Social.Notifications
         IList<NotificationTypeAction> GetNotificationTypeActions(int notificationTypeId);
 
         /// <summary>
-        /// Set the actions for a NotificationType
+        /// Set the actions for a NotificationType.
         /// </summary>
-        /// <param name="actions">The actions</param>
-        /// <param name="notificationTypeId">Id of the notification type</param>
+        /// <param name="actions">The actions.</param>
+        /// <param name="notificationTypeId">Id of the notification type.</param>
         void SetNotificationTypeActions(IList<NotificationTypeAction> actions, int notificationTypeId);
-
-        #endregion
-
-        #region Notifications Methods
 
         /// <summary>
         /// Creates a new notification and sets is sender as the portal administrator.
         /// </summary>
-        /// <param name="notification">The notification</param>
-        /// <param name="portalId">The portalId</param>
+        /// <param name="notification">The notification.</param>
+        /// <param name="portalId">The portalId.</param>
         /// <param name="roles">The list of roles to send the notification to. Leave it as null to send only to individual users.</param>
         /// <param name="users">The list of users to send the notification to. Leave it as null to send only to roles.</param>
-        /// <returns>The new notification.</returns>
         void SendNotification(Notification notification, int portalId, IList<RoleInfo> roles, IList<UserInfo> users);
-        
+
         /// <summary>
         /// Counts the notifications sent to the provided user in the specified portal.
         /// </summary>
@@ -103,7 +92,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// <param name="portalId">The portal identifier.</param>
         /// <returns>The number of notifications sent to the provided user in the specified portal.</returns>
         int CountNotifications(int userId, int portalId);
-        
+
         /// <summary>
         /// Gets a list of notifications sent to the provided user in the specified portal.
         /// </summary>
@@ -126,7 +115,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// Deletes all user notifications in a specific portal.
         /// </summary>
         /// <param name="user">The user to delete notifications for.</param>
-        /// <returns>Number of deleted notifications</returns>
+        /// <returns>Number of deleted notifications.</returns>
         int DeleteUserNotifications(UserInfo user);
 
         /// <summary>
@@ -141,65 +130,59 @@ namespace DotNetNuke.Services.Social.Notifications
         /// Deletes all NotificationRecipient for the NotificationId.
         /// </summary>
         /// <remarks>It also deletes the notification.</remarks>
-        /// <param name="notificationId">The notification identifier.</param>        
+        /// <param name="notificationId">The notification identifier.</param>
         void DeleteAllNotificationRecipients(int notificationId);
 
         /// <summary>
         /// Deletes an individual notification recipient based on NotificationTypeId, Context and UserId.
         /// </summary>
         /// <remarks>It also deletes the notification if there are no more recipients.</remarks>
-        /// <param name="notificationTypeId">Id of the notification type</param>
+        /// <param name="notificationTypeId">Id of the notification type.</param>
         /// <param name="context">Context set by creator of the notification.</param>
         /// <param name="userId">The user identifier.</param>
         void DeleteNotificationRecipient(int notificationTypeId, string context, int userId);
 
         /// <summary>
-        /// Get a Notification
+        /// Get a Notification.
         /// </summary>
-        /// <param name="notificationId">The notificationId</param>
-        /// <returns>A notification</returns>
+        /// <param name="notificationId">The notificationId.</param>
+        /// <returns>A notification.</returns>
         Notification GetNotification(int notificationId);
 
         /// <summary>
-        /// Get a Notification by NotificationTypeId and Context
+        /// Get a Notification by NotificationTypeId and Context.
         /// </summary>
-        /// <param name="notificationTypeId">Id of the notification type</param>
+        /// <param name="notificationTypeId">Id of the notification type.</param>
         /// <param name="context">Context set by creator of the notification.</param>
         /// <returns>The filtered list of notifications sent to the provided user in the specified portal.</returns>
         IList<Notification> GetNotificationByContext(int notificationTypeId, string context);
 
-        #endregion
+        /// <summary>
+        /// Is there a Toast that needs to be sent for a Notification.
+        /// </summary>
+        /// <param name="notificationId">The Notification Id. </param>
+        /// <returns>True if Toast needs to be sent. False otherwise.</returns>
+        bool IsToastPending(int notificationId);
 
-		#region Toast APIS
+        /// <summary>
+        /// Mark a Toast ready for sending.
+        /// </summary>
+        /// <param name="notification">The notification Object. </param>
+        /// <param name="userInfo">The Recipient User Info Object.</param>
+        void MarkReadyForToast(Notification notification, UserInfo userInfo);
 
-		/// <summary>
-		/// Is there a Toast that needs to be sent for a Notification
-		/// </summary>
-		/// <param name="notificationId">The Notification Id </param>
-		/// <returns>True if Toast needs to be sent. False otherwise.</returns>
-		bool IsToastPending(int notificationId);
+        /// <summary>
+        /// Mark Toast being already sent.
+        /// </summary>
+        /// <param name="notificationId">The notification Id. </param>
+        /// <param name="userId">The Recipient User Id. </param>
+        void MarkToastSent(int notificationId, int userId);
 
-		/// <summary>
-		/// Mark a Toast ready for sending
-		/// </summary>
-		/// <param name="notification">The notification Object </param>
-		/// <param name="userInfo">The Recipient User Info Object</param>
-		void MarkReadyForToast(Notification notification, UserInfo userInfo);
-
-		/// <summary>
-		/// Mark Toast being already sent
-		/// </summary>
-		/// <param name="notificationId">The notification Id </param>
-		/// <param name="userId">The Recipient User Id </param>
-		void MarkToastSent(int notificationId, int userId);
-
-		/// <summary>
-		/// Get a list of Toasts that have not been delivered yet.
-		/// </summary>
-		/// <param name="userInfo">UserInfo object</param>
-		/// <returns>List of Undelivered Toasts for the user specific to the portal</returns>
-		IList<Notification> GetToasts(UserInfo userInfo);
-
-		#endregion
+        /// <summary>
+        /// Get a list of Toasts that have not been delivered yet.
+        /// </summary>
+        /// <param name="userInfo">UserInfo object.</param>
+        /// <returns>List of Undelivered Toasts for the user specific to the portal.</returns>
+        IList<Notification> GetToasts(UserInfo userInfo);
     }
 }

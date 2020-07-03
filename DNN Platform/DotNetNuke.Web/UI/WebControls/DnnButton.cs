@@ -1,33 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     public class DnnButton : Button, ILocalizable
     {
         private bool _Localize = true;
 
-        #region "Constructors"
-
         public DnnButton()
         {
-            CssClass = "CommandButton";
-            DisabledCssClass = "CommandButtonDisabled";
+            this.CssClass = "CommandButton";
+            this.DisabledCssClass = "CommandButtonDisabled";
         }
-
-        #endregion
-
-        #region "Public Properties"
 
         [Bindable(true)]
         [Category("Appearance")]
@@ -37,11 +26,12 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["ConfirmMessage"] == null ? string.Empty : ViewState["ConfirmMessage"].ToString();
+                return this.ViewState["ConfirmMessage"] == null ? string.Empty : this.ViewState["ConfirmMessage"].ToString();
             }
+
             set
             {
-                ViewState["ConfirmMessage"] = value;
+                this.ViewState["ConfirmMessage"] = value;
             }
         }
 
@@ -53,62 +43,30 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return ViewState["DisabledCssClass"] == null ? string.Empty : ViewState["DisabledCssClass"].ToString();
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : this.ViewState["DisabledCssClass"].ToString();
             }
+
             set
             {
-                ViewState["DisabledCssClass"] = value;
+                this.ViewState["DisabledCssClass"] = value;
             }
         }
-
-        #endregion
-
-        #region "Protected Methods"
-
-        protected override void OnPreRender(EventArgs e)
-        {
-            base.OnPreRender(e);
-
-            if ((!Enabled))
-            {
-                CssClass = DisabledCssClass;
-            }
-
-            if ((!string.IsNullOrEmpty(ConfirmMessage)))
-            {
-                string msg = ConfirmMessage;
-                if ((Localize))
-                {
-                    msg = Utilities.GetLocalizedStringFromParent(ConfirmMessage, this);
-                }
-                //must be done before render
-                OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
-            }
-        }
-
-        protected override void Render(HtmlTextWriter writer)
-        {
-            LocalizeStrings();
-            base.Render(writer);
-        }
-
-        #endregion
-
-        #region "ILocalizable Implementation"
 
         public bool Localize
         {
             get
             {
-                if (DesignMode)
+                if (this.DesignMode)
                 {
                     return false;
                 }
-                return _Localize;
+
+                return this._Localize;
             }
+
             set
             {
-                _Localize = value;
+                this._Localize = value;
             }
         }
 
@@ -116,34 +74,60 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(ToolTip)))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
-                    ToolTip = Utilities.GetLocalizedStringFromParent(ToolTip, this);
+                    this.ToolTip = Utilities.GetLocalizedStringFromParent(this.ToolTip, this);
                 }
 
-                if ((!string.IsNullOrEmpty(Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
-                    string unlocalizedText = Text;
-                    Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
-                    if (String.IsNullOrEmpty(Text))
+                    string unlocalizedText = this.Text;
+                    this.Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
+                    if (string.IsNullOrEmpty(this.Text))
                     {
-                        Text = unlocalizedText;
+                        this.Text = unlocalizedText;
                     }
 
-                    if ((string.IsNullOrEmpty(ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
-                        ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
-                        if (String.IsNullOrEmpty(ToolTip))
+                        this.ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
+                        if (string.IsNullOrEmpty(this.ToolTip))
                         {
-                            ToolTip = unlocalizedText;
+                            this.ToolTip = unlocalizedText;
                         }
                     }
                 }
             }
         }
 
-        #endregion
+        protected override void OnPreRender(EventArgs e)
+        {
+            base.OnPreRender(e);
+
+            if (!this.Enabled)
+            {
+                this.CssClass = this.DisabledCssClass;
+            }
+
+            if (!string.IsNullOrEmpty(this.ConfirmMessage))
+            {
+                string msg = this.ConfirmMessage;
+                if (this.Localize)
+                {
+                    msg = Utilities.GetLocalizedStringFromParent(this.ConfirmMessage, this);
+                }
+
+                // must be done before render
+                this.OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
+            }
+        }
+
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.LocalizeStrings();
+            base.Render(writer);
+        }
     }
 }

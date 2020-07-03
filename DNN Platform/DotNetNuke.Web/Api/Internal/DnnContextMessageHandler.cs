@@ -1,22 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Globalization;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Web.Http;
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Localization.Internal;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api.Internal
 {
+    using System.Globalization;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Web.Http;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Localization.Internal;
+
     public class DnnContextMessageHandler : MessageProcessingHandler
     {
         protected override HttpRequestMessage ProcessRequest(HttpRequestMessage request, CancellationToken cancellationToken)
@@ -25,6 +26,11 @@ namespace DotNetNuke.Web.Api.Internal
             SetThreadCulture(portalSettings);
 
             return request;
+        }
+
+        protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
+        {
+            return response;
         }
 
         private static void SetThreadCulture(PortalSettings portalSettings)
@@ -49,7 +55,7 @@ namespace DotNetNuke.Web.Api.Internal
             request.GetHttpContext().Items["PortalSettings"] = portalSettings;
             return portalSettings;
         }
-        
+
         private static bool TabIsInPortalOrHost(int tabId, int portalId)
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
@@ -96,11 +102,6 @@ namespace DotNetNuke.Web.Api.Internal
                     }
                 }
             }
-        }
-
-        protected override HttpResponseMessage ProcessResponse(HttpResponseMessage response, CancellationToken cancellationToken)
-        {
-            return response;
         }
     }
 }

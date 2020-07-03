@@ -1,27 +1,20 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Personalization;
-
-using Telerik.Web.UI;
-
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Personalization;
+    using Telerik.Web.UI;
+
     public class DnnLanguageComboBox : WebControl
     {
         private readonly string _viewTypePersonalizationKey;
@@ -32,48 +25,32 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private string _originalValue;
 
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
-
-        #region "Public Events"
-
-        public event EventHandler ItemChanged;
-        public event EventHandler ModeChanged;
-
-        #endregion
-
-        #region "Constructor"
-
         public DnnLanguageComboBox()
         {
-            AutoPostBack = Null.NullBoolean;
-            CausesValidation = Null.NullBoolean;
-            ShowFlag = true;
-        	ShowModeButtons = true;
-            HideLanguagesList = new Dictionary<string, Locale>();
-            FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
-            _viewTypePersonalizationKey = "ViewType" + PortalId;
+            this.AutoPostBack = Null.NullBoolean;
+            this.CausesValidation = Null.NullBoolean;
+            this.ShowFlag = true;
+            this.ShowModeButtons = true;
+            this.HideLanguagesList = new Dictionary<string, Locale>();
+            this.FlagImageUrlFormatString = "~/images/Flags/{0}.gif";
+            this._viewTypePersonalizationKey = "ViewType" + this.PortalId;
         }
 
-        #endregion
+        public event EventHandler ItemChanged;
 
-        #region "Public Properties"
+        public event EventHandler ModeChanged;
 
-        private string DisplayMode
+        public string SelectedValue
         {
             get
             {
-                string displayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", _viewTypePersonalizationKey));
-                if (string.IsNullOrEmpty(displayMode))
+                string selectedValue = this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase) ? this._nativeCombo.SelectedValue : this._englishCombo.SelectedValue;
+                if (selectedValue == "None")
                 {
-                    displayMode = "NATIVE";
+                    selectedValue = Null.NullString;
                 }
-                return displayMode;
+
+                return selectedValue;
             }
         }
 
@@ -87,28 +64,16 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return _languagesListType;
+                return this._languagesListType;
             }
+
             set
             {
-                _languagesListType = value;
+                this._languagesListType = value;
             }
         }
 
         public int PortalId { get; set; }
-
-        public string SelectedValue
-        {
-            get
-            {
-                string selectedValue = DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase) ? _nativeCombo.SelectedValue : _englishCombo.SelectedValue;
-                if (selectedValue == "None")
-                {
-                    selectedValue = Null.NullString;
-                }
-                return selectedValue;
-            }
-        }
 
         public bool ShowFlag { get; set; }
 
@@ -116,36 +81,54 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Determines whether the List Auto Posts Back
+        ///   Gets or sets a value indicating whether determines whether the List Auto Posts Back.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }
 
         public bool CausesValidation { get; set; }
 
-        #endregion
+        protected override HtmlTextWriterTag TagKey
+        {
+            get
+            {
+                return HtmlTextWriterTag.Div;
+            }
+        }
 
-        #region "Private Methods"
+        private string DisplayMode
+        {
+            get
+            {
+                string displayMode = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", this._viewTypePersonalizationKey));
+                if (string.IsNullOrEmpty(displayMode))
+                {
+                    displayMode = "NATIVE";
+                }
+
+                return displayMode;
+            }
+        }
 
         public void BindData(bool refresh)
         {
             if (refresh)
             {
                 List<CultureInfo> cultures;
-                switch (LanguagesListType)
+                switch (this.LanguagesListType)
                 {
                     case LanguagesListType.Supported:
                         cultures = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(Null.NullInteger));
                         break;
                     case LanguagesListType.Enabled:
-                        cultures = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(PortalId));
+                        cultures = LocaleController.Instance.GetCultures(LocaleController.Instance.GetLocales(this.PortalId));
                         break;
                     default:
                         cultures = new List<CultureInfo>(CultureInfo.GetCultures(CultureTypes.SpecificCultures));
                         break;
                 }
 
-                foreach (KeyValuePair<string, Locale> lang in HideLanguagesList)
+                foreach (KeyValuePair<string, Locale> lang in this.HideLanguagesList)
                 {
                     string cultureCode = lang.Value.Code;
                     CultureInfo culture = cultures.Where(c => c.Name == cultureCode).SingleOrDefault();
@@ -155,159 +138,144 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
 
-                _nativeCombo.DataSource = cultures.OrderBy(c => c.NativeName);
-                _englishCombo.DataSource = cultures.OrderBy(c => c.EnglishName);
+                this._nativeCombo.DataSource = cultures.OrderBy(c => c.NativeName);
+                this._englishCombo.DataSource = cultures.OrderBy(c => c.EnglishName);
             }
 
+            this._nativeCombo.DataBind();
+            this._englishCombo.DataBind();
 
-            _nativeCombo.DataBind();
-            _englishCombo.DataBind();
-
-            if (IncludeNoneSpecified && refresh)
+            if (this.IncludeNoneSpecified && refresh)
             {
-                _englishCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
-                _nativeCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
+                this._englishCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
+                this._nativeCombo.Items.Insert(0, new RadComboBoxItem(Localization.GetString("System_Default", Localization.SharedResourceFile), "None"));
             }
         }
 
-        #endregion
+        public void SetLanguage(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+            {
+                this._nativeCombo.SelectedIndex = this._nativeCombo.FindItemIndexByValue("None");
+                this._englishCombo.SelectedIndex = this._englishCombo.FindItemIndexByValue("None");
+            }
+            else
+            {
+                this._nativeCombo.SelectedIndex = this._nativeCombo.FindItemIndexByValue(code);
+                this._englishCombo.SelectedIndex = this._englishCombo.FindItemIndexByValue(code);
+            }
+        }
 
-        #region "Protected Methods"
+        public override void DataBind()
+        {
+            this.BindData(!this.Page.IsPostBack);
+        }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            _nativeCombo = new DnnComboBox();
-            _nativeCombo.DataValueField = "Name";
-            _nativeCombo.DataTextField = "NativeName";
-            _nativeCombo.SelectedIndexChanged += ItemChangedInternal;
-            Controls.Add(_nativeCombo);
+            this._nativeCombo = new DnnComboBox();
+            this._nativeCombo.DataValueField = "Name";
+            this._nativeCombo.DataTextField = "NativeName";
+            this._nativeCombo.SelectedIndexChanged += this.ItemChangedInternal;
+            this.Controls.Add(this._nativeCombo);
 
-            _englishCombo = new DnnComboBox();
-            _englishCombo.DataValueField = "Name";
-            _englishCombo.DataTextField = "EnglishName";
-            _englishCombo.SelectedIndexChanged += ItemChangedInternal;
-            Controls.Add(_englishCombo);
+            this._englishCombo = new DnnComboBox();
+            this._englishCombo.DataValueField = "Name";
+            this._englishCombo.DataTextField = "EnglishName";
+            this._englishCombo.SelectedIndexChanged += this.ItemChangedInternal;
+            this.Controls.Add(this._englishCombo);
 
-            _modeRadioButtonList = new RadioButtonList();
-            _modeRadioButtonList.AutoPostBack = true;
-            _modeRadioButtonList.RepeatDirection = RepeatDirection.Horizontal;
-            _modeRadioButtonList.Items.Add(new ListItem(Localization.GetString("NativeName", Localization.GlobalResourceFile), "NATIVE"));
-            _modeRadioButtonList.Items.Add(new ListItem(Localization.GetString("EnglishName", Localization.GlobalResourceFile), "ENGLISH"));
-            _modeRadioButtonList.SelectedIndexChanged += ModeChangedInternal;
-            Controls.Add(_modeRadioButtonList);
+            this._modeRadioButtonList = new RadioButtonList();
+            this._modeRadioButtonList.AutoPostBack = true;
+            this._modeRadioButtonList.RepeatDirection = RepeatDirection.Horizontal;
+            this._modeRadioButtonList.Items.Add(new ListItem(Localization.GetString("NativeName", Localization.GlobalResourceFile), "NATIVE"));
+            this._modeRadioButtonList.Items.Add(new ListItem(Localization.GetString("EnglishName", Localization.GlobalResourceFile), "ENGLISH"));
+            this._modeRadioButtonList.SelectedIndexChanged += this.ModeChangedInternal;
+            this.Controls.Add(this._modeRadioButtonList);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            _originalValue = SelectedValue;
+            this._originalValue = this.SelectedValue;
         }
 
         protected virtual void OnItemChanged()
         {
-            if (ItemChanged != null)
+            if (this.ItemChanged != null)
             {
-                ItemChanged(this, new EventArgs());
+                this.ItemChanged(this, new EventArgs());
             }
         }
 
         protected void OnModeChanged(EventArgs e)
         {
-            if (ModeChanged != null)
+            if (this.ModeChanged != null)
             {
-                ModeChanged(this, e);
+                this.ModeChanged(this, e);
             }
         }
 
-
         protected override void OnPreRender(EventArgs e)
         {
-            if (DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase))
+            if (this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase))
             {
-                if (_englishCombo.Items.FindItemByValue(_originalValue) != null)
+                if (this._englishCombo.Items.FindItemByValue(this._originalValue) != null)
                 {
-                    _englishCombo.Items.FindItemByValue(_originalValue).Selected = true;
+                    this._englishCombo.Items.FindItemByValue(this._originalValue).Selected = true;
                 }
             }
             else
             {
-                if (_nativeCombo.Items.FindItemByValue(_originalValue) != null)
+                if (this._nativeCombo.Items.FindItemByValue(this._originalValue) != null)
                 {
-                    _nativeCombo.Items.FindItemByValue(_originalValue).Selected = true;
+                    this._nativeCombo.Items.FindItemByValue(this._originalValue).Selected = true;
                 }
             }
 
-            _modeRadioButtonList.Items.FindByValue(DisplayMode).Selected = true;
+            this._modeRadioButtonList.Items.FindByValue(this.DisplayMode).Selected = true;
 
-            foreach (RadComboBoxItem item in _englishCombo.Items)
+            foreach (RadComboBoxItem item in this._englishCombo.Items)
             {
-                item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
-            }
-            foreach (RadComboBoxItem item in _nativeCombo.Items)
-            {
-                item.ImageUrl = string.Format(FlagImageUrlFormatString, item.Value);
+                item.ImageUrl = string.Format(this.FlagImageUrlFormatString, item.Value);
             }
 
-            _englishCombo.AutoPostBack = AutoPostBack;
-            _englishCombo.CausesValidation = CausesValidation;
-            _englishCombo.Visible = (DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase));
+            foreach (RadComboBoxItem item in this._nativeCombo.Items)
+            {
+                item.ImageUrl = string.Format(this.FlagImageUrlFormatString, item.Value);
+            }
 
-            _nativeCombo.AutoPostBack = AutoPostBack;
-            _nativeCombo.CausesValidation = CausesValidation;
-            _nativeCombo.Visible = (DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase));
+            this._englishCombo.AutoPostBack = this.AutoPostBack;
+            this._englishCombo.CausesValidation = this.CausesValidation;
+            this._englishCombo.Visible = this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase);
 
-            _modeRadioButtonList.Visible = ShowModeButtons;
+            this._nativeCombo.AutoPostBack = this.AutoPostBack;
+            this._nativeCombo.CausesValidation = this.CausesValidation;
+            this._nativeCombo.Visible = this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase);
 
-            _englishCombo.Width = Width;
-            _nativeCombo.Width = Width;
+            this._modeRadioButtonList.Visible = this.ShowModeButtons;
+
+            this._englishCombo.Width = this.Width;
+            this._nativeCombo.Width = this.Width;
 
             base.OnPreRender(e);
         }
 
-        #endregion
-
-        #region "Public Methods"
-
-        public void SetLanguage(string code)
-        {
-            if (string.IsNullOrEmpty(code))
-            {
-                _nativeCombo.SelectedIndex = _nativeCombo.FindItemIndexByValue("None");
-                _englishCombo.SelectedIndex = _englishCombo.FindItemIndexByValue("None");
-            }
-            else
-            {
-                _nativeCombo.SelectedIndex = _nativeCombo.FindItemIndexByValue(code);
-                _englishCombo.SelectedIndex = _englishCombo.FindItemIndexByValue(code);
-            }
-        }
-
-        public override void DataBind()
-        {
-            BindData(!Page.IsPostBack);
-        }
-
-        #endregion
-
-        #region "Event Handlers"
-
         private void ModeChangedInternal(object sender, EventArgs e)
         {
-            Personalization.SetProfile("LanguageDisplayMode", _viewTypePersonalizationKey, _modeRadioButtonList.SelectedValue);
+            Personalization.SetProfile("LanguageDisplayMode", this._viewTypePersonalizationKey, this._modeRadioButtonList.SelectedValue);
 
-            //Resort
-            BindData(true);
+            // Resort
+            this.BindData(true);
 
-            OnModeChanged(EventArgs.Empty);
+            this.OnModeChanged(EventArgs.Empty);
         }
 
         private void ItemChangedInternal(object sender, EventArgs e)
         {
-            OnItemChanged();
+            this.OnItemChanged();
         }
-
-        #endregion
     }
 }

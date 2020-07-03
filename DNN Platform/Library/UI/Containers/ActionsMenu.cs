@@ -1,28 +1,23 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Text.RegularExpressions;
-using System.Web.UI;
-
-using DotNetNuke.Common;
-using DotNetNuke.Entities.Modules.Actions;
-using DotNetNuke.Modules.NavigationProvider;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.UI.WebControls;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.Containers
 {
+    using System;
+    using System.Text.RegularExpressions;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Modules.NavigationProvider;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.UI.WebControls;
+
     /// -----------------------------------------------------------------------------
-    /// Project	 : DotNetNuke
+    /// Project  : DotNetNuke
     /// Namespace: DotNetNuke.UI.Containers
-    /// Class	 : ActionsMenu
+    /// Class    : ActionsMenu
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionsMenu provides a menu for a collection of actions.
@@ -34,338 +29,318 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     public class ActionsMenu : Control, IActionControl
     {
-		#region "Private Members"
-
         private ActionManager _ActionManager;
         private ModuleAction _ActionRoot;
         private int _ExpandDepth = -1;
         private NavigationProvider _ProviderControl;
         private string _ProviderName = "DNNMenuNavigationProvider";
 
-		#endregion
-
-		#region "Protected Properties"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the ActionRoot
-        /// </summary>
-        /// <returns>A ModuleActionCollection</returns>
-        /// -----------------------------------------------------------------------------
-        protected ModuleAction ActionRoot
-        {
-            get
-            {
-                if (_ActionRoot == null)
-                {
-                    _ActionRoot = new ModuleAction(ModuleControl.ModuleContext.GetNextActionID(), " ", "", "", "action.gif");
-                }
-                return _ActionRoot;
-            }
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the Provider Control
-        /// </summary>
-        /// <returns>A NavigationProvider</returns>
-        /// -----------------------------------------------------------------------------
-        protected NavigationProvider ProviderControl
-        {
-            get
-            {
-                return _ProviderControl;
-            }
-        }
-		
-		#endregion
-
-		#region "Public Properties"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and Sets the Expansion Depth for the Control
-        /// </summary>
-        /// <returns>An Integer</returns>
-        /// -----------------------------------------------------------------------------
-        public int ExpandDepth
-        {
-            get
-            {
-                if (PopulateNodesFromClient == false || ProviderControl.SupportsPopulateOnDemand == false)
-                {
-                    return -1;
-                }
-                return _ExpandDepth;
-            }
-            set
-            {
-                _ExpandDepth = value;
-            }
-        }
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets and Sets the Path to the Script Library for the provider
-		/// </summary>
-		/// <returns>A String</returns>
-		/// -----------------------------------------------------------------------------
-        public string PathSystemScript { get; set; }
-
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// Gets and Sets whether the Menu should be populated from the client
-		/// </summary>
-		/// <returns>A Boolean</returns>
-		/// -----------------------------------------------------------------------------
-        public bool PopulateNodesFromClient { get; set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets and Sets the Name of the provider to use
-        /// </summary>
-        /// <returns>A String</returns>
-        /// -----------------------------------------------------------------------------
-        public string ProviderName
-        {
-            get
-            {
-                return _ProviderName;
-            }
-            set
-            {
-                _ProviderName = value;
-            }
-        }
-
-        #region IActionControl Members
-
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
             get
             {
-                if (_ActionManager == null)
+                if (this._ActionManager == null)
                 {
-                    _ActionManager = new ActionManager(this);
+                    this._ActionManager = new ActionManager(this);
                 }
-                return _ActionManager;
+
+                return this._ActionManager;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and Sets the Expansion Depth for the Control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An Integer.</returns>
+        /// -----------------------------------------------------------------------------
+        public int ExpandDepth
+        {
+            get
+            {
+                if (this.PopulateNodesFromClient == false || this.ProviderControl.SupportsPopulateOnDemand == false)
+                {
+                    return -1;
+                }
+
+                return this._ExpandDepth;
+            }
+
+            set
+            {
+                this._ExpandDepth = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and Sets the Path to the Script Library for the provider.
+        /// </summary>
+        /// <returns>A String.</returns>
+        /// -----------------------------------------------------------------------------
+        public string PathSystemScript { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client.
+        /// </summary>
+        /// <returns>A Boolean.</returns>
+        /// -----------------------------------------------------------------------------
+        public bool PopulateNodesFromClient { get; set; }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and Sets the Name of the provider to use.
+        /// </summary>
+        /// <returns>A String.</returns>
+        /// -----------------------------------------------------------------------------
+        public string ProviderName
+        {
+            get
+            {
+                return this._ProviderName;
+            }
+
+            set
+            {
+                this._ProviderName = value;
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
+        /// </summary>
+        /// <returns>An IModuleControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
-        #endregion
-		
-		#endregion
-
-		#region "Private Methods"
-
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BindMenu binds the Navigation Provider to the Node Collection
+        /// Gets the ActionRoot.
         /// </summary>
-        /// <param name="objNodes">The Nodes collection to bind</param>
+        /// <returns>A ModuleActionCollection.</returns>
         /// -----------------------------------------------------------------------------
-        private void BindMenu(DNNNodeCollection objNodes)
+        protected ModuleAction ActionRoot
         {
-            Visible = ActionManager.DisplayControl(objNodes);
-            if (Visible)
+            get
             {
-                //since we always bind we need to clear the nodes for providers that maintain their state
-                ProviderControl.ClearNodes();
-                foreach (DNNNode objNode in objNodes)
+                if (this._ActionRoot == null)
                 {
-                    ProcessNodes(objNode);
+                    this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
                 }
-                ProviderControl.Bind(objNodes);
-            }
-        }
 
-		/// -----------------------------------------------------------------------------
-		/// <summary>
-		/// ProcessNodes proceses a single node and its children
-		/// </summary>
-		/// <param name="objParent">The Node to process</param>
-		/// -----------------------------------------------------------------------------
-        private void ProcessNodes(DNNNode objParent)
-        {
-            if (!String.IsNullOrEmpty(objParent.JSFunction))
-            {
-                objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, Page.ClientScript.GetPostBackEventReference(ProviderControl.NavigationControl, objParent.ID));
-            }
-            foreach (DNNNode objNode in objParent.DNNNodes)
-            {
-                ProcessNodes(objNode);
+                return this._ActionRoot;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SetMenuDefaults sets up the default values
+        /// Gets the Provider Control.
         /// </summary>
+        /// <returns>A NavigationProvider.</returns>
         /// -----------------------------------------------------------------------------
-        private void SetMenuDefaults()
+        protected NavigationProvider ProviderControl
         {
-            try
+            get
             {
-				//--- original page set attributes ---
-                ProviderControl.StyleIconWidth = 15;
-                ProviderControl.MouseOutHideDelay = 500;
-                ProviderControl.MouseOverAction = NavigationProvider.HoverAction.Expand;
-                ProviderControl.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
-
-                //style sheet settings
-                ProviderControl.CSSControl = "ModuleTitle_MenuBar";
-                ProviderControl.CSSContainerRoot = "ModuleTitle_MenuContainer";
-                ProviderControl.CSSNode = "ModuleTitle_MenuItem";
-                ProviderControl.CSSIcon = "ModuleTitle_MenuIcon";
-                ProviderControl.CSSContainerSub = "ModuleTitle_SubMenu";
-                ProviderControl.CSSBreak = "ModuleTitle_MenuBreak";
-                ProviderControl.CSSNodeHover = "ModuleTitle_MenuItemSel";
-                ProviderControl.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
-                ProviderControl.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
-                
-                ProviderControl.PathImage = Globals.ApplicationPath + "/Images/";
-                ProviderControl.PathSystemImage = Globals.ApplicationPath + "/Images/";
-                ProviderControl.IndicateChildImageSub = "action_right.gif";
-                ProviderControl.IndicateChildren = true;
-                ProviderControl.StyleRoot = "background-color: Transparent; font-size: 1pt;";
-                ProviderControl.NodeClick += MenuItem_Click;
-            }
-            catch (Exception exc) //Module failed to load
-            {
-                Exceptions.ProcessModuleLoadException(this, exc);
+                return this._ProviderControl;
             }
         }
-		
-		#endregion
-
-		#region "Protected Methods"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BindMenu binds the Navigation Provider to the Node Collection
+        /// BindMenu binds the Navigation Provider to the Node Collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected void BindMenu()
         {
-            BindMenu(Navigation.GetActionNodes(ActionRoot, this, ExpandDepth));
+            this.BindMenu(Navigation.GetActionNodes(this.ActionRoot, this, this.ExpandDepth));
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event
+        /// OnAction raises the Action Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
         {
-            if (Action != null)
+            if (this.Action != null)
             {
-                Action(this, e);
+                this.Action(this, e);
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnInit runs during the controls initialisation phase
+        /// OnInit runs during the controls initialisation phase.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
         {
-            _ProviderControl = NavigationProvider.Instance(ProviderName);
-            ProviderControl.PopulateOnDemand += ProviderControl_PopulateOnDemand;
+            this._ProviderControl = NavigationProvider.Instance(this.ProviderName);
+            this.ProviderControl.PopulateOnDemand += this.ProviderControl_PopulateOnDemand;
             base.OnInit(e);
-            ProviderControl.ControlID = "ctl" + ID;
-            ProviderControl.Initialize();
-            Controls.Add(ProviderControl.NavigationControl);
+            this.ProviderControl.ControlID = "ctl" + this.ID;
+            this.ProviderControl.Initialize();
+            this.Controls.Add(this.ProviderControl.NavigationControl);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnLoad runs during the controls load phase
+        /// OnLoad runs during the controls load phase.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            //Add the Actions to the Action Root
-            ActionRoot.Actions.AddRange(ModuleControl.ModuleContext.Actions);
+            // Add the Actions to the Action Root
+            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions);
 
-            //Set Menu Defaults
-            SetMenuDefaults();
+            // Set Menu Defaults
+            this.SetMenuDefaults();
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs during the controls pre-render phase
+        /// OnPreRender runs during the controls pre-render phase.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            BindMenu();
+            this.BindMenu();
         }
-
-		#endregion
-
-		#region "Event Handlers"
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// MenuItem_Click handles the Menu Click event
+        /// BindMenu binds the Navigation Provider to the Node Collection.
+        /// </summary>
+        /// <param name="objNodes">The Nodes collection to bind.</param>
+        /// -----------------------------------------------------------------------------
+        private void BindMenu(DNNNodeCollection objNodes)
+        {
+            this.Visible = this.ActionManager.DisplayControl(objNodes);
+            if (this.Visible)
+            {
+                // since we always bind we need to clear the nodes for providers that maintain their state
+                this.ProviderControl.ClearNodes();
+                foreach (DNNNode objNode in objNodes)
+                {
+                    this.ProcessNodes(objNode);
+                }
+
+                this.ProviderControl.Bind(objNodes);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// ProcessNodes proceses a single node and its children.
+        /// </summary>
+        /// <param name="objParent">The Node to process.</param>
+        /// -----------------------------------------------------------------------------
+        private void ProcessNodes(DNNNode objParent)
+        {
+            if (!string.IsNullOrEmpty(objParent.JSFunction))
+            {
+                objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID));
+            }
+
+            foreach (DNNNode objNode in objParent.DNNNodes)
+            {
+                this.ProcessNodes(objNode);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// SetMenuDefaults sets up the default values.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        private void SetMenuDefaults()
+        {
+            try
+            {
+                //--- original page set attributes ---
+                this.ProviderControl.StyleIconWidth = 15;
+                this.ProviderControl.MouseOutHideDelay = 500;
+                this.ProviderControl.MouseOverAction = NavigationProvider.HoverAction.Expand;
+                this.ProviderControl.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
+
+                // style sheet settings
+                this.ProviderControl.CSSControl = "ModuleTitle_MenuBar";
+                this.ProviderControl.CSSContainerRoot = "ModuleTitle_MenuContainer";
+                this.ProviderControl.CSSNode = "ModuleTitle_MenuItem";
+                this.ProviderControl.CSSIcon = "ModuleTitle_MenuIcon";
+                this.ProviderControl.CSSContainerSub = "ModuleTitle_SubMenu";
+                this.ProviderControl.CSSBreak = "ModuleTitle_MenuBreak";
+                this.ProviderControl.CSSNodeHover = "ModuleTitle_MenuItemSel";
+                this.ProviderControl.CSSIndicateChildSub = "ModuleTitle_MenuArrow";
+                this.ProviderControl.CSSIndicateChildRoot = "ModuleTitle_RootMenuArrow";
+
+                this.ProviderControl.PathImage = Globals.ApplicationPath + "/Images/";
+                this.ProviderControl.PathSystemImage = Globals.ApplicationPath + "/Images/";
+                this.ProviderControl.IndicateChildImageSub = "action_right.gif";
+                this.ProviderControl.IndicateChildren = true;
+                this.ProviderControl.StyleRoot = "background-color: Transparent; font-size: 1pt;";
+                this.ProviderControl.NodeClick += this.MenuItem_Click;
+            }
+            catch (Exception exc) // Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// MenuItem_Click handles the Menu Click event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void MenuItem_Click(NavigationEventArgs args)
         {
             if (Globals.NumberMatchRegex.IsMatch(args.ID))
             {
-                ModuleAction action = ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
-                if (!ActionManager.ProcessAction(action))
+                ModuleAction action = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                if (!this.ActionManager.ProcessAction(action))
                 {
-                    OnAction(new ActionEventArgs(action, ModuleControl.ModuleContext.Configuration));
+                    this.OnAction(new ActionEventArgs(action, this.ModuleControl.ModuleContext.Configuration));
                 }
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProviderControl_PopulateOnDemand handles the Populate On Demand Event
+        /// ProviderControl_PopulateOnDemand handles the Populate On Demand Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void ProviderControl_PopulateOnDemand(NavigationEventArgs args)
         {
-            SetMenuDefaults();
-            ActionRoot.Actions.AddRange(ModuleControl.ModuleContext.Actions); //Modules how add custom actions in control lifecycle will not have those actions populated...
+            this.SetMenuDefaults();
+            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions); // Modules how add custom actions in control lifecycle will not have those actions populated...
 
-            ModuleAction objAction = ActionRoot;
-            if (ActionRoot.ID != Convert.ToInt32(args.ID))
+            ModuleAction objAction = this.ActionRoot;
+            if (this.ActionRoot.ID != Convert.ToInt32(args.ID))
             {
-                objAction = ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
+                objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
             }
+
             if (args.Node == null)
             {
-                args.Node = Navigation.GetActionNode(args.ID, ProviderControl.ID, objAction, this);
+                args.Node = Navigation.GetActionNode(args.ID, this.ProviderControl.ID, objAction, this);
             }
-            ProviderControl.ClearNodes(); //since we always bind we need to clear the nodes for providers that maintain their state
-            BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, ExpandDepth));
+
+            this.ProviderControl.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
+            this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }
-		
-		#endregion
     }
 }

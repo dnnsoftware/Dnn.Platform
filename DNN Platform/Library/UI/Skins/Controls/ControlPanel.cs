@@ -1,37 +1,39 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Web.UI.HtmlControls;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.UI.ControlPanels;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.Skins.Controls
 {
-	public class ControlPanel : SkinObjectBase
-	{
-		public bool IsDockable { get; set; }
+    using System;
+    using System.Web.UI.HtmlControls;
 
-		protected override void  OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.UI.ControlPanels;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
 
-            if (Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
-			{
-				var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
-                var objForm = (HtmlForm)Page.FindControl("Form");
+    public class ControlPanel : SkinObjectBase
+    {
+        public bool IsDockable { get; set; }
 
-                if(objControlPanel.IncludeInControlHierarchy)
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp())
+            {
+                var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
+                var objForm = (HtmlForm)this.Page.FindControl("Form");
+
+                if (objControlPanel.IncludeInControlHierarchy)
                 {
-                    objControlPanel.IsDockable = IsDockable;
+                    objControlPanel.IsDockable = this.IsDockable;
                     if (!Host.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))
-                        Controls.Add(objControlPanel);
+                    {
+                        this.Controls.Add(objControlPanel);
+                    }
                     else
                     {
                         if (objForm != null)
@@ -40,14 +42,14 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         else
                         {
-                            Page.Controls.AddAt(0, objControlPanel);
+                            this.Page.Controls.AddAt(0, objControlPanel);
                         }
                     }
 
-                    //register admin.css
-                    ClientResourceManager.RegisterAdminStylesheet(Page, Globals.HostPath + "admin.css");
+                    // register admin.css
+                    ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
-			}
-		}
-	}
+            }
+        }
+    }
 }

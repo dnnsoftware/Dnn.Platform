@@ -1,24 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Collections.Generic;
-using System.Net;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Library.Prompt.Attributes;
-using Dnn.PersonaBar.Library.Prompt.Models;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 {
+    using System.Collections.Generic;
+    using System.Net;
+
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Library.Prompt.Attributes;
+    using Dnn.PersonaBar.Library.Prompt.Models;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
+    using ModulesControllerLibrary = Dnn.PersonaBar.Library.Controllers.ModulesController;
+
     [ConsoleCommand("copy-module", Constants.ModulesCategory, "Prompt_CopyModule_Description")]
     public class CopyModule : ConsoleCommandBase
     {
-        public override string LocalResourceFile => Constants.LocalResourcesFile;
-
         [FlagParameter("id", "Prompt_CopyModule_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
@@ -34,6 +34,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("includesettings", "Prompt_CopyModule_FlagIncludesettings", "Boolean", "true")]
         private const string FlagIncludesettings = "includesettings";
 
+        public override string LocalResourceFile => Constants.LocalResourcesFile;
         private int ModuleId { get; set; }
         private int PageId { get; set; }
         private int TargetPageId { get; set; }
@@ -42,15 +43,15 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
-            
-            ModuleId = GetFlagValue(FlagId, "Module Id", -1, true, true, true);
-            PageId = GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
-            TargetPageId = GetFlagValue(FlagToPageId, "To Page Id", -1, true, false, true);
-            Pane = GetFlagValue(FlagPane, "Pane", "ContentPane");
-            IncludeSettings = GetFlagValue<bool?>(FlagIncludesettings, "Include settings", null);
-            if (PageId == TargetPageId)
+
+            this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
+            this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
+            this.TargetPageId = this.GetFlagValue(FlagToPageId, "To Page Id", -1, true, false, true);
+            this.Pane = this.GetFlagValue(FlagPane, "Pane", "ContentPane");
+            this.IncludeSettings = this.GetFlagValue<bool?>(FlagIncludesettings, "Include settings", null);
+            if (this.PageId == this.TargetPageId)
             {
-                AddMessage(LocalizeString("Prompt_SourceAndTargetPagesAreSame"));
+                this.AddMessage(this.LocalizeString("Prompt_SourceAndTargetPagesAreSame"));
             }
         }
 
@@ -59,18 +60,18 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             var lst = new List<ModuleInfoModel>();
             KeyValuePair<HttpStatusCode, string> message;
             var copiedModule = ModulesControllerLibrary.Instance.CopyModule(
-                PortalSettings,
-                ModuleId,
-                PageId,
-                TargetPageId,
-                Pane,
-                IncludeSettings ?? true,
+                this.PortalSettings,
+                this.ModuleId,
+                this.PageId,
+                this.TargetPageId,
+                this.Pane,
+                this.IncludeSettings ?? true,
                 out message
                 );
             if (copiedModule == null && !string.IsNullOrEmpty(message.Value))
                 return new ConsoleErrorResultModel(message.Value);
             lst.Add(ModuleInfoModel.FromDnnModuleInfo(copiedModule));
-            return new ConsoleResultModel(LocalizeString("Prompt_ModuleCopied")) { Data = lst, Records = lst.Count };
+            return new ConsoleResultModel(this.LocalizeString("Prompt_ModuleCopied")) { Data = lst, Records = lst.Count };
         }
     }
 }

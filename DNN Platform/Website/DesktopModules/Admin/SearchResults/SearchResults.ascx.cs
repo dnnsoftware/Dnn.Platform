@@ -1,77 +1,75 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Web;
-using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.JavaScriptLibraries;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Search.Internals;
-using DotNetNuke.Web.Client;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Modules.SearchResults
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Web.Client;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class SearchResults : PortalModuleBase
     {
         private const int DefaultPageIndex = 1;
         private const int DefaultPageSize = 15;
         private const int DefaultSortOption = 0;
 
+        private const string MyFileName = "SearchResults.ascx";
+
         private IList<string> _searchContentSources;
         private IList<int> _searchPortalIds;
 
         protected string SearchTerm
         {
-            get { return Request.QueryString["Search"] ?? string.Empty; }
+            get { return this.Request.QueryString["Search"] ?? string.Empty; }
         }
 
         protected string TagsQuery
         {
-            get { return Request.QueryString["Tag"] ?? string.Empty; }
+            get { return this.Request.QueryString["Tag"] ?? string.Empty; }
         }
 
         protected string SearchScopeParam
         {
-            get { return Request.QueryString["Scope"] ?? string.Empty; }
+            get { return this.Request.QueryString["Scope"] ?? string.Empty; }
         }
 
-        protected string [] SearchScope
+        protected string[] SearchScope
         {
             get
             {
-                var searchScopeParam = SearchScopeParam;
+                var searchScopeParam = this.SearchScopeParam;
                 return string.IsNullOrEmpty(searchScopeParam) ? new string[0] : searchScopeParam.Split(',');
             }
         }
 
         protected string LastModifiedParam
         {
-            get { return Request.QueryString["LastModified"] ?? string.Empty; }
+            get { return this.Request.QueryString["LastModified"] ?? string.Empty; }
         }
 
         protected int PageIndex
         {
             get
             {
-                if (string.IsNullOrEmpty(Request.QueryString["Page"]))
+                if (string.IsNullOrEmpty(this.Request.QueryString["Page"]))
                 {
                     return DefaultPageIndex;
                 }
 
                 int pageIndex;
-                if (Int32.TryParse(Request.QueryString["Page"], out pageIndex))
+                if (int.TryParse(this.Request.QueryString["Page"], out pageIndex))
                 {
                     return pageIndex;
                 }
@@ -84,13 +82,13 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get
             {
-                if (string.IsNullOrEmpty(Request.QueryString["Size"]))
+                if (string.IsNullOrEmpty(this.Request.QueryString["Size"]))
                 {
                     return DefaultPageSize;
                 }
 
                 int pageSize;
-                if (Int32.TryParse(Request.QueryString["Size"], out pageSize))
+                if (int.TryParse(this.Request.QueryString["Size"], out pageSize))
                 {
                     return pageSize;
                 }
@@ -103,13 +101,13 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get
             {
-                if (string.IsNullOrEmpty(Request.QueryString["Sort"]))
+                if (string.IsNullOrEmpty(this.Request.QueryString["Sort"]))
                 {
                     return DefaultSortOption;
                 }
 
                 int sortOption;
-                if (Int32.TryParse(Request.QueryString["Sort"], out sortOption))
+                if (int.TryParse(this.Request.QueryString["Sort"], out sortOption))
                 {
                     return sortOption;
                 }
@@ -122,13 +120,14 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get
             {
-                var paramExactSearch = Request.QueryString["ExactSearch"];
+                var paramExactSearch = this.Request.QueryString["ExactSearch"];
 
                 if (!string.IsNullOrEmpty(paramExactSearch) && paramExactSearch.ToLowerInvariant() == "y")
                 {
                     return "checked=\"true\"";
                 }
-                return "";
+
+                return string.Empty;
             }
         }
 
@@ -136,52 +135,30 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get
             {
-                string settings = Convert.ToString(Settings["LinkTarget"]);
+                string settings = Convert.ToString(this.Settings["LinkTarget"]);
                 return string.IsNullOrEmpty(settings) || settings == "0" ? string.Empty : " target=\"_blank\" ";
             }
         }
 
-        protected string ShowDescription => GetBooleanSetting("ShowDescription", true).ToString().ToLowerInvariant();
+        protected string ShowDescription => this.GetBooleanSetting("ShowDescription", true).ToString().ToLowerInvariant();
 
-        protected string ShowSnippet => GetBooleanSetting("ShowSnippet", true).ToString().ToLowerInvariant();
+        protected string ShowSnippet => this.GetBooleanSetting("ShowSnippet", true).ToString().ToLowerInvariant();
 
-        protected string ShowSource => GetBooleanSetting("ShowSource", true).ToString().ToLowerInvariant();
+        protected string ShowSource => this.GetBooleanSetting("ShowSource", true).ToString().ToLowerInvariant();
 
-        protected string ShowLastUpdated => GetBooleanSetting("ShowLastUpdated", true).ToString().ToLowerInvariant();
+        protected string ShowLastUpdated => this.GetBooleanSetting("ShowLastUpdated", true).ToString().ToLowerInvariant();
 
-        protected string ShowTags => GetBooleanSetting("ShowTags", true).ToString().ToLowerInvariant();
+        protected string ShowTags => this.GetBooleanSetting("ShowTags", true).ToString().ToLowerInvariant();
 
-        protected string MaxDescriptionLength => GetIntegerSetting("MaxDescriptionLength", 100).ToString();
-
-        private IList<int> SearchPortalIds
-        {
-            get
-            {
-                if (_searchPortalIds == null)
-                {
-                    _searchPortalIds = new List<int>();
-                    if (!string.IsNullOrEmpty(Convert.ToString(Settings["ScopeForPortals"])))
-                    {
-                        List<string> list = Convert.ToString(Settings["ScopeForPortals"]).Split('|').ToList();
-                        foreach (string l in list) _searchPortalIds.Add(Convert.ToInt32(l));
-                    }
-                    else
-                    {
-                        _searchPortalIds.Add(PortalId); // no setting, just search current portal by default
-                    }
-                }
-
-                return _searchPortalIds;
-            }
-        }
+        protected string MaxDescriptionLength => this.GetIntegerSetting("MaxDescriptionLength", 100).ToString();
 
         protected IList<string> SearchContentSources
         {
             get
             {
-                if (_searchContentSources == null)
+                if (this._searchContentSources == null)
                 {
-                    IList<int> portalIds = SearchPortalIds;
+                    IList<int> portalIds = this.SearchPortalIds;
                     var list = new List<SearchContentSource>();
                     foreach (int portalId in portalIds)
                     {
@@ -189,7 +166,11 @@ namespace DotNetNuke.Modules.SearchResults
                             InternalSearchController.Instance.GetSearchContentSourceList(portalId);
                         foreach (SearchContentSource src in crawlerList)
                         {
-                            if (src.IsPrivate) continue;
+                            if (src.IsPrivate)
+                            {
+                                continue;
+                            }
+
                             if (list.All(r => r.LocalizedName != src.LocalizedName))
                             {
                                 list.Add(src);
@@ -199,12 +180,12 @@ namespace DotNetNuke.Modules.SearchResults
 
                     List<string> configuredList = null;
 
-                    if (!string.IsNullOrEmpty(Convert.ToString(Settings["ScopeForFilters"])))
+                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForFilters"])))
                     {
-                        configuredList = Convert.ToString(Settings["ScopeForFilters"]).Split('|').ToList();
+                        configuredList = Convert.ToString(this.Settings["ScopeForFilters"]).Split('|').ToList();
                     }
 
-                    _searchContentSources = new List<string>();
+                    this._searchContentSources = new List<string>();
 
                     // add other searchable module defs
                     foreach (SearchContentSource contentSource in list)
@@ -212,21 +193,17 @@ namespace DotNetNuke.Modules.SearchResults
                         if (configuredList == null ||
                             configuredList.Any(l => l.Equals(contentSource.LocalizedName)))
                         {
-                            if (!_searchContentSources.Equals(contentSource.LocalizedName))
+                            if (!this._searchContentSources.Equals(contentSource.LocalizedName))
                             {
-                                _searchContentSources.Add(contentSource.LocalizedName);
+                                this._searchContentSources.Add(contentSource.LocalizedName);
                             }
                         }
                     }
                 }
 
-                return _searchContentSources;
+                return this._searchContentSources;
             }
         }
-
-        #region localized string
-
-        private const string MyFileName = "SearchResults.ascx";
 
         protected string DefaultText
         {
@@ -272,7 +249,6 @@ namespace DotNetNuke.Modules.SearchResults
         {
             get { return Localization.GetSafeJSString("Comments", Localization.GetResourceFile(this, MyFileName)); }
         }
-
 
         protected string RelevanceText
         {
@@ -334,7 +310,30 @@ namespace DotNetNuke.Modules.SearchResults
 
         protected string CultureCode { get; set; }
 
-        #endregion
+        private IList<int> SearchPortalIds
+        {
+            get
+            {
+                if (this._searchPortalIds == null)
+                {
+                    this._searchPortalIds = new List<int>();
+                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
+                    {
+                        List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
+                        foreach (string l in list)
+                        {
+                            this._searchPortalIds.Add(Convert.ToInt32(l));
+                        }
+                    }
+                    else
+                    {
+                        this._searchPortalIds.Add(this.PortalId); // no setting, just search current portal by default
+                    }
+                }
+
+                return this._searchPortalIds;
+            }
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -342,43 +341,44 @@ namespace DotNetNuke.Modules.SearchResults
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
-            ClientResourceManager.RegisterStyleSheet(Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
+            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/scripts/dnn.searchBox.js");
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/stylesheets/dnn.searchBox.css", FileOrder.Css.ModuleCss);
+            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/admin/SearchResults/dnn.searchResult.js");
 
-            CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
+            this.CultureCode = Thread.CurrentThread.CurrentCulture.ToString();
 
-            foreach (string o in SearchContentSources)
+            foreach (string o in this.SearchContentSources)
             {
-                var item = new ListItem(o, o) {Selected = CheckedScopeItem(o)};
-                SearchScopeList.Items.Add(item);
+                var item = new ListItem(o, o) { Selected = this.CheckedScopeItem(o) };
+                this.SearchScopeList.Items.Add(item);
             }
 
-            SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString("AllFeaturesSelected",
+            this.SearchScopeList.Options.Localization["AllItemsChecked"] = Localization.GetString(
+                "AllFeaturesSelected",
                 Localization.GetResourceFile(this, MyFileName));
 
-            var pageSizeItem = ResultsPerPageList.FindItemByValue(PageSize.ToString());
+            var pageSizeItem = this.ResultsPerPageList.FindItemByValue(this.PageSize.ToString());
             if (pageSizeItem != null)
             {
                 pageSizeItem.Selected = true;
             }
 
-            SetLastModifiedFilter();
+            this.SetLastModifiedFilter();
         }
 
         private bool CheckedScopeItem(string scopeItemName)
         {
-            var searchScope = SearchScope;
+            var searchScope = this.SearchScope;
             return searchScope.Length == 0 || searchScope.Any(x => x == scopeItemName);
         }
 
         private void SetLastModifiedFilter()
         {
-            var lastModifiedParam = LastModifiedParam;
+            var lastModifiedParam = this.LastModifiedParam;
 
             if (!string.IsNullOrEmpty(lastModifiedParam))
             {
-                var item = AdvnacedDatesList.Items.Cast<ListItem>().FirstOrDefault(x => x.Value == lastModifiedParam);
+                var item = this.AdvnacedDatesList.Items.Cast<ListItem>().FirstOrDefault(x => x.Value == lastModifiedParam);
                 if (item != null)
                 {
                     item.Selected = true;
@@ -388,9 +388,9 @@ namespace DotNetNuke.Modules.SearchResults
 
         private bool GetBooleanSetting(string settingName, bool defaultValue)
         {
-            if (Settings.ContainsKey(settingName) && !string.IsNullOrEmpty(Convert.ToString(Settings[settingName])))
+            if (this.Settings.ContainsKey(settingName) && !string.IsNullOrEmpty(Convert.ToString(this.Settings[settingName])))
             {
-                return Convert.ToBoolean(Settings[settingName]);
+                return Convert.ToBoolean(this.Settings[settingName]);
             }
 
             return defaultValue;
@@ -398,7 +398,7 @@ namespace DotNetNuke.Modules.SearchResults
 
         private int GetIntegerSetting(string settingName, int defaultValue)
         {
-            var settingValue = Convert.ToString(Settings[settingName]);
+            var settingValue = Convert.ToString(this.Settings[settingName]);
             if (!string.IsNullOrEmpty(settingValue) && Regex.IsMatch(settingValue, "^\\d+$"))
             {
                 return Convert.ToInt32(settingValue);

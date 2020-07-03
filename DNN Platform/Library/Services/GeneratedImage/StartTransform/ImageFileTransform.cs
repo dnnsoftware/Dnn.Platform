@@ -1,96 +1,96 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.IO;
-using System.Net;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
+    using System;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.IO;
+    using System.Net;
+
     /// <summary>
-    /// Image File ImageTransform class
+    /// Image File ImageTransform class.
     /// </summary>
     public class ImageFileTransform : ImageTransform
-	{
-		/// <summary>
-		/// File path of the image
-		/// </summary>
-		public string ImageFilePath { get; set; }
+    {
+        public ImageFileTransform()
+        {
+            this.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            this.SmoothingMode = SmoothingMode.HighQuality;
+            this.PixelOffsetMode = PixelOffsetMode.HighQuality;
+            this.CompositingQuality = CompositingQuality.HighQuality;
+        }
 
         /// <summary>
-        /// Url of the image
+        /// Gets provides an Unique String for the image transformation.
+        /// </summary>
+        public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
+
+        /// <summary>
+        /// Gets or sets file path of the image.
+        /// </summary>
+        public string ImageFilePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets url of the image.
         /// </summary>
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Sets the Image to return if no image or error
+        /// Gets or sets the Image to return if no image or error.
         /// </summary>
         public Image EmptyImage { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for the image transformation
-        /// </summary>
-        public override string UniqueString => base.UniqueString + "-" +  ImageFilePath + ImageUrl;
-
-        public ImageFileTransform()
-		{
-            InterpolationMode = InterpolationMode.HighQualityBicubic;
-            SmoothingMode = SmoothingMode.HighQuality;
-            PixelOffsetMode = PixelOffsetMode.HighQuality;
-            CompositingQuality = CompositingQuality.HighQuality;
-		}
-
-        /// <summary>
         /// Processes an input image applying a file image transformation.
-        /// This will return an image after read the stream from the File Path  <see cref="ImageFilePath"/> or Url <see cref="ImageUrl"/>
+        /// This will return an image after read the stream from the File Path  <see cref="ImageFilePath"/> or Url <see cref="ImageUrl"/>.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after file image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after file image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
-            return !string.IsNullOrEmpty(ImageUrl) ? 
-                ProcessImageFromUrl() : 
-                ProcessImageFilePath();
+            return !string.IsNullOrEmpty(this.ImageUrl) ?
+                this.ProcessImageFromUrl() :
+                this.ProcessImageFilePath();
         }
 
         private Image ProcessImageFilePath()
         {
             try
             {
-                using (var stream = new FileStream(ImageFilePath, FileMode.Open))
+                using (var stream = new FileStream(this.ImageFilePath, FileMode.Open))
                 {
-                    return CopyImage(stream);
+                    return this.CopyImage(stream);
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return EmptyImage;
+                return this.EmptyImage;
             }
         }
 
         private Image ProcessImageFromUrl()
         {
-            var httpWebRequest = (HttpWebRequest) WebRequest.Create(ImageUrl);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(this.ImageUrl);
 
             try
             {
-                using (var httpWebReponse = (HttpWebResponse) httpWebRequest.GetResponse())
+                using (var httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse())
                 {
                     using (var stream = httpWebReponse.GetResponseStream())
                     {
-                        return CopyImage(stream);
+                        return this.CopyImage(stream);
                     }
                 }
             }
             catch (Exception ex)
             {
                 Exceptions.Exceptions.LogException(ex);
-                return EmptyImage;
+                return this.EmptyImage;
             }
         }
-	}
+    }
 }

@@ -1,18 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-
-using DotNetNuke.Web.Validators;
-
-using NUnit.Framework;
-
-using ValidationResult = DotNetNuke.Web.Validators.ValidationResult;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.UI.Validation
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+
+    using DotNetNuke.Web.Validators;
+    using NUnit.Framework;
+
+    using ValidationResult = DotNetNuke.Web.Validators.ValidationResult;
+
     [TestFixture]
     public class DataAnnotationsObjectValidatorTests
     {
@@ -26,26 +25,11 @@ namespace DotNetNuke.Tests.UI.Validation
             }
         }
 
-        #region Nested type: TestClass
-
-        public class TestClass
-        {
-            [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
-            public object Foo { get; set; }
-
-            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof (DataAnnotationsObjectValidatorTests))]
-            public string Bar { get; set; }
-        }
-
-        #endregion
-
-        #region Tests
-
         [Test]
         public void ValidateObject_Returns_Successful_Result_If_All_Attributes_On_All_Properties_Validate()
         {
             // Arrange
-            TestClass cls = new TestClass {Foo = new object(), Bar = "Baz"};
+            TestClass cls = new TestClass { Foo = new object(), Bar = "Baz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -59,7 +43,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Returns_Failed_Result_If_Any_Attribute_Does_Not_Validate()
         {
             // Arrange
-            TestClass cls = new TestClass {Foo = new object(), Bar = "BarBaz"};
+            TestClass cls = new TestClass { Foo = new object(), Bar = "BarBaz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -73,7 +57,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Collects_Error_Messages_From_Validation_Attributes()
         {
             // Arrange
-            TestClass cls = new TestClass {Foo = null, Bar = "BarBaz"};
+            TestClass cls = new TestClass { Foo = null, Bar = "BarBaz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -89,7 +73,7 @@ namespace DotNetNuke.Tests.UI.Validation
         public void ValidateObject_Collects_ValidationAttribute_Objects_From_Failed_Validation()
         {
             // Arrange
-            TestClass cls = new TestClass {Foo = null, Bar = "BarBaz"};
+            TestClass cls = new TestClass { Foo = null, Bar = "BarBaz" };
             DataAnnotationsObjectValidator validator = new DataAnnotationsObjectValidator();
 
             // Act
@@ -101,6 +85,13 @@ namespace DotNetNuke.Tests.UI.Validation
             Assert.IsInstanceOf<StringLengthAttribute>(result.Errors.Single(e => e.PropertyName == "Bar").Validator);
         }
 
-        #endregion
+        public class TestClass
+        {
+            [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
+            public object Foo { get; set; }
+
+            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
+            public string Bar { get; set; }
+        }
     }
 }

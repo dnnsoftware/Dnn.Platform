@@ -1,53 +1,53 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Caching;
-
-using DotNetNuke.Common.Internal;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Search.Entities;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Controllers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Caching;
+
+    using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Search.Entities;
+
+    using Localization = DotNetNuke.Services.Localization.Localization;
+
     /// <summary>
-    /// Search Result Controller for Module Crawler
+    /// Search Result Controller for Module Crawler.
     /// </summary>
     /// <remarks></remarks>
     [Serializable]
     public class ModuleResultController : BaseResultController
     {
+        private const string ModuleByIdCacheKey = "ModuleById{0}";
+        private const CacheItemPriority ModuleByIdCachePriority = CacheItemPriority.Normal;
+        private const int ModuleByIdCacheTimeOut = 20;
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
 
         private static Hashtable _moduleSearchControllers = new Hashtable();
         private static object _threadLock = new object();
-
-        #region Abstract Class Implmentation
 
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var viewable = false;
             if (searchResult.ModuleId > 0)
             {
-                //Get All related tabIds from moduleId (while minimizing DB access; using caching)
+                // Get All related tabIds from moduleId (while minimizing DB access; using caching)
                 var moduleId = searchResult.ModuleId;
+
                 // The next call has over 30% performance enhancement over the above one
                 var tabModules = TabController.Instance.GetTabsByPortal(searchResult.PortalId).Values
                     .SelectMany(tabinfo => tabinfo.ChildModules.Where(kv => kv.Key == moduleId)).Select(m => m.Value);
@@ -55,24 +55,25 @@ namespace DotNetNuke.Services.Search.Controllers
                 foreach (ModuleInfo module in tabModules)
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
-                    if (ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
+                    if (this.ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
                     {
-                        //Check If authorised to View Module
-                        if (ModulePermissionController.CanViewModule(module) && HasModuleSearchPermission(module, searchResult))
+                        // Check If authorised to View Module
+                        if (ModulePermissionController.CanViewModule(module) && this.HasModuleSearchPermission(module, searchResult))
                         {
-                            //Verify against search document permissions
+                            // Verify against search document permissions
                             if (string.IsNullOrEmpty(searchResult.Permissions) || PortalSecurity.IsInRoles(searchResult.Permissions))
                             {
                                 viewable = true;
                                 if (string.IsNullOrEmpty(searchResult.Url))
                                 {
-                                    searchResult.Url = GetModuleSearchUrl(module, searchResult);
+                                    searchResult.Url = this.GetModuleSearchUrl(module, searchResult);
                                     if (string.IsNullOrEmpty(searchResult.Url))
                                     {
                                         searchResult.Url = TestableGlobals.Instance.NavigateURL(module.TabID, string.Empty,
                                                                                searchResult.QueryString);
                                     }
                                 }
+
                                 break;
                             }
                         }
@@ -91,10 +92,13 @@ namespace DotNetNuke.Services.Search.Controllers
         public override string GetDocUrl(SearchResult searchResult)
         {
             if (!string.IsNullOrEmpty(searchResult.Url))
+            {
                 return searchResult.Url;
+            }
 
-            var url = Localization.Localization.GetString("SEARCH_NoLink");
-            //Get All related tabIds from moduleId
+            var url = Localization.GetString("SEARCH_NoLink");
+
+            // Get All related tabIds from moduleId
             var tabModules = GetModuleTabs(searchResult.ModuleId);
 
             foreach (ModuleInfo module in tabModules)
@@ -104,7 +108,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     try
                     {
-                        url = GetModuleSearchUrl(module, searchResult);
+                        url = this.GetModuleSearchUrl(module, searchResult);
 
                         if (string.IsNullOrEmpty(url))
                         {
@@ -127,10 +131,6 @@ namespace DotNetNuke.Services.Search.Controllers
             return url;
         }
 
-        private const string ModuleByIdCacheKey = "ModuleById{0}";
-        private const CacheItemPriority ModuleByIdCachePriority = CacheItemPriority.Normal;
-        private const int ModuleByIdCacheTimeOut = 20;
-
         private static ArrayList GetModuleTabs(int moduleID)
         {
             // no manual clearing of the cache exists; let is just expire
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Search.Controllers
         {
             var canView = true;
 
-            var moduleSearchController = GetModuleSearchController(module);
+            var moduleSearchController = this.GetModuleSearchController(module);
             if (moduleSearchController != null)
             {
                 canView = moduleSearchController.HasViewPermission(searchResult);
@@ -152,11 +152,11 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return canView;
         }
-        
+
         private string GetModuleSearchUrl(ModuleInfo module, SearchResult searchResult)
         {
             var url = string.Empty;
-            var moduleSearchController = GetModuleSearchController(module);
+            var moduleSearchController = this.GetModuleSearchController(module);
             if (moduleSearchController != null)
             {
                 url = moduleSearchController.GetDocUrl(searchResult);
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private bool ModuleIsAvailable(TabInfo tab, ModuleInfo module)
         {
-            return GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
+            return this.GetModules(tab).Any(m => m.ModuleID == module.ModuleID && !m.IsDeleted);
         }
 
         private IEnumerable<ModuleInfo> GetModules(TabInfo tab)
@@ -202,7 +202,5 @@ namespace DotNetNuke.Services.Search.Controllers
 
             return TabVersionBuilder.Instance.GetCurrentModules(tab.TabID);
         }
-
-        #endregion
     }
 }

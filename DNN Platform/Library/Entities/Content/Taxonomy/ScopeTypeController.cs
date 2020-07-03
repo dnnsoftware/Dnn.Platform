@@ -1,63 +1,44 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System.Collections.Generic;
-using System.Linq;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Entities.Content.Data;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Content.Taxonomy
 {
-	/// <summary>
-	/// ScopeTypeController provides the business layer of ScopeType.
-	/// </summary>
-	/// <seealso cref="TermController"/>
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Data;
+
+    /// <summary>
+    /// ScopeTypeController provides the business layer of ScopeType.
+    /// </summary>
+    /// <seealso cref="TermController"/>
     public class ScopeTypeController : IScopeTypeController
     {
-        private readonly IDataService _DataService;
         private const int _CacheTimeOut = 20;
+        private readonly IDataService _DataService;
 
-        #region "Constructors"
-
-        public ScopeTypeController() : this(Util.GetDataService())
+        public ScopeTypeController()
+            : this(Util.GetDataService())
         {
         }
 
         public ScopeTypeController(IDataService dataService)
         {
-            _DataService = dataService;
+            this._DataService = dataService;
         }
-
-        #endregion
-
-        #region "Private Methods"
-
-        private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
-        {
-            return CBO.FillQueryable<ScopeType>(_DataService.GetScopeTypes()).ToList();
-        }
-
-        #endregion
-
-        #region "Public Methods"
 
         public int AddScopeType(ScopeType scopeType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
-            scopeType.ScopeTypeId = _DataService.AddScopeType(scopeType);
+            scopeType.ScopeTypeId = this._DataService.AddScopeType(scopeType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
 
             return scopeType.ScopeTypeId;
@@ -70,34 +51,37 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public void DeleteScopeType(ScopeType scopeType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
 
-            _DataService.DeleteScopeType(scopeType);
+            this._DataService.DeleteScopeType(scopeType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
         public IQueryable<ScopeType> GetScopeTypes()
         {
-            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), GetScopeTypesCallBack).AsQueryable();
+            return CBO.GetCachedObject<List<ScopeType>>(new CacheItemArgs(DataCache.ScopeTypesCacheKey, _CacheTimeOut), this.GetScopeTypesCallBack).AsQueryable();
         }
 
         public void UpdateScopeType(ScopeType scopeType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
-            _DataService.UpdateScopeType(scopeType);
+            this._DataService.UpdateScopeType(scopeType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
-        #endregion
+        private object GetScopeTypesCallBack(CacheItemArgs cacheItemArgs)
+        {
+            return CBO.FillQueryable<ScopeType>(this._DataService.GetScopeTypes()).ToList();
+        }
     }
 }

@@ -1,32 +1,38 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Configuration;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading;
-using System.Web;
-using DNN.Integration.Test.Framework;
-using DNN.Integration.Test.Framework.Helpers;
-using Newtonsoft.Json;
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Integration.Tests.Jwt
 {
+    using System;
+    using System.Configuration;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+
+    using DNN.Integration.Test.Framework;
+    using DNN.Integration.Test.Framework.Helpers;
+    using Newtonsoft.Json;
+    using NUnit.Framework;
+
     [TestFixture]
     public class JwtAuthTest : IntegrationTestBase
     {
-        #region private data
+        public const string ExtendTokenQuery = "/API/JwtAuth/mobile/extendtoken";
 
+        private const string LoginQuery = "/API/JwtAuth/mobile/login";
+        private const string LogoutQuery = "/API/JwtAuth/mobile/logout";
+        private const string TestGetQuery = "/API/JwtAuth/mobile/testget";
+        private const string TestPostQuery = "/API/JwtAuth/mobile/testpost";
+        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
+        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
+        private static readonly Encoding TextEncoder = Encoding.UTF8;
         private readonly string _hostName;
         private readonly string _hostPass;
         private readonly HttpClient _httpClient;
-
-        private static readonly Encoding TextEncoder = Encoding.UTF8;
 #if DEBUG
         // for degugging and setting breakpoints
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(300);
@@ -34,21 +40,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         private readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
 #endif
 
-        private const string LoginQuery = "/API/JwtAuth/mobile/login";
-        private const string LogoutQuery = "/API/JwtAuth/mobile/logout";
-        public const string ExtendTokenQuery = "/API/JwtAuth/mobile/extendtoken";
-        private const string TestGetQuery = "/API/JwtAuth/mobile/testget";
-        private const string TestPostQuery = "/API/JwtAuth/mobile/testpost";
-        private const string GetMonikerQuery = "/API/web/mobilehelper/monikers?moduleList=";
-        private const string GetModuleDetailsQuery = "/API/web/mobilehelper/moduledetails?moduleList=";
-
         public JwtAuthTest()
         {
             var url = ConfigurationManager.AppSettings["siteUrl"];
             var siteUri = new Uri(url);
-            _httpClient = new HttpClient { BaseAddress = siteUri, Timeout = _timeout };
-            _hostName = ConfigurationManager.AppSettings["hostUsername"];
-            _hostPass = ConfigurationManager.AppSettings["hostPassword"];
+            this._httpClient = new HttpClient { BaseAddress = siteUri, Timeout = this._timeout };
+            this._hostName = ConfigurationManager.AppSettings["hostUsername"];
+            this._hostPass = ConfigurationManager.AppSettings["hostPassword"];
         }
 
         [TestFixtureSetUp]
@@ -58,7 +56,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                {
                     DatabaseHelper.ExecuteNonQuery("TRUNCATE TABLE {objectQualifier}JsonWebTokens");
+                }
             }
             catch (Exception)
             {
@@ -66,15 +66,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             }
         }
 
-        #endregion
-
-        #region tests
-
         [Test]
         public void InvalidUserLoginShouldFail()
         {
-            var credentials = new { u = _hostName, p = _hostPass + "." };
-            var result = _httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
+            var credentials = new { u = this._hostName, p = this._hostPass + "." };
+            var result = this._httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -83,7 +79,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidUserLoginShouldPass()
         {
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             Assert.IsNotNull(token.UserId);
             Assert.IsNotNull(token.AccessToken);
             Assert.IsNotNull(token.DisplayName);
@@ -101,18 +97,18 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void RequestUsingInvaldatedTokenAfterLogoutShouldFail()
         {
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
 
-            SetAuthHeaderToken(token.AccessToken);
-            var result1 = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token.AccessToken);
+            var result1 = this._httpClient.GetAsync(TestGetQuery).Result;
             var content1 = result1.Content.ReadAsStringAsync().Result;
             LogText(@"content1 => " + content1);
             Assert.AreEqual(HttpStatusCode.OK, result1.StatusCode);
 
-            LogoutUser(token.AccessToken);
+            this.LogoutUser(token.AccessToken);
 
-            SetAuthHeaderToken(token.AccessToken);
-            var result2 = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token.AccessToken);
+            var result2 = this._httpClient.GetAsync(TestGetQuery).Result;
             var content2 = result2.Content.ReadAsStringAsync().Result;
             LogText(@"content2 => " + content2);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result2.StatusCode);
@@ -121,7 +117,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void RequestWithoutTokenShouldFail()
         {
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -130,9 +126,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatedUserGetRequestShouldPass()
         {
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
-            SetAuthHeaderToken(token.AccessToken);
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            this.SetAuthHeaderToken(token.AccessToken);
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -142,9 +138,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatedUserPostRequestShouldPass()
         {
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
-            SetAuthHeaderToken(token.AccessToken);
-            var result = _httpClient.PostAsJsonAsync(TestPostQuery, new { text = "Integraton Testing Rocks!" }).Result;
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            this.SetAuthHeaderToken(token.AccessToken);
+            var result = this._httpClient.PostAsJsonAsync(TestPostQuery, new { text = "Integraton Testing Rocks!" }).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -155,8 +151,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void RenewValidTokenShouldPass()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
-            var token2 = RenewAuthorizationToken(token1);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            var token2 = this.RenewAuthorizationToken(token1);
             Assert.AreNotEqual(token1.AccessToken, token2.AccessToken);
             Assert.AreEqual(token1.RenewalToken, token2.RenewalToken);
             Assert.AreEqual(token1.DisplayName, token2.DisplayName);
@@ -165,14 +161,14 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void UsingOriginalAccessTokenAfterRenewalShouldFail()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
-            var token2 = RenewAuthorizationToken(token1);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            var token2 = this.RenewAuthorizationToken(token1);
             Assert.AreNotEqual(token1.AccessToken, token2.AccessToken);
             Assert.AreEqual(token1.RenewalToken, token2.RenewalToken);
             Assert.AreEqual(token1.DisplayName, token2.DisplayName);
 
-            SetAuthHeaderToken(token1.AccessToken);
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token1.AccessToken);
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -181,34 +177,34 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void TryingToRenewUsingSameTokenMoreTHanOneTimeShouldFail()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
-            RenewAuthorizationToken(token1);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            this.RenewAuthorizationToken(token1);
 
-            SetAuthHeaderToken(token1.AccessToken);
-            var result = _httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
+            this.SetAuthHeaderToken(token1.AccessToken);
+            var result = this._httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
         [Test]
         public void RenewMultipleTimesShouldPass()
         {
-            RenewAuthorizationToken(
-                RenewAuthorizationToken(
-                    RenewAuthorizationToken(
-                        GetAuthorizationTokenFor(_hostName, _hostPass))));
+            this.RenewAuthorizationToken(
+                this.RenewAuthorizationToken(
+                    this.RenewAuthorizationToken(
+                        this.GetAuthorizationTokenFor(this._hostName, this._hostPass))));
         }
 
         [Test]
         public void UsingTheNewAccessTokenAfterRenewalShouldPass()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
-            var token2 = RenewAuthorizationToken(token1);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            var token2 = this.RenewAuthorizationToken(token1);
             Assert.AreNotEqual(token1.AccessToken, token2.AccessToken);
             Assert.AreEqual(token1.RenewalToken, token2.RenewalToken);
             Assert.AreEqual(token1.DisplayName, token2.DisplayName);
 
-            SetAuthHeaderToken(token2.AccessToken);
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token2.AccessToken);
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
@@ -217,18 +213,18 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void TamperedTokenShouldFail()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
 
             // tampered header
-            SetAuthHeaderToken("x" + token1.AccessToken);
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken("x" + token1.AccessToken);
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
 
             // tampered signature
-            SetAuthHeaderToken(token1.AccessToken + "y");
-            result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token1.AccessToken + "y");
+            result = this._httpClient.GetAsync(TestGetQuery).Result;
             content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -236,8 +232,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             // tampered claims
             var idx = token1.AccessToken.IndexOf('.');
             var tampered = token1.AccessToken.Substring(0, idx + 10) + "z" + token1.AccessToken.Substring(idx + 10);
-            SetAuthHeaderToken(tampered);
-            result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(tampered);
+            result = this._httpClient.GetAsync(TestGetQuery).Result;
             content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -246,7 +242,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ExtendingTokenWithinLastHourExtendsUpToRenewalExpiry()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var parts = token1.AccessToken.Split('.');
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
@@ -256,7 +252,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
-            var token2 = RenewAuthorizationToken(token1);
+            var token2 = this.RenewAuthorizationToken(token1);
             parts = token2.AccessToken.Split('.');
             decoded = DecodeBase64(parts[1]);
             claims = JsonConvert.DeserializeObject(decoded);
@@ -277,7 +273,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void UsingExpiredAccessTokenShouldFail()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var parts = token1.AccessToken.Split('.');
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
@@ -287,8 +283,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
-            SetAuthHeaderToken(token1.AccessToken);
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token1.AccessToken);
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -297,7 +293,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void UsingExpiredRenewalTokenShouldFail()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var parts = token1.AccessToken.Split('.');
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
@@ -307,8 +303,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
-            SetAuthHeaderToken(token1.AccessToken);
-            var result = _httpClient.GetAsync(TestGetQuery).Result;
+            this.SetAuthHeaderToken(token1.AccessToken);
+            var result = this._httpClient.GetAsync(TestGetQuery).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -317,7 +313,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void TryingToRenewUsingAnExpiredRenewalTokenShouldFail()
         {
-            var token1 = GetAuthorizationTokenFor(_hostName, _hostPass);
+            var token1 = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             var parts = token1.AccessToken.Split('.');
             var decoded = DecodeBase64(parts[1]);
             dynamic claims = JsonConvert.DeserializeObject(decoded);
@@ -327,8 +323,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             DatabaseHelper.ExecuteNonQuery(query);
             WebApiTestHelper.ClearHostCache();
 
-            SetAuthHeaderToken(token1.AccessToken);
-            var result = _httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
+            this.SetAuthHeaderToken(token1.AccessToken);
+            var result = this._httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = token1.RenewalToken }).Result;
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
         }
 
@@ -337,9 +333,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [TestCase(GetModuleDetailsQuery)]
         public void CallingHelperForLoggedinUserShouldReturnSuccess(string query)
         {
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
-            SetAuthHeaderToken(token.AccessToken);
-            var result = _httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            this.SetAuthHeaderToken(token.AccessToken);
+            var result = this._httpClient.GetAsync(query + HttpUtility.UrlEncode("ViewProfile")).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.NotNull(content);
@@ -349,7 +345,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatingSuccessWhenUsingExistingMoniker()
         {
-            //Arrange
+            // Arrange
             const string query1 =
                  @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
@@ -363,11 +359,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             WebApiTestHelper.ClearHostCache();
 
             // Act
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
-            SetAuthHeaderToken(token.AccessToken);
-            SetMonikerHeader("myjournal");
-            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
-            var result = _httpClient.PostAsJsonAsync(
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            this.SetAuthHeaderToken(token.AccessToken);
+            this.SetMonikerHeader("myjournal");
+            var postItem = new { ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1 };
+            var result = this._httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
@@ -377,7 +373,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatingFailureWhenUsingNonExistingMoniker()
         {
-            //Arrange
+            // Arrange
             const string query1 =
                  @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
@@ -390,15 +386,27 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             WebApiTestHelper.ClearHostCache();
 
             // Act
-            var token = GetAuthorizationTokenFor(_hostName, _hostPass);
-            SetAuthHeaderToken(token.AccessToken);
-            SetMonikerHeader("myjournal");
-            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
-            var result = _httpClient.PostAsJsonAsync(
+            var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
+            this.SetAuthHeaderToken(token.AccessToken);
+            this.SetMonikerHeader("myjournal");
+            var postItem = new { ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1 };
+            var result = this._httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             LogText(@"content => " + content);
             Assert.AreEqual(HttpStatusCode.Unauthorized, result.StatusCode);
+        }
+
+        private static string DecodeBase64(string b64Str)
+        {
+            // fix Base64 string padding
+            var mod = b64Str.Length % 4;
+            if (mod != 0)
+            {
+                b64Str += new string('=', 4 - mod);
+            }
+
+            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 
         // template to help in copy/paste of new test methods
@@ -410,27 +418,23 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         }
          */
 
-        #endregion
-
-        #region helpers
-
         private LoginResultData GetAuthorizationTokenFor(string uname, string upass)
         {
             var credentials = new { u = uname, p = upass };
-            var result = _httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
+            var result = this._httpClient.PostAsJsonAsync(LoginQuery, credentials).Result;
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
             Assert.IsNotNull(token);
             LogText(@"AuthToken => " + JsonConvert.SerializeObject(token));
-            _httpClient.DefaultRequestHeaders.Clear();
+            this._httpClient.DefaultRequestHeaders.Clear();
             return token;
         }
 
         private LoginResultData RenewAuthorizationToken(LoginResultData currentToken)
         {
             Thread.Sleep(1000); // must delay at least 1 second so the expiry time is different
-            SetAuthHeaderToken(currentToken.AccessToken);
-            var result = _httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = currentToken.RenewalToken }).Result;
+            this.SetAuthHeaderToken(currentToken.AccessToken);
+            var result = this._httpClient.PostAsJsonAsync(ExtendTokenQuery, new { rtoken = currentToken.RenewalToken }).Result;
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             var token = result.Content.ReadAsAsync<LoginResultData>().Result;
             Assert.IsNotNull(token);
@@ -440,8 +444,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
         private void LogoutUser(string accessToken)
         {
-            SetAuthHeaderToken(accessToken);
-            var result = _httpClient.GetAsync(LogoutQuery).Result;
+            this.SetAuthHeaderToken(accessToken);
+            var result = this._httpClient.GetAsync(LogoutQuery).Result;
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
             var content = result.Content.ReadAsStringAsync().Result;
             dynamic response = !string.IsNullOrEmpty(content) ? JsonConvert.DeserializeObject(content) : null;
@@ -450,26 +454,14 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
 
         private void SetAuthHeaderToken(string token, string scheme = "Bearer")
         {
-            _httpClient.DefaultRequestHeaders.Authorization =
+            this._httpClient.DefaultRequestHeaders.Authorization =
                 AuthenticationHeaderValue.Parse(scheme.Trim() + " " + token.Trim());
         }
 
         private void SetMonikerHeader(string monikerValue)
         {
-            _httpClient.DefaultRequestHeaders.Add("X-DNN-MONIKER", monikerValue);
+            this._httpClient.DefaultRequestHeaders.Add("X-DNN-MONIKER", monikerValue);
         }
-
-        private static string DecodeBase64(string b64Str)
-        {
-            // fix Base64 string padding
-            var mod = b64Str.Length % 4;
-            if (mod != 0) b64Str += new string('=', 4 - mod);
-            return TextEncoder.GetString(Convert.FromBase64String(b64Str));
-        }
-
-        #endregion
-
-        #region supporting classes
 
         [JsonObject]
         public class LoginResultData
@@ -486,7 +478,5 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             [JsonProperty("renewalToken")]
             public string RenewalToken { get; set; }
         }
-
-        #endregion
     }
 }

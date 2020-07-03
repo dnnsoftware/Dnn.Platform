@@ -1,181 +1,43 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Localization;
-
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip;
-
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
-using Directory = SchwabenCode.QuickIO.QuickIODirectory;
-using File = SchwabenCode.QuickIO.QuickIOFile;
-using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Common.Utilities
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Localization;
+    using ICSharpCode.SharpZipLib.Checksums;
+    using ICSharpCode.SharpZipLib.Zip;
+
+    using Directory = SchwabenCode.QuickIO.QuickIODirectory;
+    using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
+    using File = SchwabenCode.QuickIO.QuickIOFile;
+    using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+
     public class FileSystemUtils
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileSystemUtils));
-        #region Private Methods
-
-        private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
-        {
-            var strMessage = "";
-            var fileManager = FileManager.Instance;
-
-            try
-            {
-                var file = fileManager.AddFile(folder, fileName, fileContent, overwrite, checkPermissions, contentType);
-                if (unzip && file.Extension == "zip")
-                {
-                    fileManager.UnzipFile(file, folder);
-                }
-            }
-            catch (PermissionsNotMetException)
-            {
-                strMessage += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
-            }
-            catch (NoSpaceAvailableException)
-            {
-                strMessage += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
-            }
-            catch (InvalidFileExtensionException)
-            {
-                strMessage += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-
-                strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
-            }
-
-            return strMessage;
-        }
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the filename for a file path
-        /// </summary>
-        /// <param name="filePath">The full name of the file</param>
-        /// -----------------------------------------------------------------------------
-        private static string GetFileName(string filePath)
-        {
-            return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, "");
-        }
-
-        private static int GetFolderPortalID(PortalSettings settings)
-        {
-            return (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
-        }
-
-        private static void RemoveOrphanedFiles(FolderInfo folder, int PortalId)
-        {
-            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID)
-            {
-                foreach (FileInfo objFile in FolderManager.Instance.GetFiles(folder))
-                {
-                    RemoveOrphanedFile(objFile, PortalId);
-                }
-            }
-        }
-
-        private static void RemoveOrphanedFile(FileInfo objFile, int PortalId)
-        {
-            FileManager.Instance.DeleteFile(objFile);
-        }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Writes a Stream to the appropriate File Storage
-        /// </summary>
-		/// <param name="objResponse">The Id of the File</param>
-		/// <param name="objStream">The Input Stream</param>
-        /// <remarks>
-        /// </remarks>
-        /// -----------------------------------------------------------------------------
-        private static void WriteStream(HttpResponse objResponse, Stream objStream)
-        {
-            //Buffer to read 10K bytes in chunk:
-            var bytBuffer = new byte[10000];
-
-            //Length of the file:
-            int intLength;
-
-            //Total bytes to read:
-            long lngDataToRead;
-            try
-            {
-                //Total bytes to read:
-                lngDataToRead = objStream.Length;
-
-                //Read the bytes.
-                while (lngDataToRead > 0)
-                {
-					//Verify that the client is connected.
-                    if (objResponse.IsClientConnected)
-                    {
-						//Read the data in buffer
-                        intLength = objStream.Read(bytBuffer, 0, 10000);
-
-                        //Write the data to the current output stream.
-                        objResponse.OutputStream.Write(bytBuffer, 0, intLength);
-
-                        //Flush the data to the HTML output.
-                        objResponse.Flush();
-
-                        lngDataToRead = lngDataToRead - intLength;
-                    }
-                    else
-                    {
-                        lngDataToRead = -1;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                objResponse.Write("Error : " + ex.Message);
-            }
-            finally
-            {
-                if (objStream != null)
-                {
-                    objStream.Close();
-                    objStream.Dispose();
-                }
-            }
-        }
-
-        #endregion
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Adds a File to a Zip File
+        /// Adds a File to a Zip File.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
@@ -183,26 +45,27 @@ namespace DotNetNuke.Common.Utilities
             FileStream fs = null;
             try
             {
-				//Open File Stream
+                // Open File Stream
                 fs = File.OpenRead(FixPath(filePath));
-				
-				//Read file into byte array buffer
+
+                // Read file into byte array buffer
                 var buffer = new byte[fs.Length];
 
                 var len = fs.Read(buffer, 0, buffer.Length);
                 if (len != fs.Length)
                 {
-                    Logger.ErrorFormat("Reading from " + filePath + " didn't read all data in buffer. " +
+                    Logger.ErrorFormat(
+                        "Reading from " + filePath + " didn't read all data in buffer. " +
                                       "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
                 }
 
-                //Create Zip Entry
+                // Create Zip Entry
                 var entry = new ZipEntry(Path.Combine(folder, fileName));
                 entry.DateTime = DateTime.Now;
                 entry.Size = fs.Length;
                 fs.Close();
 
-                //Compress file and add to Zip file
+                // Compress file and add to Zip file
                 ZipFile.PutNextEntry(entry);
                 ZipFile.Write(buffer, 0, buffer.Length);
             }
@@ -218,10 +81,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tries to copy a file in the file system
+        /// Tries to copy a file in the file system.
         /// </summary>
-        /// <param name="sourceFileName">The name of the source file</param>
-        /// <param name="destFileName">The name of the destination file</param>
+        /// <param name="sourceFileName">The name of the source file.</param>
+        /// <param name="destFileName">The name of the destination file.</param>
         /// -----------------------------------------------------------------------------
         public static void CopyFile(string sourceFileName, string destFileName)
         {
@@ -229,28 +92,30 @@ namespace DotNetNuke.Common.Utilities
             {
                 File.SetAttributes(destFileName, FileAttributes.Normal);
             }
+
             File.Copy(sourceFileName, destFileName, true);
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging) 
+        /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
         /// This solves file concurrency issues under heavy load.
         /// </summary>
-        /// <param name="fileName">String</param>
-        /// <param name="waitInMilliseconds">Int16</param>
-        /// <param name="maxAttempts">Int16</param>
-        /// <returns>Boolean</returns>
+        /// <param name="fileName">String.</param>
+        /// <param name="waitInMilliseconds">Int16.</param>
+        /// <param name="maxAttempts">Int16.</param>
+        /// <returns>Boolean.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static bool DeleteFileWithWait(string fileName, Int16 waitInMilliseconds, Int16 maxAttempts)
+        public static bool DeleteFileWithWait(string fileName, short waitInMilliseconds, short maxAttempts)
         {
             fileName = FixPath(fileName);
             if (!File.Exists(fileName))
             {
                 return true;
             }
+
             bool fileDeleted = false;
             int i = 0;
             while (fileDeleted != true)
@@ -259,6 +124,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     break;
                 }
+
                 i = i + 1;
                 try
                 {
@@ -266,26 +132,29 @@ namespace DotNetNuke.Common.Utilities
                     {
                         File.Delete(fileName);
                     }
-                    fileDeleted = true; //we don't care if it didn't exist...the operation didn't fail, that's what we care about
+
+                    fileDeleted = true; // we don't care if it didn't exist...the operation didn't fail, that's what we care about
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
                     fileDeleted = false;
                 }
+
                 if (fileDeleted == false)
                 {
                     Thread.Sleep(waitInMilliseconds);
                 }
             }
+
             return fileDeleted;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tries to delete a file from the file system
+        /// Tries to delete a file from the file system.
         /// </summary>
-		/// <param name="fileName">The name of the file</param>
+        /// <param name="fileName">The name of the file.</param>
         /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName)
         {
@@ -314,6 +183,7 @@ namespace DotNetNuke.Common.Utilities
                     reader.Dispose();
                 }
             }
+
             return fileContent;
         }
 
@@ -332,6 +202,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         Directory.Create(Path.Combine(destPath, relativeDir), true);
                     }
+
                     if (!zipEntry.IsDirectory && (!string.IsNullOrEmpty(localFileName)))
                     {
                         var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
@@ -342,6 +213,7 @@ namespace DotNetNuke.Common.Utilities
                                 File.SetAttributes(fileNamePath, FileAttributes.Normal);
                                 File.Delete(fileNamePath);
                             }
+
                             FileStream objFileStream = null;
                             try
                             {
@@ -365,11 +237,12 @@ namespace DotNetNuke.Common.Utilities
                                 }
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
-							Logger.Error(ex);
+                            Logger.Error(ex);
                         }
                     }
+
                     zipEntry = zipStream.GetNextEntry();
                 }
             }
@@ -385,10 +258,10 @@ namespace DotNetNuke.Common.Utilities
 
         public static string DeleteFiles(Array arrPaths)
         {
-            var strExceptions = "";
+            var strExceptions = string.Empty;
             for (var i = 0; i < arrPaths.Length; i++)
             {
-                var strPath = (arrPaths.GetValue(i) ?? "").ToString();
+                var strPath = (arrPaths.GetValue(i) ?? string.Empty).ToString();
                 var pos = strPath.IndexOf("'", StringComparison.Ordinal);
                 if (pos != -1)
                 {
@@ -436,12 +309,13 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+
             return strExceptions;
         }
 
         public static void DeleteFilesRecursive(string strRoot, string filter)
         {
-            if (!String.IsNullOrEmpty(strRoot))
+            if (!string.IsNullOrEmpty(strRoot))
             {
                 strRoot = FixPath(strRoot);
                 if (Directory.Exists(strRoot))
@@ -454,6 +328,7 @@ namespace DotNetNuke.Common.Utilities
                             DeleteFilesRecursive(strFolder, filter);
                         }
                     }
+
                     foreach (string strFile in Directory.EnumerateFilePaths(strRoot).Where(f => f.Contains(filter)))
                     {
                         try
@@ -473,7 +348,8 @@ namespace DotNetNuke.Common.Utilities
         {
             strRoot = FixPath(strRoot);
             if (string.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
-            {   Logger.Info(strRoot + " does not exist. ");
+            {
+                Logger.Info(strRoot + " does not exist. ");
                 return;
             }
 
@@ -515,6 +391,135 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return input.Trim().Replace("/", "\\");
+        }
+
+        private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
+        {
+            var strMessage = string.Empty;
+            var fileManager = FileManager.Instance;
+
+            try
+            {
+                var file = fileManager.AddFile(folder, fileName, fileContent, overwrite, checkPermissions, contentType);
+                if (unzip && file.Extension == "zip")
+                {
+                    fileManager.UnzipFile(file, folder);
+                }
+            }
+            catch (PermissionsNotMetException)
+            {
+                strMessage += "<br />" + string.Format(Localization.GetString("InsufficientFolderPermission"), folder.FolderPath);
+            }
+            catch (NoSpaceAvailableException)
+            {
+                strMessage += "<br />" + string.Format(Localization.GetString("DiskSpaceExceeded"), fileName);
+            }
+            catch (InvalidFileExtensionException)
+            {
+                strMessage += "<br />" + string.Format(Localization.GetString("RestrictedFileType"), fileName, Host.AllowedExtensionWhitelist.ToDisplayString());
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+
+                strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), fileName);
+            }
+
+            return strMessage;
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the filename for a file path.
+        /// </summary>
+        /// <param name="filePath">The full name of the file.</param>
+        /// -----------------------------------------------------------------------------
+        private static string GetFileName(string filePath)
+        {
+            return Path.GetFileName(filePath).Replace(Globals.glbProtectedExtension, string.Empty);
+        }
+
+        private static int GetFolderPortalID(PortalSettings settings)
+        {
+            return (settings.ActiveTab.ParentId == settings.SuperTabId) ? Null.NullInteger : settings.PortalId;
+        }
+
+        private static void RemoveOrphanedFiles(FolderInfo folder, int PortalId)
+        {
+            if (folder.FolderMappingID != FolderMappingController.Instance.GetFolderMapping(PortalId, "Database").FolderMappingID)
+            {
+                foreach (FileInfo objFile in FolderManager.Instance.GetFiles(folder))
+                {
+                    RemoveOrphanedFile(objFile, PortalId);
+                }
+            }
+        }
+
+        private static void RemoveOrphanedFile(FileInfo objFile, int PortalId)
+        {
+            FileManager.Instance.DeleteFile(objFile);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Writes a Stream to the appropriate File Storage.
+        /// </summary>
+        /// <param name="objResponse">The Id of the File.</param>
+        /// <param name="objStream">The Input Stream.</param>
+        /// <remarks>
+        /// </remarks>
+        /// -----------------------------------------------------------------------------
+        private static void WriteStream(HttpResponse objResponse, Stream objStream)
+        {
+            // Buffer to read 10K bytes in chunk:
+            var bytBuffer = new byte[10000];
+
+            // Length of the file:
+            int intLength;
+
+            // Total bytes to read:
+            long lngDataToRead;
+            try
+            {
+                // Total bytes to read:
+                lngDataToRead = objStream.Length;
+
+                // Read the bytes.
+                while (lngDataToRead > 0)
+                {
+                    // Verify that the client is connected.
+                    if (objResponse.IsClientConnected)
+                    {
+                        // Read the data in buffer
+                        intLength = objStream.Read(bytBuffer, 0, 10000);
+
+                        // Write the data to the current output stream.
+                        objResponse.OutputStream.Write(bytBuffer, 0, intLength);
+
+                        // Flush the data to the HTML output.
+                        objResponse.Flush();
+
+                        lngDataToRead = lngDataToRead - intLength;
+                    }
+                    else
+                    {
+                        lngDataToRead = -1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                objResponse.Write("Error : " + ex.Message);
+            }
+            finally
+            {
+                if (objStream != null)
+                {
+                    objStream.Close();
+                    objStream.Dispose();
+                }
+            }
         }
     }
 }

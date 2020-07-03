@@ -1,71 +1,52 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Dnn.PersonaBar.Library;
-using Dnn.PersonaBar.Recyclebin.Components.Dto;
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Tabs.TabVersions;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using System.Net;
-using Dnn.PersonaBar.Library.Controllers;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Recyclebin.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Net;
+    using System.Text;
+
+    using Dnn.PersonaBar.Library;
+    using Dnn.PersonaBar.Library.Controllers;
+    using Dnn.PersonaBar.Recyclebin.Components.Dto;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
     public class RecyclebinController : ServiceLocator<IRecyclebinController, RecyclebinController>,
         IRecyclebinController
     {
         public static string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
-
-        #region Fields
-
         private readonly ITabController _tabController;
         private readonly ITabVersionSettings _tabVersionSettings;
         private readonly ITabChangeSettings _tabChangeSettings;
         private readonly ITabWorkflowSettings _tabWorkflowSettings;
         private readonly IModuleController _moduleController;
 
-        #endregion
-
         public RecyclebinController()
         {
-            _tabController = TabController.Instance;
-            _tabVersionSettings = TabVersionSettings.Instance;
-            _tabWorkflowSettings = TabWorkflowSettings.Instance;
-            _moduleController = ModuleController.Instance;
-            _tabChangeSettings = TabChangeSettings.Instance;
+            this._tabController = TabController.Instance;
+            this._tabVersionSettings = TabVersionSettings.Instance;
+            this._tabWorkflowSettings = TabWorkflowSettings.Instance;
+            this._moduleController = ModuleController.Instance;
+            this._tabChangeSettings = TabChangeSettings.Instance;
         }
-
-        #region Properties
 
         private static PortalSettings PortalSettings => PortalSettings.Current;
-
-        #endregion
-
-        #region ServiceLocator
-
-        protected override Func<IRecyclebinController> GetFactory()
-        {
-            return () => new RecyclebinController();
-        }
-
-        #endregion
-
-        #region Public Methods
 
         public string LocalizeString(string key)
         {
@@ -78,14 +59,14 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 foreach (var tab in tabs.OrderByDescending(t => t.Level))
                 {
-                    var tabInfo = _tabController.GetTab(tab.Id, PortalSettings.PortalId);
+                    var tabInfo = this._tabController.GetTab(tab.Id, PortalSettings.PortalId);
                     if (tabInfo == null)
                     {
-                        errors.AppendFormat(LocalizeString("PageNotFound"), tab.Id);
+                        errors.AppendFormat(this.LocalizeString("PageNotFound"), tab.Id);
                     }
                     else
                     {
-                        HardDeleteTab(tabInfo, deleteDescendants, errors);
+                        this.HardDeleteTab(tabInfo, deleteDescendants, errors);
                     }
                 }
             }
@@ -97,14 +78,14 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             {
                 foreach (var tab in tabs.OrderByDescending(t => t.Level))
                 {
-                    var tabInfo = _tabController.GetTab(tab.TabID, PortalSettings.PortalId);
+                    var tabInfo = this._tabController.GetTab(tab.TabID, PortalSettings.PortalId);
                     if (tabInfo == null)
                     {
-                        errors.AppendFormat(LocalizeString("PageNotFound"), tab.TabID);
+                        errors.AppendFormat(this.LocalizeString("PageNotFound"), tab.TabID);
                     }
                     else
                     {
-                        HardDeleteTab(tabInfo, deleteDescendants, errors);
+                        this.HardDeleteTab(tabInfo, deleteDescendants, errors);
                     }
                 }
             }
@@ -119,11 +100,11 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                     var moduleInfo = ModuleController.Instance.GetModule(mod.Id, mod.TabID, true);
                     if (moduleInfo == null)
                     {
-                        errors.AppendFormat(LocalizeString("ModuleNotFound"), mod.Id, mod.TabID);
+                        errors.AppendFormat(this.LocalizeString("ModuleNotFound"), mod.Id, mod.TabID);
                     }
                     else
                     {
-                        HardDeleteModule(moduleInfo, errors);
+                        this.HardDeleteModule(moduleInfo, errors);
                     }
                 }
             }
@@ -131,75 +112,16 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         public void DeleteModules(IEnumerable<ModuleInfo> modules, StringBuilder errors)
         {
-            modules?.ForEach(mod => HardDeleteModule(mod, errors));
-        }
-
-        private void HardDeleteTab(TabInfo tab, bool deleteDescendants, StringBuilder errors)
-        {
-            if (TabPermissionController.CanDeletePage(tab) && tab.IsDeleted)
-            {
-                if (tab.HasChildren && !deleteDescendants)
-                {
-                    errors.Append(string.Format(LocalizeString("Service_RemoveTabWithChildError"), tab.TabName));
-                    return;
-                }
-                //get tab modules before deleting page
-                var tabModules = _moduleController.GetTabModules(tab.TabID);
-
-                //hard delete the tab
-                _tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
-
-                //delete modules that do not have other instances
-                foreach (var kvp in tabModules)
-                {
-                    //check if all modules instances have been deleted
-                    var delModule = _moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
-                    if (delModule == null || delModule.TabID == Null.NullInteger)
-                    {
-                        try
-                        {
-                            _moduleController.DeleteModule(kvp.Value.ModuleID);
-                        }
-                        catch (Exception exc)
-                        {
-                            Logger.Error(exc);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                errors.AppendFormat(!tab.IsDeleted ? LocalizeString("TabNotSoftDeleted") : LocalizeString("CanNotDeleteTab"), tab.TabID);
-            }
-        }
-
-        private void HardDeleteModule(ModuleInfo module, StringBuilder errors)
-        {
-            try
-            {
-                if (ModulePermissionController.CanDeleteModule(module) && module.IsDeleted)
-                {
-                    _moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
-                }
-                else
-                {
-                    errors.AppendFormat(!module.IsDeleted ? LocalizeString("ModuleNotSoftDeleted") : LocalizeString("CanNotDeleteModule"), module.ModuleID);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-            }
-            //hard-delete Tab Module Instance
+            modules?.ForEach(mod => this.HardDeleteModule(mod, errors));
         }
 
         public bool RestoreTab(TabInfo tab, out string resultmessage)
         {
-            var changeControlStateForTab = _tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
+            var changeControlStateForTab = this._tabChangeSettings.GetChangeControlState(tab.PortalID, tab.TabID);
             if (changeControlStateForTab.IsChangeControlEnabledForTab)
             {
-                _tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
-                _tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
+                this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID, false);
+                this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
             }
 
             var success = true;
@@ -207,29 +129,29 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
             //if parent of the page is deleted, then can't restore - parent should be restored first
             var totalRecords = 0;
-            var deletedTabs = GetDeletedTabs(out totalRecords);
+            var deletedTabs = this.GetDeletedTabs(out totalRecords);
             if (!Null.IsNull(tab.ParentId) && deletedTabs.Any(t => t.TabID == tab.ParentId))
             {
-                resultmessage = string.Format(LocalizeString("Service_RestoreTabError"), tab.TabName);
+                resultmessage = string.Format(this.LocalizeString("Service_RestoreTabError"), tab.TabName);
                 success = false;
             }
             else
             {
-                _tabController.RestoreTab(tab, PortalSettings);
+                this._tabController.RestoreTab(tab, PortalSettings);
 
                 //restore modules in this tab
-                var tabdeletedModules = GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
+                var tabdeletedModules = this.GetDeletedModules(out totalRecords).Where(m => m.TabID == tab.TabID);
 
                 foreach (var m in tabdeletedModules)
                 {
-                    success = RestoreModule(m.ModuleID, m.TabID, out resultmessage);
+                    success = this.RestoreModule(m.ModuleID, m.TabID, out resultmessage);
                 }
 
                 if (changeControlStateForTab.IsChangeControlEnabledForTab)
                 {
-                    _tabVersionSettings.SetEnabledVersioningForTab(tab.TabID,
+                    this._tabVersionSettings.SetEnabledVersioningForTab(tab.TabID,
                         changeControlStateForTab.IsVersioningEnabledForTab);
-                    _tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
+                    this._tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID,
                         changeControlStateForTab.IsWorkflowEnabledForTab);
                 }
             }
@@ -247,27 +169,27 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             if (module != null)
             {
                 var totalRecords = 0;
-                var deletedTabs = GetDeletedTabs(out totalRecords).Where(t => t.TabID == module.TabID);
+                var deletedTabs = this.GetDeletedTabs(out totalRecords).Where(t => t.TabID == module.TabID);
                 if (deletedTabs.Any())
                 {
                     var title = !string.IsNullOrEmpty(module.ModuleTitle)
                         ? module.ModuleTitle
                         : module.DesktopModule.FriendlyName;
-                    errorMessage = string.Format(LocalizeString("Service_RestoreModuleError"), title,
+                    errorMessage = string.Format(this.LocalizeString("Service_RestoreModuleError"), title,
                         deletedTabs.SingleOrDefault().TabName);
                     return false;
                 }
                 if (module.IsDeleted)
-                    _moduleController.RestoreModule(module);
+                    this._moduleController.RestoreModule(module);
                 else
                 {
-                    errorMessage = string.Format(LocalizeString("ModuleNotSoftDeleted"), moduleId);
+                    errorMessage = string.Format(this.LocalizeString("ModuleNotSoftDeleted"), moduleId);
                     return false;
                 }
             }
             else
             {
-                errorMessage = string.Format(LocalizeString("ModuleNotFound"), moduleId, tabId);
+                errorMessage = string.Format(this.LocalizeString("ModuleNotFound"), moduleId, tabId);
                 return false;
             }
             return true;
@@ -285,7 +207,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         public List<ModuleInfo> GetDeletedModules(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
-            var deletedModules = _moduleController.GetModules(PortalSettings.PortalId)
+            var deletedModules = this._moduleController.GetModules(PortalSettings.PortalId)
                 .Cast<ModuleInfo>()
                 .Where(module => module.IsDeleted && (
                     TabPermissionController.CanAddContentToPage(TabController.Instance.GetTab(module.TabID, module.PortalID)) ||
@@ -307,7 +229,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
 
         public List<UserInfo> GetDeletedUsers(out int totalRecords, int pageIndex = -1, int pageSize = -1)
         {
-            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(CanManageUser);
+            var deletedusers = UserController.GetDeletedUsers(PortalSettings.PortalId).Cast<UserInfo>().Where(this.CanManageUser);
             totalRecords = deletedusers.Count();
             return pageIndex == -1 || pageSize == -1 ? deletedusers.ToList() : deletedusers.Skip(pageIndex * pageSize).Take(pageSize).ToList();
         }
@@ -322,7 +244,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                         .Where(user => user != null)
                         .Where(user => user.IsDeleted))
             {
-                if (CanManageUser(user))
+                if (this.CanManageUser(user))
                     UserController.RemoveUser(user);
             }
         }
@@ -330,24 +252,88 @@ namespace Dnn.PersonaBar.Recyclebin.Components
         public void DeleteUsers(IEnumerable<UserItem> users)
         {
             var userInfos = users.Select(x => new UserInfo { PortalID = x.PortalId, UserID = x.Id });
-            DeleteUsers(userInfos);
+            this.DeleteUsers(userInfos);
         }
 
         public bool RestoreUser(UserInfo user, out string errorMessage)
         {
             errorMessage = null;
-            var deletedusers = UserController.GetDeletedUsers(user.PortalID).Cast<UserInfo>().Where(CanManageUser).ToList();
+            var deletedusers = UserController.GetDeletedUsers(user.PortalID).Cast<UserInfo>().Where(this.CanManageUser).ToList();
             if ((user != null) && deletedusers.Any(u => u.UserID == user.UserID))
             {
                 UserController.RestoreUser(ref user);
                 return true;
             }
-            errorMessage = string.Format(LocalizeString("Service_RestoreUserError"));
+            errorMessage = string.Format(this.LocalizeString("Service_RestoreUserError"));
             return false;
         }
 
+        protected override Func<IRecyclebinController> GetFactory()
+        {
+            return () => new RecyclebinController();
+        }
+
+        private void HardDeleteTab(TabInfo tab, bool deleteDescendants, StringBuilder errors)
+        {
+            if (TabPermissionController.CanDeletePage(tab) && tab.IsDeleted)
+            {
+                if (tab.HasChildren && !deleteDescendants)
+                {
+                    errors.Append(string.Format(this.LocalizeString("Service_RemoveTabWithChildError"), tab.TabName));
+                    return;
+                }
+                //get tab modules before deleting page
+                var tabModules = this._moduleController.GetTabModules(tab.TabID);
+
+                //hard delete the tab
+                this._tabController.DeleteTab(tab.TabID, tab.PortalID, deleteDescendants);
+
+                //delete modules that do not have other instances
+                foreach (var kvp in tabModules)
+                {
+                    //check if all modules instances have been deleted
+                    var delModule = this._moduleController.GetModule(kvp.Value.ModuleID, Null.NullInteger, false);
+                    if (delModule == null || delModule.TabID == Null.NullInteger)
+                    {
+                        try
+                        {
+                            this._moduleController.DeleteModule(kvp.Value.ModuleID);
+                        }
+                        catch (Exception exc)
+                        {
+                            Logger.Error(exc);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                errors.AppendFormat(!tab.IsDeleted ? this.LocalizeString("TabNotSoftDeleted") : this.LocalizeString("CanNotDeleteTab"), tab.TabID);
+            }
+        }
+
+        private void HardDeleteModule(ModuleInfo module, StringBuilder errors)
+        {
+            try
+            {
+                if (ModulePermissionController.CanDeleteModule(module) && module.IsDeleted)
+                {
+                    this._moduleController.DeleteTabModule(module.TabID, module.ModuleID, false);
+                }
+                else
+                {
+                    errors.AppendFormat(!module.IsDeleted ? this.LocalizeString("ModuleNotSoftDeleted") : this.LocalizeString("CanNotDeleteModule"), module.ModuleID);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logger.Error(exc);
+            }
+            //hard-delete Tab Module Instance
+        }
+
         /// <summary>
-        /// Checks if the current user has enough rights to manage the provided user or not
+        /// Checks if the current user has enough rights to manage the provided user or not.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -362,6 +348,5 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             return false;
         }
-        #endregion        
     }
 }

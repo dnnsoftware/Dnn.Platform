@@ -1,20 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.ComponentModel;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Library.Security
 {
+    using DotNetNuke.ComponentModel;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     public class SecurityService : ISecurityService
     {
-        public virtual bool IsPagesAdminUser()
-        {
-            var user = UserController.Instance.GetCurrentUserInfo();
-            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
-        }
         public static ISecurityService Instance
         {
             get
@@ -27,6 +22,12 @@ namespace Dnn.PersonaBar.Library.Security
 
                 return ComponentFactory.GetComponent<ISecurityService>("SecurityService");
             }
+        }
+
+        public virtual bool IsPagesAdminUser()
+        {
+            var user = UserController.Instance.GetCurrentUserInfo();
+            return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
     }
 }

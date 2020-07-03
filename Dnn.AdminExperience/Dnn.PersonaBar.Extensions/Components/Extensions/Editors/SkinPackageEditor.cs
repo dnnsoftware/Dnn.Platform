@@ -1,22 +1,21 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using Dnn.PersonaBar.Extensions.Components.Dto;
-using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Installer.Packages;
-using DotNetNuke.UI.Skins;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Extensions.Components.Editors
 {
+    using System;
+
+    using Dnn.PersonaBar.Extensions.Components.Dto;
+    using Dnn.PersonaBar.Extensions.Components.Dto.Editors;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Installer.Packages;
+    using DotNetNuke.UI.Skins;
+
     public class SkinPackageEditor : IPackageEditor
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinPackageEditor));
-
-        #region IPackageEditor Implementation
 
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
@@ -61,7 +60,5 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                 return false;
             }
         }
-
-        #endregion
     }
 }

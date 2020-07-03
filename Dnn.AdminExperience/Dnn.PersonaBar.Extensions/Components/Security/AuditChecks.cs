@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Dnn.PersonaBar.Security.Components.Checks;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Security.Components
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
+    using Dnn.PersonaBar.Security.Components.Checks;
+    using DotNetNuke.Common;
+
     public class AuditChecks
     {
         private readonly IEnumerable<IAuditCheck> _auditChecks;
@@ -41,13 +42,13 @@ namespace Dnn.PersonaBar.Security.Components
                 checks.Insert(2, new CheckViewstatemac());
             }
 
-            _auditChecks = checks.AsReadOnly();
+            this._auditChecks = checks.AsReadOnly();
         }
 
         public List<CheckResult> DoChecks(bool checkAll = false)
         {
             var results = new List<CheckResult>();
-            foreach (var check in _auditChecks)
+            foreach (var check in this._auditChecks)
             {
                 try
                 {
@@ -68,7 +69,7 @@ namespace Dnn.PersonaBar.Security.Components
         {
             try
             {
-                var check = _auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
+                var check = this._auditChecks.FirstOrDefault(c => c.Id.Equals(id, StringComparison.InvariantCultureIgnoreCase));
                 return check?.Execute();
             }
             catch (Exception)

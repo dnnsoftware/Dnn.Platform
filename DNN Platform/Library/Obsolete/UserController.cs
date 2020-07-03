@@ -1,25 +1,26 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Data;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Services.Exceptions;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Entities.Users
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Data;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Services.Exceptions;
+
     /// <summary>
-    /// The UserController class provides Business Layer methods for Users
+    /// The UserController class provides Business Layer methods for Users.
     /// </summary>
     /// <remarks>
-    /// DotNetNuke user management is base on asp.net membership provider, but  the default implementation of these providers 
-    /// do not satisfy the broad set of use cases which we need to support in DotNetNuke. so The dependency of DotNetNuke on the 
-    /// MemberRole (ASP.NET 2 Membership) components will be abstracted into a DotNetNuke Membership Provider, in order to allow 
+    /// DotNetNuke user management is base on asp.net membership provider, but  the default implementation of these providers
+    /// do not satisfy the broad set of use cases which we need to support in DotNetNuke. so The dependency of DotNetNuke on the
+    /// MemberRole (ASP.NET 2 Membership) components will be abstracted into a DotNetNuke Membership Provider, in order to allow
     /// developers complete flexibility in implementing alternate Membership approaches.
     /// <list type="bullet">
     /// <item>This will allow for a number of enhancements to be added</item>
@@ -59,19 +60,19 @@ namespace DotNetNuke.Entities.Users
             return GetCurrentUserInternal();
         }
 
-		/// <summary>
-		/// overload will validate the token and if valid change the password
-		/// it does not require an old password as it supports hashed passwords
-		/// errorMessage will define why reset failed
-		/// </summary>
-		/// <param name="newPassword">The new password.</param>
-		/// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
-		/// <returns>A Boolean indicating success or failure.</returns>
-		[Obsolete("Deprecate in 7.4.2, Use ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage).. Scheduled removal in v10.0.0.")]
-		public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
-		{
-			return ChangePasswordByToken(portalid, username, newPassword, string.Empty, resetToken, out errorMessage);
-		}
+        /// <summary>
+        /// overload will validate the token and if valid change the password
+        /// it does not require an old password as it supports hashed passwords
+        /// errorMessage will define why reset failed.
+        /// </summary>
+        /// <param name="newPassword">The new password.</param>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <returns>A Boolean indicating success or failure.</returns>
+        [Obsolete("Deprecate in 7.4.2, Use ChangePasswordByToken(int portalid, string username, string newPassword, string answer, string resetToken, out string errorMessage).. Scheduled removal in v10.0.0.")]
+        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken, out string errorMessage)
+        {
+            return ChangePasswordByToken(portalid, username, newPassword, string.Empty, resetToken, out errorMessage);
+        }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Deprecated in DNN 6.1, keep this method to compatible with upgrade wizard.. Scheduled removal in v10.0.0.")]
@@ -80,20 +81,21 @@ namespace DotNetNuke.Entities.Users
             UserInfo objUserInfo = null;
             try
             {
-                //read datareader
+                // read datareader
                 var bContinue = true;
                 if (closeDataReader)
                 {
                     bContinue = false;
                     if (dr.Read())
                     {
-                        //Ensure the data reader returned is valid
+                        // Ensure the data reader returned is valid
                         if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
                         {
                             bContinue = true;
                         }
                     }
                 }
+
                 if (bContinue)
                 {
                     objUserInfo = new UserInfo
@@ -104,7 +106,7 @@ namespace DotNetNuke.Entities.Users
                         UserID = Null.SetNullInteger(dr["UserID"]),
                         FirstName = Null.SetNullString(dr["FirstName"]),
                         LastName = Null.SetNullString(dr["LastName"]),
-                        DisplayName = Null.SetNullString(dr["DisplayName"])
+                        DisplayName = Null.SetNullString(dr["DisplayName"]),
                     };
                     objUserInfo.AffiliateID = Null.SetNullInteger(Null.SetNull(dr["AffiliateID"], objUserInfo.AffiliateID));
                     objUserInfo.Username = Null.SetNullString(dr["Username"]);
@@ -119,6 +121,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             objUserInfo.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
                         }
+
                         if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
                         {
                             objUserInfo.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
@@ -135,6 +138,7 @@ namespace DotNetNuke.Entities.Users
             {
                 CBO.CloseDataReader(dr, closeDataReader);
             }
+
             return objUserInfo;
         }
     }

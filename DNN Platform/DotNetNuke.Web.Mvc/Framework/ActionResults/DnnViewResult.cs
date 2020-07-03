@@ -1,14 +1,15 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Web.Mvc;
-using DotNetNuke.Common;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 {
+    using System;
+    using System.IO;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Common;
+
     public class DnnViewResult : ViewResult, IDnnViewResult
     {
         public void ExecuteResult(ControllerContext context, TextWriter writer)
@@ -16,25 +17,25 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             Requires.NotNull("context", context);
             Requires.NotNull("writer", writer);
 
-            if (String.IsNullOrEmpty(ViewName))
+            if (string.IsNullOrEmpty(this.ViewName))
             {
-                ViewName = context.RouteData.GetRequiredString("action");
+                this.ViewName = context.RouteData.GetRequiredString("action");
             }
 
             ViewEngineResult result = null;
 
-            if (View == null)
+            if (this.View == null)
             {
-                result = ViewEngineCollection.FindView(context, ViewName, MasterName);
-                View = result.View;
+                result = this.ViewEngineCollection.FindView(context, this.ViewName, this.MasterName);
+                this.View = result.View;
             }
 
-            var viewContext = new ViewContext(context, View, ViewData, TempData, writer);
-            View.Render(viewContext, writer);
+            var viewContext = new ViewContext(context, this.View, this.ViewData, this.TempData, writer);
+            this.View.Render(viewContext, writer);
 
             if (result != null)
             {
-                result.ViewEngine.ReleaseView(context, View);
+                result.ViewEngine.ReleaseView(context, this.View);
             }
         }
     }

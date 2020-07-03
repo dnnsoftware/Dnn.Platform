@@ -1,97 +1,18 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-
-using NUnit.Framework;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Tests.Utilities
 {
+    using System;
+    using System.IO;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
+    using NUnit.Framework;
+
     public static class MailAssert
     {
-        #region Private Methods
-
-        private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
-        {
-            string emailContent = File.ReadAllText(emailFileName);
-
-            //Separate the content from the EmailAddress information
-            const string contentLineRegex = "(base64)(.*(\n)+)+";
-            Match match = Regex.Match(@emailContent, contentLineRegex, RegexOptions.Singleline);
-            Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
-
-            //Convert the EmailAddress content
-            emailContent = match.Groups[2].Value.Replace("\r\n", "");
-
-            byte[] b = Convert.FromBase64String(emailContent);
-            String decodedEmailContent = Encoding.ASCII.GetString(b);
-            return decodedEmailContent;
-        }
-
-        private static string FindContentUsingRegex(string content, string emailFileName)
-        {
-            string emailContent = File.ReadAllText(emailFileName);
-            string contentLineRegex = @content + ".*";
-            Match match = Regex.Match(@emailContent, @contentLineRegex);
-            Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
-            String contentLine = match.Value;
-            return contentLine;
-        }
-
-        private static string FindEmailLineUsingRegex(string linePrefix, string emailFileName)
-        {
-            string emailContent = File.ReadAllText(emailFileName);
-            string lineRegex = @"^(" + linePrefix + @"): (.+)";
-            Match match = Regex.Match(@emailContent, @lineRegex, RegexOptions.Multiline);
-            Assert.IsTrue(match.Success, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
-            String line = match.Value;
-            return line;
-        }
-
-        private static string FindLineUsingRegex(string linePrefix, string emailFileName)
-        {
-            string emailContent = File.ReadAllText(emailFileName);
-            string lineRegex = linePrefix + @": .*";
-            Match match = Regex.Match(@emailContent, @lineRegex);
-            Assert.IsTrue(match.Success, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
-            String line = match.Value;
-            return line;
-        }
-
-        private static string GetEmailFileName(string toAddress, string findByText)
-        {
-            return GetEmailFileName(toAddress, findByText, "The newsletter sent to " + toAddress + " could not be found");
-        }
-
-        private static string GetEmailFileName(string toAddress, string findByText, string message)
-        {
-            var physicalPath = Directory.GetCurrentDirectory();
-            var packagePath = physicalPath.Replace("\\Fixtures", "\\Packages");
-            var emailPath = packagePath + "\\TestEmails";
-            var emailFileName = String.Empty;
-
-            foreach (var email in Directory.GetFiles(emailPath))
-            {
-                string emailContent = File.ReadAllText(email);
-                if (emailContent.Contains(findByText) && emailContent.Contains("To: " + toAddress))
-                {
-                    emailFileName = email;
-                    break;
-                }
-            }
-            Assert.IsTrue(emailFileName != null, message + " The test was searching in: " + emailPath);
-            
-            return emailFileName;
-        }
-
-        #endregion
-
-        #region Public Methods
-
         public static void Base64EncodedContentLineContains(string expectedValue, string toAddress, string findByText)
         {
             var contentLine = ConvertEmailContentFromBase64ToUnicode(GetEmailFileName(toAddress, findByText));
@@ -103,7 +24,7 @@ namespace DotNetNuke.Tests.Utilities
         {
             var contentLine = FindContentUsingRegex(expectedValue, GetEmailFileName(toAddress, findByText));
 
-            Assert.IsFalse(String.IsNullOrEmpty(contentLine));
+            Assert.IsFalse(string.IsNullOrEmpty(contentLine));
         }
 
         public static void FromLineContains(string expectedValue, string toAddress, string findByText)
@@ -139,6 +60,78 @@ namespace DotNetNuke.Tests.Utilities
             Assert.IsTrue(toLine.Contains(expectedValue));
         }
 
-        #endregion
+        private static string ConvertEmailContentFromBase64ToUnicode(string emailFileName)
+        {
+            string emailContent = File.ReadAllText(emailFileName);
+
+            // Separate the content from the EmailAddress information
+            const string contentLineRegex = "(base64)(.*(\n)+)+";
+            Match match = Regex.Match(@emailContent, contentLineRegex, RegexOptions.Singleline);
+            Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
+
+            // Convert the EmailAddress content
+            emailContent = match.Groups[2].Value.Replace("\r\n", string.Empty);
+
+            byte[] b = Convert.FromBase64String(emailContent);
+            string decodedEmailContent = Encoding.ASCII.GetString(b);
+            return decodedEmailContent;
+        }
+
+        private static string FindContentUsingRegex(string content, string emailFileName)
+        {
+            string emailContent = File.ReadAllText(emailFileName);
+            string contentLineRegex = @content + ".*";
+            Match match = Regex.Match(@emailContent, @contentLineRegex);
+            Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
+            string contentLine = match.Value;
+            return contentLine;
+        }
+
+        private static string FindEmailLineUsingRegex(string linePrefix, string emailFileName)
+        {
+            string emailContent = File.ReadAllText(emailFileName);
+            string lineRegex = @"^(" + linePrefix + @"): (.+)";
+            Match match = Regex.Match(@emailContent, @lineRegex, RegexOptions.Multiline);
+            Assert.IsTrue(match.Success, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
+            string line = match.Value;
+            return line;
+        }
+
+        private static string FindLineUsingRegex(string linePrefix, string emailFileName)
+        {
+            string emailContent = File.ReadAllText(emailFileName);
+            string lineRegex = linePrefix + @": .*";
+            Match match = Regex.Match(@emailContent, @lineRegex);
+            Assert.IsTrue(match.Success, "Could not find " + linePrefix + " Line! Looking in file: " + emailFileName);
+            string line = match.Value;
+            return line;
+        }
+
+        private static string GetEmailFileName(string toAddress, string findByText)
+        {
+            return GetEmailFileName(toAddress, findByText, "The newsletter sent to " + toAddress + " could not be found");
+        }
+
+        private static string GetEmailFileName(string toAddress, string findByText, string message)
+        {
+            var physicalPath = Directory.GetCurrentDirectory();
+            var packagePath = physicalPath.Replace("\\Fixtures", "\\Packages");
+            var emailPath = packagePath + "\\TestEmails";
+            var emailFileName = string.Empty;
+
+            foreach (var email in Directory.GetFiles(emailPath))
+            {
+                string emailContent = File.ReadAllText(email);
+                if (emailContent.Contains(findByText) && emailContent.Contains("To: " + toAddress))
+                {
+                    emailFileName = email;
+                    break;
+                }
+            }
+
+            Assert.IsTrue(emailFileName != null, message + " The test was searching in: " + emailPath);
+
+            return emailFileName;
+        }
     }
 }

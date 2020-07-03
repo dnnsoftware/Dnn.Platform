@@ -1,17 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http.Filters;
-
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http.Filters;
+
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+
     public class DnnExceptionFilterAttribute : ExceptionFilterAttribute
     {
         public string MessageKey { get; set; }
@@ -26,11 +26,11 @@ namespace DotNetNuke.Web.Api
                 var actionName = actionExecutedContext.ActionContext.ActionDescriptor.ActionName;
                 var controllerName = actionExecutedContext.ActionContext.ControllerContext.ControllerDescriptor.ControllerName;
 
-                var resourceFile = string.IsNullOrEmpty(LocalResourceFile)
+                var resourceFile = string.IsNullOrEmpty(this.LocalResourceFile)
                     ? Localization.ExceptionsResourceFile
-                    : LocalResourceFile;
+                    : this.LocalResourceFile;
 
-                var key = string.IsNullOrEmpty(MessageKey) ? controllerName + "_" + actionName + ".Error" : MessageKey;
+                var key = string.IsNullOrEmpty(this.MessageKey) ? controllerName + "_" + actionName + ".Error" : this.MessageKey;
 
                 HttpStatusCode statusCode;
                 if (exception is NotImplementedException)
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Api
                 var response = new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    ReasonPhrase = Localization.GetString(key, resourceFile)
+                    ReasonPhrase = Localization.GetString(key, resourceFile),
                 };
 
                 actionExecutedContext.Response = response;

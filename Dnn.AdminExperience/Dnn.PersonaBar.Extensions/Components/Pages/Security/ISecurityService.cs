@@ -1,14 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using Dnn.PersonaBar.Library.Model;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Entities.Tabs;
-using Newtonsoft.Json.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components.Security
 {
+    using Dnn.PersonaBar.Library.Model;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Entities.Tabs;
+    using Newtonsoft.Json.Linq;
+
     public interface ISecurityService
     {
         bool IsVisible(MenuItem menuItem);

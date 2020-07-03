@@ -1,8 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Tests.Urls
 {
     using System;
@@ -86,7 +85,7 @@ namespace DotNetNuke.Tests.Urls
 
             var providerTabsTable = getExtensionUrlProvidersDataSet.Tables.Add();
             providerTabsTable.Columns.AddRange(new[] { new DataColumn("ExtensionUrlProviderID", typeof(int)), new DataColumn("TabId", typeof(int)), });
-            
+
             return getExtensionUrlProvidersDataSet;
         }
 
@@ -112,7 +111,7 @@ namespace DotNetNuke.Tests.Urls
                 throw new NotImplementedException();
             }
 
-            public override string ChangeFriendlyUrl(TabInfo tab, string friendlyUrlPath, FriendlyUrlOptions options, string cultureCode, ref string endingPageName, out bool useDnnPagePath, ref List<string> messages) 
+            public override string ChangeFriendlyUrl(TabInfo tab, string friendlyUrlPath, FriendlyUrlOptions options, string cultureCode, ref string endingPageName, out bool useDnnPagePath, ref List<string> messages)
             {
                 throw new NotImplementedException();
             }

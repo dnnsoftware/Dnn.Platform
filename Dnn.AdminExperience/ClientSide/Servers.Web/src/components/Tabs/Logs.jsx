@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Scrollbars } from "react-custom-scrollbars";
-import { GridCell, Dropdown } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import LogFileRow from "./LogFileRow";
 import LogsTabActions from "../../actions/logsTab";
 import utils from "../../utils";
 
@@ -27,27 +26,49 @@ class Logs extends Component {
     render() {
         const { props } = this;
 
-        return <div className="dnn-servers-info-panel-big logsTab">
-            <GridCell columnSize={60} className="log-file-cell">
-                {props.logs.length > 0 &&
-                    <Dropdown
-                        withBorder={false}
-                        label={Localization.get("Logs_LogFilesDefaultOption")}
-                        options={props.logs}
-                        value={props.selectedLog}
-                        prependWith={Localization.get("Logs_LogFiles")}
-                        onSelect={this.props.onSelectedLog}
-                    />}
-            </GridCell>
-            <div className="clear" />
-            <div>
-                <Scrollbars
-                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
-                    style={{ height: 500 }} >
-                    <div className="log-file-display">{props.logData}</div>
-                </Scrollbars>
+        return (
+            <div className="dnn-servers-info-panel-big logsTab">
+                <div className="logContainer">
+                    <div className="logContainerBox">
+                        <div className="logHeader-wrapper">
+                            <div className="logHeader logHeader-type">
+                                <span>{Localization.get("Logs_Type.Header")}</span>
+                            </div>
+                            <div className="logHeader logHeader-filename">
+                                <span>{Localization.get("Logs_Name.Header")}</span>
+                            </div>
+                            <div className="logHeader logHeader-date">
+                                <span>{Localization.get("Logs_Date.Header")}</span>
+                            </div>
+                            <div className="logHeader logHeader-size">
+                                <span>{Localization.get("Logs_Size.Header")}</span>
+                            </div>
+                        </div>
+                        {props.logs.map &&
+              props.logs.map(l => (
+                  <LogFileRow
+                      key={l.name}
+                      fileName={l.name}
+                      lastWriteTimeUtc={l.lastWriteTimeUtc}
+                      size={l.size}
+                      typeName={
+                          l.upgradeLog
+                              ? Localization.get("Logs_UpgradeLog")
+                              : Localization.get("Logs_ServerLog")
+                      }
+                      onOpen={() => {
+                          if (this.props.selectedLog !== l.name) {
+                              this.props.onSelectedLog(l);
+                          }
+                      }}
+                  >
+                      <div className="log-file-display">{props.logData}</div>
+                  </LogFileRow>
+              ))}
+                    </div>
+                </div>
             </div>
-        </div>;
+        );
     }
 }
 

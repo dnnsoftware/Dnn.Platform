@@ -1,60 +1,149 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.UI.WebControls;
-using Microsoft.Extensions.DependencyInjection;
-
-using DotNetNuke.Abstractions;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Content.Taxonomy;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Personalization;
-using DotNetNuke.UI.Utilities;
-using DotNetNuke.Web.UI;
-using DotNetNuke.Web.UI.WebControls;
-using DotNetNuke.Entities.Content.Common;
-using DotNetNuke.Web.UI.WebControls.Extensions;
-
-using Globals = DotNetNuke.Common.Globals;
-using PortalInfo = DotNetNuke.Entities.Portals.PortalInfo;
-using Reflection = DotNetNuke.Framework.Reflection;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.ControlPanel
 {
-	public partial class AddModule : UserControlBase, IDnnRibbonBarTool
-	{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Personalization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.UI;
+    using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Web.UI.WebControls.Extensions;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+    using PortalInfo = DotNetNuke.Entities.Portals.PortalInfo;
+    using Reflection = DotNetNuke.Framework.Reflection;
+
+    public partial class AddModule : UserControlBase, IDnnRibbonBarTool
+    {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
         private readonly INavigationManager _navigationManager;
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AddModule));
         private bool _enabled = true;
 
         public AddModule()
         {
-            _navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+            this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        public override bool Visible
+        {
+            get
+            {
+                return base.Visible && TabPermissionController.CanAddContentToPage();
+            }
+
+            set
+            {
+                base.Visible = value;
+            }
+        }
+
+        public bool Enabled
+        {
+            get
+            {
+                return this._enabled && this.CanAddModuleToPage();
+            }
+
+            set
+            {
+                this._enabled = value;
+            }
+        }
+
+        public string ToolName
+        {
+            get
+            {
+                return "QuickAddModule";
+            }
+
+            set
+            {
+                throw new NotSupportedException("Set ToolName not supported");
+            }
+        }
+
+        /// <summary>Gets the currently-selected module.</summary>
+        protected DesktopModuleInfo SelectedModule
+        {
+            get
+            {
+                if (this.AddExistingModule.Checked)
+                {
+                    var tabId = -1;
+                    if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
+                    {
+                        tabId = int.Parse(this.PageLst.SelectedValue);
+                    }
+
+                    if (tabId < 0)
+                    {
+                        tabId = PortalSettings.Current.ActiveTab.TabID;
+                    }
+
+                    if (!string.IsNullOrEmpty(this.ModuleLst.SelectedValue))
+                    {
+                        var moduleId = int.Parse(this.ModuleLst.SelectedValue);
+                        if (moduleId >= 0)
+                        {
+                            return ModuleController.Instance.GetModule(moduleId, tabId, false).DesktopModule;
+                        }
+                    }
+                }
+                else
+                {
+                    var portalId = -1;
+
+                    if (this.SiteListPanel.Visible)
+                    {
+                        portalId = int.Parse(this.SiteList.SelectedValue);
+                    }
+
+                    if (portalId < 0)
+                    {
+                        portalId = PortalSettings.Current.PortalId;
+                    }
+
+                    if (!string.IsNullOrEmpty(this.ModuleLst.SelectedValue))
+                    {
+                        var moduleId = int.Parse(this.ModuleLst.SelectedValue);
+                        if (moduleId >= 0)
+                        {
+                            return DesktopModuleController.GetDesktopModule(moduleId, portalId);
+                        }
+                    }
+                }
+
+                return null;
+            }
         }
 
         /// <summary>
-        /// Return the <see cref="PortalSettings"/> for the selected portal (from the Site list), unless
+        /// Gets return the <see cref="PortalSettings"/> for the selected portal (from the Site list), unless
         /// the site list is not visible or there are no other sites in our site group, in which case
         /// it returns the PortalSettings for the current portal.
         /// </summary>
@@ -66,14 +155,14 @@ namespace DotNetNuke.UI.ControlPanel
 
                 try
                 {
-                    if (SiteListPanel.Visible && SiteList.SelectedItem != null)
+                    if (this.SiteListPanel.Visible && this.SiteList.SelectedItem != null)
                     {
-                        if (!string.IsNullOrEmpty(SiteList.SelectedItem.Value))
+                        if (!string.IsNullOrEmpty(this.SiteList.SelectedItem.Value))
                         {
-                            var selectedPortalId = int.Parse(SiteList.SelectedItem.Value);
-                            if (PortalSettings.PortalId != selectedPortalId)
+                            var selectedPortalId = int.Parse(this.SiteList.SelectedItem.Value);
+                            if (this.PortalSettings.PortalId != selectedPortalId)
                             {
-                                portalSettings = new PortalSettings(int.Parse(SiteList.SelectedItem.Value));
+                                portalSettings = new PortalSettings(int.Parse(this.SiteList.SelectedItem.Value));
                             }
                         }
                     }
@@ -87,314 +176,234 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
+        private string LocalResourceFile
+        {
+            get
+            {
+                return string.Format("{0}/{1}/{2}.ascx.resx", this.TemplateSourceDirectory, Localization.LocalResourceDirectory, this.GetType().BaseType.Name);
+            }
+        }
 
-        #region Event Handlers
+        public bool CanAddModuleToPage()
+        {
+            if (HttpContext.Current == null)
+            {
+                return false;
+            }
 
-		protected void AddNewOrExisting_OnClick(Object sender, EventArgs e)
-		{
-			LoadAllLists();
-		}
+            // If we are not in an edit page
+            return string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"]) && string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]);
+        }
 
-		protected void PaneLstSelectedIndexChanged(Object sender, EventArgs e)
-		{
-			LoadPositionList();
-			LoadPaneModulesList();
-		}
+        protected void AddNewOrExisting_OnClick(object sender, EventArgs e)
+        {
+            this.LoadAllLists();
+        }
 
-		protected void PageLstSelectedIndexChanged(Object sender, EventArgs e)
-		{
-			LoadModuleList();
-		}
+        protected void PaneLstSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadPositionList();
+            this.LoadPaneModulesList();
+        }
 
-		protected void PositionLstSelectedIndexChanged(Object sender, EventArgs e)
-		{
-			PaneModulesLst.Enabled = PositionLst.SelectedValue == "ABOVE" || PositionLst.SelectedValue == "BELOW";
-		}
+        protected void PageLstSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadModuleList();
+        }
 
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        protected void PositionLstSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.PaneModulesLst.Enabled = this.PositionLst.SelectedValue == "ABOVE" || this.PositionLst.SelectedValue == "BELOW";
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
             // Is there more than one site in this group?
-            var multipleSites = GetCurrentPortalsGroup().Count() > 1;
-            ClientAPI.RegisterClientVariable(Page, "moduleSharing", multipleSites.ToString().ToLowerInvariant(), true);
+            var multipleSites = this.GetCurrentPortalsGroup().Count() > 1;
+            ClientAPI.RegisterClientVariable(this.Page, "moduleSharing", multipleSites.ToString().ToLowerInvariant(), true);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            cmdAddModule.Click += CmdAddModuleClick;
-			AddNewModule.CheckedChanged += AddNewOrExisting_OnClick;
-			AddExistingModule.CheckedChanged += AddNewOrExisting_OnClick;
-            SiteList.SelectedIndexChanged += SiteList_SelectedIndexChanged;
-			CategoryList.SelectedIndexChanged += CategoryListSelectedIndexChanged;
-			PageLst.SelectedIndexChanged += PageLstSelectedIndexChanged;
-			PaneLst.SelectedIndexChanged += PaneLstSelectedIndexChanged;
-			PositionLst.SelectedIndexChanged += PositionLstSelectedIndexChanged;
+            this.cmdAddModule.Click += this.CmdAddModuleClick;
+            this.AddNewModule.CheckedChanged += this.AddNewOrExisting_OnClick;
+            this.AddExistingModule.CheckedChanged += this.AddNewOrExisting_OnClick;
+            this.SiteList.SelectedIndexChanged += this.SiteList_SelectedIndexChanged;
+            this.CategoryList.SelectedIndexChanged += this.CategoryListSelectedIndexChanged;
+            this.PageLst.SelectedIndexChanged += this.PageLstSelectedIndexChanged;
+            this.PaneLst.SelectedIndexChanged += this.PaneLstSelectedIndexChanged;
+            this.PositionLst.SelectedIndexChanged += this.PositionLstSelectedIndexChanged;
 
             try
-			{
-				if ((Visible))
-				{
-					cmdAddModule.Enabled = Enabled;
-					AddExistingModule.Enabled = Enabled;
-					AddNewModule.Enabled = Enabled;
-					Title.Enabled = Enabled;
-					PageLst.Enabled = Enabled;
-					ModuleLst.Enabled = Enabled;
-					VisibilityLst.Enabled = Enabled;
-					PaneLst.Enabled = Enabled;
-					PositionLst.Enabled = Enabled;
-					PaneModulesLst.Enabled = Enabled;
+            {
+                if (this.Visible)
+                {
+                    this.cmdAddModule.Enabled = this.Enabled;
+                    this.AddExistingModule.Enabled = this.Enabled;
+                    this.AddNewModule.Enabled = this.Enabled;
+                    this.Title.Enabled = this.Enabled;
+                    this.PageLst.Enabled = this.Enabled;
+                    this.ModuleLst.Enabled = this.Enabled;
+                    this.VisibilityLst.Enabled = this.Enabled;
+                    this.PaneLst.Enabled = this.Enabled;
+                    this.PositionLst.Enabled = this.Enabled;
+                    this.PaneModulesLst.Enabled = this.Enabled;
 
-					UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
-					if ((objUser != null))
-					{
-						if (objUser.IsSuperUser)
-						{
+                    UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
+                    if (objUser != null)
+                    {
+                        if (objUser.IsSuperUser)
+                        {
                             var objModule = ModuleController.Instance.GetModuleByDefinition(-1, "Extensions");
-							if (objModule != null)
-							{
-								var strURL = _navigationManager.NavigateURL(objModule.TabID, true);
-								hlMoreExtensions.NavigateUrl = strURL + "#moreExtensions";
-							}
-							else
-							{
-								hlMoreExtensions.Enabled = false;
-							}
-							hlMoreExtensions.Text = GetString("hlMoreExtensions");
-							hlMoreExtensions.Visible = true;
-						}
-					}
-				}
+                            if (objModule != null)
+                            {
+                                var strURL = this._navigationManager.NavigateURL(objModule.TabID, true);
+                                this.hlMoreExtensions.NavigateUrl = strURL + "#moreExtensions";
+                            }
+                            else
+                            {
+                                this.hlMoreExtensions.Enabled = false;
+                            }
 
-				if ((!IsPostBack && Visible && Enabled))
-				{
-				    AddNewModule.Checked = true;
-					LoadAllLists();
-				}
-			}
-			catch (Exception exc)
-			{
-				Exceptions.ProcessModuleLoadException(this, exc);
-			}
-		}
-
-	    private void CmdConfirmAddModuleClick(object sender, EventArgs e)
-        {
-            CmdAddModuleClick(sender, e);
-        }
-
-        void SiteList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadModuleList();
-            LoadPageList();
-        }
-
-	    private void CategoryListSelectedIndexChanged(object sender, EventArgs e)
-		{
-			LoadModuleList();
-		}
-
-		protected void CmdAddModuleClick(object sender, EventArgs e)
-		{
-			if (TabPermissionController.CanAddContentToPage() && CanAddModuleToPage())
-			{
-				int permissionType;
-				try
-				{
-					permissionType = int.Parse(VisibilityLst.SelectedValue);
-				}
-				catch (Exception exc)
-				{
-					Logger.Error(exc);
-
-					permissionType = 0;
-				}
-
-				int position = -1;
-				switch (PositionLst.SelectedValue)
-				{
-					case "TOP":
-						position = 0;
-						break;
-					case "ABOVE":
-						if (!string.IsNullOrEmpty(PaneModulesLst.SelectedValue))
-						{
-							try
-							{
-								position = int.Parse(PaneModulesLst.SelectedValue) - 1;
-							}
-							catch (Exception exc)
-							{
-								Logger.Error(exc);
-
-								position = -1;
-							}
-						}
-						else
-						{
-							position = 0;
-						}
-						break;
-					case "BELOW":
-						if (!string.IsNullOrEmpty(PaneModulesLst.SelectedValue))
-						{
-							try
-							{
-								position = int.Parse(PaneModulesLst.SelectedValue) + 1;
-							}
-							catch (Exception exc)
-							{
-								Logger.Error(exc);
-
-								position = -1;
-							}
-						}
-						else
-						{
-							position = -1;
-						}
-						break;
-					case "BOTTOM":
-						position = -1;
-						break;
-				}
-
-				int moduleLstID;
-				try
-				{
-					moduleLstID = int.Parse(ModuleLst.SelectedValue);
-				}
-				catch (Exception exc)
-				{
-					Logger.Error(exc);
-
-					moduleLstID = -1;
-				}
-
-				if ((moduleLstID > -1))
-				{
-					if ((AddExistingModule.Checked))
-					{
-						int pageID;
-						try
-						{
-							pageID = int.Parse(PageLst.SelectedValue);
-						}
-						catch (Exception exc)
-						{
-							Logger.Error(exc);
-
-							pageID = -1;
-						}
-
-						if ((pageID > -1))
-						{
-							DoAddExistingModule(moduleLstID, pageID, PaneLst.SelectedValue, position, "", chkCopyModule.Checked);
-						}
-					}
-					else
-					{
-						DoAddNewModule(Title.Text, moduleLstID, PaneLst.SelectedValue, position, permissionType, "");
-					}
-				}
-
-				//set view mode to edit after add module.
-				if (PortalSettings.UserMode != PortalSettings.Mode.Edit)
-				{
-					Personalization.SetProfile("Usability", "UserMode" + PortalSettings.PortalId, "EDIT");
-				}
-				Response.Redirect(Request.RawUrl, true);
-			}
-		}
-
-	    #endregion
-
-		#region Properties
-
-		public override bool Visible
-		{
-			get
-			{
-				return base.Visible && TabPermissionController.CanAddContentToPage();
-			}
-			set
-			{
-				base.Visible = value;
-			}
-		}
-
-		public bool Enabled
-		{
-			get
-			{
-				return _enabled && CanAddModuleToPage();
-			}
-			set
-			{
-				_enabled = value;
-			}
-		}
-
-		public string ToolName
-		{
-			get
-			{
-				return "QuickAddModule";
-			}
-			set
-			{
-				throw new NotSupportedException("Set ToolName not supported");
-			}
-		}
-
-        /// <summary>The currently-selected module.</summary>
-	    protected DesktopModuleInfo SelectedModule
-	    {
-	        get
-	        {
-                if (AddExistingModule.Checked)
-                {
-                    var tabId = -1;
-                    if (!string.IsNullOrEmpty(PageLst.SelectedValue))
-                        tabId = int.Parse(PageLst.SelectedValue);
-
-                    if (tabId < 0)
-                        tabId = PortalSettings.Current.ActiveTab.TabID;
-
-                    if (!string.IsNullOrEmpty(ModuleLst.SelectedValue))
-                    {
-                        var moduleId = int.Parse(ModuleLst.SelectedValue);
-                        if (moduleId >= 0)
-                        {
-                            return ModuleController.Instance.GetModule(moduleId, tabId, false).DesktopModule;
-                        }
-                    }
-                }
-                else
-                {
-                    var portalId = -1;
-
-                    if (SiteListPanel.Visible) portalId = int.Parse(SiteList.SelectedValue);
-
-                    if (portalId < 0) portalId = PortalSettings.Current.PortalId;
-
-                    if (!string.IsNullOrEmpty(ModuleLst.SelectedValue))
-                    {
-                        var moduleId = int.Parse(ModuleLst.SelectedValue);
-                        if (moduleId >= 0)
-                        {
-                            return DesktopModuleController.GetDesktopModule(moduleId, portalId);
+                            this.hlMoreExtensions.Text = this.GetString("hlMoreExtensions");
+                            this.hlMoreExtensions.Visible = true;
                         }
                     }
                 }
 
-                return null;
-	        }
-	    }
+                if (!this.IsPostBack && this.Visible && this.Enabled)
+                {
+                    this.AddNewModule.Checked = true;
+                    this.LoadAllLists();
+                }
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
 
-		#endregion
+        protected void CmdAddModuleClick(object sender, EventArgs e)
+        {
+            if (TabPermissionController.CanAddContentToPage() && this.CanAddModuleToPage())
+            {
+                int permissionType;
+                try
+                {
+                    permissionType = int.Parse(this.VisibilityLst.SelectedValue);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
 
-		#region Methods
+                    permissionType = 0;
+                }
+
+                int position = -1;
+                switch (this.PositionLst.SelectedValue)
+                {
+                    case "TOP":
+                        position = 0;
+                        break;
+                    case "ABOVE":
+                        if (!string.IsNullOrEmpty(this.PaneModulesLst.SelectedValue))
+                        {
+                            try
+                            {
+                                position = int.Parse(this.PaneModulesLst.SelectedValue) - 1;
+                            }
+                            catch (Exception exc)
+                            {
+                                Logger.Error(exc);
+
+                                position = -1;
+                            }
+                        }
+                        else
+                        {
+                            position = 0;
+                        }
+
+                        break;
+                    case "BELOW":
+                        if (!string.IsNullOrEmpty(this.PaneModulesLst.SelectedValue))
+                        {
+                            try
+                            {
+                                position = int.Parse(this.PaneModulesLst.SelectedValue) + 1;
+                            }
+                            catch (Exception exc)
+                            {
+                                Logger.Error(exc);
+
+                                position = -1;
+                            }
+                        }
+                        else
+                        {
+                            position = -1;
+                        }
+
+                        break;
+                    case "BOTTOM":
+                        position = -1;
+                        break;
+                }
+
+                int moduleLstID;
+                try
+                {
+                    moduleLstID = int.Parse(this.ModuleLst.SelectedValue);
+                }
+                catch (Exception exc)
+                {
+                    Logger.Error(exc);
+
+                    moduleLstID = -1;
+                }
+
+                if (moduleLstID > -1)
+                {
+                    if (this.AddExistingModule.Checked)
+                    {
+                        int pageID;
+                        try
+                        {
+                            pageID = int.Parse(this.PageLst.SelectedValue);
+                        }
+                        catch (Exception exc)
+                        {
+                            Logger.Error(exc);
+
+                            pageID = -1;
+                        }
+
+                        if (pageID > -1)
+                        {
+                            this.DoAddExistingModule(moduleLstID, pageID, this.PaneLst.SelectedValue, position, string.Empty, this.chkCopyModule.Checked);
+                        }
+                    }
+                    else
+                    {
+                        DoAddNewModule(this.Title.Text, moduleLstID, this.PaneLst.SelectedValue, position, permissionType, string.Empty);
+                    }
+                }
+
+                // set view mode to edit after add module.
+                if (this.PortalSettings.UserMode != PortalSettings.Mode.Edit)
+                {
+                    Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, "EDIT");
+                }
+
+                this.Response.Redirect(this.Request.RawUrl, true);
+            }
+        }
+
+        protected string GetString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
 
         private static ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
         {
@@ -405,7 +414,7 @@ namespace DotNetNuke.UI.ControlPanel
                 RoleID = roleId,
                 UserID = userId,
                 PermissionKey = permission.PermissionKey,
-                AllowAccess = allowAccess
+                AllowAccess = allowAccess,
             };
 
             // add the permission to the collection
@@ -417,130 +426,12 @@ namespace DotNetNuke.UI.ControlPanel
             return objModulePermission;
         }
 
-        private void DoAddExistingModule(int moduleId, int tabId, string paneName, int position, string align, bool cloneModule)
+        private static void SetCloneModuleContext(bool cloneModuleContext)
         {
-            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
-
-            int userID = -1;
-            if (Request.IsAuthenticated)
-            {
-                UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                if (((user != null)))
-                {
-                    userID = user.UserID;
-                }
-            }
-
-            if ((moduleInfo != null))
-            {
-                // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
-                var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
-                if (remote)
-                {
-                    switch (moduleInfo.DesktopModule.Shareable)
-                    {
-                        case ModuleSharing.Unsupported:
-                            // Should never happen since the module should not be listed in the first place.
-                            throw new ApplicationException(string.Format("Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
-                                                                         moduleInfo.DesktopModule.FriendlyName));
-                        case ModuleSharing.Supported:
-                            break;
-                        default:
-                        case ModuleSharing.Unknown:
-                            break;
-                    }
-                }
-
-                // clone the module object ( to avoid creating an object reference to the data cache )
-                ModuleInfo newModule = moduleInfo.Clone();
-
-                newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID
-                newModule.TabModuleID = Null.NullInteger;
-                newModule.TabID = PortalSettings.Current.ActiveTab.TabID;
-                newModule.ModuleOrder = position;
-                newModule.PaneName = paneName;
-                newModule.Alignment = align;
-
-                if ((cloneModule))
-                {
-                    newModule.ModuleID = Null.NullInteger;
-
-                    //copy module settings and tab module settings
-                    newModule.ModuleSettings.Clear();
-                    foreach (var key in moduleInfo.ModuleSettings.Keys)
-                    {
-                        newModule.ModuleSettings.Add(key, moduleInfo.ModuleSettings[key]);
-                    }
-
-                    newModule.TabModuleSettings.Clear();
-                    foreach (var key in moduleInfo.TabModuleSettings.Keys)
-                    {
-                        newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
-                    }
-
-                    //reset the module id
-                    newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
-
-                    if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
-                    {
-                        object objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
-                        if (objObject is IPortable)
-                        {
-                            try
-                            {
-                                SetCloneModuleContext(true);
-                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
-                                if (!string.IsNullOrEmpty(content))
-                                {
-                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
-                                }
-                            }
-                            finally
-                            {
-                                SetCloneModuleContext(false);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    //copy tab module settings
-                    newModule.TabModuleSettings.Clear();
-                    foreach (var key in moduleInfo.TabModuleSettings.Keys)
-                    {
-                        newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
-                    }
-
-                    ModuleController.Instance.AddModule(newModule);
-                }
-
-                if (remote)
-                {
-                    //Ensure the Portal Admin has View rights
-                    var permissionController = new PermissionController();
-                    ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
-                    AddModulePermission(newModule,
-                                    (PermissionInfo)arrSystemModuleViewPermissions[0],
-                                    PortalSettings.Current.AdministratorRoleId,
-                                    Null.NullInteger,
-                                    true);
-
-                    //Set PortalID correctly
-                    newModule.OwnerPortalID = newModule.PortalID;
-                    newModule.PortalID = PortalSettings.Current.PortalId;
-                    ModulePermissionController.SaveModulePermissions(newModule);
-                }
-
-                //Add Event Log
-                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
-            }
+            Thread.SetData(
+                Thread.GetNamedDataSlot("CloneModuleContext"),
+                cloneModuleContext ? bool.TrueString : bool.FalseString);
         }
-
-	    private static void SetCloneModuleContext(bool cloneModuleContext)
-	    {
-	        Thread.SetData(Thread.GetNamedDataSlot("CloneModuleContext"),
-	            cloneModuleContext ? bool.TrueString : bool.FalseString);
-	    }
 
         private static void DoAddNewModule(string title, int desktopModuleId, string paneName, int position, int permissionType, string align)
         {
@@ -575,7 +466,7 @@ namespace DotNetNuke.UI.ControlPanel
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
                         ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if ((defaultModule != null))
+                        if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
                         }
@@ -587,8 +478,9 @@ namespace DotNetNuke.UI.ControlPanel
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //check whether original tab is exists, if true then set culture code to default language,
-                    //otherwise set culture code to current.
+
+                    // check whether original tab is exists, if true then set culture code to default language,
+                    // otherwise set culture code to current.
                     if (TabController.Instance.GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
                     {
                         objModule.CultureCode = defaultLocale.Code;
@@ -602,30 +494,12 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     objModule.CultureCode = Null.NullString;
                 }
+
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
                 ModuleController.Instance.AddModule(objModule);
             }
-        }
-
-        private IEnumerable<PortalInfo> GetCurrentPortalsGroup()
-        {
-            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
-
-            var result = (from @group in groups
-                          select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                              into portals
-                              where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                              select portals.ToArray()).FirstOrDefault();
-
-            // Are we in a group of one?
-            if (result == null || result.Length == 0)
-            {
-                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
-            }
-
-            return result;
         }
 
         private static bool GetIsPortable(string moduleID, string tabID)
@@ -637,13 +511,13 @@ namespace DotNetNuke.UI.ControlPanel
             bool validModuleID = int.TryParse(moduleID, out parsedModuleID);
             bool validTabID = int.TryParse(tabID, out parsedTabID);
 
-            if ((validModuleID && validTabID))
+            if (validModuleID && validTabID)
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(parsedModuleID, parsedTabID, false);
-                if (((moduleInfo != null)))
+                if (moduleInfo != null)
                 {
                     DesktopModuleInfo moduleDesktopInfo = moduleInfo.DesktopModule;
-                    if (((moduleDesktopInfo != null)))
+                    if (moduleDesktopInfo != null)
                     {
                         isPortable = moduleDesktopInfo.IsPortable;
                     }
@@ -653,107 +527,261 @@ namespace DotNetNuke.UI.ControlPanel
             return isPortable;
         }
 
-        protected string GetString(string key)
+        private void CmdConfirmAddModuleClick(object sender, EventArgs e)
         {
-            return Localization.GetString(key, LocalResourceFile);
+            this.CmdAddModuleClick(sender, e);
+        }
+
+        private void SiteList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadModuleList();
+            this.LoadPageList();
+        }
+
+        private void CategoryListSelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.LoadModuleList();
+        }
+
+        private void DoAddExistingModule(int moduleId, int tabId, string paneName, int position, string align, bool cloneModule)
+        {
+            ModuleInfo moduleInfo = ModuleController.Instance.GetModule(moduleId, tabId, false);
+
+            int userID = -1;
+            if (this.Request.IsAuthenticated)
+            {
+                UserInfo user = UserController.Instance.GetCurrentUserInfo();
+                if (user != null)
+                {
+                    userID = user.UserID;
+                }
+            }
+
+            if (moduleInfo != null)
+            {
+                // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
+                var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
+                if (remote)
+                {
+                    switch (moduleInfo.DesktopModule.Shareable)
+                    {
+                        case ModuleSharing.Unsupported:
+                            // Should never happen since the module should not be listed in the first place.
+                            throw new ApplicationException(string.Format(
+                                "Module '{0}' does not support Shareable and should not be listed in Add Existing Module from a different source site",
+                                moduleInfo.DesktopModule.FriendlyName));
+                        case ModuleSharing.Supported:
+                            break;
+                        default:
+                        case ModuleSharing.Unknown:
+                            break;
+                    }
+                }
+
+                // clone the module object ( to avoid creating an object reference to the data cache )
+                ModuleInfo newModule = moduleInfo.Clone();
+
+                newModule.UniqueId = Guid.NewGuid(); // Cloned Module requires a different uniqueID
+                newModule.TabModuleID = Null.NullInteger;
+                newModule.TabID = PortalSettings.Current.ActiveTab.TabID;
+                newModule.ModuleOrder = position;
+                newModule.PaneName = paneName;
+                newModule.Alignment = align;
+
+                if (cloneModule)
+                {
+                    newModule.ModuleID = Null.NullInteger;
+
+                    // copy module settings and tab module settings
+                    newModule.ModuleSettings.Clear();
+                    foreach (var key in moduleInfo.ModuleSettings.Keys)
+                    {
+                        newModule.ModuleSettings.Add(key, moduleInfo.ModuleSettings[key]);
+                    }
+
+                    newModule.TabModuleSettings.Clear();
+                    foreach (var key in moduleInfo.TabModuleSettings.Keys)
+                    {
+                        newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
+                    }
+
+                    // reset the module id
+                    newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
+
+                    if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
+                    {
+                        object objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
+                        if (objObject is IPortable)
+                        {
+                            try
+                            {
+                                SetCloneModuleContext(true);
+                                string content = Convert.ToString(((IPortable)objObject).ExportModule(moduleId));
+                                if (!string.IsNullOrEmpty(content))
+                                {
+                                    ((IPortable)objObject).ImportModule(newModule.ModuleID, content, newModule.DesktopModule.Version, userID);
+                                }
+                            }
+                            finally
+                            {
+                                SetCloneModuleContext(false);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // copy tab module settings
+                    newModule.TabModuleSettings.Clear();
+                    foreach (var key in moduleInfo.TabModuleSettings.Keys)
+                    {
+                        newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
+                    }
+
+                    ModuleController.Instance.AddModule(newModule);
+                }
+
+                if (remote)
+                {
+                    // Ensure the Portal Admin has View rights
+                    var permissionController = new PermissionController();
+                    ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
+                    AddModulePermission(
+                        newModule,
+                        (PermissionInfo)arrSystemModuleViewPermissions[0],
+                        PortalSettings.Current.AdministratorRoleId,
+                        Null.NullInteger,
+                        true);
+
+                    // Set PortalID correctly
+                    newModule.OwnerPortalID = newModule.PortalID;
+                    newModule.PortalID = PortalSettings.Current.PortalId;
+                    ModulePermissionController.SaveModulePermissions(newModule);
+                }
+
+                // Add Event Log
+                EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, string.Empty, EventLogController.EventLogType.MODULE_CREATED);
+            }
+        }
+
+        private IEnumerable<PortalInfo> GetCurrentPortalsGroup()
+        {
+            var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
+
+            var result = (from @group in groups
+                          select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
+                              into portals
+                          where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
+                          select portals.ToArray()).FirstOrDefault();
+
+            // Are we in a group of one?
+            if (result == null || result.Length == 0)
+            {
+                result = new[] { PortalController.Instance.GetPortal(PortalSettings.Current.PortalId) };
+            }
+
+            return result;
         }
 
         private void LoadAllLists()
-		{
-		    LoadSiteList();
-			LoadCategoryList();
-			LoadPageList();
-			LoadModuleList();
-			LoadVisibilityList();
-			LoadPaneList();
-			LoadPositionList();
-			LoadPaneModulesList();
-		}
+        {
+            this.LoadSiteList();
+            this.LoadCategoryList();
+            this.LoadPageList();
+            this.LoadModuleList();
+            this.LoadVisibilityList();
+            this.LoadPaneList();
+            this.LoadPositionList();
+            this.LoadPaneModulesList();
+        }
 
         private void LoadCategoryList()
         {
-            CategoryListPanel.Visible = !AddExistingModule.Checked;
+            this.CategoryListPanel.Visible = !this.AddExistingModule.Checked;
 
             ITermController termController = Util.GetTermController();
-            CategoryList.DataSource = termController.GetTermsByVocabulary("Module_Categories").OrderBy(t => t.Weight).Where(t => t.Name != "< None >").ToList();
-            CategoryList.DataBind();
-            //CategoryList.Items.Add(new ListItem(Localization.GetString("AllCategories", LocalResourceFile), "All"));
-            CategoryList.AddItem(Localization.GetString("AllCategories", LocalResourceFile), "All");
-            if (!IsPostBack)
+            this.CategoryList.DataSource = termController.GetTermsByVocabulary("Module_Categories").OrderBy(t => t.Weight).Where(t => t.Name != "< None >").ToList();
+            this.CategoryList.DataBind();
+
+            // CategoryList.Items.Add(new ListItem(Localization.GetString("AllCategories", LocalResourceFile), "All"));
+            this.CategoryList.AddItem(Localization.GetString("AllCategories", this.LocalResourceFile), "All");
+            if (!this.IsPostBack)
             {
-                CategoryList.Select("Common", false);
+                this.CategoryList.Select("Common", false);
             }
         }
 
         private void LoadModuleList()
         {
-            if (AddExistingModule.Checked)
+            if (this.AddExistingModule.Checked)
             {
-                //Get list of modules for the selected tab
-                if (!string.IsNullOrEmpty(PageLst.SelectedValue))
+                // Get list of modules for the selected tab
+                if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
                 {
-                    var tabId = int.Parse(PageLst.SelectedValue);
+                    var tabId = int.Parse(this.PageLst.SelectedValue);
                     if (tabId >= 0)
                     {
-                        ModuleLst.BindTabModulesByTabID(tabId);
+                        this.ModuleLst.BindTabModulesByTabID(tabId);
                     }
-                    if ((ModuleLst.ItemCount > 0))
+
+                    if (this.ModuleLst.ItemCount > 0)
                     {
-                        chkCopyModule.Visible = true;
-                        SetCopyModuleMessage(GetIsPortable(ModuleLst.SelectedValue, PageLst.SelectedValue));
+                        this.chkCopyModule.Visible = true;
+                        this.SetCopyModuleMessage(GetIsPortable(this.ModuleLst.SelectedValue, this.PageLst.SelectedValue));
                     }
                 }
             }
             else
             {
-                ModuleLst.Filter = CategoryList.SelectedValue == "All"
+                this.ModuleLst.Filter = this.CategoryList.SelectedValue == "All"
                                         ? (kvp => true)
-                                         : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == CategoryList.SelectedValue);
-                ModuleLst.BindAllPortalDesktopModules();
+                                         : (Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool>)(kvp => kvp.Value.DesktopModule.Category == this.CategoryList.SelectedValue);
+                this.ModuleLst.BindAllPortalDesktopModules();
             }
 
-            ModuleLst.Enabled = ModuleLst.ItemCount > 0;
+            this.ModuleLst.Enabled = this.ModuleLst.ItemCount > 0;
         }
 
         private void LoadPageList()
-		{
-			PageListPanel.Visible = AddExistingModule.Checked;
-			TitlePanel.Enabled = !AddExistingModule.Checked;
-			chkCopyModule.Visible = AddExistingModule.Checked;
+        {
+            this.PageListPanel.Visible = this.AddExistingModule.Checked;
+            this.TitlePanel.Enabled = !this.AddExistingModule.Checked;
+            this.chkCopyModule.Visible = this.AddExistingModule.Checked;
 
-			if ((AddExistingModule.Checked))
-			{
-				chkCopyModule.Text = Localization.GetString("CopyModuleDefault.Text", LocalResourceFile);
-			}
-
-	        var portalSettings = SelectedPortalSettings;
-
-	        PageLst.Items.Clear();
-
-            if (PageListPanel.Visible)
+            if (this.AddExistingModule.Checked)
             {
-                PageLst.DataValueField = "TabID";
-				PageLst.DataTextField = "IndentedTabName";
-                if(PortalSettings.PortalId == SelectedPortalSettings.PortalId)
+                this.chkCopyModule.Text = Localization.GetString("CopyModuleDefault.Text", this.LocalResourceFile);
+            }
+
+            var portalSettings = this.SelectedPortalSettings;
+
+            this.PageLst.Items.Clear();
+
+            if (this.PageListPanel.Visible)
+            {
+                this.PageLst.DataValueField = "TabID";
+                this.PageLst.DataTextField = "IndentedTabName";
+                if (this.PortalSettings.PortalId == this.SelectedPortalSettings.PortalId)
                 {
-                    PageLst.DataSource = TabController.GetPortalTabs(portalSettings.PortalId, portalSettings.ActiveTab.TabID, true, string.Empty, true, false, false, false, true);
+                    this.PageLst.DataSource = TabController.GetPortalTabs(portalSettings.PortalId, portalSettings.ActiveTab.TabID, true, string.Empty, true, false, false, false, true);
                 }
                 else
                 {
-                    PageLst.DataSource = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, true, string.Empty, true, false, false, false, true);
+                    this.PageLst.DataSource = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, true, string.Empty, true, false, false, false, true);
                 }
-				PageLst.DataBind();
-			}
-		}
+
+                this.PageLst.DataBind();
+            }
+        }
 
         private void LoadPaneList()
         {
-            PaneLst.Items.Clear();
-            PaneLst.DataSource = PortalSettings.Current.ActiveTab.Panes;
-            PaneLst.DataBind();
-            if ((PortalSettings.Current.ActiveTab.Panes.Contains(Globals.glbDefaultPane)))
+            this.PaneLst.Items.Clear();
+            this.PaneLst.DataSource = PortalSettings.Current.ActiveTab.Panes;
+            this.PaneLst.DataBind();
+            if (PortalSettings.Current.ActiveTab.Panes.Contains(Globals.glbDefaultPane))
             {
-                PaneLst.SelectedValue = Globals.glbDefaultPane;
+                this.PaneLst.SelectedValue = Globals.glbDefaultPane;
             }
         }
 
@@ -763,13 +791,13 @@ namespace DotNetNuke.UI.ControlPanel
 
             foreach (ModuleInfo m in PortalSettings.Current.ActiveTab.Modules)
             {
-                //if user is allowed to view module and module is not deleted
+                // if user is allowed to view module and module is not deleted
                 if (ModulePermissionController.CanViewModule(m) && !m.IsDeleted)
                 {
-                    //modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
+                    // modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
                     if (!m.AllTabs || !PortalSettings.Current.ActiveTab.IsSuperTab)
                     {
-                        if (m.PaneName == PaneLst.SelectedValue)
+                        if (m.PaneName == this.PaneLst.SelectedValue)
                         {
                             int moduleOrder = m.ModuleOrder;
 
@@ -777,127 +805,108 @@ namespace DotNetNuke.UI.ControlPanel
                             {
                                 moduleOrder++;
                             }
+
                             items.Add(moduleOrder.ToString(), m.ModuleTitle);
                         }
                     }
                 }
             }
 
-            PaneModulesLst.Enabled = true;
-            PaneModulesLst.Items.Clear();
-            PaneModulesLst.DataValueField = "key";
-            PaneModulesLst.DataTextField = "value";
-            PaneModulesLst.DataSource = items;
-            PaneModulesLst.DataBind();
+            this.PaneModulesLst.Enabled = true;
+            this.PaneModulesLst.Items.Clear();
+            this.PaneModulesLst.DataValueField = "key";
+            this.PaneModulesLst.DataTextField = "value";
+            this.PaneModulesLst.DataSource = items;
+            this.PaneModulesLst.DataBind();
 
-            if ((PaneModulesLst.Items.Count <= 1))
+            if (this.PaneModulesLst.Items.Count <= 1)
             {
-                var listItem = PositionLst.FindItemByValue("ABOVE");
-                if (((listItem != null)))
+                var listItem = this.PositionLst.FindItemByValue("ABOVE");
+                if (listItem != null)
                 {
-                    PositionLst.Items.Remove(listItem);
+                    this.PositionLst.Items.Remove(listItem);
                 }
-                listItem = PositionLst.FindItemByValue("BELOW");
-                if (((listItem != null)))
+
+                listItem = this.PositionLst.FindItemByValue("BELOW");
+                if (listItem != null)
                 {
-                    PositionLst.Items.Remove(listItem);
+                    this.PositionLst.Items.Remove(listItem);
                 }
-                PaneModulesLst.Enabled = false;
+
+                this.PaneModulesLst.Enabled = false;
             }
 
-            if ((PositionLst.SelectedValue == "TOP" || PositionLst.SelectedValue == "BOTTOM"))
+            if (this.PositionLst.SelectedValue == "TOP" || this.PositionLst.SelectedValue == "BOTTOM")
             {
-                PaneModulesLst.Enabled = false;
+                this.PaneModulesLst.Enabled = false;
             }
         }
 
         private void LoadPositionList()
         {
             var items = new Dictionary<string, string>
-							{
-								{"TOP", GetString("Top")},
-								{"ABOVE", GetString("Above")},
-								{"BELOW", GetString("Below")},
-								{"BOTTOM", GetString("Bottom")}
-							};
+                            {
+                                { "TOP", this.GetString("Top") },
+                                { "ABOVE", this.GetString("Above") },
+                                { "BELOW", this.GetString("Below") },
+                                { "BOTTOM", this.GetString("Bottom") },
+                            };
 
-            PositionLst.Items.Clear();
-            PositionLst.DataValueField = "key";
-            PositionLst.DataTextField = "value";
-            PositionLst.DataSource = items;
-            PositionLst.DataBind();
-            PositionLst.SelectedValue = "BOTTOM";
+            this.PositionLst.Items.Clear();
+            this.PositionLst.DataValueField = "key";
+            this.PositionLst.DataTextField = "value";
+            this.PositionLst.DataSource = items;
+            this.PositionLst.DataBind();
+            this.PositionLst.SelectedValue = "BOTTOM";
         }
 
         private void LoadSiteList()
         {
             // Is there more than one site in this group?
-            var multipleSites = GetCurrentPortalsGroup().Count() > 1;
+            var multipleSites = this.GetCurrentPortalsGroup().Count() > 1;
 
-            SiteListPanel.Visible = multipleSites && AddExistingModule.Checked;
+            this.SiteListPanel.Visible = multipleSites && this.AddExistingModule.Checked;
 
-            if (SiteListPanel.Visible)
+            if (this.SiteListPanel.Visible)
             {
                 // Get a list of portals in this SiteGroup.
                 var portals = PortalController.Instance.GetPortals().Cast<PortalInfo>().ToArray();
 
-                SiteList.DataSource = portals.Select(
-                    x => new {Value = x.PortalID, Name = x.PortalName, GroupID = x.PortalGroupID}).ToList();
-                SiteList.DataTextField = "Name";
-                SiteList.DataValueField = "Value";
-                SiteList.DataBind();
+                this.SiteList.DataSource = portals.Select(
+                    x => new { Value = x.PortalID, Name = x.PortalName, GroupID = x.PortalGroupID }).ToList();
+                this.SiteList.DataTextField = "Name";
+                this.SiteList.DataValueField = "Value";
+                this.SiteList.DataBind();
             }
         }
 
-		private void LoadVisibilityList()
-		{
-			VisibilityLst.Enabled = !AddExistingModule.Checked;
-			if ((VisibilityLst.Enabled))
-			{
-				var items = new Dictionary<string, string> {{"0", GetString("PermissionView")}, {"1", GetString("PermissionEdit")}};
-
-				VisibilityLst.Items.Clear();
-				VisibilityLst.DataValueField = "key";
-				VisibilityLst.DataTextField = "value";
-				VisibilityLst.DataSource = items;
-				VisibilityLst.DataBind();
-			}
-		}
-
-        private string LocalResourceFile
+        private void LoadVisibilityList()
         {
-            get
+            this.VisibilityLst.Enabled = !this.AddExistingModule.Checked;
+            if (this.VisibilityLst.Enabled)
             {
-                return string.Format("{0}/{1}/{2}.ascx.resx", TemplateSourceDirectory, Localization.LocalResourceDirectory, GetType().BaseType.Name);
+                var items = new Dictionary<string, string> { { "0", this.GetString("PermissionView") }, { "1", this.GetString("PermissionEdit") } };
+
+                this.VisibilityLst.Items.Clear();
+                this.VisibilityLst.DataValueField = "key";
+                this.VisibilityLst.DataTextField = "value";
+                this.VisibilityLst.DataSource = items;
+                this.VisibilityLst.DataBind();
             }
         }
 
         private void SetCopyModuleMessage(bool isPortable)
         {
-            if ((isPortable))
+            if (isPortable)
             {
-                chkCopyModule.Text = Localization.GetString("CopyModuleWcontent", LocalResourceFile);
-                chkCopyModule.ToolTip = Localization.GetString("CopyModuleWcontent.ToolTip", LocalResourceFile);
+                this.chkCopyModule.Text = Localization.GetString("CopyModuleWcontent", this.LocalResourceFile);
+                this.chkCopyModule.ToolTip = Localization.GetString("CopyModuleWcontent.ToolTip", this.LocalResourceFile);
             }
             else
             {
-                chkCopyModule.Text = Localization.GetString("CopyModuleWOcontent", LocalResourceFile);
-                chkCopyModule.ToolTip = Localization.GetString("CopyModuleWOcontent.ToolTip", LocalResourceFile);
+                this.chkCopyModule.Text = Localization.GetString("CopyModuleWOcontent", this.LocalResourceFile);
+                this.chkCopyModule.ToolTip = Localization.GetString("CopyModuleWOcontent.ToolTip", this.LocalResourceFile);
             }
         }
-
-		#endregion
-
-
-        public bool CanAddModuleToPage()
-        {
-            if (HttpContext.Current == null)
-            {
-                return false;
-            }
-            //If we are not in an edit page
-            return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
-        }
-
     }
 }

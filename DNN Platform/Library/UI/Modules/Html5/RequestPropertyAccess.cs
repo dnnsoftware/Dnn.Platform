@@ -1,21 +1,22 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System.Globalization;
-using System.Web;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Services.Tokens;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.Modules.Html5
 {
+    using System.Globalization;
+    using System.Web;
+
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Services.Tokens;
+
     public class RequestPropertyAccess : IPropertyAccess
     {
         private readonly HttpRequest _request;
 
         public RequestPropertyAccess(HttpRequest request)
         {
-            _request = request;
+            this._request = request;
         }
 
         public virtual CacheLevel Cacheability
@@ -28,7 +29,7 @@ namespace DotNetNuke.UI.Modules.Html5
             switch (propertyName.ToLowerInvariant())
             {
                 case "querystring":
-                    return _request.QueryString.ToString();
+                    return this._request.QueryString.ToString();
             }
 
             propertyNotFound = true;

@@ -1,41 +1,37 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Collections.Generic;
-using DotNetNuke.Services.Search.Entities;
-using Lucene.Net.Analysis;
-using Lucene.Net.Documents;
-using Lucene.Net.Search;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Search.Internals
 {
+    using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Services.Search.Entities;
+    using Lucene.Net.Analysis;
+    using Lucene.Net.Documents;
+    using Lucene.Net.Search;
+
     internal interface ILuceneController
     {
         /// <summary>
-        /// Execute Search
+        /// Execute Search.
         /// </summary>
-        /// <param name="luceneSearchContext">Search Context</param>
-        /// <returns>List of matching Documents</returns>
+        /// <param name="luceneSearchContext">Search Context.</param>
+        /// <returns>List of matching Documents.</returns>
         LuceneResults Search(LuceneSearchContext luceneSearchContext);
 
         /// <summary>
-        /// Adds Lucene Document in Lucene Index
+        /// Adds Lucene Document in Lucene Index.
         /// </summary>
         void Add(Document doc);
 
         /// <summary>
-        /// Delete a Search Document from the Search Index
+        /// Delete a Search Document from the Search Index.
         /// </summary>
         void Delete(Query query);
 
         /// <summary>
-        /// Commits the added search documents into the search database
+        /// Commits the added search documents into the search database.
         /// </summary>
         void Commit();
 
@@ -44,7 +40,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// </summary>
         /// <remarks>
         /// This is a costly operation which consumes substantial CPU and I/O resources, therefore use it
-        /// judiciously. If your site has a a single server that performs both indexing and searching, then 
+        /// judiciously. If your site has a a single server that performs both indexing and searching, then
         /// you should consider running the optimize operation after hours or over the weekend so that it
         /// does not interfere with ongoing search activities.
         /// <para>This means you should expect the size of your index to roughly triple (temporarily)
@@ -69,13 +65,13 @@ namespace DotNetNuke.Services.Search.Internals
         int SearchbleDocsCount();
 
         /// <summary>
-        /// Returns if the current search index has deletions
+        /// Returns if the current search index has deletions.
         /// </summary>
-        /// <returns>Whther the search index has deletions or not</returns>
+        /// <returns>Whther the search index has deletions or not.</returns>
         bool HasDeletions();
 
         /// <summary>
-        /// Returns current search indexs general information
+        /// Returns current search indexs general information.
         /// </summary>
         /// <returns><see cref="SearchStatistics"/> object or null if the information can not be retrieved.</returns>
         SearchStatistics GetSearchStatistics();

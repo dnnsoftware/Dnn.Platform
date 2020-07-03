@@ -1,34 +1,28 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.DependencyInjection;
-using DotNetNuke.DependencyInjection.Extensions;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.DependencyInjection;
-using DotNetNuke.Web.Extensions;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
+    using DotNetNuke.DependencyInjection;
+    using DotNetNuke.DependencyInjection.Extensions;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.DependencyInjection;
+    using DotNetNuke.Web.Extensions;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Startup : IDnnStartup
     {
         private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));
+
         public Startup()
         {
-            Configure();
-        }
-
-        private void Configure()
-        {
-            var services = new ServiceCollection();
-            services.AddSingleton<IScopeAccessor, ScopeAccessor>();
-            ConfigureServices(services);
-            DependencyProvider = services.BuildServiceProvider();
+            this.Configure();
         }
 
         public IServiceProvider DependencyProvider { get; private set; }
@@ -43,7 +37,7 @@ namespace DotNetNuke.Web
                             !x.IsAbstract);
 
             var startupInstances = startupTypes
-                .Select(x => CreateInstance(x))
+                .Select(x => this.CreateInstance(x))
                 .Where(x => x != null);
 
             foreach (IDnnStartup startup in startupInstances)
@@ -59,6 +53,14 @@ namespace DotNetNuke.Web
             }
 
             services.AddWebApi();
+        }
+
+        private void Configure()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<IScopeAccessor, ScopeAccessor>();
+            this.ConfigureServices(services);
+            this.DependencyProvider = services.BuildServiceProvider();
         }
 
         private object CreateInstance(Type startupType)

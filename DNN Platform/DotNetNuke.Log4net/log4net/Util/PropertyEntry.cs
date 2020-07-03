@@ -1,7 +1,7 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
 /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -26,11 +26,11 @@
 namespace log4net.Util
 {
     /// <summary>
-    /// A class to hold the key and data for a property set in the config file
+    /// A class to hold the key and data for a property set in the config file.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// A class to hold the key and data for a property set in the config file
+    /// A class to hold the key and data for a property set in the config file.
     /// </para>
     /// </remarks>
     public class PropertyEntry
@@ -39,10 +39,10 @@ namespace log4net.Util
         private object m_value = null;
 
         /// <summary>
-        /// Property Key
+        /// Gets or sets property Key.
         /// </summary>
         /// <value>
-        /// Property Key
+        /// Property Key.
         /// </value>
         /// <remarks>
         /// <para>
@@ -51,15 +51,15 @@ namespace log4net.Util
         /// </remarks>
         public string Key
         {
-            get { return m_key; }
-            set { m_key = value; }
+            get { return this.m_key; }
+            set { this.m_key = value; }
         }
 
         /// <summary>
-        /// Property Value
+        /// Gets or sets property Value.
         /// </summary>
         /// <value>
-        /// Property Value
+        /// Property Value.
         /// </value>
         /// <remarks>
         /// <para>
@@ -68,17 +68,17 @@ namespace log4net.Util
         /// </remarks>
         public object Value
         {
-            get { return m_value; }
-            set { m_value = value; }
+            get { return this.m_value; }
+            set { this.m_value = value; }
         }
 
         /// <summary>
-        /// Override <c>Object.ToString</c> to return sensible debug info
+        /// Override <c>Object.ToString</c> to return sensible debug info.
         /// </summary>
-        /// <returns>string info about this object</returns>
+        /// <returns>string info about this object.</returns>
         public override string ToString()
         {
-            return "PropertyEntry(Key=" + m_key + ", Value=" + m_value + ")";
+            return "PropertyEntry(Key=" + this.m_key + ", Value=" + this.m_value + ")";
         }
     }
 }

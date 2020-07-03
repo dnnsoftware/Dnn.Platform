@@ -1,16 +1,17 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using DotNetNuke.Web.Mvc.Framework.Controllers;
-using DotNetNuke.Web.Mvc.Framework.Modules;
-using DotNetNuke.Web.Mvc.Routing;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Mvc.Framework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+
+    using DotNetNuke.Web.Mvc.Framework.Controllers;
+    using DotNetNuke.Web.Mvc.Framework.Modules;
+    using DotNetNuke.Web.Mvc.Routing;
+
     /// <summary>
     /// A View Engine that will delegate to whatever ViewEngine(s) the module application defines.
     /// </summary>
@@ -27,7 +28,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="partialViewName">The name of the partial view.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
+            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="viewName">The name of the view.</param><param name="masterName">The name of the master.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
+            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
         }
 
         /// <summary>
@@ -48,27 +49,10 @@ namespace DotNetNuke.Web.Mvc.Framework
         /// <param name="controllerContext">The controller context.</param><param name="view">The view.</param>
         public void ReleaseView(ControllerContext controllerContext, IView view)
         {
-            if (_viewEngineMappings.ContainsKey(view))
+            if (this._viewEngineMappings.ContainsKey(view))
             {
-                _viewEngineMappings[view].ReleaseView(controllerContext, view);
+                this._viewEngineMappings[view].ReleaseView(controllerContext, view);
             }
-        }
-
-        private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
-        {
-            var controller = controllerContext.Controller as IDnnController;
-            if (controller == null || controller.ViewEngineCollectionEx == null)
-                return new ViewEngineResult(new string[0]);
-
-            var result = engineRequest(controller.ViewEngineCollectionEx);
-
-            // If there is a view, store the view<->viewengine mapping so release works correctly
-            if (result.View != null)
-            {
-                _viewEngineMappings[result.View] = result.ViewEngine;
-            }
-
-            return result;
         }
 
         private static ModuleRequestResult GetCurrentModuleRequestResult(ControllerContext controllerContext)
@@ -77,7 +61,27 @@ namespace DotNetNuke.Web.Mvc.Framework
             {
                 return controllerContext.HttpContext.GetModuleRequestResult();
             }
+
             return null;
+        }
+
+        private ViewEngineResult RunAgainstModuleViewEngines(ControllerContext controllerContext, Func<ViewEngineCollection, ViewEngineResult> engineRequest)
+        {
+            var controller = controllerContext.Controller as IDnnController;
+            if (controller == null || controller.ViewEngineCollectionEx == null)
+            {
+                return new ViewEngineResult(new string[0]);
+            }
+
+            var result = engineRequest(controller.ViewEngineCollectionEx);
+
+            // If there is a view, store the view<->viewengine mapping so release works correctly
+            if (result.View != null)
+            {
+                this._viewEngineMappings[result.View] = result.ViewEngine;
+            }
+
+            return result;
         }
     }
 }

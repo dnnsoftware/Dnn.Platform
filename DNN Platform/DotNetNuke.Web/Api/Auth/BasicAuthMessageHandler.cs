@@ -1,25 +1,24 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Membership;
-using DotNetNuke.Web.ConfigSection;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Web.Api.Auth
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Principal;
+    using System.Text;
+    using System.Threading;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Membership;
+    using DotNetNuke.Web.ConfigSection;
+
     public class BasicAuthMessageHandler : AuthMessageHandlerBase
     {
-        public override string AuthScheme => "Basic";
-
         private readonly Encoding _encoding = Encoding.GetEncoding("iso-8859-1");
 
         public BasicAuthMessageHandler(bool includeByDefault, bool forceSsl)
@@ -27,14 +26,16 @@ namespace DotNetNuke.Web.Api.Auth
         {
         }
 
+        public override string AuthScheme => "Basic";
+
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(NeedsAuthentication(request))
+            if (this.NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
                 {
-                    TryToAuthenticate(request, portalSettings.PortalId);
+                    this.TryToAuthenticate(request, portalSettings.PortalId);
                 }
             }
 
@@ -43,9 +44,9 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
-            if (response.StatusCode == HttpStatusCode.Unauthorized && SupportsBasicAuth(response.RequestMessage))
+            if (response.StatusCode == HttpStatusCode.Unauthorized && this.SupportsBasicAuth(response.RequestMessage))
             {
-                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(AuthScheme, "realm=\"DNNAPI\""));
+                response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue(this.AuthScheme, "realm=\"DNNAPI\""));
             }
 
             return base.OnOutboundResponse(response, cancellationToken);
@@ -58,7 +59,7 @@ namespace DotNetNuke.Web.Api.Auth
 
         private void TryToAuthenticate(HttpRequestMessage request, int portalId)
         {
-            UserCredentials credentials = GetCredentials(request);
+            UserCredentials credentials = this.GetCredentials(request);
 
             if (credentials == null)
             {
@@ -68,12 +69,12 @@ namespace DotNetNuke.Web.Api.Auth
             var status = UserLoginStatus.LOGIN_FAILURE;
             string ipAddress = request.GetIPAddress();
 
-            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", "",
-                                                        "a portal", ipAddress ?? "", ref status);
+            UserInfo user = UserController.ValidateUser(portalId, credentials.UserName, credentials.Password, "DNN", string.Empty,
+                                                        "a portal", ipAddress ?? string.Empty, ref status);
 
             if (user != null)
             {
-                SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(credentials.UserName, AuthScheme), null), request);
+                SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(credentials.UserName, this.AuthScheme), null), request);
             }
         }
 
@@ -84,20 +85,20 @@ namespace DotNetNuke.Web.Api.Auth
                 return null;
             }
 
-            if (request?.Headers.Authorization.Scheme.ToLower() != AuthScheme.ToLower())
+            if (request?.Headers.Authorization.Scheme.ToLower() != this.AuthScheme.ToLower())
             {
                 return null;
             }
 
             string authorization = request?.Headers.Authorization.Parameter;
-            if (String.IsNullOrEmpty(authorization))
+            if (string.IsNullOrEmpty(authorization))
             {
                 return null;
             }
 
-            string decoded = _encoding.GetString(Convert.FromBase64String(authorization));
+            string decoded = this._encoding.GetString(Convert.FromBase64String(authorization));
 
-            string[] parts = decoded.Split(new[] {':'}, 2);
+            string[] parts = decoded.Split(new[] { ':' }, 2);
             if (parts.Length < 2)
             {
                 return null;
@@ -106,20 +107,17 @@ namespace DotNetNuke.Web.Api.Auth
             return new UserCredentials(parts[0], parts[1]);
         }
 
-        #region Nested type: UserCredentials
-
         internal class UserCredentials
         {
             public UserCredentials(string userName, string password)
             {
-                UserName = userName;
-                Password = password;
+                this.UserName = userName;
+                this.Password = password;
             }
 
             public string Password { get; set; }
+
             public string UserName { get; set; }
         }
-
-        #endregion
     }
 }

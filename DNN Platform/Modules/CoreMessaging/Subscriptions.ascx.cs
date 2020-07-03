@@ -1,64 +1,52 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
-using System.Web.UI;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Services.Authentication;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Social.Messaging;
-using DotNetNuke.UI.Modules;
-using DotNetNuke.Web.Client.ClientResourceManagement;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.Modules.CoreMessaging
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Configuration;
+    using System.Web.UI;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Messaging;
+    using DotNetNuke.UI.Modules;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Subscriptions : UserControl
     {
         private const string SharedResources = "~/DesktopModules/CoreMessaging/App_LocalResources/SharedResources.resx";
 
-        #region Public Properties
         public ModuleInstanceContext ModuleContext { get; set; }
 
         public ModuleInfo ModuleConfiguration
         {
-            get { return ModuleContext != null ? ModuleContext.Configuration : null; }
+            get { return this.ModuleContext != null ? this.ModuleContext.Configuration : null; }
+
             set
             {
-                ModuleContext.Configuration = value;
+                this.ModuleContext.Configuration = value;
             }
         }
 
         public string LocalResourceFile { get; set; }
 
-        #endregion
-
-        #region Protected Methods
-
-        protected string LocalizeString(string key)
-        {
-            return Localization.GetString(key, LocalResourceFile);
-        }
-
-        #endregion
-
-        #region Public Methods
-
         public string GetSettingsAsJson()
         {
-            var settings = GetModuleSettings(PortalSettings.Current, ModuleConfiguration, Null.NullInteger);
-            foreach (DictionaryEntry entry in GetViewSettings())
+            var settings = GetModuleSettings(PortalSettings.Current, this.ModuleConfiguration, Null.NullInteger);
+            foreach (DictionaryEntry entry in this.GetViewSettings())
             {
                 if (settings.ContainsKey(entry.Key))
                 {
@@ -73,9 +61,10 @@ namespace DotNetNuke.Modules.CoreMessaging
             return settings.ToJson();
         }
 
-        #endregion
-
-        #region Event Handlers
+        protected string LocalizeString(string key)
+        {
+            return Localization.GetString(key, this.LocalResourceFile);
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -83,49 +72,17 @@ namespace DotNetNuke.Modules.CoreMessaging
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            if (Request.IsAuthenticated)
+            if (this.Request.IsAuthenticated)
             {
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
-                ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/LocalizationController.js");
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/SubscriptionsViewModel.js");
+                ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/CoreMessaging/Scripts/Subscription.js");
+                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/CoreMessaging/subscriptions.css");
             }
             else
             {
-                Response.Redirect(Globals.AccessDeniedURL(), false);
+                this.Response.Redirect(Globals.AccessDeniedURL(), false);
             }
-        }
-
-        #endregion
-
-        #region Private methods
-
-        /// <summary>
-        /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
-        /// values that are automatically retrieved by Social Library such as portalId and moduleId.
-        /// </summary>
-        private Hashtable GetViewSettings()
-        {
-            var portalSettings = PortalSettings.Current;
-            var userPreferenceController = UserPreferencesController.Instance;
-            var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
-            UserPreference userPreference=null;
-            if (user != null)
-            {
-                userPreference = userPreferenceController.GetUserPreference(user);
-            }
-           
-
-            const int notifyFrequency = 2;
-            const int messageFrequency = 0;
-            
-            return new Hashtable
-                   {
-                       { "moduleScope", string.Format("#{0}", ScopeWrapper.ClientID) },
-                       { "pageSize", 25 },
-                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
-                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency }                
-                   };
         }
 
         private static Hashtable GetModuleSettings(PortalSettings portalSettings, ModuleInfo moduleInfo, int uniqueId)
@@ -185,9 +142,9 @@ namespace DotNetNuke.Modules.CoreMessaging
                        { "usePopup", usePopup },
                        { "returnUrl", HttpContext.Current.Request.UrlReferrer },
                        { "uniqueId", uniqueId },
-                    };
+                   };
         }
-        
+
         private static string GetHistoryNavigationKey(string moduleName)
         {
             return HttpContext.Current.Server.HtmlEncode(moduleName.ToLowerInvariant().Replace(" ", string.Empty));
@@ -220,7 +177,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             return new Dictionary<string, string>
                 {
                     { "ExceptionTitle", Localization.GetString("ExceptionTitle", SharedResources) },
-                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) }
+                    { "ExceptionMessage", Localization.GetString("ExceptionMessage", SharedResources) },
                 };
         }
 
@@ -242,6 +199,31 @@ namespace DotNetNuke.Modules.CoreMessaging
             return returnUrl;
         }
 
-        #endregion
+        /// <summary>
+        /// These values are passed in as the 'settings' parameter of the JavaScript initialization function, together with
+        /// values that are automatically retrieved by Social Library such as portalId and moduleId.
+        /// </summary>
+        private Hashtable GetViewSettings()
+        {
+            var portalSettings = PortalSettings.Current;
+            var userPreferenceController = UserPreferencesController.Instance;
+            var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
+            UserPreference userPreference = null;
+            if (user != null)
+            {
+                userPreference = userPreferenceController.GetUserPreference(user);
+            }
+
+            const int notifyFrequency = 2;
+            const int messageFrequency = 0;
+
+            return new Hashtable
+                   {
+                       { "moduleScope", string.Format("#{0}", this.ScopeWrapper.ClientID) },
+                       { "pageSize", 25 },
+                       { "notifyFrequency", userPreference != null ? (int)userPreference.NotificationsEmailFrequency : notifyFrequency },
+                       { "msgFrequency", userPreference != null ? (int)userPreference.MessagesEmailFrequency : messageFrequency },
+                   };
+        }
     }
 }

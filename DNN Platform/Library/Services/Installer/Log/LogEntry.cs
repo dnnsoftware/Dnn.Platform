@@ -1,18 +1,13 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Log
 {
+    using System;
+
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The LogEntry class provides a single entry for the Installer Log
+    /// The LogEntry class provides a single entry for the Installer Log.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -24,49 +19,50 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor builds a LogEntry from its type and description
+        /// Initializes a new instance of the <see cref="LogEntry"/> class.
+        /// This Constructor builds a LogEntry from its type and description.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="description">The description (detail) of the entry</param>
-        /// <param name="type">The type of LogEntry</param>
+        /// <param name="description">The description (detail) of the entry.</param>
+        /// <param name="type">The type of LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public LogEntry(LogType type, string description)
         {
-            Type = type;
-            _description = description;
+            this.Type = type;
+            this._description = description;
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the type of LogEntry
+        /// Gets the description of LogEntry.
         /// </summary>
-        /// <value>A LogType</value>
-        /// -----------------------------------------------------------------------------
-        public LogType Type { get; private set; }
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// Gets the description of LogEntry
-        /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Description
         {
             get
             {
-                if (_description == null)
+                if (this._description == null)
                 {
                     return "...";
                 }
-                
-                return _description;
+
+                return this._description;
             }
         }
 
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// Gets the type of LogEntry.
+        /// </summary>
+        /// <value>A LogType.</value>
+        /// -----------------------------------------------------------------------------
+        public LogType Type { get; private set; }
+
         public override string ToString()
         {
-            return string.Format("{0}:  {1}", Type, Description);
+            return string.Format("{0}:  {1}", this.Type, this.Description);
         }
     }
 }

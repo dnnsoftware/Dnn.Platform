@@ -1,29 +1,30 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using DotNetNuke.Web.Api;
-using System;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web.Http;
-using Dnn.PersonaBar.Library.Attributes;
-using Dnn.PersonaBar.Library.Prompt;
-using Dnn.PersonaBar.Prompt.Common;
-using Dnn.PersonaBar.Prompt.Components;
-using Dnn.PersonaBar.Prompt.Components.Models;
-using Dnn.PersonaBar.Prompt.Components.Repositories;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.Exceptions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Entities.Portals;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Prompt.Services
 {
+    using System;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web.Http;
+
+    using Dnn.PersonaBar.Library.Attributes;
+    using Dnn.PersonaBar.Library.Prompt;
+    using Dnn.PersonaBar.Prompt.Common;
+    using Dnn.PersonaBar.Prompt.Components;
+    using Dnn.PersonaBar.Prompt.Components.Models;
+    using Dnn.PersonaBar.Prompt.Components.Repositories;
+    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
+
     [MenuPermission(MenuName = "Dnn.Prompt")]
     [RequireHost]
     public class CommandController : ControllerBase, IServiceRouteMapper
@@ -32,35 +33,37 @@ namespace Dnn.PersonaBar.Prompt.Services
         private static readonly string[] BlackList = { "smtppassword", "password", "pwd", "pass", "apikey" };
 
         private int _portalId = -1;
+        private PortalSettings _portalSettings;
+
         private new int PortalId
         {
             get
             {
-                if (_portalId == -1)
+                if (this._portalId == -1)
                 {
-                    _portalId = base.PortalId;
+                    this._portalId = base.PortalId;
                 }
-                return _portalId;
+                return this._portalId;
             }
             set
             {
-                _portalId = value;
+                this._portalId = value;
             }
         }
-        private PortalSettings _portalSettings;
+
         private new PortalSettings PortalSettings
         {
             get
             {
-                if (_portalSettings == null)
+                if (this._portalSettings == null)
                 {
-                    _portalSettings = base.PortalSettings;
+                    this._portalSettings = base.PortalSettings;
                 }
-                return _portalSettings;
+                return this._portalSettings;
             }
             set
             {
-                _portalSettings = value;
+                this._portalSettings = value;
             }
         }
 
@@ -74,21 +77,13 @@ namespace Dnn.PersonaBar.Prompt.Services
             {
                 var errorMessage = string.Format(Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
                 Logger.Error(errorMessage);
-                return AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
+                return this.AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
 
-            PortalId = portalId;
-            SetupPortalSettings(portalId);
+            this.PortalId = portalId;
+            this.SetupPortalSettings(portalId);
 
-            return Cmd(command);
-        }
-
-        private void SetupPortalSettings(int portalId)
-        {
-            PortalSettings = new PortalSettings(portalId);
-            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
-            PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
-            PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(PortalSettings.DefaultPortalAlias);
+            return this.Cmd(command);
         }
 
         [ValidateAntiForgeryToken]
@@ -105,10 +100,10 @@ namespace Dnn.PersonaBar.Prompt.Services
                 var cmdName = isHelpCmd ? (args.Length > 1 ? args[1].ToUpper() : "") : args.First().ToUpper();
                 if (isHelpCmd && (isHelpSyntax || isHelpLearn))
                 {
-                    return GetHelp(command, null, isHelpSyntax, isHelpLearn);
+                    return this.GetHelp(command, null, isHelpSyntax, isHelpLearn);
                 }
                 if (isHelpCmd && args.Length == 1)
-                    return AddLogAndReturnResponse(null, null, command, startTime,
+                    return this.AddLogAndReturnResponse(null, null, command, startTime,
                         string.Format(Localization.GetString("CommandNotFound", Constants.LocalResourcesFile),
                             cmdName.ToLower()));
 
@@ -123,7 +118,7 @@ namespace Dnn.PersonaBar.Prompt.Services
                     {
                         sbError.AppendFormat(Localization.GetString("DidYouMean", Constants.LocalResourcesFile), suggestion);
                     }
-                    return AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
+                    return this.AddLogAndReturnResponse(null, null, command, startTime, sbError.ToString());
                 }
                 var cmdTypeToRun = allCommands[cmdName].CommandType;
 
@@ -131,22 +126,53 @@ namespace Dnn.PersonaBar.Prompt.Services
                 try
                 {
                     var cmdObj = (IConsoleCommand)Activator.CreateInstance(cmdTypeToRun);
-                    if (isHelpCmd) return GetHelp(command, cmdObj);
+                    if (isHelpCmd) return this.GetHelp(command, cmdObj);
                     // set env. data for command use
-                    cmdObj.Initialize(args, PortalSettings, UserInfo, command.CurrentPage);
-                    return AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
+                    cmdObj.Initialize(args, this.PortalSettings, this.UserInfo, command.CurrentPage);
+                    return this.AddLogAndReturnResponse(cmdObj, cmdTypeToRun, command, startTime);
                 }
                 catch (Exception ex)
                 {
                     Logger.Error(ex);
-                    return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+                    return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error(ex);
-                return AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
+                return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
+        }
+
+        public void RegisterRoutes(IMapRoute mapRouteManager)
+        {
+            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
+        }
+
+        private static string FilterCommand(string command)
+        {
+            var blackList = BlackList;
+            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
+                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (promptBlackList.Length > 0)
+            {
+                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
+            }
+            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
+            foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
+                        .Where(lowerKey => args.Any(arg => arg.Replace("-", "") == lowerKey)))
+            {
+                args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
+            }
+            return string.Join(" ", args);
+        }
+
+        private void SetupPortalSettings(int portalId)
+        {
+            this.PortalSettings = new PortalSettings(portalId);
+            var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId);
+            this.PortalSettings.PrimaryAlias = portalAliases.FirstOrDefault(a => a.IsPrimary);
+            this.PortalSettings.PortalAlias = PortalAliasController.Instance.GetPortalAlias(this.PortalSettings.DefaultPortalAlias);
         }
 
         /// <summary>
@@ -205,20 +231,20 @@ namespace Dnn.PersonaBar.Prompt.Services
                                     result.PagingInfo.PageNo, result.PagingInfo.TotalPages);
                         }
                     }
-                    message = Request.CreateResponse(HttpStatusCode.OK, result);
+                    message = this.Request.CreateResponse(HttpStatusCode.OK, result);
                     logInfo.LogProperties.Add(new LogDetailInfo("RecordsAffected", result.Records.ToString()));
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", result.Output));
                 }
                 else
                 {
                     logInfo.LogProperties.Add(new LogDetailInfo("Output", consoleCommand?.ValidationMessage ?? error));
-                    message = BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
+                    message = this.BadRequestResponse(consoleCommand?.ValidationMessage ?? error);
                 }
             }
             catch (Exception ex)
             {
                 logInfo.Exception = new ExceptionInfo(ex);
-                message = BadRequestResponse(ex.Message);
+                message = this.BadRequestResponse(ex.Message);
             }
             logInfo.LogProperties.Add(new LogDetailInfo("ExecutionTime(hh:mm:ss)", TimeSpan.FromMilliseconds(DateTime.Now.Subtract(startTime).TotalMilliseconds).ToString(@"hh\:mm\:ss\.ffffff")));
             LogController.Instance.AddLog(logInfo);
@@ -227,30 +253,7 @@ namespace Dnn.PersonaBar.Prompt.Services
 
         private HttpResponseMessage GetHelp(CommandInputModel command, IConsoleCommand consoleCommand, bool showSyntax = false, bool showLearn = false)
         {
-            return Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
-        }
-
-        private static string FilterCommand(string command)
-        {
-            var blackList = BlackList;
-            var promptBlackList = HostController.Instance.GetString("PromptBlackList", string.Empty)
-                .Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (promptBlackList.Length > 0)
-            {
-                blackList = blackList.Concat(promptBlackList).Distinct().ToArray();
-            }
-            var args = command.Split(new[] { ',', '|', ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).ToList();
-            foreach (var lowerKey in blackList.Select(key => key.ToLowerInvariant())
-                        .Where(lowerKey => args.Any(arg => arg.Replace("-", "") == lowerKey)))
-            {
-                args[args.TakeWhile(arg => arg.Replace("-", "") != lowerKey).Count() + 1] = "******";
-            }
-            return string.Join(" ", args);
-        }
-
-        public void RegisterRoutes(IMapRoute mapRouteManager)
-        {
-            mapRouteManager.MapHttpRoute("PersonaBar", "promptwithportalid", "{controller}/{action}/{portalId}", null, new { portalId = "-?\\d+" }, new[] { "Dnn.PersonaBar.Prompt.Services" });
+            return this.Request.CreateResponse(HttpStatusCode.OK, CommandRepository.Instance.GetCommandHelp(command, consoleCommand, showSyntax, showLearn));
         }
     }
 }

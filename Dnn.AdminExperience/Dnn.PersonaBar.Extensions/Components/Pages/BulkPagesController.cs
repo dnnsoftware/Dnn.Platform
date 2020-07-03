@@ -1,31 +1,33 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml;
-using Dnn.PersonaBar.Pages.Components.Exceptions;
-using Dnn.PersonaBar.Pages.Services.Dto;
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Tabs;
-using DotNetNuke.Framework;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Web.UI;
-using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Pages.Components
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text.RegularExpressions;
+    using System.Xml;
+
+    using Dnn.PersonaBar.Pages.Components.Exceptions;
+    using Dnn.PersonaBar.Pages.Services.Dto;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Web.UI;
+
+    using TermHelper = DotNetNuke.Entities.Content.Taxonomy.TermHelper;
+
     public class BulkPagesController : ServiceLocator<IBulkPagesController, BulkPagesController>, IBulkPagesController
     {
-        private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
         private const string DefaultPageTemplate = "Default.page.template";
+        private static readonly Regex TabNameRegex = new Regex(">*(.*)", RegexOptions.Compiled);
 
         public BulkPageResponse AddBulkPages(BulkPage page, bool validateOnly)
         {
@@ -55,13 +57,13 @@ namespace Dnn.PersonaBar.Pages.Components
             foreach (var strLine in pages)
             {
                 var tab = new TabInfo
-                    {
-                        TabName = TabNameRegex.Replace(strLine, "${1}"),
-                        Level = strLine.LastIndexOf(">", StringComparison.Ordinal) + 1,
-                        KeyWords = page.Keywords,
-                        StartDate = page.StartDate ?? Null.NullDate,
-                        EndDate = page.EndDate ?? Null.NullDate,
-                        IsVisible = page.IncludeInMenu
+                {
+                    TabName = TabNameRegex.Replace(strLine, "${1}"),
+                    Level = strLine.LastIndexOf(">", StringComparison.Ordinal) + 1,
+                    KeyWords = page.Keywords,
+                    StartDate = page.StartDate ?? Null.NullDate,
+                    EndDate = page.EndDate ?? Null.NullDate,
+                    IsVisible = page.IncludeInMenu
                 };
                 tab.Terms.AddRange(TermHelper.ToTabTerms(page.Tags, portalId));
                 tabs.Add(tab);
@@ -78,7 +80,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     string errorMessage = null;
                     if (oTab.Level == 0)
                     {
-                        oTab.TabID = CreateTabFromParent(portalSettings, rootTab, oTab, parentId, validateOnly, out errorMessage);
+                        oTab.TabID = this.CreateTabFromParent(portalSettings, rootTab, oTab, parentId, validateOnly, out errorMessage);
                     }
                     else if (validateOnly)
                     {
@@ -89,7 +91,7 @@ namespace Dnn.PersonaBar.Pages.Components
                         var parentTabId = GetParentTabId(tabs, currentIndex, oTab.Level - 1);
                         if (parentTabId != Null.NullInteger)
                         {
-                            oTab.TabID = CreateTabFromParent(portalSettings, rootTab, oTab, parentTabId, validateOnly, out errorMessage);
+                            oTab.TabID = this.CreateTabFromParent(portalSettings, rootTab, oTab, parentTabId, validateOnly, out errorMessage);
                         }
                     }
                     bulkPageItems.Add(ToBulkPageResponseItem(oTab, errorMessage));
@@ -104,6 +106,11 @@ namespace Dnn.PersonaBar.Pages.Components
             return response;
         }
 
+        protected override Func<IBulkPagesController> GetFactory()
+        {
+            return () => new BulkPagesController();
+        }
+
         private static BulkPageResponseItem ToBulkPageResponseItem(TabInfo tab, string error)
         {
             return new BulkPageResponseItem
@@ -113,6 +120,25 @@ namespace Dnn.PersonaBar.Pages.Components
                 Status = (error == null && tab.TabID > 0) ? 0 : 1,
                 PageName = tab.TabName
             };
+        }
+
+        private static int GetParentTabId(List<TabInfo> lstTabs, int currentIndex, int parentLevel)
+        {
+            var oParent = lstTabs[0];
+
+            for (var i = 0; i < lstTabs.Count; i++)
+            {
+                if (i == currentIndex)
+                {
+                    return oParent.TabID;
+                }
+                if (lstTabs[i].Level == parentLevel)
+                {
+                    oParent = lstTabs[i];
+                }
+            }
+
+            return Null.NullInteger;
         }
 
         private int CreateTabFromParent(PortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
@@ -179,7 +205,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             //Validate Tab Path
-            if (!IsValidTabPath(tab, tab.TabPath, out errorMessage))
+            if (!this.IsValidTabPath(tab, tab.TabPath, out errorMessage))
             {
                 return Null.NullInteger;
             }
@@ -227,7 +253,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 return -1;
 
             tab.TabID = TabController.Instance.AddTab(tab);
-            ApplyDefaultTabTemplate(tab);
+            this.ApplyDefaultTabTemplate(tab);
 
             //create localized tabs if content localization is enabled
             if (portalSettings.ContentLocalizationEnabled)
@@ -236,25 +262,6 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return tab.TabID;
-        }
-
-        private static int GetParentTabId(List<TabInfo> lstTabs, int currentIndex, int parentLevel)
-        {
-            var oParent = lstTabs[0];
-
-            for (var i = 0; i < lstTabs.Count; i++)
-            {
-                if (i == currentIndex)
-                {
-                    return oParent.TabID;
-                }
-                if (lstTabs[i].Level == parentLevel)
-                {
-                    oParent = lstTabs[i];
-                }
-            }
-
-            return Null.NullInteger;
         }
 
         private void ApplyDefaultTabTemplate(TabInfo tab)
@@ -313,11 +320,6 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             return valid;
-        }
-
-        protected override Func<IBulkPagesController> GetFactory()
-        {
-            return () => new BulkPagesController();
         }
     }
 }

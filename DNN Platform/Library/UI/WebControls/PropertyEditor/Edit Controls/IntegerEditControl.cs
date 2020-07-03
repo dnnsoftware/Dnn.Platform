@@ -1,19 +1,14 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-#region Usings
-
-using System;
-using System.Web.UI;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Instrumentation;
-
-#endregion
-
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 namespace DotNetNuke.UI.WebControls
 {
+    using System;
+    using System.Web.UI;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.UI.WebControls
@@ -29,47 +24,24 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
     public class IntegerEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IntegerEditControl));
-		#region "Constructors"
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs an IntegerEditControl
+        /// Initializes a new instance of the <see cref="IntegerEditControl"/> class.
+        /// Constructs an IntegerEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public IntegerEditControl()
         {
-            SystemType = "System.Int32";
-        }
-
-		#endregion
-
-		#region "Protected Properties"
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// StringValue is the value of the control expressed as a String
-        /// </summary>
-        /// <value>A string representing the Value</value>
-        /// -----------------------------------------------------------------------------
-        protected override string StringValue
-        {
-            get
-            {
-                return IntegerValue.ToString();
-            }
-            set
-            {
-                int setValue = Int32.Parse(value);
-                Value = setValue;
-            }
+            this.SystemType = "System.Int32";
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IntegerValue returns the Integer representation of the Value
+        /// Gets integerValue returns the Integer representation of the Value.
         /// </summary>
-        /// <value>An integer representing the Value</value>
+        /// <value>An integer representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected int IntegerValue
         {
@@ -78,26 +50,26 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 try
                 {
-					//Try and cast the value to an Integer
-                    if(Value != null)
+                    // Try and cast the value to an Integer
+                    if (this.Value != null)
                     {
-                        Int32.TryParse(Value.ToString(), out intValue);
+                        int.TryParse(this.Value.ToString(), out intValue);
                     }
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
+
                 return intValue;
             }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldIntegerValue returns the Integer representation of the OldValue
+        /// Gets oldIntegerValue returns the Integer representation of the OldValue.
         /// </summary>
-        /// <value>An integer representing the OldValue</value>
+        /// <value>An integer representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected int OldIntegerValue
         {
@@ -106,55 +78,69 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 try
                 {
-					//Try and cast the value to an Integer
-                    int.TryParse(OldValue.ToString(), out intValue);
+                    // Try and cast the value to an Integer
+                    int.TryParse(this.OldValue.ToString(), out intValue);
                 }
                 catch (Exception exc)
                 {
                     Logger.Error(exc);
-
                 }
+
                 return intValue;
             }
         }
 
-		#endregion
-
-		#region "Protected Methods"
-
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
-        protected override void OnDataChanged(EventArgs e)
+        protected override string StringValue
         {
-            var args = new PropertyEditorEventArgs(Name);
-            args.Value = IntegerValue;
-            args.OldValue = OldIntegerValue;
-            args.StringValue = StringValue;
-            base.OnValueChanged(args);
+            get
+            {
+                return this.IntegerValue.ToString();
+            }
+
+            set
+            {
+                int setValue = int.Parse(value);
+                this.Value = setValue;
+            }
         }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
+        /// Event.
+        /// </summary>
+        /// -----------------------------------------------------------------------------
+        protected override void OnDataChanged(EventArgs e)
+        {
+            var args = new PropertyEditorEventArgs(this.Name);
+            args.Value = this.IntegerValue;
+            args.OldValue = this.OldIntegerValue;
+            args.StringValue = this.StringValue;
+            this.OnValueChanged(args);
+        }
+
+        /// -----------------------------------------------------------------------------
+        /// <summary>
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            ControlStyle.AddAttributesToRender(writer);
+            this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Size, "5");
-            writer.AddAttribute(HtmlTextWriterAttribute.Value, StringValue);
-            writer.AddAttribute(HtmlTextWriterAttribute.Name, UniqueID);
-            writer.AddAttribute(HtmlTextWriterAttribute.Id, ClientID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
+            writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
+            writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
         }
-		
-		#endregion
     }
 }

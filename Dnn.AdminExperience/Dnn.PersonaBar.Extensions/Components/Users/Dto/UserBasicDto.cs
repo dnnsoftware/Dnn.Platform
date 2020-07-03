@@ -1,20 +1,42 @@
-﻿// 
-// Copyright (c) .NET Foundation. All rights reserved.
-// Licensed under the MIT License. See LICENSE file in the project root for full license information.
-// 
-using System;
-using System.Linq;
-using System.Runtime.Serialization;
-using Dnn.PersonaBar.Library.Common;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
 
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
+    using System;
+    using System.Linq;
+    using System.Runtime.Serialization;
+
+    using Dnn.PersonaBar.Library.Common;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+
     [DataContract]
     public class UserBasicDto
     {
-        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public UserBasicDto()
+        {
+
+        }
+
+        public UserBasicDto(UserInfo user)
+        {
+            this.UserId = user.UserID;
+            this.Username = user.Username;
+            this.Displayname = user.DisplayName;
+            this.Email = user.Email;
+            this.CreatedOnDate = user.CreatedOnDate;
+            this.IsDeleted = user.IsDeleted;
+            this.Authorized = user.Membership.Approved;
+            this.HasAgreedToTerms = user.HasAgreedToTerms;
+            this.RequestsRemoval = user.RequestsRemoval;
+            this.IsSuperUser = user.IsSuperUser;
+            this.IsAdmin = user.Roles.Contains(this.PortalSettings.AdministratorRoleName);
+        }
+
+        [DataMember(Name = "avatar")]
+        public string AvatarUrl => Utilities.GetProfileAvatar(this.UserId);
 
         [DataMember(Name = "userId")]
         public int UserId { get; set; }
@@ -55,29 +77,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-
-        [DataMember(Name = "avatar")]
-        public string AvatarUrl => Utilities.GetProfileAvatar(UserId);
-
-        public UserBasicDto()
-        {
-
-        }
-
-        public UserBasicDto(UserInfo user)
-        {
-            UserId = user.UserID;
-            Username = user.Username;
-            Displayname = user.DisplayName;
-            Email = user.Email;
-            CreatedOnDate = user.CreatedOnDate;
-            IsDeleted = user.IsDeleted;
-            Authorized = user.Membership.Approved;
-            HasAgreedToTerms = user.HasAgreedToTerms;
-            RequestsRemoval = user.RequestsRemoval;
-            IsSuperUser = user.IsSuperUser;
-            IsAdmin = user.Roles.Contains(PortalSettings.AdministratorRoleName);
-        }
+        private PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {
@@ -91,11 +91,12 @@ namespace Dnn.PersonaBar.Users.Components.Dto
                 CreatedOnDate = user.CreatedOnDate,
                 IsDeleted = user.IsDeleted,
                 Authorized = user.Membership.Approved,
-                HasAgreedToTerms=user.HasAgreedToTerms,
-                RequestsRemoval=user.RequestsRemoval,
+                HasAgreedToTerms = user.HasAgreedToTerms,
+                RequestsRemoval = user.RequestsRemoval,
                 IsSuperUser = user.IsSuperUser
             };
         }
+
         public static UserBasicDto FromUserDetails(UserDetailDto user)
         {
             if (user == null) return null;
