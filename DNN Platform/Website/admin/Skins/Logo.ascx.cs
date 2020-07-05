@@ -4,6 +4,7 @@
 namespace DotNetNuke.UI.Skins.Controls
 {
     using System;
+    using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
@@ -58,6 +59,21 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             this.imgLogo.ImageUrl = imageUrl;
                             logoVisible = true;
+                        }
+
+                        if (fileInfo.Extension == "svg") // svg file, hide the <img> tag and use an <object> instead
+                        {
+                            logoVisible = false;
+
+                            HtmlGenericControl obj = new HtmlGenericControl("object");
+                            obj.Attributes.Add("class", this.CssClass);
+
+                            if (!string.IsNullOrEmpty(imageUrl))
+                            {
+                                obj.Attributes.Add("data", imageUrl);
+                            }
+
+                            this.hypLogo.Controls.Add(obj);
                         }
                     }
                 }
