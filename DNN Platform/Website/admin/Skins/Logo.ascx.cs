@@ -67,6 +67,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                             HtmlGenericControl obj = new HtmlGenericControl("object");
                             obj.Attributes.Add("class", this.CssClass);
+                            obj.Attributes.Add("type", "image/svg+xml");
 
                             if (!string.IsNullOrEmpty(imageUrl))
                             {
