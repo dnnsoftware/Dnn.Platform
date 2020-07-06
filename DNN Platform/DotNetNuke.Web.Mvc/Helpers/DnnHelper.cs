@@ -213,5 +213,35 @@ namespace DotNetNuke.Web.Mvc.Helpers
         {
             ClientResourceManager.RegisterScript(this.DnnPage, filePath, priority, provider, name, version);
         }
+
+        /// <summary>Requests that a script from a JavaScript Library be registered on the client browser.</summary>
+        /// <param name="name">The name of the JavaScript Library.</param>
+        public void JavaScriptLibraryInclude(string name)
+        {
+            JavaScript.RequestRegistration(name);
+        }
+
+        /// <summary>Requests that a script from a JavaScript Library be registered on the client browser.</summary>
+        /// <param name="name">The name of the JavaScript Library.</param>
+        /// <param name="version">The library's version.</param>
+        public void JavaScriptLibraryInclude(string name, Version version)
+        {
+            JavaScript.RequestRegistration(name, version);
+        }
+
+        /// <summary>Requests that a script from a JavaScript Library be registered on the client browser.</summary>
+        /// <param name="name">The name of the JavaScript Library.</param>
+        /// <param name="version">The library's version.</param>
+        /// <param name="specificVersion">
+        /// How much of the <paramref name="version"/> to pay attention to.
+        /// When <see cref="SpecificVersion.Latest"/> is passed, ignore the <paramref name="version"/>.
+        /// When <see cref="SpecificVersion.LatestMajor"/> is passed, match the major version.
+        /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
+        /// When <see cref="SpecificVersion.Exact"/> is passed, match all parts of the version.
+        /// </param>
+        public void JavaScriptLibraryInclude(string name, Version version, SpecificVersion specificVersion)
+        {
+            JavaScript.RequestRegistration(name, version, specificVersion);
+        }
     }
 }
